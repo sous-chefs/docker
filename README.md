@@ -79,45 +79,35 @@ Run a container:
 
     docker_container "busybox" do
       command "sleep 9999"
+      detach true
     end
 
 Stop a running container:
 
-    # Without container ID
     docker_container "busybox" do
-      command "sleep 9999"
-      action :stop
-    end
-    # With container ID
-    docker_container "abc123" do
       command "sleep 9999"
       action :stop
     end
 
 Start a stopped container:
 
-    # Without container ID
     docker_container "busybox" do
-      command "sleep 9999"
-      action :start
-    end
-    # With container ID
-    docker_container "abc123" do
       command "sleep 9999"
       action :start
     end
 
 Restart a container:
 
-    # Without container ID
     docker_container "busybox" do
       command "sleep 9999"
       action :restart
     end
-    # With container ID
-    docker_container "abc123" do
+
+Remove a container:
+
+    docker_container "busybox" do
       command "sleep 9999"
-      action :restart
+      action :remove
     end
 
 ### docker_image
@@ -146,6 +136,8 @@ Remove image:
 
 ## Testing and Development
 
+### Vagrant
+
 Here's how you can quickly get testing or developing against the cookbook thanks to [Vagrant](http://vagrantup.com/) and [Berkshelf](http://berkshelf.com/).
 
     vagrant plugin install vagrant-berkshelf
@@ -156,6 +148,10 @@ Here's how you can quickly get testing or developing against the cookbook thanks
 You can then SSH into the running VM using the `vagrant ssh BOX` command.
 
 The VM can easily be stopped and deleted with the `vagrant destroy` command. Please see the official [Vagrant documentation](http://docs.vagrantup.com/v2/cli/index.html) for a more in depth explanation of available commands.
+
+### Test Kitchen
+
+Please see documentation in: [TESTING.md](TESTING.md)
 
 ## Contributing
 
