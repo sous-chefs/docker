@@ -2,7 +2,7 @@
 
 ## Description
 
-Installs/Configures Docker. Please see [COMPATIBILITY.md](COMPATIBILITY.md) for more information about Docker versions that are tested and supported by cookbook versions.
+Installs/Configures [Docker](http://docker.io). Please see [COMPATIBILITY.md](COMPATIBILITY.md) for more information about Docker versions that are tested and supported by cookbook versions.
 
 This cookbook was inspired by @thoward's docker-cookbook: https://github.com/thoward/docker-cookbook
 
