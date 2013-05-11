@@ -1,0 +1,20 @@
+# Put files/directories that should be ignored by Chef Server in this file.
+# Lines that start with '# ' are comments.
+# More info: http://www.opscode.com/blog/2011/04/29/chef-0-10-preview-chefignore/
+
+# git
+\.gitignore
+
+# subversion
+*/.svn/*
+
+# emacs
+*~
+
+# vim
+*.sw[a-z]
+
+# tests
+*/test/*
+\.travis.yml
+Rakefile

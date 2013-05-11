@@ -1,0 +1,8 @@
+.bundle
+.cache
+.kitchen/
+.kitchen.local.yml
+.vagrant
+Berksfile.lock
+Gemfile.lock
+\#*#
