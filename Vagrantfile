@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
   config.vm.define :ubuntu1204 do |ubuntu1204|
     ubuntu1204.vm.box      = 'opscode-ubuntu-12.04'
     ubuntu1204.vm.box_url  = 'https://opscode-vm.s3.amazonaws.com/vagrant/opscode_ubuntu-12.04_chef-11.2.0.box'
-    ubuntu1204.vm.hostname = 'stash-ubuntu-1204'
+    ubuntu1204.vm.hostname = 'docker-ubuntu-1204'
     ubuntu1204.vm.network :private_network, ip: '192.168.50.10'
   end
 
