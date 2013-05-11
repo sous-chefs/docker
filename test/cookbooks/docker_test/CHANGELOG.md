@@ -2,6 +2,11 @@
 
 This file is used to list changes made in each version of docker_test.
 
+## 0.2.0:
+
+* Added container_lwrp recipe
+* Removed default recipe from image_lwrp recipe
+
 ## 0.1.0:
 
 * Initial release of docker_test

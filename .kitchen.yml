@@ -16,5 +16,7 @@ suites:
 - name: image_lwrp
   run_list:
   - recipe[minitest-handler]
+  - recipe[docker_test::default]
   - recipe[docker_test::image_lwrp]
+  - recipe[docker_test::container_lwrp]
   attributes: {}

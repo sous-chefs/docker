@@ -17,8 +17,6 @@
 # limitations under the License.
 #
 
-include_recipe "docker"
-
 docker_image "base"
 docker_image "busybox"
 
