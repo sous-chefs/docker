@@ -71,6 +71,73 @@ url | Repository URL for docker source | String | "https://github.com/dotcloud/d
 * `recipe[docker::source]` Installs Docker via source
 * `recipe[docker::upstart]` Installs/Starts Docker via Upstart
 
+## LWRPs
+
+### docker_container
+
+Run a container:
+
+    docker_container "busybox" do
+      command "sleep 9999"
+    end
+
+Stop a running container:
+
+    # Without container ID
+    docker_container "busybox" do
+      command "sleep 9999"
+      action :stop
+    end
+    # With container ID
+    docker_container "abc123" do
+      command "sleep 9999"
+      action :stop
+    end
+
+Start a stopped container:
+
+    # Without container ID
+    docker_container "busybox" do
+      command "sleep 9999"
+      action :start
+    end
+    # With container ID
+    docker_container "abc123" do
+      command "sleep 9999"
+      action :start
+    end
+
+Restart a container:
+
+    # Without container ID
+    docker_container "busybox" do
+      command "sleep 9999"
+      action :restart
+    end
+    # With container ID
+    docker_container "abc123" do
+      command "sleep 9999"
+      action :restart
+    end
+
+### docker_image
+
+Pull latest image:
+
+    docker_image "busybox"
+
+Pull tagged image:
+
+    docker_image "bflad/test" do
+      tag "not-latest"
+    end
+
+Remove image:
+
+    docker_image "busybox" do
+      action :remove
+    end
+
 ## Usage
 
 ### Default Installation
