@@ -33,10 +33,18 @@ These attributes are under the `node['docker']` namespace.
 Attribute | Description | Type | Default
 ----------|-------------|------|--------
 arch | Architecture for docker binary (note: Docker only currently supports x86_64) | String | auto-detected (see attributes/default.rb)
+install_dir | Installation directory for docker binary | String | auto-detected (see attributes/default.rb)
 install_type | Installation type for docker ("binary", "package" or "source") | String | "package"
+
+### Binary Attributes
+
+These attributes are under the `node['docker']['binary']` namespace.
+
+Attribute | Description | Type | Default
+----------|-------------|------|--------
 url | URL for downloading docker binary | String | auto-detected (see attributes/default.rb)
 
-## Package Attributes
+### Package Attributes
 
 These attributes are under the `node['docker']['package']` namespace.
 
@@ -45,7 +53,7 @@ Attribute | Description | Type | Default
 distribution | Distribution for docker packages | String | auto-detected (see attributes/default.rb)
 repo_url | Repository URL for docker packages | String | auto-detected (see attributes/default.rb)
 
-## Source Attributes
+### Source Attributes
 
 These attributes are under the `node['docker']['source']` namespace.
 
