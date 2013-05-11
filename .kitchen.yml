@@ -9,12 +9,12 @@ platforms:
 - name: ubuntu-12.04
   driver_config:
     box: opscode-ubuntu-12.04
-    box_url: http://opscode-vm.s3.amazonaws.com/vagrant/opscode_ubuntu-12.04_chef-11.2.0.box
-    require_chef_omnibus: 11.4.0
+    box_url: http://opscode-vm.s3.amazonaws.com/vagrant/opscode_ubuntu-12.04_chef-11.4.4.box
+    require_chef_omnibus: 11.4.4
 
 suites:
-- name: default
+- name: image_lwrp
   run_list:
   - recipe[minitest-handler]
-  - recipe[docker_test]
+  - recipe[docker_test::image_lwrp]
   attributes: {}
