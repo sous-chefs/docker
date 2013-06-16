@@ -12,6 +12,7 @@ This cookbook was inspired by @thoward's docker-cookbook: https://github.com/tho
 
 * Ubuntu 12.04
 * Ubuntu 12.10
+* Ubuntu 13.04
 
 ### Cookbooks
 
@@ -141,9 +142,10 @@ Remove image:
 Here's how you can quickly get testing or developing against the cookbook thanks to [Vagrant](http://vagrantup.com/) and [Berkshelf](http://berkshelf.com/).
 
     vagrant plugin install vagrant-berkshelf
+    vagrant plugin install vagrant-omnibus
     git clone git://github.com/bflad/chef-docker.git
     cd chef-docker
-    vagrant up BOX # BOX being ubuntu1204
+    vagrant up BOX # BOX being ubuntu1204, ubuntu1210, or ubuntu1304
 
 You can then SSH into the running VM using the `vagrant ssh BOX` command.
 

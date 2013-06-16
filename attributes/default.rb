@@ -46,12 +46,7 @@ default['docker']['binary']['url'] = "http://get.docker.io/builds/Linux/#{node['
 # Package attributes
 case node['platform']
 when "ubuntu"
-  case node['platform_version']
-  when "12.04"
-    default['docker']['package']['distribution'] = node['lsb']['codename']
-  else
-    default['docker']['package']['distribution'] = "precise"
-  end
+  default['docker']['package']['distribution'] = node['lsb']['codename']
   default['docker']['package']['repo_url'] = "http://ppa.launchpad.net/dotcloud/lxc-docker/ubuntu"
 end
 

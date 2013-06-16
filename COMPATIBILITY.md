@@ -8,15 +8,15 @@ Cookbook compatibility based on platform, installation type (`node['docker']['in
 
 Cookbook Compatibility
 
-Docker Version | Ubuntu 12.04 | Ubuntu 12.10
----------------|--------------|-------------
-0.3.2          | 0.1+         | 0.1+
+Docker Version | Ubuntu 12.04 | Ubuntu 12.10 | Ubuntu 13.04
+---------------|--------------|----------------------------
+0.3.2          | 0.1+         | 0.1+         | 0.4+
 
 Test Matrix
 
-Docker Version | Ubuntu 12.04 | Ubuntu 12.10
----------------|--------------|-------------
-0.3.2          | 0.1+         | 0.1+
+Docker Version | Ubuntu 12.04 | Ubuntu 12.10 | Ubuntu 13.04
+---------------|--------------|----------------------------
+0.3.2          | 0.1+         | 0.1+         | 0.4+
 
 #### Linux Package i386 ####
 
@@ -26,15 +26,15 @@ Unsupported by Docker.
 
 Cookbook Compatibility
 
-Docker Version | Ubuntu 12.04 | Ubuntu 12.10
----------------|--------------|-------------
-0.3.2          | 0.1+         | 0.1+
+Docker Version | Ubuntu 12.04 | Ubuntu 12.10 | Ubuntu 13.04
+---------------|--------------|----------------------------
+0.3.2          | 0.1+         | 0.1+         | 0.4+
 
 Test Matrix
 
-Docker Version | Ubuntu 12.04 | Ubuntu 12.10
----------------|--------------|-------------
-0.3.2          | 0.1+         | 0.1+
+Docker Version | Ubuntu 12.04 | Ubuntu 12.10 | Ubuntu 13.04
+---------------|--------------|----------------------------
+0.3.2          | 0.1+         | 0.1+         | 0.4+
 
 ### LWRP Compatibility ###
 

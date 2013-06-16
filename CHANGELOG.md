@@ -1,3 +1,8 @@
+## 0.4.0
+
+* Docker now provides precise/quantal/raring distributions for their PPA
+* Tested Ubuntu 13.04 support
+
 ## 0.3.0
 
 * Initial `container` LWRP
