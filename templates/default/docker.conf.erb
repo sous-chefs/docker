@@ -7,6 +7,9 @@ start on runlevel [3]
 respawn
 
 script
+    <% if node['docker']['http_proxy'] %>
+    env HTTP_PROXY=<%= node['docker']['http_proxy'] %>
+    <% end %>
     test -f /etc/default/locale && . /etc/default/locale || true
     LANG=$LANG LC_ALL=$LANG <%= node['docker']['install_dir'] %>/docker -d
 end script
