@@ -29,6 +29,8 @@ else
   default['docker']['arch'] = "x86_64"
 end
 
+default['docker']['http_proxy'] = nil
+
 default['docker']['install_type'] = "package"
 
 case node['docker']['install_type']

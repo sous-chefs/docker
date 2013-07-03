@@ -1,3 +1,7 @@
+## 0.5.0
+
+* Add http_proxy attribute
+
 ## 0.4.0
 
 * Docker now provides precise/quantal/raring distributions for their PPA
