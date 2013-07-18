@@ -37,6 +37,8 @@ arch | Architecture for docker binary (note: Docker only currently supports x86_
 http_proxy | HTTP_PROXY environment variable | String | nil
 install_dir | Installation directory for docker binary | String | auto-detected (see attributes/default.rb)
 install_type | Installation type for docker ("binary", "package" or "source") | String | "package"
+bind_uri | The location to that docker should bind to. Something | String | tcp://0.0.0.0:4243 (docker default)
+options | Additional options to pass to docker. These could be flags like "-api-enable-cors". | String | nil
 
 ### Binary Attributes
 
