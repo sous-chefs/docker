@@ -1,3 +1,7 @@
+## 0.6.0
+
+* Add bind_uri and options attributes
+
 ## 0.5.0
 
 * Add http_proxy attribute
