@@ -1,3 +1,7 @@
+## 0.6.1
+
+* Change env HTTP_PROXY to export HTTP_PROXY in Upstart configuration
+
 ## 0.6.0
 
 * Add bind_uri and options attributes
