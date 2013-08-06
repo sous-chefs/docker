@@ -9,7 +9,6 @@ respawn
 script
     <% if node['docker']['http_proxy'] %>
     export HTTP_PROXY=<%= node['docker']['http_proxy'] %>
-    export HTTPS_PROXY=<%= node['docker']['http_proxy'] %>
     <% end %>
     test -f /etc/default/locale && . /etc/default/locale || true
     LANG=$LANG LC_ALL=$LANG <%= node['docker']['install_dir'] %>/docker -d<% if node['docker']['bind_uri'] %> -H="<%= node['docker']['bind_uri'] %>"<% end %><% if node['docker']['options'] %> <%= node['docker']['options'] %><% end %>
