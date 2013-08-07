@@ -1,3 +1,7 @@
+## 0.6.2
+
+* Change Upstart config to start on runlevels [2345] instead of just 3
+
 ## 0.6.1
 
 * Change env HTTP_PROXY to export HTTP_PROXY in Upstart configuration
