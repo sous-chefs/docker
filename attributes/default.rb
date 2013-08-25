@@ -48,8 +48,9 @@ default['docker']['binary']['url'] = "http://get.docker.io/builds/Linux/#{node['
 # Package attributes
 case node['platform']
 when "ubuntu"
-  default['docker']['package']['distribution'] = node['lsb']['codename']
-  default['docker']['package']['repo_url'] = "http://ppa.launchpad.net/dotcloud/lxc-docker/ubuntu"
+  default['docker']['package']['distribution'] = "docker"
+  default['docker']['package']['repo_url'] = "https://get.docker.io/ubuntu"
+  default['docker']['package']['repo_key'] = "http://get.docker.io/gpg"
 end
 
 # Source attributes
