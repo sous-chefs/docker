@@ -23,6 +23,7 @@ when "ubuntu"
     uri node['docker']['package']['repo_url']
     distribution node['docker']['package']['distribution']
     components [ "main" ]
+    key node['docker']['package']['repo_key']
   end
 end
 
