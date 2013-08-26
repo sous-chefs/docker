@@ -1,3 +1,7 @@
+## 0.7.0
+
+* Update APT repository information for Docker 0.6+
+
 ## 0.6.2
 
 * Change Upstart config to start on runlevels [2345] instead of just 3
