@@ -46,12 +46,17 @@ end
 
 action :run do
   unless running?
+    if new_resource.public_port
+      port = "#{new_resource.public_port}:#{new_resource.port}"
+    else
+      port = ":#{new_resource.port}"
+    end
     run_args = ""
     run_args += " -d" if new_resource.detach
     run_args += " -e #{new_resource.env}" if new_resource.env
     run_args += " -h #{new_resource.hostname}" if new_resource.hostname
     run_args += " -m #{new_resource.memory}" if new_resource.memory
-    run_args += " -p #{new_resource.port}" if new_resource.port
+    run_args += " -p #{port}" if port
     run_args += " -t" if new_resource.tty
     run_args += " -u #{new_resource.user}" if new_resource.user
     run_args += " -v #{new_resource.volume}" if new_resource.volume

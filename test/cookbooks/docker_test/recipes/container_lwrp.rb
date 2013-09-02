@@ -43,6 +43,13 @@ docker_container "busybox" do
 end
 
 docker_container "busybox" do
+  command "sleep 6666"
+  port 80
+  public_port 80
+  detach true
+end
+
+docker_container "busybox" do
   command "sleep 2222"
   action :restart
 end
