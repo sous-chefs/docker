@@ -50,7 +50,7 @@ case node['platform']
 when "ubuntu"
   default['docker']['package']['distribution'] = "docker"
   default['docker']['package']['repo_url'] = "https://get.docker.io/ubuntu"
-  default['docker']['package']['repo_key'] = "http://get.docker.io/gpg"
+  default['docker']['package']['repo_key'] = "https://get.docker.io/gpg"
 end
 
 # Source attributes
