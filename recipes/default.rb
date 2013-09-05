@@ -20,6 +20,7 @@
 include_recipe "apt" if node['platform'] == "ubuntu"
 include_recipe "git" if node['docker']['install_type'] == "source"
 
+package "apt-transport-https"
 package "bsdtar"
 
 include_recipe "golang"
