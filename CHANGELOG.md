@@ -1,3 +1,7 @@
+## 0.7.1
+
+* Use HTTPS for Apt repository
+
 ## 0.7.0
 
 * Update APT repository information for Docker 0.6+
