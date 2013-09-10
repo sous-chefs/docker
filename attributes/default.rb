@@ -43,7 +43,8 @@ else
 end
 
 # Binary attributes
-default['docker']['binary']['url'] = "http://get.docker.io/builds/Linux/#{node['docker']['arch']}/docker-latest.tgz"
+default['docker']['binary']['version'] = 'latest'
+default['docker']['binary']['url'] = "http://get.docker.io/builds/Linux/#{node['docker']['arch']}/docker-#{node['docker']['binary']['version']}"
 
 # Package attributes
 case node['platform']
