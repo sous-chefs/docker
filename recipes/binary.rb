@@ -24,6 +24,6 @@ remote_file "#{node['docker']['install_dir']}/docker" do
   owner "root"
   group "root"
   mode 00755
-  action :create
+  action :create_if_missing
 end
 
