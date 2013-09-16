@@ -48,7 +48,7 @@ action :run do
   unless running?
     if new_resource.public_port
       port = "#{new_resource.public_port}:#{new_resource.port}"
-    else
+    elsif new_resource.port
       port = ":#{new_resource.port}"
     end
     run_args = ""
