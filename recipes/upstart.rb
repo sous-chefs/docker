@@ -24,6 +24,14 @@ template "/etc/init/docker.conf" do
   group "root"
 end
 
+# stop service if running - Ubuntu apt-get install automatically starts the service
+# and docker.conf is written after the package installation.
+service "docker stop" do
+  service_name "docker"
+  provider Chef::Provider::Service::Upstart
+  action :stop
+end
+
 service "docker" do
   provider Chef::Provider::Service::Upstart
   supports :status => true, :restart => true, :reload => true
