@@ -27,7 +27,7 @@ when "ubuntu"
   # linux-image-extra package. This is somewhat messy because the
   # naming of these packages is very inconsistent across kernel
   # versions
-  extra_package = %x(apt-cache search linux-image-extra-`uname -r | grep --only-matching -e [0-9]\.[0-9]\.[0-9]-[0-9]*` | cut -d " " -f 1).strip
+  extra_package = Mixlib::ShellOut.new("apt-cache search linux-image-extra-`uname -r | grep --only-matching -e [0-9]\.[0-9]\.[0-9]-[0-9]*` | cut -d ' ' -f 1").run_command.stdout.strip
   unless extra_package.empty?
     package extra_package do
       not_if "modprobe -l | grep aufs"
