@@ -17,16 +17,13 @@
 # limitations under the License.
 #
 
-remote_file "#{Chef::Config[:file_cache_path]}/docker-latest.tgz" do
+
+# Download docker binary to cache
+remote_file "#{node['docker']['install_dir']}/docker" do
   source node['docker']['binary']['url']
   owner "root"
   group "root"
-  mode 00644
+  mode 00755
   action :create_if_missing
 end
 
-execute "extract_and_install_docker_binary" do
-  command "tar -C #{node['docker']['install_dir']} --strip-components=1 -zxf #{Chef::Config[:file_cache_path]}/docker-latest.tgz docker-latest/docker"
-  creates "#{node['docker']['install_dir']}/docker"
-  action :run
-end
