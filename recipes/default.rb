@@ -23,6 +23,7 @@ include_recipe "git" if node['docker']['install_type'] == "source"
 package "apt-transport-https"
 package "bsdtar"
 
+node.set["go"]["version"] = "1.1"
 include_recipe "golang"
 include_recipe "lxc"
 include_recipe "docker::aufs"

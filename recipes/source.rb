@@ -31,6 +31,6 @@ git "#{node['go']['gopath']}/src/github.com/dotcloud/docker" do
   action :checkout
 end
 
-golang_package "github.com/dotcloud/docker/..." do
+golang_package "github.com/dotcloud/docker" do
   action :install
 end
