@@ -53,6 +53,8 @@ action :run do
     run_args += " -m #{new_resource.memory}" if new_resource.memory
     run_args += " -p #{new_resource.port}" if new_resource.port
     run_args += " -t" if new_resource.tty
+    run_args += " -i" if new_resource.stdin
+    run_args += " -privileged" if new_resource.privileged
     run_args += " -u #{new_resource.user}" if new_resource.user
     run_args += " -v #{new_resource.volume}" if new_resource.volume
     dr = shell_out("docker run #{run_args} #{new_resource.image} #{new_resource.command}")
