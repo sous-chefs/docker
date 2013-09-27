@@ -1,3 +1,7 @@
+## 0.8.1
+
+* Fix in aufs recipe for FC048 Prefer Mixlib::ShellOut
+
 ## 0.8.0
 
 Lots of community contributions this release -- thanks!
