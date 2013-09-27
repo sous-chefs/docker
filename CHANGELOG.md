@@ -1,3 +1,12 @@
+## 0.8.0
+
+Lots of community contributions this release -- thanks!
+* image LWRP now supports builds via Dockerfile
+* Additional privileged, public_port, and stdin parameters for container LWRP
+* Support specifying binary version for installation
+* Fix upstart configuration customization when installing via Apt packages
+* Default to Golang 1.1
+
 ## 0.7.1
 
 * Use HTTPS for Apt repository

@@ -46,6 +46,7 @@ These attributes are under the `node['docker']['binary']` namespace.
 
 Attribute | Description | Type | Default
 ----------|-------------|------|--------
+version | Version of docker binary | String | latest
 url | URL for downloading docker binary | String | auto-detected (see attributes/default.rb)
 
 ### Package Attributes
@@ -115,6 +116,14 @@ Remove a container:
     end
 
 ### docker_image
+
+Build image from Dockerfile:
+
+    docker_image "myImage" do
+      tag "myTag"
+      dockerfile myImageDockerfile
+      action :build
+    end
 
 Pull latest image:
 
