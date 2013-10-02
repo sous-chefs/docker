@@ -51,7 +51,11 @@ action :build do
   unless installed?
     full_image_name = new_resource.image_name
     full_image_name += ":#{new_resource.tag}" if new_resource.tag
-    shell_out("docker build -t #{full_image_name} - < #{new_resource.dockerfile}")
+
+    build_source = new_resource.image_url
+    build_source = "- < #{new_resource.dockerfile}" if new_resource.dockerfile
+
+    shell_out("docker build -t #{full_image_name} #{build_source}")
     new_resource.updated_by_last_action(true)
   end
 end
