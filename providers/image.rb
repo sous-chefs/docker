@@ -22,7 +22,7 @@ include Chef::Mixin::ShellOut
 
 def load_current_resource
   @current_resource = Chef::Resource::DockerImage.new(new_resource)
-  di = shell_out("docker images -a")
+  di = shell_out("docker images -a", :timeout => new_resource.timeout || 60)
   if di.stdout.include?(new_resource.image_name)
     di.stdout.each_line do |di_line|
       next unless di_line.include?(new_resource.image_name)
@@ -42,7 +42,7 @@ action :pull do
     pull_args = ""
     pull_args += " -registry #{new_resource.registry}" if new_resource.registry
     pull_args += " -t #{new_resource.tag}" if new_resource.tag
-    shell_out("docker pull #{new_resource.image_name} #{pull_args}")
+    shell_out("docker pull #{new_resource.image_name} #{pull_args}", :timeout => new_resource.timeout || 60)
     new_resource.updated_by_last_action(true)
   end
 end
@@ -51,7 +51,7 @@ action :build do
   unless installed?
     full_image_name = new_resource.image_name
     full_image_name += ":#{new_resource.tag}" if new_resource.tag
-    shell_out("docker build -t #{full_image_name} - < #{new_resource.dockerfile}")
+    shell_out("docker build -t #{full_image_name} - < #{new_resource.dockerfile}", :timeout => new_resource.timeout || 60)
     new_resource.updated_by_last_action(true)
   end
 end
@@ -62,7 +62,7 @@ action :remove do
 end
 
 def remove
-  shell_out("docker rmi #{new_resource.image_name}")
+  shell_out("docker rmi #{new_resource.image_name}", :timeout => new_resource.timeout || 60)
 end
 
 def installed?
