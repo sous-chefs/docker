@@ -56,6 +56,24 @@ action :build do
   end
 end
 
+action :import do
+  unless installed?
+    import_args = ""
+    if new_resource.image_url
+      import_args += new_resource.image_url
+      import_args += " #{new_resource.image_name}"
+    end
+
+    if new_resource.repository
+      import_args += " - #{new_resource.repository}"
+      import-args += " #{new_resource.tag}" if new_resource.tag
+    end
+
+    shell_out("docker import #{import_args}")
+    new_resource.updated_by_last_action(true)
+  end
+end
+
 action :remove do
   remove if @current_resource.installed
   new_resource.updated_by_last_action(true)

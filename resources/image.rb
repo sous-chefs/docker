@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-actions :pull, :remove, :build
+actions :pull, :remove, :build, :import
 
 default_action :pull
 
@@ -29,3 +29,4 @@ attribute :registry, :kind_of => [String]
 attribute :repository, :kind_of => [String]
 attribute :tag, :kind_of => [String]
 attribute :dockerfile, :kind_of => [String]
+attribute :image_url, :kind_of => [String]
