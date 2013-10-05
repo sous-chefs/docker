@@ -1,3 +1,7 @@
+## 0.9.0
+
+* image LWRP now supports non-stdin build and import actions (thanks @wingrunr21!)
+
 ## 0.8.1
 
 * Fix in aufs recipe for FC048 Prefer Mixlib::ShellOut

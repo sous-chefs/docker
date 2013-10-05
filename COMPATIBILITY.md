@@ -66,7 +66,7 @@ Docker Command | Cookbook Version
 ---------------|-----------------
 build          | 0.8+
 history        | -
-import         | -
+import         | 0.9+
 pull           | 0.2+
 push           | -
 rmi            | 0.2+

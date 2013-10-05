@@ -194,6 +194,6 @@ Please see documentation in: [TESTING.md](TESTING.md)
 
 Please use standard Github issues/pull requests and if possible, in combination with testing on the Vagrant boxes or Test Kitchen suite.
 
-## Contributors
+## Maintainers
 
 * Brian Flad (<bflad417@gmail.com>)
