@@ -52,8 +52,8 @@ action :build do
     full_image_name = new_resource.image_name
     full_image_name += ":#{new_resource.tag}" if new_resource.tag
 
-    build_source = new_resource.image_url
     build_source = "- < #{new_resource.dockerfile}" if new_resource.dockerfile
+    build_source ||= new_resource.image_url
 
     shell_out("docker build -t #{full_image_name} #{build_source}")
     new_resource.updated_by_last_action(true)
@@ -66,9 +66,7 @@ action :import do
     if new_resource.image_url
       import_args += new_resource.image_url
       import_args += " #{new_resource.image_name}"
-    end
-
-    if new_resource.repository
+    elsif new_resource.repository
       import_args += " - #{new_resource.repository}"
       import-args += " #{new_resource.tag}" if new_resource.tag
     end
