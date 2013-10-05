@@ -13,5 +13,5 @@ group :test do
   gem "rb-fchange", :require => false
 end
 
-gem 'test-kitchen', '1.0.0.alpha.6'
-gem 'kitchen-vagrant', '0.10.0'
+gem 'test-kitchen', '1.0.0.beta.3'
+gem 'kitchen-vagrant', '0.11.1'
