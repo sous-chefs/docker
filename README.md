@@ -153,7 +153,6 @@ Import image from URL:
 Import image from URL with repository/tag information:
 
     docker_image "test" do
-      image_url "https://example.com/testimage.tgz"
       repository "bflad/test"
       tag "not-latest"
       action :import
