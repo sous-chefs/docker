@@ -125,6 +125,14 @@ Build image from Dockerfile:
       action :build
     end
 
+Build image from remote repository:
+
+    docker_image "myImage" do
+      image_url "example.com/foo/myImage"
+      tag "myTag"
+      action :build
+    end
+
 Pull latest image:
 
     docker_image "busybox"
@@ -133,6 +141,21 @@ Pull tagged image:
 
     docker_image "bflad/test" do
       tag "not-latest"
+    end
+
+Import image from URL:
+
+    docker_image "test" do
+      image_url "https://example.com/testimage.tgz"
+      action :import
+    end
+
+Import image from URL with repository/tag information:
+
+    docker_image "test" do
+      repository "bflad/test"
+      tag "not-latest"
+      action :import
     end
 
 Remove image:
