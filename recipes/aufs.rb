@@ -36,5 +36,6 @@ when "ubuntu"
 
   modules "aufs" do
     action :load
+    not_if "lsmod | grep aufs"
   end
 end
