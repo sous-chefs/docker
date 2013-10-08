@@ -22,14 +22,9 @@ template "/etc/init/docker.conf" do
   mode "0600"
   owner "root"
   group "root"
-end
-
-# stop service if running - Ubuntu apt-get install automatically starts the service
-# and docker.conf is written after the package installation.
-service "docker stop" do
-  service_name "docker"
-  provider Chef::Provider::Service::Upstart
-  action :stop
+  # lxc-docker package automatically starts service
+  # must restart immediately to catch Upstart config changes after install
+  notifies :restart, "service[docker]", :immediately
 end
 
 service "docker" do

@@ -1,3 +1,7 @@
+## 0.9.1
+
+* Fix to upstart recipe to not restart service constantly (only on initial install and changes)
+
 ## 0.9.0
 
 * image LWRP now supports non-stdin build and import actions (thanks @wingrunr21!)
