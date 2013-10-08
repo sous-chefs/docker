@@ -51,7 +51,11 @@ action :build do
   unless installed?
     full_image_name = new_resource.image_name
     full_image_name += ":#{new_resource.tag}" if new_resource.tag
-    shell_out("docker build -t #{full_image_name} - < #{new_resource.dockerfile}", :timeout => new_resource.cmd_timeout || 60)
+    if new_resource.dockerfile
+      command = "- < #{new_resource.dockerfile}"
+    elsif new_resource.dockerfile_directory
+      command = "#{new_resource.dockerfile_directory}"
+    shell_out("docker build -t #{full_image_name} #{command}", :timeout => new_resource.cmd_timeout || 60)
     new_resource.updated_by_last_action(true)
   end
 end
