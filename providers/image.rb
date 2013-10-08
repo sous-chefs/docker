@@ -55,6 +55,7 @@ action :build do
       command = "- < #{new_resource.dockerfile}"
     elsif new_resource.dockerfile_directory
       command = "#{new_resource.dockerfile_directory}"
+    end
     shell_out("docker build -t #{full_image_name} #{command}", :timeout => new_resource.cmd_timeout || 60)
     new_resource.updated_by_last_action(true)
   end
