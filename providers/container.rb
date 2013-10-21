@@ -22,7 +22,7 @@ include Chef::Mixin::ShellOut
 
 def load_current_resource
   @current_resource = Chef::Resource::DockerContainer.new(new_resource)
-  dps = shell_out("docker ps -a -notrunc", :timeout => new_resource.cmd_timeout || 60)
+  dps = shell_out("docker ps -a -notrunc", :timeout => new_resource.cmd_timeout)
   dps.stdout.each_line do |dps_line|
     next unless dps_line.include?(new_resource.image) && dps_line.include?(new_resource.command)
     container_ps = dps_line.split(%r{\s\s+})
@@ -62,7 +62,8 @@ action :run do
     run_args += " -privileged" if new_resource.privileged
     run_args += " -u #{new_resource.user}" if new_resource.user
     run_args += " -v #{new_resource.volume}" if new_resource.volume
-    dr = shell_out("docker run #{run_args} #{new_resource.image} #{new_resource.command}", :timeout => new_resource.cmd_timeout || 60)
+    run_args += " -w #{new_resource.working_directory}" if new_resource.working_directory
+    dr = shell_out("docker run #{run_args} #{new_resource.image} #{new_resource.command}", :timeout => new_resource.cmd_timeout)
     new_resource.id(dr.stdout.chomp)
     new_resource.updated_by_last_action(true)
   end
@@ -79,11 +80,11 @@ action :stop do
 end
 
 def remove
-  shell_out("docker rm #{current_resource.id}", :timeout => new_resource.cmd_timeout || 60)
+  shell_out("docker rm #{current_resource.id}", :timeout => new_resource.cmd_timeout)
 end
 
 def restart
-  shell_out("docker restart #{current_resource.id}", :timeout => new_resource.cmd_timeout || 60)
+  shell_out("docker restart #{current_resource.id}", :timeout => new_resource.cmd_timeout)
 end
 
 def running?
@@ -91,9 +92,9 @@ def running?
 end
 
 def start
-  shell_out("docker start #{current_resource.id}", :timeout => new_resource.cmd_timeout || 60)
+  shell_out("docker start #{current_resource.id}", :timeout => new_resource.cmd_timeout)
 end
 
 def stop
-  shell_out("docker stop #{current_resource.id}", :timeout => new_resource.cmd_timeout || 60)
+  shell_out("docker stop #{current_resource.id}", :timeout => new_resource.cmd_timeout)
 end
