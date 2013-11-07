@@ -1,4 +1,7 @@
-* Install Go environment only when installing from source
+## 0.10.0
+
+* Enhancement: [GH-22] cmd_timeout, path (image LWRP), working_directory (container LWRP) LWRP attributes
+* Bugfix: [GH-25] Install Go environment only when installing from source
 
 ## 0.9.1
 
