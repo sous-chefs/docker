@@ -30,3 +30,5 @@ attribute :repository, :kind_of => [String]
 attribute :tag, :kind_of => [String]
 attribute :dockerfile, :kind_of => [String]
 attribute :image_url, :kind_of => [String]
+attribute :cmd_timeout, :kind_of => [Integer], :default => 60
+attribute :path, :kind_of => [String]

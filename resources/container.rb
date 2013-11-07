@@ -36,3 +36,5 @@ attribute :stdin, :kind_of => [TrueClass, FalseClass]
 attribute :privileged, :kind_of => [TrueClass, FalseClass]
 attribute :user, :kind_of => [String]
 attribute :volume, :kind_of => [String]
+attribute :working_directory, :kind_of => [String]
+attribute :cmd_timeout, :kind_of => [Integer], :default => 60
