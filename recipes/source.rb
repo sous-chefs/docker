@@ -17,9 +17,6 @@
 # limitations under the License.
 #
 
-node.set["go"]["version"] = "1.1"
-include_recipe "golang"
-
 directory "#{node['go']['gopath']}/src/github.com/dotcloud" do
   owner "root"
   group "root"
