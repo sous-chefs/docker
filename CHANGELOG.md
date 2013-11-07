@@ -1,3 +1,5 @@
+* Install Go environment only when installing from source
+
 ## 0.9.1
 
 * Fix to upstart recipe to not restart service constantly (only on initial install and changes)
