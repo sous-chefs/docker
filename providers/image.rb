@@ -76,7 +76,7 @@ action :import do
       import-args += " #{new_resource.tag}" if new_resource.tag
     end
 
-    shell_out("docker import #{import_args}")
+    shell_out("docker import #{import_args}", :timeout => new_resource.cmd_timeout)
     new_resource.updated_by_last_action(true)
   end
 end
