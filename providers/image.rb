@@ -55,7 +55,7 @@ action :build do
     if new_resource.dockerfile
       command = "- < #{new_resource.dockerfile}"
     elsif new_resource.path
-      command = "#{new_resource.path}"
+      command = new_resource.path
     elsif new_resource.image_url
       command = new_resource.image_url
     end
