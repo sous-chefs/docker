@@ -1,3 +1,23 @@
+## 0.11.0
+
+* DEPRACATION: container LWRP Fixnum port attribute: use full String notation from Docker documentation in port attribute instead
+* DEPRACATION: container LWRP public_port attribute: use port attribute instead
+* Enhancement: Additional container LWRP attributes:
+  * cidfile
+  * container_name
+  * cpu_shares
+  * dns
+  * expose
+  * link
+  * lxc_conf
+  * publish_exposed_ports
+  * remove_automatically
+  * volumes_from
+* Enhancement: Support Array in container LWRP attributes:
+  * env
+  * port
+  * volume
+
 ## 0.10.1
 
 * Bugfix: Set default cmd_timeout in image LWRP to 300 instead of 60 because downloading images can take awhile
