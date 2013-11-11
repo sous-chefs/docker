@@ -36,11 +36,11 @@ action :run do
     run_args += ' -d' if new_resource.detach
     run_args += " -e #{new_resource.env}" if new_resource.env
     run_args += " -h #{new_resource.hostname}" if new_resource.hostname
+    run_args += ' -i' if new_resource.stdin
     run_args += " -m #{new_resource.memory}" if new_resource.memory
     run_args += " -p #{port}" if port
-    run_args += ' -t' if new_resource.tty
-    run_args += ' -i' if new_resource.stdin
     run_args += ' -privileged' if new_resource.privileged
+    run_args += ' -t' if new_resource.tty
     run_args += " -u #{new_resource.user}" if new_resource.user
     run_args += " -v #{new_resource.volume}" if new_resource.volume
     run_args += " -w #{new_resource.working_directory}" if new_resource.working_directory
