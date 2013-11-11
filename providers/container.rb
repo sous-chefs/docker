@@ -1,5 +1,6 @@
 require 'chef/mixin/shell_out'
 include Chef::Mixin::ShellOut
+include Helpers::Docker
 
 def load_current_resource
   @current_resource = Chef::Resource::DockerContainer.new(new_resource)
@@ -43,9 +44,21 @@ def exists?
   @current_resource.id
 end
 
+def port
+  # DEPRACATED support for public_port attribute and Fixnum port
+  if new_resource.public_port && new_resource.port.is_a?(Fixnum)
+    "#{new_resource.public_port}:#{new_resource.port}"
+  elsif new_resource.port && new_resource.port.is_a?(Fixnum)
+    ":#{new_resource.port}"
+  else
+    new_resource.port
+  end
+end
+
 def remove
-  rm_args = ''
-  rm_args += " -link #{new_resource.link}" if new_resource.link
+  rm_args = cli_args(
+    'link' => new_resource.link
+  )
   shell_out("docker rm #{rm_args} #{current_resource.id}", :timeout => new_resource.cmd_timeout)
   new_resource.updated_by_last_action(true)
 end
@@ -56,50 +69,30 @@ def restart
 end
 
 def run
-  # DEPRACATED support for public_port attribute and Fixnum port
-  if new_resource.public_port && new_resource.port.is_a?(Fixnum)
-    port = "#{new_resource.public_port}:#{new_resource.port}"
-  elsif new_resource.port && new_resource.port.is_a?(Fixnum)
-    port = ":#{new_resource.port}"
-  else
-    port = new_resource.port
-  end
-
-  run_args = ''
-  run_args += " -c #{new_resource.cpu_shares}" if new_resource.cpu_shares
-  run_args += " -cidfile #{new_resource.cidfile}" if new_resource.cidfile
-  run_args += ' -d' if new_resource.detach
-  [*new_resource.dns].each do |dns|
-    run_args += " -dns #{dns}"
-  end
-  [*new_resource.env].each do |e|
-    run_args += " -e #{e}"
-  end
-  run_args += " -entrypoint #{new_resource.entrypoint}" if new_resource.entrypoint
-  [*new_resource.expose].each do |expose|
-    run_args += " -expose #{expose}"
-  end
-  run_args += " -h #{new_resource.hostname}" if new_resource.hostname
-  run_args += ' -i' if new_resource.stdin
-  run_args += " -link #{new_resource.link}" if new_resource.link
-  [*new_resource.lxc_conf].each do |lxc_conf|
-    run_args += " -lxc-conf #{lxc_conf}"
-  end
-  run_args += " -m #{new_resource.memory}" if new_resource.memory
-  run_args += " -name #{new_resource.container_name}" if new_resource.container_name
-  [*port].each do |p|
-    run_args += " -p #{p}"
-  end
-  run_args += ' -P' if new_resource.publish_exposed_ports
-  run_args += ' -privileged' if new_resource.privileged
-  run_args += ' -rm' if new_resource.remove_automatically
-  run_args += ' -t' if new_resource.tty
-  run_args += " -u #{new_resource.user}" if new_resource.user
-  [*new_resource.volume].each do |v|
-    run_args += " -v #{v}"
-  end
-  run_args += " -volumes-from #{new_resource.volumes_from}" if new_resource.volumes_from
-  run_args += " -w #{new_resource.working_directory}" if new_resource.working_directory
+  run_args = cli_args(
+    'c' => new_resource.cpu_shares,
+    'cidfile' => new_resource.cidfile,
+    'd' => new_resource.detach,
+    'dns' => [*new_resource.dns],
+    'e' => [*new_resource.env],
+    'entrypoint' => new_resource.entrypoint,
+    'expose' => [*new_resource.expose],
+    'h' => new_resource.hostname,
+    'i' => new_resource.stdin,
+    'link' => new_resource.link,
+    'lxc-conf' => [*new_resource.lxc_conf],
+    'm' => new_resource.memory,
+    'name' => new_resource.container_name,
+    'p' => [*port],
+    'P' => new_resource.publish_exposed_ports,
+    'privileged' => new_resource.privileged,
+    'rm' => new_resource.remove_automatically,
+    't' => new_resource.tty,
+    'u' => new_resource.user,
+    'v' => [*new_resource.volume],
+    'volumes-from' => new_resource.volumes_from,
+    'w' => new_resource.working_directory
+  )
   dr = shell_out("docker run #{run_args} #{new_resource.image} #{new_resource.command}", :timeout => new_resource.cmd_timeout)
   new_resource.id(dr.stdout.chomp)
   new_resource.updated_by_last_action(true)
@@ -110,16 +103,18 @@ def running?
 end
 
 def start
-  start_args = ''
-  start_args += ' -a' if new_resource.attach
-  start_args += ' -i' if new_resource.stdin
+  start_args = cli_args(
+    'a' => new_resource.attach,
+    'i' => new_resource.stdin
+  )
   shell_out("docker start #{start_args} #{current_resource.id}", :timeout => new_resource.cmd_timeout)
   new_resource.updated_by_last_action(true)
 end
 
 def stop
-  stop_args = ''
-  stop_args += " -t #{new_resource.cmd_timeout}"
+  stop_args = cli_args(
+    't' => new_resource.cmd_timeout
+  )
   shell_out("docker stop #{stop_args} #{current_resource.id}", :timeout => (new_resource.cmd_timeout + 1))
   new_resource.updated_by_last_action(true)
 end

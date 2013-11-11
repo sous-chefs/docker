@@ -1,5 +1,6 @@
 require 'chef/mixin/shell_out'
 include Chef::Mixin::ShellOut
+include Helpers::Docker
 
 def load_current_resource
   @current_resource = Chef::Resource::DockerImage.new(new_resource)
@@ -69,9 +70,10 @@ def installed?
 end
 
 def pull
-  pull_args = ''
-  pull_args += " -registry #{new_resource.registry}" if new_resource.registry
-  pull_args += " -t #{new_resource.tag}" if new_resource.tag
+  pull_args = cli_args(
+    'registry' => new_resource.registry,
+    't' => new_resource.tag
+  )
   shell_out("docker pull #{new_resource.image_name} #{pull_args}", :timeout => new_resource.cmd_timeout)
   new_resource.updated_by_last_action(true)
 end
