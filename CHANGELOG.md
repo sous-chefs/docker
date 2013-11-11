@@ -1,3 +1,14 @@
+## 0.10.1
+
+* Bugfix: Set default cmd_timeout in image LWRP to 300 instead of 60 because downloading images can take awhile
+* Enhancement: Change docker_test Dockerfile FROM to already downloaded busybox image instead of ubuntu
+* Enhancement: Add vagrant-cachier to Vagrantfile
+
+Other behind the scenes changes:
+* Made cookbook code Rubocop compliant
+* Move licensing information to LICENSE file
+* Updated .travis.yml and Gemfile
+
 ## 0.10.0
 
 * Enhancement: [GH-22] cmd_timeout, path (image LWRP), working_directory (container LWRP) LWRP attributes
