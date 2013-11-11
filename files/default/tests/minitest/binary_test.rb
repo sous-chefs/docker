@@ -6,5 +6,4 @@ describe_recipe 'docker::binary' do
   it 'installs docker binary' do
     file("#{node['docker']['install_dir']}/docker").must_exist
   end
-  
 end

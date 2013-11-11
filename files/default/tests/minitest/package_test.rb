@@ -6,5 +6,4 @@ describe_recipe 'docker::package' do
   it 'installs lxc-docker package' do
     package('lxc-docker').must_be_installed
   end
-  
 end

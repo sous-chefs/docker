@@ -6,5 +6,4 @@ describe_recipe 'docker::upstart' do
   it 'starts docker' do
     service('docker').must_be_running
   end
-  
 end

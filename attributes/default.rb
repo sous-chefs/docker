@@ -23,8 +23,8 @@ case node['kernel']['machine']
 when 'x86_64'
   default['docker']['arch'] = 'x86_64'
 # If Docker ever supports 32-bit or other architectures
-#when %r{i[3-6]86}
-#  default['docker']['arch'] = "i386"
+# when %r{i[3-6]86}
+#   default['docker']['arch'] = "i386"
 else
   default['docker']['arch'] = 'x86_64'
 end

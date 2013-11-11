@@ -23,7 +23,7 @@ when 'ubuntu'
   # The below code copied from: https://github.com/thoward/docker-cookbook/blob/master/recipes/default.rb
   # It's not pretty, but gets the job done!
   #
-  # If aufs isn't available, do our best to install the correct 
+  # If aufs isn't available, do our best to install the correct
   # linux-image-extra package. This is somewhat messy because the
   # naming of these packages is very inconsistent across kernel
   # versions

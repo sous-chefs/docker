@@ -26,7 +26,7 @@ def load_current_resource
   if di.stdout.include?(new_resource.image_name)
     di.stdout.each_line do |di_line|
       next unless di_line.include?(new_resource.image_name)
-      image_info = di_line.split(%r{\s\s+})
+      image_info = di_line.split(/\s\s+/)
       @current_resource.installed(true)
       @current_resource.repository(image_info[0])
       @current_resource.installed_tag(image_info[1])
@@ -73,7 +73,7 @@ action :import do
       import_args += " #{new_resource.image_name}"
     elsif new_resource.repository
       import_args += " - #{new_resource.repository}"
-      import-args += " #{new_resource.tag}" if new_resource.tag
+      import_args += " #{new_resource.tag}" if new_resource.tag
     end
 
     shell_out("docker import #{import_args}", :timeout => new_resource.cmd_timeout)
