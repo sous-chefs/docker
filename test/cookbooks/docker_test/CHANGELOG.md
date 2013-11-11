@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of docker_test.
 
+## 0.3.0:
+
+* Enhancement: Change Dockerfile FROM to already downloaded busybox image instead of ubuntu
+
 ## 0.2.0:
 
 * Added container_lwrp recipe

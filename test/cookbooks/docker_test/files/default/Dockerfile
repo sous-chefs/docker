@@ -1,2 +1,2 @@
-FROM ubuntu
+FROM busybox
 RUN /bin/echo hello world
