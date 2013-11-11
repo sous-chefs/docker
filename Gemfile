@@ -1,17 +1,21 @@
 source "https://rubygems.org"
 
-gem 'berkshelf'
+gem 'berkshelf',     '~> 2.0'
+gem 'chefspec',      '~> 2.0'
+gem 'foodcritic',    '~> 3.0'
+gem 'rubocop',       '~> 0.14'
 
-group :test do
-  gem "chefspec"
-  gem "foodcritic"
-  gem "guard"
-  gem "guard-rspec"
-  gem "guard-kitchen"
-  gem "rb-inotify", :require => false
-  gem "rb-fsevent", :require => false
-  gem "rb-fchange", :require => false
+# group :development do
+#   gem 'guard',         '~> 2.0'
+#   gem 'guard-kitchen'
+#   gem 'guard-rubocop', '~> 1.0'
+#   gem 'guard-rspec',   '~> 3.0'
+#   gem 'rb-inotify',    :require => false
+#   gem 'rb-fsevent',    :require => false
+#   gem 'rb-fchange',    :require => false
+# end
+
+group :integration do
+  gem 'test-kitchen',    '~> 1.0.0.beta'
+  gem 'kitchen-vagrant', '~> 0.11'
 end
-
-gem 'test-kitchen', '1.0.0.beta.3'
-gem 'kitchen-vagrant', '0.11.1'

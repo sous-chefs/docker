@@ -1,9 +1,9 @@
-language: ruby
-gemfile:
-   - test/support/Gemfile.ci
 rvm:
-  - 1.9.2
   - 1.9.3
+bundler_args: --without development
+before_script:
+  - bundle exec berks install
 script: 
-  - bundle exec rake knife
-  - bundle exec rake foodcritic
+  # - bundle exec knife cookbook test -a -o .
+  - bundle exec foodcritic -f any .
+  - bundle exec rubocop
