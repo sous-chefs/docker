@@ -4,6 +4,7 @@ default_action :run
 
 attribute :image, :name_attribute => true
 
+attribute :attach, :kind_of => [TrueClass, FalseClass]
 attribute :cidfile, :kind_of => [String]
 attribute :cmd_timeout, :kind_of => [Integer], :default => 60
 attribute :command, :kind_of => [String]

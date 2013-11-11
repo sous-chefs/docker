@@ -104,7 +104,10 @@ def running?
 end
 
 def start
-  shell_out("docker start #{current_resource.id}", :timeout => new_resource.cmd_timeout)
+  start_args = ''
+  start_args += ' -a' if new_resource.attach
+  start_args += ' -i' if new_resource.stdin
+  shell_out("docker start #{start_args} #{current_resource.id}", :timeout => new_resource.cmd_timeout)
   new_resource.updated_by_last_action(true)
 end
 
