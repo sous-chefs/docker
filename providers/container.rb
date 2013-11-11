@@ -22,12 +22,12 @@ include Chef::Mixin::ShellOut
 
 def load_current_resource
   @current_resource = Chef::Resource::DockerContainer.new(new_resource)
-  dps = shell_out("docker ps -a -notrunc", :timeout => new_resource.cmd_timeout)
+  dps = shell_out('docker ps -a -notrunc', :timeout => new_resource.cmd_timeout)
   dps.stdout.each_line do |dps_line|
     next unless dps_line.include?(new_resource.image) && dps_line.include?(new_resource.command)
     container_ps = dps_line.split(%r{\s\s+})
     @current_resource.id(container_ps[0])
-    @current_resource.running(true) if container_ps[4].include?("Up")
+    @current_resource.running(true) if container_ps[4].include?('Up')
     break
   end
   @current_resource
@@ -51,15 +51,15 @@ action :run do
     elsif new_resource.port
       port = ":#{new_resource.port}"
     end
-    run_args = ""
-    run_args += " -d" if new_resource.detach
+    run_args = ''
+    run_args += ' -d' if new_resource.detach
     run_args += " -e #{new_resource.env}" if new_resource.env
     run_args += " -h #{new_resource.hostname}" if new_resource.hostname
     run_args += " -m #{new_resource.memory}" if new_resource.memory
     run_args += " -p #{port}" if port
-    run_args += " -t" if new_resource.tty
-    run_args += " -i" if new_resource.stdin
-    run_args += " -privileged" if new_resource.privileged
+    run_args += ' -t' if new_resource.tty
+    run_args += ' -i' if new_resource.stdin
+    run_args += ' -privileged' if new_resource.privileged
     run_args += " -u #{new_resource.user}" if new_resource.user
     run_args += " -v #{new_resource.volume}" if new_resource.volume
     run_args += " -w #{new_resource.working_directory}" if new_resource.working_directory

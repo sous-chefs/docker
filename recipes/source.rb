@@ -18,8 +18,8 @@
 #
 
 directory "#{node['go']['gopath']}/src/github.com/dotcloud" do
-  owner "root"
-  group "root"
+  owner 'root'
+  group 'root'
   mode 00755
   recursive true
   action :create
@@ -31,6 +31,6 @@ git "#{node['go']['gopath']}/src/github.com/dotcloud/docker" do
   action :checkout
 end
 
-golang_package "github.com/dotcloud/docker" do
+golang_package 'github.com/dotcloud/docker' do
   action :install
 end

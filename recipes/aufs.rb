@@ -18,7 +18,7 @@
 #
 
 case node['platform']
-when "ubuntu"
+when 'ubuntu'
   #
   # The below code copied from: https://github.com/thoward/docker-cookbook/blob/master/recipes/default.rb
   # It's not pretty, but gets the job done!
@@ -30,11 +30,11 @@ when "ubuntu"
   extra_package = Mixlib::ShellOut.new("apt-cache search linux-image-extra-`uname -r | grep --only-matching -e [0-9]\.[0-9]\.[0-9]-[0-9]*` | cut -d ' ' -f 1").run_command.stdout.strip
   unless extra_package.empty?
     package extra_package do
-      not_if "modprobe -l | grep aufs"
+      not_if 'modprobe -l | grep aufs'
     end
   end
 
-  modules "aufs" do
+  modules 'aufs' do
     action :load
   end
 end
