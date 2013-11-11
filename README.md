@@ -177,6 +177,7 @@ Remove image:
 Here's how you can quickly get testing or developing against the cookbook thanks to [Vagrant](http://vagrantup.com/) and [Berkshelf](http://berkshelf.com/).
 
     vagrant plugin install vagrant-berkshelf
+    vagrant plugin install vagrant-cachier
     vagrant plugin install vagrant-omnibus
     git clone git://github.com/bflad/chef-docker.git
     cd chef-docker

@@ -8,6 +8,7 @@ FileUtils.mkdir(host_cache_path) unless File.exist?(host_cache_path)
 
 Vagrant.configure("2") do |config|
   config.berkshelf.enabled = true
+  config.cache.auto_detect = true
   config.omnibus.chef_version = :latest
 
   config.vm.define :ubuntu1204 do |ubuntu1204|
