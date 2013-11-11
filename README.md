@@ -197,3 +197,7 @@ Please use standard Github issues/pull requests and if possible, in combination 
 ## Maintainers
 
 * Brian Flad (<bflad417@gmail.com>)
+
+## License
+
+Please see licensing information in: [LICENSE](LICENSE)
