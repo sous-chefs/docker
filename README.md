@@ -34,10 +34,11 @@ These attributes are under the `node['docker']` namespace.
 Attribute | Description | Type | Default
 ----------|-------------|------|--------
 arch | Architecture for docker binary (note: Docker only currently supports x86_64) | String | auto-detected (see attributes/default.rb)
+bind_socket | Socket path that docker should bind | String | unix:///var/run/docker.sock
+bind_uri | TCP URI docker should bind | String | nil
 http_proxy | HTTP_PROXY environment variable | String | nil
 install_dir | Installation directory for docker binary | String | auto-detected (see attributes/default.rb)
 install_type | Installation type for docker ("binary", "package" or "source") | String | "package"
-bind_uri | The location that docker should bind to. | String | tcp://0.0.0.0:4243 (docker default)
 options | Additional options to pass to docker. These could be flags like "-api-enable-cors". | String | nil
 
 ### Binary Attributes

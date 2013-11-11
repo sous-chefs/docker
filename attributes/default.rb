@@ -10,8 +10,9 @@ else
   default['docker']['arch'] = 'x86_64'
 end
 
+default['docker']['bind_socket'] = 'unix:///var/run/docker.sock'
+default['docker']['bind_uri'] = nil
 default['docker']['http_proxy'] = nil
-
 default['docker']['install_type'] = 'package'
 
 case node['docker']['install_type']

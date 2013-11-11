@@ -1,3 +1,8 @@
+## 0.12.0
+
+* Bugfix: Add default bind_uri (nil) to default attributes
+* Enhancement: bind_socket attribute added
+
 ## 0.11.0
 
 * DEPRACATION: container LWRP Fixnum port attribute: use full String notation from Docker documentation in port attribute instead
