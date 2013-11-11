@@ -16,28 +16,49 @@ def load_current_resource
 end
 
 action :remove do
-  stop if running?
-  remove if exists?
+  if running?
+    stop
+    new_resource.updated_by_last_action(true)
+  end
+  if exists?
+    remove
+    new_resource.updated_by_last_action(true)
+  end
 end
 
 action :restart do
-  restart if exists?
+  if exists?
+    restart
+    new_resource.updated_by_last_action(true)
+  end
 end
 
 action :run do
-  run unless running?
+  unless running?
+    run
+    new_resource.updated_by_last_action(true)
+  end
 end
 
 action :start do
-  start unless running?
+  unless running?
+    start
+    new_resource.updated_by_last_action(true)
+  end
 end
 
 action :stop do
-  stop if running?
+  if running?
+    stop
+    new_resource.updated_by_last_action(true)
+  end
 end
 
 action :wait do
-  wait if running?
+  if running?
+    wait
+    new_resource.updated_by_last_action(true)
+  end
 end
 
 def exists?
@@ -60,12 +81,10 @@ def remove
     'link' => new_resource.link
   )
   shell_out("docker rm #{rm_args} #{current_resource.id}", :timeout => new_resource.cmd_timeout)
-  new_resource.updated_by_last_action(true)
 end
 
 def restart
   shell_out("docker restart #{current_resource.id}", :timeout => new_resource.cmd_timeout)
-  new_resource.updated_by_last_action(true)
 end
 
 def run
@@ -95,7 +114,6 @@ def run
   )
   dr = shell_out("docker run #{run_args} #{new_resource.image} #{new_resource.command}", :timeout => new_resource.cmd_timeout)
   new_resource.id(dr.stdout.chomp)
-  new_resource.updated_by_last_action(true)
 end
 
 def running?
@@ -108,7 +126,6 @@ def start
     'i' => new_resource.stdin
   )
   shell_out("docker start #{start_args} #{current_resource.id}", :timeout => new_resource.cmd_timeout)
-  new_resource.updated_by_last_action(true)
 end
 
 def stop
@@ -116,10 +133,8 @@ def stop
     't' => new_resource.cmd_timeout
   )
   shell_out("docker stop #{stop_args} #{current_resource.id}", :timeout => (new_resource.cmd_timeout + 1))
-  new_resource.updated_by_last_action(true)
 end
 
 def wait
   shell_out("docker wait #{current_resource.id}", :timeout => new_resource.cmd_timeout)
-  new_resource.updated_by_last_action(true)
 end

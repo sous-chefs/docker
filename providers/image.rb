@@ -20,19 +20,31 @@ def load_current_resource
 end
 
 action :build do
-  build unless installed?
+  unless installed?
+    build
+    new_resource.updated_by_last_action(true)
+  end
 end
 
 action :import do
-  import unless installed?
+  unless installed?
+    import
+    new_resource.updated_by_last_action(true)
+  end
 end
 
 action :pull do
-  pull unless installed?
+  unless installed?
+    pull
+    new_resource.updated_by_last_action(true)
+  end
 end
 
 action :remove do
-  remove if installed?
+  if installed?
+    remove
+    new_resource.updated_by_last_action(true)
+  end
 end
 
 def build
@@ -48,7 +60,6 @@ def build
   end
 
   shell_out("docker build -t #{full_image_name} #{command}", :timeout => new_resource.cmd_timeout)
-  new_resource.updated_by_last_action(true)
 end
 
 def import
@@ -62,7 +73,6 @@ def import
   end
 
   shell_out("docker import #{import_args}", :timeout => new_resource.cmd_timeout)
-  new_resource.updated_by_last_action(true)
 end
 
 def installed?
@@ -75,12 +85,10 @@ def pull
     't' => new_resource.tag
   )
   shell_out("docker pull #{new_resource.image_name} #{pull_args}", :timeout => new_resource.cmd_timeout)
-  new_resource.updated_by_last_action(true)
 end
 
 def remove
   shell_out("docker rmi #{new_resource.image_name}", :timeout => new_resource.cmd_timeout)
-  new_resource.updated_by_last_action(true)
 end
 
 def tag_match
