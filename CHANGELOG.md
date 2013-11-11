@@ -1,7 +1,7 @@
 ## 0.12.0
 
 * Bugfix: Add default bind_uri (nil) to default attributes
-* Enhancement: bind_socket attribute added
+* Enhancement: [GH-24] bind_socket attribute added
 
 ## 0.11.0
 
