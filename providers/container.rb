@@ -40,7 +40,9 @@ def exists?
 end
 
 def remove
-  shell_out("docker rm #{current_resource.id}", :timeout => new_resource.cmd_timeout)
+  rm_args = ''
+  rm_args += " -link #{new_resource.link}" if new_resource.link
+  shell_out("docker rm #{rm_args} #{current_resource.id}", :timeout => new_resource.cmd_timeout)
   new_resource.updated_by_last_action(true)
 end
 
