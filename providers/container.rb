@@ -15,14 +15,12 @@ def load_current_resource
 end
 
 action :remove do
-  stop if @current_resource.id
-  remove if @current_resource.id
-  new_resource.updated_by_last_action(true)
+  stop if running?
+  remove if exists?
 end
 
 action :restart do
-  restart if @current_resource.id
-  new_resource.updated_by_last_action(true)
+  restart if exists?
 end
 
 action :run do
@@ -30,21 +28,25 @@ action :run do
 end
 
 action :start do
-  start unless @current_resource.running
-  new_resource.updated_by_last_action(true)
+  start unless running?
 end
 
 action :stop do
-  stop if @current_resource.running
-  new_resource.updated_by_last_action(true)
+  stop if running?
+end
+
+def exists?
+  @current_resource.id
 end
 
 def remove
   shell_out("docker rm #{current_resource.id}", :timeout => new_resource.cmd_timeout)
+  new_resource.updated_by_last_action(true)
 end
 
 def restart
   shell_out("docker restart #{current_resource.id}", :timeout => new_resource.cmd_timeout)
+  new_resource.updated_by_last_action(true)
 end
 
 def run
@@ -103,8 +105,10 @@ end
 
 def start
   shell_out("docker start #{current_resource.id}", :timeout => new_resource.cmd_timeout)
+  new_resource.updated_by_last_action(true)
 end
 
 def stop
   shell_out("docker stop #{current_resource.id}", :timeout => new_resource.cmd_timeout)
+  new_resource.updated_by_last_action(true)
 end
