@@ -11,6 +11,30 @@ Vagrant.configure("2") do |config|
   config.cache.auto_detect = true
   config.omnibus.chef_version = :latest
 
+  config.vm.define :centos6 do |centos6|
+    centos6.vm.box      = 'opscode-centos-6.4'
+    centos6.vm.box_url  = 'https://opscode-vm.s3.amazonaws.com/vagrant/opscode_centos-6.4_provisionerless.box'
+    centos6.vm.hostname = 'docker-centos-6'
+  end
+
+  config.vm.define :debian7 do |debian7|
+    debian7.vm.box      = 'opscode-debian-7.1.0'
+    debian7.vm.box_url  = 'https://opscode-vm.s3.amazonaws.com/vagrant/opscode_debian-7.1.0_provisionerless.box'
+    debian7.vm.hostname = 'docker-debian-7'
+  end
+
+  config.vm.define :fedora18 do |fedora18|
+    fedora18.vm.box      = 'opscode-fedora-18'
+    fedora18.vm.box_url  = 'https://opscode-vm.s3.amazonaws.com/vagrant/opscode_fedora-18_provisionerless.box'
+    fedora18.vm.hostname = 'docker-fedora-18'
+  end
+
+  config.vm.define :fedora19 do |fedora19|
+    fedora19.vm.box      = 'opscode-fedora-19'
+    fedora19.vm.box_url  = 'https://opscode-vm.s3.amazonaws.com/vagrant/opscode_fedora-19_provisionerless.box'
+    fedora19.vm.hostname = 'docker-fedora-19'
+  end
+
   config.vm.define :ubuntu1204 do |ubuntu1204|
     ubuntu1204.vm.box      = 'opscode-ubuntu-12.04'
     ubuntu1204.vm.box_url  = 'https://opscode-vm.s3.amazonaws.com/vagrant/opscode_ubuntu-12.04_provisionerless.box'
@@ -30,7 +54,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.network :private_network, ip: '192.168.50.10'
-  
+
   config.vm.provider "virtualbox" do |v|
     v.customize ["modifyvm", :id, "--memory", 1024]
   end
