@@ -1,4 +1,4 @@
-actions :remove, :restart, :run, :start, :stop
+actions :remove, :restart, :run, :start, :stop, :wait
 
 default_action :run
 

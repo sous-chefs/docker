@@ -35,6 +35,10 @@ action :stop do
   stop if running?
 end
 
+action :wait do
+  wait if running?
+end
+
 def exists?
   @current_resource.id
 end
@@ -114,6 +118,13 @@ def start
 end
 
 def stop
-  shell_out("docker stop #{current_resource.id}", :timeout => new_resource.cmd_timeout)
+  stop_args = ''
+  stop_args += " -t #{new_resource.cmd_timeout}"
+  shell_out("docker stop #{stop_args} #{current_resource.id}", :timeout => (new_resource.cmd_timeout + 1))
+  new_resource.updated_by_last_action(true)
+end
+
+def wait
+  shell_out("docker wait #{current_resource.id}", :timeout => new_resource.cmd_timeout)
   new_resource.updated_by_last_action(true)
 end
