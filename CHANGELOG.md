@@ -1,3 +1,11 @@
+## 0.13.0
+
+* Bugfix: Move LWRP updated_on_last_action(true) calls so only triggered when something actually gets updated
+* Enhancement: Add container LWRP wait action
+* Enhancement: Add attach and stdin args to container LWRP start action
+* Enhancement: Add link arg to container LWRP remove action
+* Enhancement: Use cmd_timeout in container LWRP stop action arguments
+
 ## 0.12.0
 
 * Bugfix: Add default bind_uri (nil) to default attributes

@@ -58,7 +58,7 @@ stop           | 0.3+
 rm             | 0.3+
 restart        | 0.3+
 run            | 0.3+
-wait           | -
+wait           | 0.13+
 
 #### Image ####
 
