@@ -1,3 +1,9 @@
+## 0.14.0
+
+* Bugfix: [GH-27] Only use command to determine running container if provided
+* Bugfix: [GH-28] Upstart requires full stop and start of service instead of restart if job configuration changes while already running. Note even `initctl reload-configuration` isn't working as expected from http://upstart.ubuntu.com/faq.html#reload
+* Enhancement: [GH-26] Add ability to set package action
+
 ## 0.13.0
 
 * Bugfix: Move LWRP updated_on_last_action(true) calls so only triggered when something actually gets updated
