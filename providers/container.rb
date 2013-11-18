@@ -7,7 +7,7 @@ def load_current_resource
   dps = shell_out('docker ps -a -notrunc', :timeout => new_resource.cmd_timeout)
   dps.stdout.each_line do |dps_line|
     next unless dps_line.include?(new_resource.image)
-    next if new_resource.command && ! dps_line.include?(new_resource.command)
+    next if new_resource.command && !dps_line.include?(new_resource.command)
     container_ps = dps_line.split(/\s\s+/)
     @current_resource.id(container_ps[0])
     @current_resource.running(true) if container_ps[4].include?('Up')
