@@ -5,7 +5,9 @@ template '/etc/init/docker.conf' do
   group 'root'
   # lxc-docker package automatically starts service
   # must restart immediately to catch Upstart config changes after install
-  notifies :restart, 'service[docker]', :immediately
+  # Need to stop&start, restart doesn't reload initd changes
+  notifies :stop, 'service[docker]', :immediately
+  notifies :start, 'service[docker]', :immediately
 end
 
 service 'docker' do
