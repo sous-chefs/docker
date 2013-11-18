@@ -10,4 +10,5 @@ end
 
 package 'lxc-docker' do
   options '--force-yes'
+  action node['docker']['package']['action'].intern
 end
