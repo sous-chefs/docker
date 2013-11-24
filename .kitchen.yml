@@ -6,6 +6,11 @@ driver_config:
     memory: 1024
 
 platforms:
+- name: fedora-19
+  driver_config:
+    box: opscode-fedora-19
+    box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_fedora-19_provisionerless.box
+    require_chef_omnibus: 11.8
 - name: ubuntu-12.04
   driver_config:
     box: opscode-ubuntu-12.04
