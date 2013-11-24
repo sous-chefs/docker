@@ -10,6 +10,8 @@ This cookbook was inspired by @thoward's docker-cookbook: https://github.com/tho
 
 ### Platforms
 
+* Fedora 19
+* Fedora 20
 * Ubuntu 12.04
 * Ubuntu 12.10
 * Ubuntu 13.04
@@ -20,6 +22,7 @@ This cookbook was inspired by @thoward's docker-cookbook: https://github.com/tho
 
 * [apt](https://github.com/opscode-cookbooks/apt)
 * [git](https://github.com/opscode-cookbooks/git)
+* [yum](https://github.com/opscode-cookbooks/yum)
 
 Third-Party Cookbooks
 
@@ -37,6 +40,7 @@ arch | Architecture for docker binary (note: Docker only currently supports x86_
 bind_socket | Socket path that docker should bind | String | unix:///var/run/docker.sock
 bind_uri | TCP URI docker should bind | String | nil
 http_proxy | HTTP_PROXY environment variable | String | nil
+init_type | Init type for docker ("systemd" or "upstart") | String | auto-detected (see attributes/default.rb)
 install_dir | Installation directory for docker binary | String | auto-detected (see attributes/default.rb)
 install_type | Installation type for docker ("binary", "package" or "source") | String | "package"
 options | Additional options to pass to docker. These could be flags like "-api-enable-cors". | String | nil
@@ -75,6 +79,7 @@ url | Repository URL for docker source | String | "https://github.com/dotcloud/d
 * `recipe[docker::binary]` Installs Docker binary
 * `recipe[docker::package]` Installs Docker via package
 * `recipe[docker::source]` Installs Docker via source
+* `recipe[docker::systemd]` Installs/Starts Docker via systemd
 * `recipe[docker::upstart]` Installs/Starts Docker via Upstart
 
 ## LWRPs

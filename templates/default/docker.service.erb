@@ -1,0 +1,16 @@
+[Unit]
+Description=Docker container management daemon
+
+[Service]
+Type=simple
+ExecStartPre=/usr/sbin/sysctl -w net.ipv4.ip_forward=1 net.ipv6.conf.all.forwarding=1
+<% if node['docker']['http_proxy'] %>
+ExecStartPre=export HTTP_PROXY=<%= node['docker']['http_proxy'] %>
+<% end %>
+ExecStart=<%= node['docker']['install_dir'] %>/docker -d<% if node['docker']['bind_socket'] %> -H <%= node['docker']['bind_socket'] %><% end %><% if node['docker']['bind_uri'] %> -H <%= node['docker']['bind_uri'] %><% end %><% if node['docker']['options'] %> <%= node['docker']['options'] %><% end %>
+ExecStartPost=/usr/sbin/iptables -I FORWARD -o docker0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+ExecStartPost=/usr/sbin/iptables -I FORWARD -i docker0 ! -o docker0 -j ACCEPT
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

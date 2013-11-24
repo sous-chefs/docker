@@ -13,6 +13,16 @@ end
 default['docker']['bind_socket'] = 'unix:///var/run/docker.sock'
 default['docker']['bind_uri'] = nil
 default['docker']['http_proxy'] = nil
+
+case node['platform']
+when 'fedora'
+  default['docker']['init_type'] = 'systemd'
+when 'ubuntu'
+  default['docker']['init_type'] = 'upstart'
+else
+  default['docker']['init_type'] = 'upstart'
+end
+
 default['docker']['install_type'] = 'package'
 
 case node['docker']['install_type']
@@ -30,12 +40,15 @@ default['docker']['binary']['url'] = "http://get.docker.io/builds/Linux/#{node['
 
 # Package attributes
 case node['platform']
+when 'fedora'
+  default['docker']['package']['repo_url'] = 'http://goldmann.fedorapeople.org/repos/docker/$releasever/$basearch'
 when 'ubuntu'
   default['docker']['package']['distribution'] = 'docker'
   default['docker']['package']['repo_url'] = 'https://get.docker.io/ubuntu'
   default['docker']['package']['repo_key'] = 'https://get.docker.io/gpg'
-  default['docker']['package']['action'] = 'install'
 end
+
+default['docker']['package']['action'] = 'install'
 
 # Source attributes
 default['docker']['source']['ref'] = 'master'

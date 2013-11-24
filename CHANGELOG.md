@@ -1,3 +1,9 @@
+## 0.15.0
+
+* Enhancement: Fedora 19/20 package support via [Goldmann docker repo](http://goldmann.fedorapeople.org/repos/docker/)
+* Enhancement: docker.service / docker.socket systemd support
+* Enhancement: Add `node['docker']['init_type']` attribute for controlling init system
+
 ## 0.14.0
 
 * Bugfix: [GH-27] Only use command to determine running container if provided

@@ -1,0 +1,13 @@
+[Unit]
+Description=Docker Daemon Socket
+
+[Socket]
+<% if node['docker']['bind_socket'] -%>
+ListenStream=<%= node['docker']['bind_socket'] %>
+<% end -%>
+<% if node['docker']['bind_uri'] -%>
+ListenStream=<%= node['docker']['bind_uri'] %>
+<% end -%>
+
+[Install]
+WantedBy=sockets.target

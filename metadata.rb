@@ -10,12 +10,13 @@ recipe            'docker::aufs', 'Installs/Loads AUFS Linux module'
 recipe            'docker::binary', 'Installs Docker binary'
 recipe            'docker::package', 'Installs Docker via package'
 recipe            'docker::source', 'Installs Docker via source'
+recipe            'docker::systemd', 'Installs/Starts Docker via systemd'
 recipe            'docker::upstart', 'Installs/Starts Docker via Upstart'
 
-%w{ ubuntu }.each do |os|
+%w{ fedora ubuntu }.each do |os|
   supports os
 end
 
-%w{ apt git golang lxc modules }.each do |cb|
+%w{ apt git golang lxc modules yum }.each do |cb|
   depends cb
 end
