@@ -2,9 +2,7 @@ site :opscode
 
 metadata
 
-# See: https://github.com/NOX73/chef-golang/pull/4
-# cookbook "golang", github: "NOX73/chef-golang"
-cookbook "golang", github: "buth/chef-golang", ref: "lwrps"
+cookbook "golang", github: "NOX73/chef-golang"
 cookbook "lxc", github: "hw-cookbooks/lxc"
 cookbook "modules", github: "Youscribe/modules-cookbook"
 
