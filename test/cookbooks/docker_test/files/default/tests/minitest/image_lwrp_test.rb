@@ -11,4 +11,7 @@ describe_recipe "docker_test::image_lwrp_test" do
     assert image_exists?("busybox")
   end
 
+  it "has bflad/testcontainerd image installed" do
+    assert image_exists?("bflad/testcontainerd")
+  end
 end

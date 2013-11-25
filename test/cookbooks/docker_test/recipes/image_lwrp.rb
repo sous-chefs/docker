@@ -1,5 +1,6 @@
 docker_image "base"
 docker_image "busybox"
+docker_image 'bflad/testcontainerd'
 
 docker_image "base" do
   action :remove

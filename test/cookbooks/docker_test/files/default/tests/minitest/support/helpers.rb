@@ -6,15 +6,20 @@ module Helpers
     include MiniTest::Chef::Context
     include MiniTest::Chef::Resources
 
-    def container_exists?(image,command)
+    def container_exists?(image, command = nil)
       dps = shell_out("docker ps -a -notrunc")
-      dps.stdout.include?(command)
+      return dps.stdout.include?(command) if command
+      dps.stdout.include?(image)
     end
 
-    def container_running?(image,command)
+    def container_running?(image, command = nil)
       dps = shell_out("docker ps -a -notrunc")
       dps.stdout.each_line do |dps_line|
-        return true if dps_line.include?(command) && dps_line.include?("Up")
+        if command
+          return dps_line.include?("Up") if dps_line.include?(command)
+        else
+          return dps_line.include?("Up") if dps_line.include?(image)
+        end
       end
       false
     end
