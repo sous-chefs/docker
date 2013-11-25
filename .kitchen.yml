@@ -15,17 +15,17 @@ platforms:
   driver_config:
     box: opscode-ubuntu-12.04
     box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_ubuntu-12.04_provisionerless.box
-    require_chef_omnibus: 11.4.4
+    require_chef_omnibus: 11.8
 - name: ubuntu-12.10
   driver_config:
     box: opscode-ubuntu-12.10
     box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_ubuntu-12.10_provisionerless.box
-    require_chef_omnibus: 11.4.4
+    require_chef_omnibus: 11.8
 - name: ubuntu-13.04
   driver_config:
     box: opscode-ubuntu-13.04
     box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_ubuntu-13.04_provisionerless.box
-    require_chef_omnibus: 11.4.4
+    require_chef_omnibus: 11.8
 
 suites:
 - name: image_lwrp
@@ -34,4 +34,6 @@ suites:
   - recipe[docker_test::default]
   - recipe[docker_test::image_lwrp]
   - recipe[docker_test::container_lwrp]
-  attributes: {}
+  attributes: 
+    docker:
+      container_cmd_timeout: 30
