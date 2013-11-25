@@ -14,4 +14,5 @@ if node['docker']['install_type'] == 'source'
 end
 
 include_recipe "docker::#{node['docker']['install_type']}"
+include_recipe 'docker::configuration'
 include_recipe "docker::#{node['docker']['init_type']}"
