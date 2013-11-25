@@ -99,7 +99,7 @@ Attribute | Description | Type | Default
 ----------|-------------|------|--------
 attach | Attach container's stdout/stderr and forward all signals to the process | TrueClass, FalseClass | nil
 cidfile | File to store container ID | String | nil
-cmd_timeout | Timeout for docker commands | Integer | 60
+cmd_timeout | Timeout for docker commands | Integer | `node['docker']['container_cmd_timeout']`
 command | Command to run in container | String | nil
 container_name | Name for container/service | String | nil
 cookbook | Cookbook to grab any templates | String | docker
@@ -181,7 +181,7 @@ These attributes are under the `docker_image` LWRP namespace.
 
 Attribute | Description | Type | Default
 ----------|-------------|------|--------
-cmd_timeout | Timeout for docker commands | Integer | 300
+cmd_timeout | Timeout for docker commands | Integer | `node['docker']['image_cmd_timeout']`
 dockerfile | Dockerfile to build image | String | nil
 id | Image ID (internally set by LWRP) | String | nil
 image_name | Image name | String | LWRP name
