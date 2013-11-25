@@ -1,3 +1,18 @@
+## 0.16.0
+
+* Bugfix: Remove protocol from docker systemd ListenStreams
+* Bugfix: Lengthen shell_out timeout for stop action in container LWRP to workaround Fedora being slow
+* Enhancement: Add service creation to container LWRP by default
+  * Please thoroughly test before putting into production!
+  * `set['docker']['container_init_type'] = false` or add `init_type false` for the LWRP to disable this behavior
+* Enhancement: Add configuration recipe with template
+* Enhancement: Add container_cmd_timeout attribute to easily set global container LWRP cmd_timeout default
+* Enhancement: Add image_cmd_timeout attribute to easily set global image LWRP cmd_timeout default
+* Enhancement: Add cookbook attribute to container LWRP
+* Enhancement: Add init_type attribute to container LWRP
+* Enhancement: Add locale support for Fedora
+* Enhancement: Fail Chef run if `docker run` command errors
+
 ## 0.15.0
 
 * Enhancement: Fedora 19/20 package support via [Goldmann docker repo](http://goldmann.fedorapeople.org/repos/docker/)
