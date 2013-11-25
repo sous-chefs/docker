@@ -12,7 +12,17 @@ end
 
 default['docker']['bind_socket'] = 'unix:///var/run/docker.sock'
 default['docker']['bind_uri'] = nil
+
+case node['platform']
+when 'fedora'
+  default['docker']['config_dir'] = '/etc/sysconfig'
+when 'ubuntu'
+  default['docker']['config_dir'] = '/etc/default'
+end
+
+default['docker']['container_cmd_timeout'] = 60
 default['docker']['http_proxy'] = nil
+default['docker']['image_cmd_timeout'] = 300
 
 case node['platform']
 when 'fedora'
@@ -22,6 +32,8 @@ when 'ubuntu'
 else
   default['docker']['init_type'] = 'upstart'
 end
+
+default['docker']['container_init_type'] = node['docker']['init_type']
 
 default['docker']['install_type'] = 'package'
 
