@@ -1,0 +1,15 @@
+[Unit]
+Description=Docker service for <%= @service_name %>
+Author=Docker Chef Cookbook
+After=docker.service
+
+[Service]
+Restart=always
+ExecStartPre=CID=$(cat /var/run/<%= @service_name %>.cid)
+ExecStartPre=<%= node['docker']['install_dir'] %>/docker start $CID
+ExecStart=<%= node['docker']['install_dir'] %>/docker wait $CID
+ExecStopPre=CID=$(cat /var/run/<%= @service_name %>.cid)
+ExecStop=<%= node['docker']['install_dir'] %>/docker stop -t <%= @cmd_timeout %> $CID
+
+[Install]
+WantedBy=local.target

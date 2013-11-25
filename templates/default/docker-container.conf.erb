@@ -1,0 +1,33 @@
+description "Docker service for <%= @service_name %>"
+author "Docker Chef Cookbook"
+
+start on filesystem and started docker
+stop on runlevel [!2345]
+
+# We don't want to TERM the `docker wait` process so we fake the signal 
+# we send to it. The pre-stop script issues the `docker stop` command
+# which causes the `docker wait` process to exit
+kill signal CONT
+ 
+# Due to a bug in upstart we need to set the modes we consider
+# successful exists https://bugs.launchpad.net/upstart/+bug/568288
+normal exit 0 CONT
+
+respawn
+
+exec <%= node['docker']['install_dir'] %>/docker wait <%= @service_name %>
+
+pre-start script
+  # Wait for docker to finish starting up first.
+  <% if node['docker']['bind_socket'] -%>
+  FILE=<%= node['docker']['bind_socket'].gsub(/^unix:\/\//,'') %>
+  while [ ! -e $FILE ] ; do
+    inotifywait -t 2 -e create $(dirname $FILE)
+  done
+  <% end -%>
+  <%= node['docker']['install_dir'] %>/docker start <%= @service_name %>
+end script
+
+pre-stop script
+  <%= node['docker']['install_dir'] %>/docker stop -t <%= @cmd_timeout %> <%= @service_name %>
+end script

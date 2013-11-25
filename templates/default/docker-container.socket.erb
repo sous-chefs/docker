@@ -1,0 +1,10 @@
+[Unit]
+Description=Docker sockets for <%= @service_name %>
+
+[Socket]
+<% @sockets.each do |s| -%>
+ListenStream=<%= s %>
+<% end -%>
+
+[Install]
+WantedBy=sockets.target
