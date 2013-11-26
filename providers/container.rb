@@ -195,7 +195,6 @@ def service_create_systemd
     owner 'root'
     group 'root'
     variables(
-      :cidfile => cidfile,
       :cmd_timeout => new_resource.cmd_timeout,
       :service_name => service_name
     )
@@ -212,7 +211,6 @@ def service_create_upstart
     owner 'root'
     group 'root'
     variables(
-      :cidfile => cidfile,
       :cmd_timeout => new_resource.cmd_timeout,
       :service_name => service_name
     )
@@ -239,12 +237,10 @@ end
 def service_remove_systemd
   service_action([:stop, :disable])
 
-  file "/usr/lib/systemd/system/#{service_name}.socket" do
-    action :delete
-  end
-
-  file "/usr/lib/systemd/system/#{service_name}.service" do
-    action :delete
+  %w{service socket}.each do |f|
+    file "/usr/lib/systemd/system/#{service_name}.#{f}" do
+      action :delete
+    end
   end
 end
 
