@@ -73,8 +73,6 @@ def cidfile
 end
 
 def container_name
-  # TODO: remove when Fedora package supports named containers
-  return nil if node['platform'] == 'fedora' && node['docker']['install_type'] == 'package'
   if service?
     new_resource.container_name || new_resource.image.gsub(/^.*\//, '')
   else
@@ -220,8 +218,6 @@ def service_create_upstart
 end
 
 def service_name
-  # TODO: remove when Fedora package supports named containers
-  return new_resource.image.gsub(/^.*\//, '') if node['platform'] == 'fedora' && node['docker']['install_type'] == 'package'
   container_name
 end
 

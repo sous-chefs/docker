@@ -5,11 +5,9 @@ After=docker.service
 
 [Service]
 Restart=always
-ExecStartPre=CID=$(cat /var/run/<%= @service_name %>.cid)
-ExecStartPre=<%= node['docker']['install_dir'] %>/docker start $CID
-ExecStart=<%= node['docker']['install_dir'] %>/docker wait $CID
-ExecStopPre=CID=$(cat /var/run/<%= @service_name %>.cid)
-ExecStop=<%= node['docker']['install_dir'] %>/docker stop -t <%= @cmd_timeout %> $CID
+ExecStartPre=<%= node['docker']['install_dir'] %>/docker start <%= @service_name %> || /bin/true
+ExecStart=<%= node['docker']['install_dir'] %>/docker wait <%= @service_name %>
+ExecStop=<%= node['docker']['install_dir'] %>/docker stop -t <%= @cmd_timeout %> <%= @service_name %>
 
 [Install]
 WantedBy=local.target
