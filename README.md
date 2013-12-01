@@ -39,7 +39,6 @@ Attribute | Description | Type | Default
 arch | Architecture for docker binary (note: Docker only currently supports x86_64) | String | auto-detected (see attributes/default.rb)
 bind_socket | Socket path that docker should bind | String | unix:///var/run/docker.sock
 bind_uri | TCP URI docker should bind | String | nil
-config_dir | Configuration directory for docker | String | auto-detected (see attributes/default.rb)
 container_cmd_timeout | container LWRP default cmd_timeout seconds | Fixnum | 60
 container_init_type | Init type for docker containers (nil, "systemd", or "upstart") | NilClass or String | `node['docker']['init_type']`
 http_proxy | HTTP_PROXY environment variable | String | nil
