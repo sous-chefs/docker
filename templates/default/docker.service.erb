@@ -1,6 +1,6 @@
 [Unit]
 Description=Docker container management daemon
-Requires=firewalld.service
+Wants=firewalld.service
 After=firewalld.service
 
 [Service]
@@ -10,6 +10,7 @@ Environment="HTTP_PROXY=<%= node['docker']['http_proxy'] %>"
 <% end %>
 ExecStartPre=/usr/sbin/sysctl -w net.ipv4.ip_forward=1 net.ipv6.conf.all.forwarding=1
 ExecStart=<%= node['docker']['install_dir'] %>/docker -d<%= node['docker']['bind_socket'] ? " -H #{node['docker']['bind_socket']}" : '' %><%= node['docker']['bind_uri'] ? " -H #{node['docker']['bind_uri']}" : '' %><%= node['docker']['container_init_type'] ? ' -r=false' : '' %><%= node['docker']['options'] ? " #{node['docker']['options']}" : '' %>
+ExecStartPost=-/usr/bin/firewall-cmd --add-masquerade
 Restart=on-failure
 
 [Install]
