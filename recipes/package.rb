@@ -1,13 +1,7 @@
 case node['platform']
 when 'fedora'
-  yum_repository 'docker-goldmann' do
-    repo_name 'docker'
-    description 'Intermediate repository for Docker RPMS for Fedora'
-    url node['docker']['package']['repo_url']
-    action :add
-  end
-
   package 'docker-io' do
+    options '--enablerepo=updates-testing'
     action node['docker']['package']['action'].intern
   end
 when 'ubuntu'

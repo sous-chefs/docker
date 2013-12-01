@@ -44,8 +44,6 @@ default['docker']['binary']['url'] = "http://get.docker.io/builds/Linux/#{node['
 
 # Package attributes
 case node['platform']
-when 'fedora'
-  default['docker']['package']['repo_url'] = 'http://goldmann.fedorapeople.org/repos/docker/$releasever/$basearch'
 when 'ubuntu'
   default['docker']['package']['distribution'] = 'docker'
   default['docker']['package']['repo_url'] = 'https://get.docker.io/ubuntu'
