@@ -1,3 +1,8 @@
+execute 'systemctl-daemon-reload' do
+  command '/bin/systemctl --system daemon-reload'
+  action :nothing
+end
+
 template '/usr/lib/systemd/system/docker.socket' do
   source 'docker.socket.erb'
   mode '0644'
@@ -10,6 +15,7 @@ template '/usr/lib/systemd/system/docker.service' do
   mode '0644'
   owner 'root'
   group 'root'
+  notifies :run, 'execute[systemctl-daemon-reload]', :immediately
   notifies :restart, 'service[docker]', :immediately
 end
 
