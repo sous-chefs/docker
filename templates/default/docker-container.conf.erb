@@ -25,7 +25,7 @@ pre-start script
     inotifywait -t 2 -e create $(dirname $FILE)
   done
   <% end -%>
-  <%= node['docker']['install_dir'] %>/docker start <%= @service_name %>
+  <%= node['docker']['install_dir'] %>/docker start <%= @service_name %> || true
 end script
 
 pre-stop script
