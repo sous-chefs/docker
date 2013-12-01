@@ -1,3 +1,18 @@
+## 0.17.0
+
+* Removed: configuration recipe (see bugfix below)
+* Removed: config_dir attribute (see bugfix below)
+* Bugfix: Revert back to specifying HTTP_PROXY and "DOCKER_OPTS" natively in systemd/Upstart (mostly to fix up systemd support)
+* Bugfix: Add systemctl --system daemon-reload handling to systemd service template
+* Bugfix: Add || true to container systemd/Upstart pre-start in case already running
+* Bugfix: Locale environment already handled automatically by systemd
+* Enhancement: Switch Fedora package installation from goldmann-docker to Fedora updates-testing repository
+* Enhancement: Switch container LWRPs to named containers on Fedora since now supported
+* Enhancement: Update docker systemd service contents from docker-io-0.7.0-12.fc20
+  * Add: Wants/After firewalld.service
+  * Add: ExecStartPost firewall-cmd
+  * Remove: ExecStartPost iptables commands
+
 ## 0.16.0
 
 * Bugfix: Remove protocol from docker systemd ListenStreams
