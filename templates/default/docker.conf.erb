@@ -7,12 +7,14 @@ stop on runlevel [!2345]
 respawn
 
 script
+    <% if node['docker']['http_proxy'] -%>
+    export HTTP_PROXY=<%= node['docker']['http_proxy'] %>
+    <% end -%>
     <% case node['platform'] -%>
     <% when 'fedora' -%>
     test -f /etc/locale.conf && . /etc/locale.conf || true
     <% when 'ubuntu' -%>
     test -f /etc/default/locale && . /etc/default/locale || true
     <% end -%>
-    test -f <%= node['docker']['config_dir'] %>/docker && . <%= node['docker']['config_dir'] %>/docker || true
-    LANG=$LANG LC_ALL=$LANG <%= node['docker']['install_dir'] %>/docker $DOCKER_OPTS
+    LANG=$LANG LC_ALL=$LANG <%= node['docker']['install_dir'] %>/docker -d<%= node['docker']['bind_socket'] ? " -H #{node['docker']['bind_socket']}" : '' %><%= node['docker']['bind_uri'] ? " -H #{node['docker']['bind_uri']}" : '' %><%= node['docker']['container_init_type'] ? ' -r=false' : '' %><%= node['docker']['options'] ? " #{node['docker']['options']}" : '' %>
 end script
