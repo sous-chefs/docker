@@ -3,10 +3,12 @@ when 'centos', 'redhat'
   include_recipe 'yum::epel'
 
   package 'docker-io' do
+    version node['docker']['version']
     action node['docker']['package']['action'].intern
   end
 when 'fedora'
   package 'docker-io' do
+    version node['docker']['version']
     action node['docker']['package']['action'].intern
   end
 when 'ubuntu'
@@ -17,7 +19,12 @@ when 'ubuntu'
     key node['docker']['package']['repo_key']
   end
 
-  package 'lxc-docker' do
+  # reprepro doesn't support version tagging
+  # See: https://github.com/dotcloud/docker/issues/979
+  p = 'lxc-docker'
+  p += "-#{node['docker']['version']}" if node['docker']['version']
+
+  package p do
     options '--force-yes'
     action node['docker']['package']['action'].intern
   end

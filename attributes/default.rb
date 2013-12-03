@@ -40,8 +40,10 @@ else
   default['docker']['install_dir'] = '/usr/bin'
 end
 
+default['docker']['version'] = nil
+
 # Binary attributes
-default['docker']['binary']['version'] = 'latest'
+default['docker']['binary']['version'] = node['docker']['version'] || 'latest'
 default['docker']['binary']['url'] = "http://get.docker.io/builds/Linux/#{node['docker']['arch']}/docker-#{node['docker']['binary']['version']}"
 
 # Package attributes
