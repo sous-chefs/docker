@@ -10,8 +10,10 @@ This cookbook was inspired by @thoward's docker-cookbook: https://github.com/tho
 
 ### Platforms
 
+* CentOS 6
 * Fedora 19
 * Fedora 20
+* RHEL 6
 * Ubuntu 12.04
 * Ubuntu 12.10
 * Ubuntu 13.04
@@ -43,7 +45,7 @@ container_cmd_timeout | container LWRP default cmd_timeout seconds | Fixnum | 60
 container_init_type | Init type for docker containers (nil, "systemd", or "upstart") | NilClass or String | `node['docker']['init_type']`
 http_proxy | HTTP_PROXY environment variable | String | nil
 image_cmd_timeout | image LWRP default cmd_timeout seconds | Fixnum | 300
-init_type | Init type for docker ("systemd" or "upstart") | String | auto-detected (see attributes/default.rb)
+init_type | Init type for docker ("systemd", "sysv", or "upstart") | String | auto-detected (see attributes/default.rb)
 install_dir | Installation directory for docker binary | String | auto-detected (see attributes/default.rb)
 install_type | Installation type for docker ("binary", "package" or "source") | String | "package"
 options | Additional options to pass to docker. These could be flags like "-api-enable-cors". | String | nil
@@ -84,6 +86,7 @@ url | Repository URL for docker source | String | "https://github.com/dotcloud/d
 * `recipe[docker::package]` Installs Docker via package
 * `recipe[docker::source]` Installs Docker via source
 * `recipe[docker::systemd]` Installs/Starts Docker via systemd
+* `recipe[docker::sysv]` Installs/Starts Docker via SysV
 * `recipe[docker::upstart]` Installs/Starts Docker via Upstart
 
 ## LWRPs
