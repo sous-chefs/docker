@@ -17,6 +17,8 @@ default['docker']['http_proxy'] = nil
 default['docker']['image_cmd_timeout'] = 300
 
 case node['platform']
+when 'centos', 'redhat'
+  default['docker']['init_type'] = 'sysv'
 when 'fedora'
   default['docker']['init_type'] = 'systemd'
 when 'ubuntu'

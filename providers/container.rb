@@ -167,6 +167,8 @@ def service_create
   case new_resource.init_type
   when 'systemd'
     service_create_systemd
+  when 'sysv'
+    service_create_sysv
   when 'upstart'
     service_create_upstart
   end
@@ -190,6 +192,22 @@ def service_create_systemd
     source 'docker-container.service.erb'
     cookbook new_resource.cookbook
     mode '0644'
+    owner 'root'
+    group 'root'
+    variables(
+      :cmd_timeout => new_resource.cmd_timeout,
+      :service_name => service_name
+    )
+  end
+
+  service_action([:start, :enable])
+end
+
+def service_create_sysv
+  template "/etc/init.d/#{service_name}" do
+    source 'docker-container.sysv.erb'
+    cookbook new_resource.cookbook
+    mode '0755'
     owner 'root'
     group 'root'
     variables(
@@ -225,6 +243,8 @@ def service_remove
   case new_resource.init_type
   when 'systemd'
     service_remove_systemd
+  when 'sysv'
+    service_remove_sysv
   when 'upstart'
     service_remove_upstart
   end
@@ -237,6 +257,14 @@ def service_remove_systemd
     file "/usr/lib/systemd/system/#{service_name}.#{f}" do
       action :delete
     end
+  end
+end
+
+def service_remove_sysv
+  service_action([:stop, :disable])
+
+  file "/etc/init.d/#{service_name}" do
+    action :delete
   end
 end
 

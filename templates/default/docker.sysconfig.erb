@@ -1,0 +1,4 @@
+<% if node['docker']['http_proxy'] -%>
+export HTTP_PROXY=<%= node['docker']['http_proxy'] %>
+<% end -%>
+other_args="<%= node['docker']['bind_socket'] ? " -H #{node['docker']['bind_socket']}" : '' %><%= node['docker']['bind_uri'] ? " -H #{node['docker']['bind_uri']}" : '' %><%= node['docker']['container_init_type'] ? ' -r=false' : '' %><%= node['docker']['options'] ? " #{node['docker']['options']}" : '' %>"

@@ -1,0 +1,108 @@
+#!/bin/sh
+#
+#       /etc/rc.d/init.d/<%= @service_name %>
+#
+#       <%= @service_name %>
+#
+# chkconfig:   2345 96 94
+# description: <%= @service_name %>
+
+### BEGIN INIT INFO
+# Provides:       <%= @service_name %>
+# Required-Start: $network
+# Required-Stop:
+# Should-Start:
+# Should-Stop:
+# Default-Start: 2 3 4 5
+# Default-Stop:  0 1 6
+# Short-Description: start and stop <%= @service_name %>
+# Description: <%= @service_name %>
+### END INIT INFO
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+exec="<%= node['docker']['install_dir'] %>/docker"
+prog="<%= @service_name %>"
+pidfile="/var/run/$prog.pid"
+lockfile="/var/lock/subsys/$prog"
+
+[ -e /etc/sysconfig/$prog ] && . /etc/sysconfig/$prog
+
+start() {
+    [ -x $exec ] || exit 5
+
+    if ! [ -f $pidfile ]; then
+        printf "Starting $prog:\t"
+        $exec start $prog > /dev/null 2>&1
+        pid=$!
+        touch $lockfile
+        success
+        echo
+    else
+        failure
+        echo
+        printf "$pidfile still exists...\n"
+        exit 7
+    fi
+}
+
+stop() {
+    echo -n $"Stopping $prog: "
+    $exec stop -t <%= @cmd_timeout %> $prog
+    retval=$?
+    rm -f $pidfile
+    echo
+    [ $retval -eq 0 ] && rm -f $lockfile
+    return $retval
+}
+
+restart() {
+    stop
+    start
+}
+
+reload() {
+    restart
+}
+
+force_reload() {
+    restart
+}
+
+status() {
+    $exec ps -a -notrunc | grep $prog | grep -qc "Up"
+}
+
+case "$1" in
+    start)
+        status && exit 0
+        $1
+        ;;
+    stop)
+        status || exit 0
+        $1
+        ;;
+    restart)
+        $1
+        ;;
+    reload)
+        status || exit 7
+        $1
+        ;;
+    force-reload)
+        force_reload
+        ;;
+    status)
+        $1
+        ;;
+    condrestart|try-restart)
+        status || exit 0
+        restart
+        ;;
+    *)
+        echo $"Usage: $0 {start|stop|status|restart|condrestart|try-restart|reload|force-reload}"
+        exit 2
+esac
+
+exit $?
