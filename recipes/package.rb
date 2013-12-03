@@ -1,7 +1,12 @@
 case node['platform']
+when 'centos', 'redhat'
+  include_recipe 'yum::epel'
+
+  package 'docker-io' do
+    action node['docker']['package']['action'].intern
+  end
 when 'fedora'
   package 'docker-io' do
-    options '--enablerepo=updates-testing'
     action node['docker']['package']['action'].intern
   end
 when 'ubuntu'
