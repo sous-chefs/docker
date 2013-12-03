@@ -49,6 +49,7 @@ init_type | Init type for docker ("systemd", "sysv", or "upstart") | String | au
 install_dir | Installation directory for docker binary | String | auto-detected (see attributes/default.rb)
 install_type | Installation type for docker ("binary", "package" or "source") | String | "package"
 options | Additional options to pass to docker. These could be flags like "-api-enable-cors". | String | nil
+version | Version of docker | String | nil
 
 ### Binary Attributes
 
@@ -56,7 +57,7 @@ These attributes are under the `node['docker']['binary']` namespace.
 
 Attribute | Description | Type | Default
 ----------|-------------|------|--------
-version | Version of docker binary | String | latest
+version | Version of docker binary | String | `node['docker']['version'] || latest`
 url | URL for downloading docker binary | String | auto-detected (see attributes/default.rb)
 
 ### Package Attributes
