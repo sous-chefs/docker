@@ -1,3 +1,7 @@
+## 0.18.1
+
+* Bugfix: Remove ExecStartPost from systemd service to match change in docker-io-0.7.0-13
+
 ## 0.18.0
 
 * Enhancement: CentOS/RHEL 6 package support via EPEL repository
