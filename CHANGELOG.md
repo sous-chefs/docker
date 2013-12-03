@@ -1,3 +1,9 @@
+## 0.18.0
+
+* Enhancement: CentOS/RHEL 6 package support via EPEL repository
+* Enhancement: Fedora 19/20 package support now in updates (stable) repository
+* Enhancement: sysv recipe and init_type
+
 ## 0.17.0
 
 * Removed: configuration recipe (see bugfix below)
