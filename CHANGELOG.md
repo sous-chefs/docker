@@ -1,3 +1,9 @@
+## 0.19.0
+
+* Enhancement: Add `node['docker']['version']` attribute to handle version for all install_type (recommended you switch to this)
+* Enhancement: `default['docker']['binary']['version']` attribute uses `node['docker']['version']` if set 
+* Enhancement: Add version handling to package recipe
+
 ## 0.18.1
 
 * Bugfix: Remove ExecStartPost from systemd service to match change in docker-io-0.7.0-13
