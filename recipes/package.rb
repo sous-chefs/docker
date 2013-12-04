@@ -25,7 +25,7 @@ when 'ubuntu'
   p += "-#{node['docker']['version']}" if node['docker']['version']
 
   package p do
-    options '--force-yes'
+    options '--force-yes -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"'
     action node['docker']['package']['action'].intern
   end
 end
