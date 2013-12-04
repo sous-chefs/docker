@@ -1,3 +1,7 @@
+## 0.19.1
+
+* Bugfix: [GH-30] apt-get throws exit code 100 when upgrading docker
+
 ## 0.19.0
 
 * Enhancement: Add `node['docker']['version']` attribute to handle version for all install_type (recommended you switch to this)
