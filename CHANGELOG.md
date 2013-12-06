@@ -1,3 +1,12 @@
+## 0.20.0
+
+* Enhancement: Default to package install_type only on distros with known packages
+* Enhancement: Initial Oracle 6 platform support via binary install_type
+  * https://blogs.oracle.com/wim/entry/oracle_linux_6_5_and
+  * http://www.oracle.com/technetwork/articles/servers-storage-admin/resource-controllers-linux-1506602.html
+* Enhancement: Split out lxc recipe for default platform lxc handling
+* Enhancement: Create cgroups recipe for default platform cgroups handling
+
 ## 0.19.1
 
 * Bugfix: [GH-30] apt-get throws exit code 100 when upgrading docker
