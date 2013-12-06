@@ -11,7 +11,6 @@ when 'ubuntu'
 end
 
 if node['docker']['install_type'] == 'source'
-  node.set['go']['version'] = '1.1'
   include_recipe 'golang'
   include_recipe 'git'
 end
