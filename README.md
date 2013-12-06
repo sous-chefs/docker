@@ -262,7 +262,7 @@ Here's how you can quickly get testing or developing against the cookbook thanks
     vagrant plugin install vagrant-omnibus
     git clone git://github.com/bflad/chef-docker.git
     cd chef-docker
-    vagrant up BOX # BOX being centos6, debian7, fedora18, fedora19, ubuntu1204, ubuntu1210, or ubuntu1304
+    vagrant up BOX # BOX being centos5, centos6, debian7, fedora18, fedora19, fedora20, freebsd9, ubuntu1204, ubuntu1210, ubuntu1304, or ubuntu1310
 
 You can then SSH into the running VM using the `vagrant ssh BOX` command.
 
