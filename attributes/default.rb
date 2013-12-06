@@ -29,7 +29,12 @@ end
 
 default['docker']['container_init_type'] = node['docker']['init_type']
 
-default['docker']['install_type'] = 'package'
+case node['platform']
+when 'centos', 'fedora', 'redhat', 'ubuntu'
+  default['docker']['install_type'] = 'package'
+else
+  default['docker']['install_type'] = 'binary'
+end
 
 case node['docker']['install_type']
 when 'binary'
