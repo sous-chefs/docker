@@ -13,6 +13,7 @@ This cookbook was inspired by @thoward's docker-cookbook: https://github.com/tho
 * CentOS 6
 * Fedora 19
 * Fedora 20
+* Oracle 6
 * RHEL 6
 * Ubuntu 12.04
 * Ubuntu 12.10

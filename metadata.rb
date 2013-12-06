@@ -16,7 +16,7 @@ recipe            'docker::systemd', 'Installs/Starts Docker via systemd'
 recipe            'docker::sysv', 'Installs/Starts Docker via SysV'
 recipe            'docker::upstart', 'Installs/Starts Docker via Upstart'
 
-%w{ centos fedora redhat ubuntu }.each do |os|
+%w{ centos fedora oracle redhat ubuntu }.each do |os|
   supports os
 end
 
