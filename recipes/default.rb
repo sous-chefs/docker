@@ -1,7 +1,7 @@
 case node['platform']
 when 'oracle'
-  include_recipe "docker::cgroups"
-  include_recipe "docker::lxc"
+  include_recipe 'docker::cgroups'
+  include_recipe 'docker::lxc'
 when 'ubuntu'
   include_recipe 'apt'
   package 'apt-transport-https'
