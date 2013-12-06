@@ -3,7 +3,7 @@ when 'ubuntu'
   include_recipe 'apt'
   package 'apt-transport-https'
   package 'bsdtar'
-  include_recipe 'lxc'
+  include_recipe 'docker::lxc'
   include_recipe 'docker::aufs'
 end
 
