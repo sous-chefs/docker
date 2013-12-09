@@ -16,6 +16,6 @@ gem 'rubocop',       '~> 0.14'
 # end
 
 group :integration do
-  gem 'test-kitchen',    '~> 1.0.0.beta'
-  gem 'kitchen-vagrant', '~> 0.11'
+  gem 'test-kitchen',    '~> 1.0.0'
+  gem 'kitchen-vagrant', '~> 0.13'
 end
