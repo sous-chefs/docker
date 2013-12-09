@@ -253,28 +253,12 @@ Remove image:
 
 ## Testing and Development
 
-### Vagrant
-
-Here's how you can quickly get testing or developing against the cookbook thanks to [Vagrant](http://vagrantup.com/) and [Berkshelf](http://berkshelf.com/).
-
-    vagrant plugin install vagrant-berkshelf
-    vagrant plugin install vagrant-cachier
-    vagrant plugin install vagrant-omnibus
-    git clone git://github.com/bflad/chef-docker.git
-    cd chef-docker
-    vagrant up BOX # BOX being centos5, centos6, debian7, fedora18, fedora19, fedora20, freebsd9, ubuntu1204, ubuntu1210, ubuntu1304, or ubuntu1310
-
-You can then SSH into the running VM using the `vagrant ssh BOX` command.
-
-The VM can easily be stopped and deleted with the `vagrant destroy` command. Please see the official [Vagrant documentation](http://docs.vagrantup.com/v2/cli/index.html) for a more in depth explanation of available commands.
-
-### Test Kitchen
-
-Please see documentation in: [TESTING.md](TESTING.md)
+* Quickly testing with Vagrant: [VAGRANT.md](VAGRANT.md)
+* Full development and testing workflow with Test Kitchen and friends: [TESTING.md](TESTING.md)
 
 ## Contributing
 
-Please use standard Github issues/pull requests and if possible, in combination with testing on the Vagrant boxes or Test Kitchen suite.
+Please see contributing information in: [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## Maintainers
 
