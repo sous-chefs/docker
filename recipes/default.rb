@@ -6,10 +6,8 @@ when 'ubuntu'
   include_recipe 'apt'
   package 'apt-transport-https'
   package 'bsdtar'
-  if 'ubuntu' == node['platform'] &&
-    Chef::VersionConstraint.new('< 13.10').include?(node['platform_version'])
-      include_recipe 'docker::lxc'
-      include_recipe 'docker::aufs'
+  if Chef::VersionConstraint.new('< 13.10').include?(node['platform_version'])
+    include_recipe 'docker::aufs'
   end
 end
 
