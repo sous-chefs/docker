@@ -6,7 +6,7 @@ attribute :image, :name_attribute => true
 
 attribute :attach, :kind_of => [TrueClass, FalseClass]
 attribute :cidfile, :kind_of => [String]
-attribute :cmd_timeout, :kind_of => [Integer], :default => node['docker']['container_cmd_timeout']
+attribute :cmd_timeout, :kind_of => [Integer], :default => 60
 attribute :command, :kind_of => [String]
 attribute :container_name, :kind_of => [String]
 attribute :cookbook, :kind_of => [String], :default => 'docker'
@@ -18,7 +18,7 @@ attribute :env, :kind_of => [String, Array]
 attribute :expose, :kind_of => [Fixnum, String, Array]
 attribute :hostname, :kind_of => [String]
 attribute :id, :kind_of => [String]
-attribute :init_type, :kind_of => [FalseClass, String], :default => node['docker']['container_init_type']
+attribute :init_type, :kind_of => [FalseClass, String], :default => 60
 attribute :link, :kind_of => [String]
 attribute :lxc_conf, :kind_of => [String, Array]
 attribute :memory, :kind_of => [Fixnum]
