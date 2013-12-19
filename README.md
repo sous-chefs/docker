@@ -79,6 +79,14 @@ Attribute | Description | Type | Default
 ref | Repository reference for docker source | String | "master"
 url | Repository URL for docker source | String | "https://github.com/dotcloud/docker.git"
 
+## AUFS Attributes
+
+These attributes are under the `node['docker']['aufs'] namespace.
+
+Attribute | Description | Type | Default
+----------|-------------|------|--------
+legacy_package_finder | Use older method for determining kernel package name | Bool | false
+
 ## Recipes
 
 * `recipe[docker]` Installs/Configures Docker
