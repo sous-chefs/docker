@@ -1,11 +1,10 @@
 case node['platform']
 when 'ubuntu'
-  # If aufs isn't available, do our best to install the correct linux-image-extra package.
-  uname = Mixlib::ShellOut.new('uname -r').run_command.stdout.strip
-  extra_package = 'linux-image-extra-' + uname
+  # Verify the package exists before we attempt to install it
+  extra_package = Mixlib::ShellOut.new('apt-cache search linux-image-extra-' + node['kernel']['release']).run_command.stdout.split(' ').first.strip
   unless extra_package.empty?
     package extra_package do
-      not_if 'modprobe -l | grep aufs'
+      not_if 'modprobe -l | grep -q aufs'
     end
   end
 
