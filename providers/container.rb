@@ -2,6 +2,8 @@ require 'chef/mixin/shell_out'
 include Chef::Mixin::ShellOut
 include Helpers::Docker
 
+class CommandTimeout < RuntimeError; end
+
 def load_current_resource
   @current_resource = Chef::Resource::DockerContainer.new(new_resource)
   dps = shell_out('docker ps -a -notrunc', :timeout => new_resource.cmd_timeout)
@@ -80,6 +82,21 @@ def container_name
   end
 end
 
+def docker_cmd(cmd, timeout = new_resource.cmd_timeout)
+  Chef::Log.debug('Executing: docker ' + cmd)
+  begin
+    shell_out('docker ' + cmd, :timeout => timeout)
+  rescue Mixlib::ShellOut::CommandTimeout
+    raise CommandTimeout, <<-EOM
+
+Docker command timed out:
+docker #{cmd}
+
+Please adjust node container_cmd_timeout attribute or this docker_container cmd_timeout attribute if necessary.
+EOM
+  end
+end
+
 def exists?
   @current_resource.id
 end
@@ -136,7 +153,7 @@ def run
     'volumes-from' => new_resource.volumes_from,
     'w' => new_resource.working_directory
   )
-  dr = shell_out("docker run #{run_args} #{new_resource.image} #{new_resource.command}", :timeout => new_resource.cmd_timeout)
+  dr = docker_cmd("run #{run_args} #{new_resource.image} #{new_resource.command}")
   dr.error!
   new_resource.id(dr.stdout.chomp)
   service_create if service?
@@ -301,7 +318,7 @@ def start
   if service?
     service_create
   else
-    shell_out("docker start #{start_args} #{current_resource.id}", :timeout => new_resource.cmd_timeout)
+    docker_cmd("start #{start_args} #{current_resource.id}")
   end
 end
 
@@ -312,10 +329,10 @@ def stop
   if service?
     service_stop
   else
-    shell_out("docker stop #{stop_args} #{current_resource.id}", :timeout => (new_resource.cmd_timeout + 15))
+    docker_cmd("stop #{stop_args} #{current_resource.id}", (new_resource.cmd_timeout + 15))
   end
 end
 
 def wait
-  shell_out("docker wait #{current_resource.id}", :timeout => new_resource.cmd_timeout)
+  docker_cmd("wait #{current_resource.id}")
 end

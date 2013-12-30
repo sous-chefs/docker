@@ -2,6 +2,8 @@ require 'chef/mixin/shell_out'
 include Chef::Mixin::ShellOut
 include Helpers::Docker
 
+class CommandTimeout < RuntimeError; end
+
 def load_current_resource
   @current_resource = Chef::Resource::DockerImage.new(new_resource)
   di = shell_out('docker images -a', :timeout => new_resource.cmd_timeout)
@@ -59,7 +61,22 @@ def build
     command = new_resource.image_url
   end
 
-  shell_out("docker build -t #{full_image_name} #{command}", :timeout => new_resource.cmd_timeout)
+  docker_cmd("build -t #{full_image_name} #{command}")
+end
+
+def docker_cmd(cmd, timeout = new_resource.cmd_timeout)
+  Chef::Log.debug('Executing: docker ' + cmd)
+  begin
+    shell_out('docker ' + cmd, :timeout => timeout)
+  rescue Mixlib::ShellOut::CommandTimeout
+    raise CommandTimeout, <<-EOM
+
+Docker command timed out:
+docker #{cmd}
+
+Please adjust node image_cmd_timeout attribute or this docker_image cmd_timeout attribute if necessary.
+EOM
+  end
 end
 
 def import
@@ -72,7 +89,7 @@ def import
     import_args += " #{new_resource.tag}" if new_resource.tag
   end
 
-  shell_out("docker import #{import_args}", :timeout => new_resource.cmd_timeout)
+  docker_cmd("import #{import_args}")
 end
 
 def installed?
@@ -84,11 +101,11 @@ def pull
     'registry' => new_resource.registry,
     't' => new_resource.tag
   )
-  shell_out("docker pull #{new_resource.image_name} #{pull_args}", :timeout => new_resource.cmd_timeout)
+  docker_cmd("pull #{new_resource.image_name} #{pull_args}")
 end
 
 def remove
-  shell_out("docker rmi #{new_resource.image_name}", :timeout => new_resource.cmd_timeout)
+  docker_cmd("rmi #{new_resource.image_name}")
 end
 
 def tag_match
