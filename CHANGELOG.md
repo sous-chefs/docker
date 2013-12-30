@@ -1,6 +1,6 @@
 ## 0.21.0
 
-* Enhancement: [GH-31] More helpful cmd_timeout error messages and catchable exceptions for container (`Chef::Provider::Container::CommandTimeout`) and image (`Chef::Provider::Image::CommandTimeout`) LWRPs
+* Enhancement: [GH-31] More helpful cmd_timeout error messages and catchable exceptions for container (`Chef::Provider::Docker::Container::CommandTimeout`) and image (`Chef::Provider::Docker::Image::CommandTimeout`) LWRPs
 
 ## 0.20.0
 
