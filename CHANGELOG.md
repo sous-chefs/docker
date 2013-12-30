@@ -1,3 +1,7 @@
+## 0.21.0
+
+* Enhancement: [GH-31] More helpful cmd_timeout error messages and catchable exceptions for container (`Chef::Provider::Container::CommandTimeout`) and image (`Chef::Provider::Image::CommandTimeout`) LWRPs
+
 ## 0.20.0
 
 * Enhancement: Default to package install_type only on distros with known packages
