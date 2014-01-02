@@ -18,6 +18,7 @@ This cookbook was inspired by @thoward's docker-cookbook: https://github.com/tho
 * Ubuntu 12.04
 * Ubuntu 12.10
 * Ubuntu 13.04
+* Ubuntu 13.10 (experimental)
 
 ### Cookbooks
 
