@@ -15,7 +15,7 @@ default['docker']['http_proxy'] = nil
 default['docker']['image_cmd_timeout'] = 300
 
 default['docker']['init_type'] = value_for_platform(
-  %w{ centos redhat } => {
+  %w{ centos oracle redhat } => {
     'default' => 'sysv'
   },
   %w{ fedora } => {
