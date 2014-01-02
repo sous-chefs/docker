@@ -1,3 +1,8 @@
+## 0.24.0
+
+* Bugfix: [GH-42] fix(upstart): Install inotify-tools if using upstart
+* Enhancement: [GH-38] Allow a user to specify a custom template for their container init configuration
+
 ## 0.23.1
 
 * Bugfix: [GH-39] Fix NoMethodError bugs in docker::aufs recipe
