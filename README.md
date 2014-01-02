@@ -8,6 +8,10 @@ This cookbook was inspired by @thoward's docker-cookbook: https://github.com/tho
 
 ## Requirements
 
+### Chef
+
+* Chef 11+
+
 ### Platforms
 
 * CentOS 6
