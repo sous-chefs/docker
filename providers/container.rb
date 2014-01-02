@@ -310,7 +310,7 @@ def service_stop
 end
 
 def service_template
-  new_resource.init_template unless new_resource.init_template.nil?
+  return new_resource.init_template unless new_resource.init_template.nil?
   case new_resource.init_type
   when 'systemd'
     'docker-container.service.erb'
