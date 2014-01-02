@@ -1,3 +1,7 @@
+## 0.23.1
+
+* Bugfix: [GH-39] Fix NoMethodError bugs in docker::aufs recipe
+
 ## 0.23.0
 
 * Bugfix: Default oracle init_type to sysv
