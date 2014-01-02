@@ -102,7 +102,7 @@ def exists?
 end
 
 def port
-  # DEPRACATED support for public_port attribute and Fixnum port
+  # DEPRECATED support for public_port attribute and Fixnum port
   if new_resource.public_port && new_resource.port.is_a?(Fixnum)
     "#{new_resource.public_port}:#{new_resource.port}"
   elsif new_resource.port && new_resource.port.is_a?(Fixnum)
@@ -193,7 +193,11 @@ end
 
 def service_create_systemd
   template "/usr/lib/systemd/system/#{service_name}.socket" do
-    source 'docker-container.socket.erb'
+    if new_resource.socket_template.nil?
+      source 'docker-container.socket.erb'
+    else
+      source new_resource.socket_template
+    end
     cookbook new_resource.cookbook
     mode '0644'
     owner 'root'
@@ -206,7 +210,7 @@ def service_create_systemd
   end
 
   template "/usr/lib/systemd/system/#{service_name}.service" do
-    source 'docker-container.service.erb'
+    source service_template
     cookbook new_resource.cookbook
     mode '0644'
     owner 'root'
@@ -222,7 +226,7 @@ end
 
 def service_create_sysv
   template "/etc/init.d/#{service_name}" do
-    source 'docker-container.sysv.erb'
+    source service_template
     cookbook new_resource.cookbook
     mode '0755'
     owner 'root'
@@ -238,7 +242,7 @@ end
 
 def service_create_upstart
   template "/etc/init/#{service_name}.conf" do
-    source 'docker-container.conf.erb'
+    source service_template
     cookbook new_resource.cookbook
     mode '0600'
     owner 'root'
@@ -303,6 +307,18 @@ end
 
 def service_stop
   service_action([:stop])
+end
+
+def service_template
+  return new_resource.init_template unless new_resource.init_template.nil?
+  case new_resource.init_type
+  when 'systemd'
+    'docker-container.service.erb'
+  when 'upstart'
+    'docker-container.conf.erb'
+  when 'sysv'
+    'docker-container.sysv.erb'
+  end
 end
 
 def sockets

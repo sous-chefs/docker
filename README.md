@@ -124,6 +124,7 @@ hostname | Container hostname | String | nil
 id | Container ID (internally set by LWRP) | String | nil
 image | Image for container | String | LWRP name
 init_type | Init type for container service handling | FalseClass, String | `node['docker']['container_init_type']`
+init_template | Template to use for init configuration | String | nil
 link | Add link to another container | String | nil
 lxc_conf | Custom LXC options | String, Array | nil
 memory | Set memory limit for container | Fixnum | nil
@@ -133,6 +134,7 @@ public_port (*DEPRECATED*) | Map host port to container | Fixnum | nil
 publish_exposed_ports | Publish all exposed ports to the host interfaces | TrueClass, FalseClass | false
 remove_automatically | Automatically remove the container when it exits (incompatible with detach) | TrueClass, FalseClass | false
 running | Container running status (internally set by LWRP) | TrueClass, FalseClass | nil
+socket_template | Template to use for configuring socket (relevent for init_type systemd only) | String | nil
 stdin | Attach container's stdin | TrueClass, FalseClass | nil
 tty | Allocate a pseudo-tty | TrueClass, FalseClass | nil
 user | User to run container | String | nil
