@@ -237,6 +237,9 @@ def service_create_sysv
 end
 
 def service_create_upstart
+  # The upstart init script requires inotifywait, which is in inotify-tools
+  package 'inotify-tools'
+
   template "/etc/init/#{service_name}.conf" do
     source 'docker-container.conf.erb'
     cookbook new_resource.cookbook
