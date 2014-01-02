@@ -1,3 +1,10 @@
+## 0.23.0
+
+* Bugfix: Default oracle init_type to sysv
+* Enhancement: Experimental Debian 7 package support
+* Enhancement: Use new yum-epel cookbook instead of yum::epel recipe
+* Enhancement: Use `value_for_platform` where applicable in attributes, requires Chef 11
+
 ## 0.22.0
 
 * Enhancement: [GH-35] Use kernel release for package name on saucy and newer
