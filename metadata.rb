@@ -16,10 +16,17 @@ recipe            'docker::systemd', 'Installs/Starts Docker via systemd'
 recipe            'docker::sysv', 'Installs/Starts Docker via SysV'
 recipe            'docker::upstart', 'Installs/Starts Docker via Upstart'
 
-%w{ centos debian fedora oracle redhat ubuntu }.each do |os|
-  supports os
-end
+supports 'centos', '>= 6.0'
+supports 'debian', '>= 7.0'
+supports 'fedora', '>= 19'
+supports 'oracle', '>= 6.0'
+supports 'redhat', '>= 6.0'
+supports 'ubuntu', '>= 12.04'
 
-%w{ apt git golang lxc modules sysctl yum-epel }.each do |cb|
-  depends cb
-end
+depends 'apt'
+depends 'git'
+depends 'golang'
+depends 'lxc', '>= 1.1.6'
+depends 'modules'
+depends 'sysctl'
+depends 'yum-epel'
