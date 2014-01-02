@@ -102,7 +102,7 @@ def exists?
 end
 
 def port
-  # DEPRACATED support for public_port attribute and Fixnum port
+  # DEPRECATED support for public_port attribute and Fixnum port
   if new_resource.public_port && new_resource.port.is_a?(Fixnum)
     "#{new_resource.public_port}:#{new_resource.port}"
   elsif new_resource.port && new_resource.port.is_a?(Fixnum)
