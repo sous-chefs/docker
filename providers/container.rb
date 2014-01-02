@@ -195,7 +195,7 @@ def service_create_systemd
   template "/usr/lib/systemd/system/#{service_name}.socket" do
     if new_resource.socket_template.nil?
       source 'docker-container.socket.erb'
-    else 
+    else
       source new_resource.socket_template
     end
     cookbook new_resource.cookbook
