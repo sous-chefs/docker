@@ -1,3 +1,8 @@
+## 0.22.0
+
+* Enhancement: [GH-35] Use kernel release for package name on saucy and newer
+* Enhancement: [GH-37] dont include aufs recipe on ubuntu 13.10 and up; don't require docker::lxc for package installs
+
 ## 0.21.0
 
 * Enhancement: [GH-31] More helpful cmd_timeout error messages and catchable exceptions for container (`Chef::Provider::Docker::Container::CommandTimeout`) and image (`Chef::Provider::Docker::Image::CommandTimeout`) LWRPs
