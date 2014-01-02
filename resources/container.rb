@@ -22,7 +22,7 @@ attribute :init_type, :kind_of => [FalseClass, String], :default => node['docker
 attribute :link, :kind_of => [String]
 attribute :lxc_conf, :kind_of => [String, Array]
 attribute :memory, :kind_of => [Fixnum]
-# Fixnum kind_of port attribute is DEPRACATED
+# Fixnum kind_of port attribute is DEPRECATED
 attribute :port, :kind_of => [Fixnum, String, Array]
 attribute :privileged, :kind_of => [TrueClass, FalseClass]
 # public_port attribute is DEPRECATED
