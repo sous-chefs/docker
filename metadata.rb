@@ -20,6 +20,6 @@ recipe            'docker::upstart', 'Installs/Starts Docker via Upstart'
   supports os
 end
 
-%w{ apt git golang lxc modules sysctl yum }.each do |cb|
+%w{ apt git golang lxc modules sysctl yum-epel }.each do |cb|
   depends cb
 end

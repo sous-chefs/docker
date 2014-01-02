@@ -1,6 +1,6 @@
 case node['platform']
 when 'centos', 'redhat'
-  include_recipe 'yum::epel'
+  include_recipe 'yum-epel'
 
   package 'docker-io' do
     version node['docker']['version']
