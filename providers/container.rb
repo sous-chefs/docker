@@ -193,7 +193,7 @@ end
 
 def service_create_systemd
   template "/usr/lib/systemd/system/#{service_name}.socket" do
-    source 'docker-container.socket.erb'
+    source socket_template
     cookbook new_resource.cookbook
     mode '0644'
     owner 'root'
@@ -206,7 +206,7 @@ def service_create_systemd
   end
 
   template "/usr/lib/systemd/system/#{service_name}.service" do
-    source 'docker-container.service.erb'
+    source service_template
     cookbook new_resource.cookbook
     mode '0644'
     owner 'root'
@@ -222,7 +222,7 @@ end
 
 def service_create_sysv
   template "/etc/init.d/#{service_name}" do
-    source 'docker-container.sysv.erb'
+    source service_template
     cookbook new_resource.cookbook
     mode '0755'
     owner 'root'
@@ -238,7 +238,7 @@ end
 
 def service_create_upstart
   template "/etc/init/#{service_name}.conf" do
-    source 'docker-container.conf.erb'
+    source service_template
     cookbook new_resource.cookbook
     mode '0600'
     owner 'root'
@@ -303,6 +303,26 @@ end
 
 def service_stop
   service_action([:stop])
+end
+
+def service_template
+  return new_resource.init_template unless new_resource.init_template.nil?
+  case new_resource.init_type
+  when 'systemd'
+    return 'docker-container.service.erb'
+  when 'upstart'
+    return 'docker-container.conf.erb'
+  when 'sysv'
+    return 'docker-container.sysv.erb'
+  end
+end
+
+def socket_template
+  if new_resource.socket_template.nil?
+    return 'docker-container.socket.erb'
+  else
+    return new_resource.socket_template
+  end
 end
 
 def sockets
