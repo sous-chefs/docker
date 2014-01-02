@@ -15,7 +15,7 @@ default['docker']['http_proxy'] = nil
 default['docker']['image_cmd_timeout'] = 300
 
 default['docker']['init_type'] = value_for_platform(
-  %w{ centos oracle redhat } => {
+  %w{ centos debian oracle redhat } => {
     'default' => 'sysv'
   },
   %w{ fedora } => {
@@ -30,7 +30,7 @@ default['docker']['init_type'] = value_for_platform(
 default['docker']['container_init_type'] = node['docker']['init_type']
 
 default['docker']['install_type'] = value_for_platform(
-  %w{ centos fedora redhat ubuntu } => {
+  %w{ centos debian fedora redhat ubuntu } => {
     'default' => 'package'
   },
   'default' => 'binary'
@@ -51,7 +51,7 @@ default['docker']['binary']['url'] = "http://get.docker.io/builds/Linux/#{node['
 
 # Package attributes
 case node['platform']
-when 'ubuntu'
+when 'debian', 'ubuntu'
   default['docker']['package']['distribution'] = 'docker'
   default['docker']['package']['repo_url'] = 'https://get.docker.io/ubuntu'
   default['docker']['package']['repo_key'] = 'https://get.docker.io/gpg'

@@ -1,5 +1,11 @@
-template '/etc/sysconfig/docker' do
-  source 'docker.sysconfig.erb'
+sysv_settings =
+  case node['platform']
+  when 'debian' then 'default'
+  else 'sysconfig'
+  end
+
+template "/etc/#{sysv_settings}/docker" do
+  source "docker.#{sysv_settings}.erb"
   mode '0644'
   owner 'root'
   group 'root'
