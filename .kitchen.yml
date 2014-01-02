@@ -8,32 +8,42 @@ driver_config:
 platforms:
 - name: centos-6
   driver_config:
-    box: opscode-centos-6.4
-    box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_centos-6.4_provisionerless.box
+    box: opscode-centos-6.5
+    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-6.5_chef-provisionerless.box
+    require_chef_omnibus: 11.8
+- name: debian-7
+  driver_config:
+    box: opscode-debian-7.2.0
+    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_debian-7.2.0_chef-provisionerless.box
     require_chef_omnibus: 11.8
 - name: fedora-19
   driver_config:
     box: opscode-fedora-19
-    box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_fedora-19_provisionerless.box
+    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_fedora-19_chef-provisionerless.box
     require_chef_omnibus: 11.8
 - name: ubuntu-12.04
   driver_config:
     box: opscode-ubuntu-12.04
-    box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_ubuntu-12.04_provisionerless.box
+    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-12.04_chef-provisionerless.box
     require_chef_omnibus: 11.8
 - name: ubuntu-12.10
   driver_config:
     box: opscode-ubuntu-12.10
-    box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_ubuntu-12.10_provisionerless.box
+    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-12.10_chef-provisionerless.box
     require_chef_omnibus: 11.8
 - name: ubuntu-13.04
   driver_config:
     box: opscode-ubuntu-13.04
-    box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_ubuntu-13.04_provisionerless.box
+    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-13.04_chef-provisionerless.box
+    require_chef_omnibus: 11.8
+- name: ubuntu-13.10
+  driver_config:
+    box: opscode-ubuntu-13.10
+    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-13.10_chef-provisionerless.box
     require_chef_omnibus: 11.8
 
 suites:
-- name: image_lwrp
+- name: docker-lwrp
   run_list:
   - recipe[minitest-handler]
   - recipe[docker_test::default]
