@@ -15,6 +15,7 @@ This cookbook was inspired by @thoward's docker-cookbook: https://github.com/tho
 ### Platforms
 
 * CentOS 6
+* Debian 7 (experimental)
 * Fedora 19
 * Fedora 20
 * Oracle 6
