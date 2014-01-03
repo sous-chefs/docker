@@ -1,3 +1,7 @@
+## 0.24.2
+
+* Bugfix: [GH-43] Better formatting for container LWRP debug logging
+
 ## 0.24.1
 
 * Bugfix: Explicitly declare depends and supports in metadata
