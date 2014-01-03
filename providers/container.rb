@@ -10,11 +10,12 @@ def load_current_resource
   dps.stdout.each_line do |dps_line|
     next unless dps_line.include?(new_resource.image)
     next if new_resource.command && !dps_line.include?(new_resource.command)
-    container_ps = dps_line.split(/\s\s+/)
-    container_name = container_ps[6] || container_ps[5]
-    @current_resource.container_name(container_name)
-    @current_resource.id(container_ps[0])
-    @current_resource.running(true) if container_ps[4].include?('Up')
+    Chef::Log.debug('Matched docker container: ' + dps_line)
+    ps = dps_line.split(/\s\s+/)
+    name = ps[6] || ps[5]
+    @current_resource.container_name(name)
+    @current_resource.id(ps[0])
+    @current_resource.running(true) if ps[4].include?('Up')
     break
   end
   @current_resource
