@@ -6,7 +6,7 @@ class CommandTimeout < RuntimeError; end
 
 def load_current_resource
   @current_resource = Chef::Resource::DockerContainer.new(new_resource)
-  dps = shell_out('docker ps -a -notrunc', :timeout => new_resource.cmd_timeout)
+  dps = docker_cmd('ps -a -notrunc')
   dps.stdout.each_line do |dps_line|
     next unless dps_line.include?(new_resource.image)
     next if new_resource.command && !dps_line.include?(new_resource.command)
