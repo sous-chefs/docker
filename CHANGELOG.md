@@ -1,3 +1,8 @@
+## 0.24.1
+
+* Bugfix: Explicitly declare depends and supports in metadata
+* Bugfix: Handle container run action if container exists but isn't running
+
 ## 0.24.0
 
 * Bugfix: [GH-42] fix(upstart): Install inotify-tools if using upstart
