@@ -41,7 +41,11 @@ end
 
 action :run do
   unless running?
-    run
+    if exists?
+      start
+    else
+      run
+    end
     new_resource.updated_by_last_action(true)
   end
 end
