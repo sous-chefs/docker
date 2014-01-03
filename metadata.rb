@@ -18,7 +18,7 @@ recipe            'docker::upstart', 'Installs/Starts Docker via Upstart'
 
 supports 'centos', '>= 6.0'
 supports 'debian', '>= 7.0'
-supports 'fedora', '>= 19'
+supports 'fedora', '>= 19.0'
 supports 'oracle', '>= 6.0'
 supports 'redhat', '>= 6.0'
 supports 'ubuntu', '>= 12.04'
