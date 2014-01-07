@@ -269,7 +269,7 @@ Load repository from path:
 Save repository to path:
 
     docker_image "test" do
-      source "/path/to/test.tgz"
+      destination "/path/to/test.tgz"
       action :save
     end
 

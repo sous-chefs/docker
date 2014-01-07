@@ -143,7 +143,7 @@ def remove
 end
 
 def save
-  docker_cmd("save #{new_resource.image_name} > #{new_resource.source}")
+  docker_cmd("save #{new_resource.image_name} > #{new_resource.destination}")
 end
 
 def tag_match
