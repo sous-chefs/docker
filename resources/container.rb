@@ -1,4 +1,4 @@
-actions :commit, :kill, :remove, :restart, :run, :start, :stop, :wait
+actions :commit, :cp, :kill, :remove, :restart, :run, :start, :stop, :wait
 
 default_action :run
 

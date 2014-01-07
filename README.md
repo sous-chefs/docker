@@ -173,6 +173,14 @@ Commit a container with optional repository and tag:
       action :commit
     end
 
+Copying a file from container to host:
+
+    docker_cp 'myApp' do
+      source '/path/to/container/file'
+      destination '/path/to/save/on/host'
+      action :cp
+    end
+
 Stop a running container:
 
     docker_container "busybox" do

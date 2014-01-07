@@ -28,6 +28,13 @@ action :commit do
   end
 end
 
+action :cp do
+  if exists?
+    cp
+    new_resource.updated_by_last_action(true)
+  end
+end
+
 action :kill do
   if running?
     kill
@@ -112,6 +119,10 @@ def container_name
   else
     new_resource.container_name
   end
+end
+
+def cp
+  docker_cmd("cp #{current_resource.id}:#{new_resource.source} #{new_resource.destination}")
 end
 
 def docker_cmd(cmd, timeout = new_resource.cmd_timeout)
