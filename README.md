@@ -222,14 +222,14 @@ Build image from Dockerfile:
 
     docker_image "myImage" do
       tag "myTag"
-      dockerfile myImageDockerfile
+      source "myImageDockerfile"
       action :build
     end
 
 Build image from remote repository:
 
     docker_image "myImage" do
-      image_url "example.com/foo/myImage"
+      source "example.com/foo/myImage"
       tag "myTag"
       action :build
     end
@@ -247,7 +247,7 @@ Pull tagged image:
 Import image from URL:
 
     docker_image "test" do
-      image_url "https://example.com/testimage.tgz"
+      source "https://example.com/testimage.tgz"
       action :import
     end
 
@@ -262,14 +262,14 @@ Import image from URL with repository/tag information:
 Load repository from path:
 
     docker_image "test" do
-      path "/path/to/test.tgz"
+      source "/path/to/test.tgz"
       action :load
     end
 
 Save repository to path:
 
     docker_image "test" do
-      path "/path/to/test.tgz"
+      source "/path/to/test.tgz"
       action :save
     end
 
