@@ -11,6 +11,7 @@ attribute :command, :kind_of => [String]
 attribute :container_name, :kind_of => [String]
 attribute :cookbook, :kind_of => [String], :default => 'docker'
 attribute :cpu_shares, :kind_of => [Fixnum]
+attribute :destination, :kind_of => [String]
 attribute :detach, :kind_of => [TrueClass, FalseClass]
 attribute :dns, :kind_of => [String, Array]
 attribute :entrypoint, :kind_of => [String]
@@ -32,6 +33,7 @@ attribute :publish_exposed_ports, :kind_of => [TrueClass, FalseClass], :default 
 attribute :remove_automatically, :kind_of => [TrueClass, FalseClass], :default => false
 attribute :running, :kind_of => [TrueClass, FalseClass]
 attribute :socket_template, :kind_of => [String]
+attribute :source, :kind_of => [String]
 attribute :stdin, :kind_of => [TrueClass, FalseClass]
 attribute :tty, :kind_of => [TrueClass, FalseClass]
 attribute :user, :kind_of => [String]

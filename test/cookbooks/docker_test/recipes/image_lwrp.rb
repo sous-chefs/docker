@@ -14,7 +14,7 @@ end
 
 docker_image "myImage" do
   tag "myTag"
-  dockerfile fname
+  source fname
   action :build
 end
 

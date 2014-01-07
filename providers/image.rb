@@ -67,13 +67,8 @@ def build
   full_image_name = new_resource.image_name
   full_image_name += ":#{new_resource.tag}" if new_resource.tag
 
-  if new_resource.dockerfile
-    command = "- < #{new_resource.dockerfile}"
-  elsif new_resource.path
-    command = new_resource.path
-  elsif new_resource.image_url
-    command = new_resource.image_url
-  end
+  command = "- < #{new_resource.source}" if File.file?(new_resource.source)
+  command ||= new_resource.source
 
   docker_cmd("build -t #{full_image_name} #{command}")
 end
@@ -95,8 +90,8 @@ end
 
 def import
   import_args = ''
-  if new_resource.image_url
-    import_args += new_resource.image_url
+  if new_resource.source
+    import_args += new_resource.source
     import_args += " #{new_resource.image_name}"
   elsif new_resource.repository
     import_args += " - #{new_resource.repository}"
@@ -111,7 +106,7 @@ def installed?
 end
 
 def load
-  docker_cmd("load < #{new_resource.path}")
+  docker_cmd("load < #{new_resource.source}")
 end
 
 def pull
@@ -127,7 +122,7 @@ def remove
 end
 
 def save
-  docker_cmd("save #{new_resource.image_name} > #{new_resource.path}")
+  docker_cmd("save #{new_resource.image_name} > #{new_resource.source}")
 end
 
 def tag_match

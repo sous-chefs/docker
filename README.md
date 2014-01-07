@@ -116,6 +116,7 @@ command | Command to run in container | String | nil
 container_name | Name for container/service | String | nil
 cookbook | Cookbook to grab any templates | String | docker
 cpu_shares | CPU shares for container | Fixnum | nil
+destination | Destination path/URL for file operation | String | nil
 detach | Detach from container when starting | TrueClass, FalseClass | nil
 dns | DNS servers for container | String, Array | nil
 entrypoint | Overwrite the default entrypoint set by the image | String | nil
@@ -136,6 +137,7 @@ publish_exposed_ports | Publish all exposed ports to the host interfaces | TrueC
 remove_automatically | Automatically remove the container when it exits (incompatible with detach) | TrueClass, FalseClass | false
 running | Container running status (internally set by LWRP) | TrueClass, FalseClass | nil
 socket_template | Template to use for configuring socket (relevent for init_type systemd only) | String | nil
+source | Source path/URL for file operation | String | nil
 stdin | Attach container's stdin | TrueClass, FalseClass | nil
 tty | Allocate a pseudo-tty | TrueClass, FalseClass | nil
 user | User to run container | String | nil
@@ -203,15 +205,17 @@ These attributes are under the `docker_image` LWRP namespace.
 Attribute | Description | Type | Default
 ----------|-------------|------|--------
 cmd_timeout | Timeout for docker commands (catchable exception: `Chef::Provider::Docker::Image::CommandTimeout`) | Integer | `node['docker']['image_cmd_timeout']`
-dockerfile | Dockerfile to build image | String | nil
+destination | Destination path/URL | String | nil
+dockerfile (*DEPRECATED*) | Dockerfile to build image | String | nil
 id | Image ID (internally set by LWRP) | String | nil
 image_name | Image name | String | LWRP name
-image_url | URL to grab image | String | nil
+image_url (*DEPRECATED*) | URL to grab image | String | nil
 installed | Image installation status (internally set by LWRP) | TrueClass, FalseClass | nil
 installed_tag | - | String | nil
-path | Local path to files | String | nil
+path (*DEPRECATED*) | Local path to files | String | nil
 registry | Registry server | String | nil
 repository | Remote repository | String | nil
+source | Source path/URL | String | nil
 tag | Specific tag for image | String | nil
 
 Build image from Dockerfile:
