@@ -136,7 +136,7 @@ def remove
   rm_args = cli_args(
     'link' => new_resource.link
   )
-  shell_out("docker rm #{rm_args} #{current_resource.id}", :timeout => new_resource.cmd_timeout)
+  docker_cmd("rm #{rm_args} #{current_resource.id}")
   service_remove if service?
 end
 
@@ -144,7 +144,7 @@ def restart
   if service?
     service_restart
   else
-    shell_out("docker restart #{current_resource.id}", :timeout => new_resource.cmd_timeout)
+    docker_cmd("restart #{current_resource.id}")
   end
 end
 
