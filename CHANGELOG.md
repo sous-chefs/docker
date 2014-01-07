@@ -1,3 +1,15 @@
+## 0.25.0
+
+* DEPRECATED: image LWRP dockerfile, image_url, and path attributes (replaced with source attribute)
+* Bugfix: Use docker_cmd for container LWRP remove and restart actions
+* Enhancement: Add registry LWRP with login action
+* Enhancement: Standardize on "smart" and reusable destination and source attributes for container and image LWRPs to define paths/URLs for various operations
+* Enhancement: Add commit, cp, export, and kill actions to container LWRP
+* Enhancement: Add insert, load, push, save, and tag actions to image LWRP
+* Enhancement: Add local file and directory support to import action of image LWRP
+* Enhancement: Add Array support to container LWRP link attribute
+* Enhancement: Cleaned up LWRP documentation
+
 ## 0.24.2
 
 * Bugfix: [GH-43] Better formatting for container LWRP debug logging

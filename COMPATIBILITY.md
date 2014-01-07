@@ -51,10 +51,13 @@ LWRP compatibility based on Docker features.
 Docker Command | Cookbook Version
 ---------------|-----------------
 attach         | -
-commit         | -
-export         | -
+commit         | 0.25+
+cp             | 0.25+
+diff           | -
+events         | -
+export         | 0.25+
 inspect        | -
-kill           | -
+kill           | 0.25+
 logs           | -
 port           | -
 start          | 0.3+
@@ -71,8 +74,17 @@ Docker Command | Cookbook Version
 build          | 0.8+
 history        | -
 import         | 0.9+
+insert         | 0.25+
+load           | 0.25+
 pull           | 0.2+
-push           | -
+push           | 0.25+
 rmi            | 0.2+
+save           | 0.25+
 search         | -
-tag            | -
+tag            | 0.25+
+
+#### Registry ####
+
+Docker Command | Cookbook Version
+---------------|-----------------
+login          | 0.25+
