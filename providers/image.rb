@@ -77,6 +77,13 @@ action :save do
   end
 end
 
+action :tag do
+  if installed?
+    tag
+    new_resource.updated_by_last_action(true)
+  end
+end
+
 def build
   full_image_name = new_resource.image_name
   full_image_name += ":#{new_resource.tag}" if new_resource.tag
@@ -177,6 +184,13 @@ end
 
 def save
   docker_cmd("save #{new_resource.image_name} > #{new_resource.destination}")
+end
+
+def tag
+  tag_args = cli_args(
+    'f' => new_resource.force
+  )
+  docker_cmd("tag #{tag_args} #{new_resource.image_name} #{repository_and_tag_args}")
 end
 
 def tag_match

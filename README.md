@@ -233,6 +233,7 @@ Attribute | Description | Type | Default
 cmd_timeout | Timeout for docker commands (catchable exception: `Chef::Provider::Docker::Image::CommandTimeout`) | Integer | `node['docker']['image_cmd_timeout']`
 destination | Destination path/URL | String | nil
 dockerfile (*DEPRECATED*) | Dockerfile to build image | String | nil
+force | Force operation | Boolean | false
 id | Image ID (internally set by LWRP) | String | nil
 image_name | Image name | String | LWRP name
 image_url (*DEPRECATED*) | URL to grab image | String | nil
@@ -274,6 +275,14 @@ Push image (after logging in with `docker_registry`):
 
     docker_image "bflad/test" do
       action :push
+    end
+
+Tag image:
+
+    docker_image 'test' do
+      repository 'bflad'
+      tag '1.0.0'
+      action :tag
     end
 
 Import image from local directory:
