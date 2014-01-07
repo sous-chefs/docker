@@ -102,45 +102,222 @@ url | Repository URL for docker source | String | "https://github.com/dotcloud/d
 
 ## LWRPs
 
+* docker_container: container operations
+* docker_image: image/repository operations
+* docker_registry: registry operations
+
+### Getting Started
+
+Here's a quick example of pulling the latest image and running a container with exposed ports (creates service automatically):
+
+```ruby
+# Pull latest image
+docker_image 'samalba/docker-registry'
+
+# Run container exposing ports
+docker_container 'samalba/docker-registry' do
+  detach true
+  port '5000:5000'
+  env 'SETTINGS_FLAVOR=local'
+  volume '/mnt/docker:/docker-storage'
+end
+```
+
+Maybe you want to automatically update your private registry with changes from your container?
+
+```ruby
+# Login to private registry
+docker_registry 'https://docker-registry.example.com/' do
+  username 'shipper'
+  password 'iloveshipping'
+end
+
+# Pull tagged image
+docker_image 'apps/crowsnest' do
+  tag 'not-latest'
+end
+
+# Run container
+docker_container 'crowsnest'
+
+# Save current timestamp
+timestamp = Time.new.strftime('%Y%m%d%H%M')
+
+# Commit container changes
+docker_container 'crowsnest' do
+  repository 'apps'
+  tag timestamp
+  action :commit
+end
+
+# Push image
+docker_image 'crowsnest' do
+  repository 'apps'
+  tag timestamp
+  action :push
+end
+```
+
+See full documentation for each LWRP and action below for more information.
+
 ### docker_container
+
+Below are the available actions for the LWRP, default being `run`.
+
+These attributes are associated with all LWRP actions.
+
+Attribute | Description | Type | Default
+----------|-------------|------|--------
+cmd_timeout | Timeout for docker commands (catchable exception: `Chef::Provider::Docker::Container::CommandTimeout`)| Integer | `node['docker']['container_cmd_timeout']`
+command | Command to run in or identify container | String | nil
+container_name | Name for container/service | String | nil
+
+#### commit
+
+These attributes are associated with this LWRP action.
+
+Attribute | Description | Type | Default
+----------|-------------|------|--------
+author | Author for commit | String | nil
+message | Message for commit | String | nil
+repository | Remote repository | String | nil
+tag | Specific tag for image | String | nil
+
+Commit a container with optional repository and tag:
+
+```
+docker_container 'myApp' do
+  repository 'myRepo'
+  tag Time.new.strftime("%Y%m%d%H%M")
+  action :commit
+end
+```
+
+#### cp
+
+These attributes are associated with this LWRP action.
+
+Attribute | Description | Type | Default
+----------|-------------|------|--------
+destination | Host path to copy file | String | nil
+source | Container path to get file | String | nil
+
+Copying a file from container to host:
+
+```ruby
+docker_container 'myApp' do
+  source '/path/to/container/file'
+  destination '/path/to/save/on/host'
+  action :cp
+end
+```
+
+#### export
+
+These attributes are associated with this LWRP action.
+
+Attribute | Description | Type | Default
+----------|-------------|------|--------
+destination | Host path to save tarball | String | nil
+
+Exporting container to host:
+
+```ruby
+docker_container 'myApp' do
+  destination '/path/to/save/on/host.tgz'
+  action :export
+end
+```
+
+#### kill
+
+These attributes are associated with this LWRP action.
+
+Attribute | Description | Type | Default
+----------|-------------|------|--------
+cookbook | Cookbook to grab any templates | String | docker
+init_type | Init type for container service handling | FalseClass, String | `node['docker']['container_init_type']`
+init_template | Template to use for init configuration | String | nil
+socket_template | Template to use for configuring socket (relevent for init_type systemd only) | String | nil
+
+Kill a running container:
+
+```ruby
+docker_container 'shipyard' do
+  action :kill
+end
+```
+
+#### remove
+
+These attributes are associated with this LWRP action.
+
+Attribute | Description | Type | Default
+----------|-------------|------|--------
+cookbook | Cookbook to grab any templates | String | docker
+init_type | Init type for container service handling | FalseClass, String | `node['docker']['container_init_type']`
+init_template | Template to use for init configuration | String | nil
+link | Add link to another container | String, Array | nil
+socket_template | Template to use for configuring socket (relevent for init_type systemd only) | String | nil
+
+Remove a container:
+
+```ruby
+docker_container 'shipyard' do
+  action :remove
+end
+```
+
+#### restart
+
+These attributes are associated with this LWRP action.
+
+Attribute | Description | Type | Default
+----------|-------------|------|--------
+cookbook | Cookbook to grab any templates | String | docker
+init_type | Init type for container service handling | FalseClass, String | `node['docker']['container_init_type']`
+init_template | Template to use for init configuration | String | nil
+socket_template | Template to use for configuring socket (relevent for init_type systemd only) | String | nil
+
+Restart a container:
+
+```ruby
+docker_container 'shipyard' do
+  action :restart
+end
+```
+
+#### run
 
 By default, this will handle creating a service for the container when action is run or start. `set['docker']['container_init_type'] = false` or add `init_type false` for LWRP to disable this behavior.
 
-These attributes are under the `docker_container` LWRP namespace.
+These attributes are associated with this LWRP action.
 
 Attribute | Description | Type | Default
 ----------|-------------|------|--------
 attach | Attach container's stdout/stderr and forward all signals to the process | TrueClass, FalseClass | nil
-author | Author for commit | String | nil
 cidfile | File to store container ID | String | nil
-cmd_timeout | Timeout for docker commands (catchable exception: `Chef::Provider::Docker::Container::CommandTimeout`)| Integer | `node['docker']['container_cmd_timeout']`
-command | Command to run in container | String | nil
 container_name | Name for container/service | String | nil
 cookbook | Cookbook to grab any templates | String | docker
 cpu_shares | CPU shares for container | Fixnum | nil
-destination | Destination path/URL for file operation | String | nil
 detach | Detach from container when starting | TrueClass, FalseClass | nil
 dns | DNS servers for container | String, Array | nil
 entrypoint | Overwrite the default entrypoint set by the image | String | nil
 env | Environment variables to pass to container | String, Array | nil
 expose | Expose a port from the container without publishing it to your host | Fixnum, String, Array | nil
 hostname | Container hostname | String | nil
-id | Container ID (internally set by LWRP) | String | nil
 image | Image for container | String | LWRP name
 init_type | Init type for container service handling | FalseClass, String | `node['docker']['container_init_type']`
 init_template | Template to use for init configuration | String | nil
 link | Add link to another container | String, Array | nil
 lxc_conf | Custom LXC options | String, Array | nil
 memory | Set memory limit for container | Fixnum | nil
-message | Message for commit | String | nil
 port | Map network port(s) to the container | Fixnum (*DEPRECATED*), String, Array | nil
 privileged | Give extended privileges | TrueClass, FalseClass | nil
 public_port (*DEPRECATED*) | Map host port to container | Fixnum | nil
 publish_exposed_ports | Publish all exposed ports to the host interfaces | TrueClass, FalseClass | false
 remove_automatically | Automatically remove the container when it exits (incompatible with detach) | TrueClass, FalseClass | false
-running | Container running status (internally set by LWRP) | TrueClass, FalseClass | nil
 socket_template | Template to use for configuring socket (relevent for init_type systemd only) | String | nil
-source | Source path/URL for file operation | String | nil
 stdin | Attach container's stdin | TrueClass, FalseClass | nil
 tty | Allocate a pseudo-tty | TrueClass, FalseClass | nil
 user | User to run container | String | nil
@@ -150,197 +327,294 @@ working_directory | Working directory inside the container | String | nil
 
 Run a container:
 
-    docker_container "busybox" do
-      command "sleep 9999"
-      detach true
-    end
+```ruby
+docker_container 'myImage' do
+  detach true
+end
+```
+
+Run a container via command:
+
+```ruby
+docker_container 'busybox' do
+  command 'sleep 9999'
+  detach true
+end
+```
 
 Run a container from image (docker-registry for example):
 
-    docker_container "docker-registry" do
-      image "samalba/docker-registry"
-      detach true
-      hostname "xx.xx.xx.xx"
-      port 5000
-      env "SETTINGS_FLAVOR=local"
-      volume "/mnt/docker:/docker-storage"
-    end
+```ruby
+docker_container 'docker-registry' do
+  image 'samalba/docker-registry'
+  detach true
+  hostname 'xx.xx.xx.xx'
+  port 5000
+  env 'SETTINGS_FLAVOR=local'
+  volume '/mnt/docker:/docker-storage'
+end
+```
 
-Commit a container with optional repository and tag:
+#### start
 
-    docker_container 'myApp' do
-      repository 'myRepo'
-      tag Time.new.strftime("%Y%m%d%H%M")
-      action :commit
-    end
+These attributes are associated with this LWRP action.
 
-Copying a file from container to host:
-
-    docker_container 'myApp' do
-      source '/path/to/container/file'
-      destination '/path/to/save/on/host'
-      action :cp
-    end
-
-Exporting container to host:
-
-    docker_container 'myApp' do
-      destination '/path/to/save/on/host.tgz'
-      action :export
-    end
-
-Stop a running container:
-
-    docker_container "busybox" do
-      command "sleep 9999"
-      action :stop
-    end
-
-Kill a running container:
-
-    docker_container "busybox" do
-      command "sleep 9999"
-      action :kill
-    end
+Attribute | Description | Type | Default
+----------|-------------|------|--------
+attach | Attach container's stdout/stderr and forward all signals to the cookbook | Cookbook to grab any templates | String | docker
+init_type | Init type for container service handling | FalseClass, String | `node['docker']['container_init_type']`
+init_template | Template to use for init configuration | String | nil
+socket_template | Template to use for configuring socket (relevent for init_type systemd only) | String | nil
+stdin | Attach container's stdin | TrueClass, FalseClass | nil
 
 Start a stopped container:
 
-    docker_container "busybox" do
-      command "sleep 9999"
-      action :start
-    end
+```ruby
+docker_container 'shipyard' do
+  action :start
+end
+```
 
-Restart a container:
+#### stop
 
-    docker_container "busybox" do
-      command "sleep 9999"
-      action :restart
-    end
+These attributes are associated with this LWRP action.
 
-Remove a container:
+Attribute | Description | Type | Default
+----------|-------------|------|--------
+cookbook | Cookbook to grab any templates | String | docker
+init_type | Init type for container service handling | FalseClass, String | `node['docker']['container_init_type']`
+init_template | Template to use for init configuration | String | nil
+socket_template | Template to use for configuring socket (relevent for init_type systemd only) | String | nil
 
-    docker_container "busybox" do
-      command "sleep 9999"
-      action :remove
-    end
+Stop a running container:
+
+```ruby
+docker_container 'shipyard' do
+  action :stop
+end
+```
+
+#### wait
+
+Wait for a container to finish:
+
+```ruby
+docker_container 'busybox' do
+  command 'sleep 9999'
+  action :wait
+end
+```
 
 ### docker_image
 
-These attributes are under the `docker_image` LWRP namespace.
+Below are the available actions for the LWRP, default being `pull`.
+
+These attributes are associated with all LWRP actions.
 
 Attribute | Description | Type | Default
 ----------|-------------|------|--------
 cmd_timeout | Timeout for docker commands (catchable exception: `Chef::Provider::Docker::Image::CommandTimeout`) | Integer | `node['docker']['image_cmd_timeout']`
-destination | Destination path/URL | String | nil
+
+#### build
+
+These attributes are associated with this LWRP action.
+
+Attribute | Description | Type | Default
+----------|-------------|------|--------
 dockerfile (*DEPRECATED*) | Dockerfile to build image | String | nil
-force | Force operation | Boolean | false
-id | Image ID (internally set by LWRP) | String | nil
-image_name | Image name | String | LWRP name
 image_url (*DEPRECATED*) | URL to grab image | String | nil
-installed | Image installation status (internally set by LWRP) | TrueClass, FalseClass | nil
-installed_tag | - | String | nil
 path (*DEPRECATED*) | Local path to files | String | nil
-registry | Registry server | String | nil
-repository | Remote repository | String | nil
-source | Source path/URL | String | nil
-tag | Specific tag for image | String | nil
+source | Source dockerfile/directory/URL to build | String | nil
+tag | Optional tag for image | String | nil
 
 Build image from Dockerfile:
 
-    docker_image "myImage" do
-      tag "myTag"
-      source "myImageDockerfile"
-      action :build
-    end
+```ruby
+docker_image 'myImage' do
+  tag 'myTag'
+  source 'myImageDockerfile'
+  action :build
+end
+```
 
 Build image from remote repository:
 
-    docker_image "myImage" do
-      source "example.com/foo/myImage"
-      tag "myTag"
-      action :build
-    end
+```ruby
+docker_image 'myImage' do
+  source 'example.com/foo/myImage'
+  tag 'myTag'
+  action :build
+end
+```ruby
 
-Pull latest image:
+#### import
 
-    docker_image "busybox"
+These attributes are associated with this LWRP action.
 
-Pull tagged image:
-
-    docker_image "bflad/test" do
-      tag "not-latest"
-    end
-
-Push image (after logging in with `docker_registry`):
-
-    docker_image "bflad/test" do
-      action :push
-    end
-
-Tag image:
-
-    docker_image 'test' do
-      repository 'bflad'
-      tag '1.0.0'
-      action :tag
-    end
+Attribute | Description | Type | Default
+----------|-------------|------|--------
+image_url (*DEPRECATED*) | URL to grab image | String | nil
+repository | Optional repository | String | nil
+source | Source file/directory/URL | String | nil
+tag | Optional tag for image | String | nil
 
 Import image from local directory:
 
-    docker_image 'test' do
-      source '/path/to/test'
-      action :import
-    end
+```ruby
+docker_image 'test' do
+  source '/path/to/test'
+  action :import
+end
+```
 
 Import image from local file:
 
-    docker_image 'test' do
-      source '/path/to/test.tgz'
-      action :import
-    end
+```ruby
+docker_image 'test' do
+  source '/path/to/test.tgz'
+  action :import
+end
+```
 
 Import image from remote URL:
 
-    docker_image "test" do
-      source "https://example.com/testimage.tgz"
-      action :import
-    end
+```ruby
+docker_image 'test' do
+  source 'https://example.com/testimage.tgz'
+  action :import
+end
+```
+
+#### insert
+
+These attributes are associated with this LWRP action.
+
+Attribute | Description | Type | Default
+----------|-------------|------|--------
+destination | Destination path/URL | String | nil
+source | Source path/URL | String | nil
 
 Insert file from remote URL:
 
-    docker_image 'test' do
-      source 'http://example.com/some/file.txt'
-      destination '/container/path/for/some/file.txt'
-      action :insert
-    end
+```ruby
+docker_image 'test' do
+  source 'http://example.com/some/file.txt'
+  destination '/container/path/for/some/file.txt'
+  action :insert
+end
+```
+
+#### load
+
+These attributes are associated with this LWRP action.
+
+Attribute | Description | Type | Default
+----------|-------------|------|--------
+source | Source path/URL | String | nil
 
 Load repository from path:
 
-    docker_image "test" do
-      source "/path/to/test.tgz"
-      action :load
-    end
+```ruby
+docker_image 'test' do
+  source '/path/to/test.tgz'
+  action :load
+end
+```
 
-Save repository to path:
+#### pull
 
-    docker_image "test" do
-      destination "/path/to/test.tgz"
-      action :save
-    end
+These attributes are associated with this LWRP action.
+
+Attribute | Description | Type | Default
+----------|-------------|------|--------
+registry | Optional registry server | String | nil
+tag | Optional tag for image | String | nil
+
+Pull latest image:
+
+```ruby
+docker_image 'busybox'
+```
+
+Pull tagged image:
+
+```ruby
+docker_image 'bflad/test' do
+  tag 'not-latest'
+end
+```
+
+#### push
+
+Push image (after logging in with `docker_registry`):
+
+```ruby
+docker_image 'bflad/test' do
+  action :push
+end
+```
+
+#### remove
 
 Remove image:
 
-    docker_image "busybox" do
-      action :remove
-    end
+```ruby
+docker_image 'busybox' do
+  action :remove
+end
+```
+
+#### save
+
+These attributes are associated with this LWRP action.
+
+Attribute | Description | Type | Default
+----------|-------------|------|--------
+destination | Destination path | String | nil
+
+Save repository to path:
+
+```ruby
+docker_image 'test' do
+  destination '/path/to/test.tgz'
+  action :save
+end
+```
+
+#### tag
+
+These attributes are associated with this LWRP action.
+
+Attribute | Description | Type | Default
+----------|-------------|------|--------
+force | Force operation | Boolean | false
+repository | Remote repository | String | nil
+tag | Specific tag for image | String | nil
+
+Tag image:
+
+```ruby
+docker_image 'test' do
+  repository 'bflad'
+  tag '1.0.0'
+  action :tag
+end
+```ruby
 
 ### docker_registry
 
-These attributes are under the `docker_registry` LWRP namespace.
+These attributes are associated with all LWRP actions.
 
 Attribute | Description | Type | Default
 ----------|-------------|------|--------
 cmd_timeout | Timeout for docker commands (catchable exception: `Chef::Provider::Docker::Registry::CommandTimeout`) | Integer | `node['docker']['registry_cmd_timeout']`
+
+#### login
+
+These attributes are associated with this LWRP action.
+
+Attribute | Description | Type | Default
+----------|-------------|------|--------
 email | Registry email | String | nil
 password | Registry password | String | nil
 username | Registry username | String | nil
