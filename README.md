@@ -255,6 +255,13 @@ Import image from URL with repository/tag information:
       action :import
     end
 
+Load repository from path:
+
+    docker_image "test" do
+      path "/path/to/test.tgz"
+      action :load
+    end
+
 Remove image:
 
     docker_image "busybox" do

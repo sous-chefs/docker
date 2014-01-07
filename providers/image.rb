@@ -35,6 +35,13 @@ action :import do
   end
 end
 
+action :load do
+  unless installed?
+    load
+    new_resource.updated_by_last_action(true)
+  end
+end
+
 action :pull do
   unless installed?
     pull
@@ -94,6 +101,10 @@ end
 
 def installed?
   @current_resource.installed && tag_match
+end
+
+def load
+  docker_cmd("load < #{new_resource.path}")
 end
 
 def pull
