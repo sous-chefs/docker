@@ -445,7 +445,7 @@ docker_image 'myImage' do
   tag 'myTag'
   action :build
 end
-```ruby
+```
 
 #### import
 
@@ -599,7 +599,7 @@ docker_image 'test' do
   tag '1.0.0'
   action :tag
 end
-```ruby
+```
 
 ### docker_registry
 
