@@ -33,10 +33,12 @@ attribute :privileged, :kind_of => [TrueClass, FalseClass]
 attribute :public_port, :kind_of => [Fixnum]
 attribute :publish_exposed_ports, :kind_of => [TrueClass, FalseClass], :default => false
 attribute :remove_automatically, :kind_of => [TrueClass, FalseClass], :default => false
+attribute :repository, :kind_of => [String]
 attribute :running, :kind_of => [TrueClass, FalseClass]
 attribute :socket_template, :kind_of => [String]
 attribute :source, :kind_of => [String]
 attribute :stdin, :kind_of => [TrueClass, FalseClass]
+attribute :tag, :kind_of => [String]
 attribute :tty, :kind_of => [TrueClass, FalseClass]
 attribute :user, :kind_of => [String]
 attribute :volume, :kind_of => [String, Array]
