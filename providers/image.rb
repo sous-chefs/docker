@@ -56,6 +56,13 @@ action :remove do
   end
 end
 
+action :save do
+  if installed?
+    save
+    new_resource.updated_by_last_action(true)
+  end
+end
+
 def build
   full_image_name = new_resource.image_name
   full_image_name += ":#{new_resource.tag}" if new_resource.tag
@@ -117,6 +124,10 @@ end
 
 def remove
   docker_cmd("rmi #{new_resource.image_name}")
+end
+
+def save
+  docker_cmd("save #{new_resource.image_name} > #{new_resource.path}")
 end
 
 def tag_match

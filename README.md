@@ -262,6 +262,13 @@ Load repository from path:
       action :load
     end
 
+Save repository to path:
+
+    docker_image "test" do
+      path "/path/to/test.tgz"
+      action :save
+    end
+
 Remove image:
 
     docker_image "busybox" do
