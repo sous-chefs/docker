@@ -35,6 +35,13 @@ action :cp do
   end
 end
 
+action :export do
+  if exists?
+    export
+    new_resource.updated_by_last_action(true)
+  end
+end
+
 action :kill do
   if running?
     kill
@@ -146,6 +153,10 @@ end
 
 def exists?
   @current_resource.id
+end
+
+def export
+  docker_cmd("export #{current_resource.id} > #{new_resource.destination}")
 end
 
 def kill

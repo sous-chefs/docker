@@ -181,6 +181,13 @@ Copying a file from container to host:
       action :cp
     end
 
+Exporting container to host:
+
+    docker_container 'myApp' do
+      destination '/path/to/save/on/host.tgz'
+      action :export
+    end
+
 Stop a running container:
 
     docker_container "busybox" do
