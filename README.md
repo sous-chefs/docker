@@ -168,6 +168,13 @@ Stop a running container:
       action :stop
     end
 
+Kill a running container:
+
+    docker_container "busybox" do
+      command "sleep 9999"
+      action :kill
+    end
+
 Start a stopped container:
 
     docker_container "busybox" do

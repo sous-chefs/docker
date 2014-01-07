@@ -21,6 +21,13 @@ def load_current_resource
   @current_resource
 end
 
+action :kill do
+  if running?
+    kill
+    new_resource.updated_by_last_action(true)
+  end
+end
+
 action :remove do
   if running?
     stop
@@ -104,6 +111,14 @@ end
 
 def exists?
   @current_resource.id
+end
+
+def kill
+  if service?
+    service_stop
+  else
+    docker_cmd("kill #{current_resource.id}")
+  end
 end
 
 def port
