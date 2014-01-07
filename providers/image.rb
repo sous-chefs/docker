@@ -98,7 +98,7 @@ def build
   elsif new_resource.image_url
     Chef::Log.warn('Using DEPRECATED image_url attribute in docker_image. Please use source attribute instead.')
     command = new_resource.image_url
-  elsif File.file?(new_resource.source)
+  elsif ::File.file?(new_resource.source)
     command = "- < #{new_resource.source}"
   else
     command = new_resource.source
@@ -127,9 +127,9 @@ EOM
 end
 
 def import
-  if File.file?(new_resource.source)
+  if ::File.file?(new_resource.source)
     execute_cmd("cat #{new_resource.source} | docker import - #{repository_and_tag_args}")
-  elsif File.directory?(new_resource.source)
+  elsif ::File.directory?(new_resource.source)
     execute_cmd("tar -c #{new_resource.source} | docker import - #{repository_and_tag_args}")
   else
     import_args = ''
