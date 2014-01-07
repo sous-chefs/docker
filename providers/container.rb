@@ -21,6 +21,13 @@ def load_current_resource
   @current_resource
 end
 
+action :commit do
+  if exists?
+    commit
+    new_resource.updated_by_last_action(true)
+  end
+end
+
 action :kill do
   if running?
     kill
@@ -84,6 +91,19 @@ def cidfile
   else
     new_resource.cidfile
   end
+end
+
+def commit
+  commit_args = cli_args(
+    'author' => new_resource.author,
+    'm' => new_resource.message
+  )
+  commit_end_args = ''
+  if new_resource.repository
+    commit_end_args = new_resource.repository
+    commit_end_args += " #{new_resource.tag}" if new_resource.tag
+  end
+  docker_cmd("commit #{commit_args} #{current_resource.id} #{commit_end_args}")
 end
 
 def container_name

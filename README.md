@@ -110,6 +110,7 @@ These attributes are under the `docker_container` LWRP namespace.
 Attribute | Description | Type | Default
 ----------|-------------|------|--------
 attach | Attach container's stdout/stderr and forward all signals to the process | TrueClass, FalseClass | nil
+author | Author for commit | String | nil
 cidfile | File to store container ID | String | nil
 cmd_timeout | Timeout for docker commands (catchable exception: `Chef::Provider::Docker::Container::CommandTimeout`)| Integer | `node['docker']['container_cmd_timeout']`
 command | Command to run in container | String | nil
@@ -130,6 +131,7 @@ init_template | Template to use for init configuration | String | nil
 link | Add link to another container | String, Array | nil
 lxc_conf | Custom LXC options | String, Array | nil
 memory | Set memory limit for container | Fixnum | nil
+message | Message for commit | String | nil
 port | Map network port(s) to the container | Fixnum (*DEPRECATED*), String, Array | nil
 privileged | Give extended privileges | TrueClass, FalseClass | nil
 public_port (*DEPRECATED*) | Map host port to container | Fixnum | nil
@@ -161,6 +163,14 @@ Run a container from image (docker-registry for example):
       port 5000
       env "SETTINGS_FLAVOR=local"
       volume "/mnt/docker:/docker-storage"
+    end
+
+Commit a container with optional repository and tag:
+
+    docker_container 'myApp' do
+      repository 'myRepo'
+      tag Time.new.strftime("%Y%m%d%H%M")
+      action :commit
     end
 
 Stop a running container:

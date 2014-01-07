@@ -1,10 +1,11 @@
-actions :kill, :remove, :restart, :run, :start, :stop, :wait
+actions :commit, :kill, :remove, :restart, :run, :start, :stop, :wait
 
 default_action :run
 
 attribute :image, :name_attribute => true
 
 attribute :attach, :kind_of => [TrueClass, FalseClass]
+attribute :author, :kind_of => [String]
 attribute :cidfile, :kind_of => [String]
 attribute :cmd_timeout, :kind_of => [Integer], :default => node['docker']['container_cmd_timeout']
 attribute :command, :kind_of => [String]
@@ -24,6 +25,7 @@ attribute :init_template, :kind_of => [String]
 attribute :link, :kind_of => [String, Array]
 attribute :lxc_conf, :kind_of => [String, Array]
 attribute :memory, :kind_of => [Fixnum]
+attribute :message, :kind_of => [String]
 # Fixnum kind_of port attribute is DEPRECATED
 attribute :port, :kind_of => [Fixnum, String, Array]
 attribute :privileged, :kind_of => [TrueClass, FalseClass]
