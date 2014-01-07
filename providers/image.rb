@@ -56,6 +56,13 @@ action :pull do
   end
 end
 
+action :push do
+  if installed?
+    push
+    new_resource.updated_by_last_action(true)
+  end
+end
+
 action :remove do
   if installed?
     remove
@@ -149,6 +156,10 @@ def pull
     't' => new_resource.tag
   )
   docker_cmd("pull #{new_resource.image_name} #{pull_args}")
+end
+
+def push
+  docker_cmd("push #{new_resource.image_name}")
 end
 
 def remove

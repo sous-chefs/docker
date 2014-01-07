@@ -270,6 +270,12 @@ Pull tagged image:
       tag "not-latest"
     end
 
+Push image (after logging in with `docker_registry`):
+
+    docker_image "bflad/test" do
+      action :push
+    end
+
 Import image from local directory:
 
     docker_image 'test' do
