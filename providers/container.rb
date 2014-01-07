@@ -115,7 +115,7 @@ def commit
   commit_end_args = ''
   if new_resource.repository
     commit_end_args = new_resource.repository
-    commit_end_args += " #{new_resource.tag}" if new_resource.tag
+    commit_end_args += ":#{new_resource.tag}" if new_resource.tag
   end
   docker_cmd("commit #{commit_args} #{current_resource.id} #{commit_end_args}")
 end
