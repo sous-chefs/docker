@@ -57,6 +57,7 @@ init_type | Init type for docker ("systemd", "sysv", or "upstart") | String | au
 install_dir | Installation directory for docker binary | String | auto-detected (see attributes/default.rb)
 install_type | Installation type for docker ("binary", "package" or "source") | String | "package"
 options | Additional options to pass to docker. These could be flags like "-api-enable-cors". | String | nil
+registry_cmd_timeout | registry LWRP default cmd_timeout seconds | Fixnum | 60
 version | Version of docker | String | nil
 
 ### Binary Attributes
@@ -316,6 +317,39 @@ Remove image:
 
     docker_image "busybox" do
       action :remove
+    end
+
+### docker_registry
+
+These attributes are under the `docker_registry` LWRP namespace.
+
+Attribute | Description | Type | Default
+----------|-------------|------|--------
+cmd_timeout | Timeout for docker commands (catchable exception: `Chef::Provider::Docker::Registry::CommandTimeout`) | Integer | `node['docker']['registry_cmd_timeout']`
+email | Registry email | String | nil
+password | Registry password | String | nil
+username | Registry username | String | nil
+
+Log into public registry:
+
+    docker_registry 'https://index.docker.io/v1/' do
+      username 'publicme'
+      password 'hope_this_is_in_encrypted_databag'
+    end
+
+Log into private registry with optional port:
+
+    docker_registry 'https://docker-registry.example.com:8443/' do
+      username 'privateme'
+      password 'still_hope_this_is_in_encrypted_databag'
+    end
+
+Register with registry:
+
+    docker_registry 'https://index.docker.io/v1/' do
+      email 'publicme@example.com'
+      username 'publicme'
+      password 'hope_this_is_in_encrypted_databag'
     end
 
 ## Usage
