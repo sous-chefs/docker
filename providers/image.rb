@@ -106,20 +106,22 @@ EOM
 end
 
 def import
-  import_args = ''
-  if new_resource.image_url
-    Chef::Log.warn('Using DEPRECATED image_url attribute in docker_image. Please use source attribute instead.')
-    import_args += new_resource.image_url
-    import_args += " #{new_resource.image_name}"
-  elsif new_resource.source
-    import_args += new_resource.source
-    import_args += " #{new_resource.image_name}"
-  elsif new_resource.repository
-    import_args += " - #{new_resource.repository}"
-    import_args += " #{new_resource.tag}" if new_resource.tag
+  if File.file?(new_resource.source)
+    execute_cmd("cat #{new_resource.source} | docker import - #{repository_and_tag_args}")
+  elsif File.directory?(new_resource.source)
+    execute_cmd("tar -c #{new_resource.source} | docker import - #{repository_and_tag_args}")
+  else
+    import_args = ''
+    if new_resource.image_url
+      Chef::Log.warn('Using DEPRECATED image_url attribute in docker_image. Please use source attribute instead.')
+      import_args += new_resource.image_url
+      import_args += " #{new_resource.image_name}"
+    elsif new_resource.source
+      import_args += new_resource.source
+      import_args += " #{new_resource.image_name}"
+    end
+    docker_cmd("import #{import_args} #{repository_and_tag_args}")
   end
-
-  docker_cmd("import #{import_args}")
 end
 
 def installed?
@@ -140,6 +142,15 @@ end
 
 def remove
   docker_cmd("rmi #{new_resource.image_name}")
+end
+
+def repository_and_tag_args
+  docker_cmd_args = ''
+  if new_resource.repository
+    docker_cmd_args = new_resource.repository
+    docker_cmd_args += ":#{new_resource.tag}" if new_resource.tag
+  end
+  docker_cmd_args
 end
 
 def save

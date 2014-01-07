@@ -269,18 +269,24 @@ Pull tagged image:
       tag "not-latest"
     end
 
-Import image from URL:
+Import image from local directory:
 
-    docker_image "test" do
-      source "https://example.com/testimage.tgz"
+    docker_image 'test' do
+      source '/path/to/test'
       action :import
     end
 
-Import image from URL with repository/tag information:
+Import image from local file:
+
+    docker_image 'test' do
+      source '/path/to/test.tgz'
+      action :import
+    end
+
+Import image from remote URL:
 
     docker_image "test" do
-      repository "bflad/test"
-      tag "not-latest"
+      source "https://example.com/testimage.tgz"
       action :import
     end
 
