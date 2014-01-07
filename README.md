@@ -18,7 +18,7 @@ This cookbook was inspired by @thoward's docker-cookbook: https://github.com/tho
 * Debian 7 (experimental)
 * Fedora 19
 * Fedora 20
-* Oracle 6
+* Oracle 6 (experimental)
 * RHEL 6
 * Ubuntu 12.04
 * Ubuntu 12.10
@@ -31,13 +31,14 @@ This cookbook was inspired by @thoward's docker-cookbook: https://github.com/tho
 
 * [apt](https://github.com/opscode-cookbooks/apt)
 * [git](https://github.com/opscode-cookbooks/git)
-* [yum](https://github.com/opscode-cookbooks/yum)
+* [yum-epel](https://github.com/opscode-cookbooks/yum-epel)
 
 Third-Party Cookbooks
 
 * [golang](https://github.com/NOX73/chef-golang)
 * [lxc](https://github.com/hw-cookbooks/lxc)
 * [modules](https://github.com/Youscribe/modules-cookbook)
+* [sysctl](https://github.com/onehealth-cookbooks/sysctl)
 
 ## Attributes
 
