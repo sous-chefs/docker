@@ -67,8 +67,21 @@ def build
   full_image_name = new_resource.image_name
   full_image_name += ":#{new_resource.tag}" if new_resource.tag
 
-  command = "- < #{new_resource.source}" if File.file?(new_resource.source)
-  command ||= new_resource.source
+  # DEPRECATED: support for dockerfile, image_url, and path attributes
+  if new_resource.dockerfile
+    Chef::Log.warn('Using DEPRECATED dockerfile attribute in docker_image. Please use source attribute instead.')
+    command = "- < #{new_resource.dockerfile}"
+  elsif new_resource.path
+    Chef::Log.warn('Using DEPRECATED path attribute in docker_image. Please use source attribute instead.')
+    command = new_resource.path
+  elsif new_resource.image_url
+    Chef::Log.warn('Using DEPRECATED image_url attribute in docker_image. Please use source attribute instead.')
+    command = new_resource.image_url
+  elsif File.file?(new_resource.source)
+    command = "- < #{new_resource.source}"
+  else
+    command = new_resource.source
+  end
 
   docker_cmd("build -t #{full_image_name} #{command}")
 end
@@ -94,7 +107,11 @@ end
 
 def import
   import_args = ''
-  if new_resource.source
+  if new_resource.image_url
+    Chef::Log.warn('Using DEPRECATED image_url attribute in docker_image. Please use source attribute instead.')
+    import_args += new_resource.image_url
+    import_args += " #{new_resource.image_name}"
+  elsif new_resource.source
     import_args += new_resource.source
     import_args += " #{new_resource.image_name}"
   elsif new_resource.repository
