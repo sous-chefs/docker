@@ -35,6 +35,13 @@ action :import do
   end
 end
 
+action :insert do
+  if installed?
+    insert
+    new_resource.updated_by_last_action(true)
+  end
+end
+
 action :load do
   unless installed?
     load
@@ -122,6 +129,10 @@ def import
     end
     docker_cmd("import #{import_args} #{repository_and_tag_args}")
   end
+end
+
+def insert
+  docker_cmd("insert #{new_resource.image_name} #{new_resource.source} #{new_resource.destination}")
 end
 
 def installed?

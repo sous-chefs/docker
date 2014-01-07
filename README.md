@@ -290,6 +290,14 @@ Import image from remote URL:
       action :import
     end
 
+Insert file from remote URL:
+
+    docker_image 'test' do
+      source 'http://example.com/some/file.txt'
+      destination '/container/path/for/some/file.txt'
+      action :insert
+    end
+
 Load repository from path:
 
     docker_image "test" do
