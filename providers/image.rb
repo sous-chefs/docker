@@ -74,14 +74,18 @@ def build
 end
 
 def docker_cmd(cmd, timeout = new_resource.cmd_timeout)
-  Chef::Log.debug('Executing: docker ' + cmd)
+  execute_cmd('docker ' + cmd, timeout)
+end
+
+def execute_cmd(cmd, timeout = new_resource.cmd_timeout)
+  Chef::Log.debug('Executing: ' + cmd)
   begin
-    shell_out('docker ' + cmd, :timeout => timeout)
+    shell_out(cmd, :timeout => timeout)
   rescue Mixlib::ShellOut::CommandTimeout
     raise CommandTimeout, <<-EOM
 
-Docker command timed out:
-docker #{cmd}
+Command timed out:
+#{cmd}
 
 Please adjust node image_cmd_timeout attribute or this docker_image cmd_timeout attribute if necessary.
 EOM
