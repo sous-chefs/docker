@@ -1,4 +1,4 @@
-actions :pull, :remove, :build, :import
+actions :build, :import, :pull, :remove
 
 default_action :pull
 
