@@ -126,7 +126,7 @@ id | Container ID (internally set by LWRP) | String | nil
 image | Image for container | String | LWRP name
 init_type | Init type for container service handling | FalseClass, String | `node['docker']['container_init_type']`
 init_template | Template to use for init configuration | String | nil
-link | Add link to another container | String | nil
+link | Add link to another container | String, Array | nil
 lxc_conf | Custom LXC options | String, Array | nil
 memory | Set memory limit for container | Fixnum | nil
 port | Map network port(s) to the container | Fixnum (*DEPRECATED*), String, Array | nil

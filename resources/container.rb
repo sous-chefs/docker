@@ -20,7 +20,7 @@ attribute :hostname, :kind_of => [String]
 attribute :id, :kind_of => [String]
 attribute :init_type, :kind_of => [FalseClass, String], :default => node['docker']['container_init_type']
 attribute :init_template, :kind_of => [String]
-attribute :link, :kind_of => [String]
+attribute :link, :kind_of => [String, Array]
 attribute :lxc_conf, :kind_of => [String, Array]
 attribute :memory, :kind_of => [Fixnum]
 # Fixnum kind_of port attribute is DEPRECATED

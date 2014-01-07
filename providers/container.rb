@@ -144,7 +144,7 @@ def run
     'expose' => [*new_resource.expose],
     'h' => new_resource.hostname,
     'i' => new_resource.stdin,
-    'link' => new_resource.link,
+    'link' => [*new_resource.link],
     'lxc-conf' => [*new_resource.lxc_conf],
     'm' => new_resource.memory,
     'name' => container_name,
