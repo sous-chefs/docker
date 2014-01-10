@@ -34,6 +34,7 @@ attribute :public_port, :kind_of => [Fixnum]
 attribute :publish_exposed_ports, :kind_of => [TrueClass, FalseClass], :default => false
 attribute :remove_automatically, :kind_of => [TrueClass, FalseClass], :default => false
 attribute :repository, :kind_of => [String]
+attribute :run, :kind_of => [String]
 attribute :running, :kind_of => [TrueClass, FalseClass]
 attribute :socket_template, :kind_of => [String]
 attribute :source, :kind_of => [String]

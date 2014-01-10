@@ -110,7 +110,8 @@ end
 def commit
   commit_args = cli_args(
     'author' => new_resource.author,
-    'm' => new_resource.message
+    'm' => new_resource.message,
+    'run' => new_resource.run
   )
   commit_end_args = ''
   if new_resource.repository

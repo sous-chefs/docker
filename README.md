@@ -181,14 +181,16 @@ Attribute | Description | Type | Default
 author | Author for commit | String | nil
 message | Message for commit | String | nil
 repository | Remote repository | String | nil
+run | Configuration to be applied when the image is launched with `docker run` | String | nil
 tag | Specific tag for image | String | nil
 
-Commit a container with optional repository and tag:
+Commit a container with optional repository, run specification, and tag:
 
 ```
 docker_container 'myApp' do
   repository 'myRepo'
   tag Time.new.strftime("%Y%m%d%H%M")
+  run '{"Cmd": ["cat", "/world"], "PortSpecs": ["22"]}'
   action :commit
 end
 ```
