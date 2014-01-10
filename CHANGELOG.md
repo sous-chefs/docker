@@ -1,3 +1,7 @@
+## 0.25.1
+
+* Bugfix: [GH-44] Add missing run attribute for commit action on container LWRP
+
 ## 0.25.0
 
 * DEPRECATED: image LWRP dockerfile, image_url, and path attributes (replaced with source attribute)
