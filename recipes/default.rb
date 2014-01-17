@@ -9,7 +9,7 @@ when 'debian', 'ubuntu'
       value 1
     end
   elsif node['platform'] == 'ubuntu' && Chef::VersionConstraint.new('< 13.10').include?(node['platform_version'])
-    include_recipe 'docker::aufs'
+    include_recipe 'docker::aufs' unless node['docker']['skip_aufs']
   end
 when 'oracle'
   include_recipe 'docker::cgroups'

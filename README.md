@@ -55,6 +55,7 @@ http_proxy | HTTP_PROXY environment variable | String | nil
 image_cmd_timeout | image LWRP default cmd_timeout seconds | Fixnum | 300
 init_type | Init type for docker ("systemd", "sysv", or "upstart") | String | auto-detected (see attributes/default.rb)
 install_dir | Installation directory for docker binary | String | auto-detected (see attributes/default.rb)
+skip_aufs | skip the aufs recipe | Boolean | false
 install_type | Installation type for docker ("binary", "package" or "source") | String | "package"
 options | Additional options to pass to docker. These could be flags like "-api-enable-cors". | String | nil
 registry_cmd_timeout | registry LWRP default cmd_timeout seconds | Fixnum | 60

@@ -30,6 +30,8 @@ default['docker']['init_type'] = value_for_platform(
 
 default['docker']['container_init_type'] = node['docker']['init_type']
 
+default['docker']['skip_aufs'] = false
+
 default['docker']['install_type'] = value_for_platform(
   %w{ centos debian fedora redhat ubuntu } => {
     'default' => 'package'
