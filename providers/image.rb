@@ -88,6 +88,11 @@ def build
   full_image_name = new_resource.image_name
   full_image_name += ":#{new_resource.tag}" if new_resource.tag
 
+  build_args = cli_args(
+    'rm' => new_resource.rm,
+    't' => full_image_name
+  )
+
   # DEPRECATED: support for dockerfile, image_url, and path attributes
   if new_resource.dockerfile
     Chef::Log.warn('Using DEPRECATED dockerfile attribute in docker_image. Please use source attribute instead.')
@@ -104,7 +109,7 @@ def build
     command = new_resource.source
   end
 
-  docker_cmd("build -rm=#{new_resource.rm} -t #{full_image_name} #{command}")
+  docker_cmd("build #{build_args} #{command}")
 end
 
 def docker_cmd(cmd, timeout = new_resource.cmd_timeout)
