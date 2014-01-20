@@ -426,9 +426,9 @@ Attribute | Description | Type | Default
 dockerfile (*DEPRECATED*) | Dockerfile to build image | String | nil
 image_url (*DEPRECATED*) | URL to grab image | String | nil
 path (*DEPRECATED*) | Local path to files | String | nil
+rm | Remove intermediate containers after a successful build | TrueClass, FalseClass | false
 source | Source dockerfile/directory/URL to build | String | nil
 tag | Optional tag for image | String | nil
-rm | Remove intermediate containers after a successful build | TrueClass, FalseClass | false
 
 Build image from Dockerfile:
 
