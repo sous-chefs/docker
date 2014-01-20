@@ -104,7 +104,7 @@ def build
     command = new_resource.source
   end
 
-  docker_cmd("build -t #{full_image_name} #{command}")
+  docker_cmd("build -rm=#{new_resource.rm} -t #{full_image_name} #{command}")
 end
 
 def docker_cmd(cmd, timeout = new_resource.cmd_timeout)
