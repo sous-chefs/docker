@@ -44,7 +44,18 @@ default['docker']['install_dir'] =
   else '/usr/bin'
   end
 
+default['docker']['storage_type'] = value_for_platform(
+  %w{ centos fedora oracle redhat } => {
+    'default' => 'devmapper'
+  },
+  %w{ debian ubuntu } => {
+    'default' => 'aufs'
+  },
+  'default' => nil
+)
+
 default['docker']['version'] = nil
+default['docker']['virtualization_type'] = 'lxc'
 
 # Binary attributes
 default['docker']['binary']['version'] = node['docker']['version'] || 'latest'
