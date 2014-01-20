@@ -89,6 +89,7 @@ def build
   full_image_name += ":#{new_resource.tag}" if new_resource.tag
 
   build_args = cli_args(
+    'no-cache' => new_resource.no_cache,
     'rm' => new_resource.rm,
     't' => full_image_name
   )

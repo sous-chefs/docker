@@ -425,6 +425,7 @@ Attribute | Description | Type | Default
 ----------|-------------|------|--------
 dockerfile (*DEPRECATED*) | Dockerfile to build image | String | nil
 image_url (*DEPRECATED*) | URL to grab image | String | nil
+no_cache | Do not use the cache when building the image | TrueClass, FalseClass | false
 path (*DEPRECATED*) | Local path to files | String | nil
 rm | Remove intermediate containers after a successful build | TrueClass, FalseClass | false
 source | Source dockerfile/directory/URL to build | String | nil
