@@ -6,7 +6,7 @@ sysv_settings =
 
 template '/etc/init.d/docker' do
   source "docker.sysv.erb"
-  mode '0644'
+  mode '0755'
   owner 'root'
   group 'root'
   not_if 'test -f /etc/init.d/docker'
