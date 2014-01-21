@@ -1,3 +1,12 @@
+## 0.26.0
+
+* Bugfix: Add SysV init script for binary installs
+* Enhancement: Add storage_type and virtualization_type attributes
+* Enhancement: Initial devmapper support for binary installs on CentOS/Ubuntu
+* Enhancement: [GH-47] Debian-specific container SysV init script
+* Enhancement: [GH-46] Add rm attribute for build action on image LWRP
+* Enhancement: Add no_cache attribute for build action on image LWRP
+
 ## 0.25.1
 
 * Bugfix: [GH-44] Add missing run attribute for commit action on container LWRP
