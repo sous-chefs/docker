@@ -22,7 +22,7 @@
 # Source function library.
 . /etc/rc.d/init.d/functions
 
-exec="/usr/bin/docker"
+exec="<%= node['docker']['install_dir'] %>/docker"
 prog="docker"
 pidfile="/var/run/$prog.pid"
 lockfile="/var/lock/subsys/$prog"
