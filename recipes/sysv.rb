@@ -5,7 +5,7 @@ sysv_settings =
   end
 
 template '/etc/init.d/docker' do
-  source "docker.sysv.erb"
+  source 'docker.sysv.erb'
   mode '0755'
   owner 'root'
   group 'root'
