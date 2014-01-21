@@ -95,6 +95,7 @@ url | Repository URL for docker source | String | "https://github.com/dotcloud/d
 * `recipe[docker::aufs]` Installs/Loads AUFS Linux module
 * `recipe[docker::binary]` Installs Docker binary
 * `recipe[docker::cgroups]` Installs/configures default platform Control Groups support
+* `recipe[docker::devmapper]` Installs/Configures Device Mapper
 * `recipe[docker::lxc]` Installs/configures default platform LXC support
 * `recipe[docker::package]` Installs Docker via package
 * `recipe[docker::source]` Installs Docker via source
