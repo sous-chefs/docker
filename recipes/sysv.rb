@@ -4,6 +4,14 @@ sysv_settings =
   else 'sysconfig'
   end
 
+template '/etc/init.d/docker' do
+  source "docker.sysv.erb"
+  mode '0644'
+  owner 'root'
+  group 'root'
+  not_if 'test -f /etc/init.d/docker'
+end
+
 template "/etc/#{sysv_settings}/docker" do
   source "docker.#{sysv_settings}.erb"
   mode '0644'
