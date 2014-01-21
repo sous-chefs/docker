@@ -3,22 +3,23 @@ when 'debian', 'ubuntu'
   include_recipe 'apt'
   package 'apt-transport-https'
   package 'bsdtar'
-  include_recipe 'docker::lxc' unless node['docker']['install_type'] == 'package'
-  if node['platform'] == 'debian'
-    sysctl_param 'net.ipv4.ip_forward' do
-      value 1
-    end
-  elsif node['platform'] == 'ubuntu' && Chef::VersionConstraint.new('< 13.10').include?(node['platform_version'])
-    include_recipe 'docker::aufs'
+  sysctl_param 'net.ipv4.ip_forward' do
+    value 1
+    only_if { node['platform'] == 'debian' }
   end
 when 'oracle'
   include_recipe 'docker::cgroups'
-  include_recipe 'docker::lxc'
 end
 
-if node['docker']['install_type'] == 'source'
-  include_recipe 'golang'
-  include_recipe 'git'
+unless node['docker']['install_type'] == 'package'
+  if node['platform'] == 'ubuntu' && Chef::VersionConstraint.new('< 13.10').include?(node['platform_version'])
+    include_recipe "docker::#{node['docker']['storage_type']}" if node['docker']['storage_type']
+  end
+  include_recipe "docker::#{node['docker']['virtualization_type']}" if node['docker']['virtualization_type']
+  if node['docker']['install_type'] == 'source'
+    include_recipe 'golang'
+    include_recipe 'git'
+  end
 end
 
 include_recipe "docker::#{node['docker']['install_type']}"
