@@ -14,7 +14,6 @@ module Helpers
           cli_line += " -#{arg} #{value}"
         when TrueClass
           cli_line += " -#{arg}=true"
-          #cli_line += " -#{arg}"
         end
       end
       cli_line
