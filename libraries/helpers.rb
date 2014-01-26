@@ -8,13 +8,13 @@ module Helpers
         case value
         when Array
           cli_line += value.map { |a| " -#{arg} " + a }.join
-        # when FalseClass
-        #   cli_line += " -#{arg}=false"
+        when FalseClass
+          cli_line += " -#{arg}=false"
         when Fixnum, Integer, String
           cli_line += " -#{arg} #{value}"
         when TrueClass
-          # cli_line += " -#{arg}=true"
-          cli_line += " -#{arg}"
+          cli_line += " -#{arg}=true"
+          #cli_line += " -#{arg}"
         end
       end
       cli_line
