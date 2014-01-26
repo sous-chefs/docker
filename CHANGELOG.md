@@ -1,3 +1,7 @@
+## 0.27.0
+
+* Enhancement: [GH-48]: Accept FalseClass CLI arguments (also explicitly declare =true for TrueClass CLI arguments)
+
 ## 0.26.0
 
 * Bugfix: Add SysV init script for binary installs
