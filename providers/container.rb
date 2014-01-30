@@ -13,6 +13,7 @@ def load_current_resource
     Chef::Log.debug('Matched docker container: ' + dps_line.squeeze(' '))
     ps = dps_line.split(/\s\s+/)
     name = ps[6] || ps[5]
+    next if new_resource.container_name && new_resource.container_name != name
     @current_resource.container_name(name)
     @current_resource.id(ps[0])
     @current_resource.running(true) if ps[4].include?('Up')
