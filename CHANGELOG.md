@@ -1,3 +1,7 @@
+## 0.27.1
+
+* Bugfix: [GH-51]: container LWRP current_resource attribute matching should also depend on container_name
+
 ## 0.27.0
 
 * Enhancement: [GH-48]: Accept FalseClass CLI arguments (also explicitly declare =true for TrueClass CLI arguments)
