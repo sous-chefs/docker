@@ -1,7 +1,7 @@
 # Base hostname
 cookbook = 'docker'
 
-Vagrant.configure("2") do |config|
+Vagrant.configure('2') do |config|
   config.berkshelf.enabled = true
   config.cache.auto_detect = true
   config.omnibus.chef_version = :latest
@@ -74,8 +74,8 @@ Vagrant.configure("2") do |config|
 
   config.vm.network :private_network, ip: '192.168.50.10'
 
-  config.vm.provider "virtualbox" do |v|
-    v.customize ["modifyvm", :id, "--memory", 1024]
+  config.vm.provider 'virtualbox' do |v|
+    v.customize ['modifyvm', :id, '--memory', 1024]
   end
 
   config.vm.provision :chef_solo do |chef|
