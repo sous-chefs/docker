@@ -38,5 +38,5 @@ def login
     'p' => new_resource.password,
     'u' => new_resource.username
   )
-  docker_cmd("login #{new_resource.server} #{login_args}")
+  docker_cmd!("login #{new_resource.server} #{login_args}")
 end

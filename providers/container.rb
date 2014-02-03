@@ -7,7 +7,7 @@ class CommandTimeout < RuntimeError; end
 def load_current_resource
   @current_resource = Chef::Resource::DockerContainer.new(new_resource)
   wait_until_ready!
-  dps = docker_cmd('ps -a -notrunc')
+  dps = docker_cmd!('ps -a -notrunc')
   dps.stdout.each_line do |dps_line|
     ps = dps(dps_line)
     unless container_id_matches?(ps['id'])
@@ -122,7 +122,7 @@ def commit
     commit_end_args = new_resource.repository
     commit_end_args += ":#{new_resource.tag}" if new_resource.tag
   end
-  docker_cmd("commit #{commit_args} #{current_resource.id} #{commit_end_args}")
+  docker_cmd!("commit #{commit_args} #{current_resource.id} #{commit_end_args}")
 end
 
 def container_command_matches_if_exists?(command)
@@ -152,7 +152,7 @@ def container_name
 end
 
 def cp
-  docker_cmd("cp #{current_resource.id}:#{new_resource.source} #{new_resource.destination}")
+  docker_cmd!("cp #{current_resource.id}:#{new_resource.source} #{new_resource.destination}")
 end
 
 def docker_cmd(cmd, timeout = new_resource.cmd_timeout)
@@ -191,14 +191,14 @@ def exists?
 end
 
 def export
-  docker_cmd("export #{current_resource.id} > #{new_resource.destination}")
+  docker_cmd!("export #{current_resource.id} > #{new_resource.destination}")
 end
 
 def kill
   if service?
     service_stop
   else
-    docker_cmd("kill #{current_resource.id}")
+    docker_cmd!("kill #{current_resource.id}")
   end
 end
 
@@ -217,7 +217,7 @@ def remove
   rm_args = cli_args(
     'link' => new_resource.link
   )
-  docker_cmd("rm #{rm_args} #{current_resource.id}")
+  docker_cmd!("rm #{rm_args} #{current_resource.id}")
   service_remove if service?
 end
 
@@ -225,7 +225,7 @@ def restart
   if service?
     service_restart
   else
-    docker_cmd("restart #{current_resource.id}")
+    docker_cmd!("restart #{current_resource.id}")
   end
 end
 
@@ -254,7 +254,7 @@ def run
     'volumes-from' => new_resource.volumes_from,
     'w' => new_resource.working_directory
   )
-  dr = docker_cmd("run #{run_args} #{new_resource.image} #{new_resource.command}")
+  dr = docker_cmd!("run #{run_args} #{new_resource.image} #{new_resource.command}")
   dr.error!
   new_resource.id(dr.stdout.chomp)
   service_create if service?
@@ -438,7 +438,7 @@ def start
   if service?
     service_create
   else
-    docker_cmd("start #{start_args} #{current_resource.id}")
+    docker_cmd!("start #{start_args} #{current_resource.id}")
   end
 end
 
@@ -449,10 +449,10 @@ def stop
   if service?
     service_stop
   else
-    docker_cmd("stop #{stop_args} #{current_resource.id}", (new_resource.cmd_timeout + 15))
+    docker_cmd!("stop #{stop_args} #{current_resource.id}", (new_resource.cmd_timeout + 15))
   end
 end
 
 def wait
-  docker_cmd("wait #{current_resource.id}")
+  docker_cmd!("wait #{current_resource.id}")
 end

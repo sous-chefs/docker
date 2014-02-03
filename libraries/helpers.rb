@@ -104,5 +104,19 @@ EOM
         raise CommandTimeout, command_timeout_error_message
       end
     end
+
+    # Executes the given docker command with the specified timeout. Raises an
+    # exception if the command returns a non-zero exit code.
+    def docker_cmd!(cmd, timeout = new_resource.cmd_timeout)
+      execute_cmd!('docker ' + cmd, timeout)
+    end
+
+    # Executes teh given command with the specified timeout. Raises an
+    # exception if the command returns a non-zero exit code.
+    def execute_cmd!(cmd, timeout = new_resource.cmd_timeout)
+      cmd = execute_cmd(cmd, timeout)
+      cmd.error!
+      cmd
+    end
   end
 end
