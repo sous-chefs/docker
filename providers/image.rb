@@ -49,12 +49,20 @@ action :load do
   end
 end
 
-action :pull do
+action :pull_if_missing do
   unless installed?
     pull
     new_resource.updated_by_last_action(true)
   end
 end
+
+action :pull do
+  old_hash = docker_inspect(new_resource.image_name)[:id]
+  pull
+  new_hash = docker_inspect(new_resource.image_name)[:id]
+  new_resource.updated_by_last_action(new_hash != old_hash)
+end
+
 
 action :push do
   if installed?
