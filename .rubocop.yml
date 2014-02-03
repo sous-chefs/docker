@@ -2,6 +2,7 @@ AllCops:
   Excludes:
     - test/**
     - vendor/**
+    - ruby/**
 
 AlignParameters:
   Enabled: false
