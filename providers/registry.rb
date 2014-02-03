@@ -6,6 +6,7 @@ class CommandTimeout < RuntimeError; end
 
 def load_current_resource
   @current_resource = Chef::Resource::DockerRegistry.new(new_resource)
+  wait_until_ready!
   # TODO: load current resource?
   @current_resource
 end

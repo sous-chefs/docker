@@ -6,6 +6,7 @@ class CommandTimeout < RuntimeError; end
 
 def load_current_resource
   @current_resource = Chef::Resource::DockerContainer.new(new_resource)
+  wait_until_ready!
   dps = docker_cmd('ps -a -notrunc')
   dps.stdout.each_line do |dps_line|
     ps = dps(dps_line)
