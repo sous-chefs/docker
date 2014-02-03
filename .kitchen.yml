@@ -21,6 +21,11 @@ platforms:
     box: opscode-fedora-19
     box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_fedora-19_chef-provisionerless.box
     require_chef_omnibus: 11.8
+- name: fedora-20
+  driver_config:
+    box: opscode-fedora-20
+    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_fedora-20_chef-provisionerless.box
+    require_chef_omnibus: 11.8
 - name: ubuntu-12.04
   driver_config:
     box: opscode-ubuntu-12.04
