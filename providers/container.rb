@@ -8,15 +8,14 @@ def load_current_resource
   @current_resource = Chef::Resource::DockerContainer.new(new_resource)
   dps = docker_cmd('ps -a -notrunc')
   dps.stdout.each_line do |dps_line|
-    next unless dps_line.include?(new_resource.image)
-    next if new_resource.command && !dps_line.include?(new_resource.command)
-    ps = dps_line.split(/\s\s+/)
-    name = ps[6] || ps[5]
-    next if new_resource.container_name && new_resource.container_name != name
+    ps = dps(dps_line)
+    next unless container_image_matches(ps['image'])
+    next unless container_command_matches(ps['command'])
+    next unless container_name_matches(ps['names'])
     Chef::Log.debug('Matched docker container: ' + dps_line.squeeze(' '))
-    @current_resource.container_name(name)
-    @current_resource.id(ps[0])
-    @current_resource.running(true) if ps[4].include?('Up')
+    @current_resource.container_name(ps['names'])
+    @current_resource.id(ps['id'])
+    @current_resource.running(true) if ps['status'].include?('Up')
     break
   end
   @current_resource
@@ -122,6 +121,20 @@ def commit
   docker_cmd("commit #{commit_args} #{current_resource.id} #{commit_end_args}")
 end
 
+def container_command_matches(command)
+  return false if new_resource.command && !command.include?(new_resource.command)
+  true
+end
+
+def container_image_matches(image)
+  image.include?(new_resource.image)
+end
+
+def container_name_matches(names)
+  return false if new_resource.container_name && new_resource.container_name != names
+  true
+end
+
 def container_name
   if service?
     new_resource.container_name || new_resource.image.gsub(/^.*\//, '')
@@ -136,6 +149,23 @@ end
 
 def docker_cmd(cmd, timeout = new_resource.cmd_timeout)
   execute_cmd('docker ' + cmd, timeout)
+end
+
+def dps(dps_line)
+  split_line = dps_line.split(/\s\s+/)
+  ps = {}
+  ps['id'] = split_line[0]
+  ps['image'] = split_line[1]
+  ps['command'] = split_line[2]
+  ps['created'] = split_line[3]
+  ps['status'] = split_line[4]
+  if split_line[6]
+    ps['ports'] = split_line[5]
+    ps['names'] = split_line[6]
+  else
+    ps['names'] = split_line[5]
+  end
+  ps
 end
 
 def execute_cmd(cmd, timeout = new_resource.cmd_timeout)
