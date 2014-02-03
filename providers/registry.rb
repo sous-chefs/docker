@@ -18,23 +18,14 @@ action :login do
   end
 end
 
-def docker_cmd(cmd, timeout = new_resource.cmd_timeout)
-  execute_cmd('docker ' + cmd, timeout)
-end
-
-def execute_cmd(cmd, timeout = new_resource.cmd_timeout)
-  Chef::Log.debug('Executing: ' + cmd)
-  begin
-    shell_out(cmd, :timeout => timeout)
-  rescue Mixlib::ShellOut::CommandTimeout
-    raise CommandTimeout, <<-EOM
+def command_timeout_error_message
+  <<-EOM
 
 Command timed out:
 #{cmd}
 
 Please adjust node registry_cmd_timeout attribute or this docker_registry cmd_timeout attribute if necessary.
 EOM
-  end
 end
 
 def logged_in?

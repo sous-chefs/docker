@@ -77,5 +77,32 @@ EOH
     rescue Timeout::Error
       raise DockerNotReady.new(timeout), 'docker timeout exceeded'
     end
+
+    # the Error message to display if a command times out. Subclasses
+    # may want to override this to provide more details on the timeout.
+    def command_timeout_error_message
+      <<-EOM
+
+Command timed out:
+#{cmd}
+
+EOM
+    end
+
+    # Runs a docker command. Does not raise exception on non-zero exit code.
+    def docker_cmd(cmd, timeout = new_resource.cmd_timeout)
+      execute_cmd('docker ' + cmd, timeout)
+    end
+
+    # Executes the given command with the specified timeout. Does not raise an
+    # exception on a non-zero exit code.
+    def execute_cmd(cmd, timeout = new_resource.cmd_timeout)
+      Chef::Log.debug('Executing: ' + cmd)
+      begin
+        shell_out(cmd, :timeout => timeout)
+      rescue Mixlib::ShellOut::CommandTimeout
+        raise CommandTimeout, command_timeout_error_message
+      end
+    end
   end
 end
