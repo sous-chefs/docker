@@ -1,3 +1,7 @@
+## 0.28.0
+
+* Enhancement: [GH-55]: image LWRP pull action now attempts pull every run (use pull_if_missing action for old behavior)
+
 ## 0.27.1
 
 * Bugfix: [GH-51]: container LWRP current_resource attribute matching should also depend on container_name
