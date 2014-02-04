@@ -19,5 +19,6 @@ docker_image "myImage" do
 end
 
 docker_image "myImage" do
+  tag "myTag"
   action :remove
 end
