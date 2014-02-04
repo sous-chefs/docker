@@ -23,5 +23,10 @@ module Helpers
       require 'json'
       JSON.parse(docker_cmd("inspect #{id}").stdout)[0]
     end
+
+    def docker_inspect_id(id)
+      inspect = docker_inspect(id)
+      inspect['id'] if inspect
+    end
   end
 end
