@@ -19,9 +19,9 @@ module Helpers
       cli_line
     end
 
-    def inspect(id)
+    def docker_inspect(id)
       require 'json'
-      JSON.parse(docker_cmd('inspect', id).stdout)[0]
+      JSON.parse(docker_cmd("inspect #{id}").stdout)[0]
     end
   end
 end
