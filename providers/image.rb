@@ -63,7 +63,6 @@ action :pull do
   new_resource.updated_by_last_action(new_hash != old_hash)
 end
 
-
 action :push do
   if installed?
     push
