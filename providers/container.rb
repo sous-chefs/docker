@@ -9,9 +9,11 @@ def load_current_resource
   dps = docker_cmd('ps -a -notrunc')
   dps.stdout.each_line do |dps_line|
     ps = dps(dps_line)
-    next unless container_image_matches(ps['image'])
-    next unless container_command_matches(ps['command'])
-    next unless container_name_matches(ps['names'])
+    unless container_id_matches(ps['id'])
+        next unless container_image_matches(ps['image'])
+        next unless container_command_matches(ps['command'])
+        next unless container_name_matches(ps['names'])
+    end
     Chef::Log.debug('Matched docker container: ' + dps_line.squeeze(' '))
     @current_resource.container_name(ps['names'])
     @current_resource.id(ps['id'])
@@ -124,6 +126,10 @@ end
 def container_command_matches(command)
   return false if new_resource.command && !command.include?(new_resource.command)
   true
+end
+
+def container_id_matches(id)
+  id.start_with?(new_resource.id)
 end
 
 def container_image_matches(image)
