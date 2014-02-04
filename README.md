@@ -175,7 +175,7 @@ cmd_timeout | Timeout for docker commands (catchable exception: `Chef::Provider:
 command | Command to run in or identify container | String | nil
 container_name | Name for container/service | String | nil
 
-#### commit
+#### docker_container action :commit
 
 These attributes are associated with this LWRP action.
 
@@ -198,7 +198,7 @@ docker_container 'myApp' do
 end
 ```
 
-#### cp
+#### docker_container action :cp
 
 These attributes are associated with this LWRP action.
 
@@ -217,7 +217,7 @@ docker_container 'myApp' do
 end
 ```
 
-#### export
+#### docker_container action :export
 
 These attributes are associated with this LWRP action.
 
@@ -234,7 +234,7 @@ docker_container 'myApp' do
 end
 ```
 
-#### kill
+#### docker_container action :kill
 
 These attributes are associated with this LWRP action.
 
@@ -253,7 +253,7 @@ docker_container 'shipyard' do
 end
 ```
 
-#### remove
+#### docker_container action :remove
 
 These attributes are associated with this LWRP action.
 
@@ -273,7 +273,7 @@ docker_container 'shipyard' do
 end
 ```
 
-#### restart
+#### docker_container action :restart
 
 These attributes are associated with this LWRP action.
 
@@ -292,7 +292,7 @@ docker_container 'shipyard' do
 end
 ```
 
-#### run
+#### docker_container action :run
 
 By default, this will handle creating a service for the container when action is run or start. `set['docker']['container_init_type'] = false` or add `init_type false` for LWRP to disable this behavior.
 
@@ -360,7 +360,7 @@ docker_container 'docker-registry' do
 end
 ```
 
-#### start
+#### docker_container action :start
 
 These attributes are associated with this LWRP action.
 
@@ -380,7 +380,7 @@ docker_container 'shipyard' do
 end
 ```
 
-#### stop
+#### docker_container action :stop
 
 These attributes are associated with this LWRP action.
 
@@ -399,7 +399,7 @@ docker_container 'shipyard' do
 end
 ```
 
-#### wait
+#### docker_container action :wait
 
 Wait for a container to finish:
 
@@ -420,7 +420,7 @@ Attribute | Description | Type | Default
 ----------|-------------|------|--------
 cmd_timeout | Timeout for docker commands (catchable exception: `Chef::Provider::Docker::Image::CommandTimeout`) | Integer | `node['docker']['image_cmd_timeout']`
 
-#### build
+#### docker_image action :build
 
 These attributes are associated with this LWRP action.
 
@@ -454,7 +454,7 @@ docker_image 'myImage' do
 end
 ```
 
-#### import
+#### docker_image action :import
 
 These attributes are associated with this LWRP action.
 
@@ -492,7 +492,7 @@ docker_image 'test' do
 end
 ```
 
-#### insert
+#### docker_image action :insert
 
 These attributes are associated with this LWRP action.
 
@@ -511,7 +511,7 @@ docker_image 'test' do
 end
 ```
 
-#### load
+#### docker_image action :load
 
 These attributes are associated with this LWRP action.
 
@@ -528,7 +528,7 @@ docker_image 'test' do
 end
 ```
 
-#### pull
+#### docker_image action :pull
 
 These attributes are associated with this LWRP action.
 
@@ -551,7 +551,7 @@ docker_image 'bflad/test' do
 end
 ```
 
-#### push
+#### docker_image action :push
 
 Push image (after logging in with `docker_registry`):
 
@@ -561,7 +561,7 @@ docker_image 'bflad/test' do
 end
 ```
 
-#### remove
+#### docker_image action :remove
 
 Remove image:
 
@@ -571,7 +571,7 @@ docker_image 'busybox' do
 end
 ```
 
-#### save
+#### docker_image action :save
 
 These attributes are associated with this LWRP action.
 
@@ -588,7 +588,7 @@ docker_image 'test' do
 end
 ```
 
-#### tag
+#### docker_image action :tag
 
 These attributes are associated with this LWRP action.
 
@@ -616,7 +616,7 @@ Attribute | Description | Type | Default
 ----------|-------------|------|--------
 cmd_timeout | Timeout for docker commands (catchable exception: `Chef::Provider::Docker::Registry::CommandTimeout`) | Integer | `node['docker']['registry_cmd_timeout']`
 
-#### login
+#### docker_registry action :login
 
 These attributes are associated with this LWRP action.
 
