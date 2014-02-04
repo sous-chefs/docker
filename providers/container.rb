@@ -10,9 +10,9 @@ def load_current_resource
   dps.stdout.each_line do |dps_line|
     ps = dps(dps_line)
     unless container_id_matches(ps['id'])
-        next unless container_image_matches(ps['image'])
-        next unless container_command_matches(ps['command'])
-        next unless container_name_matches(ps['names'])
+      next unless container_image_matches(ps['image'])
+      next unless container_command_matches(ps['command'])
+      next unless container_name_matches(ps['names'])
     end
     Chef::Log.debug('Matched docker container: ' + dps_line.squeeze(' '))
     @current_resource.container_name(ps['names'])
