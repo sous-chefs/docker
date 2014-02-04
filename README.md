@@ -528,7 +528,7 @@ docker_image 'test' do
 end
 ```
 
-#### docker_image action :pull
+#### docker_image action :pull and :pull_if_missing
 
 These attributes are associated with this LWRP action.
 
@@ -537,10 +537,18 @@ Attribute | Description | Type | Default
 registry | Optional registry server | String | nil
 tag | Optional tag for image | String | nil
 
-Pull latest image:
+Pull latest image every Chef run:
 
 ```ruby
 docker_image 'busybox'
+```
+
+Pull latest image only if missing:
+
+```ruby
+docker_image 'busybox' do
+  action :pull_if_missing
+end
 ```
 
 Pull tagged image:
