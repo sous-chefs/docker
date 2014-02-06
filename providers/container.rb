@@ -9,10 +9,10 @@ def load_current_resource
   dps = docker_cmd('ps -a -notrunc')
   dps.stdout.each_line do |dps_line|
     ps = dps(dps_line)
-    unless container_id_matches(ps['id'])
-      next unless container_image_matches(ps['image'])
-      next unless container_command_matches(ps['command'])
-      next unless container_name_matches(ps['names'])
+    unless container_id_matches?(ps['id'])
+      next unless container_image_matches?(ps['image'])
+      next unless container_command_matches_if_exists?(ps['command'])
+      next unless container_name_matches_if_exists?(ps['names'])
     end
     Chef::Log.debug('Matched docker container: ' + dps_line.squeeze(' '))
     @current_resource.container_name(ps['names'])
@@ -123,20 +123,20 @@ def commit
   docker_cmd("commit #{commit_args} #{current_resource.id} #{commit_end_args}")
 end
 
-def container_command_matches(command)
+def container_command_matches_if_exists?(command)
   return false if new_resource.command && !command.include?(new_resource.command)
   true
 end
 
-def container_id_matches(id)
+def container_id_matches?(id)
   id.start_with?(new_resource.id)
 end
 
-def container_image_matches(image)
+def container_image_matches?(image)
   image.include?(new_resource.image)
 end
 
-def container_name_matches(names)
+def container_name_matches_if_exists?(names)
   return false if new_resource.container_name && new_resource.container_name != names
   true
 end
