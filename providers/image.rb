@@ -15,9 +15,11 @@ def load_current_resource
         next unless image_tag_matches_if_exists?(image['tag'])
       end
       Chef::Log.debug('Matched docker image: ' + di_line.squeeze(' '))
+      @current_resource.created(image['created'])
       @current_resource.repository(image['repository'])
       @current_resource.tag(image['tag'])
       @current_resource.id(image['id'])
+      @current_resource.virtual_size(image['virtual_size'])
       break
     end
   end
