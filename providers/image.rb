@@ -6,7 +6,7 @@ class CommandTimeout < RuntimeError; end
 
 def load_current_resource
   @current_resource = Chef::Resource::DockerImage.new(new_resource)
-  dimages = docker_cmd('images -a')
+  dimages = docker_cmd('images -a -notrunc')
   if dimages.stdout.include?(new_resource.image_name)
     dimages.stdout.each_line do |di_line|
       image = di(di_line)
