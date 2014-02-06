@@ -12,7 +12,6 @@ attribute :force, :kind_of => [TrueClass, FalseClass], :default => false
 attribute :id, :kind_of => [String]
 # DEPRECATED: Use source attribute
 attribute :image_url, :kind_of => [String]
-attribute :installed, :kind_of => [TrueClass, FalseClass]
 attribute :installed_tag, :kind_of => [String]
 attribute :no_cache, :kind_of => [TrueClass, FalseClass], :default => false
 # DEPRECATED: Use source attribute

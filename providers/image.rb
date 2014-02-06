@@ -15,7 +15,6 @@ def load_current_resource
         next unless image_tag_matches_if_exists?(image['tag'])
       end
       Chef::Log.debug('Matched docker image: ' + di_line.squeeze(' '))
-      @current_resource.installed(true)
       @current_resource.repository(image['repository'])
       @current_resource.installed_tag(image['tag'])
       @current_resource.id(image['id'])
@@ -191,7 +190,7 @@ def insert
 end
 
 def installed?
-  @current_resource.installed && tag_match
+  @current_resource.id && tag_match
 end
 
 def load
