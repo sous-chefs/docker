@@ -6,15 +6,19 @@ class CommandTimeout < RuntimeError; end
 
 def load_current_resource
   @current_resource = Chef::Resource::DockerImage.new(new_resource)
-  di = docker_cmd('images -a')
-  if di.stdout.include?(new_resource.image_name)
-    di.stdout.each_line do |di_line|
-      next unless di_line.include?(new_resource.image_name)
-      image_info = di_line.split(/\s\s+/)
+  dimages = docker_cmd('images -a')
+  if dimages.stdout.include?(new_resource.image_name)
+    dimages.stdout.each_line do |di_line|
+      image = di(di_line)
+      unless image_id_matches?(image['id'])
+        next unless image_name_matches?(image['repository'])
+        next unless image_tag_matches_if_exists?(image['tag'])
+      end
+      Chef::Log.debug('Matched docker image: ' + di_line.squeeze(' '))
       @current_resource.installed(true)
-      @current_resource.repository(image_info[0])
-      @current_resource.installed_tag(image_info[1])
-      @current_resource.id(image_info[2])
+      @current_resource.repository(image['repository'])
+      @current_resource.installed_tag(image['tag'])
+      @current_resource.id(image['id'])
       break
     end
   end
@@ -120,6 +124,17 @@ def build
   docker_cmd("build #{build_args} #{command}")
 end
 
+def di(di_line)
+  split_line = di_line.split(/\s\s+/)
+  image = {}
+  image['repository'] = split_line[0]
+  image['tag'] = split_line[1]
+  image['id'] = split_line[2]
+  image['created'] = split_line[3]
+  image['virtual_size'] = split_line[4]
+  image
+end
+
 def docker_cmd(cmd, timeout = new_resource.cmd_timeout)
   execute_cmd('docker ' + cmd, timeout)
 end
@@ -137,6 +152,19 @@ Command timed out:
 Please adjust node image_cmd_timeout attribute or this docker_image cmd_timeout attribute if necessary.
 EOM
   end
+end
+
+def image_id_matches?(id)
+  id.start_with?(new_resource.id)
+end
+
+def image_name_matches?(name)
+  name.include?(new_resource.image_name)
+end
+
+def image_tag_matches_if_exists?(tag)
+  return false if new_resource.tag && new_resource.tag != tag
+  true
 end
 
 def import
