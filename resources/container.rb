@@ -11,6 +11,7 @@ attribute :cmd_timeout, :kind_of => [Integer], :default => node['docker']['conta
 attribute :command, :kind_of => [String]
 attribute :container_name, :kind_of => [String]
 attribute :cookbook, :kind_of => [String], :default => 'docker'
+attribute :created, :kind_of => [String]
 attribute :cpu_shares, :kind_of => [Fixnum]
 attribute :destination, :kind_of => [String]
 attribute :detach, :kind_of => [TrueClass, FalseClass]
@@ -35,9 +36,9 @@ attribute :publish_exposed_ports, :kind_of => [TrueClass, FalseClass], :default 
 attribute :remove_automatically, :kind_of => [TrueClass, FalseClass], :default => false
 attribute :repository, :kind_of => [String]
 attribute :run, :kind_of => [String]
-attribute :running, :kind_of => [TrueClass, FalseClass]
 attribute :socket_template, :kind_of => [String]
 attribute :source, :kind_of => [String]
+attribute :status, :kind_of => [String]
 attribute :stdin, :kind_of => [TrueClass, FalseClass]
 attribute :tag, :kind_of => [String]
 attribute :tty, :kind_of => [TrueClass, FalseClass]

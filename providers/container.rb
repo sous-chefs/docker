@@ -16,8 +16,9 @@ def load_current_resource
     end
     Chef::Log.debug('Matched docker container: ' + dps_line.squeeze(' '))
     @current_resource.container_name(ps['names'])
+    @current_resource.created(ps['created'])
     @current_resource.id(ps['id'])
-    @current_resource.running(true) if ps['status'].include?('Up')
+    @current_resource.status(ps['status'])
     break
   end
   @current_resource
@@ -264,7 +265,7 @@ def run
 end
 
 def running?
-  @current_resource.running
+  @current_resource.status.include?('Up') if @current_resource.status
 end
 
 def service?
