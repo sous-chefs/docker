@@ -1,3 +1,10 @@
+## 0.29.0
+
+* Enhancement: [GH-57]: Implement id checking when determining current_resource
+  * Added to both container and image LWRPs
+* Enhancement: Set created and status attributes for current container resources (for handlers, wrappers, etc.)
+* Enhancement: Set created and virtual_size attributes for image resource (for handlers, wrappers, etc.)
+
 ## 0.28.0
 
 * Enhancement: [GH-55]: image LWRP pull action now attempts pull every run (use pull_if_missing action for old behavior)
