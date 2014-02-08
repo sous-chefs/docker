@@ -4,6 +4,14 @@
 
 Cookbook compatibility based on platform, installation type (`node['docker']['install_type']`), and architecture (`node['docker']['arch']`)
 
+#### Darwin Package x86_64 ####
+
+* Mac OS X via homebrew: 0.30+
+
+#### Darwin Binary x86_64 ####
+
+* Mac OS X: 0.30+
+
 #### Linux Package x86_64 ####
 
 Cookbook Compatibility

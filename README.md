@@ -18,6 +18,7 @@ This cookbook was inspired by @thoward's docker-cookbook: https://github.com/tho
 * Debian 7 (experimental)
 * Fedora 19
 * Fedora 20
+* Mac OS X (docker installation only currently)
 * Oracle 6 (experimental)
 * RHEL 6
 * Ubuntu 12.04

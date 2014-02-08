@@ -28,4 +28,9 @@ when 'fedora'
     version node['docker']['version']
     action node['docker']['package']['action'].intern
   end
+when 'max_os_x'
+  homebrew_tap 'homebrew/binary'
+  homebrew_package 'homebrew/binary/docker' do
+    action node['docker']['package']['action'].intern
+  end
 end
