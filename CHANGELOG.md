@@ -1,34 +1,34 @@
 ## 0.29.0
 
-* Enhancement: [GH-57]: Implement id checking when determining current_resource
+* Enhancement: [#57][]: Implement id checking when determining current_resource
   * Added to both container and image LWRPs
 * Enhancement: Set created and status attributes for current container resources (for handlers, wrappers, etc.)
 * Enhancement: Set created and virtual_size attributes for image resource (for handlers, wrappers, etc.)
 
 ## 0.28.0
 
-* Enhancement: [GH-55]: image LWRP pull action now attempts pull every run (use pull_if_missing action for old behavior)
+* Enhancement: [#55][]: image LWRP pull action now attempts pull every run (use pull_if_missing action for old behavior)
 
 ## 0.27.1
 
-* Bugfix: [GH-51]: container LWRP current_resource attribute matching should also depend on container_name
+* Bugfix: [#51][]: container LWRP current_resource attribute matching should also depend on container_name
 
 ## 0.27.0
 
-* Enhancement: [GH-48]: Accept FalseClass CLI arguments (also explicitly declare =true for TrueClass CLI arguments)
+* Enhancement: [#48][]: Accept FalseClass CLI arguments (also explicitly declare =true for TrueClass CLI arguments)
 
 ## 0.26.0
 
 * Bugfix: Add SysV init script for binary installs
 * Enhancement: Add storage_type and virtualization_type attributes
 * Enhancement: Initial devmapper support for binary installs on CentOS/Ubuntu
-* Enhancement: [GH-47] Debian-specific container SysV init script
-* Enhancement: [GH-46] Add rm attribute for build action on image LWRP
+* Enhancement: [#47][] Debian-specific container SysV init script
+* Enhancement: [#46][] Add rm attribute for build action on image LWRP
 * Enhancement: Add no_cache attribute for build action on image LWRP
 
 ## 0.25.1
 
-* Bugfix: [GH-44] Add missing run attribute for commit action on container LWRP
+* Bugfix: [#44][] Add missing run attribute for commit action on container LWRP
 
 ## 0.25.0
 
@@ -44,7 +44,7 @@
 
 ## 0.24.2
 
-* Bugfix: [GH-43] Better formatting for container LWRP debug logging
+* Bugfix: [#43][] Better formatting for container LWRP debug logging
 
 ## 0.24.1
 
@@ -53,12 +53,12 @@
 
 ## 0.24.0
 
-* Bugfix: [GH-42] fix(upstart): Install inotify-tools if using upstart
-* Enhancement: [GH-38] Allow a user to specify a custom template for their container init configuration
+* Bugfix: [#42][] fix(upstart): Install inotify-tools if using upstart
+* Enhancement: [#38][] Allow a user to specify a custom template for their container init configuration
 
 ## 0.23.1
 
-* Bugfix: [GH-39] Fix NoMethodError bugs in docker::aufs recipe
+* Bugfix: [#39][] Fix NoMethodError bugs in docker::aufs recipe
 
 ## 0.23.0
 
@@ -69,12 +69,12 @@
 
 ## 0.22.0
 
-* Enhancement: [GH-35] Use kernel release for package name on saucy and newer
-* Enhancement: [GH-37] dont include aufs recipe on ubuntu 13.10 and up; don't require docker::lxc for package installs
+* Enhancement: [#35][] Use kernel release for package name on saucy and newer
+* Enhancement: [#37][] dont include aufs recipe on ubuntu 13.10 and up; don't require docker::lxc for package installs
 
 ## 0.21.0
 
-* Enhancement: [GH-31] More helpful cmd_timeout error messages and catchable exceptions for container (`Chef::Provider::Docker::Container::CommandTimeout`) and image (`Chef::Provider::Docker::Image::CommandTimeout`) LWRPs
+* Enhancement: [#31][] More helpful cmd_timeout error messages and catchable exceptions for container (`Chef::Provider::Docker::Container::CommandTimeout`) and image (`Chef::Provider::Docker::Image::CommandTimeout`) LWRPs
 
 ## 0.20.0
 
@@ -87,7 +87,7 @@
 
 ## 0.19.1
 
-* Bugfix: [GH-30] apt-get throws exit code 100 when upgrading docker
+* Bugfix: [#30][] apt-get throws exit code 100 when upgrading docker
 
 ## 0.19.0
 
@@ -143,9 +143,9 @@
 
 ## 0.14.0
 
-* Bugfix: [GH-27] Only use command to determine running container if provided
-* Bugfix: [GH-28] Upstart requires full stop and start of service instead of restart if job configuration changes while already running. Note even `initctl reload-configuration` isn't working as expected from http://upstart.ubuntu.com/faq.html#reload
-* Enhancement: [GH-26] Add ability to set package action
+* Bugfix: [#27][] Only use command to determine running container if provided
+* Bugfix: [#28][] Upstart requires full stop and start of service instead of restart if job configuration changes while already running. Note even `initctl reload-configuration` isn't working as expected from http://upstart.ubuntu.com/faq.html#reload
+* Enhancement: [#26][] Add ability to set package action
 
 ## 0.13.0
 
@@ -158,7 +158,7 @@
 ## 0.12.0
 
 * Bugfix: Add default bind_uri (nil) to default attributes
-* Enhancement: [GH-24] bind_socket attribute added
+* Enhancement: [#24][] bind_socket attribute added
 
 ## 0.11.0
 
@@ -193,8 +193,8 @@ Other behind the scenes changes:
 
 ## 0.10.0
 
-* Enhancement: [GH-22] cmd_timeout, path (image LWRP), working_directory (container LWRP) LWRP attributes
-* Bugfix: [GH-25] Install Go environment only when installing from source
+* Enhancement: [#22][] cmd_timeout, path (image LWRP), working_directory (container LWRP) LWRP attributes
+* Bugfix: [#25][] Install Go environment only when installing from source
 
 ## 0.9.1
 
@@ -257,3 +257,26 @@ Lots of community contributions this release -- thanks!
 ## 0.1.0
 
 * Initial release
+
+[#22]: https://github.com/bflad/chef-docker/issues/22
+[#24]: https://github.com/bflad/chef-docker/issues/24
+[#25]: https://github.com/bflad/chef-docker/issues/25
+[#26]: https://github.com/bflad/chef-docker/issues/26
+[#27]: https://github.com/bflad/chef-docker/issues/27
+[#28]: https://github.com/bflad/chef-docker/issues/28
+[#30]: https://github.com/bflad/chef-docker/issues/30
+[#31]: https://github.com/bflad/chef-docker/issues/31
+[#35]: https://github.com/bflad/chef-docker/issues/35
+[#37]: https://github.com/bflad/chef-docker/issues/37
+[#38]: https://github.com/bflad/chef-docker/issues/38
+[#39]: https://github.com/bflad/chef-docker/issues/39
+[#42]: https://github.com/bflad/chef-docker/issues/42
+[#43]: https://github.com/bflad/chef-docker/issues/43
+[#44]: https://github.com/bflad/chef-docker/issues/44
+[#46]: https://github.com/bflad/chef-docker/issues/46
+[#47]: https://github.com/bflad/chef-docker/issues/47
+[#48]: https://github.com/bflad/chef-docker/issues/48
+[#51]: https://github.com/bflad/chef-docker/issues/51
+[#55]: https://github.com/bflad/chef-docker/issues/55
+[#57]: https://github.com/bflad/chef-docker/issues/57
+[#62]: https://github.com/bflad/chef-docker/issues/62
