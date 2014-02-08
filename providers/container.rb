@@ -51,6 +51,13 @@ action :kill do
   end
 end
 
+action :redeploy do
+  stop if running?
+  remove if exists?
+  run
+  new_resource.updated_by_last_action(true)
+end
+
 action :remove do
   if running?
     stop

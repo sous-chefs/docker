@@ -254,6 +254,26 @@ docker_container 'shipyard' do
 end
 ```
 
+#### docker_container action :redeploy
+
+Stops, removes, and runs a container. Useful for notifications from image build/pull.
+
+Attributes for this action can be found in the `stop`, `remove`, and `run` actions.
+
+Redeploy container when new image is pulled:
+
+```ruby
+docker_image 'shipyard/shipyard' do
+  action :pull
+  notifies :redeploy, 'docker_container[shipyard]', :immediately
+end
+
+docker_container 'shipyard' do
+  # Other attributes
+  action :run
+end
+```
+
 #### docker_container action :remove
 
 These attributes are associated with this LWRP action.
