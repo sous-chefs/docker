@@ -26,6 +26,11 @@ def load_current_resource
 end
 
 action :build do
+  build
+  new_resource.updated_by_last_action(true)
+end
+
+action :build_if_missing do
   unless installed?
     build
     new_resource.updated_by_last_action(true)

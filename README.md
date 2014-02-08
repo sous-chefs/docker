@@ -441,7 +441,7 @@ Attribute | Description | Type | Default
 ----------|-------------|------|--------
 cmd_timeout | Timeout for docker commands (catchable exception: `Chef::Provider::Docker::Image::CommandTimeout`) | Integer | `node['docker']['image_cmd_timeout']`
 
-#### docker_image action :build
+#### docker_image action :build and :build_if_missing
 
 These attributes are associated with this LWRP action.
 
@@ -461,7 +461,7 @@ Build image from Dockerfile:
 docker_image 'myImage' do
   tag 'myTag'
   source 'myImageDockerfile'
-  action :build
+  action :build_if_missing
 end
 ```
 
@@ -471,7 +471,20 @@ Build image from remote repository:
 docker_image 'myImage' do
   source 'example.com/foo/myImage'
   tag 'myTag'
-  action :build
+  action :build_if_missing
+end
+```
+
+Conditionally rebuild image if changes upstream:
+
+```ruby
+git "#{Chef::Config[:file_cache_path]}/docker-testcontainerd" do
+  repository 'git@github.com:bflad/docker-testcontainerd.git'
+  notifies :build, 'docker_image[bflad/testcontainerd]', :immediately
+end
+
+docker_image 'bflad/testcontainerd' do
+  action :pull_if_missing
 end
 ```
 
