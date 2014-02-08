@@ -1,3 +1,15 @@
+## 0.30.0
+
+Awesome work by [@jcrobak][] to close out two issues ([#49][] and [#52][]) with [#62][]. Note change below in image build action.
+
+* Bugfix: [#52][]: return codes of docker commands not verified
+* Bugfix: Add missing pull_if_missing action to image resource
+* Enhancement: [#56][]: Switch build action to build_if_missing, build action now builds each run (be careful with image growth!)
+* Enhancement: [#59][]: Add Mac OS X installation support
+* Enhancement: [#49][]: Add docker_cmd_timeout attribute and daemon verification
+* Enhancement: [#58][]: Add container redeploy action
+* Enhancement: [#63][]: Add group_members attribute and group recipe to manage docker group
+
 ## 0.29.0
 
 * Enhancement: [#57][]: Implement id checking when determining current_resource
@@ -202,7 +214,7 @@ Other behind the scenes changes:
 
 ## 0.9.0
 
-* image LWRP now supports non-stdin build and import actions (thanks @wingrunr21!)
+* image LWRP now supports non-stdin build and import actions (thanks [@wingrunr21][]!)
 
 ## 0.8.1
 
@@ -276,7 +288,15 @@ Lots of community contributions this release -- thanks!
 [#46]: https://github.com/bflad/chef-docker/issues/46
 [#47]: https://github.com/bflad/chef-docker/issues/47
 [#48]: https://github.com/bflad/chef-docker/issues/48
+[#49]: https://github.com/bflad/chef-docker/issues/49
 [#51]: https://github.com/bflad/chef-docker/issues/51
+[#52]: https://github.com/bflad/chef-docker/issues/52
 [#55]: https://github.com/bflad/chef-docker/issues/55
+[#56]: https://github.com/bflad/chef-docker/issues/56
 [#57]: https://github.com/bflad/chef-docker/issues/57
+[#58]: https://github.com/bflad/chef-docker/issues/58
+[#59]: https://github.com/bflad/chef-docker/issues/59
 [#62]: https://github.com/bflad/chef-docker/issues/62
+[#63]: https://github.com/bflad/chef-docker/issues/63
+[@jcrobak]: https://github.com/jcrobak
+[@wingrunr21]: https://github.com/wingrunr21
