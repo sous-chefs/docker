@@ -153,10 +153,6 @@ def cp
   docker_cmd!("cp #{current_resource.id}:#{new_resource.source} #{new_resource.destination}")
 end
 
-def docker_cmd(cmd, timeout = new_resource.cmd_timeout)
-  execute_cmd('docker ' + cmd, timeout)
-end
-
 def dps(dps_line)
   split_line = dps_line.split(/\s\s+/)
   ps = {}
