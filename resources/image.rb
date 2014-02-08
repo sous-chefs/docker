@@ -1,4 +1,4 @@
-actions :build, :build_if_missing, :import, :insert, :load, :pull, :push, :remove, :save, :tag
+actions :build, :build_if_missing, :import, :insert, :load, :pull, :pull_if_missing, :push, :remove, :save, :tag
 
 default_action :pull
 
