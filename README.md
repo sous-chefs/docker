@@ -71,7 +71,7 @@ These attributes are under the `node['docker']['binary']` namespace.
 Attribute | Description | Type | Default
 ----------|-------------|------|--------
 version | Version of docker binary | String | `node['docker']['version'] || latest`
-url | URL for downloading docker binary | String | auto-detected (see attributes/default.rb)
+url | URL for downloading docker binary | String | `http://get.docker.io/builds/#{node['kernel']['name']}/#{node['docker']['arch']}/docker-#{node['docker']['binary']['version']}`
 
 ### Package Attributes
 

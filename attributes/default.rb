@@ -61,7 +61,7 @@ default['docker']['virtualization_type'] = 'lxc'
 
 # Binary attributes
 default['docker']['binary']['version'] = node['docker']['version'] || 'latest'
-default['docker']['binary']['url'] = "http://get.docker.io/builds/Linux/#{node['docker']['arch']}/docker-#{node['docker']['binary']['version']}"
+default['docker']['binary']['url'] = "http://get.docker.io/builds/#{node['kernel']['name']}/#{node['docker']['arch']}/docker-#{node['docker']['binary']['version']}"
 
 # Package attributes
 case node['platform']
