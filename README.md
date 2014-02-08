@@ -51,6 +51,7 @@ bind_socket | Socket path that docker should bind | String | unix:///var/run/doc
 bind_uri | TCP URI docker should bind | String | nil
 container_cmd_timeout | container LWRP default cmd_timeout seconds | Fixnum | 60
 container_init_type | Init type for docker containers (nil, "systemd", or "upstart") | NilClass or String | `node['docker']['init_type']`
+docker_daemon_timeout | Timeout to wait for the docker daemon to start in seconds | Fixnum | 10
 http_proxy | HTTP_PROXY environment variable | String | nil
 image_cmd_timeout | image LWRP default cmd_timeout seconds | Fixnum | 300
 init_type | Init type for docker ("systemd", "sysv", or "upstart") | String | auto-detected (see attributes/default.rb)
@@ -58,7 +59,6 @@ install_dir | Installation directory for docker binary | String | auto-detected 
 install_type | Installation type for docker ("binary", "package" or "source") | String | "package"
 options | Additional options to pass to docker. These could be flags like "-api-enable-cors". | String | nil
 registry_cmd_timeout | registry LWRP default cmd_timeout seconds | Fixnum | 60
-docker_daemon_timeout | Timeout to wait for the docker daemon to start in seconds | Fixnum | 10
 storage_type | Storage driver for docker (nil, "aufs", or "devmapper") | String | auto-detected (see attributes/default.rb)
 version | Version of docker | String | nil
 virtualization_type | Virtualization driver for docker (nil or "lxc") | String | auto-detected (see attributes/default.rb)

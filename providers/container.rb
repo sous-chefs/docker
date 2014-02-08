@@ -1,5 +1,3 @@
-require 'chef/mixin/shell_out'
-include Chef::Mixin::ShellOut
 include Helpers::Docker
 
 class CommandTimeout < RuntimeError; end

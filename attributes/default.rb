@@ -11,10 +11,10 @@ default['docker']['arch'] =
 default['docker']['bind_socket'] = 'unix:///var/run/docker.sock'
 default['docker']['bind_uri'] = nil
 default['docker']['container_cmd_timeout'] = 60
+default['docker']['docker_daemon_timeout'] = 10
 default['docker']['http_proxy'] = nil
 default['docker']['image_cmd_timeout'] = 300
 default['docker']['registry_cmd_timeout'] = 60
-default['docker']['docker_daemon_timeout'] = 10
 
 default['docker']['init_type'] = value_for_platform(
   %w{ centos debian oracle redhat } => {
