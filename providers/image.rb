@@ -5,6 +5,7 @@ include Helpers::Docker
 class CommandTimeout < RuntimeError; end
 
 def load_current_resource
+  wait_until_ready!
   @current_resource = Chef::Resource::DockerImage.new(new_resource)
   dimages = docker_cmd('images -a -notrunc')
   if dimages.stdout.include?(new_resource.image_name)
@@ -122,7 +123,7 @@ def build
     command = new_resource.source
   end
 
-  docker_cmd("build #{build_args} #{command}")
+  docker_cmd!("build #{build_args} #{command}")
 end
 
 def di(di_line)
@@ -136,23 +137,14 @@ def di(di_line)
   image
 end
 
-def docker_cmd(cmd, timeout = new_resource.cmd_timeout)
-  execute_cmd('docker ' + cmd, timeout)
-end
-
-def execute_cmd(cmd, timeout = new_resource.cmd_timeout)
-  Chef::Log.debug('Executing: ' + cmd)
-  begin
-    shell_out(cmd, :timeout => timeout)
-  rescue Mixlib::ShellOut::CommandTimeout
-    raise CommandTimeout, <<-EOM
+def command_timeout_error_message
+  <<-EOM
 
 Command timed out:
 #{cmd}
 
 Please adjust node image_cmd_timeout attribute or this docker_image cmd_timeout attribute if necessary.
 EOM
-  end
 end
 
 def image_id_matches?(id)
@@ -183,12 +175,12 @@ def import
       import_args += new_resource.source
       import_args += " #{new_resource.image_name}"
     end
-    docker_cmd("import #{import_args} #{repository_and_tag_args}")
+    docker_cmd!("import #{import_args} #{repository_and_tag_args}")
   end
 end
 
 def insert
-  docker_cmd("insert #{new_resource.image_name} #{new_resource.source} #{new_resource.destination}")
+  docker_cmd!("insert #{new_resource.image_name} #{new_resource.source} #{new_resource.destination}")
 end
 
 def installed?
@@ -196,7 +188,7 @@ def installed?
 end
 
 def load
-  docker_cmd("load < #{new_resource.source}")
+  docker_cmd!("load < #{new_resource.source}")
 end
 
 def pull
@@ -204,15 +196,17 @@ def pull
     'registry' => new_resource.registry,
     't' => new_resource.tag
   )
-  docker_cmd("pull #{new_resource.image_name} #{pull_args}")
+  docker_cmd!("pull #{new_resource.image_name} #{pull_args}")
 end
 
 def push
-  docker_cmd("push #{new_resource.image_name}")
+  docker_cmd!("push #{new_resource.image_name}")
 end
 
 def remove
-  docker_cmd("rmi #{new_resource.image_name}")
+  image_name = new_resource.image_name
+  image_name = "#{image_name}:#{new_resource.tag}" if new_resource.tag
+  docker_cmd!("rmi #{image_name}")
 end
 
 def repository_and_tag_args
@@ -225,12 +219,12 @@ def repository_and_tag_args
 end
 
 def save
-  docker_cmd("save #{new_resource.image_name} > #{new_resource.destination}")
+  docker_cmd!("save #{new_resource.image_name} > #{new_resource.destination}")
 end
 
 def tag
   tag_args = cli_args(
     'f' => new_resource.force
   )
-  docker_cmd("tag #{tag_args} #{new_resource.image_name} #{repository_and_tag_args}")
+  docker_cmd!("tag #{tag_args} #{new_resource.image_name} #{repository_and_tag_args}")
 end

@@ -6,6 +6,7 @@ class CommandTimeout < RuntimeError; end
 
 def load_current_resource
   @current_resource = Chef::Resource::DockerRegistry.new(new_resource)
+  wait_until_ready!
   # TODO: load current resource?
   @current_resource
 end
@@ -17,23 +18,14 @@ action :login do
   end
 end
 
-def docker_cmd(cmd, timeout = new_resource.cmd_timeout)
-  execute_cmd('docker ' + cmd, timeout)
-end
-
-def execute_cmd(cmd, timeout = new_resource.cmd_timeout)
-  Chef::Log.debug('Executing: ' + cmd)
-  begin
-    shell_out(cmd, :timeout => timeout)
-  rescue Mixlib::ShellOut::CommandTimeout
-    raise CommandTimeout, <<-EOM
+def command_timeout_error_message
+  <<-EOM
 
 Command timed out:
 #{cmd}
 
 Please adjust node registry_cmd_timeout attribute or this docker_registry cmd_timeout attribute if necessary.
 EOM
-  end
 end
 
 def logged_in?
@@ -46,5 +38,5 @@ def login
     'p' => new_resource.password,
     'u' => new_resource.username
   )
-  docker_cmd("login #{new_resource.server} #{login_args}")
+  docker_cmd!("login #{new_resource.server} #{login_args}")
 end
