@@ -18,7 +18,7 @@ This cookbook was inspired by @thoward's docker-cookbook: https://github.com/tho
 * Debian 7 (experimental)
 * Fedora 19
 * Fedora 20
-* Mac OS X (docker installation only currently)
+* Mac OS X (only docker installation currently)
 * Oracle 6 (experimental)
 * RHEL 6
 * Ubuntu 12.04
@@ -32,6 +32,7 @@ This cookbook was inspired by @thoward's docker-cookbook: https://github.com/tho
 
 * [apt](https://github.com/opscode-cookbooks/apt)
 * [git](https://github.com/opscode-cookbooks/git)
+* [homebrew](https://github.com/opscode-cookbooks/homebrew)
 * [yum-epel](https://github.com/opscode-cookbooks/yum-epel)
 
 Third-Party Cookbooks
