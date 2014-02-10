@@ -1,8 +1,12 @@
-docker_image "base"
+docker_image "base" do
+  tag "ubuntu-quantal"
+end
+
 docker_image "busybox"
 docker_image 'bflad/testcontainerd'
 
 docker_image "base" do
+  tag "ubuntu-quantal"
   action :remove
 end
 
