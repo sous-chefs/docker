@@ -27,7 +27,7 @@ EOM
 end
 
 def logged_in?
-  @current_resource || true
+  @current_resource.updated_by_last_action?
 end
 
 def login
