@@ -672,9 +672,10 @@ email | Registry email | String | nil
 password | Registry password | String | nil
 username | Registry username | String | nil
 
-Log into public registry:
+Log into or register with public registry:
 
     docker_registry 'https://index.docker.io/v1/' do
+      email 'publicme@example.com'
       username 'publicme'
       password 'hope_this_is_in_encrypted_databag'
     end
@@ -684,14 +685,6 @@ Log into private registry with optional port:
     docker_registry 'https://docker-registry.example.com:8443/' do
       username 'privateme'
       password 'still_hope_this_is_in_encrypted_databag'
-    end
-
-Register with registry:
-
-    docker_registry 'https://index.docker.io/v1/' do
-      email 'publicme@example.com'
-      username 'publicme'
-      password 'hope_this_is_in_encrypted_databag'
     end
 
 ## Usage

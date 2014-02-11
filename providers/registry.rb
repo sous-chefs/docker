@@ -5,7 +5,13 @@ class CommandTimeout < RuntimeError; end
 def load_current_resource
   @current_resource = Chef::Resource::DockerRegistry.new(new_resource)
   wait_until_ready!
-  # TODO: load current resource?
+  dockercfg = dockercfg_parse
+  if dockercfg && login_matches(dockercfg[new_resource.server])
+    Chef::Log.debug("Matched registry login: #{new_resource.server}: #{dockercfg[new_resource.server].to_s}")
+    @current_resource.server(new_resource.server)
+    @current_resource.username(dockercfg[new_resource.server]['username'])
+    @current_resource.password(dockercfg[new_resource.server]['password'])
+  end
   @current_resource
 end
 
@@ -27,7 +33,7 @@ EOM
 end
 
 def logged_in?
-  @current_resource || true
+  @current_resource.server
 end
 
 def login
@@ -37,4 +43,9 @@ def login
     'u' => new_resource.username
   )
   docker_cmd!("login #{login_args} #{new_resource.server} ")
+end
+
+def login_matches(cfg)
+  return false unless cfg
+  cfg['username'] == new_resource.username && cfg['password'] == new_resource.password
 end

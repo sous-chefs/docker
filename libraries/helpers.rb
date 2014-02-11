@@ -49,6 +49,25 @@ EOH
       inspect['id'] if inspect
     end
 
+    def dockercfg_parse
+      require 'json'
+      dockercfg = JSON.parse(::File.read(::File.join(::Dir.home, '.dockercfg')))
+      dockercfg.each_pair do |k,v|
+        dockercfg[k].merge!(dockercfg_parse_auth(v['auth']))
+      end
+      dockercfg
+    end
+
+    def dockercfg_parse_auth(str)
+      require 'base64'
+      decoded_str = Base64.decode64(str)
+      if decoded_str
+        auth = {}
+        auth['username'], auth['password'] = decoded_str.split(':')
+        auth
+      end
+    end
+
     def timeout
       node['docker']['docker_daemon_timeout']
     end
