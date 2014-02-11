@@ -52,7 +52,7 @@ EOH
     def dockercfg_parse
       require 'json'
       dockercfg = JSON.parse(::File.read(::File.join(::Dir.home, '.dockercfg')))
-      dockercfg.each_pair do |k,v|
+      dockercfg.each_pair do |k, v|
         dockercfg[k].merge!(dockercfg_parse_auth(v['auth']))
       end
       dockercfg
