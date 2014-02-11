@@ -1,3 +1,11 @@
+## 0.30.1
+
+Public or private registry login should now correctly occur and login once per credentials change.
+
+* Bugfix: [#64][]: Correct CLI ordering of registry login
+* Bugfix: [#65][]: login command skipped in registry provider
+* Enhancement: registry provider current resource attributes loaded from .dockercfg
+
 ## 0.30.0
 
 Awesome work by [@jcrobak][] to close out two issues ([#49][] and [#52][]) with [#62][]. Note change below in image build action.
@@ -298,5 +306,7 @@ Lots of community contributions this release -- thanks!
 [#59]: https://github.com/bflad/chef-docker/issues/59
 [#62]: https://github.com/bflad/chef-docker/issues/62
 [#63]: https://github.com/bflad/chef-docker/issues/63
+[#64]: https://github.com/bflad/chef-docker/issues/64
+[#65]: https://github.com/bflad/chef-docker/issues/65
 [@jcrobak]: https://github.com/jcrobak
 [@wingrunr21]: https://github.com/wingrunr21
