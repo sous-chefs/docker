@@ -22,6 +22,9 @@ EOH
       end
     end
 
+    # Exception to signify that the docker command timed out.
+    class CommandTimeout < RuntimeError; end
+
     def cli_args(spec)
       cli_line = ''
       spec.each_pair do |arg, value|

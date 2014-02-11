@@ -1,7 +1,5 @@
 include Helpers::Docker
 
-class CommandTimeout < RuntimeError; end
-
 def load_current_resource
   wait_until_ready!
   @current_resource = Chef::Resource::DockerImage.new(new_resource)
