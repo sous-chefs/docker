@@ -1,3 +1,8 @@
+## 0.30.2
+
+* Bugfix: [#68][]: Fix CommandTimeout handling in LWRPs
+* Bugfix: [#67][]: Fix argument order to pull when tag specified
+
 ## 0.30.1
 
 Public or private registry login should now correctly occur and login once per credentials change.
@@ -308,5 +313,7 @@ Lots of community contributions this release -- thanks!
 [#63]: https://github.com/bflad/chef-docker/issues/63
 [#64]: https://github.com/bflad/chef-docker/issues/64
 [#65]: https://github.com/bflad/chef-docker/issues/65
+[#67]: https://github.com/bflad/chef-docker/issues/67
+[#68]: https://github.com/bflad/chef-docker/issues/68
 [@jcrobak]: https://github.com/jcrobak
 [@wingrunr21]: https://github.com/wingrunr21
