@@ -48,7 +48,7 @@ default['docker']['install_dir'] =
 
 default['docker']['storage_type'] = value_for_platform(
   %w{ centos fedora oracle redhat } => {
-    'default' => 'devmapper'
+    'default' => 'devicemapper'
   },
   %w{ debian ubuntu } => {
     'default' => 'aufs'

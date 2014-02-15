@@ -62,7 +62,7 @@ install_dir | Installation directory for docker binary | String | auto-detected 
 install_type | Installation type for docker ("binary", "package" or "source") | String | "package"
 options | Additional options to pass to docker. These could be flags like "-api-enable-cors". | String | nil
 registry_cmd_timeout | registry LWRP default cmd_timeout seconds | Fixnum | 60
-storage_type | Storage driver for docker (nil, "aufs", or "devmapper") | String | auto-detected (see attributes/default.rb)
+storage_type | Storage driver for docker (nil, "aufs", or "devicemapper") | String | auto-detected (see attributes/default.rb)
 version | Version of docker | String | nil
 virtualization_type | Virtualization driver for docker (nil or "lxc") | String | auto-detected (see attributes/default.rb)
 
@@ -99,7 +99,7 @@ url | Repository URL for docker source | String | "https://github.com/dotcloud/d
 * `recipe[docker::aufs]` Installs/Loads AUFS Linux module
 * `recipe[docker::binary]` Installs Docker binary
 * `recipe[docker::cgroups]` Installs/configures default platform Control Groups support
-* `recipe[docker::devmapper]` Installs/Configures Device Mapper
+* `recipe[docker::devicemapper]` Installs/Configures Device Mapper
 * `recipe[docker::group]` Installs/Configures docker group
 * `recipe[docker::lxc]` Installs/configures default platform LXC support
 * `recipe[docker::package]` Installs Docker via package
