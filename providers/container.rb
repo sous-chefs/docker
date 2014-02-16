@@ -268,26 +268,46 @@ def service?
 end
 
 def service_action(actions)
-  service service_name do
-    case new_resource.init_type
-    when 'systemd'
-      provider Chef::Provider::Service::Systemd
-    when 'upstart'
-      provider Chef::Provider::Service::Upstart
+  if new_resource.init_type == 'runit'
+    runit_service service_name do
+      run_template_name 'docker-container'
+      action actions
     end
-    supports :status => true, :restart => true, :reload => true
-    action actions
+  else
+    service service_name do
+      case new_resource.init_type
+      when 'systemd'
+        provider Chef::Provider::Service::Systemd
+      when 'upstart'
+        provider Chef::Provider::Service::Upstart
+      end
+      supports :status => true, :restart => true, :reload => true
+      action actions
+    end
   end
 end
 
 def service_create
   case new_resource.init_type
+  when 'runit'
+    service_create_runit
   when 'systemd'
     service_create_systemd
   when 'sysv'
     service_create_sysv
   when 'upstart'
     service_create_upstart
+  end
+end
+
+def service_create_runit
+  runit_service service_name do
+    cookbook new_resource.cookbook
+    default_logger true
+    options(
+      'service_name' => service_name
+    )
+    run_template_name service_template
   end
 end
 
@@ -365,12 +385,20 @@ end
 
 def service_remove
   case new_resource.init_type
+  when 'runit'
+    service_remove_runit
   when 'systemd'
     service_remove_systemd
   when 'sysv'
     service_remove_sysv
   when 'upstart'
     service_remove_upstart
+  end
+end
+
+def service_remove_runit
+  runit_service service_name do
+    action :disable
   end
 end
 
@@ -415,6 +443,8 @@ end
 def service_template
   return new_resource.init_template unless new_resource.init_template.nil?
   case new_resource.init_type
+  when 'runit'
+    'docker-container'
   when 'systemd'
     'docker-container.service.erb'
   when 'upstart'
