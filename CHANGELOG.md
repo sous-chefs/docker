@@ -1,3 +1,19 @@
+## 0.31.0
+
+Lots of init love this release. Now supporting runit.
+
+Please note change of storage_type attribute from devmapper to devicemapper (and associated recipe name change) to match docker's name for the driver.
+
+Cookbook now automatically adds -s option to init configurations if storage_type is defined, which is it by default. If you were specifying -s in the options attribute, you no longer need to do so. In my quick testing, docker daemon doesn't seem to mind if -s is specified twice on startup, although you'll probably want to get rid of the extra specification.
+
+I've also dropped the LANG= and LC_ALL= locale environment settings from the Upstart job configuration. Its not specified in the default docker job. Please open an issue in docker project and here if for some reason this is actually necessary.
+
+* Bugfix: Match devicemapper storage_type attribute to match docker driver name (along with recipe name)
+* Enhancement: [#72][]: Add initial runit init_type
+* Enhancement: [#60][]: Automatically set docker -d -s from storage_type attribute
+* Enhancement: Simplify default/sysconfig file into one template (docker.sysconfig.erb) and source into SysV/Upstart init configurations
+* Enhancement: Add Debian docker daemon SysV init template
+
 ## 0.30.2
 
 * Bugfix: [#68][]: Fix CommandTimeout handling in LWRPs
@@ -309,11 +325,13 @@ Lots of community contributions this release -- thanks!
 [#57]: https://github.com/bflad/chef-docker/issues/57
 [#58]: https://github.com/bflad/chef-docker/issues/58
 [#59]: https://github.com/bflad/chef-docker/issues/59
+[#60]: https://github.com/bflad/chef-docker/issues/60
 [#62]: https://github.com/bflad/chef-docker/issues/62
 [#63]: https://github.com/bflad/chef-docker/issues/63
 [#64]: https://github.com/bflad/chef-docker/issues/64
 [#65]: https://github.com/bflad/chef-docker/issues/65
 [#67]: https://github.com/bflad/chef-docker/issues/67
 [#68]: https://github.com/bflad/chef-docker/issues/68
+[#72]: https://github.com/bflad/chef-docker/issues/72
 [@jcrobak]: https://github.com/jcrobak
 [@wingrunr21]: https://github.com/wingrunr21
