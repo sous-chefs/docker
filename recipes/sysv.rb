@@ -12,7 +12,7 @@ template '/etc/init.d/docker' do
 end
 
 template settings_file do
-  source "docker.sysconfig.erb"
+  source 'docker.sysconfig.erb'
   mode '0644'
   owner 'root'
   group 'root'
