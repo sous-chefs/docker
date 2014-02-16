@@ -1,20 +1,15 @@
-description     "Run dockerd"
+description "Docker daemon"
 
-start on runlevel [2345]
+start on filesystem and started lxc-net
 stop on runlevel [!2345]
 
-# if you want it to automatically restart if it crashes, leave the next line in
 respawn
 
 script
-    <% if node['docker']['http_proxy'] -%>
-    export HTTP_PROXY=<%= node['docker']['http_proxy'] %>
-    <% end -%>
-    <% case node['platform'] -%>
-    <% when 'fedora' -%>
-    test -f /etc/locale.conf && . /etc/locale.conf || true
-    <% when 'ubuntu' -%>
-    test -f /etc/default/locale && . /etc/default/locale || true
-    <% end -%>
-    LANG=$LANG LC_ALL=$LANG <%= node['docker']['install_dir'] %>/docker -d<%= node['docker']['bind_socket'] ? " -H #{node['docker']['bind_socket']}" : '' %><%= node['docker']['bind_uri'] ? " -H #{node['docker']['bind_uri']}" : '' %><%= node['docker']['container_init_type'] ? ' -r=false' : '' %><%= node['docker']['options'] ? " #{node['docker']['options']}" : '' %>
+    DOCKER=/usr/bin/$UPSTART_JOB
+    DOCKER_OPTS=
+    if [ -f /etc/default/$UPSTART_JOB ]; then
+        . /etc/default/$UPSTART_JOB
+    fi
+    "$DOCKER" -d $DOCKER_OPTS
 end script
