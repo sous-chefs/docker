@@ -127,8 +127,11 @@ def commit
 end
 
 def container_command_matches_if_exists?(command)
-  return false if new_resource.command && !command.include?(new_resource.command)
-  true
+  return true if new_resource.command.nil?
+  # try the exact command but also the command with the ' and " stripped out, since docker will
+  # sometimes strip out quotes.
+  subcommand = new_resource.command.gsub(/['"]/, '')
+  command.include?(new_resource.command) || command.include?(subcommand)
 end
 
 def container_id_matches?(id)
