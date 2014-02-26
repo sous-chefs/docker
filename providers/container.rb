@@ -3,15 +3,13 @@ include Helpers::Docker
 def load_current_resource
   @current_resource = Chef::Resource::DockerContainer.new(new_resource)
   wait_until_ready!
-  dps = docker_cmd!('ps -a -notrunc')
-  dps.stdout.each_line do |dps_line|
-    ps = dps(dps_line)
+  docker_containers.each do |ps|
     unless container_id_matches?(ps['id'])
       next unless container_image_matches?(ps['image'])
       next unless container_command_matches_if_exists?(ps['command'])
       next unless container_name_matches_if_exists?(ps['names'])
     end
-    Chef::Log.debug('Matched docker container: ' + dps_line.squeeze(' '))
+    Chef::Log.debug('Matched docker container: ' + ps['line'].squeeze(' '))
     @current_resource.container_name(ps['names'])
     @current_resource.created(ps['created'])
     @current_resource.id(ps['id'])
@@ -158,21 +156,63 @@ def cp
   docker_cmd!("cp #{current_resource.id}:#{new_resource.source} #{new_resource.destination}")
 end
 
-def dps(dps_line)
-  split_line = dps_line.split(/\s\s+/)
-  ps = {}
-  ps['id'] = split_line[0]
-  ps['image'] = split_line[1]
-  ps['command'] = split_line[2]
-  ps['created'] = split_line[3]
-  ps['status'] = split_line[4]
-  if split_line[6]
-    ps['ports'] = split_line[5]
-    ps['names'] = split_line[6]
+# Helper method for `docker_containers` that looks at the position of the headers in the output of
+# `docker ps` to figure out the span of the data for each column within a row. This information is
+# stored in the `ranges` hash, which is returned at the end.
+def get_ranges(header)
+  container_id_index = 0
+  image_index = header.index('IMAGE')
+  command_index = header.index('COMMAND')
+  created_index = header.index('CREATED')
+  status_index = header.index('STATUS')
+  ports_index = header.index('PORTS')
+  names_index = header.index('NAMES')
+
+  ranges = {
+    id: [container_id_index, image_index],
+    image: [image_index, command_index],
+    command: [command_index, created_index],
+    created: [created_index, status_index]
+  }
+  if ports_index > 0
+    ranges[:status] = [status_index, ports_index]
+    ranges[:ports] = [ports_index, names_index]
   else
-    ps['names'] = split_line[5]
+    ranges[:status] = [status_index, names_index]
   end
-  ps
+  ranges[:names] = [names_index]
+  ranges
+end
+
+#
+# Get a list of all docker containers by parsing the output of `docker ps -a -notrunc`.
+#
+# Uses `get_ranges` to determine where column data is within each row. Then, for each line after
+# the header, a hash is build up with the values for each of the columns. A special 'line' entry
+# is added to the hash for the raw line of the row.
+#
+# The array of hashes is returned.
+def docker_containers
+  dps = docker_cmd!('ps -a -notrunc')
+
+  lines = dps.stdout.lines.to_a
+  ranges = get_ranges(lines[0])
+
+  lines[1, lines.length].map do |line|
+    ps = { 'line' => line }
+    [:id, :image, :command, :created, :status, :ports, :names].each do |name|
+      if ranges.key?(name)
+        start = ranges[name][0]
+        if ranges[name].length == 2
+          finish = ranges[name][1]
+        else
+          finish = line.length
+        end
+        ps[name.to_s] = line[start..finish - 1].strip
+      end
+    end
+    ps
+  end
 end
 
 def command_timeout_error_message
