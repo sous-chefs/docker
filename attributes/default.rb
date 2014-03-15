@@ -12,7 +12,7 @@ default['docker']['bind_socket'] = 'unix:///var/run/docker.sock'
 default['docker']['bind_uri'] = nil
 default['docker']['container_cmd_timeout'] = 60
 default['docker']['docker_daemon_timeout'] = 10
-default['docker']['exec_driver'] = 'lxc'
+default['docker']['exec_driver'] = 'native'
 
 # DEPRECATED: will be removed in chef-docker 1.0
 default['docker']['virtualization_type'] = node['docker']['exec_driver']

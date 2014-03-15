@@ -54,7 +54,7 @@ bind_uri | TCP URI docker should bind | String | nil
 container_cmd_timeout | container LWRP default cmd_timeout seconds | Fixnum | 60
 container_init_type | Init type for docker containers (nil, "runit", "systemd", or "upstart") | NilClass or String | `node['docker']['init_type']`
 docker_daemon_timeout | Timeout to wait for the docker daemon to start in seconds | Fixnum | 10
-exec_driver | Execution driver for docker (nil or "lxc") | String | auto-detected (see attributes/default.rb)
+exec_driver | Execution driver for docker (nil, "lxc", or "native") | String | native
 group | Group for docker socket and group_members | String | docker
 group_members | Manage docker group members | Array of Strings | []
 http_proxy | HTTP_PROXY environment variable | String | nil
