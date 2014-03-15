@@ -8,4 +8,20 @@ when 'oracle'
     supports :status => true, :restart => true, :reload => true
     action [:enable, :start]
   end
+when 'ubuntu'
+  package 'cgroup-bin'
+
+  if node['platform_version'] == '12.04'
+    service 'cgconfig' do
+      action :start
+    end
+
+    service 'cgred' do
+      action :start
+    end
+  else
+    service 'cgroup-lite' do
+      action :start
+    end
+  end
 end
