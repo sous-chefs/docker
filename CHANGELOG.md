@@ -15,6 +15,7 @@ This release includes Docker 0.9.0 changes such as defaulting to libcontainer an
 * DEPRECATED: Rename storage_type attribute to storage_driver to [match Docker terminology](http://docs.docker.io/en/latest/reference/commandline/cli/#daemon) (storage_type will be removed in chef-docker 1.0)
 * DEPRECATED: Rename virtualization_type attribute to exec_driver to [match Docker terminology](http://docs.docker.io/en/latest/reference/commandline/cli/#daemon) (virtualization_type will be removed in chef-docker 1.0)
 * Enhancement: [#77][]: Improved docker ps handling
+* Enhancement: [#84][]: Docker 0.9.0: Add -e flag for execution driver
 * Enhancement: [#86][]: Add Chefspec LWRP matchers
 
 ## 0.31.0
@@ -353,6 +354,7 @@ Lots of community contributions this release -- thanks!
 [#68]: https://github.com/bflad/chef-docker/issues/68
 [#72]: https://github.com/bflad/chef-docker/issues/72
 [#77]: https://github.com/bflad/chef-docker/issues/77
+[#84]: https://github.com/bflad/chef-docker/issues/84
 [#86]: https://github.com/bflad/chef-docker/issues/86
 [@jcrobak]: https://github.com/jcrobak
 [@wingrunr21]: https://github.com/wingrunr21
