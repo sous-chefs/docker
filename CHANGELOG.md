@@ -17,6 +17,7 @@ This release includes Docker 0.9.0 changes and defaults, such as setting exec_dr
 * Enhancement: [#77][]: Improved docker ps handling
 * Enhancement: [#78][]: Docker 0.9.0: Make --rm the default for docker build
 * Enhancement: [#82][]: Docker 0.9.0: Add -f flag to docker rm to force removal of running containers
+* Enhancement: Add -f flag for docker rmi to force removal of images
 * Enhancement: [#84][]: Docker 0.9.0: Add -e flag for execution driver
 * Enhancement: [#86][]: Add Chefspec LWRP matchers
 

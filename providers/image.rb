@@ -205,9 +205,12 @@ def push
 end
 
 def remove
+  remove_args = cli_args(
+    'f' => new_resource.force
+  )
   image_name = new_resource.image_name
   image_name = "#{image_name}:#{new_resource.tag}" if new_resource.tag
-  docker_cmd!("rmi #{image_name}")
+  docker_cmd!("rmi #{remove_args} #{image_name}")
 end
 
 def repository_and_tag_args
