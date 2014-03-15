@@ -12,6 +12,11 @@ default['docker']['bind_socket'] = 'unix:///var/run/docker.sock'
 default['docker']['bind_uri'] = nil
 default['docker']['container_cmd_timeout'] = 60
 default['docker']['docker_daemon_timeout'] = 10
+default['docker']['execution_driver'] = 'lxc'
+
+# DEPRECATED: will be removed in chef-docker 1.0
+default['docker']['virtualization_type'] = node['docker']['execution_driver']
+
 default['docker']['group_members'] = []
 default['docker']['http_proxy'] = nil
 default['docker']['image_cmd_timeout'] = 300
@@ -46,7 +51,7 @@ default['docker']['install_dir'] =
   else '/usr/bin'
   end
 
-default['docker']['storage_type'] = value_for_platform(
+default['docker']['storage_driver'] = value_for_platform(
   %w{ centos fedora oracle redhat } => {
     'default' => 'devicemapper'
   },
@@ -55,9 +60,10 @@ default['docker']['storage_type'] = value_for_platform(
   },
   'default' => nil
 )
+# DEPRECATED: will be removed in chef-docker 1.0
+default['docker']['storage_type'] = node['docker']['storage_driver']
 
 default['docker']['version'] = nil
-default['docker']['virtualization_type'] = 'lxc'
 
 # Binary attributes
 default['docker']['binary']['version'] = node['docker']['version'] || 'latest'

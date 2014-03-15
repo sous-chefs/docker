@@ -7,15 +7,15 @@ when 'debian', 'ubuntu'
     value 1
     only_if { node['platform'] == 'debian' }
   end
-when 'oracle'
-  include_recipe 'docker::cgroups'
 end
+
+include_recipe 'docker::cgroups' if node['docker']['execution_driver'] == 'lxc'
 
 unless node['docker']['install_type'] == 'package'
   if node['platform'] == 'ubuntu' && Chef::VersionConstraint.new('< 13.10').include?(node['platform_version'])
-    include_recipe "docker::#{node['docker']['storage_type']}" if node['docker']['storage_type']
+    include_recipe "docker::#{node['docker']['storage_driver']}" if node['docker']['storage_driver']
   end
-  include_recipe "docker::#{node['docker']['virtualization_type']}" if node['docker']['virtualization_type']
+  include_recipe "docker::#{node['docker']['execution_driver']}" if node['docker']['execution_driver']
   if node['docker']['install_type'] == 'source'
     include_recipe 'golang'
     include_recipe 'git'

@@ -16,8 +16,8 @@ DOCKER_OPTS="$DOCKER_OPTS -r=false"
 <% if node['docker']['options'] -%>
 DOCKER_OPTS="$DOCKER_OPTS <%= node['docker']['options'] %>"
 <% end -%>
-<% if node['docker']['storage_type'] -%>
-DOCKER_OPTS="$DOCKER_OPTS -s <%= node['docker']['storage_type'] %>"
+<% if node['docker']['storage_driver'] -%>
+DOCKER_OPTS="$DOCKER_OPTS -s <%= node['docker']['storage_driver'] %>"
 <% end -%>
 
 # If you need Docker to use an HTTP proxy, it can also be specified here.
