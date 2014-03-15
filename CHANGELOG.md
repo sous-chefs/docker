@@ -1,3 +1,22 @@
+## 1.0.0 (unreleased)
+
+It appears we're getting close to Docker 1.0, which will mean a 1.0 release of the cookbook that removes any deprecations. Here's a quick listing so you can be sure you can upgrade:
+
+* storage_type attribute renamed to storage_driver
+* virtualization_type attribute renamed to exec_driver
+* image LWRP dockerfile, image_url, and path attributes replaced with source attribute
+* container LWRP Fixnum port attribute: use full String notation from Docker documentation in port attribute instead
+* container LWRP public_port attribute: use port attribute instead
+
+## 0.32.0 (unreleased)
+
+This release includes Docker 0.9.0 changes such as defaulting to libcontainer and more.
+
+* DEPRECATED: Rename storage_type attribute to storage_driver to [match Docker terminology](http://docs.docker.io/en/latest/reference/commandline/cli/#daemon) (storage_type will be removed in chef-docker 1.0)
+* DEPRECATED: Rename virtualization_type attribute to exec_driver to [match Docker terminology](http://docs.docker.io/en/latest/reference/commandline/cli/#daemon) (virtualization_type will be removed in chef-docker 1.0)
+* Enhancement: [#77][]: Improved docker ps handling
+* Enhancement: [#86][]: Add Chefspec LWRP matchers
+
 ## 0.31.0
 
 Lots of init love this release. Now supporting runit.
@@ -333,5 +352,7 @@ Lots of community contributions this release -- thanks!
 [#67]: https://github.com/bflad/chef-docker/issues/67
 [#68]: https://github.com/bflad/chef-docker/issues/68
 [#72]: https://github.com/bflad/chef-docker/issues/72
+[#77]: https://github.com/bflad/chef-docker/issues/77
+[#86]: https://github.com/bflad/chef-docker/issues/86
 [@jcrobak]: https://github.com/jcrobak
 [@wingrunr21]: https://github.com/wingrunr21
