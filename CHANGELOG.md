@@ -17,7 +17,9 @@ Attribute deprecations so you can be sure you can upgrade:
 * container LWRP Fixnum port attribute: use full String notation from Docker documentation in port attribute instead
 * container LWRP public_port attribute: use port attribute instead
 
-## 0.32.0 (unreleased)
+## 0.32.0
+
+_If you're using CentOS/RHEL with EPEL, upcoming docker-io 0.9.0 package upgrade can be tracked at [Bugzilla 1074880](https://bugzilla.redhat.com/show_bug.cgi?id=1074880)_
 
 This release includes Docker 0.9.0 changes and defaults, such as setting exec_driver to libcontainer ("native"), setting -rm on docker build, double dash arguments on the CLI, additional flags, etc.
 
