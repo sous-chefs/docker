@@ -5,7 +5,7 @@ def load_current_resource
   wait_until_ready!
   dockercfg = dockercfg_parse
   if dockercfg && login_matches(dockercfg[new_resource.server])
-    Chef::Log.debug("Matched registry login: #{new_resource.server}: #{dockercfg[new_resource.server].to_s}")
+    Chef::Log.debug("Matched registry login: #{new_resource.server}: #{dockercfg[new_resource.server]}")
     @current_resource.server(new_resource.server)
     @current_resource.username(dockercfg[new_resource.server]['username'])
     @current_resource.password(dockercfg[new_resource.server]['password'])

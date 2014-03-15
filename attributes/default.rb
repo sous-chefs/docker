@@ -23,13 +23,13 @@ default['docker']['image_cmd_timeout'] = 300
 default['docker']['registry_cmd_timeout'] = 60
 
 default['docker']['init_type'] = value_for_platform(
-  %w{ centos debian oracle redhat } => {
+  %w(centos debian oracle redhat) => {
     'default' => 'sysv'
   },
-  %w{ fedora } => {
+  %w(fedora) => {
     'default' => 'systemd'
   },
-  %w{ ubuntu } => {
+  %w(ubuntu) => {
     'default' => 'upstart'
   },
   'default' => 'upstart'
@@ -38,7 +38,7 @@ default['docker']['init_type'] = value_for_platform(
 default['docker']['container_init_type'] = node['docker']['init_type']
 
 default['docker']['install_type'] = value_for_platform(
-  %w{ centos debian fedora redhat ubuntu } => {
+  %w(centos debian fedora redhat ubuntu) => {
     'default' => 'package'
   },
   'default' => 'binary'
@@ -52,10 +52,10 @@ default['docker']['install_dir'] =
   end
 
 default['docker']['storage_driver'] = value_for_platform(
-  %w{ centos fedora oracle redhat } => {
+  %w(centos fedora oracle redhat) => {
     'default' => 'devicemapper'
   },
-  %w{ debian ubuntu } => {
+  %w(debian ubuntu) => {
     'default' => 'aufs'
   },
   'default' => nil

@@ -448,7 +448,7 @@ end
 def service_remove_systemd
   service_action([:stop, :disable])
 
-  %w{service socket}.each do |f|
+  %w(service socket).each do |f|
     file "/usr/lib/systemd/system/#{service_name}.#{f}" do
       action :delete
     end
