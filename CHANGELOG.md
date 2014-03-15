@@ -15,6 +15,7 @@ This release includes Docker 0.9.0 changes and defaults, such as setting exec_dr
 * DEPRECATED: Rename storage_type attribute to storage_driver to [match Docker terminology](http://docs.docker.io/en/latest/reference/commandline/cli/#daemon) (storage_type will be removed in chef-docker 1.0)
 * DEPRECATED: Rename virtualization_type attribute to exec_driver to [match Docker terminology](http://docs.docker.io/en/latest/reference/commandline/cli/#daemon) (virtualization_type will be removed in chef-docker 1.0)
 * Bugfix: [#80][]: Use double dashed arguments on CLI
+* Bugfix: Surround String values on CLI with quotes
 * Enhancement: [#77][]: Improved docker ps handling
 * Enhancement: [#78][]: Docker 0.9.0: Make --rm the default for docker build
 * Enhancement: [#81][]: Docker 0.9.0: Add a -G option to specify the group which unix sockets belong
