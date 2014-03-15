@@ -16,6 +16,7 @@ This release includes Docker 0.9.0 changes and defaults, such as setting exec_dr
 * DEPRECATED: Rename virtualization_type attribute to exec_driver to [match Docker terminology](http://docs.docker.io/en/latest/reference/commandline/cli/#daemon) (virtualization_type will be removed in chef-docker 1.0)
 * Enhancement: [#77][]: Improved docker ps handling
 * Enhancement: [#78][]: Docker 0.9.0: Make --rm the default for docker build
+* Enhancement: [#81][]: Docker 0.9.0: Add a -G option to specify the group which unix sockets belong
 * Enhancement: [#82][]: Docker 0.9.0: Add -f flag to docker rm to force removal of running containers
 * Enhancement: Add -f flag for docker rmi to force removal of images
 * Enhancement: [#84][]: Docker 0.9.0: Add -e flag for execution driver
@@ -358,6 +359,8 @@ Lots of community contributions this release -- thanks!
 [#72]: https://github.com/bflad/chef-docker/issues/72
 [#77]: https://github.com/bflad/chef-docker/issues/77
 [#78]: https://github.com/bflad/chef-docker/issues/78
+[#81]: https://github.com/bflad/chef-docker/issues/81
+[#82]: https://github.com/bflad/chef-docker/issues/82
 [#84]: https://github.com/bflad/chef-docker/issues/84
 [#86]: https://github.com/bflad/chef-docker/issues/86
 [@jcrobak]: https://github.com/jcrobak

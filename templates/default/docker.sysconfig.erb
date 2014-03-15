@@ -22,6 +22,9 @@ DOCKER_OPTS="$DOCKER_OPTS -s <%= node['docker']['storage_driver'] %>"
 <% if node['docker']['exec_driver'] -%>
 DOCKER_OPTS="$DOCKER_OPTS -e <%= node['docker']['exec_driver'] %>"
 <% end -%>
+<% if node['docker']['group'] -%>
+DOCKER_OPTS="$DOCKER_OPTS -G <%= node['docker']['group'] %>"
+<% end -%>
 
 # If you need Docker to use an HTTP proxy, it can also be specified here.
 <% if node['docker']['http_proxy'] -%>

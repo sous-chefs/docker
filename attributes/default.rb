@@ -17,6 +17,7 @@ default['docker']['exec_driver'] = 'lxc'
 # DEPRECATED: will be removed in chef-docker 1.0
 default['docker']['virtualization_type'] = node['docker']['exec_driver']
 
+default['docker']['group'] = 'docker'
 default['docker']['group_members'] = []
 default['docker']['http_proxy'] = nil
 default['docker']['image_cmd_timeout'] = 300
