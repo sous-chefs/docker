@@ -19,6 +19,7 @@ attribute :dns, :kind_of => [String, Array]
 attribute :entrypoint, :kind_of => [String]
 attribute :env, :kind_of => [String, Array]
 attribute :expose, :kind_of => [Fixnum, String, Array]
+attribute :force, :kind_of => [TrueClass, FalseClass], :default => false
 attribute :hostname, :kind_of => [String]
 attribute :id, :kind_of => [String]
 attribute :init_type, :kind_of => [FalseClass, String], :default => node['docker']['container_init_type']

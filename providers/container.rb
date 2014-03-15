@@ -257,6 +257,7 @@ end
 
 def remove
   rm_args = cli_args(
+    'f' => new_resource.force,
     'link' => new_resource.link
   )
   docker_cmd!("rm #{rm_args} #{current_resource.id}")
