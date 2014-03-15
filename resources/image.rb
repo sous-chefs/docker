@@ -18,7 +18,7 @@ attribute :no_cache, :kind_of => [TrueClass, FalseClass], :default => false
 attribute :path, :kind_of => [String]
 attribute :registry, :kind_of => [String]
 attribute :repository, :kind_of => [String]
-attribute :rm, :kind_of => [TrueClass, FalseClass], :default => false
+attribute :rm, :kind_of => [TrueClass, FalseClass], :default => true
 attribute :source, :kind_of => [String]
 attribute :tag, :kind_of => [String]
 attribute :virtual_size, :kind_of => [String]
