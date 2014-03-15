@@ -1,6 +1,15 @@
 ## 1.0.0 (unreleased)
 
-It appears we're getting close to Docker 1.0, which will mean a 1.0 release of the cookbook that removes any deprecations. Here's a quick listing so you can be sure you can upgrade:
+It appears we're getting close to Docker 1.0, which will mean a 1.0 release of the cookbook that removes any attribute deprecations and *removes built-in recipes for exec_driver (such as LXC) and storage_driver (such as AUFS/devicemapper)*. I originally added these to this cookbook to help everyone get started, but the logic for them is beyond the scope of managing Docker and now Docker uses a native execution driver. I won't leave you stranded though as I'll try to get current LXC/filesystem features pulled into existing community cookbooks or create new ones with sufficient documentation in the README.
+
+Recipe deprecations so you can be sure you can upgrade (*please check linked issues for current status*):
+
+* [#88][]: Migrate AUFS logic to separate cookbook
+* [#89][]: Migrate cgroups logic to separate cookbook
+* [#90][]: Migrate devicemapper logic to separate cookbook
+* [#91][]: Migrate LXC logic to separate cookbook
+
+Attribute deprecations so you can be sure you can upgrade:
 
 * storage_type attribute renamed to storage_driver
 * virtualization_type attribute renamed to exec_driver
@@ -368,5 +377,9 @@ Lots of community contributions this release -- thanks!
 [#83]: https://github.com/bflad/chef-docker/issues/83
 [#84]: https://github.com/bflad/chef-docker/issues/84
 [#86]: https://github.com/bflad/chef-docker/issues/86
+[#88]: https://github.com/bflad/chef-docker/issues/88
+[#89]: https://github.com/bflad/chef-docker/issues/89
+[#90]: https://github.com/bflad/chef-docker/issues/90
+[#91]: https://github.com/bflad/chef-docker/issues/91
 [@jcrobak]: https://github.com/jcrobak
 [@wingrunr21]: https://github.com/wingrunr21
