@@ -30,13 +30,13 @@ EOH
       spec.each_pair do |arg, value|
         case value
         when Array
-          cli_line += value.map { |a| " -#{arg} " + a }.join
+          cli_line += value.map { |a| " --#{arg}=" + a }.join
         when FalseClass
-          cli_line += " -#{arg}=false"
+          cli_line += " --#{arg}=false"
         when Fixnum, Integer, String
-          cli_line += " -#{arg} #{value}"
+          cli_line += " --#{arg}=#{value}"
         when TrueClass
-          cli_line += " -#{arg}=true"
+          cli_line += " --#{arg}=true"
         end
       end
       cli_line

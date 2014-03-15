@@ -10,10 +10,11 @@ It appears we're getting close to Docker 1.0, which will mean a 1.0 release of t
 
 ## 0.32.0 (unreleased)
 
-This release includes Docker 0.9.0 changes and defaults, such as setting exec_driver to libcontainer, setting -rm on docker build, additional flags, etc.
+This release includes Docker 0.9.0 changes and defaults, such as setting exec_driver to libcontainer ("native"), setting -rm on docker build, double dash arguments on the CLI, additional flags, etc.
 
 * DEPRECATED: Rename storage_type attribute to storage_driver to [match Docker terminology](http://docs.docker.io/en/latest/reference/commandline/cli/#daemon) (storage_type will be removed in chef-docker 1.0)
 * DEPRECATED: Rename virtualization_type attribute to exec_driver to [match Docker terminology](http://docs.docker.io/en/latest/reference/commandline/cli/#daemon) (virtualization_type will be removed in chef-docker 1.0)
+* Bugfix: [#80][]: Use double dashed arguments on CLI
 * Enhancement: [#77][]: Improved docker ps handling
 * Enhancement: [#78][]: Docker 0.9.0: Make --rm the default for docker build
 * Enhancement: [#81][]: Docker 0.9.0: Add a -G option to specify the group which unix sockets belong
@@ -360,6 +361,7 @@ Lots of community contributions this release -- thanks!
 [#72]: https://github.com/bflad/chef-docker/issues/72
 [#77]: https://github.com/bflad/chef-docker/issues/77
 [#78]: https://github.com/bflad/chef-docker/issues/78
+[#80]: https://github.com/bflad/chef-docker/issues/80
 [#81]: https://github.com/bflad/chef-docker/issues/81
 [#82]: https://github.com/bflad/chef-docker/issues/82
 [#83]: https://github.com/bflad/chef-docker/issues/83
