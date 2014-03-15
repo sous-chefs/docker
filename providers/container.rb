@@ -115,7 +115,7 @@ end
 def commit
   commit_args = cli_args(
     'author' => new_resource.author,
-    'm' => new_resource.message,
+    'message' => new_resource.message,
     'run' => new_resource.run
   )
   commit_end_args = ''
@@ -257,7 +257,7 @@ end
 
 def remove
   rm_args = cli_args(
-    'f' => new_resource.force,
+    'force' => new_resource.force,
     'link' => new_resource.link
   )
   docker_cmd!("rm #{rm_args} #{current_resource.id}")
@@ -274,28 +274,28 @@ end
 
 def run
   run_args = cli_args(
-    'c' => new_resource.cpu_shares,
+    'cpu-shares' => new_resource.cpu_shares,
     'cidfile' => cidfile,
-    'd' => new_resource.detach,
+    'detach' => new_resource.detach,
     'dns' => [*new_resource.dns],
-    'e' => [*new_resource.env],
+    'env' => [*new_resource.env],
     'entrypoint' => new_resource.entrypoint,
     'expose' => [*new_resource.expose],
-    'h' => new_resource.hostname,
-    'i' => new_resource.stdin,
+    'host' => new_resource.hostname,
+    'interactive' => new_resource.stdin,
     'link' => [*new_resource.link],
     'lxc-conf' => [*new_resource.lxc_conf],
-    'm' => new_resource.memory,
+    'memory' => new_resource.memory,
     'name' => container_name,
-    'p' => [*port],
-    'P' => new_resource.publish_exposed_ports,
+    'publish' => [*port],
+    'publish-all' => new_resource.publish_exposed_ports,
     'privileged' => new_resource.privileged,
     'rm' => new_resource.remove_automatically,
-    't' => new_resource.tty,
-    'u' => new_resource.user,
-    'v' => [*new_resource.volume],
+    'tty' => new_resource.tty,
+    'user' => new_resource.user,
+    'volume' => [*new_resource.volume],
     'volumes-from' => new_resource.volumes_from,
-    'w' => new_resource.working_directory
+    'workdir' => new_resource.working_directory
   )
   dr = docker_cmd!("run #{run_args} #{new_resource.image} #{new_resource.command}")
   dr.error!
@@ -505,8 +505,8 @@ end
 
 def start
   start_args = cli_args(
-    'a' => new_resource.attach,
-    'i' => new_resource.stdin
+    'attach' => new_resource.attach,
+    'interactive' => new_resource.stdin
   )
   if service?
     service_create
@@ -517,7 +517,7 @@ end
 
 def stop
   stop_args = cli_args(
-    't' => new_resource.cmd_timeout
+    'time' => new_resource.cmd_timeout
   )
   if service?
     service_stop

@@ -36,9 +36,9 @@ end
 
 def login
   login_args = cli_args(
-    'e' => new_resource.email,
-    'p' => new_resource.password,
-    'u' => new_resource.username
+    'email' => new_resource.email,
+    'password' => new_resource.password,
+    'username' => new_resource.username
   )
   docker_cmd!("login #{login_args} #{new_resource.server} ")
 end
