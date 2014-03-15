@@ -26,6 +26,10 @@ DOCKER_OPTS="$DOCKER_OPTS -e <%= node['docker']['exec_driver'] %>"
 DOCKER_OPTS="$DOCKER_OPTS -G <%= node['docker']['group'] %>"
 <% end -%>
 
+<% if node['docker']['ramdisk'] -%>
+DOCKER_RAMDISK=<%= node['docker']['ramdisk'] %>
+<% end -%>
+
 # If you need Docker to use an HTTP proxy, it can also be specified here.
 <% if node['docker']['http_proxy'] -%>
 export HTTP_PROXY=<%= node['docker']['http_proxy'] %>

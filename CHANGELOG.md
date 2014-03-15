@@ -19,6 +19,7 @@ This release includes Docker 0.9.0 changes and defaults, such as setting exec_dr
 * Enhancement: [#81][]: Docker 0.9.0: Add a -G option to specify the group which unix sockets belong
 * Enhancement: [#82][]: Docker 0.9.0: Add -f flag to docker rm to force removal of running containers
 * Enhancement: Add -f flag for docker rmi to force removal of images
+* Enhancement: [#83][]: Docker 0.9.0: Add DOCKER_RAMDISK environment variable to make Docker work when the root is on a ramdisk
 * Enhancement: [#84][]: Docker 0.9.0: Add -e flag for execution driver
 * Enhancement: [#86][]: Add Chefspec LWRP matchers
 
@@ -361,6 +362,7 @@ Lots of community contributions this release -- thanks!
 [#78]: https://github.com/bflad/chef-docker/issues/78
 [#81]: https://github.com/bflad/chef-docker/issues/81
 [#82]: https://github.com/bflad/chef-docker/issues/82
+[#83]: https://github.com/bflad/chef-docker/issues/83
 [#84]: https://github.com/bflad/chef-docker/issues/84
 [#86]: https://github.com/bflad/chef-docker/issues/86
 [@jcrobak]: https://github.com/jcrobak

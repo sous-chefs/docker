@@ -5,6 +5,9 @@ After=network.target
 
 [Service]
 Type=simple
+<% if node['docker']['ramdisk'] -%>
+Environment="DOCKER_RAMDISK=<%= node['docker']['ramdisk'] %>"
+<% end -%>
 <% if node['docker']['http_proxy'] -%>
 Environment="HTTP_PROXY=<%= node['docker']['http_proxy'] %>"
 <% end -%>

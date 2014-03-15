@@ -21,6 +21,7 @@ default['docker']['group'] = 'docker'
 default['docker']['group_members'] = []
 default['docker']['http_proxy'] = nil
 default['docker']['image_cmd_timeout'] = 300
+default['docker']['ramdisk'] = false
 default['docker']['registry_cmd_timeout'] = 60
 
 default['docker']['init_type'] = value_for_platform(

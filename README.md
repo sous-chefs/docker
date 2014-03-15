@@ -63,6 +63,7 @@ init_type | Init type for docker ("runit", "systemd", "sysv", or "upstart") | St
 install_dir | Installation directory for docker binary | String | auto-detected (see attributes/default.rb)
 install_type | Installation type for docker ("binary", "package" or "source") | String | "package"
 options | Additional options to pass to docker. These could be flags like "-api-enable-cors". | String | nil
+ramdisk | Set DOCKER_RAMDISK when using RAM disk | TrueClass or FalseClass | false
 registry_cmd_timeout | registry LWRP default cmd_timeout seconds | Fixnum | 60
 storage_driver | Storage driver for docker (nil, "aufs", or "devicemapper") | String | auto-detected (see attributes/default.rb)
 version | Version of docker | String | nil
