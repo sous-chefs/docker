@@ -35,7 +35,7 @@ EOH
             " --#{arg}=#{v}"
           end
           cli_line += args.join
-        else
+        when FalseClass, Fixnum, Integer, String, TrueClass
           value = "\"#{value}\"" if value.is_a?(String)
           cli_line += " --#{arg}=#{value}"
         end
