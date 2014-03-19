@@ -23,6 +23,13 @@ when 'debian', 'ubuntu'
     options '--force-yes -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"'
     action node['docker']['package']['action'].intern
   end
+
+  # lxc-docker is missing a dependency for cgroup-bin on 13.10.
+  package 'cgroup-bin' do
+    options '--force-yes -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"'
+    action node['docker']['package']['action'].intern
+    not_if { Chef::Version.new(node['platform_version']) < Chef::Version.new('13.10') }
+  end
 when 'fedora'
   package 'docker-io' do
     version node['docker']['version']
