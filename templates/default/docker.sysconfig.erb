@@ -19,7 +19,7 @@ DOCKER_OPTS="$DOCKER_OPTS <%= node['docker']['options'] %>"
 <% if node['docker']['storage_driver'] -%>
 DOCKER_OPTS="$DOCKER_OPTS -s <%= node['docker']['storage_driver'] %>"
 <% end -%>
-<% if node['docker']['exec_driver'] -%>
+<% if node['docker']['use_exec_driver'] -%>
 DOCKER_OPTS="$DOCKER_OPTS -e <%= node['docker']['exec_driver'] %>"
 <% end -%>
 <% if node['docker']['group'] -%>
