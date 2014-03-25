@@ -1,2 +1,2 @@
 FROM busybox
-RUN /bin/echo hello world
+RUN /bin/echo hi
