@@ -22,6 +22,14 @@ unless node['docker']['install_type'] == 'package'
   end
 end
 
+# We must be on Docker >= 0.9.0 to specify an exec_driver
+node.set['docker']['use_exec_driver'] = false
+if node['docker']['exec_driver']
+  if node['docker']['binary']['version'] == 'latest' || Chef::VersionConstraint.new('>= 0.9.0').include?(node['docker']['binary']['version'])
+    node.set['docker']['use_exec_driver'] = true
+  end
+end
+
 include_recipe "docker::#{node['docker']['install_type']}"
 include_recipe 'docker::group' unless node['docker']['group_members'].empty?
 include_recipe "docker::#{node['docker']['init_type']}"
