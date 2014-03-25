@@ -172,10 +172,10 @@ def get_ranges(header)
   names_index = header.index('NAMES')
 
   ranges = {
-    id: [container_id_index, image_index],
-    image: [image_index, command_index],
-    command: [command_index, created_index],
-    created: [created_index, status_index]
+    :id => [container_id_index, image_index],
+    :image => [image_index, command_index],
+    :command => [command_index, created_index],
+    :created => [created_index, status_index]
   }
   if ports_index > 0
     ranges[:status] = [status_index, ports_index]
