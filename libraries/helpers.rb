@@ -30,6 +30,7 @@ EOH
       spec.each_pair do |arg, value|
         case value
         when Array
+          next if value.empty?
           args = value.map do |v|
             v = "\"#{v}\"" if v.is_a?(String)
             " --#{arg}=#{v}"
