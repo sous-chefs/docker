@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of docker_test.
 
+## 0.5.1:
+
+* Bugfix: Test docker_image :build for both file and directory source
+
 ## 0.5.0:
 
 * Bugfix: Switch docker@0.25.0 deprecated dockerfile container LWRP attribute to source
