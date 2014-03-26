@@ -172,10 +172,10 @@ def get_ranges(header)
   names_index = header.index('NAMES')
 
   ranges = {
-    id: [container_id_index, image_index],
-    image: [image_index, command_index],
-    command: [command_index, created_index],
-    created: [created_index, status_index]
+    :id => [container_id_index, image_index],
+    :image => [image_index, command_index],
+    :command => [command_index, created_index],
+    :created => [created_index, status_index]
   }
   if ports_index > 0
     ranges[:status] = [status_index, ports_index]
@@ -277,23 +277,23 @@ def run
     'cpu-shares' => new_resource.cpu_shares,
     'cidfile' => cidfile,
     'detach' => new_resource.detach,
-    'dns' => [*new_resource.dns],
-    'env' => [*new_resource.env],
+    'dns' => Array(new_resource.dns),
+    'env' => Array(new_resource.env),
     'entrypoint' => new_resource.entrypoint,
-    'expose' => [*new_resource.expose],
+    'expose' => Array(new_resource.expose),
     'host' => new_resource.hostname,
     'interactive' => new_resource.stdin,
-    'link' => [*new_resource.link],
-    'lxc-conf' => [*new_resource.lxc_conf],
+    'link' => Array(new_resource.link),
+    'lxc-conf' => Array(new_resource.lxc_conf),
     'memory' => new_resource.memory,
     'name' => container_name,
-    'publish' => [*port],
+    'publish' => Array(port),
     'publish-all' => new_resource.publish_exposed_ports,
     'privileged' => new_resource.privileged,
     'rm' => new_resource.remove_automatically,
     'tty' => new_resource.tty,
     'user' => new_resource.user,
-    'volume' => [*new_resource.volume],
+    'volume' => Array(new_resource.volume),
     'volumes-from' => new_resource.volumes_from,
     'workdir' => new_resource.working_directory
   )
