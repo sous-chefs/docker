@@ -17,6 +17,11 @@ Attribute deprecations so you can be sure you can upgrade:
 * container LWRP Fixnum port attribute: use full String notation from Docker documentation in port attribute instead
 * container LWRP public_port attribute: use port attribute instead
 
+## 0.32.1
+
+* Bugfix: [#98][]: Ensure Ruby 1.8 syntax is supported
+* Bugfix: Skip empty Array values in cli_args helper
+
 ## 0.32.0
 
 _If you're using CentOS/RHEL with EPEL, upcoming docker-io 0.9.0 package upgrade can be tracked at [Bugzilla 1074880](https://bugzilla.redhat.com/show_bug.cgi?id=1074880)_
@@ -385,5 +390,6 @@ Lots of community contributions this release -- thanks!
 [#89]: https://github.com/bflad/chef-docker/issues/89
 [#90]: https://github.com/bflad/chef-docker/issues/90
 [#91]: https://github.com/bflad/chef-docker/issues/91
+[#98]: https://github.com/bflad/chef-docker/issues/98
 [@jcrobak]: https://github.com/jcrobak
 [@wingrunr21]: https://github.com/wingrunr21
