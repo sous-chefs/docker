@@ -48,12 +48,22 @@ platforms:
     require_chef_omnibus: latest
 
 suites:
-- name: docker-lwrp
+- name: docker-lwrp-native
   run_list:
   - recipe[minitest-handler]
   - recipe[docker_test::default]
   - recipe[docker_test::image_lwrp]
   - recipe[docker_test::container_lwrp]
-  attributes: 
+  attributes:
     docker:
       container_cmd_timeout: 30
+- name: docker-lwrp-lxc
+  run_list:
+  - recipe[minitest-handler]
+  - recipe[docker_test::default]
+  - recipe[docker_test::image_lwrp]
+  - recipe[docker_test::container_lwrp]
+  attributes:
+    docker:
+      container_cmd_timeout: 30
+      exec_driver: 'lxc'
