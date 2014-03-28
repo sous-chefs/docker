@@ -9,13 +9,15 @@ when 'debian', 'ubuntu'
   end
 end
 
-include_recipe 'docker::cgroups' if node['docker']['exec_driver'] == 'lxc'
+if node['docker']['exec_driver'] == 'lxc'
+  include_recipe 'docker::cgroups'
+  include_recipe 'docker::lxc'
+end
 
 unless node['docker']['install_type'] == 'package'
   if node['platform'] == 'ubuntu' && Chef::VersionConstraint.new('< 13.10').include?(node['platform_version'])
     include_recipe "docker::#{node['docker']['storage_driver']}" if node['docker']['storage_driver']
   end
-  include_recipe 'docker::lxc' if node['docker']['exec_driver'] == 'lxc'
   if node['docker']['install_type'] == 'source'
     include_recipe 'golang'
     include_recipe 'git'
