@@ -281,7 +281,7 @@ def run
     'env' => Array(new_resource.env),
     'entrypoint' => new_resource.entrypoint,
     'expose' => Array(new_resource.expose),
-    'host' => new_resource.hostname,
+    'hostname' => new_resource.hostname,
     'interactive' => new_resource.stdin,
     'link' => Array(new_resource.link),
     'lxc-conf' => Array(new_resource.lxc_conf),
