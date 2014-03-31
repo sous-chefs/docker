@@ -23,6 +23,7 @@ default['docker']['http_proxy'] = nil
 default['docker']['image_cmd_timeout'] = 300
 default['docker']['ramdisk'] = false
 default['docker']['registry_cmd_timeout'] = 60
+default['docker']['tmpdir'] = nil
 
 default['docker']['init_type'] = value_for_platform(
   %w(centos debian oracle redhat) => {

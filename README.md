@@ -94,6 +94,7 @@ options | Additional options to pass to docker. These could be flags like "-api-
 ramdisk | Set DOCKER_RAMDISK when using RAM disk | TrueClass or FalseClass | false
 registry_cmd_timeout | registry LWRP default cmd_timeout seconds | Fixnum | 60
 storage_driver | Storage driver for docker (nil, "aufs", or "devicemapper") | String | auto-detected (see attributes/default.rb)
+tmpdir | TMPDIR environment variable | String | nil
 version | Version of docker | String | nil
 
 ### Binary Attributes

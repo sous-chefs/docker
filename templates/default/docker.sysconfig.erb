@@ -34,3 +34,8 @@ DOCKER_RAMDISK=<%= node['docker']['ramdisk'] %>
 <% if node['docker']['http_proxy'] -%>
 export HTTP_PROXY=<%= node['docker']['http_proxy'] %>
 <% end -%>
+
+# This is also a handy place to tweak where Docker's temporary files go.
+<% if node['docker']['tmpdir'] -%>
+export TMPDIR="<%= node['docker']['tmpdir'] %>"
+<% end -%>
