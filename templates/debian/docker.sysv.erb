@@ -14,13 +14,16 @@
 #  VMs, bare metal, OpenStack clusters, public clouds and more.
 ### END INIT INFO
 
+export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin
+
 BASE=$(basename $0)
 
+# modify these in /etc/default/$BASE (/etc/default/docker)
 DOCKER=/usr/bin/$BASE
 DOCKER_PIDFILE=/var/run/$BASE.pid
+DOCKER_LOGFILE=/var/log/$BASE.log
 DOCKER_OPTS=
-
-PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin
+DOCKER_DESC="Docker"
 
 # Get lsb functions
 . /lib/lsb/init-functions
@@ -30,8 +33,8 @@ if [ -f /etc/default/$BASE ]; then
 fi
 
 # see also init_is_upstart in /lib/lsb/init-functions (which isn't available in Ubuntu 12.04, or we'd use it)
-if [ -x /sbin/initctl ] && /sbin/initctl version 2>/dev/null | /bin/grep -q upstart; then
-  log_failure_msg "Docker is managed via upstart, try using service $BASE $1"
+if [ -x /sbin/initctl ] && /sbin/initctl version 2>/dev/null | grep -q upstart; then
+  log_failure_msg "$DOCKER_DESC is managed via upstart, try using service $BASE $1"
   exit 1
 fi
 
@@ -43,29 +46,59 @@ fi
 
 fail_unless_root() {
   if [ "$(id -u)" != '0' ]; then
-    log_failure_msg "Docker must be run as root"
+    log_failure_msg "$DOCKER_DESC must be run as root"
     exit 1
   fi
+}
+
+cgroupfs_mount() {
+  # see also https://github.com/tianon/cgroupfs-mount/blob/master/cgroupfs-mount
+  if grep -v '^#' /etc/fstab | grep -q cgroup \
+    || [ ! -e /proc/cgroups ] \
+    || [ ! -d /sys/fs/cgroup ]; then
+    return
+  fi
+  if ! mountpoint -q /sys/fs/cgroup; then
+    mount -t tmpfs -o uid=0,gid=0,mode=0755 cgroup /sys/fs/cgroup
+  fi
+  (
+    cd /sys/fs/cgroup
+    for sys in $(awk '!/^#/ { if ($4 == 1) print $1 }' /proc/cgroups); do
+      mkdir -p $sys
+      if ! mountpoint -q $sys; then
+        if ! mount -n -t cgroup -o $sys cgroup $sys; then
+          rmdir $sys || true
+        fi
+      fi
+    done
+  )
 }
 
 case "$1" in
   start)
     fail_unless_root
-    log_begin_msg "Starting Docker: $BASE"
-    mount | grep cgroup >/dev/null || mount -t cgroup none /sys/fs/cgroup 2>/dev/null
+
+    cgroupfs_mount
+
+    touch "$DOCKER_LOGFILE"
+    chgrp docker "$DOCKER_LOGFILE"
+
+    log_begin_msg "Starting $DOCKER_DESC: $BASE"
     start-stop-daemon --start --background \
+      --no-close \
       --exec "$DOCKER" \
       --pidfile "$DOCKER_PIDFILE" \
-      -- -d -p "$DOCKER_PIDFILE" \
-      $DOCKER_OPTS
+      -- \
+        -d -p "$DOCKER_PIDFILE" \
+        $DOCKER_OPTS \
+          >> "$DOCKER_LOGFILE" 2>&1
     log_end_msg $?
     ;;
 
   stop)
     fail_unless_root
-    log_begin_msg "Stopping Docker: $BASE"
-    start-stop-daemon --stop \
-      --pidfile "$DOCKER_PIDFILE"
+    log_begin_msg "Stopping $DOCKER_DESC: $BASE"
+    start-stop-daemon --stop --pidfile "$DOCKER_PIDFILE"
     log_end_msg $?
     ;;
 
