@@ -290,6 +290,7 @@ def run
     'memory' => new_resource.memory,
     'networking' => new_resource.networking,
     'name' => container_name,
+    'opt' => Array(new_resource.opt),
     'publish' => Array(port),
     'publish-all' => new_resource.publish_exposed_ports,
     'privileged' => new_resource.privileged,
