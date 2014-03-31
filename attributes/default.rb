@@ -11,6 +11,8 @@ default['docker']['arch'] =
 default['docker']['bind_socket'] = 'unix:///var/run/docker.sock'
 default['docker']['bind_uri'] = nil
 default['docker']['container_cmd_timeout'] = 60
+default['docker']['container_dns'] = nil
+default['docker']['container_dns_search'] = nil
 default['docker']['docker_daemon_timeout'] = 10
 default['docker']['exec_driver'] = 'native'
 

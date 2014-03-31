@@ -29,6 +29,7 @@ This release deprecates AUFS/device-mapper handling from chef-docker, but provid
 * Enhancement: [#110][]: Add docker Upstart pre-start script and limits configuration
 * Enhancement: [#108][]: Add --dns-search for docker run
 * Enhancement: [#104][]: Add TMPDIR
+* Enhancement: container_dns* attributes to set --dns and --dns-search for all containers
 
 ## 0.32.2
 
