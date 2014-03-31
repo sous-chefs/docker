@@ -364,6 +364,7 @@ cookbook | Cookbook to grab any templates | String | docker
 cpu_shares | CPU shares for container | Fixnum | nil
 detach | Detach from container when starting | TrueClass, FalseClass | nil
 dns | DNS servers for container | String, Array | nil
+dns_search | DNS search domains for container | String, Array | nil
 entrypoint | Overwrite the default entrypoint set by the image | String | nil
 env | Environment variables to pass to container | String, Array | nil
 expose | Expose a port from the container without publishing it to your host | Fixnum, String, Array | nil

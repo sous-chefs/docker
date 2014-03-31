@@ -278,6 +278,7 @@ def run
     'cidfile' => cidfile,
     'detach' => new_resource.detach,
     'dns' => Array(new_resource.dns),
+    'dns-search' => Array(new_resource.dns_search),
     'env' => Array(new_resource.env),
     'entrypoint' => new_resource.entrypoint,
     'expose' => Array(new_resource.expose),
