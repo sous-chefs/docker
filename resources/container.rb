@@ -30,6 +30,7 @@ attribute :label, :kind_of => [String]
 attribute :lxc_conf, :kind_of => [String, Array]
 attribute :memory, :kind_of => [Fixnum]
 attribute :message, :kind_of => [String]
+attribute :networking, :kind_of => [TrueClass, FalseClass]
 # Fixnum kind_of port attribute is DEPRECATED
 attribute :port, :kind_of => [Fixnum, String, Array]
 attribute :privileged, :kind_of => [TrueClass, FalseClass]

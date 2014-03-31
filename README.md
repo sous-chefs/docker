@@ -378,6 +378,7 @@ link | Add link to another container | String, Array | nil
 label | Options to pass to underlying labeling system | String | nil
 lxc_conf | Custom LXC options | String, Array | nil
 memory | Set memory limit for container | Fixnum | nil
+networking | Configure networking for container | TrueClass, FalseClass | true
 port | Map network port(s) to the container | Fixnum (*DEPRECATED*), String, Array | nil
 privileged | Give extended privileges | TrueClass, FalseClass | nil
 public_port (*DEPRECATED*) | Map host port to container | Fixnum | nil

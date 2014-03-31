@@ -288,6 +288,7 @@ def run
     'link' => Array(new_resource.link),
     'lxc-conf' => Array(new_resource.lxc_conf),
     'memory' => new_resource.memory,
+    'networking' => new_resource.networking,
     'name' => container_name,
     'publish' => Array(port),
     'publish-all' => new_resource.publish_exposed_ports,
