@@ -26,6 +26,7 @@ This release deprecates AUFS/device-mapper handling from chef-docker, but provid
 * Bugfix: [#109][]: Remove on lxc-net start from docker Upstart
 * Enhancement: [#88][]: Migrate AUFS logic to separate cookbook
 * Enhancement: [#90][]: Migrate device-mapper logic to separate cookbook
+* Enhancement: [#110][]: Add docker Upstart pre-start script and limits configuration
 
 ## 0.32.2
 
@@ -409,5 +410,6 @@ Lots of community contributions this release -- thanks!
 [#101]: https://github.com/bflad/chef-docker/issues/101
 [#103]: https://github.com/bflad/chef-docker/issues/103
 [#109]: https://github.com/bflad/chef-docker/issues/109
+[#110]: https://github.com/bflad/chef-docker/issues/110
 [@jcrobak]: https://github.com/jcrobak
 [@wingrunr21]: https://github.com/wingrunr21
