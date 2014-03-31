@@ -23,6 +23,7 @@ This release deprecates AUFS/device-mapper handling from chef-docker, but provid
 * aufs: [aufs on community site](http://community.opscode.com/cookbooks/aufs) / [chef-aufs on Github](https://github.com/bflad/chef-aufs)
 * device-mapper: [device-mapper on community site](http://community.opscode.com/cookbooks/device-mapper) / [chef-device-mapper on Github](https://github.com/bflad/chef-device-mapper)
 
+* Bugfix: [#109][]: Remove on lxc-net start from docker Upstart
 * Enhancement: [#88][]: Migrate AUFS logic to separate cookbook
 * Enhancement: [#90][]: Migrate device-mapper logic to separate cookbook
 
@@ -407,5 +408,6 @@ Lots of community contributions this release -- thanks!
 [#98]: https://github.com/bflad/chef-docker/issues/98
 [#101]: https://github.com/bflad/chef-docker/issues/101
 [#103]: https://github.com/bflad/chef-docker/issues/103
+[#109]: https://github.com/bflad/chef-docker/issues/109
 [@jcrobak]: https://github.com/jcrobak
 [@wingrunr21]: https://github.com/wingrunr21
