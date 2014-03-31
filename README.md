@@ -15,16 +15,16 @@ This cookbook was inspired by @thoward's docker-cookbook: https://github.com/tho
 ### Platforms
 
 * CentOS 6
-* Debian 7 (experimental)
+* Debian 7
 * Fedora 19
 * Fedora 20
 * Mac OS X (only docker installation currently)
-* Oracle 6 (experimental)
+* Oracle 6
 * RHEL 6
 * Ubuntu 12.04
 * Ubuntu 12.10
 * Ubuntu 13.04
-* Ubuntu 13.10 (experimental)
+* Ubuntu 13.10
 
 ### Cookbooks
 
