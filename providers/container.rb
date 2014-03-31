@@ -284,6 +284,7 @@ def run
     'expose' => Array(new_resource.expose),
     'hostname' => new_resource.hostname,
     'interactive' => new_resource.stdin,
+    'label' => new_resource.label,
     'link' => Array(new_resource.link),
     'lxc-conf' => Array(new_resource.lxc_conf),
     'memory' => new_resource.memory,

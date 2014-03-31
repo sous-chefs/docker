@@ -27,6 +27,7 @@ This release deprecates AUFS/device-mapper handling from chef-docker, but provid
 * Enhancement: [#88][]: Migrate AUFS logic to separate cookbook
 * Enhancement: [#90][]: Migrate device-mapper logic to separate cookbook
 * Enhancement: [#110][]: Add docker Upstart pre-start script and limits configuration
+* Enhancement: [#105][]: Add --label for docker run
 * Enhancement: [#108][]: Add --dns-search for docker run
 * Enhancement: [#104][]: Add TMPDIR
 * Enhancement: container_dns* attributes to set --dns and --dns-search for all containers
@@ -413,6 +414,7 @@ Lots of community contributions this release -- thanks!
 [#101]: https://github.com/bflad/chef-docker/issues/101
 [#103]: https://github.com/bflad/chef-docker/issues/103
 [#104]: https://github.com/bflad/chef-docker/issues/104
+[#105]: https://github.com/bflad/chef-docker/issues/105
 [#108]: https://github.com/bflad/chef-docker/issues/108
 [#109]: https://github.com/bflad/chef-docker/issues/109
 [#110]: https://github.com/bflad/chef-docker/issues/110
