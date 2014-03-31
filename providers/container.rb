@@ -272,6 +272,7 @@ def restart
   end
 end
 
+# rubocop:disable MethodLength
 def run
   run_args = cli_args(
     'cpu-shares' => new_resource.cpu_shares,
@@ -306,6 +307,7 @@ def run
   new_resource.id(dr.stdout.chomp)
   service_create if service?
 end
+# rubocop:enable MethodLength
 
 def running?
   @current_resource.status.include?('Up') if @current_resource.status
