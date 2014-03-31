@@ -3,6 +3,10 @@
 # Customize location of Docker binary (especially for development testing).
 DOCKER="<%= node['docker']['install_dir'] %>/docker"
 
+<% if node['docker']['logfile'] -%>
+DOCKER_LOGFILE=<%= node['docker']['logfile'] %>
+<% end -%>
+
 # Use DOCKER_OPTS to modify the daemon startup options.
 <% if node['docker']['bind_socket'] -%>
 DOCKER_OPTS="$DOCKER_OPTS -H <%= node['docker']['bind_socket'] %>"
@@ -24,6 +28,10 @@ DOCKER_OPTS="$DOCKER_OPTS -e <%= node['docker']['exec_driver'] %>"
 <% end -%>
 <% if node['docker']['group'] -%>
 DOCKER_OPTS="$DOCKER_OPTS -G <%= node['docker']['group'] %>"
+<% end -%>
+
+<% if node['docker']['pidfile'] -%>
+DOCKER_PIDFILE=<%= node['docker']['pidfile'] %>
 <% end -%>
 
 <% if node['docker']['ramdisk'] -%>

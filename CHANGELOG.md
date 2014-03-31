@@ -32,6 +32,7 @@ This release deprecates AUFS/device-mapper handling from chef-docker, but provid
 * Enhancement: [#107][]: Add --networking for docker run
 * Enhancement: [#108][]: Add --dns-search for docker run
 * Enhancement: [#104][]: Add TMPDIR
+* Enhancement: [#111][]: Add DOCKER_LOGFILE configuration
 * Enhancement: container_dns* attributes to set --dns and --dns-search for all containers
 
 ## 0.32.2
@@ -422,5 +423,6 @@ Lots of community contributions this release -- thanks!
 [#108]: https://github.com/bflad/chef-docker/issues/108
 [#109]: https://github.com/bflad/chef-docker/issues/109
 [#110]: https://github.com/bflad/chef-docker/issues/110
+[#111]: https://github.com/bflad/chef-docker/issues/111
 [@jcrobak]: https://github.com/jcrobak
 [@wingrunr21]: https://github.com/wingrunr21
