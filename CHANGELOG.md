@@ -17,6 +17,15 @@ Attribute deprecations so you can be sure you can upgrade:
 * container LWRP Fixnum port attribute: use full String notation from Docker documentation in port attribute instead
 * container LWRP public_port attribute: use port attribute instead
 
+## 0.33.0
+
+This release deprecates AUFS/device-mapper handling from chef-docker, but provides backwards compatibility by still including the default recipe of the new cookbooks. Please update your dependencies, Github watching/issues, and recipes to reflect the two new community cookbooks:
+* aufs: [aufs on community site](http://community.opscode.com/cookbooks/aufs) / [chef-aufs on Github](https://github.com/bflad/chef-aufs)
+* device-mapper: [device-mapper on community site](http://community.opscode.com/cookbooks/device-mapper) / [chef-device-mapper on Github](https://github.com/bflad/chef-device-mapper)
+
+* Enhancement: [#88][]: Migrate AUFS logic to separate cookbook
+* Enhancement: [#90][]: Migrate device-mapper logic to separate cookbook
+
 ## 0.32.2
 
 * Bugfix: [#101][]: Explicitly install lxc on Ubuntu (when lxc is exec_driver; continue to fully support LXC as a default installation path since its been since Docker 0.1)

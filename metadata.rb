@@ -29,6 +29,8 @@ supports 'redhat', '>= 6.0'
 supports 'ubuntu', '>= 12.04'
 
 depends 'apt'
+depends 'aufs', '>= 0.1.1'
+depends 'device-mapper', '>= 0.1.0'
 depends 'git'
 depends 'golang'
 depends 'homebrew'

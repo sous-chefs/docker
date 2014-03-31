@@ -37,10 +37,38 @@ This cookbook was inspired by @thoward's docker-cookbook: https://github.com/tho
 
 Third-Party Cookbooks
 
+* [aufs](https://github.com/bflad/chef-aufs)
+* [device-mapper](https://github.com/bflad/chef-device-mapper)
 * [golang](https://github.com/NOX73/chef-golang)
 * [lxc](https://github.com/hw-cookbooks/lxc)
 * [modules](https://github.com/Youscribe/modules-cookbook)
 * [sysctl](https://github.com/onehealth-cookbooks/sysctl)
+
+## Usage
+
+### Default Installation
+
+* Add `recipe[docker]` to your node's run list
+
+### Storage Drivers
+
+Beginning in chef-docker 1.0, storage driver installation and configuration is expected to be handled before this cookbook's execution, except where required by Docker.
+
+#### AUFS
+
+If you need AUFS support, consider adding the aufs cookbook to your node/recipe before docker.
+* [aufs on community site](http://community.opscode.com/cookbooks/aufs)
+* [chef-aufs on Github](https://github.com/bflad/chef-aufs)
+
+Then, set the `storage_driver` attribute of this cookbook to `aufs`.
+
+#### device-mapper
+
+If you need device-mapper support, consider adding the device-mapper cookbook to your node/recipe before docker.
+* [device-mapper on community site](http://community.opscode.com/cookbooks/device-mapper)
+* [chef-device-mapper on Github](https://github.com/bflad/chef-device-mapper)
+
+Then, set the `storage_driver` attribute of this cookbook to `devicemapper` (please note lack of dash).
 
 ## Attributes
 
@@ -689,12 +717,6 @@ Log into private registry with optional port:
       username 'privateme'
       password 'still_hope_this_is_in_encrypted_databag'
     end
-
-## Usage
-
-### Default Installation
-
-* Add `recipe[docker]` to your node's run list
 
 ## Testing and Development
 
