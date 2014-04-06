@@ -1,41 +1,64 @@
 #!/usr/bin/env rake
 
-task :default => 'foodcritic'
+# Style tests. Rubocop and Foodcritic
+namespace :style do
+  begin
+    require 'rubocop/rake_task'
+    desc 'Run Ruby style checks'
+    Rubocop::RakeTask.new(:ruby)
+  rescue LoadError
+    puts '>>>>> Rubocop gem not loaded, omitting tasks' unless ENV['CI']
+  end
 
-desc "Runs foodcritic linter"
-task :foodcritic do
-  Rake::Task[:prepare_sandbox].execute
+  begin
+    require 'foodcritic'
 
-  if Gem::Version.new("1.9.2") <= Gem::Version.new(RUBY_VERSION.dup)
-    sh "foodcritic -f any #{sandbox_path}"
-  else
-    puts "WARN: foodcritic run is skipped as Ruby #{RUBY_VERSION} is < 1.9.2."
+    desc 'Run Chef style checks'
+    FoodCritic::Rake::LintTask.new(:chef) do |t|
+      t.options = {
+        fail_tags: ['any']
+      }
+    end
+  rescue LoadError
+    puts '>>>>> foodcritic gem not loaded, omitting tasks' unless ENV['CI']
   end
 end
 
-desc "Runs knife cookbook test"
-task :knife do
-  Rake::Task[:prepare_sandbox].execute
+desc 'Run all style checks'
+task style: ['style:chef', 'style:ruby']
 
-  sh "bundle exec knife cookbook test cookbook -c test/.chef/knife.rb -o #{sandbox_path}/../"
+# Integration tests. Kitchen.ci
+namespace :integration do
+  begin
+    require 'kitchen/rake_tasks'
+
+    desc 'Run kitchen integration tests'
+    Kitchen::RakeTasks.new
+  rescue LoadError
+    puts '>>>>> Kitchen gem not loaded, omitting tasks' unless ENV['CI']
+  end
 end
 
-task :prepare_sandbox do
-  files = %w{*.md *.rb attributes definitions libraries files providers recipes resources templates}
-
-  rm_rf sandbox_path
-  mkdir_p sandbox_path
-  cp_r Dir.glob("{#{files.join(',')}}"), sandbox_path
+# Unit tests with rspec/chefspec
+namespace :unit do
+  begin
+    require 'rspec/core/rake_task'
+    desc 'Run unit tests with RSpec/ChefSpec'
+    RSpec::Core::RakeTask.new(:rspec) do |t|
+      t.rspec_opts = [].tap do |a|
+        a.push('--color')
+        a.push('--format progress')
+      end.join(' ')
+    end
+  rescue LoadError
+    puts '>>>>> rspec gem not loaded, omitting tasks' unless ENV['CI']
+  end
 end
 
-begin
-  require 'kitchen/rake_tasks'
-  Kitchen::RakeTasks.new
-rescue LoadError
-  puts ">>>>> Kitchen gem not loaded, omitting tasks" unless ENV['CI']
-end
+task unit: ['unit:rspec']
 
-private
-def sandbox_path
-  File.join(File.dirname(__FILE__), %w(tmp cookbooks cookbook))
-end
+desc 'Run all tests on Travis'
+task travis: ['style', 'unit']
+
+# Default
+task default: ['style', 'unit', 'integration:kitchen:all']
