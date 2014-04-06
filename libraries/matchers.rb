@@ -2,7 +2,7 @@ if defined?(ChefSpec)
   ChefSpec::Runner.define_runner_method(:docker_container)
   ChefSpec::Runner.define_runner_method(:docker_image)
   ChefSpec::Runner.define_runner_method(:docker_registry)
-  
+
   # Docker registry
   def login_docker_registry(resource_name)
     ChefSpec::Matchers::ResourceMatcher.new(:docker_registry, :login, resource_name)
