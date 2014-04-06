@@ -17,7 +17,7 @@ Attribute deprecations so you can be sure you can upgrade:
 * container LWRP Fixnum port attribute: use full String notation from Docker documentation in port attribute instead
 * container LWRP public_port attribute: use port attribute instead
 
-## 0.33.1 (unreleased)
+## 0.33.1
 
 * Bugfix: [#112][]: Defines runner methods for ChefSpec matchers
 * Bugfix: [#113][]: [D-15] Fedora 19 installs Docker 0.8.1, does not have the -G or -e flag
