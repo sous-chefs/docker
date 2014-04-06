@@ -17,6 +17,10 @@ Attribute deprecations so you can be sure you can upgrade:
 * container LWRP Fixnum port attribute: use full String notation from Docker documentation in port attribute instead
 * container LWRP public_port attribute: use port attribute instead
 
+## 0.33.1 (unreleased)
+
+* Bugfix: [#112][]: Defines runner methods for ChefSpec matchers
+
 ## 0.33.0
 
 This release deprecates AUFS/device-mapper handling from chef-docker, but provides backwards compatibility by still including the default recipe of the new cookbooks. Please update your dependencies, Github watching/issues, and recipes to reflect the two new community cookbooks:
@@ -424,5 +428,6 @@ Lots of community contributions this release -- thanks!
 [#109]: https://github.com/bflad/chef-docker/issues/109
 [#110]: https://github.com/bflad/chef-docker/issues/110
 [#111]: https://github.com/bflad/chef-docker/issues/111
+[#112]: https://github.com/bflad/chef-docker/issues/112
 [@jcrobak]: https://github.com/jcrobak
 [@wingrunr21]: https://github.com/wingrunr21
