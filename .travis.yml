@@ -5,4 +5,4 @@ rvm:
 before_script:
   - bundle exec berks install
 script:
-  - bundle exec travis
+  - bundle exec rake travis
