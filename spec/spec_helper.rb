@@ -7,6 +7,7 @@ require 'chefspec/berkshelf'
 # Prevent system calls from getting run on our local machine
 # lxc cookbook does this: https://github.com/hw-cookbooks/lxc/blob/master/recipes/default.rb#L47
 # TODO: Figure out a better way to do this - couldn't get stubbing to work (see below)
+# Kernel module
 module Kernel
   def system(cmd)
     true
