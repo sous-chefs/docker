@@ -50,6 +50,12 @@ Third-Party Cookbooks
 
 * Add `recipe[docker]` to your node's run list
 
+### Execution Drivers
+
+If your system is runs a Docker version before 0.9, you'll need to explicitly set up LXC outside of this cookbook. This will likely be true for most distros after Docker 1.0 and chef-docker 1.0 is released.
+* [lxc on community site](http://community.opscode.com/cookbooks/lxc)
+* [lxc on Github](https://github.com/hw-cookbooks/lxc/)
+
 ### Storage Drivers
 
 Beginning in chef-docker 1.0, storage driver installation and configuration is expected to be handled before this cookbook's execution, except where required by Docker.
@@ -84,8 +90,8 @@ container_dns | container LWRP default DNS server(s) | String, Array | nil
 container_dns_search | container LWRP default DNS search domain(s) | String, Array | nil
 container_init_type | Init type for docker containers (nil, "runit", "systemd", or "upstart") | NilClass or String | `node['docker']['init_type']`
 docker_daemon_timeout | Timeout to wait for the docker daemon to start in seconds | Fixnum | 10
-exec_driver | Execution driver for docker (nil, "lxc", or "native") | String | native
-group | Group for docker socket and group_members | String | docker
+exec_driver | Execution driver for docker (nil, "lxc", or "native") | String | nil (implicitly native as of 0.9.0)
+group | Group for docker socket and group_members | String | nil (implicitly docker)
 group_members | Manage docker group members | Array of Strings | []
 http_proxy | HTTP_PROXY environment variable | String | nil
 image_cmd_timeout | image LWRP default cmd_timeout seconds | Fixnum | 300

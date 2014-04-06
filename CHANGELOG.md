@@ -20,6 +20,7 @@ Attribute deprecations so you can be sure you can upgrade:
 ## 0.33.1 (unreleased)
 
 * Bugfix: [#112][]: Defines runner methods for ChefSpec matchers
+* Bugfix: [#113][]: [D-15] Fedora 19 installs Docker 0.8.1, does not have the -G or -e flag
 
 ## 0.33.0
 
@@ -429,5 +430,6 @@ Lots of community contributions this release -- thanks!
 [#110]: https://github.com/bflad/chef-docker/issues/110
 [#111]: https://github.com/bflad/chef-docker/issues/111
 [#112]: https://github.com/bflad/chef-docker/issues/112
+[#113]: https://github.com/bflad/chef-docker/issues/113
 [@jcrobak]: https://github.com/jcrobak
 [@wingrunr21]: https://github.com/wingrunr21

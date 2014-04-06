@@ -14,12 +14,12 @@ default['docker']['container_cmd_timeout'] = 60
 default['docker']['container_dns'] = nil
 default['docker']['container_dns_search'] = nil
 default['docker']['docker_daemon_timeout'] = 10
-default['docker']['exec_driver'] = 'native'
+default['docker']['exec_driver'] = nil
 
 # DEPRECATED: will be removed in chef-docker 1.0
 default['docker']['virtualization_type'] = node['docker']['exec_driver']
 
-default['docker']['group'] = 'docker'
+default['docker']['group'] = nil
 default['docker']['group_members'] = []
 default['docker']['http_proxy'] = nil
 default['docker']['image_cmd_timeout'] = 300
