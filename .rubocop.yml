@@ -4,7 +4,7 @@ AllCops:
     - Gemfile
     - Guardfile
     - Rakefile
-  Excludes:
+  Exclude:
     - test/**
     - vendor/**
     - ruby/**
