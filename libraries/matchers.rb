@@ -1,4 +1,5 @@
 if defined?(ChefSpec)
+  # Docker runner methods
   ChefSpec::Runner.define_runner_method(:docker_container)
   ChefSpec::Runner.define_runner_method(:docker_image)
   ChefSpec::Runner.define_runner_method(:docker_registry)
