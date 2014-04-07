@@ -17,7 +17,7 @@ describe 'docker::default' do
     stub_command('modprobe -n -v aufs').and_return('')
 
     # TODO: Contribute back to golang cookbook
-    stub_command('/usr/local/go/bin/go version | grep 1.1.2').and_return('1.1.2')
+    stub_command('/usr/local/go/bin/go version | grep "go1.2 "').and_return('1.2')
   end
 
   let(:chef_run) do
