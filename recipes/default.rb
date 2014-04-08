@@ -6,6 +6,7 @@ when 'debian', 'ubuntu'
   sysctl_param 'net.ipv4.ip_forward' do
     value 1
     only_if { node['platform'] == 'debian' }
+    not_if { node['docker']['ip_forward'] == false }
   end
 end
 

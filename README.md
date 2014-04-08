@@ -98,6 +98,7 @@ image_cmd_timeout | image LWRP default cmd_timeout seconds | Fixnum | 300
 init_type | Init type for docker ("runit", "systemd", "sysv", or "upstart") | String | auto-detected (see attributes/default.rb)
 install_dir | Installation directory for docker binary | String | auto-detected (see attributes/default.rb)
 install_type | Installation type for docker ("binary", "package" or "source") | String | "package"
+ip_forward | Sysctl set net.ipv4.ip_forward to 1 | Boolean | true
 logfile | Set custom DOCKER_LOGFILE | String | nil
 options | Additional options to pass to docker. These could be flags like "-api-enable-cors". | String | nil
 pidfile | Set custom DOCKER_PIDFILE | String | nil
