@@ -74,7 +74,7 @@ default['docker']['storage_type'] = node['docker']['storage_driver']
 default['docker']['version'] = nil
 
 # IP forwarding
-default['docker']['ip_forward'] = true
+default['docker']['ipv4_forward'] = true
 
 # Binary attributes
 default['docker']['binary']['version'] = node['docker']['version'] || 'latest'

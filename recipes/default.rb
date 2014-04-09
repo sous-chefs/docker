@@ -3,11 +3,9 @@ when 'debian', 'ubuntu'
   include_recipe 'apt'
   package 'apt-transport-https'
   package 'bsdtar'
-  unless node['docker']['ip_forward'] == true
-    sysctl_param 'net.ipv4.ip_forward' do
-      value 1
-      only_if { node['platform'] == 'debian' }
-    end
+  sysctl_param 'net.ipv4.ip_forward' do
+    value 1
+    only_if { node['platform'] == 'debian' && node['docker']['ipv4_forward'] }
   end
 end
 
