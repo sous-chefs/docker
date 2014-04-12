@@ -125,6 +125,8 @@ Attribute | Description | Type | Default
 ----------|-------------|------|--------
 bind_socket | Socket path that docker should bind | String | unix:///var/run/docker.sock
 bind_uri | TCP URI docker should bind | String | nil
+dns | DNS server(s) for containers | String, Array | nil
+dns_search | DNS search domain(s) for containers | String, Array | nil
 exec_driver | Execution driver for docker | String | nil (implicitly native as of 0.9.0)
 group | Group for docker socket and group_members | String | nil (implicitly docker)
 http_proxy | HTTP_PROXY environment variable | String | nil
@@ -150,8 +152,6 @@ These attributes are under the `node['docker']` namespace.
 Attribute | Description | Type | Default
 ----------|-------------|------|--------
 container_cmd_timeout | container LWRP default cmd_timeout seconds | Fixnum | 60
-container_dns | container LWRP default DNS server(s) | String, Array | nil
-container_dns_search | container LWRP default DNS search domain(s) | String, Array | nil
 container_init_type | Init type for docker containers (nil, "runit", "systemd", "sysv", or "upstart") | String | `node['docker']['init_type']`
 
 #### docker_image Attributes
@@ -409,8 +409,8 @@ container_name | Name for container/service | String | nil
 cookbook | Cookbook to grab any templates | String | docker
 cpu_shares | CPU shares for container | Fixnum | nil
 detach | Detach from container when starting | TrueClass, FalseClass | nil
-dns | DNS servers for container | String, Array | `node['docker']['container_dns']`
-dns_search | DNS search domains for container | String, Array | `node['docker']['container_dns_search']`
+dns | DNS servers for container | String, Array | nil
+dns_search | DNS search domains for container | String, Array | nil
 entrypoint | Overwrite the default entrypoint set by the image | String | nil
 env | Environment variables to pass to container | String, Array | nil
 expose | Expose a port from the container without publishing it to your host | Fixnum, String, Array | nil

@@ -27,6 +27,8 @@ EOH
 
     def self.daemon_cli_args(node)
       daemon_options = Helpers::Docker.cli_args(
+        'dns' => Array(node['docker']['dns']),
+        'dns-search' => Array(node['docker']['dns_search']),
         'exec-driver' => node['docker']['exec_driver'],
         'host' => Array(node['docker']['bind_socket']) +
           Array(node['docker']['bind_uri']),

@@ -59,6 +59,58 @@ describe 'docker::upstart' do
     end
   end
 
+  context 'when dns is set with String' do
+    let(:chef_run) do
+      runner = ChefSpec::Runner.new
+      runner.node.set['docker']['dns'] = '8.8.8.8'
+      runner.converge(described_recipe)
+    end
+
+    it 'adds dns flag to docker service' do
+      expect(chef_run).to render_file('/etc/default/docker').with_content(
+        /^DOCKER_OPTS='.* --dns="8.8.8.8".*'$/)
+    end
+  end
+
+  context 'when dns is set with Array' do
+    let(:chef_run) do
+      runner = ChefSpec::Runner.new
+      runner.node.set['docker']['dns'] = %w(8.8.8.8 8.8.4.4)
+      runner.converge(described_recipe)
+    end
+
+    it 'adds dns flags to docker service' do
+      expect(chef_run).to render_file('/etc/default/docker').with_content(
+        /^DOCKER_OPTS='.* --dns="8.8.8.8" --dns="8.8.4.4".*'$/)
+    end
+  end
+
+  context 'when dns_search is set with String' do
+    let(:chef_run) do
+      runner = ChefSpec::Runner.new
+      runner.node.set['docker']['dns_search'] = 'example.com'
+      runner.converge(described_recipe)
+    end
+
+    it 'adds dns-search flag to docker service' do
+      expect(chef_run).to render_file('/etc/default/docker').with_content(
+        /^DOCKER_OPTS='.* --dns-search="example.com".*'$/)
+    end
+  end
+
+  context 'when dns_search is set with Array' do
+    let(:chef_run) do
+      runner = ChefSpec::Runner.new
+      runner.node.set['docker']['dns_search'] = %w(foo.example.com bar.example.com)
+      runner.converge(described_recipe)
+    end
+
+    it 'adds dns-search flags to docker service' do
+      expect(chef_run).to render_file('/etc/default/docker').with_content(
+        /^DOCKER_OPTS='.* --dns-search="foo.example.com" --dns-search="bar.example.com".*'$/)
+    end
+  end
+
   context 'when exec_driver is set' do
     let(:chef_run) do
       runner = ChefSpec::Runner.new

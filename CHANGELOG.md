@@ -21,7 +21,9 @@ Attribute deprecations so you can be sure you can upgrade:
 
 Attributes now available for all docker daemon flags as well as system IP forwarding.
 
+* REMOVED: container_dns* attributes (use replacement dns* attributes on daemon for all containers or docker_container dns* attributes instead)
 * Enhancement: [#115][]: Add IP forwarding attributes
+* Enhancement: [#125][]: Use dns* attributes to set docker daemon options, not defaults per-container
 * Enhancement: [#128][]: Add checksum attribute for binary downloads
 * Enhancement: [#126][]: Set long option names for specified docker daemon options
 * Enhancement: [#127][]: Use a helper function to specify single line docker daemon options
@@ -441,6 +443,7 @@ Lots of community contributions this release -- thanks!
 [#112]: https://github.com/bflad/chef-docker/issues/112
 [#113]: https://github.com/bflad/chef-docker/issues/113
 [#115]: https://github.com/bflad/chef-docker/issues/115
+[#125]: https://github.com/bflad/chef-docker/issues/125
 [#126]: https://github.com/bflad/chef-docker/issues/126
 [#127]: https://github.com/bflad/chef-docker/issues/127
 [#128]: https://github.com/bflad/chef-docker/issues/128
