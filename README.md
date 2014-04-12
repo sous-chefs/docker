@@ -269,7 +269,7 @@ tag | Specific tag for image | String | nil
 
 Commit a container with optional repository, run specification, and tag:
 
-```
+```ruby
 docker_container 'myApp' do
   repository 'myRepo'
   tag Time.new.strftime("%Y%m%d%H%M")
