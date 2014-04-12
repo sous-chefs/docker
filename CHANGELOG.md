@@ -17,6 +17,12 @@ Attribute deprecations so you can be sure you can upgrade:
 * container LWRP Fixnum port attribute: use full String notation from Docker documentation in port attribute instead
 * container LWRP public_port attribute: use port attribute instead
 
+## 0.34.0 (unreleased)
+
+Attributes now available for all docker daemon flags as well as system IP forwarding.
+
+* Enhancement: [#115][]: Add IP forwarding attributes
+
 ## 0.33.1
 
 * Bugfix: [#112][]: Defines runner methods for ChefSpec matchers
@@ -431,5 +437,6 @@ Lots of community contributions this release -- thanks!
 [#111]: https://github.com/bflad/chef-docker/issues/111
 [#112]: https://github.com/bflad/chef-docker/issues/112
 [#113]: https://github.com/bflad/chef-docker/issues/113
+[#115]: https://github.com/bflad/chef-docker/issues/115
 [@jcrobak]: https://github.com/jcrobak
 [@wingrunr21]: https://github.com/wingrunr21
