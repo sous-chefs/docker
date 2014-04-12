@@ -73,6 +73,9 @@ default['docker']['storage_type'] = node['docker']['storage_driver']
 
 default['docker']['version'] = nil
 
+# IP forwarding
+default['docker']['ipv4_forward'] = true
+
 # Binary attributes
 default['docker']['binary']['version'] = node['docker']['version'] || 'latest'
 default['docker']['binary']['url'] = "http://get.docker.io/builds/#{node['kernel']['name']}/#{node['docker']['arch']}/docker-#{node['docker']['binary']['version']}"

@@ -85,6 +85,7 @@ group_members | Users to manage in `node['docker']['group']` | Array of Strings 
 init_type | Init type for docker ("runit", "systemd", "sysv", or "upstart") | String | auto-detected (see attributes/default.rb)
 install_dir | Installation directory for docker binary (custom setting only valid for non-package installations) | String | auto-detected (see attributes/default.rb)
 install_type | Installation type for docker ("binary", "package" or "source") | String | package
+ipv4_forward | Sysctl set net.ipv4.ip_forward to 1 | TrueClass, FalseClass | true
 version | Version of docker | String | nil
 
 #### Binary Installation Attributes

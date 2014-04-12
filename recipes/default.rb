@@ -5,7 +5,7 @@ when 'debian', 'ubuntu'
   package 'bsdtar'
   sysctl_param 'net.ipv4.ip_forward' do
     value 1
-    only_if { node['platform'] == 'debian' }
+    only_if { node['platform'] == 'debian' && node['docker']['ipv4_forward'] }
   end
 end
 

@@ -39,7 +39,9 @@ prestart() {
 
     preexec="/sbin/sysctl"
     [ -x $preexec ] || exit 6
+    <% if node['docker']['ipv4_forward'] -%>
     $preexec -w net.ipv4.ip_forward=1 > /dev/null 2>&1
+    <% end -%>
     $preexec -w net.ipv6.conf.all.forwarding=1 > /dev/null 2>&1
 
 }
