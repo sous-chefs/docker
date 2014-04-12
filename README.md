@@ -84,7 +84,7 @@ arch | Architecture for docker binary (note: Docker only currently supports x86_
 group_members | Users to manage in `node['docker']['group']` | Array of Strings | []
 init_type | Init type for docker ("runit", "systemd", "sysv", or "upstart") | String | auto-detected (see attributes/default.rb)
 install_dir | Installation directory for docker binary (custom setting only valid for non-package installations) | String | auto-detected (see attributes/default.rb)
-install_type | Installation type for docker ("binary", "package" or "source") | String | "package"
+install_type | Installation type for docker ("binary", "package" or "source") | String | package
 version | Version of docker | String | nil
 
 #### Binary Installation Attributes
@@ -93,7 +93,7 @@ These attributes are under the `node['docker']['binary']` namespace.
 
 Attribute | Description | Type | Default
 ----------|-------------|------|--------
-version | Version of docker binary | String | `node['docker']['version'] || latest`
+version | Version of docker binary | String | `node['docker']['version']` (if set) or `latest`
 url | URL for downloading docker binary | String | `http://get.docker.io/builds/#{node['kernel']['name']}/#{node['docker']['arch']}/docker-#{node['docker']['binary']['version']}`
 
 #### Package Installation Attributes
@@ -111,8 +111,8 @@ These attributes are under the `node['docker']['source']` namespace.
 
 Attribute | Description | Type | Default
 ----------|-------------|------|--------
-ref | Repository reference for docker source | String | "master"
-url | Repository URL for docker source | String | "https://github.com/dotcloud/docker.git"
+ref | Repository reference for docker source | String | master
+url | Repository URL for docker source | String | https://github.com/dotcloud/docker.git
 
 ### Docker Daemon Attributes
 
@@ -149,7 +149,7 @@ Attribute | Description | Type | Default
 container_cmd_timeout | container LWRP default cmd_timeout seconds | Fixnum | 60
 container_dns | container LWRP default DNS server(s) | String, Array | nil
 container_dns_search | container LWRP default DNS search domain(s) | String, Array | nil
-container_init_type | Init type for docker containers (nil, "runit", "systemd", "sysv", or "upstart") | NilClass or String | `node['docker']['init_type']`
+container_init_type | Init type for docker containers (nil, "runit", "systemd", "sysv", or "upstart") | String | `node['docker']['init_type']`
 
 #### docker_image Attributes
 
