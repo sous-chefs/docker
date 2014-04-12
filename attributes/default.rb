@@ -76,8 +76,18 @@ default['docker']['storage_type'] = node['docker']['storage_driver']
 default['docker']['version'] = nil
 
 # Binary attributes
-default['docker']['binary']['checksum'] = nil
 default['docker']['binary']['version'] = node['docker']['version'] || 'latest'
+default['docker']['binary']['checksum'] =
+case node['kernel']['name']
+when 'Darwin'
+  case node['docker']['binary']['version']
+  when '0.10.0' then '416835b2e83e520c3c413b4b4e4ae34bca20704f085b435f4c200010dd1ac3b7'
+  end
+when 'Linux'
+  case node['docker']['binary']['version']
+  when '0.10.0' then 'ce1f5bc88a99f8b2331614ede7199f872bd20e4ac1806de7332cbac8e441d1a0'
+  end
+end
 default['docker']['binary']['url'] = "http://get.docker.io/builds/#{node['kernel']['name']}/#{node['docker']['arch']}/docker-#{node['docker']['binary']['version']}"
 
 # Package attributes

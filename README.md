@@ -95,7 +95,7 @@ These attributes are under the `node['docker']['binary']` namespace.
 
 Attribute | Description | Type | Default
 ----------|-------------|------|--------
-checksum | Optional SHA256 checksum for docker binary | String | nil
+checksum | Optional SHA256 checksum for docker binary | String | auto-detected (see attributes/default.rb)
 version | Version of docker binary | String | `node['docker']['version']` (if set) or `latest`
 url | URL for downloading docker binary | String | `http://get.docker.io/builds/#{node['kernel']['name']}/#{node['docker']['arch']}/docker-#{node['docker']['binary']['version']}`
 
