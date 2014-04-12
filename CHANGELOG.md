@@ -22,6 +22,7 @@ Attribute deprecations so you can be sure you can upgrade:
 Attributes now available for all docker daemon flags as well as system IP forwarding.
 
 * Enhancement: [#115][]: Add IP forwarding attributes
+* Enhancement: [#128][]: Add checksum attribute for binary downloads
 
 ## 0.33.1
 
@@ -438,5 +439,6 @@ Lots of community contributions this release -- thanks!
 [#112]: https://github.com/bflad/chef-docker/issues/112
 [#113]: https://github.com/bflad/chef-docker/issues/113
 [#115]: https://github.com/bflad/chef-docker/issues/115
+[#128]: https://github.com/bflad/chef-docker/issues/128
 [@jcrobak]: https://github.com/jcrobak
 [@wingrunr21]: https://github.com/wingrunr21
