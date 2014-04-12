@@ -23,6 +23,8 @@ default['docker']['group'] = nil
 default['docker']['group_members'] = []
 default['docker']['http_proxy'] = nil
 default['docker']['image_cmd_timeout'] = 300
+default['docker']['ipv4_forward'] = true
+default['docker']['ipv6_forward'] = true
 default['docker']['logfile'] = nil
 default['docker']['options'] = nil
 default['docker']['pidfile'] = nil
@@ -72,9 +74,6 @@ default['docker']['storage_driver'] = value_for_platform(
 default['docker']['storage_type'] = node['docker']['storage_driver']
 
 default['docker']['version'] = nil
-
-# IP forwarding
-default['docker']['ipv4_forward'] = true
 
 # Binary attributes
 default['docker']['binary']['version'] = node['docker']['version'] || 'latest'

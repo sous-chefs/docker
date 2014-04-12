@@ -15,8 +15,9 @@ Environment="HTTP_PROXY=<%= node['docker']['http_proxy'] %>"
 Environment="TMPDIR=<%= node['docker']['tmpdir'] %>"
 <% end -%>
 <% if node['docker']['ipv4_forward'] -%>
-ExecStartPre=/usr/sbin/sysctl -w net.ipv4.ip_forward=1 net.ipv6.conf.all.forwarding=1
-<% else -%>
+ExecStartPre=/usr/sbin/sysctl -w net.ipv4.ip_forward=1
+<% end -%>
+<% if node['docker']['ipv6_forward'] -%>
 ExecStartPre=/usr/sbin/sysctl -w net.ipv6.conf.all.forwarding=1
 <% end -%>
 ExecStart=<%= node['docker']['install_dir'] %>/docker -d<%= node['docker']['bind_socket'] ? " -H #{node['docker']['bind_socket']}" : '' %><%= node['docker']['bind_uri'] ? " -H #{node['docker']['bind_uri']}" : '' %><%= node['docker']['container_init_type'] ? ' -r=false' : '' %><%= node['docker']['options'] ? " #{node['docker']['options']}" : '' %><%= node['docker']['storage_driver'] ? " -s #{node['docker']['storage_driver']}" : '' %><%= node['docker']['exec_driver'] ? " -e #{node['docker']['exec_driver']}" : '' %><%= node['docker']['group'] ? " -G #{node['docker']['group']}" : '' %>
