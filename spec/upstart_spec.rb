@@ -29,7 +29,7 @@ describe 'docker::upstart' do
 
     it 'adds host flag to docker service' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
-        %r{^DOCKER_OPTS="\$DOCKER_OPTS -H unix:///var/run/docker\.sock"$})
+        %r{^DOCKER_OPTS='.* --host="unix:///var/run/docker\.sock".*'$})
     end
   end
 
@@ -42,7 +42,7 @@ describe 'docker::upstart' do
 
     it 'adds host flag to docker service' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
-        %r{^DOCKER_OPTS="\$DOCKER_OPTS -H tcp://127\.0\.0\.1:4243"$})
+        %r{^DOCKER_OPTS='.* --host="tcp://127\.0\.0\.1:4243".*'$})
     end
   end
 
@@ -55,7 +55,7 @@ describe 'docker::upstart' do
 
     it 'adds restart flag to docker service' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
-        /^DOCKER_OPTS="\$DOCKER_OPTS -r=false"$/)
+        /^DOCKER_OPTS='.* --restart=false.*'$/)
     end
   end
 
@@ -68,7 +68,7 @@ describe 'docker::upstart' do
 
     it 'adds exec driver flag to docker service' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
-        /^DOCKER_OPTS="\$DOCKER_OPTS -e lxc"$/)
+        /^DOCKER_OPTS='.* --exec-driver="lxc".*'$/)
     end
   end
 
@@ -81,7 +81,7 @@ describe 'docker::upstart' do
 
     it 'adds group flag to docker service' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
-        /^DOCKER_OPTS="\$DOCKER_OPTS -G vagrant"$/)
+        /^DOCKER_OPTS='.* --group="vagrant".*'$/)
     end
   end
 
@@ -120,7 +120,7 @@ describe 'docker::upstart' do
 
     it 'adds options to docker service' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
-        /^DOCKER_OPTS="\$DOCKER_OPTS --debug"$/)
+        /^DOCKER_OPTS='.* --debug.*'$/)
     end
   end
 
@@ -159,7 +159,7 @@ describe 'docker::upstart' do
 
     it 'adds storage driver flag to docker service' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
-        /^DOCKER_OPTS="\$DOCKER_OPTS -s brtfs"$/)
+        /^DOCKER_OPTS='.* --storage-driver="brtfs".*'$/)
     end
   end
 

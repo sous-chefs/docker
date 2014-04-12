@@ -16,6 +16,9 @@ template settings_file do
   mode '0644'
   owner 'root'
   group 'root'
+  variables(
+    'daemon_options' => Helpers::Docker.daemon_cli_args(node)
+  )
   notifies :restart, 'service[docker]', :immediately
 end
 

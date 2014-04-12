@@ -29,7 +29,7 @@ describe 'docker::systemd' do
 
     it 'adds host flag to docker service' do
       expect(chef_run).to render_file('/usr/lib/systemd/system/docker.service').with_content(
-        %r{^ExecStart=/usr/bin/docker -d.* -H unix:///var/run/docker\.sock.*})
+        %r{^ExecStart=/usr/bin/docker -d.* --host="unix:///var/run/docker\.sock".*})
     end
   end
 
@@ -42,7 +42,7 @@ describe 'docker::systemd' do
 
     it 'adds host flag to docker service' do
       expect(chef_run).to render_file('/usr/lib/systemd/system/docker.service').with_content(
-        %r{^ExecStart=/usr/bin/docker -d.* -H tcp://127\.0\.0\.1:4243.*})
+        %r{^ExecStart=/usr/bin/docker -d.* --host="tcp://127\.0\.0\.1:4243".*})
     end
   end
 
@@ -55,7 +55,7 @@ describe 'docker::systemd' do
 
     it 'adds restart flag to docker service' do
       expect(chef_run).to render_file('/usr/lib/systemd/system/docker.service').with_content(
-        %r{^ExecStart=/usr/bin/docker -d.* -r=false.*})
+        %r{^ExecStart=/usr/bin/docker -d.* --restart=false.*})
     end
   end
 
@@ -68,7 +68,7 @@ describe 'docker::systemd' do
 
     it 'adds exec driver flag to docker service' do
       expect(chef_run).to render_file('/usr/lib/systemd/system/docker.service').with_content(
-        %r{^ExecStart=/usr/bin/docker -d.* -e lxc.*})
+        %r{^ExecStart=/usr/bin/docker -d.* --exec-driver="lxc".*})
     end
   end
 
@@ -81,7 +81,7 @@ describe 'docker::systemd' do
 
     it 'adds group flag to docker service' do
       expect(chef_run).to render_file('/usr/lib/systemd/system/docker.service').with_content(
-        %r{^ExecStart=/usr/bin/docker -d.* -G vagrant.*})
+        %r{^ExecStart=/usr/bin/docker -d.* --group="vagrant".*})
     end
   end
 
@@ -133,7 +133,7 @@ describe 'docker::systemd' do
 
     it 'adds storage driver flag to docker service' do
       expect(chef_run).to render_file('/usr/lib/systemd/system/docker.service').with_content(
-        %r{^ExecStart=/usr/bin/docker -d.* -s brtfs.*})
+        %r{^ExecStart=/usr/bin/docker -d.* --storage-driver="brtfs".*})
     end
   end
 

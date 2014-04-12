@@ -8,27 +8,7 @@ DOCKER_LOGFILE=<%= node['docker']['logfile'] %>
 <% end -%>
 
 # Use DOCKER_OPTS to modify the daemon startup options.
-<% if node['docker']['bind_socket'] -%>
-DOCKER_OPTS="$DOCKER_OPTS -H <%= node['docker']['bind_socket'] %>"
-<% end -%>
-<% if node['docker']['bind_uri'] -%>
-DOCKER_OPTS="$DOCKER_OPTS -H <%= node['docker']['bind_uri'] %>"
-<% end -%>
-<% if node['docker']['container_init_type'] -%>
-DOCKER_OPTS="$DOCKER_OPTS -r=false"
-<% end -%>
-<% if node['docker']['options'] -%>
-DOCKER_OPTS="$DOCKER_OPTS <%= node['docker']['options'] %>"
-<% end -%>
-<% if node['docker']['storage_driver'] -%>
-DOCKER_OPTS="$DOCKER_OPTS -s <%= node['docker']['storage_driver'] %>"
-<% end -%>
-<% if node['docker']['exec_driver'] -%>
-DOCKER_OPTS="$DOCKER_OPTS -e <%= node['docker']['exec_driver'] %>"
-<% end -%>
-<% if node['docker']['group'] -%>
-DOCKER_OPTS="$DOCKER_OPTS -G <%= node['docker']['group'] %>"
-<% end -%>
+DOCKER_OPTS='<%= @daemon_options %>'
 
 <% if node['docker']['pidfile'] -%>
 DOCKER_PIDFILE=<%= node['docker']['pidfile'] %>

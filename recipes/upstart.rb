@@ -16,6 +16,9 @@ template settings_file do
   mode '0644'
   owner 'root'
   group 'root'
+  variables(
+    'daemon_options' => Helpers::Docker.daemon_cli_args(node)
+  )
   # DEPRECATED: stop and start only necessary for 0.x cookbook upgrades
   # Default docker Upstart job now sources default file for DOCKER_OPTS
   notifies :stop, 'service[docker]', :immediately

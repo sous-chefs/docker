@@ -11,4 +11,7 @@ include_recipe 'runit'
 
 runit_service 'docker' do
   default_logger true
+  options(
+    'daemon_options' => Helpers::Docker.daemon_cli_args(node)
+  )
 end

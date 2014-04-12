@@ -25,6 +25,39 @@ EOH
     # Exception to signify that the docker command timed out.
     class CommandTimeout < RuntimeError; end
 
+    def self.daemon_cli_args(node)
+      daemon_options = Helpers::Docker.cli_args(
+        'exec-driver' => node['docker']['exec_driver'],
+        'host' => Array(node['docker']['bind_socket']) +
+          Array(node['docker']['bind_uri']),
+        'group' => node['docker']['group'],
+        'restart' => node['docker']['container_init_type'] ? false : nil,
+        'storage-driver' => node['docker']['storage_driver']
+      )
+      daemon_options += " #{node['docker']['options']}" if node['docker']['options']
+      daemon_options
+    end
+
+    # TODO: Remove duplicate instance method?
+    def self.cli_args(spec)
+      cli_line = ''
+      spec.each_pair do |arg, value|
+        case value
+        when Array
+          next if value.empty?
+          args = value.map do |v|
+            v = "\"#{v}\"" if v.is_a?(String)
+            " --#{arg}=#{v}"
+          end
+          cli_line += args.join
+        when FalseClass, Fixnum, Integer, String, TrueClass
+          value = "\"#{value}\"" if value.is_a?(String)
+          cli_line += " --#{arg}=#{value}"
+        end
+      end
+      cli_line
+    end
+
     def cli_args(spec)
       cli_line = ''
       spec.each_pair do |arg, value|
