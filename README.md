@@ -78,36 +78,20 @@ Then, set the `storage_driver` attribute of this cookbook to `devicemapper` (ple
 
 ## Attributes
 
+### Installation/System Attributes
+
 These attributes are under the `node['docker']` namespace.
 
 Attribute | Description | Type | Default
 ----------|-------------|------|--------
 arch | Architecture for docker binary (note: Docker only currently supports x86_64) | String | auto-detected (see attributes/default.rb)
-bind_socket | Socket path that docker should bind | String | unix:///var/run/docker.sock
-bind_uri | TCP URI docker should bind | String | nil
-container_cmd_timeout | container LWRP default cmd_timeout seconds | Fixnum | 60
-container_dns | container LWRP default DNS server(s) | String, Array | nil
-container_dns_search | container LWRP default DNS search domain(s) | String, Array | nil
-container_init_type | Init type for docker containers (nil, "runit", "systemd", or "upstart") | NilClass or String | `node['docker']['init_type']`
-docker_daemon_timeout | Timeout to wait for the docker daemon to start in seconds | Fixnum | 10
-exec_driver | Execution driver for docker (nil, "lxc", or "native") | String | nil (implicitly native as of 0.9.0)
-group | Group for docker socket and group_members | String | nil (implicitly docker)
-group_members | Manage docker group members | Array of Strings | []
-http_proxy | HTTP_PROXY environment variable | String | nil
-image_cmd_timeout | image LWRP default cmd_timeout seconds | Fixnum | 300
+group_members | Users to manage in `node['docker']['group']` | Array of Strings | []
 init_type | Init type for docker ("runit", "systemd", "sysv", or "upstart") | String | auto-detected (see attributes/default.rb)
 install_dir | Installation directory for docker binary (custom setting only valid for non-package installations) | String | auto-detected (see attributes/default.rb)
 install_type | Installation type for docker ("binary", "package" or "source") | String | "package"
-logfile | Set custom DOCKER_LOGFILE | String | nil
-options | Additional options to pass to docker. These could be flags like "-api-enable-cors". | String | nil
-pidfile | Set custom DOCKER_PIDFILE | String | nil
-ramdisk | Set DOCKER_RAMDISK when using RAM disk | TrueClass or FalseClass | false
-registry_cmd_timeout | registry LWRP default cmd_timeout seconds | Fixnum | 60
-storage_driver | Storage driver for docker (nil, "aufs", or "devicemapper") | String | auto-detected (see attributes/default.rb)
-tmpdir | TMPDIR environment variable | String | nil
 version | Version of docker | String | nil
 
-### Binary Attributes
+#### Binary Installation Attributes
 
 These attributes are under the `node['docker']['binary']` namespace.
 
@@ -116,7 +100,7 @@ Attribute | Description | Type | Default
 version | Version of docker binary | String | `node['docker']['version'] || latest`
 url | URL for downloading docker binary | String | `http://get.docker.io/builds/#{node['kernel']['name']}/#{node['docker']['arch']}/docker-#{node['docker']['binary']['version']}`
 
-### Package Attributes
+#### Package Installation Attributes
 
 These attributes are under the `node['docker']['package']` namespace.
 
@@ -125,7 +109,7 @@ Attribute | Description | Type | Default
 distribution | Distribution for docker packages | String | auto-detected (see attributes/default.rb)
 repo_url | Repository URL for docker packages | String | auto-detected (see attributes/default.rb)
 
-### Source Attributes
+#### Source Installation Attributes
 
 These attributes are under the `node['docker']['source']` namespace.
 
@@ -133,6 +117,59 @@ Attribute | Description | Type | Default
 ----------|-------------|------|--------
 ref | Repository reference for docker source | String | "master"
 url | Repository URL for docker source | String | "https://github.com/dotcloud/docker.git"
+
+### Docker Daemon Attributes
+
+These attributes are under the `node['docker']` namespace.
+
+Attribute | Description | Type | Default
+----------|-------------|------|--------
+bind_socket | Socket path that docker should bind | String | unix:///var/run/docker.sock
+bind_uri | TCP URI docker should bind | String | nil
+exec_driver | Execution driver for docker | String | nil (implicitly native as of 0.9.0)
+group | Group for docker socket and group_members | String | nil (implicitly docker)
+http_proxy | HTTP_PROXY environment variable | String | nil
+logfile | Set custom DOCKER_LOGFILE | String | nil
+options | Additional options to pass to docker. These could be flags like "-api-enable-cors". | String | nil
+pidfile | Set custom DOCKER_PIDFILE | String | nil
+ramdisk | Set DOCKER_RAMDISK when using RAM disk | TrueClass or FalseClass | false
+storage_driver | Storage driver for docker | String | nil
+tmpdir | TMPDIR environment variable | String | nil
+
+### LWRP Attributes
+
+These attributes are under the `node['docker']` namespace.
+
+Attribute | Description | Type | Default
+----------|-------------|------|--------
+docker_daemon_timeout | Timeout to wait for the docker daemon to start in seconds for LWRP commands | Fixnum | 10
+
+#### docker_container Attributes
+
+These attributes are under the `node['docker']` namespace.
+
+Attribute | Description | Type | Default
+----------|-------------|------|--------
+container_cmd_timeout | container LWRP default cmd_timeout seconds | Fixnum | 60
+container_dns | container LWRP default DNS server(s) | String, Array | nil
+container_dns_search | container LWRP default DNS search domain(s) | String, Array | nil
+container_init_type | Init type for docker containers (nil, "runit", "systemd", "sysv", or "upstart") | NilClass or String | `node['docker']['init_type']`
+
+#### docker_image Attributes
+
+These attributes are under the `node['docker']` namespace.
+
+Attribute | Description | Type | Default
+----------|-------------|------|--------
+image_cmd_timeout | image LWRP default cmd_timeout seconds | Fixnum | 300
+
+#### docker_registry Attributes
+
+These attributes are under the `node['docker']` namespace.
+
+Attribute | Description | Type | Default
+----------|-------------|------|--------
+registry_cmd_timeout | registry LWRP default cmd_timeout seconds | Fixnum | 60
 
 ## Recipes
 
