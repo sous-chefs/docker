@@ -43,7 +43,7 @@ describe 'docker::upstart' do
 
     it 'adds host flag to docker service' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
-        %r{^DOCKER_OPTS='.* --host="unix:///var/run/docker\.sock".*'$})
+        %r{^DOCKER_OPTS='.* --host=unix:///var/run/docker\.sock.*'$})
     end
   end
 
@@ -57,7 +57,7 @@ describe 'docker::upstart' do
 
     it 'adds host flag to docker service' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
-        %r{^DOCKER_OPTS='.* --host="tcp://127\.0\.0\.1:4243".*'$})
+        %r{^DOCKER_OPTS='.* --host=tcp://127\.0\.0\.1:4243.*'$})
     end
   end
 
@@ -70,7 +70,7 @@ describe 'docker::upstart' do
 
     it 'adds bip flag to docker service' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
-        /^DOCKER_OPTS='.* --bip="10\.0\.0\.2".*'$/)
+        /^DOCKER_OPTS='.* --bip=10\.0\.0\.2.*'$/)
     end
   end
 
@@ -83,7 +83,7 @@ describe 'docker::upstart' do
 
     it 'adds bridge flag to docker service' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
-        /^DOCKER_OPTS='.* --bridge="br0".*'$/)
+        /^DOCKER_OPTS='.* --bridge=br0.*'$/)
     end
   end
 
@@ -122,7 +122,7 @@ describe 'docker::upstart' do
 
     it 'adds dns flag to docker service' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
-        /^DOCKER_OPTS='.* --dns="8.8.8.8".*'$/)
+        /^DOCKER_OPTS='.* --dns=8.8.8.8.*'$/)
     end
   end
 
@@ -135,7 +135,7 @@ describe 'docker::upstart' do
 
     it 'adds dns flags to docker service' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
-        /^DOCKER_OPTS='.* --dns="8.8.8.8" --dns="8.8.4.4".*'$/)
+        /^DOCKER_OPTS='.* --dns=8.8.8.8 --dns=8.8.4.4.*'$/)
     end
   end
 
@@ -148,7 +148,7 @@ describe 'docker::upstart' do
 
     it 'adds dns-search flag to docker service' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
-        /^DOCKER_OPTS='.* --dns-search="example.com".*'$/)
+        /^DOCKER_OPTS='.* --dns-search=example.com.*'$/)
     end
   end
 
@@ -161,7 +161,7 @@ describe 'docker::upstart' do
 
     it 'adds dns-search flags to docker service' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
-        /^DOCKER_OPTS='.* --dns-search="foo.example.com" --dns-search="bar.example.com".*'$/)
+        /^DOCKER_OPTS='.* --dns-search=foo.example.com --dns-search=bar.example.com.*'$/)
     end
   end
 
@@ -174,7 +174,7 @@ describe 'docker::upstart' do
 
     it 'adds exec driver flag to docker service' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
-        /^DOCKER_OPTS='.* --exec-driver="lxc".*'$/)
+        /^DOCKER_OPTS='.* --exec-driver=lxc.*'$/)
     end
   end
 
@@ -187,7 +187,7 @@ describe 'docker::upstart' do
 
     it 'adds graph flag to docker service' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
-        %r{^DOCKER_OPTS='.* --graph="/tmp/docker".*'$})
+        %r{^DOCKER_OPTS='.* --graph=/tmp/docker.*'$})
     end
   end
 
@@ -200,7 +200,7 @@ describe 'docker::upstart' do
 
     it 'adds group flag to docker service' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
-        /^DOCKER_OPTS='.* --group="vagrant".*'$/)
+        /^DOCKER_OPTS='.* --group=vagrant.*'$/)
     end
   end
 
@@ -213,7 +213,7 @@ describe 'docker::upstart' do
 
     it 'adds host flag to docker service' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
-        %r{^DOCKER_OPTS='.* --host="unix:///var/run/docker\.sock".*'$})
+        %r{^DOCKER_OPTS='.* --host=unix:///var/run/docker\.sock.*'$})
     end
   end
 
@@ -226,7 +226,7 @@ describe 'docker::upstart' do
 
     it 'adds host flags to docker service' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
-        %r{^DOCKER_OPTS='.* --host="unix:///var/run/docker\.sock" --host="tcp://127\.0\.0\.1:4243".*'$})
+        %r{^DOCKER_OPTS='.* --host=unix:///var/run/docker\.sock --host=tcp://127\.0\.0\.1:4243.*'$})
     end
   end
 
@@ -265,7 +265,7 @@ describe 'docker::upstart' do
 
     it 'adds ip flag to docker service' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
-        /^DOCKER_OPTS='.* --ip="127\.0\.0\.1".*'$/)
+        /^DOCKER_OPTS='.* --ip=127\.0\.0\.1.*'$/)
     end
   end
 
@@ -335,7 +335,7 @@ describe 'docker::upstart' do
 
     it 'adds pidfile flag to docker service' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
-        %r{^DOCKER_OPTS='.* --pidfile="/tmp/docker.pid".*'$})
+        %r{^DOCKER_OPTS='.* --pidfile=/tmp/docker.pid.*'$})
     end
   end
 
@@ -361,7 +361,7 @@ describe 'docker::upstart' do
 
     it 'adds storage driver flag to docker service' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
-        /^DOCKER_OPTS='.* --storage-driver="brtfs".*'$/)
+        /^DOCKER_OPTS='.* --storage-driver=brtfs.*'$/)
     end
   end
 
@@ -387,7 +387,7 @@ describe 'docker::upstart' do
 
     it 'adds tlscacert flag to docker service' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
-        %r{^DOCKER_OPTS='.* --tlscacert="/tmp/ca.pem".*'$})
+        %r{^DOCKER_OPTS='.* --tlscacert=/tmp/ca.pem.*'$})
     end
   end
 
@@ -400,7 +400,7 @@ describe 'docker::upstart' do
 
     it 'adds tlscert flag to docker service' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
-        %r{^DOCKER_OPTS='.* --tlscert="/tmp/cert.pem".*'$})
+        %r{^DOCKER_OPTS='.* --tlscert=/tmp/cert.pem.*'$})
     end
   end
 
@@ -413,7 +413,7 @@ describe 'docker::upstart' do
 
     it 'adds tlskey flag to docker service' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
-        %r{^DOCKER_OPTS='.* --tlskey="/tmp/key.pem".*'$})
+        %r{^DOCKER_OPTS='.* --tlskey=/tmp/key.pem.*'$})
     end
   end
 

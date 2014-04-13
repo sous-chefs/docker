@@ -43,7 +43,7 @@ describe 'docker::systemd' do
 
     it 'adds host flag to docker service' do
       expect(chef_run).to render_file('/usr/lib/systemd/system/docker.service').with_content(
-        %r{^ExecStart=/usr/bin/docker -d.* --host="unix:///var/run/docker\.sock".*})
+        %r{^ExecStart=/usr/bin/docker -d.* --host=unix:///var/run/docker\.sock.*})
     end
   end
 
@@ -57,7 +57,7 @@ describe 'docker::systemd' do
 
     it 'adds host flag to docker service' do
       expect(chef_run).to render_file('/usr/lib/systemd/system/docker.service').with_content(
-        %r{^ExecStart=/usr/bin/docker -d.* --host="tcp://127\.0\.0\.1:4243".*})
+        %r{^ExecStart=/usr/bin/docker -d.* --host=tcp://127\.0\.0\.1:4243.*})
     end
   end
 
@@ -70,7 +70,7 @@ describe 'docker::systemd' do
 
     it 'adds bip flag to docker service' do
       expect(chef_run).to render_file('/usr/lib/systemd/system/docker.service').with_content(
-        %r{^ExecStart=/usr/bin/docker -d.* --bip="10\.0\.0\.2".*})
+        %r{^ExecStart=/usr/bin/docker -d.* --bip=10\.0\.0\.2.*})
     end
   end
 
@@ -83,7 +83,7 @@ describe 'docker::systemd' do
 
     it 'adds bridge flag to docker service' do
       expect(chef_run).to render_file('/usr/lib/systemd/system/docker.service').with_content(
-        %r{^ExecStart=/usr/bin/docker -d.* --bridge="br0".*})
+        %r{^ExecStart=/usr/bin/docker -d.* --bridge=br0.*})
     end
   end
 
@@ -122,7 +122,7 @@ describe 'docker::systemd' do
 
     it 'adds dns flag to docker service' do
       expect(chef_run).to render_file('/usr/lib/systemd/system/docker.service').with_content(
-        %r{^ExecStart=/usr/bin/docker -d.* --dns="8.8.8.8".*})
+        %r{^ExecStart=/usr/bin/docker -d.* --dns=8.8.8.8.*})
     end
   end
 
@@ -135,7 +135,7 @@ describe 'docker::systemd' do
 
     it 'adds dns flags to docker service' do
       expect(chef_run).to render_file('/usr/lib/systemd/system/docker.service').with_content(
-        %r{^ExecStart=/usr/bin/docker -d.* --dns="8.8.8.8" --dns="8.8.4.4".*})
+        %r{^ExecStart=/usr/bin/docker -d.* --dns=8.8.8.8 --dns=8.8.4.4.*})
     end
   end
 
@@ -148,7 +148,7 @@ describe 'docker::systemd' do
 
     it 'adds dns-search flag to docker service' do
       expect(chef_run).to render_file('/usr/lib/systemd/system/docker.service').with_content(
-        %r{^ExecStart=/usr/bin/docker -d.* --dns-search="example.com".*})
+        %r{^ExecStart=/usr/bin/docker -d.* --dns-search=example.com.*})
     end
   end
 
@@ -161,7 +161,7 @@ describe 'docker::systemd' do
 
     it 'adds dns-search flags to docker service' do
       expect(chef_run).to render_file('/usr/lib/systemd/system/docker.service').with_content(
-        %r{^ExecStart=/usr/bin/docker -d.* --dns-search="foo.example.com" --dns-search="bar.example.com".*})
+        %r{^ExecStart=/usr/bin/docker -d.* --dns-search=foo.example.com --dns-search=bar.example.com.*})
     end
   end
 
@@ -174,7 +174,7 @@ describe 'docker::systemd' do
 
     it 'adds exec driver flag to docker service' do
       expect(chef_run).to render_file('/usr/lib/systemd/system/docker.service').with_content(
-        %r{^ExecStart=/usr/bin/docker -d.* --exec-driver="lxc".*})
+        %r{^ExecStart=/usr/bin/docker -d.* --exec-driver=lxc.*})
     end
   end
 
@@ -187,7 +187,7 @@ describe 'docker::systemd' do
 
     it 'adds graph flag to docker service' do
       expect(chef_run).to render_file('/usr/lib/systemd/system/docker.service').with_content(
-        %r{^ExecStart=/usr/bin/docker -d.* --graph="/tmp/docker".*})
+        %r{^ExecStart=/usr/bin/docker -d.* --graph=/tmp/docker.*})
     end
   end
 
@@ -200,7 +200,7 @@ describe 'docker::systemd' do
 
     it 'adds group flag to docker service' do
       expect(chef_run).to render_file('/usr/lib/systemd/system/docker.service').with_content(
-        %r{^ExecStart=/usr/bin/docker -d.* --group="vagrant".*})
+        %r{^ExecStart=/usr/bin/docker -d.* --group=vagrant.*})
     end
   end
 
@@ -213,7 +213,7 @@ describe 'docker::systemd' do
 
     it 'adds host flag to docker service' do
       expect(chef_run).to render_file('/usr/lib/systemd/system/docker.service').with_content(
-        %r{^ExecStart=/usr/bin/docker -d.* --host="unix:///var/run/docker\.sock".*})
+        %r{^ExecStart=/usr/bin/docker -d.* --host=unix:///var/run/docker\.sock.*})
     end
   end
 
@@ -226,7 +226,7 @@ describe 'docker::systemd' do
 
     it 'adds host flags to docker service' do
       expect(chef_run).to render_file('/usr/lib/systemd/system/docker.service').with_content(
-        %r{^ExecStart=/usr/bin/docker -d.* --host="unix:///var/run/docker\.sock" --host="tcp://127\.0\.0\.1:4243".*})
+        %r{^ExecStart=/usr/bin/docker -d.* --host=unix:///var/run/docker\.sock --host=tcp://127\.0\.0\.1:4243.*})
     end
   end
 
@@ -265,7 +265,7 @@ describe 'docker::systemd' do
 
     it 'adds ip flag to docker service' do
       expect(chef_run).to render_file('/usr/lib/systemd/system/docker.service').with_content(
-        %r{^ExecStart=/usr/bin/docker -d.* --ip="127\.0\.0\.1".*})
+        %r{^ExecStart=/usr/bin/docker -d.* --ip=127\.0\.0\.1.*})
     end
   end
 
@@ -317,7 +317,7 @@ describe 'docker::systemd' do
 
     it 'adds pidfile flag to docker service' do
       expect(chef_run).to render_file('/usr/lib/systemd/system/docker.service').with_content(
-        %r{^ExecStart=/usr/bin/docker -d.* --pidfile="/tmp/docker.pid".*})
+        %r{^ExecStart=/usr/bin/docker -d.* --pidfile=/tmp/docker.pid.*})
     end
   end
 
@@ -343,7 +343,7 @@ describe 'docker::systemd' do
 
     it 'adds storage driver flag to docker service' do
       expect(chef_run).to render_file('/usr/lib/systemd/system/docker.service').with_content(
-        %r{^ExecStart=/usr/bin/docker -d.* --storage-driver="brtfs".*})
+        %r{^ExecStart=/usr/bin/docker -d.* --storage-driver=brtfs.*})
     end
   end
 
@@ -369,7 +369,7 @@ describe 'docker::systemd' do
 
     it 'adds tlscacert flag to docker service' do
       expect(chef_run).to render_file('/usr/lib/systemd/system/docker.service').with_content(
-        %r{^ExecStart=/usr/bin/docker -d.* --tlscacert="/tmp/ca\.pem".*})
+        %r{^ExecStart=/usr/bin/docker -d.* --tlscacert=/tmp/ca\.pem.*})
     end
   end
 
@@ -382,7 +382,7 @@ describe 'docker::systemd' do
 
     it 'adds tlscert flag to docker service' do
       expect(chef_run).to render_file('/usr/lib/systemd/system/docker.service').with_content(
-        %r{^ExecStart=/usr/bin/docker -d.* --tlscert="/tmp/cert\.pem".*})
+        %r{^ExecStart=/usr/bin/docker -d.* --tlscert=/tmp/cert\.pem.*})
     end
   end
 
@@ -395,7 +395,7 @@ describe 'docker::systemd' do
 
     it 'adds tlskey flag to docker service' do
       expect(chef_run).to render_file('/usr/lib/systemd/system/docker.service').with_content(
-        %r{^ExecStart=/usr/bin/docker -d.* --tlskey="/tmp/key\.pem".*})
+        %r{^ExecStart=/usr/bin/docker -d.* --tlskey=/tmp/key\.pem.*})
     end
   end
 
