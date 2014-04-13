@@ -16,7 +16,7 @@ when 'debian', 'ubuntu'
 end
 
 if node['docker']['exec_driver'] == 'lxc'
-  include_recipe 'docker::cgroups'
+  include_recipe 'docker::cgroups' unless %w(sysv upstart).include?(node['docker']['init_type'])
   include_recipe 'docker::lxc'
 end
 
