@@ -213,7 +213,8 @@ end
 
 def remove
   remove_args = cli_args(
-    'force' => new_resource.force
+    'force' => new_resource.force,
+    'no-prune' => new_resource.no_prune
   )
   image_name = new_resource.image_name
   image_name = "#{image_name}:#{new_resource.tag}" if new_resource.tag

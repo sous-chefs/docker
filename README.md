@@ -719,6 +719,13 @@ end
 
 #### docker_image action :remove
 
+These attributes are associated with this LWRP action.
+
+Attribute | Description | Type | Default
+----------|-------------|------|--------
+force | Force removal | TrueClass, FalseClass | nil
+no_prune | Do not delete untagged parents | TrueClass, FalseClass | nil
+
 Remove image:
 
 ```ruby
