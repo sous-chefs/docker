@@ -189,7 +189,14 @@ def installed?
 end
 
 def load
-  docker_cmd!("load < #{new_resource.source}")
+  if new_resource.input
+    load_args = cli_args(
+      'input' => new_resource.input
+    )
+    docker_cmd!("load #{load_args}")
+  else
+    docker_cmd!("load < #{new_resource.source}")
+  end
 end
 
 def pull

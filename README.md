@@ -655,9 +655,19 @@ These attributes are associated with this LWRP action.
 
 Attribute | Description | Type | Default
 ----------|-------------|------|--------
-source | Source path/URL | String | nil
+input | Image source (via tar archive file) | String | nil
+source | Image source (via stdin) | String | nil
 
-Load repository from path:
+Load repository via input:
+
+```ruby
+docker_image 'test' do
+  input '/path/to/test.tar'
+  action :load
+end
+```
+
+Load repository via stdin:
 
 ```ruby
 docker_image 'test' do
