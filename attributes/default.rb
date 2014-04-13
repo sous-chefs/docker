@@ -107,24 +107,17 @@ default['docker']['mtu'] = nil
 default['docker']['options'] = nil
 default['docker']['pidfile'] = nil
 default['docker']['ramdisk'] = false
+default['docker']['storage_driver'] = nil
+
+# DEPRECATED: will be removed in chef-docker 1.0
+default['docker']['storage_type'] = node['docker']['storage_driver']
+
 default['docker']['tls'] = nil
 default['docker']['tlscacert'] = nil
 default['docker']['tlscert'] = nil
 default['docker']['tlskey'] = nil
 default['docker']['tlsverify'] = nil
 default['docker']['tmpdir'] = nil
-
-default['docker']['storage_driver'] = value_for_platform(
-  %w(centos fedora oracle redhat) => {
-    'default' => 'devicemapper'
-  },
-  %w(debian ubuntu) => {
-    'default' => 'aufs'
-  },
-  'default' => nil
-)
-# DEPRECATED: will be removed in chef-docker 1.0
-default['docker']['storage_type'] = node['docker']['storage_driver']
 
 # LWRP attributes
 

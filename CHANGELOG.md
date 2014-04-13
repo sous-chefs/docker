@@ -23,6 +23,7 @@ Attributes now available for all docker daemon flags as well as system IP forwar
 
 * REMOVED: container_dns* attributes (use replacement dns* attributes on daemon for all containers or docker_container dns* attributes instead)
 * DEPRECATED: bind_* attributes to match docker terminology (use host attribute instead)
+* Bugfix: [#132][]: Do Not Explicitly Set storage_driver Attribute
 * Enhancement: [#115][]: Add IP forwarding attributes
 * Enhancement: [#116][]: Docker 0.10.0: Add --no-prune to docker rmi
 * Enhancement: [#117][]: Docker 0.10.0: Add --output flag to docker save (as well as tag support)
@@ -462,5 +463,6 @@ Lots of community contributions this release -- thanks!
 [#126]: https://github.com/bflad/chef-docker/issues/126
 [#127]: https://github.com/bflad/chef-docker/issues/127
 [#128]: https://github.com/bflad/chef-docker/issues/128
+[#132]: https://github.com/bflad/chef-docker/issues/132
 [@jcrobak]: https://github.com/jcrobak
 [@wingrunr21]: https://github.com/wingrunr21
