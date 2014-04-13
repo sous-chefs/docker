@@ -24,9 +24,17 @@
 
 exec="<%= node['docker']['install_dir'] %>/docker"
 prog="docker"
+<% if node['docker']['pidfile'] -%>
+pidfile="<%= node['docker']['pidfile'] %>"
+<% else -%>
 pidfile="/var/run/$prog.pid"
+<% end -%>
 lockfile="/var/lock/subsys/$prog"
+<% if node['docker']['logfile'] -%>
+logfile="<%= node['docker']['logfile'] %>"
+<% else -%>
 logfile="/var/log/$prog"
+<% end -%>
 
 [ -e /etc/sysconfig/$prog ] && . /etc/sysconfig/$prog
 
