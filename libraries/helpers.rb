@@ -113,6 +113,8 @@ EOH
         dockercfg[k].merge!(dockercfg_parse_auth(v['auth']))
       end
       dockercfg
+    rescue
+      nil
     end
 
     def dockercfg_parse_auth(str)
