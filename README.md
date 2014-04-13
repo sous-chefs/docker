@@ -430,6 +430,7 @@ dns | DNS servers for container | String, Array | nil
 dns_search | DNS search domains for container | String, Array | nil
 entrypoint | Overwrite the default entrypoint set by the image | String | nil
 env | Environment variables to pass to container | String, Array | nil
+env_file | Read in a line delimited file of ENV variables | String | nil
 expose | Expose a port from the container without publishing it to your host | Fixnum, String, Array | nil
 hostname | Container hostname | String | nil
 image | Image for container | String | LWRP name

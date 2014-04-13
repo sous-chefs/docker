@@ -281,6 +281,7 @@ def run
     'dns' => Array(new_resource.dns),
     'dns-search' => Array(new_resource.dns_search),
     'env' => Array(new_resource.env),
+    'env-file' => new_resource.env_file,
     'entrypoint' => new_resource.entrypoint,
     'expose' => Array(new_resource.expose),
     'hostname' => new_resource.hostname,

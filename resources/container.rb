@@ -19,6 +19,7 @@ attribute :dns, :kind_of => [String, Array]
 attribute :dns_search, :kind_of => [String, Array]
 attribute :entrypoint, :kind_of => [String]
 attribute :env, :kind_of => [String, Array]
+attribute :env_file, :kind_of => [String]
 attribute :expose, :kind_of => [Fixnum, String, Array]
 attribute :force, :kind_of => [TrueClass, FalseClass], :default => false
 attribute :hostname, :kind_of => [String]
