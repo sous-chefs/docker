@@ -119,22 +119,39 @@ url | Repository URL for docker source | String | https://github.com/dotcloud/do
 
 ### Docker Daemon Attributes
 
+For more information: http://docs.docker.io/en/latest/reference/commandline/cli/#daemon
+
 These attributes are under the `node['docker']` namespace.
 
 Attribute | Description | Type | Default
 ----------|-------------|------|--------
-bind_socket | Socket path that docker should bind | String | unix:///var/run/docker.sock
-bind_uri | TCP URI docker should bind | String | nil
+api_enable_cors | Enable CORS headers in API | TrueClass, FalseClass | nil
+bind_socket (*DEPRECATED*) | Socket path that docker should bind | String | unix:///var/run/docker.sock
+bind_uri (*DEPRECATED*) | TCP URI docker should bind | String | nil
+bip | Use this CIDR notation address for the network bridge's IP, not compatible with `bridge` | String | nil
+bridge | Attach containers to a pre-existing network bridge; use 'none' to disable container networking | String | nil
+debug | Enable debug mode | TrueClass, FalseClass | nil (implicitly false)
 dns | DNS server(s) for containers | String, Array | nil
 dns_search | DNS search domain(s) for containers | String, Array | nil
 exec_driver | Execution driver for docker | String | nil (implicitly native as of 0.9.0)
+graph | Path to use as the root of the docker runtime | String | nil (implicitly /var/lib/docker)
 group | Group for docker socket and group_members | String | nil (implicitly docker)
+host | Socket(s) that docker should bind | String, Array | unix:///var/run/docker.sock
 http_proxy | HTTP_PROXY environment variable | String | nil
+icc | Enable inter-container communication | TrueClass, FalseClass | nil (implicitly true)
+ip | Default IP address to use when binding container ports | String | nil (implicitly 0.0.0.0)
+iptables | Enable Docker's addition of iptables rules | TrueClass, FalseClass | nil (implicitly true)
 logfile | Set custom DOCKER_LOGFILE | String | nil
+mtu | Set the containers network MTU | Fixnum | nil (implicitly default route MTU or 1500 if no default route is available)
 options | Additional options to pass to docker. These could be flags like "-api-enable-cors". | String | nil
-pidfile | Set custom DOCKER_PIDFILE | String | nil
+pidfile | Path to use for daemon PID file | String | nil (implicitly /var/run/docker.pid)
 ramdisk | Set DOCKER_RAMDISK when using RAM disk | TrueClass or FalseClass | false
 storage_driver | Storage driver for docker | String | nil
+tls | Use TLS | TrueClass, FalseClass | nil (implicitly false)
+tlscacert | Trust only remotes providing a certificate signed by the CA given here | String | nil (implicitly ~/.docker/ca.pem)
+tlscert | Path to TLS certificate file | String | nil (implicitly ~/.docker/cert.pem)
+tlskey | Path to TLS key file | String | nil (implicitly ~/.docker/key.pem)
+tlsverify | Use TLS and verify the remote (daemon: verify client, client: verify daemon) | TrueClass, FalseClass | nil (implicitly false)
 tmpdir | TMPDIR environment variable | String | nil
 
 ### LWRP Attributes

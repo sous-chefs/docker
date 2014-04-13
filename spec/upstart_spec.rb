@@ -20,6 +20,20 @@ describe 'docker::upstart' do
     expect(resource).to notify('service[docker]').to(:start).immediately
   end
 
+  context 'when api_enable_cors is set' do
+    let(:chef_run) do
+      runner = ChefSpec::Runner.new
+      runner.node.set['docker']['api_enable_cors'] = true
+      runner.converge(described_recipe)
+    end
+
+    it 'adds api-enable-cors flag to docker service' do
+      expect(chef_run).to render_file('/etc/default/docker').with_content(
+        /^DOCKER_OPTS='.* --api-enable-cors=true.*'$/)
+    end
+  end
+
+  # DEPRECATED: will be removed in chef-docker 1.0
   context 'when bind_socket is set' do
     let(:chef_run) do
       runner = ChefSpec::Runner.new
@@ -33,6 +47,7 @@ describe 'docker::upstart' do
     end
   end
 
+  # DEPRECATED: will be removed in chef-docker 1.0
   context 'when bind_uri is set' do
     let(:chef_run) do
       runner = ChefSpec::Runner.new
@@ -46,6 +61,32 @@ describe 'docker::upstart' do
     end
   end
 
+  context 'when bip is set' do
+    let(:chef_run) do
+      runner = ChefSpec::Runner.new
+      runner.node.set['docker']['bip'] = '10.0.0.2'
+      runner.converge(described_recipe)
+    end
+
+    it 'adds bip flag to docker service' do
+      expect(chef_run).to render_file('/etc/default/docker').with_content(
+        /^DOCKER_OPTS='.* --bip="10\.0\.0\.2".*'$/)
+    end
+  end
+
+  context 'when bridge is set' do
+    let(:chef_run) do
+      runner = ChefSpec::Runner.new
+      runner.node.set['docker']['bridge'] = 'br0'
+      runner.converge(described_recipe)
+    end
+
+    it 'adds bridge flag to docker service' do
+      expect(chef_run).to render_file('/etc/default/docker').with_content(
+        /^DOCKER_OPTS='.* --bridge="br0".*'$/)
+    end
+  end
+
   context 'when container_init_type is set' do
     let(:chef_run) do
       runner = ChefSpec::Runner.new
@@ -56,6 +97,19 @@ describe 'docker::upstart' do
     it 'adds restart flag to docker service' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
         /^DOCKER_OPTS='.* --restart=false.*'$/)
+    end
+  end
+
+  context 'when debug is set' do
+    let(:chef_run) do
+      runner = ChefSpec::Runner.new
+      runner.node.set['docker']['debug'] = true
+      runner.converge(described_recipe)
+    end
+
+    it 'adds debug flag to docker service' do
+      expect(chef_run).to render_file('/etc/default/docker').with_content(
+        /^DOCKER_OPTS='.* --debug=true.*'$/)
     end
   end
 
@@ -124,6 +178,19 @@ describe 'docker::upstart' do
     end
   end
 
+  context 'when graph is set' do
+    let(:chef_run) do
+      runner = ChefSpec::Runner.new
+      runner.node.set['docker']['graph'] = '/tmp/docker'
+      runner.converge(described_recipe)
+    end
+
+    it 'adds graph flag to docker service' do
+      expect(chef_run).to render_file('/etc/default/docker').with_content(
+        %r{^DOCKER_OPTS='.* --graph="/tmp/docker".*'$})
+    end
+  end
+
   context 'when group is set' do
     let(:chef_run) do
       runner = ChefSpec::Runner.new
@@ -134,6 +201,32 @@ describe 'docker::upstart' do
     it 'adds group flag to docker service' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
         /^DOCKER_OPTS='.* --group="vagrant".*'$/)
+    end
+  end
+
+  context 'when host is set with String' do
+    let(:chef_run) do
+      runner = ChefSpec::Runner.new
+      runner.node.set['docker']['host'] = 'unix:///var/run/docker.sock'
+      runner.converge(described_recipe)
+    end
+
+    it 'adds host flag to docker service' do
+      expect(chef_run).to render_file('/etc/default/docker').with_content(
+        %r{^DOCKER_OPTS='.* --host="unix:///var/run/docker\.sock".*'$})
+    end
+  end
+
+  context 'when host is set with Array' do
+    let(:chef_run) do
+      runner = ChefSpec::Runner.new
+      runner.node.set['docker']['host'] = %w(unix:///var/run/docker.sock tcp://127.0.0.1:4243)
+      runner.converge(described_recipe)
+    end
+
+    it 'adds host flags to docker service' do
+      expect(chef_run).to render_file('/etc/default/docker').with_content(
+        %r{^DOCKER_OPTS='.* --host="unix:///var/run/docker\.sock" --host="tcp://127\.0\.0\.1:4243".*'$})
     end
   end
 
@@ -150,6 +243,45 @@ describe 'docker::upstart' do
     end
   end
 
+  context 'when icc is set' do
+    let(:chef_run) do
+      runner = ChefSpec::Runner.new
+      runner.node.set['docker']['icc'] = false
+      runner.converge(described_recipe)
+    end
+
+    it 'adds icc flag to docker service' do
+      expect(chef_run).to render_file('/etc/default/docker').with_content(
+        /^DOCKER_OPTS='.* --icc=false.*'$/)
+    end
+  end
+
+  context 'when ip is set' do
+    let(:chef_run) do
+      runner = ChefSpec::Runner.new
+      runner.node.set['docker']['ip'] = '127.0.0.1'
+      runner.converge(described_recipe)
+    end
+
+    it 'adds ip flag to docker service' do
+      expect(chef_run).to render_file('/etc/default/docker').with_content(
+        /^DOCKER_OPTS='.* --ip="127\.0\.0\.1".*'$/)
+    end
+  end
+
+  context 'when iptables is set' do
+    let(:chef_run) do
+      runner = ChefSpec::Runner.new
+      runner.node.set['docker']['iptables'] = false
+      runner.converge(described_recipe)
+    end
+
+    it 'adds iptables flag to docker service' do
+      expect(chef_run).to render_file('/etc/default/docker').with_content(
+        /^DOCKER_OPTS='.* --iptables=false.*'$/)
+    end
+  end
+
   context 'when logfile is set' do
     let(:chef_run) do
       runner = ChefSpec::Runner.new
@@ -160,6 +292,19 @@ describe 'docker::upstart' do
     it 'sets DOCKER_LOGFILE environment variable in docker service' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
         %r{^DOCKER_LOGFILE=/var/log/docker.log$})
+    end
+  end
+
+  context 'when mtu is set' do
+    let(:chef_run) do
+      runner = ChefSpec::Runner.new
+      runner.node.set['docker']['mtu'] = 1492
+      runner.converge(described_recipe)
+    end
+
+    it 'adds mtu flag to docker service' do
+      expect(chef_run).to render_file('/etc/default/docker').with_content(
+        /^DOCKER_OPTS='.* --mtu=1492.*'$/)
     end
   end
 
@@ -179,13 +324,18 @@ describe 'docker::upstart' do
   context 'when pidfile is set' do
     let(:chef_run) do
       runner = ChefSpec::Runner.new
-      runner.node.set['docker']['pidfile'] = '/var/run/docker.pid'
+      runner.node.set['docker']['pidfile'] = '/tmp/docker.pid'
       runner.converge(described_recipe)
     end
 
     it 'sets DOCKER_PIDFILE environment variable in docker service' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
-        %r{^DOCKER_PIDFILE=/var/run/docker.pid$})
+        %r{^DOCKER_PIDFILE=/tmp/docker.pid$})
+    end
+
+    it 'adds pidfile flag to docker service' do
+      expect(chef_run).to render_file('/etc/default/docker').with_content(
+        %r{^DOCKER_OPTS='.* --pidfile="/tmp/docker.pid".*'$})
     end
   end
 
@@ -212,6 +362,71 @@ describe 'docker::upstart' do
     it 'adds storage driver flag to docker service' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
         /^DOCKER_OPTS='.* --storage-driver="brtfs".*'$/)
+    end
+  end
+
+  context 'when tls is set' do
+    let(:chef_run) do
+      runner = ChefSpec::Runner.new
+      runner.node.set['docker']['tls'] = true
+      runner.converge(described_recipe)
+    end
+
+    it 'adds tls flag to docker service' do
+      expect(chef_run).to render_file('/etc/default/docker').with_content(
+        /^DOCKER_OPTS='.* --tls=true.*'$/)
+    end
+  end
+
+  context 'when tlscacert is set' do
+    let(:chef_run) do
+      runner = ChefSpec::Runner.new
+      runner.node.set['docker']['tlscacert'] = '/tmp/ca.pem'
+      runner.converge(described_recipe)
+    end
+
+    it 'adds tlscacert flag to docker service' do
+      expect(chef_run).to render_file('/etc/default/docker').with_content(
+        %r{^DOCKER_OPTS='.* --tlscacert="/tmp/ca.pem".*'$})
+    end
+  end
+
+  context 'when tlscert is set' do
+    let(:chef_run) do
+      runner = ChefSpec::Runner.new
+      runner.node.set['docker']['tlscert'] = '/tmp/cert.pem'
+      runner.converge(described_recipe)
+    end
+
+    it 'adds tlscert flag to docker service' do
+      expect(chef_run).to render_file('/etc/default/docker').with_content(
+        %r{^DOCKER_OPTS='.* --tlscert="/tmp/cert.pem".*'$})
+    end
+  end
+
+  context 'when tlskey is set' do
+    let(:chef_run) do
+      runner = ChefSpec::Runner.new
+      runner.node.set['docker']['tlskey'] = '/tmp/key.pem'
+      runner.converge(described_recipe)
+    end
+
+    it 'adds tlskey flag to docker service' do
+      expect(chef_run).to render_file('/etc/default/docker').with_content(
+        %r{^DOCKER_OPTS='.* --tlskey="/tmp/key.pem".*'$})
+    end
+  end
+
+  context 'when tlsverify is set' do
+    let(:chef_run) do
+      runner = ChefSpec::Runner.new
+      runner.node.set['docker']['tlsverify'] = true
+      runner.converge(described_recipe)
+    end
+
+    it 'adds tlsverify flag to docker service' do
+      expect(chef_run).to render_file('/etc/default/docker').with_content(
+        /^DOCKER_OPTS='.* --tlsverify=true.*'$/)
     end
   end
 

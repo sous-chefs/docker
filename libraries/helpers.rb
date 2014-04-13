@@ -27,14 +27,28 @@ EOH
 
     def self.daemon_cli_args(node)
       daemon_options = Helpers::Docker.cli_args(
+        'api-enable-cors' => node['docker']['api_enable_cors'],
+        'bip' => node['docker']['bip'],
+        'bridge' => node['docker']['bridge'],
+        'debug' => node['docker']['debug'],
         'dns' => Array(node['docker']['dns']),
         'dns-search' => Array(node['docker']['dns_search']),
         'exec-driver' => node['docker']['exec_driver'],
-        'host' => Array(node['docker']['bind_socket']) +
-          Array(node['docker']['bind_uri']),
+        'host' => Array(node['docker']['host']),
+        'graph' => node['docker']['graph'],
         'group' => node['docker']['group'],
+        'icc' => node['docker']['icc'],
+        'ip' => node['docker']['ip'],
+        'iptables' => node['docker']['iptables'],
+        'mtu' => node['docker']['mtu'],
+        'pidfile' => node['docker']['pidfile'],
         'restart' => node['docker']['container_init_type'] ? false : nil,
-        'storage-driver' => node['docker']['storage_driver']
+        'storage-driver' => node['docker']['storage_driver'],
+        'tls' => node['docker']['tls'],
+        'tlscacert' => node['docker']['tlscacert'],
+        'tlscert' => node['docker']['tlscert'],
+        'tlskey' => node['docker']['tlskey'],
+        'tlsverify' => node['docker']['tlsverify']
       )
       daemon_options += " #{node['docker']['options']}" if node['docker']['options']
       daemon_options

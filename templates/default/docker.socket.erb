@@ -2,11 +2,8 @@
 Description=Docker Daemon Socket
 
 [Socket]
-<% if node['docker']['bind_socket'] -%>
-ListenStream=<%= node['docker']['bind_socket'].gsub(/^unix:\/\//,'') %>
-<% end -%>
-<% if node['docker']['bind_uri'] -%>
-ListenStream=<%= node['docker']['bind_uri'].gsub(/^tcp:\/\//,'') %>
+<% Array(node['docker']['host']).each do |socket| -%>
+ListenStream=<%= socket.gsub(/^unix:\/\//,'').gsub(/^tcp:\/\//,'').gsub(/^fd:\/\//,'') %>
 <% end -%>
 
 [Install]
