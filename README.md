@@ -733,9 +733,19 @@ These attributes are associated with this LWRP action.
 
 Attribute | Description | Type | Default
 ----------|-------------|------|--------
-destination | Destination path | String | nil
+destination | Destination path (via stdout) | String | nil
+output | Destination path (via file) | String | nil
 
-Save repository to path:
+Save repository via file to path:
+
+```ruby
+docker_image 'test' do
+  destination '/path/to/test.tar'
+  action :save
+end
+```
+
+Save repository via stdout to path:
 
 ```ruby
 docker_image 'test' do

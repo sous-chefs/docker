@@ -230,7 +230,14 @@ def repository_and_tag_args
 end
 
 def save
-  docker_cmd!("save #{new_resource.image_name} > #{new_resource.destination}")
+  if new_resource.output
+    save_args = cli_args(
+      'output' => new_resource.output
+    )
+    docker_cmd!("save #{save_args} #{repository_and_tag_args}")
+  else
+    docker_cmd!("save #{repository_and_tag_args} > #{new_resource.destination}")
+  end
 end
 
 def tag

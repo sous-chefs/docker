@@ -24,6 +24,7 @@ Attributes now available for all docker daemon flags as well as system IP forwar
 * REMOVED: container_dns* attributes (use replacement dns* attributes on daemon for all containers or docker_container dns* attributes instead)
 * DEPRECATED: bind_* attributes to match docker terminology (use host attribute instead)
 * Enhancement: [#115][]: Add IP forwarding attributes
+* Enhancement: [#117][]: Docker 0.10.0: Add --output flag to docker save (as well as tag support)
 * Enhancement: [#118][]: Docker 0.10.0: Add --input flag to docker load
 * Enhancement: [#119][]: Docker 0.10.0: Add support for --env-file to load environment variables from files
 * Enhancement: [#124][]: Add all docker daemon options as attributes
@@ -447,6 +448,7 @@ Lots of community contributions this release -- thanks!
 [#112]: https://github.com/bflad/chef-docker/issues/112
 [#113]: https://github.com/bflad/chef-docker/issues/113
 [#115]: https://github.com/bflad/chef-docker/issues/115
+[#117]: https://github.com/bflad/chef-docker/issues/117
 [#118]: https://github.com/bflad/chef-docker/issues/118
 [#119]: https://github.com/bflad/chef-docker/issues/119
 [#124]: https://github.com/bflad/chef-docker/issues/124
