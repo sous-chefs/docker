@@ -742,6 +742,7 @@ Attribute | Description | Type | Default
 ----------|-------------|------|--------
 destination | Destination path (via stdout) | String | nil
 output | Destination path (via file) | String | nil
+tag | Save specific tag | String | nil
 
 Save repository via file to path:
 
