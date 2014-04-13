@@ -632,6 +632,8 @@ end
 
 #### docker_image action :insert
 
+*ACTION DEPRECATED AS OF DOCKER 0.10.0*
+
 These attributes are associated with this LWRP action.
 
 Attribute | Description | Type | Default
