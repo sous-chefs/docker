@@ -54,7 +54,12 @@ EOH
       daemon_options
     end
 
-    # TODO: Remove duplicate instance method?
+    # NOTE: This method has custom daemon arg handling for
+    # the daemon options since they do not parse quotes correctly
+    # e.g. --exec-driver="lxc"
+    # e.g. --host="unix:///var/run/docker.sock"
+    # e.g. --storage-driver="aufs"
+    # This probably should be opened as a bug in Docker
     def self.cli_args(spec)
       cli_line = ''
       spec.each_pair do |arg, value|
@@ -62,12 +67,10 @@ EOH
         when Array
           next if value.empty?
           args = value.map do |v|
-            v = "\"#{v}\"" if v.is_a?(String)
             " --#{arg}=#{v}"
           end
           cli_line += args.join
         when FalseClass, Fixnum, Integer, String, TrueClass
-          value = "\"#{value}\"" if value.is_a?(String)
           cli_line += " --#{arg}=#{value}"
         end
       end
