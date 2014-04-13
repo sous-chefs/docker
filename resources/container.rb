@@ -42,6 +42,7 @@ attribute :publish_exposed_ports, :kind_of => [TrueClass, FalseClass], :default 
 attribute :remove_automatically, :kind_of => [TrueClass, FalseClass], :default => false
 attribute :repository, :kind_of => [String]
 attribute :run, :kind_of => [String]
+attribute :signal, :kind_of => [String]
 attribute :socket_template, :kind_of => [String]
 attribute :source, :kind_of => [String]
 attribute :status, :kind_of => [String]

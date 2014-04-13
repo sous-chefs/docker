@@ -240,7 +240,10 @@ def kill
   if service?
     service_stop
   else
-    docker_cmd!("kill #{current_resource.id}")
+    kill_args = cli_args(
+      'signal' => new_resource.signal
+    )
+    docker_cmd!("kill #{kill_args} #{current_resource.id}")
   end
 end
 

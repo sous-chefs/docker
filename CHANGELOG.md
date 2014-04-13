@@ -29,6 +29,7 @@ Attributes now available for all docker daemon flags as well as system IP forwar
 * Enhancement: [#118][]: Docker 0.10.0: Add --input flag to docker load
 * Enhancement: [#119][]: Docker 0.10.0: Add support for --env-file to load environment variables from files
 * Enhancement: [#120][]: Docker 0.10.0: Deprecate docker insert
+* Enhancement: [#123][]: Add docker kill --signal
 * Enhancement: [#124][]: Add all docker daemon options as attributes
 * Enhancement: [#125][]: Use dns* attributes to set docker daemon options, not defaults per-container
 * Enhancement: [#128][]: Add checksum attribute for binary downloads
@@ -455,6 +456,7 @@ Lots of community contributions this release -- thanks!
 [#118]: https://github.com/bflad/chef-docker/issues/118
 [#119]: https://github.com/bflad/chef-docker/issues/119
 [#120]: https://github.com/bflad/chef-docker/issues/120
+[#123]: https://github.com/bflad/chef-docker/issues/123
 [#124]: https://github.com/bflad/chef-docker/issues/124
 [#125]: https://github.com/bflad/chef-docker/issues/125
 [#126]: https://github.com/bflad/chef-docker/issues/126

@@ -343,12 +343,22 @@ Attribute | Description | Type | Default
 cookbook | Cookbook to grab any templates | String | docker
 init_type | Init type for container service handling | FalseClass, String | `node['docker']['container_init_type']`
 init_template | Template to use for init configuration | String | nil
+signal | Signal to send to the container | String | nil (implicitly KILL)
 socket_template | Template to use for configuring socket (relevent for init_type systemd only) | String | nil
 
 Kill a running container:
 
 ```ruby
 docker_container 'shipyard' do
+  action :kill
+end
+```
+
+Send SIGQUIT to a running container:
+
+```ruby
+docker_container 'shipyard' do
+  signal 'QUIT'
   action :kill
 end
 ```
