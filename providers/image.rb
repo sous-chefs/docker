@@ -42,7 +42,9 @@ action :import do
   end
 end
 
+# DEPRECATED: Deprecated as of Docker 0.10.0
 action :insert do
+  Chef::Log.warn('Using DEPRECATED (as of Docker 0.10.0) insert action in docker_image. Please update your workflow and cookbook.')
   if installed?
     insert
     new_resource.updated_by_last_action(true)
@@ -180,7 +182,9 @@ def import
   end
 end
 
+# DEPRECATED: Deprecated as of Docker 0.10.0
 def insert
+  Chef::Log.warn('Using DEPRECATED (as of Docker 0.10.0) insert command in docker_image. Please update your workflow and cookbook.')
   docker_cmd!("insert #{new_resource.image_name} #{new_resource.source} #{new_resource.destination}")
 end
 
