@@ -31,7 +31,7 @@ EOM
 end
 
 def logged_in?
-  @current_resource.server ? true : false
+  @current_resource.username ? true : false
 end
 
 def login
