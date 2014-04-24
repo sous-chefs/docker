@@ -8,11 +8,13 @@ require 'chefspec/berkshelf'
 # lxc cookbook does this: https://github.com/hw-cookbooks/lxc/blob/master/recipes/default.rb#L47
 # TODO: Figure out a better way to do this - couldn't get stubbing to work (see below)
 # Kernel module
+# rubocop:disable all
 module Kernel
   def system(cmd)
     true
   end
 end
+# rubocop:enable all
 
 # Specify defaults -- these can be overridden
 RSpec.configure do |config|
