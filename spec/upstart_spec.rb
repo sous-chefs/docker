@@ -10,14 +10,26 @@ describe 'docker::upstart' do
     expect(chef_run).to render_file('/etc/init/docker.conf').with_content(
       /"\$DOCKER" -d \$DOCKER_OPTS/)
   end
+  
+  context 'when running on debian/ubuntu' do
+    it 'creates the docker sysconfig template in /etc/default' do
+      expect(chef_run).to create_template('/etc/default/docker')
+      expect(chef_run).to render_file('/etc/default/docker').with_content(
+        %r{^DOCKER="/usr/bin/docker"$})
+      resource = chef_run.template('/etc/default/docker')
+      expect(resource).to notify('service[docker]').to(:stop).immediately
+      expect(resource).to notify('service[docker]').to(:start).immediately
+    end
+  end
 
-  it 'creates the docker sysconfig template' do
-    expect(chef_run).to create_template('/etc/default/docker')
-    expect(chef_run).to render_file('/etc/default/docker').with_content(
-      %r{^DOCKER="/usr/bin/docker"$})
-    resource = chef_run.template('/etc/default/docker')
-    expect(resource).to notify('service[docker]').to(:stop).immediately
-    expect(resource).to notify('service[docker]').to(:start).immediately
+  context 'when running on non debian/ubuntu' do
+    let(:chef_run) do
+      ChefSpec::Runner.new(platform: 'centos', version: '6.5').converge(described_recipe)
+    end
+
+    it 'creates the docker sysconfig template in /etc/sysconfig' do
+      expect(chef_run).to create_template('/etc/sysconfig/docker')
+    end
   end
 
   context 'when api_enable_cors is set' do
