@@ -17,12 +17,20 @@ describe 'docker::cgroups' do
   end
 
   context 'when running on any ubuntu platform' do
+    let(:chef_run) do
+      ChefSpec::Runner.new.converge(described_recipe)
+    end
+
     it 'should install the cgroup-bin package' do
       expect(chef_run).to install_package('cgroup-bin')
     end
   end
 
   context 'when running on ubuntu 12.04' do
+    let(:chef_run) do
+      ChefSpec::Runner.new.converge(described_recipe)
+    end
+
     it 'should start the cgconfig service' do
       expect(chef_run).to start_service('cgconfig')
     end
@@ -34,7 +42,7 @@ describe 'docker::cgroups' do
 
   context 'when running on other ubuntu platforms' do
     let(:chef_run) do
-      ChefSpec::Runner.new(platform: 'ubuntu', version: '12.10').converge(described_recipe)
+      ChefSpec::Runner.new(platform: 'ubuntu', version: '14.04').converge(described_recipe)
     end
 
     it 'should start the cgroup-lite service' do
