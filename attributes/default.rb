@@ -23,7 +23,7 @@ default['docker']['init_type'] = value_for_platform(
   'default' => 'upstart'
 )
 default['docker']['install_type'] = value_for_platform(
-  %w(centos debian fedora redhat ubuntu) => {
+  %w(centos debian fedora redhat ubuntu mac_os_x) => {
     'default' => 'package'
   },
   'default' => 'binary'
