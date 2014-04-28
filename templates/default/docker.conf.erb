@@ -36,5 +36,5 @@ script
     if [ -f /etc/default/$UPSTART_JOB ]; then
         . /etc/default/$UPSTART_JOB
     fi
-    "$DOCKER" -d $DOCKER_OPTS
+    "$UPSTART_JOB" -d $DOCKER_OPTS
 end script
