@@ -128,14 +128,6 @@ describe 'docker::default' do
       runner.converge(described_recipe)
     end
 
-    it 'includes the git recipe' do
-      expect(chef_run).to include_recipe('git')
-    end
-
-    it 'includes the golang recipe' do
-      expect(chef_run).to include_recipe('golang')
-    end
-
     it 'includes the docker::source recipe' do
       expect(chef_run).to include_recipe('docker::source')
     end

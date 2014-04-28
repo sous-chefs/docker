@@ -1,3 +1,6 @@
+include_recipe 'golang'
+include_recipe 'git'
+
 directory "#{node['go']['gopath']}/src/github.com/dotcloud" do
   owner 'root'
   group 'root'
