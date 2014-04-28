@@ -1,19 +1,44 @@
 require 'spec_helper'
 
 describe 'docker::cgroups' do
-  let(:chef_run) do
-    ChefSpec::Runner.new.converge(described_recipe)
+  context 'when running on oracle 6.5' do
+    let(:chef_run) do
+      ChefSpec::Runner.new(platform: 'oracle', version: '6.5').converge(described_recipe)
+    end
+
+    it 'installs the libcgroup package' do
+      expect(chef_run).to install_package('libcgroup')
+    end
+
+    it 'starts and enables the cgconfig service' do
+      expect(chef_run).to enable_service('cgconfig')
+      expect(chef_run).to start_service('cgconfig')
+    end
   end
 
-  it 'installs the cgroup-bin package' do
-    expect(chef_run).to install_package('cgroup-bin')
+  context 'when running on any ubuntu platform' do
+    it 'should install the cgroup-bin package' do
+      expect(chef_run).to install_package('cgroup-bin')
+    end
   end
 
-  it 'starts the cgconfig service' do
-    expect(chef_run).to start_service('cgconfig')
+  context 'when running on ubuntu 12.04' do
+    it 'should start the cgconfig service' do
+      expect(chef_run).to start_service('cgconfig')
+    end
+
+    it 'should start the cgred service' do
+      expect(chef_run).to start_service('cgred')
+    end
   end
 
-  it 'starts the cgred service' do
-    expect(chef_run).to start_service('cgred')
+  context 'when running on other ubuntu platforms' do
+    let(:chef_run) do
+      ChefSpec::Runner.new(platform: 'ubuntu', version: '12.10').converge(described_recipe)
+    end
+
+    it 'should start the cgroup-lite service' do
+      expect(chef_run).to start_service('cgroup-lite')
+    end
   end
 end
