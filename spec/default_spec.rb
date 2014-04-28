@@ -20,11 +20,12 @@ describe 'docker::default' do
     stub_command('/usr/local/go/bin/go version | grep "go1.2 "').and_return('1.2')
   end
 
-  
   context 'when running on ubuntu 12.04' do
     let(:chef_run) do
       ChefSpec::Runner.new.converge(described_recipe)
     end
+
+    it 'should make sure kernel >= 3.8'
 
     it 'includes the apt recipe' do
       expect(chef_run).to include_recipe('apt')
