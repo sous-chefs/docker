@@ -1,9 +1,12 @@
+include_recipe 'docker::dep_check'
+
 case node['platform']
 when 'debian', 'ubuntu'
   include_recipe 'apt'
   package 'apt-transport-https'
   package 'bsdtar'
   if node['platform'] == 'debian'
+    include_recipe 'sysctl'
     sysctl_param 'net.ipv4.ip_forward' do
       value 1
       only_if { node['docker']['ipv4_forward'] }
