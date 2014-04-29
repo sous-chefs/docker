@@ -33,4 +33,6 @@ when 'mac_os_x'
   package 'homebrew/binary/docker' do
     action node['docker']['package']['action'].intern
   end
+else
+  raise RuntimeError, "The package installation method for `#{node['platform']} is not supported.`"
 end
