@@ -49,7 +49,7 @@ end
 
 action :redeploy do
   stop if running?
-  remove if exists?
+  remove_container if exists?
   run
   new_resource.updated_by_last_action(true)
 end
@@ -263,6 +263,11 @@ def remove
     'force' => new_resource.force,
     'link' => new_resource.link
   )
+  docker_cmd!("rm #{rm_args} #{current_resource.id}")
+  service_remove if service?
+end
+
+def remove_container
   docker_cmd!("rm #{rm_args} #{current_resource.id}")
   service_remove if service?
 end
