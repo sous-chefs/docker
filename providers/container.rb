@@ -268,7 +268,7 @@ def remove
 end
 
 def remove_container
-  docker_cmd!("rm #{rm_args} #{current_resource.id}")
+  docker_cmd!("rm #{current_resource.id}")
   service_remove if service?
 end
 
