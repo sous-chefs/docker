@@ -48,7 +48,6 @@ action :kill do
 end
 
 action :redeploy do
-  stop if running?
   remove_container if exists?
   run
   new_resource.updated_by_last_action(true)
@@ -268,7 +267,7 @@ def remove
 end
 
 def remove_container
-  docker_cmd!("rm #{current_resource.id}")
+  docker_cmd!("rm -f #{current_resource.id}")
   service_remove if service?
 end
 
