@@ -48,6 +48,9 @@ action :kill do
 end
 
 action :redeploy do
+  if service?
+    service_stop 
+  end
   remove_container if exists?
   run
   new_resource.updated_by_last_action(true)
