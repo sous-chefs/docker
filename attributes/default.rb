@@ -11,7 +11,7 @@ default['docker']['arch'] =
   end
 default['docker']['group_members'] = []
 default['docker']['init_type'] = value_for_platform(
-  %w(centos debian oracle redhat) => {
+  %w(amazon centos debian oracle redhat) => {
     'default' => 'sysv'
   },
   %w(fedora) => {
@@ -23,7 +23,7 @@ default['docker']['init_type'] = value_for_platform(
   'default' => 'upstart'
 )
 default['docker']['install_type'] = value_for_platform(
-  %w(centos debian fedora redhat ubuntu) => {
+  %w(amazon centos debian fedora redhat ubuntu) => {
     'default' => 'package'
   },
   'default' => 'binary'
