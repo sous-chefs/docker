@@ -17,6 +17,22 @@ Attribute deprecations so you can be sure you can upgrade:
 * container LWRP Fixnum port attribute: use full String notation from Docker documentation in port attribute instead
 * container LWRP public_port attribute: use port attribute instead
 
+## Development
+* Binary Installation
+  * Added missing dependency resolution for using the binary. 
+* Dependency Checks
+  * Added `docker::dep_check` that will take an action if certain dependencies are not met.
+    * `node[docker][alert_on_error_action] = :fatal` will kill the chef run and print the error message.
+    * `node[docker][alert_on_error_action] = :warn` will print the error message but continue with the chef run. There is no guarantee that it will succeed though.
+* KitchenCI 
+  * Copied MiniTests to ServerSpec Tests
+  * Added new platforms (Debian 7.4)
+  * Changed provisioner from chef-solo to chef-zero
+  * Removed Ubuntu 12.10 because it is not supported by Docker and the Kernel is bad and fails all the tests.
+  * Removed tests for the source recipe. The dotcloud/docker repo actually doesn’t build any Go deliverables. 
+    * I think that the source recipe needs to be completely refactored. 
+
+
 ## 0.34.1
 
 * [#134][]: Bugfix: Fix docker_registry login handling, fixes #114
