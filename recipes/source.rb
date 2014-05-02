@@ -1,3 +1,5 @@
+# The dotcloud/docker folder actually doesn't container any buildable Go files. 
+
 include_recipe 'golang'
 include_recipe 'git'
 
