@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'docker::dep_check' do
 
-  context 'when running on mac_os_x' do
+  context 'when running on darwin' do
     let(:chef_run) do
       ChefSpec::Runner.new(platform: 'mac_os_x', version: '10.9.2').converge(described_recipe)
     end
@@ -21,7 +21,7 @@ describe 'docker::dep_check' do
     end
   end
 
-  context 'when running ubuntu' do
+  context 'when running debian' do
     let(:chef_run) do
       ChefSpec::Runner.new(platform: 'ubuntu', version: '12.04') do |node|
         node.automatic['kernel']['release'] = "3.2.0-26-generic"
@@ -31,7 +31,6 @@ describe 'docker::dep_check' do
     it 'should fail if kernel < 3.8' do
       expect { chef_run }.to raise_error(DockerCookbook::Exceptions::InvalidKernelVersion)
     end
-
   end
 
   context 'when running on redhat' do
@@ -57,6 +56,19 @@ describe 'docker::dep_check' do
       end
     end
 
+    context 'installing as binary on kernel < 3.8' do
+      let(:chef_run) do
+        ChefSpec::Runner.new(platform: 'redhat', version: '6.5') do |node|
+          node.automatic['kernel']['release'] = '2.6.32-431'
+        end.converge(described_recipe)
+      end
+
+      it 'should fail' do
+        expect { chef_run }.to raise_error(DockerCookbook::Exceptions::InvalidKernelVersion)
+      end
+      
+    end
+
     context 'with kernel version < 2.6.32' do
       let(:chef_run) do
         ChefSpec::Runner.new(platform: 'redhat', version: '6.5') do |node|
@@ -70,7 +82,7 @@ describe 'docker::dep_check' do
     end
   end
 
-  context 'when running on openSUSE' do
+  context 'when running on suse' do
     context 'on 32bit arch' do
       let(:chef_run) do
         ChefSpec::Runner.new(platform: 'opensuse', version: '12.3') do |node|

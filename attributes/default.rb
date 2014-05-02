@@ -39,6 +39,9 @@ default['docker']['ipv6_forward'] = true
 default['docker']['logfile'] = nil
 default['docker']['version'] = nil
 
+# Actions: :warn, :fatal
+default['docker']['alert_on_error_action'] = :fatal
+
 ## Binary installation attributes
 
 default['docker']['binary']['version'] = node['docker']['version'] || 'latest'
@@ -135,3 +138,4 @@ default['docker']['image_cmd_timeout'] = 300
 ## docker_registry attributes
 
 default['docker']['registry_cmd_timeout'] = 60
+

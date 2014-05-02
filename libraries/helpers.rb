@@ -7,6 +7,26 @@ module Helpers
   def binary_installed?(bin)
     !shell_out("which #{bin}").error?
   end
+
+  #
+  # Pairs with the dep_check recipe. 
+  #
+  # Parameters:
+  # @execption - DockerCookbook exception to throw
+  # @action - symbol representing which action to take
+  # @msg - string of message to print
+  #
+  def alert_on_error(exception, action, msg)
+    case action
+    when :warn
+      Chef::Log.warn <<-MSG
+WARNING: #{exception}
+#{msg}
+      MSG
+    when :fatal
+      fail exception, msg
+    end
+  end
   
   # Helpers::Docker module
   module Docker
