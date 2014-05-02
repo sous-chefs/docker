@@ -5,6 +5,7 @@ include Serverspec::Helper::DetectOS
 # Install required gems
 require 'busser/rubygems'
 Busser::RubyGems.install_gem('mixlib-shellout', '~> 1.0')
+Busser::RubyGems.install_gem('docker-api', '~> 1.0')
 
 # Require support files
 Dir[File.expand_path('../support/**/*.rb', __FILE__)].each { |file| require_relative(file) }

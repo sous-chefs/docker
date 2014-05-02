@@ -3,13 +3,14 @@ module RSpec
     #
     module DSL
 
-      def docker_container(name, command = nil)
-        Serverspec::Type::DockerContainer.new(name, command)
-      end
-
-      def docker_image(name=nil)
+      def docker_imag(name)
         Serverspec::Type::DockerImage.new(name)
       end
+
+      def docker_container(image, command = nil)
+        Serverspec::Type::DockerContainer.new(image, command)
+      end
+
     end
   end
 end

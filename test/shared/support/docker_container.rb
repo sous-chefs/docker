@@ -4,35 +4,56 @@ module Serverspec
     # Serverspec::Type Container
     class DockerContainer < Base
       require 'mixlib/shellout'
+      require 'docker'
 
-      attr_reader :name
+      attr_reader :image
       attr_reader :command
 
-      def initialize(name, command = nil)
-        @name     = name
-        @command  = command
+      def initialize(image, command = nil)
+        @image      = with_latest(image)
+        @command    = command
+        @container  = find_container
+        if !!command
+          super("#{@image} running #{@command}")
+        else
+          super("#{@image}")
+        end
       end
       
       # it { should be_a_container }
       def container?
-        cmd = Mixlib::ShellOut.new("docker ps -a -notrunc", timeout: 30)
-        dps = cmd.run_command
-        return dps.stdout.include?(@command) if @command
-        dps.stdout.include?(@name)
+        !!@container
       end
 
       # it { should be_running }
       def running?
-        cmd = Mixlib::ShellOut.new("docker ps -a -notrunc", timeout: 30)
-        dps = cmd.run_command
-        dps.stdout.each_line do |dps_line|
-          if @command
-            return dps_line.include?("Up") if dps_line.include?(@command)
+        if @container
+          !!@container.info['Status'].match(/^Up/)
+        else
+          false
+        end
+      end
+
+      private
+
+      def find_container
+        containers = Docker::Container.all(:all => true)
+        containers.each do |container|
+          if @command == nil
+            if container.info['Image'] == @image
+              return container
+            end
           else
-            return dps_line.include?("Up") if dps_line.include?(@name)
+            if container.info['Command'] == @command && container.info['Image'] == @image
+              return container
+            end
           end
         end
-        false
+        return nil
+      end
+
+      def with_latest(image)
+        image.include?(':') ? image : "#{image}:latest"
       end
     end
   end

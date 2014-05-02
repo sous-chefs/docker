@@ -16,6 +16,8 @@ provisioner:
 
 platforms:
 - name: centos-6.5
+  run_list:
+  - recipe[build-essential]
   driver_config:
     box: opscode-centos-6.5
     box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-6.5_chef-provisionerless.box
@@ -44,10 +46,6 @@ platforms:
   driver_config:
     box: opscode-ubuntu-12.04
     box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-12.04_chef-provisionerless.box
-- name: ubuntu-12.10
-  driver_config:
-    box: opscode-ubuntu-12.10
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-12.10_chef-provisionerless.box
 - name: ubuntu-13.04
   driver_config:
     box: opscode-ubuntu-13.04
@@ -56,10 +54,6 @@ platforms:
   driver_config:
     box: opscode-ubuntu-13.10
     box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-13.10_chef-provisionerless.box
-#- name: ubuntu-14.04
-#  drive_config:
-#    box: opscode-ubuntu-14.04
-#    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-14.04_chef-provisionerless.box
 
 suites:
 #
@@ -87,6 +81,8 @@ suites:
 # Binary Installations
 #
 - name: binary-native
+  excludes:
+  - centos-6.5
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::image_lwrp]
@@ -95,6 +91,8 @@ suites:
     docker:
       install_type: binary
 - name: binary-lxc
+  excludes:
+  - centos-6.5
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::image_lwrp]
@@ -108,23 +106,27 @@ suites:
 # 
 # Source Installations
 #
-- name: source-native
-  run_list:
-  - recipe[docker_test::default]
-  - recipe[docker_test::image_lwrp]
-  - recipe[docker_test::container_lwrp]
-  attributes:
-    docker:
-      install_type: source
-- name: source-lxc
-  run_list:
-  - recipe[docker_test::default]
-  - recipe[docker_test::image_lwrp]
-  - recipe[docker_test::container_lwrp]
-  attributes:
-    docker:
-      install_type: source
-      exec_driver: lxc
+#- name: source-native
+#  excludes:
+#  - centos-6.5
+#  run_list:
+#  - recipe[docker_test::default]
+#  - recipe[docker_test::image_lwrp]
+#  - recipe[docker_test::container_lwrp]
+#  attributes:
+#    docker:
+#      install_type: source
+#- name: source-lxc
+#  excludes:
+#  - centos-6.5
+#  run_list:
+#  - recipe[docker_test::default]
+#  - recipe[docker_test::image_lwrp]
+#  - recipe[docker_test::container_lwrp]
+#  attributes:
+#    docker:
+#      install_type: source
+#      exec_driver: lxc
 
 #
 # Archived Tests
