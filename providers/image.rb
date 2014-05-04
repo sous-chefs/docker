@@ -150,6 +150,12 @@ Please adjust node image_cmd_timeout attribute or this docker_image cmd_timeout 
 EOM
 end
 
+def image_and_tag_arg
+  docker_cmd_args = new_resource.image_name
+  docker_cmd_args += ":#{new_resource.tag}" if new_resource.tag
+  docker_cmd_args
+end
+
 def image_id_matches?(id)
   id.start_with?(new_resource.id)
 end
@@ -204,15 +210,18 @@ def load
 end
 
 def pull
-  pull_args = cli_args(
-    'registry' => new_resource.registry,
-    'tag' => new_resource.tag
-  )
-  docker_cmd!("pull #{pull_args} #{new_resource.image_name}")
+  docker_cmd!("pull #{registry_image_and_tag_arg}")
 end
 
 def push
-  docker_cmd!("push #{new_resource.image_name}")
+  docker_cmd!("push #{registry_image_and_tag_arg}")
+end
+
+def registry_image_and_tag_arg
+  docker_cmd_args = ''
+  docker_cmd_args += "#{new_resource.registry}/" if new_resource.registry
+  docker_cmd_args += image_and_tag_arg
+  docker_cmd_args
 end
 
 def remove
