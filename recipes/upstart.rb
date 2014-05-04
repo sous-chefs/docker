@@ -1,13 +1,12 @@
-
 def docker_settings_file
   case node['platform']
   when 'debian'
     '/etc/default/docker'
   when 'ubuntu'
-    if Chef::VersionConstraint.new('>= 14.04').include?(node['platform_version'])
-      '/etc/default/docker.io'
-    else
+    if Helpers::Docker.use_docker_ppa? node
       '/etc/default/docker'
+    else
+      '/etc/default/docker.io'
     end
   else
     '/etc/sysconfig/docker'
@@ -17,10 +16,10 @@ end
 def docker_upstart_conf_file
   case node['platform']
   when 'ubuntu'
-    if Chef::VersionConstraint.new('>= 14.04').include?(node['platform_version'])
-      '/etc/init/docker.io.conf'
-    else
+    if Helpers::Docker.use_docker_ppa? node
       '/etc/init/docker.conf'
+    else
+      '/etc/init/docker.io.conf'
     end
   else
     '/etc/init/docker.conf'
@@ -55,3 +54,4 @@ service docker_service_name do
   supports :status => true, :restart => true, :reload => true
   action [:start]
 end
+
