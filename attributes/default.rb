@@ -63,6 +63,10 @@ when 'debian', 'ubuntu'
   default['docker']['package']['distribution'] = 'docker'
   default['docker']['package']['repo_url'] = 'https://get.docker.io/ubuntu'
   default['docker']['package']['repo_key'] = 'https://get.docker.io/gpg'
+  # this currently only has meaning on ubuntu >= 14.04
+  # if you want to use the ubuntu provided package / repository
+  # override this attribute to false
+  default['docker']['package']['use_docker_io_ppa'] = true
 end
 
 ## Source installation attributes
