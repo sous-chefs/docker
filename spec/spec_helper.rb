@@ -9,7 +9,7 @@ require 'chefspec/berkshelf'
 # TODO: Figure out a better way to do this - couldn't get stubbing to work (see below)
 # Kernel module
 module Kernel
-  def system(cmd)
+  def system(*)
     true
   end
 end

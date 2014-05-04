@@ -20,7 +20,7 @@ when 'debian', 'ubuntu'
     p = 'docker.io'
     link '/usr/local/bin/docker' do
       action :nothing
-      to "/usr/bin/docker.io"
+      to '/usr/bin/docker.io'
     end
   end
 

@@ -27,7 +27,7 @@ EOH
 
     # Boolean to determine whether or not we are using the docker ppa
     def self.use_docker_ppa?(node)
-      not (
+      ! (
         node['platform'] == 'ubuntu' &&
         node['docker']['install_type'] == 'package' &&
         node['docker']['package']['use_docker_io_ppa'] == false &&
