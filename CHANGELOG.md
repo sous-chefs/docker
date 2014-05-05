@@ -17,6 +17,13 @@ Attribute deprecations so you can be sure you can upgrade:
 * container LWRP Fixnum port attribute: use full String notation from Docker documentation in port attribute instead
 * container LWRP public_port attribute: use port attribute instead
 
+## 0.34.2
+
+* [#141][]: Bugfix/Enhancement: Fix and enhance docker_image pull/push behavior with Docker 0.10
+  * Removes deprecated --registry and --tag CLI args from docker_image pull
+  * Adds support for registry attribute usage in docker_image pull and push
+  * Adds support for tag attribute usage in docker_image push
+
 ## 0.34.1
 
 * [#134][]: Bugfix: Fix docker_registry login handling, fixes #114
@@ -473,5 +480,6 @@ Lots of community contributions this release -- thanks!
 [#132]: https://github.com/bflad/chef-docker/issues/132
 [#133]: https://github.com/bflad/chef-docker/issues/133
 [#134]: https://github.com/bflad/chef-docker/issues/134
+[#141]: https://github.com/bflad/chef-docker/issues/141
 [@jcrobak]: https://github.com/jcrobak
 [@wingrunr21]: https://github.com/wingrunr21
