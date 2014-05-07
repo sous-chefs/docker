@@ -49,7 +49,7 @@ end
 
 action :redeploy do
   stop if running?
-  remove if exists?
+  remove_container if exists?
   run
   new_resource.updated_by_last_action(true)
 end
@@ -63,6 +63,14 @@ action :remove do
     remove
     new_resource.updated_by_last_action(true)
   end
+end
+
+action :remove_link do
+  new_resource.updated_by_last_action(remove_link)
+end
+
+action :remove_volume do
+  new_resource.updated_by_last_action(remove_volume)
 end
 
 action :restart do
@@ -259,12 +267,31 @@ def port
 end
 
 def remove
+  remove_container
+  service_remove if service?
+end
+
+def remove_container
   rm_args = cli_args(
-    'force' => new_resource.force,
+    'force' => new_resource.force
+  )
+  docker_cmd!("rm #{rm_args} #{current_resource.id}")
+end
+
+def remove_link
+  return false if new_resource.link.nil? || new_resource.link.empty?
+  rm_args = cli_args(
     'link' => new_resource.link
   )
   docker_cmd!("rm #{rm_args} #{current_resource.id}")
-  service_remove if service?
+end
+
+def remove_volume
+  return false if new_resource.volume.nil? || new_resource.volume.empty?
+  rm_args = cli_args(
+    'volume' => Array(new_resource.volume)
+  )
+  docker_cmd!("rm #{rm_args} #{current_resource.id}")
 end
 
 def restart

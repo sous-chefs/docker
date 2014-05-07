@@ -390,9 +390,9 @@ These attributes are associated with this LWRP action.
 Attribute | Description | Type | Default
 ----------|-------------|------|--------
 cookbook | Cookbook to grab any templates | String | docker
+force | Force removal | TrueClass, FalseClass | nil
 init_type | Init type for container service handling | FalseClass, String | `node['docker']['container_init_type']`
 init_template | Template to use for init configuration | String | nil
-link | Add link to another container | String, Array | nil
 socket_template | Template to use for configuring socket (relevent for init_type systemd only) | String | nil
 
 Remove a container:
@@ -400,6 +400,40 @@ Remove a container:
 ```ruby
 docker_container 'shipyard' do
   action :remove
+end
+```
+
+#### docker_container action :remove_link
+
+These attributes are associated with this LWRP action.
+
+Attribute | Description | Type | Default
+----------|-------------|------|--------
+link | Link to remove from container | String | nil
+
+Remove a container:
+
+```ruby
+docker_container 'shipyard' do
+  link 'foo'
+  action :remove_link
+end
+```
+
+#### docker_container action :remove_volume
+
+These attributes are associated with this LWRP action.
+
+Attribute | Description | Type | Default
+----------|-------------|------|--------
+volume | Volume(s) to remove from container | String, Array | nil
+
+Remove a container:
+
+```ruby
+docker_container 'shipyard' do
+  volume %w(/extravol1 /extravol2)
+  action :remove_volume
 end
 ```
 
