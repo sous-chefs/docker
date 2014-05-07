@@ -14,6 +14,7 @@ This cookbook was inspired by @thoward's docker-cookbook: https://github.com/tho
 
 ### Platforms
 
+* Amazon 2014.03.1 (experimental)
 * CentOS 6
 * Debian 7
 * Fedora 19, 20

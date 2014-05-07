@@ -20,6 +20,7 @@ recipe 'docker::systemd', 'Installs/Starts Docker via systemd'
 recipe 'docker::sysv', 'Installs/Starts Docker via SysV'
 recipe 'docker::upstart', 'Installs/Starts Docker via Upstart'
 
+supports 'amazon'
 supports 'centos', '>= 6.0'
 supports 'debian', '>= 7.0'
 supports 'fedora', '>= 19.0'

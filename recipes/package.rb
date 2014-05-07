@@ -1,5 +1,10 @@
 case node['platform']
-when 'amazon', 'centos', 'redhat'
+when 'amazon'
+  package 'docker' do
+    version node['docker']['version']
+    action node['docker']['package']['action'].intern
+  end
+when 'centos', 'redhat'
   include_recipe 'yum-epel'
 
   package 'docker-io' do
