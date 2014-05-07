@@ -4,6 +4,10 @@ describe_recipe 'docker::upstart' do
   include Helpers::Docker
 
   it 'starts docker' do
-    service('docker').must_be_running
+    if Helpers::Docker.use_docker_ppa? node
+      service('docker').must_be_running
+    else
+      service('docker.io').must_be_running
+    end
   end
 end

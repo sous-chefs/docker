@@ -108,6 +108,7 @@ Attribute | Description | Type | Default
 ----------|-------------|------|--------
 distribution | Distribution for docker packages | String | auto-detected (see attributes/default.rb)
 repo_url | Repository URL for docker packages | String | auto-detected (see attributes/default.rb)
+use_docker_io_ppa | Use the docker.io package repository (can be set to false on Ubuntu 14.04+) | TrueClass, FalseClass | true
 
 #### Source Installation Attributes
 

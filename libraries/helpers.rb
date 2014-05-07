@@ -25,6 +25,16 @@ EOH
     # Exception to signify that the docker command timed out.
     class CommandTimeout < RuntimeError; end
 
+    # Boolean to determine whether or not we are using the docker ppa
+    def self.use_docker_ppa?(node)
+      ! (
+        node['platform'] == 'ubuntu' &&
+        node['docker']['install_type'] == 'package' &&
+        node['docker']['package']['use_docker_io_ppa'] == false &&
+        Chef::VersionConstraint.new('>= 14.04').include?(node['platform_version'])
+      )
+    end
+
     def self.daemon_cli_args(node)
       daemon_options = Helpers::Docker.cli_args(
         'api-enable-cors' => node['docker']['api_enable_cors'],
