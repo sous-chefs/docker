@@ -23,6 +23,7 @@ Attribute deprecations so you can be sure you can upgrade:
 * [#137][]/[#138][]: Enhancement: Experimental Ubuntu 14.04 LTS support
 * [#144][]: Enhancement: Experimental Amazon linux support
 * Enhancement: container LWRP remove_link and remove_volume actions
+* Enhancement: Add Docker 0.11.0 binary checksums
 
 ## 0.34.2
 
