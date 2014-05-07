@@ -17,6 +17,11 @@ Attribute deprecations so you can be sure you can upgrade:
 * container LWRP Fixnum port attribute: use full String notation from Docker documentation in port attribute instead
 * container LWRP public_port attribute: use port attribute instead
 
+## 0.35.0 (unreleased)
+
+* [#142][]: Bugfix: Redeploy breaks when a link is present
+* Enhancement: container LWRP remove_link and remove_volume actions
+
 ## 0.34.2
 
 * [#141][]: Bugfix/Enhancement: Fix and enhance docker_image pull/push behavior with Docker 0.10
@@ -481,5 +486,6 @@ Lots of community contributions this release -- thanks!
 [#133]: https://github.com/bflad/chef-docker/issues/133
 [#134]: https://github.com/bflad/chef-docker/issues/134
 [#141]: https://github.com/bflad/chef-docker/issues/141
+[#142]: https://github.com/bflad/chef-docker/issues/142
 [@jcrobak]: https://github.com/jcrobak
 [@wingrunr21]: https://github.com/wingrunr21
