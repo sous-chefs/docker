@@ -46,6 +46,11 @@ platforms:
     box: opscode-ubuntu-13.10
     box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-13.10_chef-provisionerless.box
     require_chef_omnibus: latest
+- name: ubuntu-14.04
+  driver_config:
+    box: opscode-ubuntu-14.04
+    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-14.04_chef-provisionerless.box
+    require_chef_omnibus: latest
 
 suites:
 - name: docker-lwrp-native
