@@ -1,32 +1,6 @@
-def docker_settings_file
-  case node['platform']
-  when 'debian'
-    '/etc/default/docker'
-  when 'ubuntu'
-    if Helpers::Docker.use_docker_ppa? node
-      '/etc/default/docker'
-    else
-      '/etc/default/docker.io'
-    end
-  else
-    '/etc/sysconfig/docker'
-  end
-end
-
-def docker_upstart_conf_file
-  case node['platform']
-  when 'ubuntu'
-    if Helpers::Docker.use_docker_ppa? node
-      '/etc/init/docker.conf'
-    else
-      '/etc/init/docker.io.conf'
-    end
-  else
-    '/etc/init/docker.conf'
-  end
-end
-
-docker_service_name = ::File.basename(docker_upstart_conf_file, '.conf')
+docker_settings_file = Helpers::Docker.docker_settings_file(node)
+docker_upstart_conf_file = Helpers::Docker.docker_upstart_conf_file(node)
+docker_service = Helpers::Docker.docker_service(node)
 
 template docker_upstart_conf_file do
   source 'docker.conf.erb'
@@ -45,11 +19,11 @@ template docker_settings_file do
   )
   # DEPRECATED: stop and start only necessary for 0.x cookbook upgrades
   # Default docker Upstart job now sources default file for DOCKER_OPTS
-  notifies :stop, "service[#{docker_service_name}]", :immediately
-  notifies :start, "service[#{docker_service_name}]", :immediately
+  notifies :stop, "service[#{docker_service}]", :immediately
+  notifies :start, "service[#{docker_service}]", :immediately
 end
 
-service docker_service_name do
+service docker_service do
   provider Chef::Provider::Service::Upstart
   supports :status => true, :restart => true, :reload => true
   action [:start]

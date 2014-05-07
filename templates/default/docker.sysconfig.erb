@@ -1,7 +1,7 @@
 # Docker Upstart and SysVinit configuration file
 
 # Customize location of Docker binary (especially for development testing).
-DOCKER="<%= node['docker']['install_dir'] %>/docker"
+DOCKER="<%= Helpers::Docker.executable(node) %>"
 
 <% if node['docker']['logfile'] -%>
 DOCKER_LOGFILE=<%= node['docker']['logfile'] %>

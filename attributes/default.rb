@@ -58,16 +58,15 @@ default['docker']['binary']['url'] = "http://get.docker.io/builds/#{node['kernel
 ## Package installation attributes
 
 default['docker']['package']['action'] = 'install'
-case node['platform']
-when 'debian', 'ubuntu'
-  default['docker']['package']['distribution'] = 'docker'
-  default['docker']['package']['repo_url'] = 'https://get.docker.io/ubuntu'
-  default['docker']['package']['repo_key'] = 'https://get.docker.io/gpg'
-  # this currently only has meaning on ubuntu >= 14.04
-  # if you want to use the ubuntu provided package / repository
-  # override this attribute to false
-  default['docker']['package']['use_docker_io_ppa'] = true
-end
+default['docker']['package']['distribution'] = 'docker'
+default['docker']['package']['repo_url'] = value_for_platform(
+  %w(debian ubuntu) => {
+    %w(12.04 12.10 13.04 13.10) => 'https://get.docker.io/ubuntu',
+    'default' => nil
+  },
+  'default' => nil
+)
+default['docker']['package']['repo_key'] = 'https://get.docker.io/gpg'
 
 ## Source installation attributes
 

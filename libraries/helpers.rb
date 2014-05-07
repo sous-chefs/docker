@@ -25,14 +25,57 @@ EOH
     # Exception to signify that the docker command timed out.
     class CommandTimeout < RuntimeError; end
 
-    # Boolean to determine whether or not we are using the docker ppa
-    def self.use_docker_ppa?(node)
-      ! (
-        node['platform'] == 'ubuntu' &&
-        node['docker']['install_type'] == 'package' &&
-        node['docker']['package']['use_docker_io_ppa'] == false &&
-        Chef::VersionConstraint.new('>= 14.04').include?(node['platform_version'])
-      )
+    # Daemon service name
+    def self.docker_service(node)
+      return 'docker.io' if Helpers::Docker.using_docker_io_package?(node)
+      'docker'
+    end
+
+    # Path to settings file
+    def self.docker_settings_file(node)
+      case node['platform']
+      when 'debian'
+        '/etc/default/docker'
+      when 'ubuntu'
+        if Helpers::Docker.using_docker_io_package?(node)
+          '/etc/default/docker.io'
+        else
+          '/etc/default/docker'
+        end
+      else
+        '/etc/sysconfig/docker'
+      end
+    end
+
+    # Path to Upstart configuration file
+    def self.docker_upstart_conf_file(node)
+      case node['platform']
+      when 'ubuntu'
+        if Helpers::Docker.using_docker_io_package?(node)
+          '/etc/init/docker.io.conf'
+        else
+          '/etc/init/docker.conf'
+        end
+      else
+        '/etc/init/docker.conf'
+      end
+    end
+
+    # Path to docker executable
+    def self.executable(node)
+      return '/usr/bin/docker.io' if Helpers::Docker.using_docker_io_package?(node)
+      "#{node['docker']['install_dir']}/docker"
+    end
+
+    # Boolean to determine whether or not we are using the docker.io package
+    def self.using_docker_io_package?(node)
+      node['platform'] == 'ubuntu' &&
+      node['docker']['install_type'] == 'package' &&
+      (
+        node['docker']['package']['repo_url'].nil? ||
+        node['docker']['package']['repo_url'].empty?
+      ) &&
+      Chef::VersionConstraint.new('>= 14.04').include?(node['platform_version'])
     end
 
     def self.daemon_cli_args(node)

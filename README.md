@@ -21,7 +21,7 @@ This cookbook was inspired by @thoward's docker-cookbook: https://github.com/tho
 * Mac OS X (only docker installation currently)
 * Oracle 6
 * RHEL 6
-* Ubuntu 12.04, 12.10, 13.04, 13.10
+* Ubuntu 12.04, 12.10, 13.04, 13.10, 14.04 (experimental)
 
 ### Cookbooks
 
@@ -73,6 +73,10 @@ If you need device-mapper support, consider adding the device-mapper cookbook to
 
 Then, set the `storage_driver` attribute of this cookbook to `devicemapper` (please note lack of dash).
 
+### Ubuntu 14.04 Package Installation via Docker PPA
+
+By default, this cookbook will use the docker.io package from Ubuntu 14.04's repository. To use the Docker PPA package, just set the repo_url attribute to the Docker PPA URL. e.g. `node.set['docker']['package']['repo_url'] = 'https://get.docker.io/ubuntu'`
+
 ## Attributes
 
 ### Installation/System Attributes
@@ -106,9 +110,10 @@ These attributes are under the `node['docker']['package']` namespace.
 
 Attribute | Description | Type | Default
 ----------|-------------|------|--------
+action | Action for docker packages ("install", "update", etc.) | String | install
 distribution | Distribution for docker packages | String | auto-detected (see attributes/default.rb)
 repo_url | Repository URL for docker packages | String | auto-detected (see attributes/default.rb)
-use_docker_io_ppa | Use the docker.io package repository (can be set to false on Ubuntu 14.04+) | TrueClass, FalseClass | true
+repo_key | Repository GPG key URL for docker packages | String | https://get.docker.io/gpg
 
 #### Source Installation Attributes
 

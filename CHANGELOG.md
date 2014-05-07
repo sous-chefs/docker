@@ -20,6 +20,7 @@ Attribute deprecations so you can be sure you can upgrade:
 ## 0.35.0 (unreleased)
 
 * [#142][]: Bugfix: Redeploy breaks when a link is present
+* [#137][]/[#138][]: Enhancement: Experimental Ubuntu 14.04 LTS support
 * [#144][]: Enhancement: Experimental Amazon linux support
 * Enhancement: container LWRP remove_link and remove_volume actions
 
@@ -486,6 +487,8 @@ Lots of community contributions this release -- thanks!
 [#132]: https://github.com/bflad/chef-docker/issues/132
 [#133]: https://github.com/bflad/chef-docker/issues/133
 [#134]: https://github.com/bflad/chef-docker/issues/134
+[#137]: https://github.com/bflad/chef-docker/issues/137
+[#138]: https://github.com/bflad/chef-docker/issues/138
 [#141]: https://github.com/bflad/chef-docker/issues/141
 [#142]: https://github.com/bflad/chef-docker/issues/142
 [#144]: https://github.com/bflad/chef-docker/issues/144

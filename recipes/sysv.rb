@@ -1,8 +1,4 @@
-settings_file =
-  case node['platform']
-  when 'debian', 'ubuntu' then '/etc/default/docker'
-  else '/etc/sysconfig/docker'
-  end
+docker_settings_file = Helpers::Docker.docker_settings_file(node)
 
 template '/etc/init.d/docker' do
   source 'docker.sysv.erb'
@@ -11,7 +7,7 @@ template '/etc/init.d/docker' do
   group 'root'
 end
 
-template settings_file do
+template docker_settings_file do
   source 'docker.sysconfig.erb'
   mode '0644'
   owner 'root'
