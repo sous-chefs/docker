@@ -60,7 +60,10 @@ default['docker']['binary']['url'] = "http://get.docker.io/builds/#{node['kernel
 default['docker']['package']['action'] = 'install'
 default['docker']['package']['distribution'] = 'docker'
 default['docker']['package']['repo_url'] = value_for_platform(
-  %w(debian ubuntu) => {
+  'debian' => {
+    'default' => 'https://get.docker.io/ubuntu'
+  },
+  'ubuntu' => {
     %w(12.04 12.10 13.04 13.10) => 'https://get.docker.io/ubuntu',
     'default' => nil
   },
