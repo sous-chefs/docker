@@ -1,5 +1,5 @@
 case node['platform']
-when 'centos', 'redhat'
+when 'amazon', 'centos', 'redhat'
   include_recipe 'yum-epel'
 
   package 'docker-io' do
