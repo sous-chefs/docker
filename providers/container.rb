@@ -320,6 +320,7 @@ def run
     'link' => Array(new_resource.link),
     'lxc-conf' => Array(new_resource.lxc_conf),
     'memory' => new_resource.memory,
+    'net' => new_resource.net,
     'networking' => new_resource.networking,
     'name' => container_name,
     'opt' => Array(new_resource.opt),
