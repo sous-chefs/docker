@@ -2,6 +2,10 @@ docker_settings_file = Helpers::Docker.docker_settings_file(node)
 docker_upstart_conf_file = Helpers::Docker.docker_upstart_conf_file(node)
 docker_service = Helpers::Docker.docker_service(node)
 
+if node['docker'].key?(['graph'])
+  directory node['docker']['graph']
+end
+
 template docker_upstart_conf_file do
   source 'docker.conf.erb'
   mode '0600'
