@@ -31,7 +31,9 @@ attribute :label, :kind_of => [String]
 attribute :lxc_conf, :kind_of => [String, Array]
 attribute :memory, :kind_of => [Fixnum]
 attribute :message, :kind_of => [String]
-attribute :net, :kind_of => [String]
+attribute :net, :kind_of => [String], :regex => [
+  /(host|bridge|none)/, /container:.*/
+]
 # networking attribute is DEPRECATED
 attribute :networking, :kind_of => [TrueClass, FalseClass]
 attribute :opt, :kind_of => [String, Array]
