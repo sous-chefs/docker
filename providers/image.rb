@@ -7,10 +7,8 @@ def load_current_resource
   if dimages.stdout.include?(new_resource.image_name)
     dimages.stdout.each_line do |di_line|
       image = di(di_line)
-      unless image_id_matches?(image['id'])
-        next unless image_name_matches?(image['repository'])
-        next unless image_tag_matches_if_exists?(image['tag'])
-      end
+      next unless image_name_matches?(image['repository'])
+      next unless image_tag_matches_if_exists?(image['tag'])
       Chef::Log.debug('Matched docker image: ' + di_line.squeeze(' '))
       @current_resource.created(image['created'])
       @current_resource.repository(image['repository'])
