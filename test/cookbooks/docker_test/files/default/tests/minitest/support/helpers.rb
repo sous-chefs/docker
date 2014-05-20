@@ -1,3 +1,5 @@
+require 'json'
+
 module Helpers
   module DockerTest
     require 'chef/mixin/shell_out'
@@ -27,6 +29,10 @@ module Helpers
     def image_exists?(image)
       di = shell_out("docker images -a")
       di.stdout.include?(image)
+    end
+
+    def container_info(name)
+      JSON.parse(shell_out("docker inspect #{name}").stdout)
     end
 
   end

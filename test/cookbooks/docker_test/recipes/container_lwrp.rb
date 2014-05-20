@@ -76,3 +76,19 @@ docker_container 'bflad/testcontainerd' do
   detach true
   port '9999:9999'
 end
+
+docker_container "busybox-container" do
+  image "busybox"
+  container_name "busybox-container"
+  command "sleep 7777"
+  detach true
+  init_type false
+end
+
+docker_container "busybox-container" do
+  image "busybox"
+  container_name "busybox-container"
+  command "sleep 8888"
+  init_type false
+  action :redeploy
+end
