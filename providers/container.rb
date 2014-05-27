@@ -226,7 +226,7 @@ def docker_containers
   end
 end
 
-def command_timeout_error_message
+def command_timeout_error_message(cmd)
   <<-EOM
 
 Command timed out:

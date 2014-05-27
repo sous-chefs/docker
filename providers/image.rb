@@ -140,7 +140,7 @@ def di(di_line)
   image
 end
 
-def command_timeout_error_message
+def command_timeout_error_message(cmd)
   <<-EOM
 
 Command timed out:

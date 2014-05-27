@@ -211,7 +211,7 @@ EOH
 
     # the Error message to display if a command times out. Subclasses
     # may want to override this to provide more details on the timeout.
-    def command_timeout_error_message
+    def command_timeout_error_message(cmd)
       <<-EOM
 
 Command timed out:
@@ -232,7 +232,7 @@ EOM
       begin
         shell_out(cmd, :timeout => timeout)
       rescue Mixlib::ShellOut::CommandTimeout
-        raise CommandTimeout, command_timeout_error_message
+        raise CommandTimeout, command_timeout_error_message(cmd)
       end
     end
 
