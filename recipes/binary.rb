@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Dependencies derived from here: http://docs.docker.io/installation/binaries/
 
 # iptables >= 1.4
