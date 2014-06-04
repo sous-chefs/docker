@@ -1,4 +1,4 @@
-#!/bin/sh
+!/bin/sh
 #
 #       /etc/rc.d/init.d/docker
 #
@@ -22,57 +22,42 @@
 # Source function library.
 . /etc/rc.d/init.d/functions
 
-exec="<%= Helpers::Docker.executable(node) %>"
 prog="docker"
-<% if node['docker']['pidfile'] -%>
-pidfile="<%= node['docker']['pidfile'] %>"
-<% else -%>
+exec="/usr/bin/$prog"
 pidfile="/var/run/$prog.pid"
-<% end -%>
 lockfile="/var/lock/subsys/$prog"
-<% if node['docker']['logfile'] -%>
-logfile="<%= node['docker']['logfile'] %>"
-<% else -%>
 logfile="/var/log/$prog"
-<% end -%>
 
 [ -e /etc/sysconfig/$prog ] && . /etc/sysconfig/$prog
 
 prestart() {
-    service cgconfig status > /dev/null
+  service cgconfig status > /dev/null
 
-    if [[ $? != 0 ]]; then
-        service cgconfig start
-    fi
+  if [[ $? != 0 ]]; then
+    service cgconfig start
+  fi
 
-    preexec="/sbin/sysctl"
-    [ -x $preexec ] || exit 6
-    <% if node['docker']['ipv4_forward'] -%>
-    $preexec -w net.ipv4.ip_forward=1 > /dev/null 2>&1
-    <% end -%>
-    <% if node['docker']['ipv6_forward'] -%>
-    $preexec -w net.ipv6.conf.all.forwarding=1 > /dev/null 2>&1
-    <% end -%>
 }
 
 start() {
-    [ -x $exec ] || exit 5
+  [ -x $exec ] || exit 5
 
-    if ! [ -f $pidfile ]; then
-        prestart
-        printf "Starting $prog:\t"
-        echo "\n$(date)\n" >> $logfile
-        $exec -d $DOCKER_OPTS &>> $logfile &
-        pid=$!
-        touch $lockfile
-        success
-        echo
-    else
-        failure
-        echo
-        printf "$pidfile still exists...\n"
-        exit 7
-    fi
+  if ! [ -f $pidfile ]; then
+    prestart
+    printf "Starting $prog:\t"
+    echo "\n$(date)\n" >> $logfile
+    nohup $exec -d $other_args &>> $logfile &
+    pid=$!
+    sleep 1
+    touch $lockfile
+    success
+    echo
+  else
+    failure
+    echo
+    printf "$pidfile still exists...\n"
+    exit 7
+  fi
 }
 
 stop() {

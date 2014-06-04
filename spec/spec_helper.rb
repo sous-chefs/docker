@@ -13,7 +13,7 @@ Dir['libraries/*.rb'].each { |f| require File.expand_path(f) }
 # Kernel module
 # rubocop:disable all
 module Kernel
-  def system(cmd)
+  def system(*)
     true
   end
 end

@@ -15,7 +15,7 @@ normal exit 0 CONT
 
 respawn
 
-exec <%= node['docker']['install_dir'] %>/docker wait <%= @service_name %>
+exec <%= Helpers::Docker.executable(node) %> wait <%= @service_name %>
 
 pre-start script
   # Wait for docker to finish starting up first.
@@ -25,9 +25,9 @@ pre-start script
     inotifywait -t 2 -e create $(dirname $FILE)
   done
   <% end -%>
-  <%= node['docker']['install_dir'] %>/docker start <%= @service_name %> || true
+  <%= Helpers::Docker.executable(node) %> start <%= @service_name %> || true
 end script
 
 pre-stop script
-  <%= node['docker']['install_dir'] %>/docker stop -t <%= @cmd_timeout %> <%= @service_name %>
+  <%= Helpers::Docker.executable(node) %> stop -t <%= @cmd_timeout %> <%= @service_name %>
 end script

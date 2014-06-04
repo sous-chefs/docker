@@ -13,7 +13,7 @@
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
 DESC="<%= @service_name %>"
 NAME="<%= @service_name %>"
-DAEMON="<%= node['docker']['install_dir'] %>/docker"
+DAEMON="<%= Helpers::Docker.executable node %>"
 DAEMON_ARGS=""
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME

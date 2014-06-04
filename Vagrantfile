@@ -131,6 +131,12 @@ Vagrant.configure('2') do |config|
     end
   end
 
+  config.vm.define :ubuntu1404 do |ubuntu1404|
+    ubuntu1404.vm.box      = 'opscode-ubuntu-14.04'
+    ubuntu1404.vm.box_url  = 'http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-14.04_chef-provisionerless.box'
+    ubuntu1404.vm.hostname = "#{cookbook}-ubuntu-1404"
+  end
+
   config.vm.network :private_network, ip: '192.168.50.10'
 
   config.vm.provider 'aws' do |aws, override|

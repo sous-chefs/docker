@@ -1,9 +1,9 @@
 # Package installation automatically starts docker service
 # So let's stop and disable it.
 service 'lxc-docker' do
-  pattern "#{node['docker']['install_dir']}/docker"
+  pattern Helpers::Docker.executable(node)
   provider Chef::Provider::Service::Upstart if node['platform'] == 'ubuntu'
-  service_name 'docker'
+  service_name Helpers::Docker.docker_service(node)
   action [:stop, :disable]
 end
 

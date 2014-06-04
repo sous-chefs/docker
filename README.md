@@ -14,13 +14,14 @@ This cookbook was inspired by @thoward's docker-cookbook: https://github.com/tho
 
 ### Platforms
 
+* Amazon 2014.03.1 (experimental)
 * CentOS 6
 * Debian 7
 * Fedora 19, 20
 * Mac OS X (only docker installation currently)
 * Oracle 6
 * RHEL 6
-* Ubuntu 12.04, 12.10, 13.04, 13.10
+* Ubuntu 12.04, 12.10, 13.04, 13.10, 14.04 (experimental)
 
 ### Cookbooks
 
@@ -72,6 +73,10 @@ If you need device-mapper support, consider adding the device-mapper cookbook to
 
 Then, set the `storage_driver` attribute of this cookbook to `devicemapper` (please note lack of dash).
 
+### Ubuntu 14.04 Package Installation via Docker PPA
+
+By default, this cookbook will use the docker.io package from Ubuntu 14.04's repository. To use the Docker PPA package, just set the repo_url attribute to the Docker PPA URL. e.g. `node.set['docker']['package']['repo_url'] = 'https://get.docker.io/ubuntu'`
+
 ## Attributes
 
 ### Installation/System Attributes
@@ -105,8 +110,10 @@ These attributes are under the `node['docker']['package']` namespace.
 
 Attribute | Description | Type | Default
 ----------|-------------|------|--------
+action | Action for docker packages ("install", "update", etc.) | String | install
 distribution | Distribution for docker packages | String | auto-detected (see attributes/default.rb)
 repo_url | Repository URL for docker packages | String | auto-detected (see attributes/default.rb)
+repo_key | Repository GPG key URL for docker packages | String | https://get.docker.io/gpg
 
 #### Source Installation Attributes
 
@@ -390,9 +397,9 @@ These attributes are associated with this LWRP action.
 Attribute | Description | Type | Default
 ----------|-------------|------|--------
 cookbook | Cookbook to grab any templates | String | docker
+force | Force removal | TrueClass, FalseClass | nil
 init_type | Init type for container service handling | FalseClass, String | `node['docker']['container_init_type']`
 init_template | Template to use for init configuration | String | nil
-link | Add link to another container | String, Array | nil
 socket_template | Template to use for configuring socket (relevent for init_type systemd only) | String | nil
 
 Remove a container:
@@ -400,6 +407,40 @@ Remove a container:
 ```ruby
 docker_container 'shipyard' do
   action :remove
+end
+```
+
+#### docker_container action :remove_link
+
+These attributes are associated with this LWRP action.
+
+Attribute | Description | Type | Default
+----------|-------------|------|--------
+link | Link to remove from container | String | nil
+
+Remove a container:
+
+```ruby
+docker_container 'shipyard' do
+  link 'foo'
+  action :remove_link
+end
+```
+
+#### docker_container action :remove_volume
+
+These attributes are associated with this LWRP action.
+
+Attribute | Description | Type | Default
+----------|-------------|------|--------
+volume | Volume(s) to remove from container | String, Array | nil
+
+Remove a container:
+
+```ruby
+docker_container 'shipyard' do
+  volume %w(/extravol1 /extravol2)
+  action :remove_volume
 end
 ```
 

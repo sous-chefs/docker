@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Dependencies derived from here: http://docs.docker.io/installation/binaries/
 
 # iptables >= 1.4
@@ -73,7 +74,7 @@ exit 0
 end 
 
 
-remote_file "#{node['docker']['install_dir']}/docker" do
+remote_file Helpers::Docker.executable(node) do
   source node['docker']['binary']['url']
   checksum node['docker']['binary']['checksum']
   owner 'root'

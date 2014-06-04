@@ -11,7 +11,7 @@ default['docker']['arch'] =
   end
 default['docker']['group_members'] = []
 default['docker']['init_type'] = value_for_platform(
-  %w(centos debian oracle redhat) => {
+  %w(amazon centos debian oracle redhat) => {
     'default' => 'sysv'
   },
   %w(fedora) => {
@@ -50,10 +50,12 @@ case node['kernel']['name']
 when 'Darwin'
   case node['docker']['binary']['version']
   when '0.10.0' then '416835b2e83e520c3c413b4b4e4ae34bca20704f085b435f4c200010dd1ac3b7'
+  when '0.11.0' then '9db839b56a8656cfcef1f6543e9f75b01a774fdd6a50457da20d8183d6b415fa'
   end
 when 'Linux'
   case node['docker']['binary']['version']
   when '0.10.0' then 'ce1f5bc88a99f8b2331614ede7199f872bd20e4ac1806de7332cbac8e441d1a0'
+  when '0.11.0' then 'f80ba82acc0a6255960d3ff6fe145a8fdd0c07f136543fcd4676bb304daaf598'
   end
 end
 default['docker']['binary']['url'] = "http://get.docker.io/builds/#{node['kernel']['name']}/#{node['docker']['arch']}/docker-#{node['docker']['binary']['version']}"
@@ -61,12 +63,18 @@ default['docker']['binary']['url'] = "http://get.docker.io/builds/#{node['kernel
 ## Package installation attributes
 
 default['docker']['package']['action'] = 'install'
-case node['platform']
-when 'debian', 'ubuntu'
-  default['docker']['package']['distribution'] = 'docker'
-  default['docker']['package']['repo_url'] = 'https://get.docker.io/ubuntu'
-  default['docker']['package']['repo_key'] = 'https://get.docker.io/gpg'
-end
+default['docker']['package']['distribution'] = 'docker'
+default['docker']['package']['repo_url'] = value_for_platform(
+  'debian' => {
+    'default' => 'https://get.docker.io/ubuntu'
+  },
+  'ubuntu' => {
+    %w(12.04 12.10 13.04 13.10) => 'https://get.docker.io/ubuntu',
+    'default' => nil
+  },
+  'default' => nil
+)
+default['docker']['package']['repo_key'] = 'https://get.docker.io/gpg'
 
 ## Source installation attributes
 

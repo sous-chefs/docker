@@ -1,5 +1,11 @@
+
 case node['platform']
-when 'centos', 'redhat'
+when 'amazon'
+  package 'docker' do
+    version node['docker']['version']
+    action node['docker']['package']['action'].intern
+  end
+when 'centos', 'redhat' # ~FC024
   include_recipe 'yum-epel'
 
   package 'docker-io' do
@@ -7,16 +13,23 @@ when 'centos', 'redhat'
     action node['docker']['package']['action'].intern
   end
 when 'debian', 'ubuntu'
-  apt_repository 'docker' do
-    uri node['docker']['package']['repo_url']
-    distribution node['docker']['package']['distribution']
-    components ['main']
-    key node['docker']['package']['repo_key']
+  if Helpers::Docker.using_docker_io_package? node
+    p = 'docker.io'
+    link '/usr/local/bin/docker' do
+      to '/usr/bin/docker.io'
+    end
+  else
+    p = 'lxc-docker'
+    apt_repository 'docker' do
+      uri node['docker']['package']['repo_url']
+      distribution node['docker']['package']['distribution']
+      components ['main']
+      key node['docker']['package']['repo_key']
+    end
   end
 
   # reprepro doesn't support version tagging
   # See: https://github.com/dotcloud/docker/issues/979
-  p = 'lxc-docker'
   p += "-#{node['docker']['version']}" if node['docker']['version']
 
   package p do
