@@ -7,11 +7,11 @@ group :test, :integration do
 end
 
 group :test do
-  gem 'chefspec', '~> 3.4'
+  gem 'chefspec', '~> 4.0'
   # elecksee is lxc dependency
   gem 'elecksee', '~> 1.0.20'
   gem 'foodcritic', '~> 3.0.3'
-  gem 'rubocop', '~> 0.20'
+  gem 'rubocop', '~> 0.23'
 end
 
 group :integration do

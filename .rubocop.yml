@@ -5,9 +5,9 @@ AllCops:
     - Guardfile
     - Rakefile
   Exclude:
-    - test/**
-    - vendor/**
-    - ruby/**
+    - test/**/*
+    - vendor/**/*
+    - ruby/**/*
 
 AlignParameters:
   Enabled: false
