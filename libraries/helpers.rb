@@ -176,8 +176,9 @@ EOH
       if decoded_str
         auth = {}
         auth['username'], auth['password'] = decoded_str.split(':')
-        auth
+        return auth
       end
+      nil
     end
 
     def timeout

@@ -212,15 +212,14 @@ def docker_containers
   lines[1, lines.length].map do |line|
     ps = { 'line' => line }
     [:id, :image, :command, :created, :status, :ports, :names].each do |name|
-      if ranges.key?(name)
-        start = ranges[name][0]
-        if ranges[name].length == 2
-          finish = ranges[name][1]
-        else
-          finish = line.length
-        end
-        ps[name.to_s] = line[start..finish - 1].strip
+      next unless ranges.key?(name)
+      start = ranges[name][0]
+      if ranges[name].length == 2
+        finish = ranges[name][1]
+      else
+        finish = line.length
       end
+      ps[name.to_s] = line[start..finish - 1].strip
     end
     ps
   end
