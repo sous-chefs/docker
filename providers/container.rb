@@ -275,6 +275,14 @@ def remove_container
     'force' => new_resource.force
   )
   docker_cmd!("rm #{rm_args} #{current_resource.id}")
+  remove_cidfile
+end
+
+def remove_cidfile
+  # run at compile-time to ensure cidfile is gone before running docker_cmd()
+  file cidfile do
+    action :nothing
+  end.run_action(:delete)
 end
 
 def remove_link
