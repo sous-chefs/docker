@@ -71,15 +71,6 @@ It is recommended that you install Docker on RHEL 6.5 machines using the package
 To do this, please set `node['docker']['install_type']` to 'package' in the appropriate location.
       MSG
     end
-  else
-    unless ::Chef::VersionConstraint.new('>= 3.8').include?(node['kernel']['release'].match(/\d+.\d+.\d+/)[0])
-      alert_on_error DockerCookbook::Exceptions::InvalidKernelVersion, action, <<-MSG
-Due to a bug in LXC, Docker works best on the 3.8 Linux kernel. You are currently running #{node['kernel']['release']}.
-It is recommended that you upgrade your kernel to at least 3.8.
-
-More Info: http://docs.docker.io/installation/binaries/
-      MSG
-    end
   end
 
   # check kernel.release > 2.6.32-431
