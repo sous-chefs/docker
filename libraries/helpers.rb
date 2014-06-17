@@ -156,7 +156,8 @@ EOH
 
     def docker_inspect_id(id)
       inspect = docker_inspect(id)
-      inspect['id'] if inspect
+      # in docker < 1.0.0 the field is called 'id', but docker >= 1.0.0 it's called 'Id'.
+      (inspect['id'] || inspect['Id']) if inspect
     end
 
     def dockercfg_parse
