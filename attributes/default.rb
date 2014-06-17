@@ -72,6 +72,7 @@ default['docker']['package']['repo_url'] = value_for_platform(
   'default' => nil
 )
 default['docker']['package']['repo_key'] = 'https://get.docker.io/gpg'
+default['docker']['package']['name'] = nil
 
 ## Source installation attributes
 
