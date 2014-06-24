@@ -1,18 +1,21 @@
 ## 1.0.0 (unreleased)
 
-It appears we're getting close to Docker 1.0, which will mean a 1.0 release of the cookbook that removes any attribute deprecations.
+* Changed default Docker port to IANA assigned 2375
 
-Attribute deprecations so you can be sure you can upgrade:
+Attribute deprecations:
 
 * storage_type attribute renamed to storage_driver
 * virtualization_type attribute renamed to exec_driver
 * image LWRP dockerfile, image_url, and path attributes replaced with source attribute
 * container LWRP Fixnum port attribute: use full String notation from Docker documentation in port attribute instead
 * container LWRP public_port attribute: use port attribute instead
+* container LWRP networking attribute: use net attribute instead
 
-## 0.35.0 (unreleased)
+## 0.35.0
 
-After a long personal hiatus (sorry!), this is the first intermediate release getting us closer to 1.0 for the cookbook.
+After a long personal hiatus (sorry!), this is the last minor release before 1.0 of the cookbook. If you can handle the Docker port number change and don't use anything deprecated, upgrading to 1.0.X from 0.35.X of the cookbook should be very easy.
+
+This release has a bunch of changes and hasn't been fully tested yet. Wanted to get it out there for broad testing. Please use caution!
 
 Major kudos to @tduffield for the [#147][] PR, which includes:
 * Binary Installation
