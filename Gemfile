@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 gem 'rake'
 
 group :test, :integration do
-  gem 'berkshelf', '~> 2.0.14'
+  gem 'berkshelf', '~> 3.0'
 end
 
 group :test do

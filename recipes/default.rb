@@ -1,9 +1,12 @@
+include_recipe 'docker::dep_check'
+
 case node['platform']
 when 'debian', 'ubuntu'
   include_recipe 'apt'
   package 'apt-transport-https'
   package 'bsdtar'
   if node['platform'] == 'debian'
+    include_recipe 'sysctl'
     sysctl_param 'net.ipv4.ip_forward' do
       value 1
       only_if { node['docker']['ipv4_forward'] }
@@ -24,9 +27,30 @@ unless node['docker']['install_type'] == 'package'
   if node['platform'] == 'ubuntu' && Chef::VersionConstraint.new('< 13.10').include?(node['platform_version'])
     include_recipe "docker::#{node['docker']['storage_driver']}" if node['docker']['storage_driver']
   end
-  if node['docker']['install_type'] == 'source'
-    include_recipe 'golang'
+  if node['docker']['install_type'] == 'binary'
     include_recipe 'git'
+    include_recipe 'iptables'
+
+    node['docker']['binary']['dependency_packages'].each do |p|
+      package p
+    end
+
+    # cgroupfs
+    # https://github.com/tianon/cgroupfs-mount/blob/master/cgroupfs-mount
+    template "#{node['docker']['install_dir']}/cgroupfs-mount" do
+      source 'cgroupfs-mount.erb'
+      owner 'root'
+      group 'root'
+      mode '0755'
+    end
+
+    execute 'cgroupfs-mount' do
+      command "#{node['docker']['install_dir']}/cgroupfs-mount"
+      not_if 'mountpoint -q /sys/fs/cgroup'
+    end
+  elsif node['docker']['install_type'] == 'source'
+    include_recipe 'git'
+    include_recipe 'golang'
   end
 end
 
