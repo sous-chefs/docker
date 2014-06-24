@@ -38,4 +38,9 @@ describe_recipe "docker_test::container_lwrp_test" do
     assert container_running?('bflad/testcontainerd')
     service('testcontainerd').must_be_running
   end
+
+  it "has a named busybox-container running sleep 8888" do
+    cmd = container_info("busybox-container").first['Config']['Cmd']
+    assert cmd.grep(/8888/).count > 0
+  end
 end
