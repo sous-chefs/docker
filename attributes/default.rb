@@ -23,7 +23,7 @@ default['docker']['init_type'] = value_for_platform(
   'default' => 'upstart'
 )
 default['docker']['install_type'] = value_for_platform(
-  %w(amazon centos debian fedora redhat ubuntu) => {
+  %w(centos debian fedora redhat ubuntu mac_os_x) => {
     'default' => 'package'
   },
   'default' => 'binary'
@@ -38,6 +38,9 @@ default['docker']['ipv4_forward'] = true
 default['docker']['ipv6_forward'] = true
 default['docker']['logfile'] = nil
 default['docker']['version'] = nil
+
+# Actions: :warn, :fatal
+default['docker']['alert_on_error_action'] = :fatal
 
 ## Binary installation attributes
 
@@ -143,3 +146,4 @@ default['docker']['image_cmd_timeout'] = 300
 ## docker_registry attributes
 
 default['docker']['registry_cmd_timeout'] = 60
+

@@ -1,3 +1,8 @@
+# The dotcloud/docker folder actually doesn't container any buildable Go files. 
+
+include_recipe 'golang'
+include_recipe 'git'
+
 directory "#{node['go']['gopath']}/src/github.com/dotcloud" do
   owner 'root'
   group 'root'

@@ -20,20 +20,50 @@ describe 'docker::default' do
     stub_command('/usr/local/go/bin/go version | grep "go1.2 "').and_return('1.2')
   end
 
-  let(:chef_run) do
-    ChefSpec::Runner.new.converge(described_recipe)
+  context 'when running on ubuntu 12.04' do
+    let(:chef_run) do
+      ChefSpec::Runner.new.converge(described_recipe)
+    end
+
+    it 'should make sure kernel >= 3.8'
+
+    it 'includes the apt recipe' do
+      expect(chef_run).to include_recipe('apt')
+    end
+
+    it 'installs the apt-transport-https package' do
+      expect(chef_run).to install_package('apt-transport-https')
+    end
+
+    it 'installs the bsdtar package' do
+      expect(chef_run).to install_package('bsdtar')
+    end
   end
 
-  it 'includes the apt recipe' do
-    expect(chef_run).to include_recipe('apt')
-  end
+  context 'when running on debian 7.4' do
+    let(:chef_run) do
+      ChefSpec::Runner.new(platform: 'debian', version: '7.4').converge(described_recipe)
+    end
 
-  it 'installs the apt-transport-https package' do
-    expect(chef_run).to install_package('apt-transport-https')
-  end
+    it 'includes the apt recipe' do
+      expect(chef_run).to include_recipe('apt')
+    end
 
-  it 'installs the bsdtar package' do
-    expect(chef_run).to install_package('bsdtar')
+    it 'installs the apt-transport-https package' do
+      expect(chef_run).to install_package('apt-transport-https')
+    end
+
+    it 'installs the bsdtar package' do
+      expect(chef_run).to install_package('bsdtar')
+    end
+
+    it 'sets net.ipv4.ip_forward to 1' do
+      expect(chef_run).to apply_sysctl_param('net.ipv4.ip_forward').with(value: 1)
+    end
+
+    it 'sets net.ipv6.conf.all.forwarding to 1' do
+      expect(chef_run).to apply_sysctl_param('net.ipv6.conf.all.forwarding').with(value: 1)
+    end
   end
 
   context 'when exec_driver is lxc' do
@@ -64,16 +94,31 @@ describe 'docker::default' do
     end
   end
 
-  context 'when install_type is binary and storage_driver is aufs' do
+  context 'when running on ubuntu < 13.10' do
+    context 'and install_type is binary and storage_driver is aufs' do
+      let(:chef_run) do
+        runner = ChefSpec::Runner.new
+        runner.node.set['docker']['install_type'] = 'binary'
+        runner.node.set['docker']['storage_driver'] = 'aufs'
+        runner.converge(described_recipe)
+      end
+
+      it 'includes the docker::aufs recipe' do
+        expect(chef_run).to include_recipe('docker::aufs')
+      end
+    end
+  end
+
+  context 'when running on ubuntu > 13.10' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::Runner.new(platform: 'ubuntu', version: '14.04')
       runner.node.set['docker']['install_type'] = 'binary'
       runner.node.set['docker']['storage_driver'] = 'aufs'
       runner.converge(described_recipe)
     end
 
-    it 'includes the docker::aufs recipe' do
-      expect(chef_run).to include_recipe('docker::aufs')
+    it 'should not manage the storagedriver' do
+      expect(chef_run).not_to include_recipe('docker::aufs')
     end
   end
 
@@ -84,72 +129,32 @@ describe 'docker::default' do
       runner.converge(described_recipe)
     end
 
-    it 'includes the git recipe' do
-      expect(chef_run).to include_recipe('git')
-    end
-
-    it 'includes the golang recipe' do
-      expect(chef_run).to include_recipe('golang')
-    end
-
     it 'includes the docker::source recipe' do
       expect(chef_run).to include_recipe('docker::source')
     end
   end
 
-  it 'includes the docker::package recipe' do
-    expect(chef_run).to include_recipe('docker::package')
-  end
-
-  context 'when group_members is not empty' do
+  context 'when the install_type is package' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
-      runner.node.set['docker']['group_members'] = ['vagrant']
-      runner.converge(described_recipe)
+      ChefSpec::Runner.new.converge(described_recipe)
     end
 
-    it 'includes the docker::group recipe' do
-      expect(chef_run).to include_recipe('docker::group')
+    it 'includes the docker::package recipe' do
+      expect(chef_run).to include_recipe('docker::package')
     end
   end
+  
+  %w( runit systemd sysv ).each do |init|
+    context "when init_type is #{init}" do
+      let(:chef_run) do
+        runner = ChefSpec::Runner.new
+        runner.node.set['docker']['init_type'] = init
+        runner.converge(described_recipe)
+      end
 
-  it 'includes the docker::upstart recipe' do
-    expect(chef_run).to include_recipe('docker::upstart')
-  end
-
-  context 'when init_type is runit' do
-    let(:chef_run) do
-      runner = ChefSpec::Runner.new
-      runner.node.set['docker']['init_type'] = 'runit'
-      runner.converge(described_recipe)
-    end
-
-    it 'includes the docker::runit recipe' do
-      expect(chef_run).to include_recipe('docker::runit')
-    end
-  end
-
-  context 'when init_type is systemd' do
-    let(:chef_run) do
-      runner = ChefSpec::Runner.new
-      runner.node.set['docker']['init_type'] = 'systemd'
-      runner.converge(described_recipe)
-    end
-
-    it 'includes the docker::systemd recipe' do
-      expect(chef_run).to include_recipe('docker::systemd')
-    end
-  end
-
-  context 'when init_type is sysv' do
-    let(:chef_run) do
-      runner = ChefSpec::Runner.new
-      runner.node.set['docker']['init_type'] = 'sysv'
-      runner.converge(described_recipe)
-    end
-
-    it 'includes the docker::sysv recipe' do
-      expect(chef_run).to include_recipe('docker::sysv')
+      it "includes the docker::#{init} recipe" do
+        expect(chef_run).to include_recipe("docker::#{init}")
+      end
     end
   end
 end
