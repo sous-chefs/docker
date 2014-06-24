@@ -116,6 +116,7 @@ EOH
         'mtu' => node['docker']['mtu'],
         'pidfile' => node['docker']['pidfile'],
         'restart' => node['docker']['container_init_type'] ? false : nil,
+        'selinux-enabled' => node['docker']['selinux_enabled'],
         'storage-driver' => node['docker']['storage_driver'],
         'storage-opt' => Array(node['docker']['storage_opt']),
         'tls' => node['docker']['tls'],

@@ -153,6 +153,7 @@ default['docker']['mtu'] = nil
 default['docker']['options'] = nil
 default['docker']['pidfile'] = nil
 default['docker']['ramdisk'] = false
+default['docker']['selinux_enabled'] = false
 default['docker']['storage_driver'] = nil
 default['docker']['storage_opt'] = nil
 

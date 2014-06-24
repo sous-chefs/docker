@@ -42,6 +42,7 @@ Other awesome work merged:
 * [#150][]/[#152][]: Enhancement: Add net attribute, deprecate networking
 * [#168][]: Enhancement: Allow override of package name
 * [#161][]: Enhancement: Add minitest case for SysV service
+* [#149][]: Enhancement: Add --selinux-enabled daemon flag
 * Enhancement: container LWRP remove_link and remove_volume actions
 * Enhancement: Add storage-opt daemon flag
 * Enhancement: Add Docker 0.11.0, 0.11.1, 0.12.0, 1.0.0, 1.0.1 binary checksums
@@ -516,6 +517,7 @@ Lots of community contributions this release -- thanks!
 [#142]: https://github.com/bflad/chef-docker/issues/142
 [#144]: https://github.com/bflad/chef-docker/issues/144
 [#147]: https://github.com/bflad/chef-docker/issues/147
+[#149]: https://github.com/bflad/chef-docker/issues/149
 [#150]: https://github.com/bflad/chef-docker/issues/150
 [#152]: https://github.com/bflad/chef-docker/issues/152
 [#153]: https://github.com/bflad/chef-docker/issues/153
