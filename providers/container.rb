@@ -4,11 +4,9 @@ def load_current_resource
   @current_resource = Chef::Resource::DockerContainer.new(new_resource)
   wait_until_ready!
   docker_containers.each do |ps|
-    unless container_id_matches?(ps['id'])
-      next unless container_image_matches?(ps['image'])
-      next unless container_command_matches_if_exists?(ps['command'])
-      next unless container_name_matches_if_exists?(ps['names'])
-    end
+    next unless container_image_matches?(ps['image'])
+    next unless container_command_matches_if_exists?(ps['command'])
+    next unless container_name_matches_if_exists?(ps['names'])
     Chef::Log.debug('Matched docker container: ' + ps['line'].squeeze(' '))
     @current_resource.container_name(ps['names'])
     @current_resource.created(ps['created'])
@@ -204,7 +202,7 @@ end
 #
 # The array of hashes is returned.
 def docker_containers
-  dps = docker_cmd!('ps -a -notrunc')
+  dps = docker_cmd!('ps -a --no-trunc')
 
   lines = dps.stdout.lines.to_a
   ranges = get_ranges(lines[0])
