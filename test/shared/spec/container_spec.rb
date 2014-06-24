@@ -24,6 +24,16 @@ shared_examples_for 'a docker container test environment' do
     it { should_not be_running }
   end
 
+  describe docker_container('busybox-container', 'sleep 7777') do
+    it { should be_a_container }
+    it { should_not be_running }
+  end
+
+  describe docker_container('busybox-container', 'sleep 8888') do
+    it { should be_a_container }
+    it { should be_running }
+  end
+
   describe docker_container('bflad/testcontainerd') do
     it { should be_a_container }
     it { should be_running }
