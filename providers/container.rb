@@ -148,14 +148,17 @@ def container_command_matches_if_exists?(command)
 end
 
 def container_id_matches?(id)
+  return false unless id
   id.start_with?(new_resource.id)
 end
 
 def container_image_matches?(image)
+  return false unless image
   image.include?(new_resource.image)
 end
 
 def container_name_matches?(names)
+  return false unless names
   new_resource.container_name && new_resource.container_name == names
 end
 

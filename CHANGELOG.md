@@ -32,7 +32,7 @@ Major kudos to @tduffield for the [#147][] PR, which includes:
 Other awesome work merged:
 
 * [#142][]: Bugfix: Redeploy breaks when a link is present
-* [#139][]/[#153][]/[#154][]/[#157][]: Bugfix: container/image ID given as nil, fixes deprecated -notrunc
+* [#139][]/[#153][]/[#154][]/[#156][]/[#157][]: Bugfix: container/image ID given as nil, fixes deprecated -notrunc
 * [#164][]: Bugfix: Removing a container should also remove its cidfile
 * [#166][]: Bugfix: Fix docker_inspect_id for Docker 1.0+
 * [#158][]/[#160][]/[#165][]: Bugfix: Fix NameError when displaying error messages for timed-out commands
@@ -519,6 +519,7 @@ Lots of community contributions this release -- thanks!
 [#152]: https://github.com/bflad/chef-docker/issues/152
 [#153]: https://github.com/bflad/chef-docker/issues/153
 [#154]: https://github.com/bflad/chef-docker/issues/154
+[#156]: https://github.com/bflad/chef-docker/issues/156
 [#157]: https://github.com/bflad/chef-docker/issues/157
 [#158]: https://github.com/bflad/chef-docker/issues/158
 [#160]: https://github.com/bflad/chef-docker/issues/160
