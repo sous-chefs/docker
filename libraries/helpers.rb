@@ -117,6 +117,7 @@ EOH
         'pidfile' => node['docker']['pidfile'],
         'restart' => node['docker']['container_init_type'] ? false : nil,
         'storage-driver' => node['docker']['storage_driver'],
+        'storage-opt' => Array(node['docker']['storage_opt']),
         'tls' => node['docker']['tls'],
         'tlscacert' => node['docker']['tlscacert'],
         'tlscert' => node['docker']['tlscert'],

@@ -43,6 +43,7 @@ Other awesome work merged:
 * [#168][]: Enhancement: Allow override of package name
 * [#161][]: Enhancement: Add minitest case for SysV service
 * Enhancement: container LWRP remove_link and remove_volume actions
+* Enhancement: Add storage-opt daemon flag
 * Enhancement: Add Docker 0.11.0, 0.11.1, 0.12.0, 1.0.0, 1.0.1 binary checksums
 
 ## 0.34.2

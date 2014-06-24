@@ -154,6 +154,7 @@ default['docker']['options'] = nil
 default['docker']['pidfile'] = nil
 default['docker']['ramdisk'] = false
 default['docker']['storage_driver'] = nil
+default['docker']['storage_opt'] = nil
 
 # DEPRECATED: will be removed in chef-docker 1.0
 default['docker']['storage_type'] = node['docker']['storage_driver']

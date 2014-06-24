@@ -155,6 +155,7 @@ options | Additional options to pass to docker. These could be flags like "-api-
 pidfile | Path to use for daemon PID file | String | nil (implicitly /var/run/docker.pid)
 ramdisk | Set DOCKER_RAMDISK when using RAM disk | TrueClass or FalseClass | false
 storage_driver | Storage driver for docker | String | nil
+storage_opt | Storage driver options | String, Array | nil
 tls | Use TLS | TrueClass, FalseClass | nil (implicitly false)
 tlscacert | Trust only remotes providing a certificate signed by the CA given here | String | nil (implicitly ~/.docker/ca.pem)
 tlscert | Path to TLS certificate file | String | nil (implicitly ~/.docker/cert.pem)
