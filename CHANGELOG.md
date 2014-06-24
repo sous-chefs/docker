@@ -34,6 +34,7 @@ Other awesome work merged:
 * [#142][]: Bugfix: Redeploy breaks when a link is present
 * [#139][]/[#153][]/[#154][]/[#157][]: Bugfix: container/image ID given as nil, fixes deprecated -notrunc
 * [#166][]: Bugfix: Fix docker_inspect_id for Docker 1.0+
+* [#158][]/[#160][]: Bugfix: Fix NameError when displaying error messages for timed-out commands
 * [#137][]/[#138][]: Enhancement: Experimental Ubuntu 14.04 LTS support
 * [#144][]: Enhancement: Experimental Amazon linux support
 * [#150][]/[#152][]: Enhancement: Add net attribute, deprecate networking
@@ -515,6 +516,8 @@ Lots of community contributions this release -- thanks!
 [#153]: https://github.com/bflad/chef-docker/issues/153
 [#154]: https://github.com/bflad/chef-docker/issues/154
 [#157]: https://github.com/bflad/chef-docker/issues/157
+[#158]: https://github.com/bflad/chef-docker/issues/158
+[#160]: https://github.com/bflad/chef-docker/issues/160
 [#166]: https://github.com/bflad/chef-docker/issues/166
 [@jcrobak]: https://github.com/jcrobak
 [@wingrunr21]: https://github.com/wingrunr21
