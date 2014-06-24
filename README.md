@@ -491,7 +491,8 @@ link | Add link to another container | String, Array | nil
 label | Options to pass to underlying labeling system | String | nil
 lxc_conf | Custom LXC options | String, Array | nil
 memory | Set memory limit for container | Fixnum | nil
-networking | Configure networking for container | TrueClass, FalseClass | true
+net | [Configure networking](http://docs.docker.io/reference/run/#network-settings) for container | String | nil
+networking (*DEPRECATED*) | Configure networking for container | TrueClass, FalseClass | true
 opt | Custom driver options | String, Array | nil
 port | Map network port(s) to the container | Fixnum (*DEPRECATED*), String, Array | nil
 privileged | Give extended privileges | TrueClass, FalseClass | nil
