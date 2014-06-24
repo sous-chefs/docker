@@ -32,6 +32,7 @@ Major kudos to @tduffield for the [#147][] PR, which includes:
 Other awesome work merged:
 
 * [#142][]: Bugfix: Redeploy breaks when a link is present
+* [#139][]/[#153][]/[#154][]/[#157][]: Bugfix: container/image ID given as nil, fixes deprecated -notrunc
 * [#137][]/[#138][]: Enhancement: Experimental Ubuntu 14.04 LTS support
 * [#144][]: Enhancement: Experimental Amazon linux support
 * [#150][]/[#152][]: Enhancement: Add net attribute, deprecate networking
@@ -503,11 +504,15 @@ Lots of community contributions this release -- thanks!
 [#134]: https://github.com/bflad/chef-docker/issues/134
 [#137]: https://github.com/bflad/chef-docker/issues/137
 [#138]: https://github.com/bflad/chef-docker/issues/138
+[#139]: https://github.com/bflad/chef-docker/issues/139
 [#141]: https://github.com/bflad/chef-docker/issues/141
 [#142]: https://github.com/bflad/chef-docker/issues/142
 [#144]: https://github.com/bflad/chef-docker/issues/144
 [#147]: https://github.com/bflad/chef-docker/issues/147
 [#150]: https://github.com/bflad/chef-docker/issues/150
 [#152]: https://github.com/bflad/chef-docker/issues/152
+[#153]: https://github.com/bflad/chef-docker/issues/153
+[#154]: https://github.com/bflad/chef-docker/issues/154
+[#157]: https://github.com/bflad/chef-docker/issues/157
 [@jcrobak]: https://github.com/jcrobak
 [@wingrunr21]: https://github.com/wingrunr21
