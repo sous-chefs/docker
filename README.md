@@ -112,6 +112,7 @@ Attribute | Description | Type | Default
 ----------|-------------|------|--------
 action | Action for docker packages ("install", "update", etc.) | String | install
 distribution | Distribution for docker packages | String | auto-detected (see attributes/default.rb)
+name | Override Docker package name | String | auto-detected (see attributes/default.rb)
 repo_url | Repository URL for docker packages | String | auto-detected (see attributes/default.rb)
 repo_key | Repository GPG key URL for docker packages | String | https://get.docker.io/gpg
 

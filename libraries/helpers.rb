@@ -94,13 +94,8 @@ EOH
 
     # Boolean to determine whether or not we are using the docker.io package
     def self.using_docker_io_package?(node)
-      node['platform'] == 'ubuntu' &&
       node['docker']['install_type'] == 'package' &&
-      (
-        node['docker']['package']['repo_url'].nil? ||
-        node['docker']['package']['repo_url'].empty?
-      ) &&
-      Chef::VersionConstraint.new('>= 14.04').include?(node['platform_version'])
+      node['docker']['package']['name'] == 'docker.io'
     end
 
     def self.daemon_cli_args(node)

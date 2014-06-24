@@ -80,6 +80,25 @@ default['docker']['binary']['url'] = "http://get.docker.io/builds/#{node['kernel
 
 default['docker']['package']['action'] = 'install'
 default['docker']['package']['distribution'] = 'docker'
+default['docker']['package']['name'] = value_for_platform(
+  'amazon' => {
+    'default' => 'docker'
+  },
+  %w(centos fedora redhat) => {
+    'default' => 'docker-io'
+  },
+  'debian' => {
+    'default' => 'lxc-docker'
+  },
+  'mac_os_x' => {
+    'default' => 'homebrew/binary/docker'
+  },
+  'ubuntu' => {
+    %w(12.04 12.10 13.04 13.10) => 'lxc-docker',
+    'default' => 'docker.io'
+  },
+  'default' => nil
+)
 default['docker']['package']['repo_url'] = value_for_platform(
   'debian' => {
     'default' => 'https://get.docker.io/ubuntu'
@@ -91,7 +110,6 @@ default['docker']['package']['repo_url'] = value_for_platform(
   'default' => nil
 )
 default['docker']['package']['repo_key'] = 'https://get.docker.io/gpg'
-default['docker']['package']['name'] = nil
 
 ## Source installation attributes
 
