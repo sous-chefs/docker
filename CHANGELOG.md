@@ -1,13 +1,6 @@
 ## 1.0.0 (unreleased)
 
-It appears we're getting close to Docker 1.0, which will mean a 1.0 release of the cookbook that removes any attribute deprecations and *removes built-in recipes for exec_driver (such as LXC) and storage_driver (such as AUFS/devicemapper)*. I originally added these to this cookbook to help everyone get started, but the logic for them is beyond the scope of managing Docker and now Docker uses a native execution driver. I won't leave you stranded though as I'll try to get current LXC/filesystem features pulled into existing community cookbooks or create new ones with sufficient documentation in the README.
-
-Recipe deprecations so you can be sure you can upgrade (*please check linked issues for current status*):
-
-* [#88][]: Migrate AUFS logic to separate cookbook
-* [#89][]: Migrate cgroups logic to separate cookbook
-* [#90][]: Migrate devicemapper logic to separate cookbook
-* [#91][]: Migrate LXC logic to separate cookbook
+It appears we're getting close to Docker 1.0, which will mean a 1.0 release of the cookbook that removes any attribute deprecations.
 
 Attribute deprecations so you can be sure you can upgrade:
 
@@ -17,7 +10,11 @@ Attribute deprecations so you can be sure you can upgrade:
 * container LWRP Fixnum port attribute: use full String notation from Docker documentation in port attribute instead
 * container LWRP public_port attribute: use port attribute instead
 
-## Development
+## 0.35.0
+
+After a long personal hiatus (sorry!), this is the first intermediate release getting us closer to 1.0 for the cookbook.
+
+Major kudos to @tduffield for the [#147][] PR, which includes:
 * Binary Installation
   * Added missing dependency resolution for using the binary. 
 * Dependency Checks
@@ -32,7 +29,7 @@ Attribute deprecations so you can be sure you can upgrade:
   * Removed tests for the source recipe. The dotcloud/docker repo actually doesn’t build any Go deliverables. 
     * I think that the source recipe needs to be completely refactored. 
 
-## 0.35.0 (unreleased)
+Other awesome work merged:
 
 * [#142][]: Bugfix: Redeploy breaks when a link is present
 * [#137][]/[#138][]: Enhancement: Experimental Ubuntu 14.04 LTS support
@@ -508,5 +505,6 @@ Lots of community contributions this release -- thanks!
 [#141]: https://github.com/bflad/chef-docker/issues/141
 [#142]: https://github.com/bflad/chef-docker/issues/142
 [#144]: https://github.com/bflad/chef-docker/issues/144
+[#147]: https://github.com/bflad/chef-docker/issues/147
 [@jcrobak]: https://github.com/jcrobak
 [@wingrunr21]: https://github.com/wingrunr21
