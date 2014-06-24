@@ -34,6 +34,20 @@ unless node['docker']['install_type'] == 'package'
     node['docker']['binary']['dependency_packages'].each do |p|
       package p
     end
+
+    # cgroupfs
+    # https://github.com/tianon/cgroupfs-mount/blob/master/cgroupfs-mount
+    template "#{node['docker']['install_dir']}/cgroupfs-mount" do
+      source 'cgroupfs-mount.erb'
+      owner 'root'
+      group 'root'
+      mode '0755'
+    end
+
+    execute 'cgroupfs-mount' do
+      command "#{node['docker']['install_dir']}/cgroupfs-mount"
+      not_if 'mountpoint -q /sys/fs/cgroup'
+    end
   end
 end
 
