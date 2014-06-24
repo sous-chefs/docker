@@ -1,14 +1,3 @@
-# procps
-package 'procps'
-
-# xz utils >= 4.9
-case node['platform_family']
-when 'rhel'
-  package 'xz'
-when 'debian'
-  package 'xz-utils'
-end
-
 # cgroupfs
 # https://github.com/tianon/cgroupfs-mount/blob/master/cgroupfs-mount
 bash 'cgroupfs-mount' do
