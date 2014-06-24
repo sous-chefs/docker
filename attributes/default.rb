@@ -45,12 +45,8 @@ default['docker']['alert_on_error_action'] = :fatal
 ## Binary installation attributes
 
 default['docker']['binary']['dependency_packages'] = value_for_platform_family(
-  'debian' => {
-    'default' => %w(procps xz-utils)
-  },
-  'rhel' => {
-    'default' => %w(procps xz)
-  }
+  'debian' => %w(procps xz-utils),
+  'rhel' => %w(procps xz)
 )
 default['docker']['binary']['version'] = node['docker']['version'] || 'latest'
 default['docker']['binary']['checksum'] =

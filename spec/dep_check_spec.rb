@@ -59,6 +59,7 @@ describe 'docker::dep_check' do
     context 'installing as binary on kernel < 3.8' do
       let(:chef_run) do
         ChefSpec::Runner.new(platform: 'redhat', version: '6.5') do |node|
+          node.set['docker']['install_type'] = 'binary'
           node.automatic['kernel']['release'] = '2.6.32-431'
         end.converge(described_recipe)
       end

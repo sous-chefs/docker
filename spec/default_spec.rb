@@ -15,14 +15,17 @@ describe 'docker::default' do
     allow(uname).to receive(:stdout).and_return('3.')
 
     stub_command('modprobe -n -v aufs').and_return('')
+    stub_command('mountpoint -q /sys/fs/cgroup').and_return('')
 
     # TODO: Contribute back to golang cookbook
-    stub_command('/usr/local/go/bin/go version | grep "go1.2 "').and_return('1.2')
+    stub_command('/usr/local/go/bin/go version | grep "go1.2.2 "').and_return('1.2.2')
   end
 
   context 'when running on ubuntu 12.04' do
     let(:chef_run) do
-      ChefSpec::Runner.new.converge(described_recipe)
+      ChefSpec::Runner.new(platform: 'ubuntu', version: '12.04') do |node|
+        node.set['docker']['alert_on_error_action'] = :warn
+      end.converge(described_recipe)
     end
 
     it 'should make sure kernel >= 3.8'
@@ -42,7 +45,9 @@ describe 'docker::default' do
 
   context 'when running on debian 7.4' do
     let(:chef_run) do
-      ChefSpec::Runner.new(platform: 'debian', version: '7.4').converge(described_recipe)
+      ChefSpec::Runner.new(platform: 'debian', version: '7.4') do |node|
+        node.set['docker']['alert_on_error_action'] = :warn
+      end.converge(described_recipe)
     end
 
     it 'includes the apt recipe' do
@@ -68,9 +73,10 @@ describe 'docker::default' do
 
   context 'when exec_driver is lxc' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
-      runner.node.set['docker']['exec_driver'] = 'lxc'
-      runner.converge(described_recipe)
+      ChefSpec::Runner.new do |node|
+        node.set['docker']['alert_on_error_action'] = :warn
+        node.set['docker']['exec_driver'] = 'lxc'
+      end.converge(described_recipe)
     end
 
     it 'includes the docker::cgroups recipe' do
@@ -84,9 +90,38 @@ describe 'docker::default' do
 
   context 'when install_type is binary' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
-      runner.node.set['docker']['install_type'] = 'binary'
-      runner.converge(described_recipe)
+      ChefSpec::Runner.new do |node|
+        node.set['docker']['alert_on_error_action'] = :warn
+        node.set['docker']['install_type'] = 'binary'
+      end.converge(described_recipe)
+    end
+
+    it 'includes iptables cookbook' do
+      expect(chef_run).to include_recipe('iptables')
+    end
+
+    it 'includes git cookbook' do
+      expect(chef_run).to include_recipe('git')
+    end
+
+    it 'installs procps package' do
+      expect(chef_run).to install_package('procps')
+    end
+
+    it 'installs the XZ Utilities package' do
+      expect(chef_run).to install_package('xz-utils')
+
+      rhel_run = ChefSpec::Runner.new(platform: 'redhat', version: '6.5') do |node|
+        node.set['docker']['alert_on_error_action'] = :warn
+        node.set['docker']['install_type'] = 'binary'
+        node.automatic['kernel']['release'] = '3.8.0'
+      end.converge(described_recipe)
+
+      expect(rhel_run).to install_package('xz')
+    end
+
+    it 'create cgroupfs-mount script' do
+      expect(chef_run).to render_file('/usr/local/bin/cgroupfs-mount')
     end
 
     it 'includes the docker::binary recipe' do
@@ -97,10 +132,11 @@ describe 'docker::default' do
   context 'when running on ubuntu < 13.10' do
     context 'and install_type is binary and storage_driver is aufs' do
       let(:chef_run) do
-        runner = ChefSpec::Runner.new
-        runner.node.set['docker']['install_type'] = 'binary'
-        runner.node.set['docker']['storage_driver'] = 'aufs'
-        runner.converge(described_recipe)
+        ChefSpec::Runner.new do |node|
+          node.set['docker']['alert_on_error_action'] = :warn
+          node.set['docker']['install_type'] = 'binary'
+          node.set['docker']['storage_driver'] = 'aufs'
+        end.converge(described_recipe)
       end
 
       it 'includes the docker::aufs recipe' do
@@ -111,10 +147,11 @@ describe 'docker::default' do
 
   context 'when running on ubuntu > 13.10' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new(platform: 'ubuntu', version: '14.04')
-      runner.node.set['docker']['install_type'] = 'binary'
-      runner.node.set['docker']['storage_driver'] = 'aufs'
-      runner.converge(described_recipe)
+      ChefSpec::Runner.new(platform: 'ubuntu', version: '14.04') do |node|
+        node.set['docker']['alert_on_error_action'] = :warn
+        node.set['docker']['install_type'] = 'binary'
+        node.set['docker']['storage_driver'] = 'aufs'
+      end.converge(described_recipe)
     end
 
     it 'should not manage the storagedriver' do
@@ -124,9 +161,18 @@ describe 'docker::default' do
 
   context 'when install_type is source' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
-      runner.node.set['docker']['install_type'] = 'source'
-      runner.converge(described_recipe)
+      ChefSpec::Runner.new do |node|
+        node.set['docker']['alert_on_error_action'] = :warn
+        node.set['docker']['install_type'] = 'source'
+      end.converge(described_recipe)
+    end
+
+    it 'includes the git recipe' do
+      expect(chef_run).to include_recipe('git')
+    end
+
+    it 'includes the golang recipe' do
+      expect(chef_run).to include_recipe('golang')
     end
 
     it 'includes the docker::source recipe' do
@@ -136,7 +182,9 @@ describe 'docker::default' do
 
   context 'when the install_type is package' do
     let(:chef_run) do
-      ChefSpec::Runner.new.converge(described_recipe)
+      ChefSpec::Runner.new do |node|
+        node.set['docker']['alert_on_error_action'] = :warn
+      end.converge(described_recipe)
     end
 
     it 'includes the docker::package recipe' do
@@ -147,9 +195,10 @@ describe 'docker::default' do
   %w( runit systemd sysv ).each do |init|
     context "when init_type is #{init}" do
       let(:chef_run) do
-        runner = ChefSpec::Runner.new
-        runner.node.set['docker']['init_type'] = init
-        runner.converge(described_recipe)
+        ChefSpec::Runner.new do |node|
+          node.set['docker']['alert_on_error_action'] = :warn
+          node.set['docker']['init_type'] = init
+        end.converge(described_recipe)
       end
 
       it "includes the docker::#{init} recipe" do

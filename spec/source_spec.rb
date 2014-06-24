@@ -10,14 +10,6 @@ describe 'docker::source' do
     stub_command('/usr/local/go/bin/go version | grep "go1.2 "').and_return('1.2')
   end
 
-  it 'includes the git recipe' do
-    expect(chef_run).to include_recipe('git')
-  end
-
-  it 'includes the golang recipe' do
-    expect(chef_run).to include_recipe('golang')
-  end
-
   it 'creates the docker source directory' do
     expect(chef_run).to create_directory('/opt/go/src/github.com/dotcloud').with(
       owner: 'root',
