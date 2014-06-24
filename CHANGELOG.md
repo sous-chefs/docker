@@ -34,6 +34,7 @@ Other awesome work merged:
 * [#142][]: Bugfix: Redeploy breaks when a link is present
 * [#137][]/[#138][]: Enhancement: Experimental Ubuntu 14.04 LTS support
 * [#144][]: Enhancement: Experimental Amazon linux support
+* [#150][]/[#152][]: Enhancement: Add net attribute, deprecate networking
 * Enhancement: container LWRP remove_link and remove_volume actions
 * Enhancement: Add Docker 0.11.0, 0.11.1, 0.12.0, 1.0.0, 1.0.1 binary checksums
 
@@ -506,5 +507,7 @@ Lots of community contributions this release -- thanks!
 [#142]: https://github.com/bflad/chef-docker/issues/142
 [#144]: https://github.com/bflad/chef-docker/issues/144
 [#147]: https://github.com/bflad/chef-docker/issues/147
+[#150]: https://github.com/bflad/chef-docker/issues/150
+[#152]: https://github.com/bflad/chef-docker/issues/152
 [@jcrobak]: https://github.com/jcrobak
 [@wingrunr21]: https://github.com/wingrunr21
