@@ -1,11 +1,3 @@
-# Dependencies derived from here: http://docs.docker.io/installation/binaries/
-
-# iptables >= 1.4
-include_recipe 'iptables'
-
-# git >= 1.7
-include_recipe 'git'
-
 # procps
 package 'procps'
 

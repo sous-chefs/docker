@@ -27,6 +27,10 @@ unless node['docker']['install_type'] == 'package'
   if node['platform'] == 'ubuntu' && Chef::VersionConstraint.new('< 13.10').include?(node['platform_version'])
     include_recipe "docker::#{node['docker']['storage_driver']}" if node['docker']['storage_driver']
   end
+  if node['docker']['install_type'] == 'binary'
+    include_recipe 'git'
+    include_recipe 'iptables'
+  end
 end
 
 include_recipe "docker::#{node['docker']['install_type']}"
