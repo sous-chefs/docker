@@ -48,6 +48,9 @@ unless node['docker']['install_type'] == 'package'
       command "#{node['docker']['install_dir']}/cgroupfs-mount"
       not_if 'mountpoint -q /sys/fs/cgroup'
     end
+  elsif node['docker']['install_type'] == 'source'
+    include_recipe 'git'
+    include_recipe 'golang'
   end
 end
 
