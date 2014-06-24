@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-shared_examples_for "a non-ubuntu platform" do
+shared_examples_for 'a non-ubuntu platform' do
   it 'installs the lxc package' do
     expect(chef_run).to install_package('lxc')
   end
@@ -9,7 +9,7 @@ end
 describe 'docker::lxc' do
 
   context 'when running on debian' do
-    it_behaves_like "a non-ubuntu platform" do
+    it_behaves_like 'a non-ubuntu platform' do
       let(:chef_run) do
         ChefSpec::Runner.new(platform: 'debian', version: '7.4').converge(described_recipe)
       end
@@ -17,7 +17,7 @@ describe 'docker::lxc' do
   end
 
   context 'when running on oracle' do
-    it_behaves_like "a non-ubuntu platform" do
+    it_behaves_like 'a non-ubuntu platform' do
       let(:chef_run) do
         ChefSpec::Runner.new(platform: 'oracle', version: '6.5').converge(described_recipe)
       end

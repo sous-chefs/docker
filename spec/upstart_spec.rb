@@ -10,7 +10,7 @@ describe 'docker::upstart' do
     expect(chef_run).to render_file('/etc/init/docker.conf').with_content(
       /"\$UPSTART_JOB" -d \$DOCKER_OPTS/)
   end
-  
+
   context 'when running on debian/ubuntu' do
     it 'creates the docker sysconfig template in /etc/default' do
       expect(chef_run).to create_template('/etc/default/docker')

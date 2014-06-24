@@ -24,7 +24,7 @@ describe 'docker::dep_check' do
   context 'when running debian' do
     let(:chef_run) do
       ChefSpec::Runner.new(platform: 'ubuntu', version: '12.04') do |node|
-        node.automatic['kernel']['release'] = "3.2.0-26-generic"
+        node.automatic['kernel']['release'] = '3.2.0-26-generic'
       end.converge(described_recipe)
     end
 
@@ -66,7 +66,7 @@ describe 'docker::dep_check' do
       it 'should fail' do
         expect { chef_run }.to raise_error(DockerCookbook::Exceptions::InvalidKernelVersion)
       end
-      
+
     end
 
     context 'with kernel version < 2.6.32' do

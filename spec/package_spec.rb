@@ -74,7 +74,7 @@ describe 'docker::package' do
   end
 
   context 'when running on fedora' do
-    let(:chef_run) do 
+    let(:chef_run) do
       ChefSpec::Runner.new(platform: 'fedora', version: '19').converge(described_recipe)
     end
 
@@ -87,7 +87,7 @@ describe 'docker::package' do
     let(:chef_run) do
       ChefSpec::Runner.new(platform: 'mac_os_x', version: '10.9.2').converge(described_recipe)
     end
-    
+
     it 'should tap the homebrew/binary cask' do
       expect(chef_run).to tap_homebrew_tap('homebrew/binary')
     end

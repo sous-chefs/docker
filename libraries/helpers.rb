@@ -3,13 +3,12 @@ include Chef::Mixin::ShellOut
 
 # Helpers module
 module Helpers
-
   def binary_installed?(bin)
     !shell_out("which #{bin}").error?
   end
 
   #
-  # Pairs with the dep_check recipe. 
+  # Pairs with the dep_check recipe.
   #
   # Parameters:
   # @execption - DockerCookbook exception to throw
@@ -27,7 +26,7 @@ WARNING: #{exception}
       fail exception, msg
     end
   end
-  
+
   # Helpers::Docker module
   module Docker
     # Exception to signify that the Docker daemon is not yet ready to handle
@@ -276,12 +275,16 @@ EOM
   end
 end
 
+# class Chef
 class Chef
+  # class Chef::Node
   class Node
-
+    # recipe? is already taken
+    # rubocop:disable PredicateName
     def has_recipe?(recipe_name)
       loaded_recipes.include?(with_default(recipe_name))
     end
+    # rubocop:enable PredicateName
 
     private
 

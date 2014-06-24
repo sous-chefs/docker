@@ -143,7 +143,7 @@ describe 'docker::default' do
       expect(chef_run).to include_recipe('docker::package')
     end
   end
-  
+
   %w( runit systemd sysv ).each do |init|
     context "when init_type is #{init}" do
       let(:chef_run) do

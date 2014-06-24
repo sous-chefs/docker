@@ -5,7 +5,7 @@ describe 'docker::binary' do
   context 'by default' do
     let(:chef_run) do
       ChefSpec::Runner.new(platform: 'ubuntu', version: '12.04') do |node|
-        node.automatic['kernel']['release'] = "3.8.0"
+        node.automatic['kernel']['release'] = '3.8.0'
       end.converge(described_recipe)
     end
 
@@ -16,7 +16,7 @@ describe 'docker::binary' do
     it 'includes iptables cookbook' do
       expect(chef_run).to include_recipe('iptables')
     end
-    
+
     it 'includes git cookbook' do
       expect(chef_run).to include_recipe('git')
     end
@@ -56,7 +56,7 @@ describe 'docker::binary' do
     let(:chef_run) do
       ChefSpec::Runner.new(platform: 'ubuntu', version: '12.04') do |node|
         node.normal['docker']['install_dir'] = '/tmp'
-        node.automatic['kernel']['release'] = "3.8.0"
+        node.automatic['kernel']['release'] = '3.8.0'
       end.converge(described_recipe)
     end
 
@@ -69,7 +69,7 @@ describe 'docker::binary' do
     let(:chef_run) do
       ChefSpec::Runner.new(platform: 'ubuntu', version: '12.04') do |node|
         node.normal['docker']['install_type'] = 'binary'
-        node.automatic['kernel']['release'] = "3.8.0"
+        node.automatic['kernel']['release'] = '3.8.0'
       end.converge(described_recipe)
     end
 

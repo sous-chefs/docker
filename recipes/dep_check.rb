@@ -11,8 +11,8 @@ when 'mac_os_x'
   unless vbox_exists || vbox_in_runlist
     alert_on_error DockerCookbook::Exceptions::MissingDependency, action, <<-MSG
 VirtualBox is a requirement for running Docker on Mac OS X and it was not found on your system or
-in your chef-client's run_list. To successfully install Docker on Mac OS X we recommend adding the 
-following cookbooks to your run_list. 
+in your chef-client's run_list. To successfully install Docker on Mac OS X we recommend adding the
+following cookbooks to your run_list.
 
 1) virtualbox   - http://community.opscode.com/cookbooks/virtualbox
 2) boot2docker  - https://github.com/bflad/chef-boot2docker
@@ -25,7 +25,7 @@ following cookbooks to your run_list.
   unless boot2docker_exists || boot2docker_in_runlist
     alert_on_error DockerCookbook::Exceptions::MissingDependency, action, <<-MSG
 boot2docker is a requirement for running Docker on Mac OS X and it was not found on your system or
-in your chef-client's run_list. To successfully install Docker on Mac OS X we recommend adding the 
+in your chef-client's run_list. To successfully install Docker on Mac OS X we recommend adding the
 following cookbooks prior to docker in your run_list.
 
 1) virtualbox   - http://community.opscode.com/cookbooks/virtualbox
@@ -36,7 +36,7 @@ following cookbooks prior to docker in your run_list.
 when 'debian'
   # check kernel.release >= 3.8
   unless ::Chef::VersionConstraint.new('>= 3.8').include?(node['kernel']['release'].match(/\d+.\d+.\d+/)[0])
-    alert_on_error DockerCookbook::Exceptions::InvalidKernelVersion, action, <<-MSG 
+    alert_on_error DockerCookbook::Exceptions::InvalidKernelVersion, action, <<-MSG
 Due to a bug in LXC, Docker works best on the 3.8 Linux kernel. You are currently running #{node['kernel']['release']}.
 It is recommended that you upgrade your kernel to at least 3.8.
 
@@ -48,7 +48,7 @@ when 'rhel'
   # check kernel.machine == x86_64
   unless node['kernel']['machine'] == 'x86_64'
     alert_on_error DockerCookbook::Exceptions::InvalidArchitecture, action, <<-MSG
-Due to current Docker limitations, Docker is only able to run on 64bit architectures. 
+Due to current Docker limitations, Docker is only able to run on 64bit architectures.
 More Info: http://docs.docker.io/installation/rhel/
     MSG
   end
@@ -65,8 +65,8 @@ More Info: http://docs.docker.io/installation/rhel/
   when 'binary'
     unless ::Chef::VersionConstraint.new('>= 3.8').include?(node['kernel']['release'].match(/\d+.\d+.\d+/)[0])
       alert_on_error DockerCookbook::Exceptions::InvalidKernelVersion, action, <<-MSG
-Binary installations on the RHEL 6.5 family with a kernel < 3.8 are highly unstable. You are currently running RHEL #{node['platform']['version']} on kernel #{node['kernel']['release']}. 
-It is recommended that you install Docker on RHEL 6.5 machines using the package method or as a Binary with a kernel >= 3.8. 
+Binary installations on the RHEL 6.5 family with a kernel < 3.8 are highly unstable. You are currently running RHEL #{node['platform']['version']} on kernel #{node['kernel']['release']}.
+It is recommended that you install Docker on RHEL 6.5 machines using the package method or as a Binary with a kernel >= 3.8.
 
 To do this, please set `node['docker']['install_type']` to 'package' in the appropriate location.
       MSG
@@ -84,7 +84,7 @@ More Info: http://docs.docker.io/installation/rhel/
 when 'fedora'
   if node['docker']['install_type'] == 'binary'
     alert_on_error DockerCookbook::Exceptions::InvalidPlatformVersion, action, <<-MSG
-LXC on Fedora is incredibly unstable. It is recommended to use native Docker on Fedora. 
+LXC on Fedora is incredibly unstable. It is recommended to use native Docker on Fedora.
     MSG
   end
 
@@ -93,10 +93,8 @@ when 'suse'
   # check kernel.machine == x86_64
   unless node['kernel']['machine'] == 'x86_64'
     alert_on_error DockerCookbook::Exceptions::InvalidArchitecture, action, <<-MSG
-Due to current Docker limitations, Docker is only able to run on 64bit architectures. 
+Due to current Docker limitations, Docker is only able to run on 64bit architectures.
 More Info: http://docs.docker.io/installation/openSUSE/
     MSG
   end
 end
-
-
