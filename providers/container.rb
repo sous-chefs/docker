@@ -4,9 +4,7 @@ def load_current_resource
   @current_resource = Chef::Resource::DockerContainer.new(new_resource)
   wait_until_ready!
   docker_containers.each do |ps|
-    next unless container_image_matches?(ps['image'])
-    next unless container_command_matches_if_exists?(ps['command'])
-    next unless container_name_matches_if_exists?(ps['names'])
+    next unless container_matches?(ps)
     Chef::Log.debug('Matched docker container: ' + ps['line'].squeeze(' '))
     @current_resource.container_name(ps['names'])
     @current_resource.created(ps['created'])
@@ -132,6 +130,15 @@ def commit
   docker_cmd!("commit #{commit_args} #{current_resource.id} #{commit_end_args}")
 end
 
+def container_matches?(ps)
+  return true if container_id_matches?(ps['id'])
+  return true if container_name_matches?(ps['names'])
+  return false unless container_image_matches?(ps['image'])
+  return false unless container_command_matches_if_exists?(ps['command'])
+  return false unless container_name_matches_if_exists?(ps['names'])
+  true
+end
+
 def container_command_matches_if_exists?(command)
   return true if new_resource.command.nil?
   # try the exact command but also the command with the ' and " stripped out, since docker will
@@ -146,6 +153,10 @@ end
 
 def container_image_matches?(image)
   image.include?(new_resource.image)
+end
+
+def container_name_matches?(names)
+  new_resource.container_name && new_resource.container_name == names
 end
 
 def container_name_matches_if_exists?(names)
