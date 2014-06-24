@@ -8,7 +8,7 @@ describe 'docker::upstart' do
   it 'creates the docker Upstart template' do
     expect(chef_run).to create_template('/etc/init/docker.conf')
     expect(chef_run).to render_file('/etc/init/docker.conf').with_content(
-      /"\$UPSTART_JOB" -d \$DOCKER_OPTS/)
+      /"exec \$DOCKER" -d \$DOCKER_OPTS/)
   end
 
   context 'when running on debian/ubuntu' do
