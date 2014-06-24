@@ -49,7 +49,7 @@ Third-Party Cookbooks
 
 ### Execution Drivers
 
-If your system is runs a Docker version before 0.9, you'll need to explicitly set up LXC outside of this cookbook. This will likely be true for most distros after Docker 1.0 and chef-docker 1.0 is released.
+If your system is running a Docker version before 0.9, you'll need to explicitly set up LXC outside of this cookbook. This will likely be true for most distros after Docker 1.0 and chef-docker 1.0 is released.
 * [lxc on community site](http://community.opscode.com/cookbooks/lxc)
 * [lxc on Github](https://github.com/hw-cookbooks/lxc/)
 
