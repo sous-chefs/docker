@@ -1,25 +1,27 @@
 
 case node['platform']
 when 'amazon'
-  package 'docker' do
+  p = node['docker']['package']['name'] || 'docker'
+  package p do
     version node['docker']['version']
     action node['docker']['package']['action'].intern
   end
 when 'centos', 'redhat' # ~FC024
   include_recipe 'yum-epel'
 
-  package 'docker-io' do
+  p = node['docker']['package']['name'] || 'docker-io'
+  package p do
     version node['docker']['version']
     action node['docker']['package']['action'].intern
   end
 when 'debian', 'ubuntu'
   if Helpers::Docker.using_docker_io_package? node
-    p = 'docker.io'
+    p = node['docker']['package']['name'] || 'docker.io'
     link '/usr/local/bin/docker' do
       to '/usr/bin/docker.io'
     end
   else
-    p = 'lxc-docker'
+    p = node['docker']['package']['name'] || 'lxc-docker'
     apt_repository 'docker' do
       uri node['docker']['package']['repo_url']
       distribution node['docker']['package']['distribution']
@@ -37,7 +39,8 @@ when 'debian', 'ubuntu'
     action node['docker']['package']['action'].intern
   end
 when 'fedora'
-  package 'docker-io' do
+  p = node['docker']['package']['name'] || 'docker-io'
+  package p do
     version node['docker']['version']
     action node['docker']['package']['action'].intern
   end
