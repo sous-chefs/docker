@@ -36,6 +36,7 @@ Other awesome work merged:
 * [#164][]: Bugfix: Removing a container should also remove its cidfile
 * [#166][]: Bugfix: Fix docker_inspect_id for Docker 1.0+
 * [#158][]/[#160][]/[#165][]: Bugfix: Fix NameError when displaying error messages for timed-out commands
+* [#169][]: Bugfix: Specify Upstart as service provider for cgroup on Ubuntu 14.04 (workaround for CHEF-5276, fixed in Chef 11.14)
 * [#137][]/[#138][]: Enhancement: Experimental Ubuntu 14.04 LTS support
 * [#144][]: Enhancement: Experimental Amazon linux support
 * [#150][]/[#152][]: Enhancement: Add net attribute, deprecate networking
@@ -526,5 +527,6 @@ Lots of community contributions this release -- thanks!
 [#165]: https://github.com/bflad/chef-docker/issues/165
 [#166]: https://github.com/bflad/chef-docker/issues/166
 [#168]: https://github.com/bflad/chef-docker/issues/168
+[#169]: https://github.com/bflad/chef-docker/issues/169
 [@jcrobak]: https://github.com/jcrobak
 [@wingrunr21]: https://github.com/wingrunr21
