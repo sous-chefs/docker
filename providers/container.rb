@@ -291,6 +291,8 @@ def remove_container
 end
 
 def remove_cidfile
+  # return if init_type is false and no cidfile attribute
+  return false unless cidfile
   # run at compile-time to ensure cidfile is gone before running docker_cmd()
   file cidfile do
     action :nothing
