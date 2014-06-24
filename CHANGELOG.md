@@ -10,7 +10,7 @@ Attribute deprecations so you can be sure you can upgrade:
 * container LWRP Fixnum port attribute: use full String notation from Docker documentation in port attribute instead
 * container LWRP public_port attribute: use port attribute instead
 
-## 0.35.0
+## 0.35.0 (unreleased)
 
 After a long personal hiatus (sorry!), this is the first intermediate release getting us closer to 1.0 for the cookbook.
 
