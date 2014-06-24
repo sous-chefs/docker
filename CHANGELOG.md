@@ -38,6 +38,7 @@ Other awesome work merged:
 * [#137][]/[#138][]: Enhancement: Experimental Ubuntu 14.04 LTS support
 * [#144][]: Enhancement: Experimental Amazon linux support
 * [#150][]/[#152][]: Enhancement: Add net attribute, deprecate networking
+* [#161][]: Enhancement: Add minitest case for SysV service
 * Enhancement: container LWRP remove_link and remove_volume actions
 * Enhancement: Add Docker 0.11.0, 0.11.1, 0.12.0, 1.0.0, 1.0.1 binary checksums
 
@@ -518,6 +519,7 @@ Lots of community contributions this release -- thanks!
 [#157]: https://github.com/bflad/chef-docker/issues/157
 [#158]: https://github.com/bflad/chef-docker/issues/158
 [#160]: https://github.com/bflad/chef-docker/issues/160
+[#161]: https://github.com/bflad/chef-docker/issues/161
 [#165]: https://github.com/bflad/chef-docker/issues/165
 [#166]: https://github.com/bflad/chef-docker/issues/166
 [@jcrobak]: https://github.com/jcrobak
