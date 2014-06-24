@@ -22,6 +22,7 @@ when 'ubuntu'
   else
     service 'cgroup-lite' do
       action :start
+      provider Chef::Provider::Service::Upstart if node['platform_version'] == '14.04'
     end
   end
 end
