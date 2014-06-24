@@ -35,7 +35,7 @@ Other awesome work merged:
 * [#137][]/[#138][]: Enhancement: Experimental Ubuntu 14.04 LTS support
 * [#144][]: Enhancement: Experimental Amazon linux support
 * Enhancement: container LWRP remove_link and remove_volume actions
-* Enhancement: Add Docker 0.11.0 binary checksums
+* Enhancement: Add Docker 0.11.0, 0.11.1, 0.12.0, 1.0.0, 1.0.1 binary checksums
 
 ## 0.34.2
 
