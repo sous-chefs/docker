@@ -11,6 +11,12 @@ Attribute deprecations:
 * container LWRP public_port attribute: use port attribute instead
 * container LWRP networking attribute: use net attribute instead
 
+## 0.35.2
+
+* Bugfix: [#171][]: Default Ubuntu 14.04 to Docker PPA
+* Bugfix: [#175][]: Do not set --selinux-enabled in opts unless explicitly defined for older versions
+* Bugfix: [#176][]: Use docker host attribute in docker_container Upstart inotifywait
+
 ## 0.35.1
 
 * Bugfix: [#172][]: Generate no cidfile by default, even when deploying as service
@@ -540,7 +546,10 @@ Lots of community contributions this release -- thanks!
 [#166]: https://github.com/bflad/chef-docker/issues/166
 [#168]: https://github.com/bflad/chef-docker/issues/168
 [#169]: https://github.com/bflad/chef-docker/issues/169
+[#171]: https://github.com/bflad/chef-docker/issues/171
 [#172]: https://github.com/bflad/chef-docker/issues/172
 [#173]: https://github.com/bflad/chef-docker/issues/173
+[#175]: https://github.com/bflad/chef-docker/issues/175
+[#176]: https://github.com/bflad/chef-docker/issues/176
 [@jcrobak]: https://github.com/jcrobak
 [@wingrunr21]: https://github.com/wingrunr21
