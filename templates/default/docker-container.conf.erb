@@ -19,8 +19,14 @@ exec <%= Helpers::Docker.executable(node) %> wait <%= @service_name %>
 
 pre-start script
   # Wait for docker to finish starting up first.
+  <% # DEPRECATED: bind_socket usage -%>
   <% if node['docker']['bind_socket'] -%>
   FILE=<%= node['docker']['bind_socket'].gsub(/^unix:\/\//,'') %>
+  while [ ! -e $FILE ] ; do
+    inotifywait -t 2 -e create $(dirname $FILE)
+  done
+  <% elsif Array(node['docker']['host']).any?{|host| host.start_with? 'unix://'} -%>
+  FILE=<%= Array(node['docker']['host']).select{|host| host.start_with? 'unix://'}[0].gsub(/^unix:\/\//,'') %>
   while [ ! -e $FILE ] ; do
     inotifywait -t 2 -e create $(dirname $FILE)
   done
