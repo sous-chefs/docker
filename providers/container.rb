@@ -108,10 +108,6 @@ action :wait do
   end
 end
 
-def cidfile
-  new_resource.cidfile
-end
-
 def commit
   commit_args = cli_args(
     'author' => new_resource.author,
@@ -283,14 +279,12 @@ def remove_container
     'force' => new_resource.force
   )
   docker_cmd!("rm #{rm_args} #{current_resource.id}")
-  remove_cidfile
+  remove_cidfile if new_resource.cidfile
 end
 
 def remove_cidfile
-  # return if init_type is false and no cidfile attribute
-  return false unless cidfile
   # run at compile-time to ensure cidfile is gone before running docker_cmd()
-  file cidfile do
+  file new_resource.cidfile do
     action :nothing
   end.run_action(:delete)
 end
@@ -323,7 +317,7 @@ end
 def run
   run_args = cli_args(
     'cpu-shares' => new_resource.cpu_shares,
-    'cidfile' => cidfile,
+    'cidfile' => new_resource.cidfile,
     'detach' => new_resource.detach,
     'dns' => Array(new_resource.dns),
     'dns-search' => Array(new_resource.dns_search),
