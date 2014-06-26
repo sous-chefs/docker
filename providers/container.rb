@@ -109,11 +109,7 @@ action :wait do
 end
 
 def cidfile
-  if service?
-    new_resource.cidfile || "/var/run/#{service_name}.cid"
-  else
-    new_resource.cidfile
-  end
+  new_resource.cidfile
 end
 
 def commit
