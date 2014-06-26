@@ -11,6 +11,11 @@ Attribute deprecations:
 * container LWRP public_port attribute: use port attribute instead
 * container LWRP networking attribute: use net attribute instead
 
+## 0.35.1
+
+* Bugfix: [#172][]: Generate no cidfile by default, even when deploying as service
+* Bugfix: [#173][]: Updated docker upstart script (should fix service docker restart)
+
 ## 0.35.0
 
 After a long personal hiatus (sorry!), this is the last minor release before 1.0 of the cookbook. If you can handle the Docker port number change and don't use anything deprecated, upgrading to 1.0.X from 0.35.X of the cookbook should be very easy.
@@ -535,5 +540,7 @@ Lots of community contributions this release -- thanks!
 [#166]: https://github.com/bflad/chef-docker/issues/166
 [#168]: https://github.com/bflad/chef-docker/issues/168
 [#169]: https://github.com/bflad/chef-docker/issues/169
+[#172]: https://github.com/bflad/chef-docker/issues/172
+[#173]: https://github.com/bflad/chef-docker/issues/173
 [@jcrobak]: https://github.com/jcrobak
 [@wingrunr21]: https://github.com/wingrunr21
