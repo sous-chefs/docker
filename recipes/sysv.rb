@@ -15,10 +15,10 @@ template docker_settings_file do
   variables(
     'daemon_options' => Helpers::Docker.daemon_cli_args(node)
   )
-  notifies :restart, 'service[docker]', :immediately
+  notifies :start, 'service[docker]', :immediately
 end
 
 service 'docker' do
   supports :status => true, :restart => true, :reload => true
-  action [:start, :enable]
+  action [:enable]
 end

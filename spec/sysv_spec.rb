@@ -17,7 +17,7 @@ describe 'docker::sysv' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
         %r{^DOCKER="/usr/bin/docker"$})
       resource = chef_run.template('/etc/default/docker')
-      expect(resource).to notify('service[docker]').to(:restart).immediately
+      expect(resource).to notify('service[docker]').to(:start).immediately
     end
   end
 
@@ -452,10 +452,6 @@ describe 'docker::sysv' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
         /^export TMPDIR="\/tmp"$/)
     end
-  end
-
-  it 'starts the docker service' do
-    expect(chef_run).to start_service('docker')
   end
 
   it 'enables the docker service' do
