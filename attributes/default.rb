@@ -127,6 +127,7 @@ default['docker']['debug'] = nil
 default['docker']['dns'] = nil
 default['docker']['dns_search'] = nil
 default['docker']['exec_driver'] = nil
+default['docker']['restart'] = nil
 
 # DEPRECATED: will be removed in chef-docker 1.0
 default['docker']['virtualization_type'] = node['docker']['exec_driver']
