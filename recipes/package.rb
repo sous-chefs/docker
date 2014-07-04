@@ -19,6 +19,7 @@ when 'debian', 'ubuntu'
       distribution node['docker']['package']['distribution']
       components ['main']
       key node['docker']['package']['repo_key']
+      action :add
     end
   end
 
