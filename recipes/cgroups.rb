@@ -1,7 +1,7 @@
 # TODO: Platforms handled here should be fixed in control_groups cookbook
 # Possibly: https://github.com/hw-cookbooks/control_groups/
 case node['platform']
-when 'oracle'
+when 'oracle' || 'rhel'
   package 'libcgroup'
 
   service 'cgconfig' do
