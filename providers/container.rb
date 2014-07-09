@@ -151,7 +151,7 @@ end
 
 def container_name_matches?(names)
   return false unless names
-  new_resource.container_name && new_resource.container_name == names.split(',')[0]
+  new_resource.container_name if names.split(',').include?(new_resource.container_name)
 end
 
 def container_name_matches_if_exists?(names)
