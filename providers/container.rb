@@ -294,9 +294,9 @@ def remove_link
   rm_args = cli_args(
     'link' => true
   )
-  link_args = Array(new_resource.link).map { |link|
+  link_args = Array(new_resource.link).map do |link|
     container_name + '/' + link
-  }
+  end
   docker_cmd!("rm #{rm_args} #{link_args.join(' ')}")
 end
 
