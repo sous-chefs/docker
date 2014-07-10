@@ -292,9 +292,12 @@ end
 def remove_link
   return false if new_resource.link.nil? || new_resource.link.empty?
   rm_args = cli_args(
-    'link' => new_resource.link
+    'link' => true
   )
-  docker_cmd!("rm #{rm_args} #{current_resource.id}")
+  link_args = Array(new_resource.link).map { |link|
+    container_name + '/' + link
+  }
+  docker_cmd!("rm #{rm_args} #{link_args.join(' ')}")
 end
 
 def remove_volume
