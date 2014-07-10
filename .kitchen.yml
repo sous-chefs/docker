@@ -16,8 +16,6 @@ provisioner:
 
 platforms:
 - name: centos-6.5
-  run_list:
-  - recipe[build-essential]
   driver_config:
     box: opscode-centos-6.5
     box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-6.5_chef-provisionerless.box
@@ -67,6 +65,7 @@ suites:
 #
 - name: package-native
   run_list:
+  - recipe[build-essential]
   - recipe[docker_test::default]
   - recipe[docker_test::image_lwrp]
   - recipe[docker_test::container_lwrp]
@@ -75,6 +74,7 @@ suites:
       install_type: package
 - name: package-lxc
   run_list:
+  - recipe[build-essential]
   - recipe[docker_test::default]
   - recipe[docker_test::image_lwrp]
   - recipe[docker_test::container_lwrp]
@@ -90,6 +90,7 @@ suites:
   excludes:
   - centos-6.5
   run_list:
+  - recipe[build-essential]
   - recipe[docker_test::default]
   - recipe[docker_test::image_lwrp]
   - recipe[docker_test::container_lwrp]
@@ -100,6 +101,7 @@ suites:
   excludes:
   - centos-6.5
   run_list:
+  - recipe[build-essential]
   - recipe[docker_test::default]
   - recipe[docker_test::image_lwrp]
   - recipe[docker_test::container_lwrp]
