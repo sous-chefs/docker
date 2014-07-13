@@ -56,6 +56,7 @@ unless node['docker']['install_type'] == 'package'
   if node['docker']['install_type'] == 'binary'
     include_recipe 'git'
     include_recipe 'iptables'
+    include_recipe 'docker::cgroups'
 
     node['docker']['binary']['dependency_packages'].each do |p|
       package p
