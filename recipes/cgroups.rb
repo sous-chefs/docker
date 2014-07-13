@@ -1,14 +1,14 @@
 # TODO: Platforms handled here should be fixed in control_groups cookbook
 # Possibly: https://github.com/hw-cookbooks/control_groups/
-case node['platform']
-when 'oracle' || 'rhel'
+if platform_family?('rhel')
   package 'libcgroup'
 
   service 'cgconfig' do
     supports :status => true, :restart => true, :reload => true
     action [:enable, :start]
   end
-when 'ubuntu'
+end
+if platform?('ubuntu')
   package 'cgroup-bin'
 
   if node['platform_version'] == '12.04'
