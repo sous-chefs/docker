@@ -1,4 +1,4 @@
-include Helpers::Docker
+include Docker::Helpers
 
 def load_current_resource
   wait_until_ready!

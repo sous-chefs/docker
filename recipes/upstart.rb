@@ -1,6 +1,6 @@
-docker_settings_file = Helpers::Docker.docker_settings_file(node)
-docker_upstart_conf_file = Helpers::Docker.docker_upstart_conf_file(node)
-docker_service = Helpers::Docker.docker_service(node)
+docker_settings_file = Docker::Helpers.docker_settings_file(node)
+docker_upstart_conf_file = Docker::Helpers.docker_upstart_conf_file(node)
+docker_service = Docker::Helpers.docker_service(node)
 
 template docker_upstart_conf_file do
   source 'docker.conf.erb'
@@ -15,7 +15,7 @@ template docker_settings_file do
   owner 'root'
   group 'root'
   variables(
-    'daemon_options' => Helpers::Docker.daemon_cli_args(node)
+    'daemon_options' => Docker::Helpers.daemon_cli_args(node)
   )
   # DEPRECATED: stop and start only necessary for 0.x cookbook upgrades
   # Default docker Upstart job now sources default file for DOCKER_OPTS

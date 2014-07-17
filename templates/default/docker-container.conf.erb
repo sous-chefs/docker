@@ -4,18 +4,18 @@ author "Docker Chef Cookbook"
 start on filesystem and started docker
 stop on runlevel [!2345]
 
-# We don't want to TERM the `docker wait` process so we fake the signal 
+# We don't want to TERM the `docker wait` process so we fake the signal
 # we send to it. The pre-stop script issues the `docker stop` command
 # which causes the `docker wait` process to exit
 kill signal CONT
- 
+
 # Due to a bug in upstart we need to set the modes we consider
 # successful exists https://bugs.launchpad.net/upstart/+bug/568288
 normal exit 0 CONT
 
 respawn
 
-exec <%= Helpers::Docker.executable(node) %> wait <%= @service_name %>
+exec <%= Docker::Helpers.executable(node) %> wait <%= @service_name %>
 
 pre-start script
   # Wait for docker to finish starting up first.
@@ -31,9 +31,9 @@ pre-start script
     inotifywait -t 2 -e create $(dirname $FILE)
   done
   <% end -%>
-  <%= Helpers::Docker.executable(node) %> start <%= @service_name %> || true
+  <%= Docker::Helpers.executable(node) %> start <%= @service_name %> || true
 end script
 
 pre-stop script
-  <%= Helpers::Docker.executable(node) %> stop -t <%= @cmd_timeout %> <%= @service_name %>
+  <%= Docker::Helpers.executable(node) %> stop -t <%= @cmd_timeout %> <%= @service_name %>
 end script

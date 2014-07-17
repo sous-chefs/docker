@@ -22,7 +22,7 @@
 # Source function library.
 . /etc/rc.d/init.d/functions
 
-exec="<%= Helpers::Docker.executable(node) %>"
+exec="<%= Docker::Helpers.executable(node) %>"
 prog="docker"
 <% if node['docker']['pidfile'] -%>
 pidfile="<%= node['docker']['pidfile'] %>"
