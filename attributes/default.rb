@@ -127,7 +127,6 @@ default['docker']['debug'] = nil
 default['docker']['dns'] = nil
 default['docker']['dns_search'] = nil
 default['docker']['exec_driver'] = nil
-default['docker']['restart'] = false
 
 # DEPRECATED: will be removed in chef-docker 1.0
 default['docker']['virtualization_type'] = node['docker']['exec_driver']
@@ -180,3 +179,7 @@ default['docker']['image_cmd_timeout'] = 300
 ## docker_registry attributes
 
 default['docker']['registry_cmd_timeout'] = 60
+
+# Other attributes
+
+default['docker']['restart'] = false if node['docker']['container_init_type']
