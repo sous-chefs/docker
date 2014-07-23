@@ -1,4 +1,4 @@
-include Helpers::Docker
+include Docker::Helpers
 
 def load_current_resource
   @current_resource = Chef::Resource::DockerRegistry.new(new_resource)

@@ -1,4 +1,4 @@
-docker_settings_file = Helpers::Docker.docker_settings_file(node)
+docker_settings_file = Docker::Helpers.docker_settings_file(node)
 
 template '/etc/init.d/docker' do
   source 'docker.sysv.erb'
@@ -13,7 +13,7 @@ template docker_settings_file do
   owner 'root'
   group 'root'
   variables(
-    'daemon_options' => Helpers::Docker.daemon_cli_args(node)
+    'daemon_options' => Docker::Helpers.daemon_cli_args(node)
   )
   notifies :restart, 'service[docker]', :immediately
 end

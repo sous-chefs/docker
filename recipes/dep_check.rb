@@ -1,4 +1,4 @@
-::Chef::Recipe.send(:include, Helpers)
+::Chef::Recipe.send(:include, Docker::Helpers)
 
 action = node['docker']['alert_on_error_action']
 

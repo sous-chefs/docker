@@ -2,7 +2,7 @@
 ### BEGIN INIT INFO
 # Provides:          <%= @service_name %>
 # Required-Start:    $network
-# Required-Stop:     
+# Required-Stop:
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
 # Short-Description: start and stop <%= @service_name %>
@@ -13,7 +13,7 @@
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
 DESC="<%= @service_name %>"
 NAME="<%= @service_name %>"
-DAEMON="<%= Helpers::Docker.executable node %>"
+DAEMON="<%= Docker::Helpers.executable node %>"
 DAEMON_ARGS=""
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME

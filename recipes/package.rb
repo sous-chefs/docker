@@ -9,7 +9,7 @@ when 'amazon', 'centos', 'fedora', 'redhat'
     action node['docker']['package']['action'].intern
   end
 when 'debian', 'ubuntu'
-  if Helpers::Docker.using_docker_io_package? node
+  if Docker::Helpers.using_docker_io_package? node
     link '/usr/local/bin/docker' do
       to '/usr/bin/docker.io'
     end
