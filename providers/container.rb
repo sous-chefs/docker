@@ -132,30 +132,34 @@ def container_matches?(ps)
 end
 
 def container_command_matches_if_exists?(command)
-  return true if new_resource.command.nil?
-  # try the exact command but also the command with the ' and " stripped out, since docker will
-  # sometimes strip out quotes.
-  subcommand = new_resource.command.gsub(/['"]/, '')
-  command.include?(new_resource.command) || command.include?(subcommand)
+  if new_resource.command
+    # try the exact command but also the command with the ' and " stripped out, since docker will
+    # sometimes strip out quotes.
+    subcommand = new_resource.command.gsub(/['"]/, '')
+    command.include?(new_resource.command) || command.include?(subcommand)
+  else
+    true
+  end
 end
 
 def container_id_matches?(id)
-  return false unless id
+  return false unless id && new_resource.id
   id.start_with?(new_resource.id)
 end
 
 def container_image_matches?(image)
-  return false unless image
+  return false unless image && new_resource.image
   image.include?(new_resource.image)
 end
 
 def container_name_matches?(names)
-  return false unless names
-  new_resource.container_name if names.split(',').include?(new_resource.container_name)
+  return false unless names && new_resource.container_name
+  return true if names.split(',').include?(new_resource.container_name)
+  false
 end
 
 def container_name_matches_if_exists?(names)
-  return false if new_resource.container_name && new_resource.container_name != names
+  return false if new_resource.container_name && names.split(',').include?(new_resource.container_name)
   true
 end
 

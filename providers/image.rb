@@ -155,10 +155,12 @@ def image_and_tag_arg
 end
 
 def image_id_matches?(id)
+  return false unless id && new_resource.id
   id.start_with?(new_resource.id)
 end
 
 def image_name_matches?(name)
+  return false unless name && new_resource.image_name
   name.include?(new_resource.image_name)
 end
 
