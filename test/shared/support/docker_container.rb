@@ -40,12 +40,14 @@ module Serverspec
         containers = Docker::Container.all(:all => true)
         containers.each do |container|
           if @command == nil
-            if container.info['Image'] == @image
+            if container.info['Image'] == @image || container.info['Image'].split(':').first == @image
               return container
             end
           else
-            if container.info['Command'] == @command && container.info['Image'] == @image
-              return container
+            if container.info['Command'] == @command 
+              if container.info['Image'] == @image || container.info['Image'].split(':').first == @image
+                return container
+              end
             end
           end
         end
