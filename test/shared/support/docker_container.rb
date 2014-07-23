@@ -10,52 +10,54 @@ module Serverspec
       attr_reader :command
 
       def initialize(image, command = nil)
-        @image      = with_latest(image)
+        @image      = image
         @command    = command
         @container  = find_container
-        if !!command
+        if command
           super("#{@image} running #{@command}")
         else
           super("#{@image}")
         end
       end
-      
+
       # it { should be_a_container }
       def container?
-        !!@container
+        return true if @container
+        false
       end
 
       # it { should be_running }
       def running?
-        if @container
-          !!@container.info['Status'].match(/^Up/)
-        else
-          false
-        end
+        return @container.info['Status'].match(/^Up/) if @container
+        false
       end
 
       private
 
+      def container_command_matches_if_exists?(container)
+        return false if @command && container.info['Command'] != @command
+        true
+      end
+
+      def container_image_matches?(container)
+        return true if container.info['Image'] == @image || container.info['Image'].split(':').first == @image
+        false
+      end
+
+      def container_matches?(container)
+        if container_image_matches?(container)
+          return false unless container_command_matches_if_exists?(container)
+          return true
+        end
+        false
+      end
+
       def find_container
         containers = Docker::Container.all(:all => true)
         containers.each do |container|
-          if @command == nil
-            if container.info['Image'] == @image || container.info['Image'].split(':').first == @image
-              return container
-            end
-          else
-            if container.info['Command'] == @command 
-              if container.info['Image'] == @image || container.info['Image'].split(':').first == @image
-                return container
-              end
-            end
-          end
+          return container if container_matches?(container)
         end
-        return nil
-      end
-
-      def with_latest(image)
-        image.include?(':') ? image : "#{image}:latest"
+        nil
       end
     end
   end
