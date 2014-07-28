@@ -119,7 +119,7 @@ def commit
     commit_end_args = new_resource.repository
     commit_end_args += ":#{new_resource.tag}" if new_resource.tag
   end
-  docker_cmd!("commit #{commit_args} #{current_resource.id} #{commit_end_args}")
+  execute "docker commit #{commit_args} #{current_resource.id} #{commit_end_args}"
 end
 
 def container_matches?(ps)
@@ -172,7 +172,7 @@ def container_name
 end
 
 def cp
-  docker_cmd!("cp #{current_resource.id}:#{new_resource.source} #{new_resource.destination}")
+  execute "docker cp #{current_resource.id}:#{new_resource.source} #{new_resource.destination}"
 end
 
 # Helper method for `docker_containers` that looks at the position of the headers in the output of
@@ -248,7 +248,7 @@ def exists?
 end
 
 def export
-  docker_cmd!("export #{current_resource.id} > #{new_resource.destination}")
+  execute "docker export #{current_resource.id} > #{new_resource.destination}"
 end
 
 def kill
@@ -258,7 +258,7 @@ def kill
     kill_args = cli_args(
       'signal' => new_resource.signal
     )
-    docker_cmd!("kill #{kill_args} #{current_resource.id}")
+    execute "docker kill #{kill_args} #{current_resource.id}"
   end
 end
 
@@ -282,7 +282,7 @@ def remove_container
   rm_args = cli_args(
     'force' => new_resource.force
   )
-  docker_cmd!("rm #{rm_args} #{current_resource.id}")
+  execute "docker rm #{rm_args} #{current_resource.id}"
   remove_cidfile if new_resource.cidfile
 end
 
@@ -290,7 +290,7 @@ def remove_cidfile
   # run at compile-time to ensure cidfile is gone before running docker_cmd()
   file new_resource.cidfile do
     action :nothing
-  end.run_action(:delete)
+  end
 end
 
 def remove_link
@@ -301,7 +301,7 @@ def remove_link
   link_args = Array(new_resource.link).map do |link|
     container_name + '/' + link
   end
-  docker_cmd!("rm #{rm_args} #{link_args.join(' ')}")
+  execute "docker rm #{rm_args} #{link_args.join(' ')}"
 end
 
 def remove_volume
@@ -309,14 +309,14 @@ def remove_volume
   rm_args = cli_args(
     'volume' => Array(new_resource.volume)
   )
-  docker_cmd!("rm #{rm_args} #{current_resource.id}")
+  execute "docker rm #{rm_args} #{current_resource.id}"
 end
 
 def restart
   if service?
     service_restart
   else
-    docker_cmd!("restart #{current_resource.id}")
+    execute "docker restart #{current_resource.id}"
   end
 end
 
@@ -352,9 +352,7 @@ def run
     'volumes-from' => new_resource.volumes_from,
     'workdir' => new_resource.working_directory
   )
-  dr = docker_cmd!("run #{run_args} #{new_resource.image} #{new_resource.command}")
-  dr.error!
-  new_resource.id(dr.stdout.chomp)
+  execute "docker run #{run_args} #{new_resource.image} #{new_resource.command}"
   service_create if service?
 end
 # rubocop:enable MethodLength
@@ -567,7 +565,7 @@ def start
   if service?
     service_create
   else
-    docker_cmd!("start #{start_args} #{current_resource.id}")
+    execute "docker start #{start_args} #{current_resource.id}"
   end
 end
 
@@ -578,10 +576,12 @@ def stop
   if service?
     service_stop
   else
-    docker_cmd!("stop #{stop_args} #{current_resource.id}", (new_resource.cmd_timeout + 15))
+    execute "docker stop #{stop_args} #{current_resource.id}" do
+      timeout new_resource.cmd_timeout + 15
+    end
   end
 end
 
 def wait
-  docker_cmd!("wait #{current_resource.id}")
+  execute "docker wait #{current_resource.id}"
 end
