@@ -454,8 +454,7 @@ def service_create_systemd
     )
   end
 
-  @service.run_action(:start)
-  @service.run_action(:enable)
+  service_start_and_enable
 end
 
 def service_create_sysv
@@ -471,8 +470,7 @@ def service_create_sysv
     )
   end
 
-  @service.run_action(:start)
-  @service.run_action(:enable)
+  service_start_and_enable
 end
 
 def service_create_upstart
@@ -491,8 +489,7 @@ def service_create_upstart
     )
   end
 
-  @service.run_action(:start)
-  @service.run_action(:enable)
+  service_start_and_enable
 end
 
 def service_name
@@ -519,8 +516,7 @@ def service_remove_runit
 end
 
 def service_remove_systemd
-  @service.run_action(:stop)
-  @service.run_action(:disable)
+  service_stop_and_disable
 
   %w(service socket).each do |f|
     file "/usr/lib/systemd/system/#{service_name}.#{f}" do
@@ -530,8 +526,7 @@ def service_remove_systemd
 end
 
 def service_remove_sysv
-  @service.run_action(:stop)
-  @service.run_action(:disable)
+  service_stop_and_disable
 
   file "/etc/init.d/#{service_name}" do
     action :delete
@@ -539,8 +534,7 @@ def service_remove_sysv
 end
 
 def service_remove_upstart
-  @service.run_action(:stop)
-  @service.run_action(:disable)
+  service_stop_and_disable
 
   file "/etc/init/#{service_name}" do
     action :delete
@@ -557,6 +551,16 @@ end
 
 def service_stop
   @service.run_action(:stop)
+end
+
+def service_start_and_enable
+  @service.run_action(:start)
+  @service.run_action(:enable)
+end
+
+def service_stop_and_disable
+  @service.run_action(:stop)
+  @service.run_action(:disable)
 end
 
 def service_template
