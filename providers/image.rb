@@ -64,9 +64,9 @@ action :pull_if_missing do
 end
 
 action :pull do
-  old_hash = docker_inspect_id(new_resource.image_name)
+  old_hash = docker_inspect_id(image_and_tag_arg)
   pull
-  new_hash = docker_inspect_id(new_resource.image_name)
+  new_hash = docker_inspect_id(image_and_tag_arg)
   new_resource.updated_by_last_action(new_hash != old_hash)
 end
 
