@@ -6,7 +6,11 @@ def load_current_resource
   docker_containers.each do |ps|
     next unless container_matches?(ps)
     Chef::Log.debug('Matched docker container: ' + ps['line'].squeeze(' '))
-    @current_resource.container_name(ps['names'])
+    detected_container_name = ps['names'].  # out of all raw names,
+      split(',').                           # extract the different names,
+      reject { |n| n.include?('/') }.       # filter out links (eg. 'my-app/db')
+      fetch(0)                              # returning main name (always exist)
+    @current_resource.container_name(detected_container_name)
     @current_resource.created(ps['created'])
     @current_resource.id(ps['id'])
     @current_resource.status(ps['status'])
