@@ -128,7 +128,7 @@ def container_matches?(ps)
   return false unless container_image_matches?(ps['image'])
   return false unless container_command_matches_if_exists?(ps['command'])
   return false unless container_name_matches_if_exists?(ps['names'])
-  true
+  false
 end
 
 def container_command_matches_if_exists?(command)
