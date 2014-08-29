@@ -151,11 +151,11 @@ end
 
 def container_name_matches?(names)
   return false unless names
-  new_resource.container_name && new_resource.container_name == names
+  new_resource.container_name && names.split(',').include?(new_resource.container_name)
 end
 
 def container_name_matches_if_exists?(names)
-  return false if new_resource.container_name && new_resource.container_name != names
+  return container_name_matches?(names) if new_resource.container_name
   true
 end
 
