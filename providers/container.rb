@@ -1,7 +1,7 @@
 include Helpers::Docker
 
 def load_current_resource
-  @current_resource = Chef::Resource::DockerContainer.new(new_resource)
+  @current_resource = Chef::Resource::DockerContainer.new(new_resource.name)
   wait_until_ready!
   docker_containers.each do |ps|
     next unless container_matches?(ps)
