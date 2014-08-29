@@ -225,6 +225,10 @@ def docker_containers
       end
       ps[name.to_s] = line[start..finish - 1].strip
     end
+    # Filter out technical names (eg. 'my-app/db'), which appear in ps['names']
+    # when a container has at least another container linking to it. If these
+    # names are not filtered they will pollute current_resource.container_name.
+    ps['names'] = ps['names'].split(',').grep( /\A[^\/]+\Z/ ).join(',') # technical names always contain a '/'
     ps
   end
 end
