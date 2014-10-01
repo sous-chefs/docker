@@ -14,7 +14,7 @@ default['docker']['init_type'] = value_for_platform(
   %w(amazon centos debian oracle redhat) => {
     'default' => 'sysv'
   },
-  %w(fedora) => {
+  %w(fedora arch) => {
     'default' => 'systemd'
   },
   %w(ubuntu) => {
@@ -23,7 +23,7 @@ default['docker']['init_type'] = value_for_platform(
   'default' => 'upstart'
 )
 default['docker']['install_type'] = value_for_platform(
-  %w(centos debian fedora mac_os_x redhat ubuntu amazon) => {
+  %w(centos debian fedora mac_os_x redhat ubuntu amazon arch) => {
     'default' => 'package'
   },
   'default' => 'binary'
@@ -77,7 +77,7 @@ default['docker']['binary']['url'] = "http://get.docker.io/builds/#{node['kernel
 default['docker']['package']['action'] = 'install'
 default['docker']['package']['distribution'] = 'docker'
 default['docker']['package']['name'] = value_for_platform(
-  'amazon' => {
+  %w(amazon arch) => {
     'default' => 'docker'
   },
   %w(centos fedora redhat) => {

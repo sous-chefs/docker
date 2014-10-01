@@ -1,7 +1,7 @@
 p = node['docker']['package']['name']
 
 case node['platform']
-when 'amazon', 'centos', 'fedora', 'redhat'
+when 'amazon', 'centos', 'fedora', 'redhat', 'arch'
   include_recipe 'yum-epel' if %w(centos redhat).include?(node['platform'])
 
   package p do

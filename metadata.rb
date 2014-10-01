@@ -30,6 +30,7 @@ supports 'mac_os_x_server'
 supports 'oracle', '>= 6.0'
 supports 'redhat', '>= 6.0'
 supports 'ubuntu', '>= 12.04'
+supports 'arch'
 
 depends 'apt'
 depends 'aufs', '>= 0.1.1'
