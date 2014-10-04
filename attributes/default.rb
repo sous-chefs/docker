@@ -179,7 +179,3 @@ default['docker']['image_cmd_timeout'] = 300
 ## docker_registry attributes
 
 default['docker']['registry_cmd_timeout'] = 60
-
-# Other attributes
-
-default['docker']['restart'] = false if node['docker']['container_init_type']
