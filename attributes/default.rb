@@ -80,7 +80,11 @@ default['docker']['package']['name'] = value_for_platform(
   'amazon' => {
     'default' => 'docker'
   },
-  %w(centos fedora redhat) => {
+  'centos' => {
+    '6.5' => 'docker-io',
+    'default' => 'docker'
+  },
+  %w(fedora redhat) => {
     'default' => 'docker-io'
   },
   'debian' => {
