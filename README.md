@@ -884,7 +884,9 @@ Please see contributing information in: [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## Maintainers
 
+* Tom Duffield (http://tomduffield.com)
 * Brian Flad (<bflad417@gmail.com>)
+* Fletcher Nichol (<fnichol@nichol.ca>)
 
 ## License
 
