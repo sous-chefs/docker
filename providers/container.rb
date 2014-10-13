@@ -153,8 +153,8 @@ def container_image_matches?(image)
 end
 
 def container_name_matches?(names)
-  return false unless names && new_resource.container_name
-  return true if names.split(',').include?(new_resource.container_name)
+  return false unless names && container_name
+  return true if names.split(',').include?(container_name)
   false
 end
 
