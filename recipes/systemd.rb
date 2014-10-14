@@ -3,11 +3,13 @@ execute 'systemctl-daemon-reload' do
   action :nothing
 end
 
-template '/usr/lib/systemd/system/docker.socket' do
-  source 'docker.socket.erb'
-  mode '0644'
-  owner 'root'
-  group 'root'
+unless node['platform'] == 'arch'
+  template '/usr/lib/systemd/system/docker.socket' do
+    source 'docker.socket.erb'
+    mode '0644'
+    owner 'root'
+    group 'root'
+  end
 end
 
 template '/usr/lib/systemd/system/docker.service' do

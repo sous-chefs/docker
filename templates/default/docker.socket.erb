@@ -5,11 +5,6 @@ Description=Docker Daemon Socket
 <% Array(node['docker']['host']).each do |socket| -%>
 ListenStream=<%= socket.gsub(/^unix:\/\//,'').gsub(/^tcp:\/\//,'').gsub(/^fd:\/\//,'') %>
 <% end -%>
-<% if node['platform'] == 'arch' %>
-SocketMode=0660
-SocketUser=root
-SocketGroup=<%= node['docker']['group'] || 'docker' %>
-<% end %>
 
 [Install]
 WantedBy=sockets.target
