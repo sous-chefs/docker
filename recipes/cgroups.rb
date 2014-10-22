@@ -12,6 +12,13 @@ when 'ubuntu'
   package 'cgroup-bin'
 
   if node['platform_version'] == '12.04'
+    template '/etc/init/cgconfig.conf' do
+      source 'cgconfig.conf.erb'
+      mode '0644'
+      owner 'root'
+      group 'root'
+    end
+
     service 'cgconfig' do
       action :start
     end
