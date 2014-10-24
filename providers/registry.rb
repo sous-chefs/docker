@@ -1,7 +1,7 @@
 include Docker::Helpers
 
 def load_current_resource
-  @current_resource = Chef::Resource::DockerRegistry.new(new_resource)
+  @current_resource = Chef::Resource::DockerRegistry.new(new_resource.name)
   wait_until_ready!
   dockercfg = dockercfg_parse
   if dockercfg && login_matches(dockercfg[new_resource.server])

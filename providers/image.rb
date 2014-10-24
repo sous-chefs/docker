@@ -2,7 +2,7 @@ include Docker::Helpers
 
 def load_current_resource
   wait_until_ready!
-  @current_resource = Chef::Resource::DockerImage.new(new_resource)
+  @current_resource = Chef::Resource::DockerImage.new(new_resource.name)
   dimages = docker_cmd('images -a --no-trunc')
   if dimages.stdout.include?(new_resource.image_name)
     dimages.stdout.each_line do |di_line|
