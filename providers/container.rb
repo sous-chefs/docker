@@ -16,6 +16,7 @@ def load_current_resource
 end
 
 action :commit do
+  @service = service_action(:nothing) if service?
   if exists?
     commit
     new_resource.updated_by_last_action(true)
@@ -23,6 +24,7 @@ action :commit do
 end
 
 action :cp do
+  @service = service_action(:nothing) if service?
   if exists?
     cp
     new_resource.updated_by_last_action(true)
@@ -30,6 +32,7 @@ action :cp do
 end
 
 action :export do
+  @service = service_action(:nothing) if service?
   if exists?
     export
     new_resource.updated_by_last_action(true)
@@ -37,6 +40,7 @@ action :export do
 end
 
 action :kill do
+  @service = service_action(:nothing) if service?
   if running?
     kill
     new_resource.updated_by_last_action(true)
@@ -44,6 +48,7 @@ action :kill do
 end
 
 action :redeploy do
+  @service = service_action(:nothing) if service?
   stop if running?
   remove_container if exists?
   run
@@ -51,6 +56,7 @@ action :redeploy do
 end
 
 action :remove do
+  @service = service_action(:nothing) if service?
   if running?
     stop
     new_resource.updated_by_last_action(true)
@@ -62,14 +68,17 @@ action :remove do
 end
 
 action :remove_link do
+  @service = service_action(:nothing) if service?
   new_resource.updated_by_last_action(remove_link)
 end
 
 action :remove_volume do
+  @service = service_action(:nothing) if service?
   new_resource.updated_by_last_action(remove_volume)
 end
 
 action :restart do
+  @service = service_action(:nothing) if service?
   if exists?
     restart
     new_resource.updated_by_last_action(true)
@@ -77,6 +86,7 @@ action :restart do
 end
 
 action :run do
+  @service = service_action(:nothing) if service?
   unless running?
     if exists?
       start
@@ -88,6 +98,7 @@ action :run do
 end
 
 action :start do
+  @service = service_action(:nothing) if service?
   unless running?
     start
     new_resource.updated_by_last_action(true)
@@ -95,6 +106,7 @@ action :start do
 end
 
 action :stop do
+  @service = service_action(:nothing) if service?
   if running?
     stop
     new_resource.updated_by_last_action(true)
@@ -102,6 +114,7 @@ action :stop do
 end
 
 action :wait do
+  @service = service_action(:nothing) if service?
   if running?
     wait
     new_resource.updated_by_last_action(true)
@@ -441,7 +454,7 @@ def service_create_systemd
     )
   end
 
-  service_action([:start, :enable])
+  service_start_and_enable
 end
 
 def service_create_sysv
@@ -457,7 +470,7 @@ def service_create_sysv
     )
   end
 
-  service_action([:start, :enable])
+  service_start_and_enable
 end
 
 def service_create_upstart
@@ -476,7 +489,7 @@ def service_create_upstart
     )
   end
 
-  service_action([:start, :enable])
+  service_start_and_enable
 end
 
 def service_name
@@ -503,7 +516,7 @@ def service_remove_runit
 end
 
 def service_remove_systemd
-  service_action([:stop, :disable])
+  service_stop_and_disable
 
   %w(service socket).each do |f|
     file "/usr/lib/systemd/system/#{service_name}.#{f}" do
@@ -513,7 +526,7 @@ def service_remove_systemd
 end
 
 def service_remove_sysv
-  service_action([:stop, :disable])
+  service_stop_and_disable
 
   file "/etc/init.d/#{service_name}" do
     action :delete
@@ -521,7 +534,7 @@ def service_remove_sysv
 end
 
 def service_remove_upstart
-  service_action([:stop, :disable])
+  service_stop_and_disable
 
   file "/etc/init/#{service_name}" do
     action :delete
@@ -529,15 +542,25 @@ def service_remove_upstart
 end
 
 def service_restart
-  service_action([:restart])
+  @service.run_action(:restart)
 end
 
 def service_start
-  service_action([:start])
+  @service.run_action(:start)
 end
 
 def service_stop
-  service_action([:stop])
+  @service.run_action(:stop)
+end
+
+def service_start_and_enable
+  @service.run_action(:start)
+  @service.run_action(:enable)
+end
+
+def service_stop_and_disable
+  @service.run_action(:stop)
+  @service.run_action(:disable)
 end
 
 def service_template
