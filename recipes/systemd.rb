@@ -16,7 +16,7 @@ template '/usr/lib/systemd/system/docker.service' do
   owner 'root'
   group 'root'
   variables(
-    'daemon_options' => Helpers::Docker.daemon_cli_args(node)
+    'daemon_options' => Docker::Helpers.daemon_cli_args(node)
   )
   notifies :run, 'execute[systemctl-daemon-reload]', :immediately
   notifies :restart, 'service[docker]', :immediately

@@ -1,25 +1,19 @@
+p = node['docker']['package']['name']
 
 case node['platform']
-when 'amazon'
-  package 'docker' do
-    version node['docker']['version']
-    action node['docker']['package']['action'].intern
-  end
-when 'centos', 'redhat' # ~FC024
-  include_recipe 'yum-epel'
+when 'amazon', 'centos', 'fedora', 'redhat'
+  include_recipe 'yum-epel' if %w(centos redhat).include?(node['platform'])
 
-  package 'docker-io' do
+  package p do
     version node['docker']['version']
     action node['docker']['package']['action'].intern
   end
 when 'debian', 'ubuntu'
-  if Helpers::Docker.using_docker_io_package? node
-    p = 'docker.io'
+  if Docker::Helpers.using_docker_io_package? node
     link '/usr/local/bin/docker' do
       to '/usr/bin/docker.io'
     end
   else
-    p = 'lxc-docker'
     apt_repository 'docker' do
       uri node['docker']['package']['repo_url']
       distribution node['docker']['package']['distribution']
@@ -36,14 +30,11 @@ when 'debian', 'ubuntu'
     options '--force-yes -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"'
     action node['docker']['package']['action'].intern
   end
-when 'fedora'
-  package 'docker-io' do
-    version node['docker']['version']
-    action node['docker']['package']['action'].intern
-  end
-when 'max_os_x'
+when 'mac_os_x', 'mac_os_x_server'
   homebrew_tap 'homebrew/binary'
-  homebrew_package 'homebrew/binary/docker' do
+  package p do
     action node['docker']['package']['action'].intern
   end
+else
+  fail "The package installation method for `#{node['platform']} is not supported.`"
 end

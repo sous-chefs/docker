@@ -6,12 +6,24 @@ describe 'docker::source' do
     ChefSpec::Runner.new.converge(described_recipe)
   end
 
+  before(:each) do
+    stub_command('/usr/local/go/bin/go version | grep "go1.2 "').and_return('1.2')
+  end
+
   it 'creates the docker source directory' do
-    expect(chef_run).to create_directory('/opt/go/src/github.com/dotcloud')
+    expect(chef_run).to create_directory('/opt/go/src/github.com/dotcloud').with(
+      owner: 'root',
+      group: 'root',
+      mode: 00755,
+      recursive: true
+    )
   end
 
   it 'checks out the docker source' do
-    expect(chef_run).to checkout_git('/opt/go/src/github.com/dotcloud/docker')
+    expect(chef_run).to checkout_git('/opt/go/src/github.com/dotcloud/docker').with(
+      repository: 'https://github.com/dotcloud/docker.git',
+      reference: 'master'
+    )
   end
 
   it 'installs the docker golang package' do

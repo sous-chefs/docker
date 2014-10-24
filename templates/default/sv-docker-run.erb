@@ -9,4 +9,4 @@ export HTTP_PROXY=<%= node['docker']['http_proxy'] %>
 <% if node['docker']['tmpdir'] -%>
 export TMPDIR=<%= node['docker']['tmpdir'] %>
 <% end -%>
-exec <%= Helpers::Docker.executable(node) %> -d<%= @options['daemon_options'] %>
+exec <%= Docker::Helpers.executable(node) %> -d<%= @options['daemon_options'] %>

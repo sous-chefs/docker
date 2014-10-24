@@ -4,15 +4,20 @@ require 'chefspec/berkshelf'
 # See https://github.com/sethvargo/chefspec/issues/393
 # ChefSpec::Coverage.start!
 
+# Require all our libraries
+Dir['libraries/*.rb'].each { |f| require File.expand_path(f) }
+
 # Prevent system calls from getting run on our local machine
 # lxc cookbook does this: https://github.com/hw-cookbooks/lxc/blob/master/recipes/default.rb#L47
 # TODO: Figure out a better way to do this - couldn't get stubbing to work (see below)
 # Kernel module
+# rubocop:disable all
 module Kernel
   def system(*)
     true
   end
 end
+# rubocop:enable all
 
 # Specify defaults -- these can be overridden
 RSpec.configure do |config|

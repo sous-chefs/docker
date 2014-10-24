@@ -1,14 +1,10 @@
-include Helpers::Docker
+include Docker::Helpers
 
 def load_current_resource
-  @current_resource = Chef::Resource::DockerContainer.new(new_resource)
+  @current_resource = Chef::Resource::DockerContainer.new(new_resource.name)
   wait_until_ready!
   docker_containers.each do |ps|
-    unless container_id_matches?(ps['id'])
-      next unless container_image_matches?(ps['image'])
-      next unless container_command_matches_if_exists?(ps['command'])
-      next unless container_name_matches_if_exists?(ps['names'])
-    end
+    next unless container_matches?(ps)
     Chef::Log.debug('Matched docker container: ' + ps['line'].squeeze(' '))
     @current_resource.container_name(ps['names'])
     @current_resource.created(ps['created'])
@@ -20,6 +16,7 @@ def load_current_resource
 end
 
 action :commit do
+  @service = service_action(:nothing) if service?
   if exists?
     commit
     new_resource.updated_by_last_action(true)
@@ -27,6 +24,7 @@ action :commit do
 end
 
 action :cp do
+  @service = service_action(:nothing) if service?
   if exists?
     cp
     new_resource.updated_by_last_action(true)
@@ -34,6 +32,7 @@ action :cp do
 end
 
 action :export do
+  @service = service_action(:nothing) if service?
   if exists?
     export
     new_resource.updated_by_last_action(true)
@@ -41,6 +40,7 @@ action :export do
 end
 
 action :kill do
+  @service = service_action(:nothing) if service?
   if running?
     kill
     new_resource.updated_by_last_action(true)
@@ -48,6 +48,7 @@ action :kill do
 end
 
 action :redeploy do
+  @service = service_action(:nothing) if service?
   stop if running?
   remove_container if exists?
   run
@@ -55,6 +56,7 @@ action :redeploy do
 end
 
 action :remove do
+  @service = service_action(:nothing) if service?
   if running?
     stop
     new_resource.updated_by_last_action(true)
@@ -66,14 +68,17 @@ action :remove do
 end
 
 action :remove_link do
+  @service = service_action(:nothing) if service?
   new_resource.updated_by_last_action(remove_link)
 end
 
 action :remove_volume do
+  @service = service_action(:nothing) if service?
   new_resource.updated_by_last_action(remove_volume)
 end
 
 action :restart do
+  @service = service_action(:nothing) if service?
   if exists?
     restart
     new_resource.updated_by_last_action(true)
@@ -81,6 +86,7 @@ action :restart do
 end
 
 action :run do
+  @service = service_action(:nothing) if service?
   unless running?
     if exists?
       start
@@ -92,6 +98,7 @@ action :run do
 end
 
 action :start do
+  @service = service_action(:nothing) if service?
   unless running?
     start
     new_resource.updated_by_last_action(true)
@@ -99,6 +106,7 @@ action :start do
 end
 
 action :stop do
+  @service = service_action(:nothing) if service?
   if running?
     stop
     new_resource.updated_by_last_action(true)
@@ -106,17 +114,10 @@ action :stop do
 end
 
 action :wait do
+  @service = service_action(:nothing) if service?
   if running?
     wait
     new_resource.updated_by_last_action(true)
-  end
-end
-
-def cidfile
-  if service?
-    new_resource.cidfile || "/var/run/#{service_name}.cid"
-  else
-    new_resource.cidfile
   end
 end
 
@@ -134,24 +135,43 @@ def commit
   docker_cmd!("commit #{commit_args} #{current_resource.id} #{commit_end_args}")
 end
 
+def container_matches?(ps)
+  return true if container_id_matches?(ps['id'])
+  return true if container_name_matches?(ps['names'])
+  return false unless container_image_matches?(ps['image'])
+  return false unless container_command_matches_if_exists?(ps['command'])
+  return false unless container_name_matches_if_exists?(ps['names'])
+  false
+end
+
 def container_command_matches_if_exists?(command)
-  return true if new_resource.command.nil?
-  # try the exact command but also the command with the ' and " stripped out, since docker will
-  # sometimes strip out quotes.
-  subcommand = new_resource.command.gsub(/['"]/, '')
-  command.include?(new_resource.command) || command.include?(subcommand)
+  if new_resource.command
+    # try the exact command but also the command with the ' and " stripped out, since docker will
+    # sometimes strip out quotes.
+    subcommand = new_resource.command.gsub(/['"]/, '')
+    command.include?(new_resource.command) || command.include?(subcommand)
+  else
+    true
+  end
 end
 
 def container_id_matches?(id)
+  return false unless id && new_resource.id
   id.start_with?(new_resource.id)
 end
 
 def container_image_matches?(image)
+  return false unless image && new_resource.image
   image.include?(new_resource.image)
 end
 
+def container_name_matches?(names)
+  return false unless names
+  new_resource.container_name && names.split(',').include?(new_resource.container_name)
+end
+
 def container_name_matches_if_exists?(names)
-  return false if new_resource.container_name && new_resource.container_name != names
+  return container_name_matches?(names) if new_resource.container_name
   true
 end
 
@@ -204,7 +224,7 @@ end
 #
 # The array of hashes is returned.
 def docker_containers
-  dps = docker_cmd!('ps -a -notrunc')
+  dps = docker_cmd!('ps -a --no-trunc')
 
   lines = dps.stdout.lines.to_a
   ranges = get_ranges(lines[0])
@@ -212,21 +232,24 @@ def docker_containers
   lines[1, lines.length].map do |line|
     ps = { 'line' => line }
     [:id, :image, :command, :created, :status, :ports, :names].each do |name|
-      if ranges.key?(name)
-        start = ranges[name][0]
-        if ranges[name].length == 2
-          finish = ranges[name][1]
-        else
-          finish = line.length
-        end
-        ps[name.to_s] = line[start..finish - 1].strip
+      next unless ranges.key?(name)
+      start = ranges[name][0]
+      if ranges[name].length == 2
+        finish = ranges[name][1]
+      else
+        finish = line.length
       end
+      ps[name.to_s] = line[start..finish - 1].strip
     end
+    # Filter out technical names (eg. 'my-app/db'), which appear in ps['names']
+    # when a container has at least another container linking to it. If these
+    # names are not filtered they will pollute current_resource.container_name.
+    ps['names'] = ps['names'].split(',').grep(/\A[^\/]+\Z/).join(',') # technical names always contain a '/'
     ps
   end
 end
 
-def command_timeout_error_message
+def command_timeout_error_message(cmd)
   <<-EOM
 
 Command timed out:
@@ -276,14 +299,25 @@ def remove_container
     'force' => new_resource.force
   )
   docker_cmd!("rm #{rm_args} #{current_resource.id}")
+  remove_cidfile if new_resource.cidfile
+end
+
+def remove_cidfile
+  # run at compile-time to ensure cidfile is gone before running docker_cmd()
+  file new_resource.cidfile do
+    action :nothing
+  end.run_action(:delete)
 end
 
 def remove_link
   return false if new_resource.link.nil? || new_resource.link.empty?
   rm_args = cli_args(
-    'link' => new_resource.link
+    'link' => true
   )
-  docker_cmd!("rm #{rm_args} #{current_resource.id}")
+  link_args = Array(new_resource.link).map do |link|
+    container_name + '/' + link
+  end
+  docker_cmd!("rm #{rm_args} #{link_args.join(' ')}")
 end
 
 def remove_volume
@@ -306,7 +340,7 @@ end
 def run
   run_args = cli_args(
     'cpu-shares' => new_resource.cpu_shares,
-    'cidfile' => cidfile,
+    'cidfile' => new_resource.cidfile,
     'detach' => new_resource.detach,
     'dns' => Array(new_resource.dns),
     'dns-search' => Array(new_resource.dns_search),
@@ -320,6 +354,7 @@ def run
     'link' => Array(new_resource.link),
     'lxc-conf' => Array(new_resource.lxc_conf),
     'memory' => new_resource.memory,
+    'net' => new_resource.net,
     'networking' => new_resource.networking,
     'name' => container_name,
     'opt' => Array(new_resource.opt),
@@ -422,7 +457,7 @@ def service_create_systemd
     )
   end
 
-  service_action([:start, :enable])
+  service_start_and_enable
 end
 
 def service_create_sysv
@@ -438,7 +473,7 @@ def service_create_sysv
     )
   end
 
-  service_action([:start, :enable])
+  service_start_and_enable
 end
 
 def service_create_upstart
@@ -457,7 +492,7 @@ def service_create_upstart
     )
   end
 
-  service_action([:start, :enable])
+  service_start_and_enable
 end
 
 def service_name
@@ -484,7 +519,7 @@ def service_remove_runit
 end
 
 def service_remove_systemd
-  service_action([:stop, :disable])
+  service_stop_and_disable
 
   %w(service socket).each do |f|
     file "/usr/lib/systemd/system/#{service_name}.#{f}" do
@@ -494,7 +529,7 @@ def service_remove_systemd
 end
 
 def service_remove_sysv
-  service_action([:stop, :disable])
+  service_stop_and_disable
 
   file "/etc/init.d/#{service_name}" do
     action :delete
@@ -502,7 +537,7 @@ def service_remove_sysv
 end
 
 def service_remove_upstart
-  service_action([:stop, :disable])
+  service_stop_and_disable
 
   file "/etc/init/#{service_name}" do
     action :delete
@@ -510,15 +545,25 @@ def service_remove_upstart
 end
 
 def service_restart
-  service_action([:restart])
+  @service.run_action(:restart)
 end
 
 def service_start
-  service_action([:start])
+  @service.run_action(:start)
 end
 
 def service_stop
-  service_action([:stop])
+  @service.run_action(:stop)
+end
+
+def service_start_and_enable
+  @service.run_action(:start)
+  @service.run_action(:enable)
+end
+
+def service_stop_and_disable
+  @service.run_action(:stop)
+  @service.run_action(:disable)
 end
 
 def service_template

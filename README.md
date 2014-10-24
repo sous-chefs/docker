@@ -49,7 +49,7 @@ Third-Party Cookbooks
 
 ### Execution Drivers
 
-If your system is runs a Docker version before 0.9, you'll need to explicitly set up LXC outside of this cookbook. This will likely be true for most distros after Docker 1.0 and chef-docker 1.0 is released.
+If your system is running a Docker version before 0.9, you'll need to explicitly set up LXC outside of this cookbook. This will likely be true for most distros after Docker 1.0 and chef-docker 1.0 is released.
 * [lxc on community site](http://community.opscode.com/cookbooks/lxc)
 * [lxc on Github](https://github.com/hw-cookbooks/lxc/)
 
@@ -112,6 +112,7 @@ Attribute | Description | Type | Default
 ----------|-------------|------|--------
 action | Action for docker packages ("install", "update", etc.) | String | install
 distribution | Distribution for docker packages | String | auto-detected (see attributes/default.rb)
+name | Override Docker package name | String | auto-detected (see attributes/default.rb)
 repo_url | Repository URL for docker packages | String | auto-detected (see attributes/default.rb)
 repo_key | Repository GPG key URL for docker packages | String | https://get.docker.io/gpg
 
@@ -153,7 +154,10 @@ mtu | Set the containers network MTU | Fixnum | nil (implicitly default route MT
 options | Additional options to pass to docker. These could be flags like "-api-enable-cors". | String | nil
 pidfile | Path to use for daemon PID file | String | nil (implicitly /var/run/docker.pid)
 ramdisk | Set DOCKER_RAMDISK when using RAM disk | TrueClass or FalseClass | false
+restart | Restart containers on boot | TrueClass or FalseClass | auto-detected (see attributes/default.rb)
+selinux_enabled | Enable SELinux | TrueClass or FalseClass | nil
 storage_driver | Storage driver for docker | String | nil
+storage_opt | Storage driver options | String, Array | nil
 tls | Use TLS | TrueClass, FalseClass | nil (implicitly false)
 tlscacert | Trust only remotes providing a certificate signed by the CA given here | String | nil (implicitly ~/.docker/ca.pem)
 tlscert | Path to TLS certificate file | String | nil (implicitly ~/.docker/cert.pem)
@@ -491,7 +495,8 @@ link | Add link to another container | String, Array | nil
 label | Options to pass to underlying labeling system | String | nil
 lxc_conf | Custom LXC options | String, Array | nil
 memory | Set memory limit for container | Fixnum | nil
-networking | Configure networking for container | TrueClass, FalseClass | true
+net | [Configure networking](http://docs.docker.io/reference/run/#network-settings) for container | String | nil
+networking (*DEPRECATED*) | Configure networking for container | TrueClass, FalseClass | true
 opt | Custom driver options | String, Array | nil
 port | Map network port(s) to the container | Fixnum (*DEPRECATED*), String, Array | nil
 privileged | Give extended privileges | TrueClass, FalseClass | nil
@@ -879,7 +884,9 @@ Please see contributing information in: [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## Maintainers
 
+* Tom Duffield (http://tomduffield.com)
 * Brian Flad (<bflad417@gmail.com>)
+* Fletcher Nichol (<fnichol@nichol.ca>)
 
 ## License
 

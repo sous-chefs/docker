@@ -1,4 +1,4 @@
 #!/bin/sh
 exec 2>&1
-exec <%= Helpers::Docker.executable(node) %> start <%= @options['service_name'] %> || true
-exec <%= Helpers::Docker.executable(node) %> attach <%= @options['service_name'] %>
+exec <%= Docker::Helpers.executable(node) %> start <%= @options['service_name'] %> || true
+exec <%= Docker::Helpers.executable(node) %> attach <%= @options['service_name'] %>

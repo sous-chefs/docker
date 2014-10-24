@@ -1,10 +1,10 @@
 require 'chef/mixin/shell_out'
 include Chef::Mixin::ShellOut
 
-# Helpers module
-module Helpers
-  # Helpers::Docker module
-  module Docker
+# Docker module
+module Docker
+  # Docker::Helpers module
+  module Helpers
     # Exception to signify that the Docker daemon is not yet ready to handle
     # docker commands.
     class DockerNotReady < StandardError
@@ -27,7 +27,7 @@ EOH
 
     # Daemon service name
     def self.docker_service(node)
-      return 'docker.io' if Helpers::Docker.using_docker_io_package?(node)
+      return 'docker.io' if Docker::Helpers.using_docker_io_package?(node)
       'docker'
     end
 
@@ -37,7 +37,7 @@ EOH
       when 'debian'
         '/etc/default/docker'
       when 'ubuntu'
-        if Helpers::Docker.using_docker_io_package?(node)
+        if Docker::Helpers.using_docker_io_package?(node)
           '/etc/default/docker.io'
         else
           '/etc/default/docker'
@@ -51,7 +51,7 @@ EOH
     def self.docker_upstart_conf_file(node)
       case node['platform']
       when 'ubuntu'
-        if Helpers::Docker.using_docker_io_package?(node)
+        if Docker::Helpers.using_docker_io_package?(node)
           '/etc/init/docker.io.conf'
         else
           '/etc/init/docker.conf'
@@ -63,23 +63,18 @@ EOH
 
     # Path to docker executable
     def self.executable(node)
-      return '/usr/bin/docker.io' if Helpers::Docker.using_docker_io_package?(node)
+      return '/usr/bin/docker.io' if Docker::Helpers.using_docker_io_package?(node)
       "#{node['docker']['install_dir']}/docker"
     end
 
     # Boolean to determine whether or not we are using the docker.io package
     def self.using_docker_io_package?(node)
-      node['platform'] == 'ubuntu' &&
       node['docker']['install_type'] == 'package' &&
-      (
-        node['docker']['package']['repo_url'].nil? ||
-        node['docker']['package']['repo_url'].empty?
-      ) &&
-      Chef::VersionConstraint.new('>= 14.04').include?(node['platform_version'])
+      node['docker']['package']['name'] == 'docker.io'
     end
 
     def self.daemon_cli_args(node)
-      daemon_options = Helpers::Docker.cli_args(
+      daemon_options = Docker::Helpers.cli_args(
         'api-enable-cors' => node['docker']['api_enable_cors'],
         'bip' => node['docker']['bip'],
         'bridge' => node['docker']['bridge'],
@@ -95,8 +90,10 @@ EOH
         'iptables' => node['docker']['iptables'],
         'mtu' => node['docker']['mtu'],
         'pidfile' => node['docker']['pidfile'],
-        'restart' => node['docker']['container_init_type'] ? false : nil,
+        'restart' => node['docker']['restart'],
+        'selinux-enabled' => node['docker']['selinux_enabled'],
         'storage-driver' => node['docker']['storage_driver'],
+        'storage-opt' => Array(node['docker']['storage_opt']),
         'tls' => node['docker']['tls'],
         'tlscacert' => node['docker']['tlscacert'],
         'tlscert' => node['docker']['tlscert'],
@@ -156,7 +153,8 @@ EOH
 
     def docker_inspect_id(id)
       inspect = docker_inspect(id)
-      inspect['id'] if inspect
+      # in docker < 1.0.0 the field is called 'id', but docker >= 1.0.0 it's called 'Id'.
+      (inspect['id'] || inspect['Id']) if inspect
     end
 
     def dockercfg_parse
@@ -176,8 +174,9 @@ EOH
       if decoded_str
         auth = {}
         auth['username'], auth['password'] = decoded_str.split(':')
-        auth
+        return auth
       end
+      nil
     end
 
     def timeout
@@ -211,7 +210,7 @@ EOH
 
     # the Error message to display if a command times out. Subclasses
     # may want to override this to provide more details on the timeout.
-    def command_timeout_error_message
+    def command_timeout_error_message(cmd)
       <<-EOM
 
 Command timed out:
@@ -232,7 +231,7 @@ EOM
       begin
         shell_out(cmd, :timeout => timeout)
       rescue Mixlib::ShellOut::CommandTimeout
-        raise CommandTimeout, command_timeout_error_message
+        raise CommandTimeout, command_timeout_error_message(cmd)
       end
     end
 
@@ -249,5 +248,73 @@ EOM
       cmd.error!
       cmd
     end
+
+    def binary_installed?(bin)
+      !shell_out("which #{bin}").error?
+    end
+
+    #
+    # Pairs with the dep_check recipe.
+    #
+    # Parameters:
+    # @execption - DockerCookbook exception to throw
+    # @action - symbol representing which action to take
+    # @msg - string of message to print
+    #
+    def alert_on_error(exception, action, msg)
+      case action
+      when :warn
+        Chef::Log.warn <<-MSG
+WARNING: #{exception}
+#{msg}
+        MSG
+      when :fatal
+        fail exception, msg
+      end
+    end
+  end
+end
+
+# class Chef
+class Chef
+  # class Chef::Node
+  class Node
+    # recipe? is already taken
+    # rubocop:disable PredicateName
+    def has_recipe?(recipe_name)
+      loaded_recipes.include?(with_default(recipe_name))
+    end
+    # rubocop:enable PredicateName
+
+    private
+
+    #
+    # Automatically appends "+::default+" to recipes that need them.
+    #
+    # @param [String] name
+    #
+    # @return [String]
+    #
+    def with_default(name)
+      name.include?('::') ? name : "#{name}::default"
+    end
+
+    #
+    # The list of loaded recipes on the Chef run (normalized)
+    #
+    # @return [Array<String>]
+    #
+    def loaded_recipes
+      node.run_context.loaded_recipes.map { |name| with_default(name) }
+    end
+  end
+end
+
+class DockerCookbook
+  class Exceptions
+    class MissingDependency < RuntimeError; end
+    class InvalidPlatformVersion < StandardError; end
+    class InvalidArchitecture < StandardError; end
+    class InvalidKernelVersion < StandardError; end
   end
 end
