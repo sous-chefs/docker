@@ -18,6 +18,7 @@ when 'debian', 'ubuntu'
       uri node['docker']['package']['repo_url']
       distribution node['docker']['package']['distribution']
       components ['main']
+      keyserver node['docker']['package']['repo_keyserver']
       key node['docker']['package']['repo_key']
     end
   end
