@@ -60,5 +60,14 @@ task unit: ['unit:rspec']
 desc 'Run all tests on Travis'
 task travis: %w(style unit)
 
+task spec: [:unit]
+task kitchen: [:integration]
+
+task ci: do
+  sh cp -v /opt/gce-data/kitchen.gce.yml .kitchen.local.yml
+  Rake::Task['spec'].invoke
+  Rake::Task['kitchen'].invoke
+end
+
 # Default
 task default: ['style', 'unit', 'integration:kitchen:all']
