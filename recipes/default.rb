@@ -25,7 +25,7 @@ end
 
 directory 'docker-graph' do
   path node['docker']['graph']
-  not_if node['docker']['graph'].nil?
+  not_if { node['docker']['graph'].nil? }
 end
 
 unless node['docker']['install_type'] == 'package'
