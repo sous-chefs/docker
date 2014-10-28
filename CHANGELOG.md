@@ -14,6 +14,7 @@ Attribute deprecations:
 ## 0.35.3 (unreleased)
 * Bugfix: [#217][]: Explicitly set key and keyserver for docker apt repository.
 * Improvement: Pull in sysv init.d script changes from upstream.
+* Improvement: [#220][]: Create graph directory if it is specified.
 
 ## 0.35.2
 

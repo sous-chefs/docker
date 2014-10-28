@@ -196,6 +196,7 @@ describe 'docker::default' do
     context "when init_type is #{init}" do
       let(:chef_run) do
         ChefSpec::Runner.new do |node|
+          node.set['docker']['graph'] = '/var/lib/docker'
           node.set['docker']['alert_on_error_action'] = :warn
           node.set['docker']['init_type'] = init
         end.converge(described_recipe)
@@ -203,6 +204,10 @@ describe 'docker::default' do
 
       it "includes the docker::#{init} recipe" do
         expect(chef_run).to include_recipe("docker::#{init}")
+      end
+
+      it 'creates the docker graph folder' do
+        expect(chef_run) .to create_directory('/var/lib/docker')
       end
     end
   end
