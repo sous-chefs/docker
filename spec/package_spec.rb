@@ -16,7 +16,8 @@ shared_examples_for 'an apt-based system' do
       uri: 'https://get.docker.io/ubuntu',
       distribution: 'docker',
       components: ['main'],
-      key: 'https://get.docker.io/gpg'
+      keyserver: 'keyserver.ubuntu.com',
+      key: 'A88D21E9'
     )
   end
 
