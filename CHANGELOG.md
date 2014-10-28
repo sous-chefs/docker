@@ -11,6 +11,10 @@ Attribute deprecations:
 * container LWRP public_port attribute: use port attribute instead
 * container LWRP networking attribute: use net attribute instead
 
+## 0.35.3 (unreleased)
+* Bugfix: [#217][]: Explicitly set key and keyserver for docker apt repository.
+* Improvement: Pull in sysv init.d script changes from upstream.
+
 ## 0.35.2
 
 * Bugfix: [#171][]: Default Ubuntu 14.04 to Docker PPA
@@ -30,18 +34,18 @@ This release has a bunch of changes and hasn't been fully tested yet. Wanted to 
 
 Major kudos to @tduffield for the [#147][] PR, which includes:
 * Binary Installation
-  * Added missing dependency resolution for using the binary. 
+  * Added missing dependency resolution for using the binary.
 * Dependency Checks
   * Added `docker::dep_check` that will take an action if certain dependencies are not met.
     * `node[docker][alert_on_error_action] = :fatal` will kill the chef run and print the error message.
     * `node[docker][alert_on_error_action] = :warn` will print the error message but continue with the chef run. There is no guarantee that it will succeed though.
-* KitchenCI 
+* KitchenCI
   * Copied MiniTests to ServerSpec Tests
   * Added new platforms (Debian 7.4)
   * Changed provisioner from chef-solo to chef-zero
   * Removed Ubuntu 12.10 because it is not supported by Docker and the Kernel is bad and fails all the tests.
-  * Removed tests for the source recipe. The dotcloud/docker repo actually doesn’t build any Go deliverables. 
-    * I think that the source recipe needs to be completely refactored. 
+  * Removed tests for the source recipe. The dotcloud/docker repo actually doesn’t build any Go deliverables.
+    * I think that the source recipe needs to be completely refactored.
 
 Other awesome work merged:
 
@@ -282,7 +286,7 @@ Awesome work by [@jcrobak][] to close out two issues ([#49][] and [#52][]) with 
 ## 0.19.0
 
 * Enhancement: Add `node['docker']['version']` attribute to handle version for all install_type (recommended you switch to this)
-* Enhancement: `default['docker']['binary']['version']` attribute uses `node['docker']['version']` if set 
+* Enhancement: `default['docker']['binary']['version']` attribute uses `node['docker']['version']` if set
 * Enhancement: Add version handling to package recipe
 
 ## 0.18.1
