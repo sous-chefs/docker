@@ -23,6 +23,11 @@ if node['docker']['exec_driver'] == 'lxc'
   include_recipe 'docker::lxc'
 end
 
+directory 'docker-graph' do
+  path node['docker']['graph']
+  not_if { node['docker']['graph'].nil? }
+end
+
 unless node['docker']['install_type'] == 'package'
   if node['platform'] == 'ubuntu' && Chef::VersionConstraint.new('< 13.10').include?(node['platform_version'])
     include_recipe "docker::#{node['docker']['storage_driver']}" if node['docker']['storage_driver']
