@@ -112,7 +112,7 @@ describe 'docker::runit' do
 
   #   it 'sets NO_PROXY environment variable in docker service' do
   #     expect(chef_run).to render_file('/etc/sv/docker/run').with_content(
-  #       %r{^export NO_PROXY=host1.example.com,111.111.111.0/24$})
+  #       /^export NO_PROXY=host1.example.com,111.111.111.0\/24$/)
   #   end
   # end
 
