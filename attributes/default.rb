@@ -15,7 +15,7 @@ default['docker']['init_type'] = value_for_platform(
     'default' => 'sysv'
   },
   %w(redhat centos) => {
-    %w(6.0 6.1 6.2 6.3 6.4 6.5) => 'sysv',
+    %w(6.0 6.1 6.2 6.3 6.4 6.5 6.6) => 'sysv',
     'default' => 'systemd'
   },
   %w(fedora) => {
@@ -85,7 +85,7 @@ default['docker']['package']['name'] = value_for_platform(
     'default' => 'docker'
   },
   %w(centos redhat) => {
-    %w(6.0 6.1 6.2 6.3 6.4 6.5) => 'docker-io',
+    %w(6.0 6.1 6.2 6.3 6.4 6.5 6.6) => 'docker-io',
     'default' => 'docker'
   },
   'fedora' => {
