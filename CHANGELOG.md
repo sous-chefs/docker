@@ -11,9 +11,10 @@ Attribute deprecations:
 * container LWRP public_port attribute: use port attribute instead
 * container LWRP networking attribute: use net attribute instead
 
-## 0.35.3 (unreleased)
+## 0.35.3
 * Bugfix: [#217][]: Explicitly set key and keyserver for docker apt repository.
 * Improvement: Pull in sysv init.d script changes from upstream.
+* Bugfix: [#219][]: Explicitly set Upstart provider for Ubuntu 14.04 and 14.10.
 * Improvement: [#220][]: Create graph directory if it is specified.
 
 ## 0.35.2
