@@ -3,7 +3,7 @@ require_relative 'support/matchers'
 
 describe 'docker::runit' do
   let(:chef_run) do
-    ChefSpec::Runner.new.converge(described_recipe)
+    ChefSpec::SoloRunner.new.converge(described_recipe)
   end
 
   it 'stops the lxc-docker service' do
@@ -27,7 +27,7 @@ describe 'docker::runit' do
 
   # context 'when bind_socket is set' do
   #   let(:chef_run) do
-  #     runner = ChefSpec::Runner.new
+  #     runner = ChefSpec::SoloRunner.new
   #     runner.node.set['docker']['bind_socket'] = 'unix:///var/run/docker.sock'
   #     runner.converge(described_recipe)
   #   end
@@ -40,7 +40,7 @@ describe 'docker::runit' do
 
   # context 'when bind_uri is set' do
   #   let(:chef_run) do
-  #     runner = ChefSpec::Runner.new
+  #     runner = ChefSpec::SoloRunner.new
   #     runner.node.set['docker']['bind_uri'] = 'tcp://127.0.0.1:4243'
   #     runner.converge(described_recipe)
   #   end
@@ -53,7 +53,7 @@ describe 'docker::runit' do
 
   # context 'when container_init_type is set' do
   #   let(:chef_run) do
-  #     runner = ChefSpec::Runner.new
+  #     runner = ChefSpec::SoloRunner.new
   #     runner.node.set['docker']['container_init_type'] = 'upstart'
   #     runner.converge(described_recipe)
   #   end
@@ -66,7 +66,7 @@ describe 'docker::runit' do
 
   # context 'when exec_driver is set' do
   #   let(:chef_run) do
-  #     runner = ChefSpec::Runner.new
+  #     runner = ChefSpec::SoloRunner.new
   #     runner.node.set['docker']['exec_driver'] = 'lxc'
   #     runner.converge(described_recipe)
   #   end
@@ -79,7 +79,7 @@ describe 'docker::runit' do
 
   # context 'when group is set' do
   #   let(:chef_run) do
-  #     runner = ChefSpec::Runner.new
+  #     runner = ChefSpec::SoloRunner.new
   #     runner.node.set['docker']['group'] = 'vagrant'
   #     runner.converge(described_recipe)
   #   end
@@ -92,7 +92,7 @@ describe 'docker::runit' do
 
   # context 'when http_proxy is set' do
   #   let(:chef_run) do
-  #     runner = ChefSpec::Runner.new
+  #     runner = ChefSpec::SoloRunner.new
   #     runner.node.set['docker']['http_proxy'] = 'http://username:password@proxy.example.com:8080'
   #     runner.converge(described_recipe)
   #   end
@@ -105,7 +105,7 @@ describe 'docker::runit' do
 
   # context 'when options is set' do
   #   let(:chef_run) do
-  #     runner = ChefSpec::Runner.new
+  #     runner = ChefSpec::SoloRunner.new
   #     runner.node.set['docker']['options'] = '--debug'
   #     runner.converge(described_recipe)
   #   end
@@ -118,7 +118,7 @@ describe 'docker::runit' do
 
   # context 'when ramdisk is set' do
   #   let(:chef_run) do
-  #     runner = ChefSpec::Runner.new
+  #     runner = ChefSpec::SoloRunner.new
   #     runner.node.set['docker']['ramdisk'] = '/dev/shm'
   #     runner.converge(described_recipe)
   #   end
@@ -131,7 +131,7 @@ describe 'docker::runit' do
 
   # context 'when storage_driver is set' do
   #   let(:chef_run) do
-  #     runner = ChefSpec::Runner.new
+  #     runner = ChefSpec::SoloRunner.new
   #     runner.node.set['docker']['storage_driver'] = 'brtfs'
   #     runner.converge(described_recipe)
   #   end
@@ -144,7 +144,7 @@ describe 'docker::runit' do
 
   # context 'when tmpdir is set' do
   #   let(:chef_run) do
-  #     runner = ChefSpec::Runner.new
+  #     runner = ChefSpec::SoloRunner.new
   #     runner.node.set['docker']['tmpdir'] = '/tmp'
   #     runner.converge(described_recipe)
   #   end

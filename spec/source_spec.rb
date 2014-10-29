@@ -3,7 +3,7 @@ require_relative 'support/matchers'
 
 describe 'docker::source' do
   let(:chef_run) do
-    ChefSpec::Runner.new.converge(described_recipe)
+    ChefSpec::SoloRunner.new.converge(described_recipe)
   end
 
   before(:each) do
