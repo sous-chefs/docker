@@ -6,6 +6,9 @@ export DOCKER_RAMDISK=<%= node['docker']['ramdisk'] %>
 <% if node['docker']['http_proxy'] -%>
 export HTTP_PROXY=<%= node['docker']['http_proxy'] %>
 <% end -%>
+<% if node['docker']['no_proxy'] -%>
+export NO_PROXY=<%= node['docker']['no_proxy'] %>
+<% end -%>
 <% if node['docker']['tmpdir'] -%>
 export TMPDIR=<%= node['docker']['tmpdir'] %>
 <% end -%>

@@ -146,6 +146,7 @@ default['docker']['icc'] = nil
 default['docker']['ip'] = nil
 default['docker']['iptables'] = nil
 default['docker']['mtu'] = nil
+default['docker']['no_proxy'] = nil
 default['docker']['options'] = nil
 default['docker']['pidfile'] = nil
 default['docker']['ramdisk'] = false

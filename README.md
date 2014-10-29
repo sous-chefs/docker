@@ -151,6 +151,7 @@ ip | Default IP address to use when binding container ports | String | nil (impl
 iptables | Enable Docker's addition of iptables rules | TrueClass, FalseClass | nil (implicitly true)
 logfile | Set custom DOCKER_LOGFILE | String | nil
 mtu | Set the containers network MTU | Fixnum | nil (implicitly default route MTU or 1500 if no default route is available)
+no_proxy | NO_PROXY environment variable | String | nil
 options | Additional options to pass to docker. These could be flags like "-api-enable-cors". | String | nil
 pidfile | Path to use for daemon PID file | String | nil (implicitly /var/run/docker.pid)
 ramdisk | Set DOCKER_RAMDISK when using RAM disk | TrueClass or FalseClass | false
