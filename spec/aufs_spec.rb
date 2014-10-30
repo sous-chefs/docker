@@ -8,7 +8,7 @@ describe 'docker::aufs' do
     apt_cache = double('apt-cache')
     uname = double
 
-    Mixlib::ShellOut.stub(:new).and_return(shellout)
+    allow(Mixlib::ShellOut).to receive(:new).and_return(shellout)
     allow(shellout).to receive(:run_command).and_return(apt_cache)
     allow(apt_cache).to receive(:stdout).and_return('linux-image-extra-3.')
     allow(shellout).to receive(:run_command).and_return(uname)

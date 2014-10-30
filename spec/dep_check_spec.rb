@@ -8,8 +8,8 @@ describe 'docker::dep_check' do
     end
 
     before do
-      Chef::Recipe.any_instance.stub(:binary_installed?).with('VboxManage').and_return(false)
-      Chef::Recipe.any_instance.stub(:binary_installed?).with('boot2docker').and_return(false)
+      allow_any_instance_of(Chef::Recipe).to receive(:binary_installed?).with('VboxManage').and_return(false)
+      allow_any_instance_of(Chef::Recipe).to receive(:binary_installed?).with('boot2docker').and_return(false)
     end
 
     it 'should fail if it can\'t find VirtualBox or if VirtualBox is not in the run_list' do
