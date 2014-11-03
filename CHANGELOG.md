@@ -16,6 +16,7 @@ Attribute deprecations:
 * Improvement: Pull in sysv init.d script changes from upstream.
 * Bugfix: [#219][]: Explicitly set Upstart provider for Ubuntu 14.04 and 14.10.
 * Improvement: [#220][]: Create graph directory if it is specified.
+* Bugfix: [#224][]: Fix runit container template to properly use exec.
 
 ## 0.35.2
 
