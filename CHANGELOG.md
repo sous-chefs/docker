@@ -13,10 +13,12 @@ Attribute deprecations:
 
 ## 0.35.3
 * Bugfix: [#217][]: Explicitly set key and keyserver for docker apt repository.
-* Improvement: Pull in sysv init.d script changes from upstream.
+* Improvement: Pull in init script changes from upstream for sysv and systemd.
 * Bugfix: [#219][]: Explicitly set Upstart provider for Ubuntu 14.04 and 14.10.
 * Improvement: [#220][]: Create graph directory if it is specified.
 * Bugfix: [#224][]: Fix runit container template to properly use exec.
+* Various Test Suite Modifications
+  * Update Berksfile to reference supermarket.getchef.com instead of api.berkshelf.com
 
 ## 0.35.2
 
