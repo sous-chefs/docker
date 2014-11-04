@@ -5,7 +5,7 @@ when 'amazon', 'centos', 'fedora', 'redhat'
   include_recipe 'yum-epel' if %w(centos redhat).include?(node['platform'])
 
   package p do
-    version node['docker']['version']
+    version node['docker']['version'] if not %w(centos).include?(node['platform'])
     action node['docker']['package']['action'].intern
   end
 when 'debian', 'ubuntu'
