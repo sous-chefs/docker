@@ -17,6 +17,7 @@ end
 
 def initialize(new_resource, run_context)
   super
+  @service = service_init if service?
   print_breaking_change_message
 end
 
@@ -49,7 +50,6 @@ Please check out https://github.com/bflad/chef-docker for more details.
 end
 
 action :commit do
-  @service = service_action(:nothing) if service?
   if exists?
     commit
     new_resource.updated_by_last_action(true)
@@ -57,7 +57,6 @@ action :commit do
 end
 
 action :cp do
-  @service = service_action(:nothing) if service?
   if exists?
     cp
     new_resource.updated_by_last_action(true)
@@ -65,7 +64,6 @@ action :cp do
 end
 
 action :export do
-  @service = service_action(:nothing) if service?
   if exists?
     export
     new_resource.updated_by_last_action(true)
@@ -73,7 +71,6 @@ action :export do
 end
 
 action :kill do
-  @service = service_action(:nothing) if service?
   if running?
     kill
     new_resource.updated_by_last_action(true)
@@ -81,7 +78,6 @@ action :kill do
 end
 
 action :redeploy do
-  @service = service_action(:nothing) if service?
   stop if running?
   remove_container if exists?
   run
@@ -89,7 +85,6 @@ action :redeploy do
 end
 
 action :remove do
-  @service = service_action(:nothing) if service?
   if running?
     stop
     new_resource.updated_by_last_action(true)
@@ -101,17 +96,14 @@ action :remove do
 end
 
 action :remove_link do
-  @service = service_action(:nothing) if service?
   new_resource.updated_by_last_action(remove_link)
 end
 
 action :remove_volume do
-  @service = service_action(:nothing) if service?
   new_resource.updated_by_last_action(remove_volume)
 end
 
 action :restart do
-  @service = service_action(:nothing) if service?
   if exists?
     restart
     new_resource.updated_by_last_action(true)
@@ -119,7 +111,6 @@ action :restart do
 end
 
 action :run do
-  @service = service_action(:nothing) if service?
   unless running?
     if exists?
       start
@@ -131,7 +122,6 @@ action :run do
 end
 
 action :start do
-  @service = service_action(:nothing) if service?
   unless running?
     start
     new_resource.updated_by_last_action(true)
@@ -139,7 +129,6 @@ action :start do
 end
 
 action :stop do
-  @service = service_action(:nothing) if service?
   if running?
     stop
     new_resource.updated_by_last_action(true)
@@ -147,7 +136,6 @@ action :stop do
 end
 
 action :wait do
-  @service = service_action(:nothing) if service?
   if running?
     wait
     new_resource.updated_by_last_action(true)
