@@ -393,7 +393,7 @@ def run
   dr = docker_cmd!("run #{run_args} #{new_resource.image} #{new_resource.command}")
   dr.error!
   new_resource.id(dr.stdout.chomp)
-  service_create if service?
+  service_run if service?
 end
 # rubocop:enable MethodLength
 
@@ -412,11 +412,14 @@ def service?
   new_resource.init_type
 end
 
-def service_action(actions)
+def service_init
+  service_create
+
   if new_resource.init_type == 'runit'
     runit_service service_name do
       run_template_name 'docker-container'
-      action actions
+      supports :restart => true, :reload => true, :status => true
+      action :nothing
     end
   else
     service service_name do
@@ -426,22 +429,29 @@ def service_action(actions)
       when 'upstart'
         provider Chef::Provider::Service::Upstart
       end
-      supports :status => true, :restart => true, :reload => true
-      action actions
+      supports :restart => true, :reload => true, :status => true
+      action :nothing
     end
   end
 end
 
 def service_create
   case new_resource.init_type
-  when 'runit'
-    service_create_runit
   when 'systemd'
     service_create_systemd
   when 'sysv'
     service_create_sysv
   when 'upstart'
     service_create_upstart
+  end
+end
+
+def service_run
+  case new_resource.init_type
+  when 'runit'
+    service_create_runit
+  else
+    service_start_and_enable
   end
 end
 
@@ -453,7 +463,8 @@ def service_create_runit
       'service_name' => service_name
     )
     run_template_name service_template
-  end
+    action :nothing
+  end.run_action(:enable)
 end
 
 def service_create_systemd
@@ -472,7 +483,8 @@ def service_create_systemd
       :sockets => sockets
     )
     not_if port.empty?
-  end
+    action :nothing
+  end.run_action(:create)
 
   template "/usr/lib/systemd/system/#{service_name}.service" do
     source service_template
@@ -484,9 +496,8 @@ def service_create_systemd
       :cmd_timeout => new_resource.cmd_timeout,
       :service_name => service_name
     )
-  end
-
-  service_start_and_enable
+    action :nothing
+  end.run_action(:create)
 end
 
 def service_create_sysv
@@ -500,14 +511,21 @@ def service_create_sysv
       :cmd_timeout => new_resource.cmd_timeout,
       :service_name => service_name
     )
-  end
+    action :nothing
+  end.run_action(:create)
 
-  service_start_and_enable
+  # link "/etc/rc.d/init.d/#{service_name}" do
+  #   to "/etc/init.d/#{service_name}"
+  #   only_if { platform_family?('rhel') }
+  #   action :nothing
+  # end.run_action(:create)
 end
 
 def service_create_upstart
   # The upstart init script requires inotifywait, which is in inotify-tools
-  package 'inotify-tools'
+  package 'inotify-tools' do
+    action :nothing
+  end.run_action(:install)
 
   template "/etc/init/#{service_name}.conf" do
     source service_template
@@ -519,9 +537,8 @@ def service_create_upstart
       :cmd_timeout => new_resource.cmd_timeout,
       :service_name => service_name
     )
-  end
-
-  service_start_and_enable
+    action :nothing
+  end.run_action(:create)
 end
 
 def service_name
@@ -586,8 +603,8 @@ def service_stop
 end
 
 def service_start_and_enable
-  @service.run_action(:start)
   @service.run_action(:enable)
+  @service.run_action(:start)
 end
 
 def service_stop_and_disable
