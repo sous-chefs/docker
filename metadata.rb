@@ -4,7 +4,7 @@ maintainer_email 'bflad417@gmail.com'
 license 'Apache 2.0'
 description 'Installs/Configures Docker'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version '0.35.2'
+version '0.36.0'
 
 recipe 'docker', 'Installs/Configures Docker'
 recipe 'docker::aufs', 'Installs/Loads AUFS Linux module'

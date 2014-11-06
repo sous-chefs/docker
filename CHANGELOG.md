@@ -11,13 +11,27 @@ Attribute deprecations:
 * container LWRP public_port attribute: use port attribute instead
 * container LWRP networking attribute: use net attribute instead
 
-## 0.35.3
-* Bugfix: [#217][]: Explicitly set key and keyserver for docker apt repository.
+## 0.36.0
+* Bugfix: [#181][]: Fixed remove_link action (thanks jperville).
+* Bugfix: [#185][]: Fix for non idempotent run action on docker_container (thanks bplunkert).
+# Bugfix: [#188][]: Applied temporary workaround to address the libcgmanager error to users running LXC on Ubuntu 14.04.
+* Bugfix: [#196][]: Address Helpers module naming conflict (thanks sethrosenblum).
+* Bugfix: [#200][]: Fix how service actions are handled by docker_container resource (thanks brianhartsock).
+* Bugfix: [#202][]: Correctly check for the kernel.release version on Debian (thanks Tritlo, paweloczadly).
+* Bugfix: [#203][]: Fix pull notifications for tagged images (thanks hobofan).
+* Bugfix: [#205][]: Fix current_resource.name assignments in docker_container provider (thanks jperville).
+* Bugfix: [#206][]: Fixes to container name detection (thanks jperville).
+* Enhancement: [#217][]: Explicitly set key and keyserver for docker apt repository (thanks sethrosenblum).
 * Improvement: Pull in init script changes from upstream for sysv and systemd.
-* Bugfix: [#219][]: Explicitly set Upstart provider for Ubuntu 14.04 and 14.10.
-* Improvement: [#220][]: Create graph directory if it is specified.
-* Bugfix: [#224][]: Fix runit container template to properly use exec.
+* Bugfix: [#219][]: Explicitly set Upstart provider for Ubuntu 14.04 and 14.10 (thanks methodx).
+* Improvement: [#220][]: Create graph directory if it is specified (thanks jontg).
+* Bugfix: [#224][]: Fix runit container template to properly use exec (thanks waisbrot).
+* Bugfix: Appropriately check for LXC when using the binary recipe on Fedora.
 * Various Test Suite Modifications
+  * Enhancement: [#192][]: Allow image tags in serverspec matching (thanks bplunkert).
+  * Bugfix: [#223][]: Convert a few occurrences of old 'should' rspec syntax to 'expect' (thanks jperville).
+  * Disable a few platforms that are experiencing bugs unrelated to core functionality.
+  * Address ChefSpec 4.1 deprecation warnings.
   * Update Berksfile to reference supermarket.getchef.com instead of api.berkshelf.com
 
 ## 0.35.2
