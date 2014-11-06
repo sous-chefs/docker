@@ -120,6 +120,8 @@ suites:
 - name: binary-lxc
   excludes:
   - centos-6.5
+  - fedora-19
+  - fedora-20
   run_list:
   - recipe[build-essential]
   - recipe[docker_test::default]
