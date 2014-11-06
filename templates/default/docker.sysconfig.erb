@@ -23,6 +23,12 @@ DOCKER_RAMDISK=<%= node['docker']['ramdisk'] %>
 export HTTP_PROXY=<%= node['docker']['http_proxy'] %>
 <% end -%>
 
+# In case you need a proxy to hit a public index, but also need to hit a private
+# index not accessible via the proxy, use no_proxy
+<% if node['docker']['no_proxy'] -%>
+export NO_PROXY=<%= node['docker']['no_proxy'] %>
+<% end -%>
+
 # This is also a handy place to tweak where Docker's temporary files go.
 <% if node['docker']['tmpdir'] -%>
 export TMPDIR="<%= node['docker']['tmpdir'] %>"
