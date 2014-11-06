@@ -88,6 +88,7 @@ action :remove do
   if running?
     stop
     new_resource.updated_by_last_action(true)
+    sleep 1
   end
   if exists?
     remove
@@ -397,6 +398,13 @@ end
 # rubocop:enable MethodLength
 
 def running?
+  # First, lets see if we can grab the state using the Container ID
+  if @current_resource.id
+    info = docker_inspect(@current_resource.id)
+    return info['State']['Running']
+  end
+
+  # otherwise, we go by our current resource state
   @current_resource.status.include?('Up') if @current_resource.status
 end
 
