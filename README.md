@@ -6,6 +6,34 @@ Installs/Configures [Docker](http://docker.io). Please see [COMPATIBILITY.md](CO
 
 This cookbook was inspired by @thoward's docker-cookbook: https://github.com/thoward/docker-cookbook
 
+## Breaking Change Alert
+
+In version 1.0 of this cookbook, we will be making a significant breaking change in the way that we handle the `docker_container` custom resource. Right now, the name attribute of the custom resource is associated with the `image` name value. Starting in version 1.0, the name attribute will be associated with the `container_name` attribute and the `image` attribute will become a required attribute.
+
+### Old Style (pre-1.0)
+```ruby
+docker_container "busybox"
+
+docker_container "busybox"
+```
+
+### New Style (1.0)
+```ruby
+docker_container "busybox01" do
+  image "busybox"
+end
+
+docker_container "busybox02" do
+  image "busybox"
+end
+```
+
+To avoid any issues, please make sure to pin your versions in the appropriate places.
+  - metadata.rb
+  - Chef Environments
+  - Berksfile
+  - Chef Policyfile
+
 ## Requirements
 
 ### Chef
