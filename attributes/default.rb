@@ -46,7 +46,8 @@ default['docker']['alert_on_error_action'] = :fatal
 
 default['docker']['binary']['dependency_packages'] = value_for_platform_family(
   'debian' => %w(procps xz-utils),
-  'rhel' => %w(procps xz)
+  'rhel' => %w(procps xz),
+  'default' => %w()
 )
 default['docker']['binary']['version'] = node['docker']['version'] || 'latest'
 default['docker']['binary']['checksum'] =
