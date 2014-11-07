@@ -70,7 +70,7 @@ EOH
     # Boolean to determine whether or not we are using the docker.io package
     def self.using_docker_io_package?(node)
       node['docker']['install_type'] == 'package' &&
-      node['docker']['package']['name'] == 'docker.io'
+        node['docker']['package']['name'] == 'docker.io'
     end
 
     def self.daemon_cli_args(node)

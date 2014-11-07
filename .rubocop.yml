@@ -19,3 +19,5 @@ LineLength:
   Enabled: false
 MethodLength:
   Max: 30
+Metrics/AbcSize:
+  Enabled: false

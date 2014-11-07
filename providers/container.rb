@@ -24,12 +24,12 @@ end
 def print_breaking_change_message
   message = <<-MSG
 
-#{"*"*60}
+#{'*' * 60}
 *
 * WARNING!
 * BREAKING CHANGE COMING TO DOCKER COOKBOOK IN VERSION 1.0
 *
-#{"*"*60}
+#{'*' * 60}
 
 In version 1.0 of the Docker cookbook, there will be a breaking change in the way
 that we handle the `docker_container` custom resource. The name attribute of the
