@@ -14,7 +14,7 @@ Attribute deprecations:
 ## 0.36.0
 * Bugfix: [#181][]: Fixed remove_link action (thanks jperville).
 * Bugfix: [#185][]: Fix for non idempotent run action on docker_container (thanks bplunkert).
-# Bugfix: [#188][]: Applied temporary workaround to address the libcgmanager error to users running LXC on Ubuntu 14.04.
+* Bugfix: [#188][]: Applied temporary workaround to address the libcgmanager error to users running LXC on Ubuntu 14.04.
 * Bugfix: [#196][]: Address Helpers module naming conflict (thanks sethrosenblum).
 * Bugfix: [#200][]: Fix how service actions are handled by docker_container resource (thanks brianhartsock).
 * Bugfix: [#202][]: Correctly check for the kernel.release version on Debian (thanks Tritlo, paweloczadly).
