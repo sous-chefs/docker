@@ -28,6 +28,7 @@ Attribute deprecations:
 * Bugfix: [#224][]: Fix runit container template to properly use exec (thanks waisbrot).
 * Bugfix: Appropriately check for LXC when using the binary recipe on Fedora.
 * Bugfix: Implement workaround for docker/docker#2702 on Ubuntu 14.10.
+* Enhancement: [#221][]: Added NO_PROXY support (thanks jperville).
 * Various Test Suite Modifications
   * Enhancement: [#192][]: Allow image tags in serverspec matching (thanks bplunkert).
   * Bugfix: [#223][]: Convert a few occurrences of old 'should' rspec syntax to 'expect' (thanks jperville).

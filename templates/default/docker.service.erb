@@ -12,6 +12,9 @@ Environment="DOCKER_RAMDISK=<%= node['docker']['ramdisk'] %>"
 <% if node['docker']['http_proxy'] -%>
 Environment="HTTP_PROXY=<%= node['docker']['http_proxy'] %>"
 <% end -%>
+<% if node['docker']['no_proxy'] -%>
+Environment="NO_PROXY=<%= node['docker']['no_proxy'] %>"
+<% end -%>
 <% if node['docker']['tmpdir'] -%>
 Environment="TMPDIR=<%= node['docker']['tmpdir'] %>"
 <% end -%>
