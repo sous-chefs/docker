@@ -17,4 +17,20 @@ when 'ubuntu'
   end
 
   include_recipe 'lxc'
+
+  #
+  # This is a workaround to address docker/docker#2702 which prevents containers
+  # from properly starting when using LXC on some Ubuntu machines. Right now we
+  # have only seen it on Ubuntu 14.10.
+  #
+  package 'apparmor-utils' do
+    action :install
+    only_if { node['platform_version'] == '14.10' }
+    notifies :run, 'execute[aa-complain]', :immediately
+  end
+
+  execute 'aa-complain' do
+    command 'aa-complain /usr/bin/lxc-start'
+    action :nothing
+  end
 end
