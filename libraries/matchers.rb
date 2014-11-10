@@ -1,8 +1,8 @@
 if defined?(ChefSpec)
   # Docker matchers
-  ChefSpec.define_matcher(:docker_container)
-  ChefSpec.define_matcher(:docker_image)
-  ChefSpec.define_matcher(:docker_registry)
+  ChefSpec::Runner.define_runner_method(:docker_container)
+  ChefSpec::Runner.define_runner_method(:docker_image)
+  ChefSpec::Runner.define_runner_method(:docker_registry)
 
   # Docker registry
   def login_docker_registry(resource_name)

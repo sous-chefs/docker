@@ -35,7 +35,7 @@ describe 'docker::package' do
   context 'when running on centos' do
     it_behaves_like 'a yum-based system' do
       let(:chef_run) do
-        ChefSpec::SoloRunner.new(platform: 'centos', version: '6.5').converge(described_recipe)
+        ChefSpec::Runner.new(platform: 'centos', version: '6.5').converge(described_recipe)
       end
     end
   end
@@ -43,7 +43,7 @@ describe 'docker::package' do
   context 'when running on redhat' do
     it_behaves_like 'a yum-based system' do
       let(:chef_run) do
-        ChefSpec::SoloRunner.new(platform: 'redhat', version: '6.5').converge(described_recipe)
+        ChefSpec::Runner.new(platform: 'redhat', version: '6.5').converge(described_recipe)
       end
     end
   end
@@ -51,10 +51,10 @@ describe 'docker::package' do
   context 'when running on debian' do
     it_behaves_like 'an apt-based system' do
       let(:chef_run) do
-        ChefSpec::SoloRunner.new(platform: 'debian', version: '7.4').converge(described_recipe)
+        ChefSpec::Runner.new(platform: 'debian', version: '7.4').converge(described_recipe)
       end
       let(:chef_run2) do
-        runner = ChefSpec::SoloRunner.new(platform: 'debian', version: '7.4')
+        runner = ChefSpec::Runner.new(platform: 'debian', version: '7.4')
         runner.node.set['docker']['version'] = '0.9.1'
         runner.converge(described_recipe)
       end
@@ -64,10 +64,10 @@ describe 'docker::package' do
   context 'when running on ubuntu' do
     it_behaves_like 'an apt-based system' do
       let(:chef_run) do
-        ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '12.04').converge(described_recipe)
+        ChefSpec::Runner.new(platform: 'ubuntu', version: '12.04').converge(described_recipe)
       end
       let(:chef_run2) do
-        runner = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '12.04')
+        runner = ChefSpec::Runner.new(platform: 'ubuntu', version: '12.04')
         runner.node.set['docker']['version'] = '0.9.1'
         runner.converge(described_recipe)
       end
@@ -76,7 +76,7 @@ describe 'docker::package' do
 
   context 'when running on fedora' do
     let(:chef_run) do
-      ChefSpec::SoloRunner.new(platform: 'fedora', version: '19').converge(described_recipe)
+      ChefSpec::Runner.new(platform: 'fedora', version: '19').converge(described_recipe)
     end
 
     it 'should install the docker-io package' do
@@ -86,7 +86,7 @@ describe 'docker::package' do
 
   context 'when running on mac_os_x' do
     let(:chef_run) do
-      ChefSpec::SoloRunner.new(platform: 'mac_os_x', version: '10.9.2').converge(described_recipe)
+      ChefSpec::Runner.new(platform: 'mac_os_x', version: '10.9.2').converge(described_recipe)
     end
 
     it 'should tap the homebrew/binary cask' do

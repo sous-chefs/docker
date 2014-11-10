@@ -18,7 +18,7 @@ describe 'docker::aufs' do
   end
 
   let(:chef_run) do
-    ChefSpec::SoloRunner.new.converge(described_recipe)
+    ChefSpec::Runner.new.converge(described_recipe)
   end
 
   it 'includes the aufs recipe' do

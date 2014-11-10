@@ -11,7 +11,7 @@ describe 'docker::lxc' do
   context 'when running on debian' do
     it_behaves_like 'a non-ubuntu platform' do
       let(:chef_run) do
-        ChefSpec::SoloRunner.new(platform: 'debian', version: '7.4').converge(described_recipe)
+        ChefSpec::Runner.new(platform: 'debian', version: '7.4').converge(described_recipe)
       end
     end
   end
@@ -19,14 +19,14 @@ describe 'docker::lxc' do
   context 'when running on oracle' do
     it_behaves_like 'a non-ubuntu platform' do
       let(:chef_run) do
-        ChefSpec::SoloRunner.new(platform: 'oracle', version: '6.5').converge(described_recipe)
+        ChefSpec::Runner.new(platform: 'oracle', version: '6.5').converge(described_recipe)
       end
     end
   end
 
   context 'when running on ubuntu' do
     let(:chef_run) do
-      ChefSpec::SoloRunner.new.converge(described_recipe)
+      ChefSpec::Runner.new.converge(described_recipe)
     end
 
     it 'includes the lxc recipe' do
