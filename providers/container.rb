@@ -18,35 +18,6 @@ end
 def initialize(new_resource, run_context)
   super
   @service = service_init if service?
-  print_breaking_change_message
-end
-
-def print_breaking_change_message
-  message = <<-MSG
-
-#{'*' * 60}
-*
-* WARNING!
-* BREAKING CHANGE COMING TO DOCKER COOKBOOK IN VERSION 1.0
-*
-#{'*' * 60}
-
-In version 1.0 of the Docker cookbook, there will be a breaking change in the way
-that we handle the `docker_container` custom resource. The name attribute of the
-resource will now be the `container_name` instead of the `image` name. We are doing
-this because the current method of using the `image` name makes ensuring idempotency
-almost impossible.
-
-To avoid any issues, please make sure to pin your versions in the appropriate places.
-  - metadata.rb
-  - Chef Environments
-  - Berksfile
-  - Policyfile
-
-Please check out https://github.com/bflad/chef-docker for more details.
-
-  MSG
-  puts message
 end
 
 action :commit do
