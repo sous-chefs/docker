@@ -11,6 +11,31 @@ Attribute deprecations:
 * container LWRP public_port attribute: use port attribute instead
 * container LWRP networking attribute: use net attribute instead
 
+## 0.36.0
+* Bugfix: [#181][]: Fixed remove_link action (thanks jperville).
+* Bugfix: [#185][]: Fix for non idempotent run action on docker_container (thanks bplunkert).
+* Bugfix: [#188][]: Applied temporary workaround to address the libcgmanager error to users running LXC on Ubuntu 14.04.
+* Bugfix: [#196][]: Address Helpers module naming conflict (thanks sethrosenblum).
+* Bugfix: [#200][]: Fix how service actions are handled by docker_container resource (thanks brianhartsock).
+* Bugfix: [#202][]: Correctly check for the kernel.release version on Debian (thanks Tritlo, paweloczadly).
+* Bugfix: [#203][]: Fix pull notifications for tagged images (thanks hobofan).
+* Bugfix: [#205][]: Fix current_resource.name assignments in docker_container provider (thanks jperville).
+* Bugfix: [#206][]: Fixes to container name detection (thanks jperville).
+* Enhancement: [#217][]: Explicitly set key and keyserver for docker apt repository (thanks sethrosenblum).
+* Improvement: Pull in init script changes from upstream for sysv and systemd.
+* Bugfix: [#219][]: Explicitly set Upstart provider for Ubuntu 14.04 and 14.10 (thanks methodx).
+* Improvement: [#220][]: Create graph directory if it is specified (thanks jontg).
+* Bugfix: [#224][]: Fix runit container template to properly use exec (thanks waisbrot).
+* Bugfix: Appropriately check for LXC when using the binary recipe on Fedora.
+* Bugfix: Implement workaround for docker/docker#2702 on Ubuntu 14.10.
+* Enhancement: [#221][]: Added NO_PROXY support (thanks jperville).
+* Various Test Suite Modifications
+  * Enhancement: [#192][]: Allow image tags in serverspec matching (thanks bplunkert).
+  * Bugfix: [#223][]: Convert a few occurrences of old 'should' rspec syntax to 'expect' (thanks jperville).
+  * Disable a few platforms that are experiencing bugs unrelated to core functionality.
+  * Address ChefSpec 4.1 deprecation warnings.
+  * Update Berksfile to reference supermarket.getchef.com instead of api.berkshelf.com
+
 ## 0.35.2
 
 * Bugfix: [#171][]: Default Ubuntu 14.04 to Docker PPA
@@ -30,18 +55,18 @@ This release has a bunch of changes and hasn't been fully tested yet. Wanted to 
 
 Major kudos to @tduffield for the [#147][] PR, which includes:
 * Binary Installation
-  * Added missing dependency resolution for using the binary. 
+  * Added missing dependency resolution for using the binary.
 * Dependency Checks
   * Added `docker::dep_check` that will take an action if certain dependencies are not met.
     * `node[docker][alert_on_error_action] = :fatal` will kill the chef run and print the error message.
     * `node[docker][alert_on_error_action] = :warn` will print the error message but continue with the chef run. There is no guarantee that it will succeed though.
-* KitchenCI 
+* KitchenCI
   * Copied MiniTests to ServerSpec Tests
   * Added new platforms (Debian 7.4)
   * Changed provisioner from chef-solo to chef-zero
   * Removed Ubuntu 12.10 because it is not supported by Docker and the Kernel is bad and fails all the tests.
-  * Removed tests for the source recipe. The dotcloud/docker repo actually doesn’t build any Go deliverables. 
-    * I think that the source recipe needs to be completely refactored. 
+  * Removed tests for the source recipe. The dotcloud/docker repo actually doesn’t build any Go deliverables.
+    * I think that the source recipe needs to be completely refactored.
 
 Other awesome work merged:
 
@@ -282,7 +307,7 @@ Awesome work by [@jcrobak][] to close out two issues ([#49][] and [#52][]) with 
 ## 0.19.0
 
 * Enhancement: Add `node['docker']['version']` attribute to handle version for all install_type (recommended you switch to this)
-* Enhancement: `default['docker']['binary']['version']` attribute uses `node['docker']['version']` if set 
+* Enhancement: `default['docker']['binary']['version']` attribute uses `node['docker']['version']` if set
 * Enhancement: Add version handling to package recipe
 
 ## 0.18.1

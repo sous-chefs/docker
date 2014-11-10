@@ -6,6 +6,16 @@ Installs/Configures [Docker](http://docker.io). Please see [COMPATIBILITY.md](CO
 
 This cookbook was inspired by @thoward's docker-cookbook: https://github.com/thoward/docker-cookbook
 
+## Breaking Change Alert
+
+In version 1.0 of this cookbook, we will be making a significant breaking changes including the way that we handle the custom resources (`docker_image`, `docker_container` and `docker_registry`). It is highly recommended that you constrain the version of the cookbook you are using in the appropriate places.
+  - metadata.rb
+  - Chef Environments
+  - Berksfile
+  - Chef Policyfile
+
+More details about specific changes will be documented in the [1.0_CHANGES.md](1.0_CHANGES.md) file. 
+
 ## Requirements
 
 ### Chef
@@ -151,6 +161,7 @@ ip | Default IP address to use when binding container ports | String | nil (impl
 iptables | Enable Docker's addition of iptables rules | TrueClass, FalseClass | nil (implicitly true)
 logfile | Set custom DOCKER_LOGFILE | String | nil
 mtu | Set the containers network MTU | Fixnum | nil (implicitly default route MTU or 1500 if no default route is available)
+no_proxy | NO_PROXY environment variable | String | nil
 options | Additional options to pass to docker. These could be flags like "-api-enable-cors". | String | nil
 pidfile | Path to use for daemon PID file | String | nil (implicitly /var/run/docker.pid)
 ramdisk | Set DOCKER_RAMDISK when using RAM disk | TrueClass or FalseClass | false

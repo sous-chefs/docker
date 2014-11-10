@@ -1,15 +1,19 @@
 [Unit]
 Description=Docker Application Container Engine
-Documentation=http://docs.docker.io
-After=network.target
+Documentation=http://docs.docker.com
+After=network.target docker.socket
+Requires=docker.socket
 
 [Service]
-Type=simple
+Type=notify
 <% if node['docker']['ramdisk'] -%>
 Environment="DOCKER_RAMDISK=<%= node['docker']['ramdisk'] %>"
 <% end -%>
 <% if node['docker']['http_proxy'] -%>
 Environment="HTTP_PROXY=<%= node['docker']['http_proxy'] %>"
+<% end -%>
+<% if node['docker']['no_proxy'] -%>
+Environment="NO_PROXY=<%= node['docker']['no_proxy'] %>"
 <% end -%>
 <% if node['docker']['tmpdir'] -%>
 Environment="TMPDIR=<%= node['docker']['tmpdir'] %>"
@@ -21,7 +25,8 @@ ExecStartPre=/usr/sbin/sysctl -w net.ipv4.ip_forward=1
 ExecStartPre=/usr/sbin/sysctl -w net.ipv6.conf.all.forwarding=1
 <% end -%>
 ExecStart=<%= Docker::Helpers.executable(node) %> -d<%= @daemon_options %>
-Restart=on-failure
+LimitNOFILE=1048576
+LimitNPROC=1048576
 
 [Install]
-WantedBy=multi-user.target
+Also=docker.socket

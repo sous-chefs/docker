@@ -7,7 +7,7 @@ group :test, :integration do
 end
 
 group :test do
-  gem 'chefspec', '~> 4.0'
+  gem 'chefspec', '~> 4.0.0'
   # elecksee is lxc dependency
   gem 'elecksee', '~> 1.0.20'
   gem 'foodcritic', '~> 3.0.3'

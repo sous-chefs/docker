@@ -103,6 +103,19 @@ describe 'docker::runit' do
   #   end
   # end
 
+  # context 'when no_proxy is set' do
+  #   let(:chef_run) do
+  #     runner = ChefSpec::Runner.new
+  #     runner.node.set['docker']['no_proxy'] = 'host1.example.com,111.111.111.0/24'
+  #     runner.converge(described_recipe)
+  #   end
+
+  #   it 'sets NO_PROXY environment variable in docker service' do
+  #     expect(chef_run).to render_file('/etc/sv/docker/run').with_content(
+  #       /^export NO_PROXY=host1.example.com,111.111.111.0\/24$/)
+  #   end
+  # end
+
   # context 'when options is set' do
   #   let(:chef_run) do
   #     runner = ChefSpec::Runner.new

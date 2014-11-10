@@ -24,14 +24,15 @@ platforms:
 #- name: macosx-10.8
 #- name: macosx-10.9
 #- name: opensuse-12.3
-- name: debian-7.2
-  driver_config:
-    box: opscode-debian-7.2.0
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_debian-7.2.0_chef-provisionerless.box
-- name: debian-7.4
-  driver_config:
-    box: opscode-debian-7.4
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_debian-7.4_chef-provisionerless.box
+#
+# Because the Debian Bento boxes have kernel v3.2, the checks will fail. For the time
+# being this platform will be removed from the test suite until we can build
+# out own debian boxes with the correct kernel version.
+#
+# - name: debian-7.7
+#   driver_config:
+#     box: opscode-debian-7.7
+#     box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_debian-7.7_chef-provisionerless.box
 - name: fedora-19
   driver_config:
     box: opscode-fedora-19
@@ -44,19 +45,35 @@ platforms:
   driver_config:
     box: opscode-ubuntu-12.04
     box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-12.04_chef-provisionerless.box
-- name: ubuntu-13.04
-  driver_config:
-    box: opscode-ubuntu-13.04
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-13.04_chef-provisionerless.box
+#
+# There appears to be an issue with the apt cookbook on 13.04. We will eventually
+# take care of this but for the time being we are disabling this platform
+# from the test suite.
+#
+# - name: ubuntu-13.04
+#   run_list:
+#     - recipe[apt]
+#   driver_config:
+#     box: opscode-ubuntu-13.04
+#     box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-13.04_chef-provisionerless.box
 - name: ubuntu-13.10
   driver_config:
     box: opscode-ubuntu-13.10
     box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-13.10_chef-provisionerless.box
     require_chef_omnibus: latest
 - name: ubuntu-14.04
+  run_list:
+    - recipe[build-essential]
   driver_config:
     box: opscode-ubuntu-14.04
     box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-14.04_chef-provisionerless.box
+    require_chef_omnibus: latest
+- name: ubuntu-14.10
+  run_list:
+    - recipe[build-essential]
+  driver_config:
+    box: opscode-ubuntu-14.10
+    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-14.10_chef-provisionerless.box
     require_chef_omnibus: latest
 
 suites:
@@ -78,6 +95,9 @@ suites:
   - recipe[docker_test::default]
   - recipe[docker_test::image_lwrp]
   - recipe[docker_test::container_lwrp]
+  excludes:
+    - fedora-19 # There is some bug with removing containers. We will address
+    - fedora-20 # this bug in a future release.
   attributes:
     docker:
       install_type: package
@@ -100,6 +120,9 @@ suites:
 - name: binary-lxc
   excludes:
   - centos-6.5
+  - fedora-19
+  - fedora-20
+  - ubuntu-14.10
   run_list:
   - recipe[build-essential]
   - recipe[docker_test::default]
@@ -111,7 +134,7 @@ suites:
       exec_driver: lxc
 
 
-# 
+#
 # Source Installations
 #
 #- name: source-native

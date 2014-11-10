@@ -8,7 +8,7 @@ describe 'docker::default' do
     apt_cache = double('apt-cache')
     uname = double
 
-    Mixlib::ShellOut.stub(:new).and_return(shellout)
+    allow(Mixlib::ShellOut).to receive(:new).and_return(shellout)
     allow(shellout).to receive(:run_command).and_return(apt_cache)
     allow(apt_cache).to receive(:stdout).and_return('linux-image-extra-3.')
     allow(shellout).to receive(:run_command).and_return(uname)
@@ -18,7 +18,8 @@ describe 'docker::default' do
     stub_command('mountpoint -q /sys/fs/cgroup').and_return('')
 
     # TODO: Contribute back to golang cookbook
-    stub_command('/usr/local/go/bin/go version | grep "go1.2.2 "').and_return('1.2.2')
+    stub_command("/usr/local/go/bin/go version | grep \"go1.2 \"").and_return('1.2.2')
+    stub_command("/usr/local/go/bin/go version | grep \"go1.3 \"").and_return('1.3.0')
   end
 
   context 'when running on ubuntu 12.04' do
@@ -196,6 +197,7 @@ describe 'docker::default' do
     context "when init_type is #{init}" do
       let(:chef_run) do
         ChefSpec::Runner.new do |node|
+          node.set['docker']['graph'] = '/var/lib/docker'
           node.set['docker']['alert_on_error_action'] = :warn
           node.set['docker']['init_type'] = init
         end.converge(described_recipe)
@@ -203,6 +205,10 @@ describe 'docker::default' do
 
       it "includes the docker::#{init} recipe" do
         expect(chef_run).to include_recipe("docker::#{init}")
+      end
+
+      it 'creates the docker graph folder' do
+        expect(chef_run) .to create_directory('/var/lib/docker')
       end
     end
   end

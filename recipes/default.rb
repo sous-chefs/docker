@@ -1,5 +1,26 @@
 include_recipe 'docker::dep_check'
 
+log 'breaking_changes_alert' do
+  message <<-MSG
+
+#{'*' * 60}
+*
+* WARNING!
+* BREAKING CHANGE COMING TO DOCKER COOKBOOK IN VERSION 1.0
+*
+#{'*' * 60}
+
+To avoid any issues, please make sure to pin your versions in the appropriate places.
+  - metadata.rb
+  - Chef Environments
+  - Berksfile
+  - Policyfile
+
+Please check out https://github.com/bflad/chef-docker for more details.
+
+  MSG
+end
+
 case node['platform']
 when 'debian', 'ubuntu'
   include_recipe 'apt'
@@ -21,6 +42,11 @@ end
 if node['docker']['exec_driver'] == 'lxc'
   include_recipe 'docker::cgroups'
   include_recipe 'docker::lxc'
+end
+
+directory 'docker-graph' do
+  path node['docker']['graph']
+  not_if { node['docker']['graph'].nil? }
 end
 
 unless node['docker']['install_type'] == 'package'

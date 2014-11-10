@@ -82,7 +82,7 @@ More Info: http://docs.docker.io/installation/rhel/
   end
 
 when 'fedora'
-  if node['docker']['install_type'] == 'binary'
+  if node['docker']['install_type'] == 'binary' && node['docker']['exec_driver'] == 'lxc'
     alert_on_error DockerCookbook::Exceptions::InvalidPlatformVersion, action, <<-MSG
 LXC on Fedora is incredibly unstable. It is recommended to use native Docker on Fedora.
     MSG
