@@ -347,6 +347,32 @@ describe 'docker::systemd' do
     end
   end
 
+  context 'when registry-mirror is set with String' do
+    let(:chef_run) do
+      runner = ChefSpec::Runner.new
+      runner.node.set['docker']['registry-mirror'] = 'http://registry.example.com:1337'
+      runner.converge(described_recipe)
+    end
+
+    it 'adds registry-mirror flag to docker service' do
+      expect(chef_run).to render_file('/usr/lib/systemd/system/docker.service').with_content(
+        %r{^ExecStart=/usr/bin/docker -d.* --registry-mirror=http://registry\.example\.com:1337.*})
+    end
+  end
+
+  context 'when registry-mirror is set with Array' do
+    let(:chef_run) do
+      runner = ChefSpec::Runner.new
+      runner.node.set['docker']['registry-mirror'] = %w(http://registry.example.com:1337 http://registry.example.com:1338)
+      runner.converge(described_recipe)
+    end
+
+    it 'adds registry-mirror flags to docker service' do
+      expect(chef_run).to render_file('/usr/lib/systemd/system/docker.service').with_content(
+        %r{^ExecStart=/usr/bin/docker -d.* --registry-mirror=http://registry\.example\.com:1337 --registry-mirror=http://registry\.example\.com:1338.*})
+    end
+  end
+
   context 'when storage_driver is set' do
     let(:chef_run) do
       runner = ChefSpec::Runner.new

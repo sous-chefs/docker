@@ -165,6 +165,7 @@ no_proxy | NO_PROXY environment variable | String | nil
 options | Additional options to pass to docker. These could be flags like "-api-enable-cors". | String | nil
 pidfile | Path to use for daemon PID file | String | nil (implicitly /var/run/docker.pid)
 ramdisk | Set DOCKER_RAMDISK when using RAM disk | TrueClass or FalseClass | false
+registry-mirror | List of docker registry mirrors | String, Array | nil
 restart | Restart containers on boot | TrueClass or FalseClass | auto-detected (see attributes/default.rb)
 selinux_enabled | Enable SELinux | TrueClass or FalseClass | nil
 storage_driver | Storage driver for docker | String | nil

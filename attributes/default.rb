@@ -153,6 +153,7 @@ default['docker']['no_proxy'] = nil
 default['docker']['options'] = nil
 default['docker']['pidfile'] = nil
 default['docker']['ramdisk'] = false
+default['docker']['registry-mirror'] = nil
 default['docker']['selinux_enabled'] = nil
 default['docker']['storage_driver'] = nil
 default['docker']['storage_opt'] = nil

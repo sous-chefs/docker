@@ -90,6 +90,7 @@ EOH
         'iptables' => node['docker']['iptables'],
         'mtu' => node['docker']['mtu'],
         'pidfile' => node['docker']['pidfile'],
+        'registry-mirror' => Array(node['docker']['registry-mirror']),
         'restart' => node['docker']['restart'],
         'selinux-enabled' => node['docker']['selinux_enabled'],
         'storage-driver' => node['docker']['storage_driver'],
