@@ -86,6 +86,7 @@ EOH
         'graph' => node['docker']['graph'],
         'group' => node['docker']['group'],
         'icc' => node['docker']['icc'],
+        'insecure-registry' => Array(node['docker']['insecure-registry']),
         'ip' => node['docker']['ip'],
         'iptables' => node['docker']['iptables'],
         'mtu' => node['docker']['mtu'],
