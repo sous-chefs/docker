@@ -552,6 +552,29 @@ docker_container 'docker-registry' do
 end
 ```
 
+Run a container form image with arguments (logspout for example):
+
+```ruby
+docker_container 'progrium/logspout syslog://logs.papertrailapp.com:999999' do
+  action :run
+  container_name 'logspout'
+  detach true
+  hostname node[:hostname]
+  volume '/var/run/docker.sock:/tmp/docker.sock'
+end
+```
+
+This would produce the command:
+
+```
+%> docker run \
+    --name=logspout \
+    -d \
+    -h $(hostname) \
+    -v=/var/run/docker.sock:/tmp/docker.sock \  
+    progrium/logspout syslog://logs.papertrailapp.com:999999`
+```
+
 #### docker_container action :start
 
 These attributes are associated with this LWRP action.
