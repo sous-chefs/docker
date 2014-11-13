@@ -167,6 +167,8 @@ default['docker']['tlskey'] = nil
 default['docker']['tlsverify'] = nil
 default['docker']['tmpdir'] = nil
 
+default['docker']['registry_mirror'] = nil
+
 # LWRP attributes
 
 default['docker']['docker_daemon_timeout'] = 10

@@ -98,7 +98,8 @@ EOH
         'tlscacert' => node['docker']['tlscacert'],
         'tlscert' => node['docker']['tlscert'],
         'tlskey' => node['docker']['tlskey'],
-        'tlsverify' => node['docker']['tlsverify']
+        'tlsverify' => node['docker']['tlsverify'],
+        'registry-mirror' => Array(node['docker']['registry_mirror'])
       )
       daemon_options += " #{node['docker']['options']}" if node['docker']['options']
       daemon_options
