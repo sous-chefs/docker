@@ -99,6 +99,7 @@ describe 'docker::upstart' do
     end
   end
 
+  # DEPRECATED: will be removed in chef-docker 1.0
   context 'when container_init_type is set' do
     let(:chef_run) do
       runner = ChefSpec::Runner.new
