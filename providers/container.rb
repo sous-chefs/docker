@@ -355,6 +355,7 @@ def run
     'publish-all' => new_resource.publish_exposed_ports,
     'privileged' => new_resource.privileged,
     'rm' => new_resource.remove_automatically,
+    'restart' => new_resource.restart,
     'tty' => new_resource.tty,
     'user' => new_resource.user,
     'volume' => Array(new_resource.volume),
