@@ -14,7 +14,7 @@ In version 1.0 of this cookbook, we will be making a significant breaking change
   - Berksfile
   - Chef Policyfile
 
-More details about specific changes will be documented in the [1.0_CHANGES.md](1.0_CHANGES.md) file. 
+More details about specific changes will be documented in the [1.0_CHANGES.md](1.0_CHANGES.md) file.
 
 ## Requirements
 
@@ -166,6 +166,7 @@ no_proxy | NO_PROXY environment variable | String | nil
 options | Additional options to pass to docker. These could be flags like "-api-enable-cors". | String | nil
 pidfile | Path to use for daemon PID file | String | nil (implicitly /var/run/docker.pid)
 ramdisk | Set DOCKER_RAMDISK when using RAM disk | TrueClass or FalseClass | false
+registry-mirror | List of docker registry mirrors | String, Array | nil
 restart (*DEPRECATED*) | Restart containers on boot | TrueClass or FalseClass | auto-detected (see attributes/default.rb)
 selinux_enabled | Enable SELinux | TrueClass or FalseClass | nil
 storage_driver | Storage driver for docker | String | nil
