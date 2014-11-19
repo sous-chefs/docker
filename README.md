@@ -514,6 +514,7 @@ privileged | Give extended privileges | TrueClass, FalseClass | nil
 public_port (*DEPRECATED*) | Map host port to container | Fixnum | nil
 publish_exposed_ports | Publish all exposed ports to the host interfaces | TrueClass, FalseClass | false
 remove_automatically | Automatically remove the container when it exits (incompatible with detach) | TrueClass, FalseClass | false
+restart | Restart policy for the container (no, on-failure, always) | String | nil
 socket_template | Template to use for configuring socket (relevent for init_type systemd only) | String | nil
 stdin | Attach container's stdin | TrueClass, FalseClass | nil
 tty | Allocate a pseudo-tty | TrueClass, FalseClass | nil
