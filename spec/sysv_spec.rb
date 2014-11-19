@@ -281,6 +281,32 @@ describe 'docker::sysv' do
     end
   end
 
+  context 'when insecure-registry is set with String' do
+    let(:chef_run) do
+      runner = ChefSpec::Runner.new
+      runner.node.set['docker']['insecure-registry'] = 'registry.example.com:1337'
+      runner.converge(described_recipe)
+    end
+
+    it 'adds insecure-registry flag to docker service' do
+      expect(chef_run).to render_file('/etc/default/docker').with_content(
+        /^DOCKER_OPTS='.* --insecure-registry=registry\.example\.com:1337.*'$/)
+    end
+  end
+
+  context 'when insecure-registry is set with Array' do
+    let(:chef_run) do
+      runner = ChefSpec::Runner.new
+      runner.node.set['docker']['insecure-registry'] = %w(registry.example.com:1337 registry.example.com:1338)
+      runner.converge(described_recipe)
+    end
+
+    it 'adds insecure-registry flags to docker service' do
+      expect(chef_run).to render_file('/etc/default/docker').with_content(
+        /^DOCKER_OPTS='.* --insecure-registry=registry\.example\.com:1337 --insecure-registry=registry\.example\.com:1338.*'$/)
+    end
+  end
+
   context 'when ip is set' do
     let(:chef_run) do
       runner = ChefSpec::Runner.new

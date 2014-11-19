@@ -146,6 +146,7 @@ default['docker']['host'] =
   end
 default['docker']['http_proxy'] = nil
 default['docker']['icc'] = nil
+default['docker']['insecure-registry'] = nil
 default['docker']['ip'] = nil
 default['docker']['iptables'] = nil
 default['docker']['mtu'] = nil
