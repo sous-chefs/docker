@@ -487,9 +487,15 @@ end
 
 def service_create_upstart
   # The upstart init script requires inotifywait, which is in inotify-tools
-  package 'inotify-tools' do
-    action :nothing
-  end.run_action(:install)
+  # For clarity, install the package here but do it only once (no CHEF-3694).
+  begin
+    run_context.resource_collection.find(:package => 'inotify-tools')
+    # If we get here then we already installed the resource the first time.
+  rescue Chef::Exceptions::ResourceNotFound
+    package('inotify-tools') do
+      action :nothing
+    end.run_action(:install)
+  end
 
   template "/etc/init/#{service_name}.conf" do
     source service_template
