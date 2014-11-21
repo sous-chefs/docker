@@ -609,6 +609,7 @@ def start
   )
   if service?
     service_create
+    service_run
   else
     docker_cmd!("start #{start_args} #{current_resource.id}")
   end
