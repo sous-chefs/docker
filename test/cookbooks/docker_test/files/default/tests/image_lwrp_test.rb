@@ -1,6 +1,6 @@
 require File.expand_path('../support/helpers', __FILE__)
 
-describe_recipe 'docker_test::image_lwrp_test' do
+describe_recipe 'docker_test::image_lwrp' do
   include Helpers::DockerTest
 
   it 'has docker-test-image image not installed' do
