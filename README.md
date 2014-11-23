@@ -341,6 +341,12 @@ docker_container 'myApp' do
 end
 ```
 
+#### docker_container action :create
+
+By default, this will handle creating a service for the container when action is create, run or start. `set['docker']['container_init_type'] = false` or add `init_type false` for LWRP to disable this behavior.
+
+Attributes for this action can be found in the `run` action (except for the `detach` attribute).
+
 #### docker_container action :export
 
 These attributes are associated with this LWRP action.
@@ -482,7 +488,7 @@ end
 
 #### docker_container action :run
 
-By default, this will handle creating a service for the container when action is run or start. `set['docker']['container_init_type'] = false` or add `init_type false` for LWRP to disable this behavior.
+By default, this will handle creating a service for the container when action is create, run or start. `set['docker']['container_init_type'] = false` or add `init_type false` for LWRP to disable this behavior.
 
 These attributes are associated with this LWRP action.
 

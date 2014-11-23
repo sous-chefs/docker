@@ -92,3 +92,9 @@ docker_container "busybox-container" do
   init_type false
   action :redeploy
 end
+
+docker_container "busybox" do
+  command "sleep 9999"
+  init_type false
+  action :create
+end
