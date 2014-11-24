@@ -556,7 +556,7 @@ end
 def service_remove_upstart
   service_stop_and_disable
 
-  file "/etc/init/#{service_name}" do
+  file "/etc/init/#{service_name}.conf" do
     action :delete
   end
 end
