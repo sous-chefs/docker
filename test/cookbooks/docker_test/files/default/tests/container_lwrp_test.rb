@@ -1,6 +1,6 @@
 require File.expand_path('../support/helpers', __FILE__)
 
-describe_recipe "docker_test::container_lwrp_test" do
+describe_recipe "docker_test::container_lwrp" do
   include Helpers::DockerTest
 
   it "has busybox sleep 1111 container running" do
