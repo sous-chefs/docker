@@ -56,9 +56,13 @@ action :kill do
 end
 
 action :redeploy do
-  stop if running?
+  stop if (previously_running = running?)
   remove_container if exists?
-  run
+  if previously_running
+    run
+  else
+    create
+  end
   new_resource.updated_by_last_action(true)
 end
 

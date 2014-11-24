@@ -98,3 +98,20 @@ docker_container "busybox" do
   init_type false
   action :create
 end
+
+docker_container "busybox2-container" do
+  image "busybox"
+  container_name "busybox2-container"
+  command "sleep 9777"
+  detach true
+  init_type false
+  action :create
+end
+
+docker_container "busybox2-container" do
+  image "busybox"
+  container_name "busybox2-container"
+  command "sleep 9888"
+  init_type false
+  action :redeploy
+end
