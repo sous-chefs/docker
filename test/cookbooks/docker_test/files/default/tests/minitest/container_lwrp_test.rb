@@ -1,6 +1,6 @@
 require File.expand_path('../support/helpers', __FILE__)
 
-describe_recipe "docker_test::container_lwrp_test" do
+describe_recipe "docker_test::container_lwrp" do
   include Helpers::DockerTest
 
   it "has busybox sleep 1111 container running" do
@@ -39,8 +39,21 @@ describe_recipe "docker_test::container_lwrp_test" do
     service('testcontainerd').must_be_running
   end
 
-  it "has a named busybox-container running sleep 8888" do
+  it "has a named busybox-container running sleep 8888 and started" do
     cmd = container_info("busybox-container").first['Config']['Cmd']
     assert cmd.grep(/8888/).count > 0
+    assert container_running?('busybox-container')
+  end
+
+  it "has busybox sleep 9999 container created and not started" do
+    assert container_exists?("busybox","sleep 9999")
+    refute container_running?("busybox","sleep 9999")
+    service('busybox').wont_be_running
+  end
+
+  it "has a named busybox2-container running sleep 9888 and not started" do
+    cmd = container_info("busybox2-container").first['Config']['Cmd']
+    assert cmd.grep(/9888/).count > 0
+    refute container_running?('busybox2-container')
   end
 end

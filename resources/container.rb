@@ -1,4 +1,4 @@
-actions :commit, :cp, :export, :kill, :redeploy, :remove, :remove_link, :remove_volume, :restart, :run, :start, :stop, :wait
+actions :commit, :cp, :create, :export, :kill, :redeploy, :remove, :remove_link, :remove_volume, :restart, :run, :start, :stop, :wait
 
 default_action :run
 

@@ -34,6 +34,13 @@ action :cp do
   end
 end
 
+action :create do
+  unless running? || exists?
+    create
+    new_resource.updated_by_last_action(true)
+  end
+end
+
 action :export do
   if exists?
     export
@@ -49,9 +56,13 @@ action :kill do
 end
 
 action :redeploy do
-  stop if running?
+  stop if (previously_running = running?)
   remove_container if exists?
-  run
+  if previously_running
+    run
+  else
+    create
+  end
   new_resource.updated_by_last_action(true)
 end
 
@@ -178,6 +189,16 @@ end
 
 def cp
   docker_cmd!("cp #{current_resource.id}:#{new_resource.source} #{new_resource.destination}")
+end
+
+def create
+  create_args = cli_args(
+      run_cli_args.reject { |arg, _| arg == 'detach' }
+  )
+  dc = docker_cmd!("create #{create_args} #{new_resource.image} #{new_resource.command}")
+  dc.error!
+  new_resource.id(dc.stdout.chomp)
+  service_create if service?
 end
 
 # Helper method for `docker_containers` that looks at the position of the headers in the output of
@@ -329,9 +350,17 @@ def restart
   end
 end
 
-# rubocop:disable MethodLength
 def run
-  run_args = cli_args(
+  run_args = cli_args(run_cli_args)
+  dr = docker_cmd!("run #{run_args} #{new_resource.image} #{new_resource.command}")
+  dr.error!
+  new_resource.id(dr.stdout.chomp)
+  service_run if service?
+end
+
+# rubocop:disable MethodLength
+def run_cli_args
+  {
     'cpu-shares' => new_resource.cpu_shares,
     'cidfile' => new_resource.cidfile,
     'detach' => new_resource.detach,
@@ -361,11 +390,7 @@ def run
     'volume' => Array(new_resource.volume),
     'volumes-from' => new_resource.volumes_from,
     'workdir' => new_resource.working_directory
-  )
-  dr = docker_cmd!("run #{run_args} #{new_resource.image} #{new_resource.command}")
-  dr.error!
-  new_resource.id(dr.stdout.chomp)
-  service_run if service?
+  }
 end
 # rubocop:enable MethodLength
 
