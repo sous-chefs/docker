@@ -19,6 +19,10 @@ platforms:
   driver_config:
     box: opscode-centos-6.5
     box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-6.5_chef-provisionerless.box
+- name: centos-7.0
+  driver_config:
+    box: opscode-centos-7.0
+    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-7.0_chef-provisionerless.box
 #- name: oracle-6
 #- name: macosx-10.7
 #- name: macosx-10.8

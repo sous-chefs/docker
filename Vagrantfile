@@ -47,6 +47,12 @@ Vagrant.configure('2') do |config|
     centos6.vm.hostname = "#{cookbook}-centos-6"
   end
 
+  config.vm.define :centos7 do |centos7|
+    centos7.vm.box      = 'opscode-centos-7.0'
+    centos7.vm.box_url  = 'http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-7.0_chef-provisionerless.box'
+    centos7.vm.hostname = "#{cookbook}-centos-7"
+  end
+
   config.vm.define :debian7 do |debian7|
     debian7.vm.box      = 'opscode-debian-7.2.0'
     debian7.vm.box_url  = 'http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_debian-7.2.0_chef-provisionerless.box'
