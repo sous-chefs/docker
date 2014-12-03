@@ -647,7 +647,7 @@ def stop
   if service?
     service_stop
   else
-    docker_cmd!("stop #{stop_args} #{current_resource.id}", (new_resource.cmd_timeout + 15))
+    docker_cmd!("stop #{stop_args} #{current_resource.id}", (new_resource.cmd_timeout + 30))
   end
 end
 
