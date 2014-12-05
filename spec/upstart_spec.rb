@@ -30,6 +30,13 @@ describe 'docker::upstart' do
     it 'creates the docker sysconfig template in /etc/sysconfig' do
       expect(chef_run).to create_template('/etc/sysconfig/docker')
     end
+
+    it 'sources settings from /etc/sysconfig' do
+      # Ensure the script section of the upstart configuration
+      # is sourcing from sysconfig.
+      expect(chef_run).to render_file('/etc/init/docker.conf').with_content(
+        /script.*?. \/etc\/sysconfig\/docker.*?end script/m)
+    end
   end
 
   context 'when api_enable_cors is set' do
