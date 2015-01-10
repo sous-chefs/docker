@@ -41,3 +41,7 @@ docker_image 'busybox' do
   force true
   action :tag
 end
+
+docker_image 'busybox:busyboxWithCustomTag' do
+  action :pull_if_missing
+end

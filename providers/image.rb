@@ -2,13 +2,17 @@ include Docker::Helpers
 
 def load_current_resource
   wait_until_ready!
-  @current_resource = Chef::Resource::DockerImage.new(new_resource.name)
+  # extract image tag from the name attribute if present.
+  image_name_without_tag, alt_image_tag = new_resource.name.split(':', 2)
+  new_resource.image_name(image_name_without_tag)
+  new_resource.tag(alt_image_tag) unless new_resource.tag
+  @current_resource = Chef::Resource::DockerImage.new(image_name_without_tag)
   dimages = docker_cmd('images -a --no-trunc')
   if dimages.stdout.include?(new_resource.image_name)
     dimages.stdout.each_line do |di_line|
       image = di(di_line)
       next unless image_name_matches?(image['repository'])
-      next unless image_tag_matches_if_exists?(image['tag'])
+      next unless image_tag_matches_if_exists?(image['tag'], alt_image_tag)
       Chef::Log.debug('Matched docker image: ' + di_line.squeeze(' '))
       @current_resource.created(image['created'])
       @current_resource.repository(image['repository'])
@@ -164,9 +168,22 @@ def image_name_matches?(name)
   name.include?(new_resource.image_name)
 end
 
-def image_tag_matches_if_exists?(tag)
-  return false if new_resource.tag && new_resource.tag != tag
-  true
+def image_tag_matches_if_exists?(tag, alt_image_tag)
+  unless new_resource_has_any_tag_setting_action?
+    # For most actions except those that interpret the 'tag' attribute as
+    # the consequence of running the action (eg. action :tag), the 'tag'
+    # attribute (implicitly 'latest') is the tag of the current_resource,
+    return tag == (new_resource.tag || 'latest')
+  else
+    # For tag-setting actions, we cannot rely on the 'tag' attribute to specify
+    # the image tag of the current_resource; if by chance the user has provided
+    # the actual tag in the name attribute then use that else assume 'latest'.
+    return tag == (alt_image_tag || 'latest')
+  end
+end
+
+def new_resource_has_any_tag_setting_action?
+  Array(new_resource.action).any? { |action| action == :tag }
 end
 
 def import
@@ -236,10 +253,9 @@ end
 
 def repository_and_tag_args
   docker_cmd_args = ''
-  if new_resource.repository
-    docker_cmd_args = new_resource.repository
-    docker_cmd_args += ":#{new_resource.tag}" if new_resource.tag
-  end
+  docker_cmd_args += new_resource.repository + '/' if new_resource.repository
+  docker_cmd_args += new_resource.image_name.split(':', 2).first # strip tag if any
+  docker_cmd_args += ":#{new_resource.tag}" if new_resource.tag
   docker_cmd_args
 end
 
