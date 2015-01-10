@@ -169,7 +169,7 @@ def image_name_matches?(name)
 end
 
 def image_tag_matches_if_exists?(tag, alt_image_tag)
-  unless new_resource_has_any_tag_setting_action?
+  if new_resource_has_no_setting_action?
     # For most actions except those that interpret the 'tag' attribute as
     # the consequence of running the action (eg. action :tag), the 'tag'
     # attribute (implicitly 'latest') is the tag of the current_resource,
@@ -182,8 +182,8 @@ def image_tag_matches_if_exists?(tag, alt_image_tag)
   end
 end
 
-def new_resource_has_any_tag_setting_action?
-  Array(new_resource.action).any? { |action| action == :tag }
+def new_resource_has_no_setting_action?
+  Array(new_resource.action).none? { |action| action == :tag }
 end
 
 def import
