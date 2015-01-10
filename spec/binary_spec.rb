@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe 'docker::binary' do
-
   context 'by default' do
     let(:chef_run) do
       ChefSpec::Runner.new(platform: 'ubuntu', version: '12.04') do |node|

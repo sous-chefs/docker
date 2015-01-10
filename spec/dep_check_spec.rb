@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe 'docker::dep_check' do
-
   context 'when running on darwin' do
     let(:chef_run) do
       ChefSpec::Runner.new(platform: 'mac_os_x', version: '10.9.2').converge(described_recipe)
@@ -67,7 +66,6 @@ describe 'docker::dep_check' do
       it 'should fail' do
         expect { chef_run }.to raise_error(DockerCookbook::Exceptions::InvalidKernelVersion)
       end
-
     end
 
     context 'with kernel version < 2.6.32' do
