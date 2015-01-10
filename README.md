@@ -848,7 +848,7 @@ These attributes are associated with this LWRP action.
 Attribute | Description | Type | Default
 ----------|-------------|------|--------
 force | Force operation | Boolean | false
-repository | Remote repository | String | nil
+repository | Optional remote repository | String | nil
 tag | Specific tag for image | String | nil
 
 Tag image:

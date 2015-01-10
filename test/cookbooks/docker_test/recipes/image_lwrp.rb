@@ -35,3 +35,9 @@ docker_image 'docker_image_build_2' do
   source docker_image_build_2_dir
   action :build
 end
+
+docker_image 'busybox' do
+  tag 'busyboxWithCustomTag'
+  force true
+  action :tag
+end

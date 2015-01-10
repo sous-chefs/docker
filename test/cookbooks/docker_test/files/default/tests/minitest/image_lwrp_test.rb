@@ -22,4 +22,8 @@ describe_recipe 'docker_test::image_lwrp_test' do
   it 'has docker_image_build_2 image installed' do
     assert image_exists?('docker_image_build_2')
   end
+
+  it 'has busybox:busyboxWithCustomTag image installed' do
+    assert image_exists?('busyboxWithCustomTag')
+  end
 end
