@@ -24,7 +24,6 @@ end
 
 service 'docker' do
   provider Chef::Provider::Service::Systemd
-  service_name 'docker.service'
   supports :status => true, :restart => true, :reload => true
   action [:start, :enable]
 end

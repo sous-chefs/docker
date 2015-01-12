@@ -416,7 +416,6 @@ def service_init
       case new_resource.init_type
       when 'systemd'
         provider Chef::Provider::Service::Systemd
-        service_name "#{service_name}.service"
       when 'upstart'
         provider Chef::Provider::Service::Upstart
       end
