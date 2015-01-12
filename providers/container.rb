@@ -371,6 +371,7 @@ def run_cli_args
     'entrypoint' => new_resource.entrypoint,
     'expose' => Array(new_resource.expose),
     'hostname' => new_resource.hostname,
+    'add-host' => Array(new_resource.add_host),
     'interactive' => new_resource.stdin,
     'label' => new_resource.label,
     'link' => Array(new_resource.link),
