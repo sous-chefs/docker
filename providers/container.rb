@@ -624,7 +624,7 @@ end
 
 def sockets
   return [] if port.empty?
-  [*port].map { |p| p.gsub!(/.*:/, '') }
+  [*port].map { |p| p.gsub(/.*:/, '') }
 end
 
 def start
