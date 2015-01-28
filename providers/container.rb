@@ -361,6 +361,7 @@ end
 # rubocop:disable MethodLength
 def run_cli_args
   {
+    'add-host' => Array(new_resource.additional_host),
     'cpu-shares' => new_resource.cpu_shares,
     'cidfile' => new_resource.cidfile,
     'detach' => new_resource.detach,
