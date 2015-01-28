@@ -5,6 +5,7 @@ default_action :pull
 attribute :image_name, :name_attribute => true
 
 attribute :cmd_timeout, :kind_of => [Integer], :default => node['docker']['image_cmd_timeout']
+attribute :docker_client_user, :kind_of => [String], :default => node['docker']['docker_client_user']
 attribute :created, :kind_of => [String]
 attribute :destination, :kind_of => [String]
 # DEPRECATED: Use source attribute

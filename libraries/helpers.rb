@@ -159,9 +159,10 @@ EOH
       (inspect['id'] || inspect['Id']) if inspect
     end
 
-    def dockercfg_parse
+    def dockercfg_parse(docker_client_user = new_resource.docker_client_user)
       require 'json'
-      dockercfg = JSON.parse(::File.read(::File.join(::Dir.home, '.dockercfg')))
+      homedir = ::Dir.home(docker_client_user)
+      dockercfg = JSON.parse(::File.read(::File.join(homedir, '.dockercfg')))
       dockercfg.each_pair do |k, v|
         dockercfg[k].merge!(dockercfg_parse_auth(v['auth']))
       end
@@ -222,16 +223,23 @@ EOM
     end
 
     # Runs a docker command. Does not raise exception on non-zero exit code.
-    def docker_cmd(cmd, timeout = new_resource.cmd_timeout)
-      execute_cmd('docker ' + cmd, timeout)
+    def docker_cmd(cmd, timeout = new_resource.cmd_timeout, docker_client_user = new_resource.docker_client_user)
+      execute_cmd('docker ' + cmd, timeout, docker_client_user)
     end
 
     # Executes the given command with the specified timeout. Does not raise an
     # exception on a non-zero exit code.
-    def execute_cmd(cmd, timeout = new_resource.cmd_timeout)
+    def execute_cmd(cmd, timeout = new_resource.cmd_timeout, docker_client_user = new_resource.docker_client_user)
+      homedir = ::Dir.home(docker_client_user)
       Chef::Log.debug('Executing: ' + cmd)
       begin
-        shell_out(cmd, :timeout => timeout)
+        # When running the docker client, it looks for the configuration file in ~/.dockercfg
+        # the docker_client_user parameter lets you override the HOME environment variable
+        # to control where docker will look for .dockercfg (or in the case of "docker login", where
+        # to save it)
+        #
+        # This preserves the same behavior no matter what user chef is ran with (#261)
+        shell_out(cmd, :timeout => timeout, :environment => {'HOME' => homedir})
       rescue Mixlib::ShellOut::CommandTimeout
         raise CommandTimeout, command_timeout_error_message(cmd)
       end
@@ -239,14 +247,14 @@ EOM
 
     # Executes the given docker command with the specified timeout. Raises an
     # exception if the command returns a non-zero exit code.
-    def docker_cmd!(cmd, timeout = new_resource.cmd_timeout)
-      execute_cmd!('docker ' + cmd, timeout)
+    def docker_cmd!(cmd, timeout = new_resource.cmd_timeout, docker_client_user = new_resource.docker_client_user)
+      execute_cmd!('docker ' + cmd, timeout, docker_client_user)
     end
 
     # Executes the given command with the specified timeout. Raises an
     # exception if the command returns a non-zero exit code.
-    def execute_cmd!(cmd, timeout = new_resource.cmd_timeout)
-      cmd = execute_cmd(cmd, timeout)
+    def execute_cmd!(cmd, timeout = new_resource.cmd_timeout, docker_client_user = new_resource.docker_client_user)
+      cmd = execute_cmd(cmd, timeout, docker_client_user)
       cmd.error!
       cmd
     end
