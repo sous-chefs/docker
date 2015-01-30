@@ -1,8 +1,15 @@
 if defined?(ChefSpec)
   # Docker matchers
-  ChefSpec::Runner.define_runner_method(:docker_container)
-  ChefSpec::Runner.define_runner_method(:docker_image)
-  ChefSpec::Runner.define_runner_method(:docker_registry)
+  chefspec_version = Gem.loaded_specs['chefspec'].version
+  if chefspec_version < Gem::Version.new('4.1.0')
+    ChefSpec::Runner.define_runner_method(:docker_container)
+    ChefSpec::Runner.define_runner_method(:docker_image)
+    ChefSpec::Runner.define_runner_method(:docker_registry)
+  else
+    ChefSpec.define_matcher(:docker_container)
+    ChefSpec.define_matcher(:docker_image)
+    ChefSpec.define_matcher(:docker_registry)
+  end
 
   # Docker registry
   def login_docker_registry(resource_name)

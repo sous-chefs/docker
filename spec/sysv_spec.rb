@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'docker::sysv' do
   let(:chef_run) do
-    ChefSpec::Runner.new.converge(described_recipe)
+    ChefSpec::SoloRunner.new.converge(described_recipe)
   end
 
   it 'creates the docker SysV template' do
@@ -23,7 +23,7 @@ describe 'docker::sysv' do
 
   context 'when running on non debian/ubuntu' do
     let(:chef_run) do
-      ChefSpec::Runner.new(platform: 'centos', version: '6.5').converge(described_recipe)
+      ChefSpec::SoloRunner.new(platform: 'centos', version: '6.5').converge(described_recipe)
     end
 
     it 'should create sysconfig template in /etc/sysconfig' do
@@ -33,7 +33,7 @@ describe 'docker::sysv' do
 
   context 'when api_enable_cors is set' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['api_enable_cors'] = true
       runner.converge(described_recipe)
     end
@@ -47,7 +47,7 @@ describe 'docker::sysv' do
   # DEPRECATED: will be removed in chef-docker 1.0
   context 'when bind_socket is set' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['bind_socket'] = 'unix:///var/run/docker.sock'
       runner.converge(described_recipe)
     end
@@ -61,7 +61,7 @@ describe 'docker::sysv' do
   # DEPRECATED: will be removed in chef-docker 1.0
   context 'when bind_uri is set' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['bind_uri'] = 'tcp://127.0.0.1:4243'
       runner.converge(described_recipe)
     end
@@ -74,7 +74,7 @@ describe 'docker::sysv' do
 
   context 'when bip is set' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['bip'] = '10.0.0.2'
       runner.converge(described_recipe)
     end
@@ -87,7 +87,7 @@ describe 'docker::sysv' do
 
   context 'when bridge is set' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['bridge'] = 'br0'
       runner.converge(described_recipe)
     end
@@ -101,7 +101,7 @@ describe 'docker::sysv' do
   # DEPRECATED: will be removed in chef-docker 1.0
   context 'when container_init_type is set' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['container_init_type'] = 'upstart'
       runner.converge(described_recipe)
     end
@@ -114,7 +114,7 @@ describe 'docker::sysv' do
 
   context 'when debug is set' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['debug'] = true
       runner.converge(described_recipe)
     end
@@ -127,7 +127,7 @@ describe 'docker::sysv' do
 
   context 'when dns is set with String' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['dns'] = '8.8.8.8'
       runner.converge(described_recipe)
     end
@@ -140,7 +140,7 @@ describe 'docker::sysv' do
 
   context 'when dns is set with Array' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['dns'] = %w(8.8.8.8 8.8.4.4)
       runner.converge(described_recipe)
     end
@@ -153,7 +153,7 @@ describe 'docker::sysv' do
 
   context 'when dns_search is set with String' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['dns_search'] = 'example.com'
       runner.converge(described_recipe)
     end
@@ -166,7 +166,7 @@ describe 'docker::sysv' do
 
   context 'when dns_search is set with Array' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['dns_search'] = %w(foo.example.com bar.example.com)
       runner.converge(described_recipe)
     end
@@ -179,7 +179,7 @@ describe 'docker::sysv' do
 
   context 'when exec_driver is set' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['exec_driver'] = 'lxc'
       runner.converge(described_recipe)
     end
@@ -192,7 +192,7 @@ describe 'docker::sysv' do
 
   context 'when graph is set' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['graph'] = '/tmp/docker'
       runner.converge(described_recipe)
     end
@@ -205,7 +205,7 @@ describe 'docker::sysv' do
 
   context 'when group is set' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['group'] = 'vagrant'
       runner.converge(described_recipe)
     end
@@ -218,7 +218,7 @@ describe 'docker::sysv' do
 
   context 'when host is set with String' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['host'] = 'unix:///var/run/docker.sock'
       runner.converge(described_recipe)
     end
@@ -231,7 +231,7 @@ describe 'docker::sysv' do
 
   context 'when host is set with Array' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['host'] = %w(unix:///var/run/docker.sock tcp://127.0.0.1:4243)
       runner.converge(described_recipe)
     end
@@ -244,7 +244,7 @@ describe 'docker::sysv' do
 
   context 'when http_proxy is set' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['http_proxy'] = 'http://username:password@proxy.example.com:8080'
       runner.converge(described_recipe)
     end
@@ -257,7 +257,7 @@ describe 'docker::sysv' do
 
   context 'when no_proxy is set' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['no_proxy'] = 'host1.example.com,111.111.111.0/24'
       runner.converge(described_recipe)
     end
@@ -270,7 +270,7 @@ describe 'docker::sysv' do
 
   context 'when icc is set' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['icc'] = false
       runner.converge(described_recipe)
     end
@@ -283,7 +283,7 @@ describe 'docker::sysv' do
 
   context 'when insecure-registry is set with String' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['insecure-registry'] = 'registry.example.com:1337'
       runner.converge(described_recipe)
     end
@@ -296,7 +296,7 @@ describe 'docker::sysv' do
 
   context 'when insecure-registry is set with Array' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['insecure-registry'] = %w(registry.example.com:1337 registry.example.com:1338)
       runner.converge(described_recipe)
     end
@@ -309,7 +309,7 @@ describe 'docker::sysv' do
 
   context 'when ip is set' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['ip'] = '127.0.0.1'
       runner.converge(described_recipe)
     end
@@ -322,7 +322,7 @@ describe 'docker::sysv' do
 
   context 'when iptables is set' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['iptables'] = false
       runner.converge(described_recipe)
     end
@@ -335,7 +335,7 @@ describe 'docker::sysv' do
 
   context 'when mtu is set' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['mtu'] = 1492
       runner.converge(described_recipe)
     end
@@ -348,7 +348,7 @@ describe 'docker::sysv' do
 
   context 'when logfile is set' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['logfile'] = '/var/log/docker.log'
       runner.converge(described_recipe)
     end
@@ -361,7 +361,7 @@ describe 'docker::sysv' do
 
   context 'when options is set' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['options'] = '--debug'
       runner.converge(described_recipe)
     end
@@ -374,7 +374,7 @@ describe 'docker::sysv' do
 
   context 'when pidfile is set' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['pidfile'] = '/tmp/docker.pid'
       runner.converge(described_recipe)
     end
@@ -392,7 +392,7 @@ describe 'docker::sysv' do
 
   context 'when ramdisk is set' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['ramdisk'] = '/dev/shm'
       runner.converge(described_recipe)
     end
@@ -405,7 +405,7 @@ describe 'docker::sysv' do
 
   context 'when registry-mirror is set with String' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['registry-mirror'] = 'http://registry.example.com:1337'
       runner.converge(described_recipe)
     end
@@ -418,7 +418,7 @@ describe 'docker::sysv' do
 
   context 'when registry-mirror is set with Array' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['registry-mirror'] = %w(http://registry.example.com:1337 http://registry.example.com:1338)
       runner.converge(described_recipe)
     end
@@ -431,7 +431,7 @@ describe 'docker::sysv' do
 
   context 'when storage_driver is set' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['storage_driver'] = 'brtfs'
       runner.converge(described_recipe)
     end
@@ -444,7 +444,7 @@ describe 'docker::sysv' do
 
   context 'when tls is set' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['tls'] = true
       runner.converge(described_recipe)
     end
@@ -457,7 +457,7 @@ describe 'docker::sysv' do
 
   context 'when tlscacert is set' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['tlscacert'] = '/tmp/ca.pem'
       runner.converge(described_recipe)
     end
@@ -470,7 +470,7 @@ describe 'docker::sysv' do
 
   context 'when tlscert is set' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['tlscert'] = '/tmp/cert.pem'
       runner.converge(described_recipe)
     end
@@ -483,7 +483,7 @@ describe 'docker::sysv' do
 
   context 'when tlskey is set' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['tlskey'] = '/tmp/key.pem'
       runner.converge(described_recipe)
     end
@@ -496,7 +496,7 @@ describe 'docker::sysv' do
 
   context 'when tlsverify is set' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['tlsverify'] = true
       runner.converge(described_recipe)
     end
@@ -509,7 +509,7 @@ describe 'docker::sysv' do
 
   context 'when tmpdir is set' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['tmpdir'] = '/tmp'
       runner.converge(described_recipe)
     end

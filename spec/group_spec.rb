@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'docker::group' do
   let(:chef_run) do
-    ChefSpec::Runner.new.converge(described_recipe)
+    ChefSpec::SoloRunner.new.converge(described_recipe)
   end
 
   it 'creates the docker group' do
@@ -15,7 +15,7 @@ describe 'docker::group' do
 
   context 'when group is set' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['group'] = 'vagrant'
       runner.converge(described_recipe)
     end
@@ -31,7 +31,7 @@ describe 'docker::group' do
 
   context 'when group_members is set' do
     let(:chef_run) do
-      runner = ChefSpec::Runner.new
+      runner = ChefSpec::SoloRunner.new
       runner.node.set['docker']['group_members'] = ['vagrant']
       runner.converge(described_recipe)
     end
