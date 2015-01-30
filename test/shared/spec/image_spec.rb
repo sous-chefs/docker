@@ -8,7 +8,7 @@ shared_examples_for 'a docker image test environment' do
       it { should be_a_image }
     end
 
-    describe docker_imag('bflad/testcontainerd') do
+    describe docker_imag('tduffield/testcontainerd') do
       it { should be_a_image }
     end
 

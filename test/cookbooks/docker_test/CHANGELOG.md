@@ -14,7 +14,7 @@ This file is used to list changes made in each version of docker_test.
 
 * Bugfix: Remove deprecated public_port in container_lwrp
 * Bugfix: Add `init_type false` for busybox test containers
-* Enhancement: Add bflad/testcontainerd image, container, and tests
+* Enhancement: Add tduffield/testcontainerd image, container, and tests
 
 ## 0.3.0:
 

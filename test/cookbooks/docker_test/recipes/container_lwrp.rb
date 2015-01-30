@@ -72,7 +72,7 @@ directory '/mnt/docker' do
   action :create
 end
 
-docker_container 'bflad/testcontainerd' do
+docker_container 'tduffield/testcontainerd' do
   detach true
   port '9999:9999'
 end

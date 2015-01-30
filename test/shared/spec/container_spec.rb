@@ -39,7 +39,7 @@ shared_examples_for 'a docker container test environment' do
     it { should_not be_running }
   end
 
-  describe docker_container('bflad/testcontainerd') do
+  describe docker_container('tduffield/testcontainerd') do
     it { should be_a_container }
     it { should be_running }
   end

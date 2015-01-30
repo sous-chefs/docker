@@ -33,9 +33,9 @@ describe_recipe "docker_test::container_lwrp" do
     service('busybox').wont_be_running
   end
 
-  it 'has bflad/testcontainerd container running' do
-    assert container_exists?('bflad/testcontainerd')
-    assert container_running?('bflad/testcontainerd')
+  it 'has tduffield/testcontainerd container running' do
+    assert container_exists?('tduffield/testcontainerd')
+    assert container_running?('tduffield/testcontainerd')
     service('testcontainerd').must_be_running
   end
 
