@@ -495,6 +495,7 @@ These attributes are associated with this LWRP action.
 
 Attribute | Description | Type | Default
 ----------|-------------|------|--------
+additional_host | Add a custom host-to-IP mapping (host:ip) | String, Array | nil
 attach | Attach container's stdout/stderr and forward all signals to the process | TrueClass, FalseClass | nil
 cidfile | File to store container ID | String | nil
 container_name | Name for container/service | String | nil

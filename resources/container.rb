@@ -4,6 +4,7 @@ default_action :run
 
 attribute :image, :name_attribute => true
 
+attribute :additional_host, :kind_of => [String, Array]
 attribute :attach, :kind_of => [TrueClass, FalseClass]
 attribute :author, :kind_of => [String]
 attribute :cidfile, :kind_of => [String]
