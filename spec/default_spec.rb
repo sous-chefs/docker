@@ -24,7 +24,7 @@ describe 'docker::default' do
 
   context 'when running on ubuntu 12.04' do
     let(:chef_run) do
-      ChefSpec::Runner.new(platform: 'ubuntu', version: '12.04') do |node|
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '12.04') do |node|
         node.set['docker']['alert_on_error_action'] = :warn
       end.converge(described_recipe)
     end
@@ -46,7 +46,7 @@ describe 'docker::default' do
 
   context 'when running on debian 7.4' do
     let(:chef_run) do
-      ChefSpec::Runner.new(platform: 'debian', version: '7.4') do |node|
+      ChefSpec::SoloRunner.new(platform: 'debian', version: '7.4') do |node|
         node.set['docker']['alert_on_error_action'] = :warn
       end.converge(described_recipe)
     end
@@ -74,7 +74,7 @@ describe 'docker::default' do
 
   context 'when exec_driver is lxc' do
     let(:chef_run) do
-      ChefSpec::Runner.new do |node|
+      ChefSpec::SoloRunner.new do |node|
         node.set['docker']['alert_on_error_action'] = :warn
         node.set['docker']['exec_driver'] = 'lxc'
       end.converge(described_recipe)
@@ -91,7 +91,7 @@ describe 'docker::default' do
 
   context 'when install_type is binary' do
     let(:chef_run) do
-      ChefSpec::Runner.new do |node|
+      ChefSpec::SoloRunner.new do |node|
         node.set['docker']['alert_on_error_action'] = :warn
         node.set['docker']['install_type'] = 'binary'
       end.converge(described_recipe)
@@ -112,7 +112,7 @@ describe 'docker::default' do
     it 'installs the XZ Utilities package' do
       expect(chef_run).to install_package('xz-utils')
 
-      rhel_run = ChefSpec::Runner.new(platform: 'redhat', version: '6.5') do |node|
+      rhel_run = ChefSpec::SoloRunner.new(platform: 'redhat', version: '6.5') do |node|
         node.set['docker']['alert_on_error_action'] = :warn
         node.set['docker']['install_type'] = 'binary'
         node.automatic['kernel']['release'] = '3.8.0'
@@ -133,7 +133,7 @@ describe 'docker::default' do
   context 'when running on ubuntu < 13.10' do
     context 'and install_type is binary and storage_driver is aufs' do
       let(:chef_run) do
-        ChefSpec::Runner.new do |node|
+        ChefSpec::SoloRunner.new do |node|
           node.set['docker']['alert_on_error_action'] = :warn
           node.set['docker']['install_type'] = 'binary'
           node.set['docker']['storage_driver'] = 'aufs'
@@ -148,7 +148,7 @@ describe 'docker::default' do
 
   context 'when running on ubuntu > 13.10' do
     let(:chef_run) do
-      ChefSpec::Runner.new(platform: 'ubuntu', version: '14.04') do |node|
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |node|
         node.set['docker']['alert_on_error_action'] = :warn
         node.set['docker']['install_type'] = 'binary'
         node.set['docker']['storage_driver'] = 'aufs'
@@ -162,7 +162,7 @@ describe 'docker::default' do
 
   context 'when install_type is source' do
     let(:chef_run) do
-      ChefSpec::Runner.new do |node|
+      ChefSpec::SoloRunner.new do |node|
         node.set['docker']['alert_on_error_action'] = :warn
         node.set['docker']['install_type'] = 'source'
       end.converge(described_recipe)
@@ -183,7 +183,7 @@ describe 'docker::default' do
 
   context 'when the install_type is package' do
     let(:chef_run) do
-      ChefSpec::Runner.new do |node|
+      ChefSpec::SoloRunner.new do |node|
         node.set['docker']['alert_on_error_action'] = :warn
       end.converge(described_recipe)
     end
@@ -196,7 +196,7 @@ describe 'docker::default' do
   %w( runit systemd sysv ).each do |init|
     context "when init_type is #{init}" do
       let(:chef_run) do
-        ChefSpec::Runner.new do |node|
+        ChefSpec::SoloRunner.new do |node|
           node.set['docker']['graph'] = '/var/lib/docker'
           node.set['docker']['alert_on_error_action'] = :warn
           node.set['docker']['init_type'] = init
