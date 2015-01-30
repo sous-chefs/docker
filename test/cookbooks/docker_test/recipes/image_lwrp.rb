@@ -1,7 +1,7 @@
 docker_image 'docker-test-image'
 
 docker_image 'busybox'
-docker_image 'bflad/testcontainerd'
+docker_image 'tduffield/testcontainerd'
 
 docker_image 'docker-test-image' do
   action :remove

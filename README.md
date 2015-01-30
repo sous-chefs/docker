@@ -662,10 +662,10 @@ Conditionally rebuild image if changes upstream:
 ```ruby
 git "#{Chef::Config[:file_cache_path]}/docker-testcontainerd" do
   repository 'git@github.com:bflad/docker-testcontainerd.git'
-  notifies :build, 'docker_image[bflad/testcontainerd]', :immediately
+  notifies :build, 'docker_image[tduffield/testcontainerd]', :immediately
 end
 
-docker_image 'bflad/testcontainerd' do
+docker_image 'tduffield/testcontainerd' do
   action :pull_if_missing
 end
 ```
