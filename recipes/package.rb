@@ -20,6 +20,7 @@ when 'debian', 'ubuntu'
       components ['main']
       keyserver node['docker']['package']['repo_keyserver']
       key node['docker']['package']['repo_key']
+      action :add
     end
   end
 
