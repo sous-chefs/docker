@@ -7,6 +7,9 @@ template docker_upstart_conf_file do
   mode '0600'
   owner 'root'
   group 'root'
+  variables(
+    'docker_settings_file' => docker_settings_file
+  )
 end
 
 template docker_settings_file do

@@ -31,11 +31,11 @@ pre-start script
 end script
 
 script
-    # modify these in /etc/default/$UPSTART_JOB (/etc/default/docker)
+    # modify these in <%= @docker_settings_file %>
     DOCKER=/usr/bin/$UPSTART_JOB
     DOCKER_OPTS=
-    if [ -f /etc/default/$UPSTART_JOB ]; then
-        . /etc/default/$UPSTART_JOB
+    if [ -f <%= @docker_settings_file %> ]; then
+        . <%= @docker_settings_file %>
     fi
     exec "$DOCKER" -d $DOCKER_OPTS
 end script
