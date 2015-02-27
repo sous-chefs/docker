@@ -49,6 +49,10 @@ directory 'docker-graph' do
   not_if { node['docker']['graph'].nil? }
 end
 
+# Lay down init templates before installing the package.  This prevents erorrs
+# caused by docker being started by the package install.
+include_recipe "docker::#{node['docker']['init_type']}"
+
 unless node['docker']['install_type'] == 'package'
   if node['platform'] == 'ubuntu' && Chef::VersionConstraint.new('< 13.10').include?(node['platform_version'])
     include_recipe "docker::#{node['docker']['storage_driver']}" if node['docker']['storage_driver']
@@ -82,4 +86,13 @@ end
 
 include_recipe "docker::#{node['docker']['install_type']}"
 include_recipe 'docker::group' unless node['docker']['group_members'].empty?
-include_recipe "docker::#{node['docker']['init_type']}"
+
+# This block is necessary because runit declares its service as type runit_service
+if node['docker']['init_type'] == 'runit'
+  docker_resource = resources(runit_service: 'docker')
+else
+  docker_resource = resources(service: Docker::Helpers.docker_service(node))
+end
+
+# Start and enable the docker service
+docker_resource.action([:start, :enable])

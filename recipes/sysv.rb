@@ -18,7 +18,7 @@ template docker_settings_file do
   notifies :restart, 'service[docker]', :immediately
 end
 
-service 'docker' do
+service Docker::Helpers.docker_service(node) do
   supports :status => true, :restart => true, :reload => true
-  action [:start, :enable]
+  action [:nothing]
 end

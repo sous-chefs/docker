@@ -519,12 +519,4 @@ describe 'docker::sysv' do
         /^export TMPDIR="\/tmp"$/)
     end
   end
-
-  it 'starts the docker service' do
-    expect(chef_run).to start_service('docker')
-  end
-
-  it 'enables the docker service' do
-    expect(chef_run).to enable_service('docker')
-  end
 end

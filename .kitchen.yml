@@ -15,14 +15,14 @@ provisioner:
 
 
 platforms:
-- name: centos-6.5
-  driver_config:
-    box: opscode-centos-6.5
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-6.5_chef-provisionerless.box
-- name: centos-7.0
-  driver_config:
-    box: opscode-centos-7.0
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-7.0_chef-provisionerless.box
+#- name: centos-6.5
+#  driver_config:
+#    box: opscode-centos-6.5
+#    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-6.5_chef-provisionerless.box
+#- name: centos-7.0
+#  driver_config:
+#    box: opscode-centos-7.0
+#    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-7.0_chef-provisionerless.box
 #- name: oracle-6
 #- name: macosx-10.7
 #- name: macosx-10.8
@@ -37,18 +37,18 @@ platforms:
 #   driver_config:
 #     box: opscode-debian-7.7
 #     box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_debian-7.7_chef-provisionerless.box
-- name: fedora-19
-  driver_config:
-    box: opscode-fedora-19
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_fedora-19_chef-provisionerless.box
-- name: fedora-20
-  driver_config:
-    box: opscode-fedora-20
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_fedora-20_chef-provisionerless.box
-- name: ubuntu-12.04
-  driver_config:
-    box: opscode-ubuntu-12.04
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-12.04_chef-provisionerless.box
+#- name: fedora-19
+#  driver_config:
+#    box: opscode-fedora-19
+#    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_fedora-19_chef-provisionerless.box
+#- name: fedora-20
+#  driver_config:
+#    box: opscode-fedora-20
+#    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_fedora-20_chef-provisionerless.box
+#- name: ubuntu-12.04
+#  driver_config:
+#    box: opscode-ubuntu-12.04
+#    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-12.04_chef-provisionerless.box
 #
 # There appears to be an issue with the apt cookbook on 13.04. We will eventually
 # take care of this but for the time being we are disabling this platform
