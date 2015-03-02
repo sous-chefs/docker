@@ -20,6 +20,7 @@ tmp/
 *.sublime-project
 *.sublime-workspace
 *.un~
+.idea/
 
 # OS files
 .DS_Store
