@@ -114,7 +114,7 @@ default['docker']['package']['repo_url'] = value_for_platform(
   },
   'default' => nil
 )
-default['docker']['package']['repo_keyserver'] = 'keyserver.ubuntu.com'
+default['docker']['package']['repo_keyserver'] = 'hkp://keyserver.ubuntu.com:80'
 # Found at https://get.docker.io/ubuntu/
 default['docker']['package']['repo_key'] = 'A88D21E9'
 
