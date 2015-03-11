@@ -362,9 +362,11 @@ end
 def run_cli_args
   {
     'add-host' => Array(new_resource.additional_host),
+    'cap-add' => Array(new_resource.cap_add),
     'cpu-shares' => new_resource.cpu_shares,
     'cidfile' => new_resource.cidfile,
     'detach' => new_resource.detach,
+    'device' => Array(new_resource.device),
     'dns' => Array(new_resource.dns),
     'dns-search' => Array(new_resource.dns_search),
     'env' => Array(new_resource.env),
