@@ -11,6 +11,10 @@ Attribute deprecations:
 * container LWRP public_port attribute: use port attribute instead
 * container LWRP networking attribute: use net attribute instead
 
+## 0.37.0 (unreleased)
+
+* Improvement [#276][]: Added support for docker options device and cap-add (thanks hvolkmer)
+
 ## 0.36.0
 * Bugfix: [#181][]: Fixed remove_link action (thanks jperville).
 * Bugfix: [#185][]: Fix for non idempotent run action on docker_container (thanks bplunkert).
@@ -576,5 +580,22 @@ Lots of community contributions this release -- thanks!
 [#173]: https://github.com/bflad/chef-docker/issues/173
 [#175]: https://github.com/bflad/chef-docker/issues/175
 [#176]: https://github.com/bflad/chef-docker/issues/176
+[#181]: https://github.com/bflad/chef-docker/issues/181
+[#185]: https://github.com/bflad/chef-docker/issues/185
+[#188]: https://github.com/bflad/chef-docker/issues/188
+[#192]: https://github.com/bflad/chef-docker/issues/192
+[#196]: https://github.com/bflad/chef-docker/issues/196
+[#200]: https://github.com/bflad/chef-docker/issues/200
+[#202]: https://github.com/bflad/chef-docker/issues/202
+[#203]: https://github.com/bflad/chef-docker/issues/203
+[#205]: https://github.com/bflad/chef-docker/issues/205
+[#206]: https://github.com/bflad/chef-docker/issues/206
+[#217]: https://github.com/bflad/chef-docker/issues/217
+[#219]: https://github.com/bflad/chef-docker/issues/219
+[#220]: https://github.com/bflad/chef-docker/issues/220
+[#221]: https://github.com/bflad/chef-docker/issues/221
+[#223]: https://github.com/bflad/chef-docker/issues/223
+[#224]: https://github.com/bflad/chef-docker/issues/224
+[#276]: https://github.com/bflad/chef-docker/issues/276
 [@jcrobak]: https://github.com/jcrobak
 [@wingrunr21]: https://github.com/wingrunr21

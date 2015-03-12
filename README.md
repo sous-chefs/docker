@@ -497,11 +497,13 @@ Attribute | Description | Type | Default
 ----------|-------------|------|--------
 additional_host | Add a custom host-to-IP mapping (host:ip) | String, Array | nil
 attach | Attach container's stdout/stderr and forward all signals to the process | TrueClass, FalseClass | nil
+cap_add | Capabilities to add to container | String, Array | nil
 cidfile | File to store container ID | String | nil
 container_name | Name for container/service | String | nil
 cookbook | Cookbook to grab any templates | String | docker
 cpu_shares | CPU shares for container | Fixnum | nil
 detach | Detach from container when starting | TrueClass, FalseClass | nil
+device | Device(s) to pass through to container | String, Array | nil
 dns | DNS servers for container | String, Array | nil
 dns_search | DNS search domains for container | String, Array | nil
 entrypoint | Overwrite the default entrypoint set by the image | String | nil
