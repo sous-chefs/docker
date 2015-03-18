@@ -299,7 +299,7 @@ def port
   elsif new_resource.port && new_resource.port.is_a?(Fixnum)
     ":#{new_resource.port}"
   else
-    new_resource.port
+    new_resource.port || []
   end
 end
 
