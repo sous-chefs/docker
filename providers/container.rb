@@ -193,7 +193,7 @@ end
 
 def create
   create_args = cli_args(
-      run_cli_args.reject { |arg, _| arg == 'detach' }
+    run_cli_args.reject { |arg, _| arg == 'detach' }
   )
   dc = docker_cmd!("create #{create_args} #{new_resource.image} #{new_resource.command}")
   dc.error!
