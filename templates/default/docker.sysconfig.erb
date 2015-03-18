@@ -8,7 +8,7 @@ DOCKER_LOGFILE=<%= node['docker']['logfile'] %>
 <% end -%>
 
 # Use DOCKER_OPTS to modify the daemon startup options.
-DOCKER_OPTS='<%= @daemon_options %>'
+DOCKER_OPTS="<%= @daemon_options %>"
 
 <% if node['docker']['pidfile'] -%>
 DOCKER_PIDFILE=<%= node['docker']['pidfile'] %>
