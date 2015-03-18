@@ -99,7 +99,14 @@ case "$1" in
 	esac
 	;;
   status)
-	status_of_proc "$DAEMON" "$NAME" && exit 0 || exit $?
+	RUNNING=$($DAEMON inspect -f '{{.State.Running}}' $NAME) || exit 1
+	if [ "$RUNNING" = "true" ]; then
+		echo "$NAME is running"
+		exit 0
+	else
+		echo "$NAME is not running"
+		exit 2
+	fi
 	;;
   #reload|force-reload)
 	#
