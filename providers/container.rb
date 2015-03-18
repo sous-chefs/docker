@@ -475,7 +475,7 @@ def service_create_systemd
       :service_name => service_name,
       :sockets => sockets
     )
-    not_if port.empty?
+    not_if { port.empty? }
     action :nothing
   end.run_action(:create)
 
