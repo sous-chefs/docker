@@ -32,7 +32,7 @@ attribute :init_template, :kind_of => [String]
 attribute :link, :kind_of => [String, Array]
 attribute :label, :kind_of => [String]
 attribute :lxc_conf, :kind_of => [String, Array]
-attribute :memory, :kind_of => [Fixnum]
+attribute :memory, :kind_of => [Fixnum, String]
 attribute :message, :kind_of => [String]
 attribute :net, :kind_of => [String], :regex => [
   /(host|bridge|none)/, /container:.*/
