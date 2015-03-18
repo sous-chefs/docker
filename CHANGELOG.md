@@ -13,7 +13,16 @@ Attribute deprecations:
 
 ## 0.37.0 (unreleased)
 
-* Improvement [#276][]: Added support for docker options device and cap-add (thanks hvolkmer)
+Please note: the sysconfig DOCKER_OPTS improvement in [#250][] can potentially change the behavior of that environment variable as it now allows shell interpolation of any embedded variables. This should not affect most environments. If your DOCKER_OPTS does contains any expected `$`, please escape via `\$` for previous behavior or be sure it will behave as expected before upgrading.
+
+* Bugfix: [#258][]: Fix checking docker container status on debian (thanks fxposter)
+* Bugfix: [#269][]: Fix tests on Travis by following Rubocop style guidelines (container LWRP) (thanks fxposter)
+* Bugfix: [#280][] / [#281][]: Fix port handling when omitted in container LWRP (thanks databus23)
+* Improvement: [#250][]: Use double-quotes for DOCKER_OPTS (thanks rchekaluk)
+* Improvement: [#259][]: Use registry on image inspection (thanks fxposter)
+* Improvement: [#268][]: Updated the /etc/init/docker.conf template (thanks jperville)
+* Improvement: [#276][]: Added support for docker options device and cap-add (thanks hvolkmer)
+* Improvement: [#279][]: Allow docker_container memory to have String value (eg. memory='1G') (thanks jperville)
 
 ## 0.36.0
 * Bugfix: [#181][]: Fixed remove_link action (thanks jperville).
@@ -596,6 +605,13 @@ Lots of community contributions this release -- thanks!
 [#221]: https://github.com/bflad/chef-docker/issues/221
 [#223]: https://github.com/bflad/chef-docker/issues/223
 [#224]: https://github.com/bflad/chef-docker/issues/224
+[#258]: https://github.com/bflad/chef-docker/issues/258
+[#259]: https://github.com/bflad/chef-docker/issues/259
+[#268]: https://github.com/bflad/chef-docker/issues/268
+[#269]: https://github.com/bflad/chef-docker/issues/269
 [#276]: https://github.com/bflad/chef-docker/issues/276
+[#279]: https://github.com/bflad/chef-docker/issues/279
+[#280]: https://github.com/bflad/chef-docker/issues/280
+[#281]: https://github.com/bflad/chef-docker/issues/281
 [@jcrobak]: https://github.com/jcrobak
 [@wingrunr21]: https://github.com/wingrunr21
