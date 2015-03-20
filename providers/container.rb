@@ -415,6 +415,7 @@ def service_init
       supports :restart => true, :reload => true, :status => true, :stop => true
       action :nothing
       finish true
+      restart_on_update false
     end
   else
     service service_name do
