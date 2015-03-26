@@ -7,7 +7,7 @@ ListenStream=<%= socket.gsub(/^unix:\/\//,'').gsub(/^tcp:\/\//,'').gsub(/^fd:\/\
 <% end -%>
 SocketMode=0660
 SocketUser=root
-SocketGroup=docker
+SocketGroup=<%= node['docker']['group'] || 'root' %>
 
 [Install]
 WantedBy=sockets.target
