@@ -143,7 +143,7 @@ default['docker']['exec_driver'] = nil
 default['docker']['virtualization_type'] = node['docker']['exec_driver']
 
 default['docker']['graph'] = nil
-default['docker']['group'] = node['docker']['group_members'].empty? ? nil : 'docker' 
+default['docker']['group'] = node['docker']['group_members'].empty? ? nil : 'docker'
 
 # DEPRECATED: Support for bind_socket/bind_uri
 default['docker']['host'] =
