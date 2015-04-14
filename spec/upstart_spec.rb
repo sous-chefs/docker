@@ -17,8 +17,8 @@ describe 'docker::upstart' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
         %r{^DOCKER="/usr/bin/docker"$})
       resource = chef_run.template('/etc/default/docker')
-      expect(resource).to notify('service[docker]').to(:stop).immediately
-      expect(resource).to notify('service[docker]').to(:start).immediately
+      expect(resource).to notify('service[docker]').to(:stop).delayed
+      expect(resource).to notify('service[docker]').to(:start).delayed
     end
   end
 
@@ -519,9 +519,5 @@ describe 'docker::upstart' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
         %r{^export TMPDIR="\/tmp"$})
     end
-  end
-
-  it 'starts the docker service' do
-    expect(chef_run).to start_service('docker')
   end
 end

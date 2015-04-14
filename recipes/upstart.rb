@@ -19,12 +19,12 @@ template docker_settings_file do
   )
   # DEPRECATED: stop and start only necessary for 0.x cookbook upgrades
   # Default docker Upstart job now sources default file for DOCKER_OPTS
-  notifies :stop, "service[#{docker_service}]", :immediately
-  notifies :start, "service[#{docker_service}]", :immediately
+  notifies :stop, "service[#{docker_service}]", :delayed
+  notifies :start, "service[#{docker_service}]", :delayed
 end
 
 service docker_service do
   provider Chef::Provider::Service::Upstart
   supports :status => true, :restart => true, :reload => true
-  action [:start]
+  action [:nothing]
 end

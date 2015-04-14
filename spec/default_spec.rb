@@ -193,7 +193,7 @@ describe 'docker::default' do
     end
   end
 
-  %w( runit systemd sysv ).each do |init|
+  %w( upstart runit systemd sysv ).each do |init|
     context "when init_type is #{init}" do
       let(:chef_run) do
         ChefSpec::SoloRunner.new do |node|
@@ -203,12 +203,45 @@ describe 'docker::default' do
         end.converge(described_recipe)
       end
 
+      let(:node) do
+        {
+          'docker' => {
+            'init_type' => init,
+            'install_type' => 'package',
+            'package' => {
+            }
+          }
+        }
+      end
+
+      let(:service_test_method) do
+        if init == 'runit'
+          'enable_runit_service'
+        else
+          'enable_service'
+        end
+      end
+
+      let(:service_name) do
+        Docker::Helpers.docker_service(node)
+      end
+
       it "includes the docker::#{init} recipe" do
         expect(chef_run).to include_recipe("docker::#{init}")
       end
 
       it 'creates the docker graph folder' do
         expect(chef_run) .to create_directory('/var/lib/docker')
+      end
+
+      unless init == 'runit'
+        it 'starts the docker service' do
+          expect(chef_run).to start_service(service_name)
+        end
+      end
+
+      it 'enables the docker service' do
+        expect(chef_run).to send(service_test_method.to_sym, service_name)
       end
     end
   end

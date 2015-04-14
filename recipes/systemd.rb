@@ -22,8 +22,8 @@ template '/usr/lib/systemd/system/docker.service' do
   notifies :restart, 'service[docker]', :immediately
 end
 
-service 'docker' do
+service Docker::Helpers.docker_service(node) do
   provider Chef::Provider::Service::Systemd
   supports :status => true, :restart => true, :reload => true
-  action [:start, :enable]
+  action [:nothing]
 end
