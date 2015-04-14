@@ -2,7 +2,8 @@ p = node['docker']['package']['name']
 
 case node['platform']
 when 'amazon', 'centos', 'fedora', 'redhat'
-  include_recipe 'yum-epel' if %w(centos redhat).include?(node['platform'])
+  include_recipe 'yum-epel' if node['platform'] == 'centos'
+  include_recipe 'yum-epel' if node['platform'] == 'redhat' && node['platform_version'].to_f < 7
 
   package p do
     version node['docker']['version']
