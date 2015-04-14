@@ -18,7 +18,7 @@ describe 'docker::default' do
     stub_command('mountpoint -q /sys/fs/cgroup').and_return('')
 
     # TODO: Contribute back to golang cookbook
-    stub_command("/usr/local/go/bin/go version | grep \"go1.2 \"").and_return('1.2.2')
+    stub_command("/usr/local/go/bin/go version | grep \"go1.2.2 \"").and_return('1.2.2')
     stub_command("/usr/local/go/bin/go version | grep \"go1.3 \"").and_return('1.3.0')
   end
 
