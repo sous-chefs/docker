@@ -99,10 +99,10 @@ describe 'docker::sysv' do
   end
 
   # DEPRECATED: will be removed in chef-docker 1.0
-  context 'when container_init_type is set' do
+  context 'when restart is set' do
     let(:chef_run) do
       runner = ChefSpec::SoloRunner.new
-      runner.node.set['docker']['container_init_type'] = 'upstart'
+      runner.node.set['docker']['restart'] = false
       runner.converge(described_recipe)
     end
 
