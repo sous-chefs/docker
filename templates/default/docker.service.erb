@@ -25,8 +25,10 @@ ExecStartPre=/usr/sbin/sysctl -w net.ipv4.ip_forward=1
 ExecStartPre=/usr/sbin/sysctl -w net.ipv6.conf.all.forwarding=1
 <% end -%>
 ExecStart=<%= Docker::Helpers.executable(node) %> -d<%= @daemon_options %>
+MountFlags=slave
 LimitNOFILE=1048576
 LimitNPROC=1048576
+LimitCORE=infinity
 
 [Install]
 WantedBy=multi-user.target

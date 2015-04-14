@@ -149,6 +149,8 @@ default['docker']['group'] = node['docker']['group_members'].empty? ? nil : 'doc
 default['docker']['host'] =
   if node['docker']['bind_socket'] || node['docker']['bind_uri']
     Array(node['docker']['bind_socket']) + Array(node['docker']['bind_uri'])
+  elsif node['docker']['init_type'] == 'systemd'
+    'fd://'
   else
     'unix:///var/run/docker.sock'
   end
