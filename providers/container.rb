@@ -411,8 +411,11 @@ def service_init
   if new_resource.init_type == 'runit'
     runit_service service_name do
       run_template_name 'docker-container'
-      supports :restart => true, :reload => true, :status => true
+      finish_script_template_name 'docker-container'
+      supports :restart => true, :reload => true, :status => true, :stop => true
       action :nothing
+      finish true
+      restart_on_update false
     end
   else
     service service_name do
