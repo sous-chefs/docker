@@ -81,5 +81,5 @@ unless node['docker']['install_type'] == 'package'
 end
 
 include_recipe "docker::#{node['docker']['install_type']}"
-include_recipe 'docker::group' unless node['docker']['group_members'].empty?
+include_recipe 'docker::group' if node['docker']['group']
 include_recipe "docker::#{node['docker']['init_type']}"
