@@ -264,7 +264,7 @@ describe 'docker::sysv' do
 
     it 'sets NO_PROXY environment variable in docker service' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
-        /^export NO_PROXY=host1.example.com,111.111.111.0\/24$/)
+        %r{^export NO_PROXY=host1.example.com,111.111.111.0/24$})
     end
   end
 
@@ -516,7 +516,7 @@ describe 'docker::sysv' do
 
     it 'sets TMPDIR environment variable in docker service' do
       expect(chef_run).to render_file('/etc/default/docker').with_content(
-        /^export TMPDIR="\/tmp"$/)
+        %r{^export TMPDIR="/tmp"$})
     end
   end
 

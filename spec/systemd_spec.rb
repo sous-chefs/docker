@@ -253,7 +253,7 @@ describe 'docker::systemd' do
 
     it 'sets NO_PROXY environment variable in docker service' do
       expect(chef_run).to render_file('/usr/lib/systemd/system/docker.service').with_content(
-        /^Environment="NO_PROXY=host1.example.com,111.111.111.0\/24"/)
+        %r{^Environment="NO_PROXY=host1.example.com,111.111.111.0/24"})
     end
   end
 
@@ -487,7 +487,7 @@ describe 'docker::systemd' do
 
     it 'sets TMPDIR environment variable in docker service' do
       expect(chef_run).to render_file('/usr/lib/systemd/system/docker.service').with_content(
-        /^Environment="TMPDIR=\/tmp"$/)
+        %r{^Environment="TMPDIR=/tmp"$})
     end
   end
 
