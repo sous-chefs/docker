@@ -531,7 +531,7 @@ socket_template | Template to use for configuring socket (relevent for init_type
 stdin | Attach container's stdin | TrueClass, FalseClass | nil
 tty | Allocate a pseudo-tty | TrueClass, FalseClass | nil
 user | User to run container | String | nil
-volume | Create bind mount(s) with: [host-dir]:[container-dir]:[rw|ro]. If "container-dir" is missing, then docker creates a new volume. | String, Array | nil
+volume | Create bind mount(s) with: [host-dir]:[container-dir]:[rw\|ro]. If "container-dir" is missing, then docker creates a new volume. | String, Array | nil
 volumes_from | Mount all volumes from the given container(s) | String | nil
 working_directory | Working directory inside the container | String | nil
 
