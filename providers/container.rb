@@ -181,7 +181,7 @@ end
 
 def container_name
   if service?
-    new_resource.container_name || new_resource.image.gsub(/^.*\//, '')
+    new_resource.container_name || new_resource.image.gsub(%r{^.*/}, '')
   else
     new_resource.container_name
   end
@@ -258,7 +258,7 @@ def docker_containers
     # Filter out technical names (eg. 'my-app/db'), which appear in ps['names']
     # when a container has at least another container linking to it. If these
     # names are not filtered they will pollute current_resource.container_name.
-    ps['names'] = ps['names'].split(',').grep(/\A[^\/]+\Z/).join(',') # technical names always contain a '/'
+    ps['names'] = ps['names'].split(',').grep(%r{\A[^\/]+\Z}).join(',') # technical names always contain a '/'
     ps
   end
 end
