@@ -82,7 +82,7 @@ EOH
         'dns' => Array(node['docker']['dns']),
         'dns-search' => Array(node['docker']['dns_search']),
         'exec-driver' => node['docker']['exec_driver'],
-        'host' => Array(node['docker']['host']),
+        'host' => node['docker']['init_type'] == 'systemd' ? ['fd://'] : Array(node['docker']['host']),
         'graph' => node['docker']['graph'],
         'group' => node['docker']['group'],
         'icc' => node['docker']['icc'],
