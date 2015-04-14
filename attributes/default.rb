@@ -199,4 +199,4 @@ default['docker']['registry_cmd_timeout'] = 60
 # Other attributes
 
 # DEPRECATED: will be removed in chef-docker 1.0
-default['docker']['restart'] = false if node['docker']['container_init_type']
+default['docker']['restart'] = nil
