@@ -25,7 +25,7 @@ Please note: the sysconfig DOCKER_OPTS improvement in [#250][] can potentially c
 * Bugfix: [#267][]: Replace outdated testcontainerd (thanks tduffield)
 * Bugfix: [#269][]: Fix tests on Travis by following Rubocop style guidelines (container LWRP) (thanks fxposter)
 * Bugfix: [#280][] / [#281][]: Fix port handling when omitted in container LWRP (thanks databus23)
-* Improvement: [#208][]: Add CentOS/RHEL 7 support (thanks dermusikman)
+* Improvement: [#208][]: Add CentOS/RHEL 7 support (thanks dermusikman and intoximeters)
 * Improvement: [#232][]: Added support for insecure-registry docker daemon option (thanks jperville)
 * Improvement: [#233][] / [#234][]: Added support for registry-mirror docker daemon option (thanks jperville and tarnfeld)
 * Improvement: [#237][]: Deprecate the restart daemon option (thanks jperville)
