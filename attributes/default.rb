@@ -170,7 +170,6 @@ default['docker']['selinux_enabled'] = nil
 default['docker']['storage_driver'] = nil
 default['docker']['storage_opt'] = nil
 
-
 # the systemd system dir is different in newer Ubuntu (and debian?)
 default['docker']['systemd_system_dir'] = value_for_platform(
   'ubuntu' => {
