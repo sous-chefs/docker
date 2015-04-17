@@ -4,9 +4,9 @@ PartOf=docker.service
 
 [Socket]
 <% Array(node['docker']['host']).each do |socket| -%>
-next if socket.match(/^unix:/)
-next if socket.match(/^tcp:/)
-next if socket.match(/^fd:/)
+<% next if socket.match(/^unix:/) -%>
+<% next if socket.match(/^tcp:/) -%>
+<% next if socket.match(/^fd:/) -%>
 ListenStream=<%= socket %>
 <% end -%>
 ListenStream=/var/run/docker.sock
