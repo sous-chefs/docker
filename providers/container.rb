@@ -230,7 +230,7 @@ def get_ranges(header)
 end
 
 #
-# Get a list of all docker containers by parsing the output of `docker ps -a -notrunc`.
+# Get a list of all docker containers by parsing the output of `docker ps -a --no-trunc`.
 #
 # Uses `get_ranges` to determine where column data is within each row. Then, for each line after
 # the header, a hash is build up with the values for each of the columns. A special 'line' entry
