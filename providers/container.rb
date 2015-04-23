@@ -389,6 +389,7 @@ def run_cli_args
     'rm' => new_resource.remove_automatically,
     'restart' => new_resource.restart,
     'tty' => new_resource.tty,
+    'ulimit' => Array(new_resource.ulimit),
     'user' => new_resource.user,
     'volume' => Array(new_resource.volume),
     'volumes-from' => new_resource.volumes_from,
