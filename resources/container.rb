@@ -37,6 +37,9 @@ attribute :message, :kind_of => [String]
 attribute :net, :kind_of => [String], :regex => [
   /(host|bridge|none)/, /container:.*/
 ]
+attribute :pid, :kind_of => [String], :regex => [
+  /(host)/, /container:.*/
+]
 # networking attribute is DEPRECATED
 attribute :networking, :kind_of => [TrueClass, FalseClass]
 attribute :opt, :kind_of => [String, Array]
