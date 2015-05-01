@@ -625,6 +625,33 @@ Attribute | Description | Type | Default
 ----------|-------------|------|--------
 cmd_timeout | Timeout for docker commands (catchable exception: `Chef::Provider::Docker::Image::CommandTimeout`) | Integer | `node['docker']['image_cmd_timeout']`
 
+#### Note about image tags
+
+If not specified, the image tag is assumed to be 'latest'.
+
+The image tag may be specified either:
+ - by using the optional `tag` attribute (works for most LWRP actions except `:tag`)
+ - by appending the image tag to the image name attribute using ':' as separator
+
+As an example:
+
+```ruby
+docker_image 'myImage' do
+  tag 'myTag'
+  action :pull
+end
+```
+
+And
+
+```ruby
+docker_image 'myImage:myTag' do
+  action :pull
+end
+```
+
+Should both result in the `myImage:myTag` image being pulled.
+
 #### docker_image action :build and :build_if_missing
 
 These attributes are associated with this LWRP action.
@@ -851,13 +878,23 @@ These attributes are associated with this LWRP action.
 Attribute | Description | Type | Default
 ----------|-------------|------|--------
 force | Force operation | Boolean | false
-repository | Remote repository | String | nil
+repository | Optional remote repository | String | nil
 tag | Specific tag for image | String | nil
 
 Tag image:
 
 ```ruby
 docker_image 'test' do
+  repository 'bflad'
+  tag '1.0.0'
+  action :tag
+end
+```
+
+Tag image with non-default tag:
+
+```ruby
+docker_image 'test:non-latest' do
   repository 'bflad'
   tag '1.0.0'
   action :tag
