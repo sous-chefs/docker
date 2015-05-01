@@ -188,9 +188,9 @@ end
 
 def import
   if ::File.file?(new_resource.source)
-    execute_cmd("cat #{new_resource.source} | docker import - #{repository_and_tag_args}")
+    execute_cmd("cat #{new_resource.source} | docker import - #{repository_image_and_tag_args}")
   elsif ::File.directory?(new_resource.source)
-    execute_cmd("tar -c #{new_resource.source} | docker import - #{repository_and_tag_args}")
+    execute_cmd("tar -c #{new_resource.source} | docker import - #{repository_image_and_tag_args}")
   else
     import_args = ''
     if new_resource.image_url
@@ -201,7 +201,7 @@ def import
       import_args += new_resource.source
       import_args += " #{new_resource.image_name}"
     end
-    docker_cmd!("import #{import_args} #{repository_and_tag_args}")
+    docker_cmd!("import #{import_args} #{repository_image_and_tag_args}")
   end
 end
 
@@ -251,11 +251,10 @@ def remove
   docker_cmd!("rmi #{remove_args} #{image_name}")
 end
 
-def repository_and_tag_args
+def repository_image_and_tag_args
   docker_cmd_args = ''
   docker_cmd_args += new_resource.repository + '/' if new_resource.repository
-  docker_cmd_args += new_resource.image_name.split(':', 2).first # strip tag if any
-  docker_cmd_args += ":#{new_resource.tag}" if new_resource.tag
+  docker_cmd_args += image_and_tag_arg
   docker_cmd_args
 end
 
@@ -276,5 +275,5 @@ def tag
   tag_args = cli_args(
     'force' => new_resource.force
   )
-  docker_cmd!("tag #{tag_args} #{new_resource.image_name} #{repository_and_tag_args}")
+  docker_cmd!("tag #{tag_args} #{new_resource.image_name} #{repository_image_and_tag_args}")
 end
