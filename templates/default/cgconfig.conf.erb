@@ -1,0 +1,38 @@
+description "cgconfig"
+author "Serge E. Hallyn <serge.hallyn@ubuntu.com>"
+
+start on (runlevel [2345] and starting docker)
+
+console output
+
+pre-start script
+  test -x /usr/sbin/cgconfigparser || { stop; exit 0; }
+
+  CREATE_DEFAULT="yes"
+  CGCONFIG=/etc/cgconfig.conf
+  if [ -r /etc/default/cgconfig ]; then
+    . /etc/default/cgconfig
+  fi
+
+  # If we've already run, don't do it again!
+  if grep -q /sys/fs/cgroup /proc/mounts; then
+    stop
+    exit 0
+  fi
+
+  [ -r $CGCONFIG ] || { echo "$CGCONFIG is empty"; stop; exit 0; }
+
+  mount -t tmpfs -o uid=0,gid=0,mode=0755 cgroups /sys/fs/cgroup
+  /usr/sbin/cgconfigparser -l $CGCONFIG
+  if [ "$CREATE_DEFAULT" = "yes" ]; then
+    /usr/sbin/create_default_cgroups
+  fi
+end script
+
+post-stop script
+  if [ -x /usr/sbin/cgclear ]
+  then
+    /usr/sbin/cgclear
+  fi
+  umount /sys/fs/cgroup || true
+end script
