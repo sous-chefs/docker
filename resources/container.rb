@@ -9,6 +9,7 @@ attribute :attach, :kind_of => [TrueClass, FalseClass]
 attribute :author, :kind_of => [String]
 attribute :cidfile, :kind_of => [String]
 attribute :cmd_timeout, :kind_of => [Integer], :default => node['docker']['container_cmd_timeout']
+attribute :docker_client_user, :kind_of => [String], :default => node['docker']['docker_client_user']
 attribute :command, :kind_of => [String]
 attribute :container_name, :kind_of => [String]
 attribute :cookbook, :kind_of => [String], :default => 'docker'

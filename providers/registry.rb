@@ -9,6 +9,7 @@ def load_current_resource
     @current_resource.server(new_resource.server)
     @current_resource.username(dockercfg[new_resource.server]['username'])
     @current_resource.password(dockercfg[new_resource.server]['password'])
+    @current_resource.docker_client_user(new_resource.docker_client_user)
   end
   @current_resource
 end

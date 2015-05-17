@@ -191,6 +191,7 @@ default['docker']['tmpdir'] = nil
 
 # LWRP attributes
 
+default['docker']['docker_client_user'] = 'root'
 default['docker']['docker_daemon_timeout'] = 10
 
 ## docker_container attributes

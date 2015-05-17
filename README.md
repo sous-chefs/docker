@@ -186,6 +186,7 @@ These attributes are under the `node['docker']` namespace.
 Attribute | Description | Type | Default
 ----------|-------------|------|--------
 docker_daemon_timeout | Timeout to wait for the docker daemon to start in seconds for LWRP commands | Fixnum | 10
+docker_client_user | LWRPs default docker_client_user attribute | String | root
 
 #### docker_container Attributes
 
@@ -297,6 +298,7 @@ These attributes are associated with all LWRP actions.
 Attribute | Description | Type | Default
 ----------|-------------|------|--------
 cmd_timeout | Timeout for docker commands (catchable exception: `Chef::Provider::Docker::Container::CommandTimeout`)| Integer | `node['docker']['container_cmd_timeout']`
+docker_client_user | The .dockercfg file will be taken from this user's homedir | String | `node['docker']['docker_client_user']`
 command | Command to run in or identify container | String | nil
 container_name | Name for container/service | String | nil
 
@@ -624,6 +626,7 @@ These attributes are associated with all LWRP actions.
 Attribute | Description | Type | Default
 ----------|-------------|------|--------
 cmd_timeout | Timeout for docker commands (catchable exception: `Chef::Provider::Docker::Image::CommandTimeout`) | Integer | `node['docker']['image_cmd_timeout']`
+docker_client_user | The .dockercfg file will be taken from this user's homedir | String | `node['docker']['docker_client_user']`
 
 #### docker_image action :build and :build_if_missing
 
@@ -871,6 +874,7 @@ These attributes are associated with all LWRP actions.
 Attribute | Description | Type | Default
 ----------|-------------|------|--------
 cmd_timeout | Timeout for docker commands (catchable exception: `Chef::Provider::Docker::Registry::CommandTimeout`) | Integer | `node['docker']['registry_cmd_timeout']`
+docker_client_user | The .dockercfg file will be taken from this user's homedir | String | `node['docker']['docker_client_user']`
 
 #### docker_registry action :login
 
