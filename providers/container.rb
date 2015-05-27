@@ -388,6 +388,7 @@ def run_cli_args
     'privileged' => new_resource.privileged,
     'rm' => new_resource.remove_automatically,
     'restart' => new_resource.restart,
+    'security-opt' => Array(new_resource.security_opt),
     'tty' => new_resource.tty,
     'ulimit' => Array(new_resource.ulimit),
     'user' => new_resource.user,
