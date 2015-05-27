@@ -124,7 +124,13 @@ def build
     command = new_resource.source
   end
 
+  cwd = ::Dir.pwd
+  if ::File.directory? new_resource.cwd
+    ::Dir.chdir new_resource.cwd
+  end
+
   docker_cmd!("build #{build_args} #{command}")
+  ::Dir.chdir cwd
 end
 
 def di(di_line)
