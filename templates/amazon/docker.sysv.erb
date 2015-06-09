@@ -30,6 +30,8 @@ logfile="/var/log/$prog"
 
 [ -e /etc/sysconfig/$prog ] && . /etc/sysconfig/$prog
 
+DOCKER_OPTS="${DOCKER_OPTS:-${other_args}}"
+
 prestart() {
   service cgconfig status > /dev/null
 
@@ -46,7 +48,7 @@ start() {
     prestart
     printf "Starting $prog:\t"
     echo "\n$(date)\n" >> $logfile
-    nohup $exec -d $other_args &>> $logfile &
+    nohup $exec -d ${DOCKER_OPTS} &>> $logfile &
     pid=$!
     sleep 1
     touch $lockfile
