@@ -377,6 +377,7 @@ def run_cli_args
     'interactive' => new_resource.stdin,
     'label' => new_resource.label,
     'link' => Array(new_resource.link),
+    'log-driver' => new_resource.log_driver,
     'lxc-conf' => Array(new_resource.lxc_conf),
     'memory' => new_resource.memory,
     'net' => new_resource.net,
