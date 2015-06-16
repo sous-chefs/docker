@@ -156,6 +156,7 @@ default['docker']['host'] =
     'unix:///var/run/docker.sock'
   end
 default['docker']['http_proxy'] = nil
+default['docker']['https_proxy'] = nil
 default['docker']['icc'] = nil
 default['docker']['insecure-registry'] = nil
 default['docker']['ip'] = nil

@@ -157,6 +157,7 @@ graph | Path to use as the root of the docker runtime | String | nil (implicitly
 group | Group for docker socket and group_members | String | nil (implicitly docker)
 host | Socket(s) that docker should bind | String, Array | unix:///var/run/docker.sock
 http_proxy | HTTP_PROXY environment variable | String | nil
+https_proxy | HTTPS_PROXY environment variable | String | nil
 icc | Enable inter-container communication | TrueClass, FalseClass | nil (implicitly true)
 insecure-registry | List of well-known insecure registries | String, Array | nil
 ip | Default IP address to use when binding container ports | String | nil (implicitly 0.0.0.0)
