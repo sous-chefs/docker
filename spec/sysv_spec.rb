@@ -255,6 +255,19 @@ describe 'docker::sysv' do
     end
   end
 
+  context 'when https_proxy is set' do
+    let(:chef_run) do
+      runner = ChefSpec::SoloRunner.new
+      runner.node.set['docker']['https_proxy'] = 'http://username:password@proxy.example.com:8080'
+      runner.converge(described_recipe)
+    end
+
+    it 'sets HTTPS_PROXY environment variable in docker service' do
+      expect(chef_run).to render_file('/etc/default/docker').with_content(
+        %r{^export HTTPS_PROXY=http://username:password@proxy.example.com:8080$})
+    end
+  end
+
   context 'when no_proxy is set' do
     let(:chef_run) do
       runner = ChefSpec::SoloRunner.new
