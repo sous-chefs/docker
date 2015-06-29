@@ -1,0 +1,157 @@
+#<% require 'kitchen-sync' %>
+---
+driver_config:
+   digitalocean_api_token: <%= ENV['DIGITALOCEAN_API_TOKEN'] %>
+   aws_access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] %>
+   aws_secret_access_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
+   aws_ssh_key_id: <%= ENV['AWS_KEYPAIR_NAME'] %>
+   flavor_id: <%= ENV['EC2_FLAVOR_ID'] %>
+   availability_zone: <%= ENV['AWS_AVAILABILITY_ZONE'] %>
+
+provisioner:
+  name: chef_zero
+  require_chef_omnibus: 12.2.1
+
+platforms:
+- name: centos-6.5
+  driver_plugin: digital_ocean
+  driver_config:
+    size: 2gb
+    image: centos-6-5-x64
+    region: <%= ENV['DIGITALOCEAN_REGION'] %>
+    ssh_key_ids: <%= ENV['DIGITALOCEAN_SSH_KEYS'] %>
+    ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
+
+- name: centos-7.0
+  driver_plugin: digital_ocean
+  driver_config:
+    size: 2gb
+    image: centos-7-0-x64
+    region: <%= ENV['DIGITALOCEAN_REGION'] %>
+    ssh_key_ids: <%= ENV['DIGITALOCEAN_SSH_KEYS'] %>
+    ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
+
+- name: amazon-2014.09
+  driver_plugin: ec2
+  driver_config:
+    image_id: ami-9a6ed3f2
+    username: ec2-user
+    ssh_key: <%= ENV['EC2_SSH_KEY_PATH'] %>
+
+- name: fedora-21
+  driver_plugin: digital_ocean
+  driver_config:
+    size: 2gb
+    image: fedora-21-x64
+    region: <%= ENV['DIGITALOCEAN_REGION'] %>
+    ssh_key_ids: <%= ENV['DIGITALOCEAN_SSH_KEYS'] %>
+    ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
+
+- name: debian-7.0
+  driver_plugin: digital_ocean
+  driver_config:
+    size: 2gb
+    image: debian-7-0-x64
+    region: <%= ENV['DIGITALOCEAN_REGION'] %>
+    ssh_key_ids: <%= ENV['DIGITALOCEAN_SSH_KEYS'] %>
+    ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
+  run_list:
+  - recipe[apt]
+
+# - name: debian-8
+#   driver_plugin: digital_ocean
+#   driver_config:
+#     size: 2gb
+#     image: debian-8-x64
+#     region: <%= ENV['DIGITALOCEAN_REGION'] %>
+#     ssh_key_ids: <%= ENV['DIGITALOCEAN_SSH_KEYS'] %>
+#     ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
+#   run_list:
+#   - recipe[apt]
+
+- name: ubuntu-12.04
+  driver_plugin: digital_ocean
+  driver_config:
+    size: 2gb
+    image: ubuntu-12-04-x64
+    region: <%= ENV['DIGITALOCEAN_REGION'] %>
+    ssh_key_ids: <%= ENV['DIGITALOCEAN_SSH_KEYS'] %>
+    ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
+  run_list:
+  - recipe[apt]
+
+- name: ubuntu-14.04
+  driver_plugin: digital_ocean
+  driver_config:
+    size: 2gb
+    image: ubuntu-14-04-x64
+    region: <%= ENV['DIGITALOCEAN_REGION'] %>
+    ssh_key_ids: <%= ENV['DIGITALOCEAN_SSH_KEYS'] %>
+    ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
+  run_list:
+  - recipe[apt]
+
+- name: ubuntu-15.04
+  driver_plugin: digital_ocean
+  driver_config:
+    size: 2gb
+    image: ubuntu-15-04-x64
+    region: <%= ENV['DIGITALOCEAN_REGION'] %>
+    ssh_key_ids: <%= ENV['DIGITALOCEAN_SSH_KEYS'] %>
+    ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
+  run_list:
+  - recipe[apt]
+
+
+suites:
+#
+# Resource behavior testing cookbooks
+#
+- name: service-socket
+  includes: [
+    'amazon-2014.09',
+    'fedora-21',
+    'centos-6.5',
+    'centos-7.0',
+    'debian-7.0',
+    'debian-8',
+    'ubuntu-12.04',
+    'ubuntu-14.04',
+    'ubuntu-15.04'
+  ]
+  run_list:
+  - recipe[docker_service_test::socket]
+
+- name: service-tcp-tls
+  includes: [
+    'amazon-2014.09',
+    'fedora-21',
+    'centos-6.5',
+    'centos-7.0',
+    'debian-7.0',
+    'debian-8',
+    'ubuntu-12.04',
+    'ubuntu-14.04',
+    'ubuntu-15.04',
+  ]
+  run_list:
+  - recipe[docker_service_test::tcp-tls]
+
+- name: image_and_container
+  includes: [
+    'fedora-21',
+    'centos-7.0',
+    'debian-8',
+    'ubuntu-12.04',
+    'ubuntu-14.04',
+    'ubuntu-15.04',
+  ]
+  run_list:
+  - recipe[docker_test::default]
+  - recipe[docker_test::image_lwrp]
+  - recipe[docker_test::container_lwrp]
+
+- name: hello_world
+  includes: [ 'ubuntu-15.04' ]
+  run_list:
+  - recipe[docker_test::hello_world]

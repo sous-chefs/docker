@@ -1,242 +1,135 @@
-# chef-docker [![Build Status](https://secure.travis-ci.org/bflad/chef-docker.png?branch=master)](http://travis-ci.org/bflad/chef-docker)
+Docker Cookbook
+===============
+[![Build Status](https://secure.travis-ci.org/bflad/chef-docker.png?branch=master)](http://travis-ci.org/bflad/chef-docker)
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/bflad/chef-docker?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-## Description
+The Docker Cookbook is a library cookbook that provides resources
+(LWRPs) for use in recipes.
 
-Installs/Configures [Docker](http://docker.io). Please see [COMPATIBILITY.md](COMPATIBILITY.md) for more information about Docker versions that are tested and supported by cookbook versions along with LWRP features.
+Breaking Changes Alert
+----------------------
+In version 1.0 of this cookbook, we have made a significant
+breaking changes including the way that we handle resources
+(`docker_image`, `docker_container` and `docker_registry`). It is
+highly recommended that you constrain the version of the cookbook you
+are using in the appropriate places.
 
-This cookbook was inspired by @thoward's docker-cookbook: https://github.com/thoward/docker-cookbook
+- metadata.rb
+- Chef Environments
+- Berksfile
+- Chef Policyfile
 
-## Breaking Change Alert
+More details about specific changes will be documented in the
+[1.0_CHANGES.md](1.0_CHANGES.md) file.
 
-In version 1.0 of this cookbook, we will be making a significant breaking changes including the way that we handle the custom resources (`docker_image`, `docker_container` and `docker_registry`). It is highly recommended that you constrain the version of the cookbook you are using in the appropriate places.
-  - metadata.rb
-  - Chef Environments
-  - Berksfile
-  - Chef Policyfile
+Scope
+-----
+This cookbook is concerned with the [Docker](http://docker.io)
+container engine as distributed by Docker, Inc. It does not address
+with docker ecosystem tooling or prerequisite technology such as
+cgroups or aufs.
 
-More details about specific changes will be documented in the [1.0_CHANGES.md](1.0_CHANGES.md) file.
+Requirements
+------------
+- Chef 11 or higher
+- Ruby 1.9 or higher (preferably from the Chef full-stack installer)
+- Network accessible web server hosting the docker binary.
 
-## Requirements
+Platform Support
+----------------
+The following platforms have been tested with Test Kitchen:
 
-### Chef
+```
+|--------------+-------|
+|              | 1.6.0 |
+|--------------+-------|
+| amazon       | X     |
+|--------------+-------|
+| centos-6     | X     |
+|--------------+-------|
+| centos-7     | X     |
+|--------------+-------|
+| fedora-21    | X     |
+|--------------+-------|
+| debian-7     | X     |
+|--------------+-------|
+| ubuntu-12.04 | X     |
+|--------------+-------|
+| ubuntu-14.04 | X     |
+|--------------+-------|
+| ubuntu-15.04 | X     |
+|--------------+-------|
+```
 
-* Chef 11+
+Cookbook Dependencies
+---------------------
+- none!
 
-### Platforms
+Usage
+-----
+- Add ```depends 'docker', '~> 1.0'``` to your cookbook's metadata.rb
+- Place resources shipped in this cookbook in a recipe, the same way
+  you'd use core Chef resources (file, template, directory, package, etc).
 
-* Amazon 2014.03.1 (experimental)
-* CentOS 6
-* Debian 7
-* Fedora 19, 20
-* Mac OS X (only docker installation currently)
-* Oracle 6
-* RHEL 6
-* Ubuntu 12.04, 12.10, 13.04, 13.10, 14.04 (experimental)
+```ruby
+docker_service 'default' do
+  action [:create, :start]
+end
 
-### Cookbooks
+docker_image 'busybox' do
+  action :pull
+end
 
-[Opscode Cookbooks](https://github.com/opscode-cookbooks/)
+docker_container 'an echo server' do
+  image 'busybox'
+  port '1234:1234'
+  command "nc -ll -p 1234 -e /bin/cat"
+  detach true
+  init_type false
+end
+```
+Test Cookbooks as Examples
+--------------------------
+The cookbooks ran under test-kitchen make excellent usage examples.
+The above recipe is actually used as a smoke test, and is converged by
+test-kitchen during development. It is located in this repo at
+`test/cookbooks/docker_test/recipes/hello_world.rb`
 
-* [apt](https://github.com/opscode-cookbooks/apt)
-* [git](https://github.com/opscode-cookbooks/git)
-* [homebrew](https://github.com/opscode-cookbooks/homebrew)
-* [yum-epel](https://github.com/opscode-cookbooks/yum-epel)
+More example recipes can be found at:
+```ruby
+test/cookbooks/docker_test/
+test/cookbooks/docker_service_test/
+```
 
-Third-Party Cookbooks
+Cgroups, Execution and Storage drivers
+--------------------------------------
+Beginning in chef-docker 1.0, support for LXC execution driver has
+been removed in favor of native. Cgroups and storage drivers are now
+loosely coupled dependencies and should be configured using other
+cookbooks.
 
-* [aufs](https://github.com/bflad/chef-aufs)
-* [device-mapper](https://github.com/bflad/chef-device-mapper)
-* [golang](https://github.com/NOX73/chef-golang)
-* [lxc](https://github.com/hw-cookbooks/lxc)
-* [modules](https://github.com/Youscribe/modules-cookbook)
-* [sysctl](https://github.com/onehealth-cookbooks/sysctl)
+Storage drivers can be selected with the `storage_driver` property on
+the `docker_service` resource like this:
 
-## Usage
+```ruby
+docker_service 'default' do
+   storage_driver 'overlay'
+end
+```
 
-### Default Installation
+Configuration of the backing storage driver, including kernel module
+loading, is out of scope for this cookbook.
 
-* Add `recipe[docker]` to your node's run list
-
-### Execution Drivers
-
-If your system is running a Docker version before 0.9, you'll need to explicitly set up LXC outside of this cookbook. This will likely be true for most distros after Docker 1.0 and chef-docker 1.0 is released.
-* [lxc on community site](http://community.opscode.com/cookbooks/lxc)
-* [lxc on Github](https://github.com/hw-cookbooks/lxc/)
-
-### Storage Drivers
-
-Beginning in chef-docker 1.0, storage driver installation and configuration is expected to be handled before this cookbook's execution, except where required by Docker.
-
-#### AUFS
-
-If you need AUFS support, consider adding the aufs cookbook to your node/recipe before docker.
-* [aufs on community site](http://community.opscode.com/cookbooks/aufs)
-* [chef-aufs on Github](https://github.com/bflad/chef-aufs)
-
-Then, set the `storage_driver` attribute of this cookbook to `aufs`.
-
-#### device-mapper
-
-If you need device-mapper support, consider adding the device-mapper cookbook to your node/recipe before docker.
-* [device-mapper on community site](http://community.opscode.com/cookbooks/device-mapper)
-* [chef-device-mapper on Github](https://github.com/bflad/chef-device-mapper)
-
-Then, set the `storage_driver` attribute of this cookbook to `devicemapper` (please note lack of dash).
-
-### Ubuntu 14.04 Package Installation via Docker PPA
-
-By default, this cookbook will use the docker.io package from Ubuntu 14.04's repository. To use the Docker PPA package, just set the repo_url attribute to the Docker PPA URL. e.g. `node.set['docker']['package']['repo_url'] = 'https://get.docker.io/ubuntu'`
-
-## Attributes
-
-### Installation/System Attributes
-
-These attributes are under the `node['docker']` namespace.
-
-Attribute | Description | Type | Default
-----------|-------------|------|--------
-arch | Architecture for docker binary (note: Docker only currently supports x86_64) | String | auto-detected (see attributes/default.rb)
-group_members | Users to manage in `node['docker']['group']` | Array of Strings | []
-init_type | Init type for docker ("runit", "systemd", "sysv", or "upstart") | String | auto-detected (see attributes/default.rb)
-install_dir | Installation directory for docker binary (custom setting only valid for non-package installations) | String | auto-detected (see attributes/default.rb)
-install_type | Installation type for docker ("binary", "package" or "source") | String | package
-ipv4_forward | Sysctl set net.ipv4.ip_forward to 1 | TrueClass, FalseClass | true
-ipv6_forward | Sysctl set net.ipv6.conf.all.forwarding to 1 | TrueClass, FalseClass | true
-version | Version of docker | String | nil
-
-#### Binary Installation Attributes
-
-These attributes are under the `node['docker']['binary']` namespace.
-
-Attribute | Description | Type | Default
-----------|-------------|------|--------
-checksum | Optional SHA256 checksum for docker binary | String | auto-detected (see attributes/default.rb)
-version | Version of docker binary | String | `node['docker']['version']` (if set) or `latest`
-url | URL for downloading docker binary | String | `http://get.docker.io/builds/#{node['kernel']['name']}/#{node['docker']['arch']}/docker-#{node['docker']['binary']['version']}`
-
-#### Package Installation Attributes
-
-These attributes are under the `node['docker']['package']` namespace.
-
-Attribute | Description | Type | Default
-----------|-------------|------|--------
-action | Action for docker packages ("install", "update", etc.) | String | install
-distribution | Distribution for docker packages | String | auto-detected (see attributes/default.rb)
-name | Override Docker package name | String | auto-detected (see attributes/default.rb)
-repo_url | Repository URL for docker packages | String | auto-detected (see attributes/default.rb)
-repo_key | Repository GPG key URL for docker packages | String | https://get.docker.io/gpg
-
-#### Source Installation Attributes
-
-These attributes are under the `node['docker']['source']` namespace.
-
-Attribute | Description | Type | Default
-----------|-------------|------|--------
-ref | Repository reference for docker source | String | master
-url | Repository URL for docker source | String | https://github.com/dotcloud/docker.git
-
-### Docker Daemon Attributes
-
-For more information: http://docs.docker.io/en/latest/reference/commandline/cli/#daemon
-
-These attributes are under the `node['docker']` namespace.
-
-Attribute | Description | Type | Default
-----------|-------------|------|--------
-api_enable_cors | Enable CORS headers in API | TrueClass, FalseClass | nil
-bind_socket (*DEPRECATED*) | Socket path that docker should bind | String | unix:///var/run/docker.sock
-bind_uri (*DEPRECATED*) | TCP URI docker should bind | String | nil
-bip | Use this CIDR notation address for the network bridge's IP, not compatible with `bridge` | String | nil
-bridge | Attach containers to a pre-existing network bridge; use 'none' to disable container networking | String | nil
-debug | Enable debug mode | TrueClass, FalseClass | nil (implicitly false)
-dns | DNS server(s) for containers | String, Array | nil
-dns_search | DNS search domain(s) for containers | String, Array | nil
-exec_driver | Execution driver for docker | String | nil (implicitly native as of 0.9.0)
-graph | Path to use as the root of the docker runtime | String | nil (implicitly /var/lib/docker)
-group | Group for docker socket and group_members | String | nil (implicitly docker)
-host | Socket(s) that docker should bind | String, Array | unix:///var/run/docker.sock
-http_proxy | HTTP_PROXY environment variable | String | nil
-icc | Enable inter-container communication | TrueClass, FalseClass | nil (implicitly true)
-insecure-registry | List of well-known insecure registries | String, Array | nil
-ip | Default IP address to use when binding container ports | String | nil (implicitly 0.0.0.0)
-iptables | Enable Docker's addition of iptables rules | TrueClass, FalseClass | nil (implicitly true)
-logfile | Set custom DOCKER_LOGFILE | String | nil
-mtu | Set the containers network MTU | Fixnum | nil (implicitly default route MTU or 1500 if no default route is available)
-no_proxy | NO_PROXY environment variable | String | nil
-options | Additional options to pass to docker. These could be flags like "-api-enable-cors". | String | nil
-pidfile | Path to use for daemon PID file | String | nil (implicitly /var/run/docker.pid)
-ramdisk | Set DOCKER_RAMDISK when using RAM disk | TrueClass or FalseClass | false
-registry-mirror | List of docker registry mirrors | String, Array | nil
-restart (*DEPRECATED*) | Restart containers on boot | TrueClass or FalseClass | nil
-selinux_enabled | Enable SELinux | TrueClass or FalseClass | nil
-storage_driver | Storage driver for docker | String | nil
-storage_opt | Storage driver options | String, Array | nil
-tls | Use TLS | TrueClass, FalseClass | nil (implicitly false)
-tlscacert | Trust only remotes providing a certificate signed by the CA given here | String | nil (implicitly ~/.docker/ca.pem)
-tlscert | Path to TLS certificate file | String | nil (implicitly ~/.docker/cert.pem)
-tlskey | Path to TLS key file | String | nil (implicitly ~/.docker/key.pem)
-tlsverify | Use TLS and verify the remote (daemon: verify client, client: verify daemon) | TrueClass, FalseClass | nil (implicitly false)
-tmpdir | TMPDIR environment variable | String | nil
-
-### LWRP Attributes
-
-These attributes are under the `node['docker']` namespace.
-
-Attribute | Description | Type | Default
-----------|-------------|------|--------
-docker_daemon_timeout | Timeout to wait for the docker daemon to start in seconds for LWRP commands | Fixnum | 10
-
-#### docker_container Attributes
-
-These attributes are under the `node['docker']` namespace.
-
-Attribute | Description | Type | Default
-----------|-------------|------|--------
-container_cmd_timeout | container LWRP default cmd_timeout seconds | Fixnum | 60
-container_init_type | Init type for docker containers (nil, "runit", "systemd", "sysv", or "upstart") | String | `node['docker']['init_type']`
-
-#### docker_image Attributes
-
-These attributes are under the `node['docker']` namespace.
-
-Attribute | Description | Type | Default
-----------|-------------|------|--------
-image_cmd_timeout | image LWRP default cmd_timeout seconds | Fixnum | 300
-
-#### docker_registry Attributes
-
-These attributes are under the `node['docker']` namespace.
-
-Attribute | Description | Type | Default
-----------|-------------|------|--------
-registry_cmd_timeout | registry LWRP default cmd_timeout seconds | Fixnum | 60
-
-## Recipes
-
-* `recipe[docker]` Installs/Configures Docker
-* `recipe[docker::aufs]` Installs/Loads AUFS Linux module
-* `recipe[docker::binary]` Installs Docker binary
-* `recipe[docker::cgroups]` Installs/configures default platform Control Groups support
-* `recipe[docker::devicemapper]` Installs/Configures Device Mapper
-* `recipe[docker::group]` Installs/Configures docker group
-* `recipe[docker::lxc]` Installs/configures default platform LXC support
-* `recipe[docker::package]` Installs Docker via package
-* `recipe[docker::runit]` Installs/Starts Docker via runit
-* `recipe[docker::source]` Installs Docker via source
-* `recipe[docker::systemd]` Installs/Starts Docker via systemd
-* `recipe[docker::sysv]` Installs/Starts Docker via SysV
-* `recipe[docker::upstart]` Installs/Starts Docker via Upstart
-
-## LWRPs
-
-* docker_container: container operations
-* docker_image: image/repository operations
-* docker_registry: registry operations
+Resources Overview
+------------------
+* `docker_service`: docker daemon installation and configuration
+* `docker_container`: container operations
+* `docker_image`: image/repository operations
+* `docker_registry`: registry operations
 
 ### Getting Started
-
-Here's a quick example of pulling the latest image and running a container with exposed ports (creates service automatically):
+Here's a quick example of pulling the latest image and running a
+container with exposed ports (creates service automatically):
 
 ```ruby
 # Pull latest image
@@ -251,7 +144,8 @@ docker_container 'samalba/docker-registry' do
 end
 ```
 
-Maybe you want to automatically update your private registry with changes from your container?
+Maybe you want to automatically update your private registry with
+changes from your container?
 
 ```ruby
 # Login to private registry
@@ -273,9 +167,9 @@ timestamp = Time.new.strftime('%Y%m%d%H%M')
 
 # Commit container changes
 docker_container 'crowsnest' do
-  repository 'apps'
-  tag timestamp
-  action :commit
+   repository 'apps'
+   tag timestamp
+   action :commit
 end
 
 # Push image
@@ -286,7 +180,101 @@ docker_image 'crowsnest' do
 end
 ```
 
-See full documentation for each LWRP and action below for more information.
+See full documentation for each resource and action below for more
+information.
+
+Resources Details
+------------------
+The ```docker_service```, ```docker_image```, ```docker_container```,
+and ```docker_registry``` resources are documented in full below.
+
+### docker_service
+The `docker_service` manages a Docker daemon.
+
+The `:create` action manages software installation.
+The `:start` action manages the running docker service on the machine.
+
+The service management strategy for the host platform is dynamically
+chosen based on platform, but can be overridden. See the "providers"
+section below for more information.
+
+#### Example
+```ruby
+docker_service 'tls_test:2376' do
+  host ["tcp://#{node['ipaddress']}:2376", 'unix:///var/run/docker.sock']
+  tlscacert '/path/to/ca.pem'
+  tlscert '/path/to/server.pem'
+  tlskey '/path/to/serverkey.pem'
+  tlsverify true
+  provider Chef::Provider::DockerService::Systemd
+  action [:create, :start]
+end
+```
+
+WARNING - As of the 1.0 version of this cookbook, `docker_service`
+is a singleton resource. This means that if you create multiple
+`docker_service` resources on the same machine, you will only
+create one actual service and things may not work as expected.
+
+#### Properties
+The `docker_service` resource property list mostly corresponds to
+the options found in the
+[Docker Command Line Reference](https://docs.docker.com/reference/commandline/cli/)
+
+- `source` - URL to the pre-compiled Docker binary used for
+  installation. Defaults to a calculated URL based on kernel version,
+  Docker version, and platform arch. By default, this will try to get
+  to "http://get.docker.io/builds/".  
+- `version` - Docker version to install
+- `checksum` - sha256 checksum of Docker binary
+- `instance` - Identity for ```docker_service``` resource. Defaults to
+  name. Mostly unimportant for the 1.0 version because of its
+  singleton status. | String | nil 
+- `api_cors_header` - Set CORS headers in the remote API
+- `bridge` - Attach containers to a network bridge
+- `bip` - Specify network bridge IP
+- `debug` - Enable debug mode
+- `daemon` - Enable daemon mode
+- `dns` - DNS server to use
+- `dns_search` - DNS search domains to use
+- `exec_driver` - Exec driver to use
+- `fixed_cidr` - IPv4 subnet for fixed IPs
+- `fixed_cidr_v6` - IPv6 subnet for fixed IPs
+- `group` - Posix group for the unix socket
+- `graph` - Root of the Docker runtime - Effectively, the "data
+  directory"  
+- `host` - Daemon socket(s) to connect to - `tcp://host:port`,
+  `unix:///path/to/socket`, `fd://*` or `fd://socketfd`  
+- `icc` - Enable inter-container communication
+- `ip` - Enable inter-container communication
+- `ip_forward` - Enable ip forwarding
+- `ipv4_forward` - Enable net.ipv4.ip_forward
+- `ipv6_forward` - Enable net.ipv6.ip_forward
+- `ip_masq` - Enable IP masquerading
+- `iptables` - Enable addition of iptables rules
+- `ipv6` - Enable IPv6 networking
+- `log_level` - Set the logging level
+- `label` - Set key=value labels to the daemon
+- `log_driver` - Container's logging driver (json-file/none)
+- `mtu` - Container's logging driver (json-file/none)
+- `pidfile` - Path to use for daemon PID file
+- `registry_mirror` - Preferred Docker registry mirror
+- `storage_driver` - Storage driver to use
+- `selinux_enabled` - Enable selinux support
+- `storage_opt` - Set storage driver options
+- `tls` - Use TLS; implied by --tlsverify
+- `tlscacert` - Trust certs signed only by this CA
+- `tlscert` - Path to TLS certificate file
+- `tlskey` - Path to TLS key file
+- `tlsverify` - Use TLS and verify the remote
+- `default_ulimit` - Set default ulimit settings for containers
+- http_proxy - ENV variable set before for Docker daemon starts
+- https_proxy - ENV variable set before for Docker daemon starts
+- no_proxy - ENV variable set before for Docker daemon starts
+- tmpdir - ENV variable set before for Docker daemon starts
+- logfile - Location of Docker daemon log file
+
+# SAVEGAME: YOU ARE HERE
 
 ### docker_container
 
@@ -294,10 +282,10 @@ Below are the available actions for the LWRP, default being `run`.
 
 These attributes are associated with all LWRP actions.
 
-Attribute | Description | Type | Default
-----------|-------------|------|--------
-cmd_timeout | Timeout for docker commands (catchable exception: `Chef::Provider::Docker::Container::CommandTimeout`)| Integer | `node['docker']['container_cmd_timeout']`
-command | Command to run in or identify container | String | nil
+Property | Description | Type | Default
+---------|-------------|------|---------
+cmd_timeout | Timeout for docker commands (catchable exception: `Chef::Provider::Docker::Container::CommandTimeout`) | Integer | 60
+command | Command to run in or identify container | String  | nil
 container_name | Name for container/service | String | nil
 
 #### docker_container action :commit
@@ -316,10 +304,10 @@ Commit a container with optional repository, run specification, and tag:
 
 ```ruby
 docker_container 'myApp' do
-  repository 'myRepo'
-  tag Time.new.strftime("%Y%m%d%H%M")
-  run '{"Cmd": ["cat", "/world"], "PortSpecs": ["22"]}'
-  action :commit
+repository 'myRepo'
+tag Time.new.strftime("%Y%m%d%H%M")
+run '{"Cmd": ["cat", "/world"], "PortSpecs": ["22"]}'
+action :commit
 end
 ```
 
@@ -710,27 +698,6 @@ docker_image 'test' do
 end
 ```
 
-#### docker_image action :insert
-
-*ACTION DEPRECATED AS OF DOCKER 0.10.0*
-
-These attributes are associated with this LWRP action.
-
-Attribute | Description | Type | Default
-----------|-------------|------|--------
-destination | Destination path/URL | String | nil
-source | Source path/URL | String | nil
-
-Insert file from remote URL:
-
-```ruby
-docker_image 'test' do
-  source 'http://example.com/some/file.txt'
-  destination '/container/path/for/some/file.txt'
-  action :insert
-end
-```
-
 #### docker_image action :load
 
 These attributes are associated with this LWRP action.
@@ -865,37 +832,28 @@ end
 ```
 
 ### docker_registry
-
-These attributes are associated with all LWRP actions.
-
-Attribute | Description | Type | Default
-----------|-------------|------|--------
-cmd_timeout | Timeout for docker commands (catchable exception: `Chef::Provider::Docker::Registry::CommandTimeout`) | Integer | `node['docker']['registry_cmd_timeout']`
+FIXME: blah blah blah
 
 #### docker_registry action :login
 
-These attributes are associated with this LWRP action.
-
-Attribute | Description | Type | Default
-----------|-------------|------|--------
-email | Registry email | String | nil
-password | Registry password | String | nil
-username | Registry username | String | nil
-
 Log into or register with public registry:
 
-    docker_registry 'https://index.docker.io/v1/' do
-      email 'publicme@example.com'
-      username 'publicme'
-      password 'hope_this_is_in_encrypted_databag'
-    end
+```ruby
+docker_registry 'https://index.docker.io/v1/' do
+  email 'publicme@example.com'
+  username 'publicme'
+  password 'hope_this_is_in_encrypted_databag'
+end
+```
 
 Log into private registry with optional port:
 
-    docker_registry 'https://docker-registry.example.com:8443/' do
-      username 'privateme'
-      password 'still_hope_this_is_in_encrypted_databag'
-    end
+```ruby
+docker_registry 'https://docker-registry.example.com:8443/' do
+   username 'privateme'
+   password 'still_hope_this_is_in_encrypted_databag'
+end
+```
 
 ## Testing and Development
 
@@ -911,7 +869,17 @@ Please see contributing information in: [CONTRIBUTING.md](CONTRIBUTING.md)
 * Tom Duffield (http://tomduffield.com)
 * Brian Flad (<bflad417@gmail.com>)
 * Fletcher Nichol (<fnichol@nichol.ca>)
+* Sean OMeara (sean@chef.io)
 
 ## License
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-Please see licensing information in: [LICENSE](LICENSE)
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.

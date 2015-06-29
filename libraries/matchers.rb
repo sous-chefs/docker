@@ -11,6 +11,11 @@ if defined?(ChefSpec)
     ChefSpec.define_matcher(:docker_registry)
   end
 
+  # Docker Service
+  def create_docker_service(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_service, :create, resource_name)
+  end
+
   # Docker registry
   def login_docker_registry(resource_name)
     ChefSpec::Matchers::ResourceMatcher.new(:docker_registry, :login, resource_name)

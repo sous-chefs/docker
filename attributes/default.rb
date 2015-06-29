@@ -1,5 +1,3 @@
-include_attribute 'golang'
-
 # Installation/System attributes
 
 default['docker']['arch'] =

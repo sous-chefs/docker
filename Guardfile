@@ -1,14 +1,16 @@
-# A sample Guardfile
 # More info at https://github.com/guard/guard#readme
 
-# rubocop:disable RegexpLiteral
-guard 'kitchen' do
-  watch(%r{test/.+})
-  watch(%r{^recipes/(.+)\.rb$})
-  watch(%r{^attributes/(.+)\.rb$})
-  watch(%r{^files/(.+)})
-  watch(%r{^templates/(.+)})
-  watch(%r{^providers/(.+)\.rb})
-  watch(%r{^resources/(.+)\.rb})
+guard 'rubocop' do
+  watch(/attributes\/.+\.rb$/)
+  watch(/providers\/.+\.rb$/)
+  watch(/recipes\/.+\.rb$/)
+  watch(/resources\/.+\.rb$/)
+  watch('metadata.rb')
 end
-# rubocop:enable RegexpLiteral
+
+guard :rspec, :cmd => 'chef exec /opt/chefdk/embedded/bin/rspec', :all_on_start => false, :notification => false do
+  watch(/^libraries\/(.+)\.rb$/)
+  watch(/^spec\/(.+)_spec\.rb$/)
+  watch(/^(recipes)\/(.+)\.rb$/)   { |m| "spec/#{m[1]}_spec.rb" }
+  watch('spec/spec_helper.rb')      { 'spec' }
+end
