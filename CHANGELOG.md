@@ -1,17 +1,28 @@
-## 1.0.0 (unreleased)
 
-* Changed default Docker port to IANA assigned 2375
+v1.0.0 (unreleased)
+--------------------
+* Work in progress... moving from "classic" recipe and attribute based
+  cookbook to resource based cookbook  
+* TODO docker_image and docker_container resources
+  
+v0.40.0
+-------
+Important changes with this release:
 
-Attribute deprecations:
+* MAJOR INTERFACE CHANGE
+* Recipes replaced with docker_service resource* 
+* Removing a ton of dependencies
+* Storage backends, kernel module loading, etc should now be handled externally
+* Updating for Docker 1.6.2
+* Preferring binary install method to OS packages
 
-* storage_type attribute renamed to storage_driver
-* virtualization_type attribute renamed to exec_driver
-* image LWRP dockerfile, image_url, and path attributes replaced with source attribute
-* container LWRP Fixnum port attribute: use full String notation from Docker documentation in port attribute instead
-* container LWRP public_port attribute: use port attribute instead
-* container LWRP networking attribute: use net attribute instead
+IMPORTANT
+* attributes/ will be removed in the next release.
+* most are currently non-functional
+* All options will be driven through resource properties
 
-## 0.37.0
+v0.37.0
+-------
 
 Please note some important changes with this release:
 
