@@ -56,6 +56,7 @@ attribute :status, kind_of: String
 attribute :stdin, kind_of: [TrueClass, FalseClass]
 attribute :tag, kind_of: String
 attribute :tty, kind_of: [TrueClass, FalseClass]
+attribute :ulimit, kind_of: [String, Array]
 attribute :user, kind_of: String
 attribute :volume, kind_of: [String, Array]
 attribute :volumes_from, kind_of: String
