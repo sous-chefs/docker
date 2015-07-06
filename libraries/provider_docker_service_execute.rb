@@ -2,7 +2,9 @@ class Chef
   class Provider
     class DockerService
       class Execute < Chef::Provider::DockerService
-        provides :docker_service, os: ' linux'
+        if Chef::Provider.respond_to?(:provides)
+          provides :docker_service, os: ' linux'
+        end
 
         # Start the service
         action :start do
