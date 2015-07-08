@@ -4,7 +4,11 @@ v1.0.0 (unreleased)
 * Work in progress... moving from "classic" recipe and attribute based
   cookbook to resource based cookbook  
 * TODO docker_image and docker_container resources
-  
+
+v0.40.1
+-------
+- Changing host property to kind_of Array
+
 v0.40.0
 -------
 Important changes with this release:
