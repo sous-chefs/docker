@@ -54,7 +54,7 @@ attribute :socket_template, kind_of: String
 attribute :source, kind_of: String
 attribute :status, kind_of: String
 attribute :stdin, kind_of: [TrueClass, FalseClass]
-attribute :tag, kind_of: String
+attribute :tag, kind_of: String, default: 'latest'
 attribute :tty, kind_of: [TrueClass, FalseClass]
 attribute :user, kind_of: String
 attribute :volume, kind_of: [String, Array]

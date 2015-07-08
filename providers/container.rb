@@ -352,7 +352,7 @@ end
 
 def run
   run_args = cli_args(run_cli_args)
-  dr = docker_cmd!("run #{run_args} #{new_resource.image} #{new_resource.command}")
+  dr = docker_cmd!("run #{run_args} #{new_resource.image}:#{new_resource.tag} #{new_resource.command}")
   dr.error!
   new_resource.id(dr.stdout.chomp)
   service_run if service?
