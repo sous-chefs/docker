@@ -2,7 +2,9 @@ class Chef
   class Provider
     class DockerService
       class Upstart < Chef::Provider::DockerService
-        provides :docker_service, platform: 'ubuntu'
+        if Chef::Provider.respond_to?(:provides)
+          provides :docker_service, platform: 'ubuntu'
+        end
 
         action :start do
           template '/etc/default/docker' do

@@ -11,7 +11,9 @@ class Chef
       default_action :create
 
       # register with the resource resolution system
-      provides :docker_service
+      if Chef::Provider.respond_to?(:provides)
+        provides :docker_service
+      end
 
       # service installation
       attribute :source, kind_of: String, default: nil

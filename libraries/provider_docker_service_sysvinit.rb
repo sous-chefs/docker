@@ -2,11 +2,13 @@ class Chef
   class Provider
     class DockerService
       class Sysvinit < Chef::Provider::DockerService
-        provides :docker_service, platform: 'amazon'
-        provides :docker_service, platform: 'centos'
-        provides :docker_service, platform: 'redhat'
-        provides :docker_service, platform: 'suse'
-        provides :docker_service, platform: 'debian'
+        if Chef::Provider.respond_to?(:provides)
+          provides :docker_service, platform: 'amazon'
+          provides :docker_service, platform: 'centos'
+          provides :docker_service, platform: 'redhat'
+          provides :docker_service, platform: 'suse'
+          provides :docker_service, platform: 'debian'
+        end
 
         action :start do
           template '/etc/init.d/docker' do

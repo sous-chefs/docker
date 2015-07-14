@@ -3,18 +3,20 @@ class Chef
     class DockerService
       class Systemd < Chef::Provider::DockerService
         # Set provider mappings for Chef 12
-        provides :docker_service, platform: 'fedora'
+        if Chef::Provider.respond_to?(:provides)
+          provides :docker_service, platform: 'fedora'
 
-        provides :docker_service, platform: %w(redhat centos scientific) do |node|
-          node['platform_version'].to_f >= 7.0
-        end
+          provides :docker_service, platform: %w(redhat centos scientific) do |node|
+            node['platform_version'].to_f >= 7.0
+          end
 
-        provides :docker_service, platform: %w(debian) do |node|
-          node['platform_version'].to_f >= 8.0
-        end
+          provides :docker_service, platform: %w(debian) do |node|
+            node['platform_version'].to_f >= 8.0
+          end
 
-        provides :docker_service, platform: 'ubuntu' do |node|
-          node['platform_version'].to_f >= 15.04
+          provides :docker_service, platform: 'ubuntu' do |node|
+            node['platform_version'].to_f >= 15.04
+          end
         end
 
         action :start do
