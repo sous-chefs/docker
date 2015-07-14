@@ -5,6 +5,15 @@ v1.0.0 (unreleased)
   cookbook to resource based cookbook  
 * TODO docker_image and docker_container resources
 
+v0.40.3 (2015-07-14)
+--------------------
+- remove --no-trunc from docker container status in sysvinit script
+- #334 - docker_container tag property (issue 320)
+- #331 - docker_container ulimit property
+- #328 - Upstart job respawn status detection
+- #326 - Upstart job restart behavior fix sysvinit script examples
+- #236 - README#324 - Reference DOCKER_OPTS Amazon Linux#325
+
 v0.40.2 (2015-07-14)
 --------------------
 - Support for older Chef versions
