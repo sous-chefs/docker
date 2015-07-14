@@ -5,12 +5,16 @@ v1.0.0 (unreleased)
   cookbook to resource based cookbook  
 * TODO docker_image and docker_container resources
 
-v0.40.1
--------
+v0.40.2 (2015-07-14)
+--------------------
+- Support for older Chef versions
+
+v0.40.1 (2015-07-08)
+--------------------
 - Changing host property to kind_of Array
 
-v0.40.0
--------
+v0.40.0  (2015-06-29)
+---------------------
 Important changes with this release:
 
 * MAJOR INTERFACE CHANGE
