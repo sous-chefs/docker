@@ -71,7 +71,7 @@ force_reload() {
 }
 
 status() {
-    $exec ps -a --no-trunc | grep $prog | grep -qc "Up"
+    $exec ps -a | grep $prog | grep -qc "Up"
 }
 
 case "$1" in
