@@ -517,6 +517,7 @@ remove_automatically | Automatically remove the container when it exits (incompa
 restart | Restart policy for the container (no, on-failure, always) | String | nil
 socket_template | Template to use for configuring socket (relevent for init_type systemd only) | String | nil
 stdin | Attach container's stdin | TrueClass, FalseClass | nil
+tag | Image tag | String | 'latest'
 tty | Allocate a pseudo-tty | TrueClass, FalseClass | nil
 user | User to run container | String | nil
 volume | Create bind mount(s) with: [host-dir]:[container-dir]:[rw\|ro]. If "container-dir" is missing, then docker creates a new volume. | String, Array | nil
