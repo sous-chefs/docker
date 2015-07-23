@@ -103,7 +103,11 @@ module DockerHelpers
     opts << ' --debug' if new_resource.debug
     opts << " --default-ulimit=#{new_resource.default_ulimit}" if new_resource.default_ulimit
     opts << " --dns=#{new_resource.dns}" if new_resource.dns
-    opts << " --dns-search=#{new_resource.dns_search}" if new_resource.dns_search
+    if new_resource.dns_search
+      new_resource.dns_search.each do |dns_search|
+        opts << " --dns-search=#{dns_search}"
+      end
+    end
     opts << " --exec-driver=#{new_resource.exec_driver}" if new_resource.exec_driver
     opts << " --fixed-cidr=#{new_resource.fixed_cidr}" if new_resource.fixed_cidr
     opts << " --fixed-cidr-v6=#{new_resource.fixed_cidr_v6}" if new_resource.fixed_cidr_v6
