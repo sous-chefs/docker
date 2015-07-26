@@ -3,7 +3,14 @@ v1.0.0 (unreleased)
 --------------------
 * Work in progress... moving from "classic" recipe and attribute based
   cookbook to resource based cookbook  
-* TODO docker_image and docker_container resources
+* TODO fix up docker_image and docker_container resources
+
+v0.41.0 (2015-07-26)
+--------------------
+- vendoring docker-api rubygem
+- beginning work to convert docker_image to use native API instead of shelling out
+- changing docker_image default action to :pull_if_missing
+- removing some deprecated interfaces
 
 v0.40.3 (2015-07-14)
 --------------------
