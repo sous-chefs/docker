@@ -1,0 +1,88 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: <DOCKER_HOST>/v1.16/images/create?fromImage=debian%3Awheezy
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Swipely/Docker-API 1.18.0
+      Content-Type:
+      - text/plain
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 12 Feb 2015 00:55:48 GMT
+    body:
+      encoding: US-ASCII
+      string: ! "{\"status\":\"The image you are pulling has been verified\",\"id\":\"debian:wheezy\"}\r\n{\"status\":\"Already
+        exists\",\"progressDetail\":{},\"id\":\"511136ea3c5a\"}{\"status\":\"Already
+        exists\",\"progressDetail\":{},\"id\":\"30d39e59ffe2\"}{\"status\":\"Already
+        exists\",\"progressDetail\":{},\"id\":\"c90d655b99b2\"}{\"status\":\"Status:
+        Image is up to date for debian:wheezy\"}\r\n"
+    http_version: 
+  recorded_at: Thu, 12 Feb 2015 00:55:48 GMT
+- request:
+    method: post
+    uri: <DOCKER_HOST>/v1.16/images/c90d655b99b2/tag?force=true&repo=teh
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Swipely/Docker-API 1.18.0
+      Content-Type:
+      - text/plain
+  response:
+    status:
+      code: 201
+      message: 
+    headers:
+      Date:
+      - Thu, 12 Feb 2015 00:55:48 GMT
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/plain; charset=utf-8
+    body:
+      encoding: US-ASCII
+      string: ''
+    http_version: 
+  recorded_at: Thu, 12 Feb 2015 00:55:48 GMT
+- request:
+    method: delete
+    uri: <DOCKER_HOST>/v1.16/images/teh:latest?noprune=true
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Swipely/Docker-API 1.18.0
+      Content-Type:
+      - text/plain
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 12 Feb 2015 00:55:48 GMT
+      Content-Length:
+      - '28'
+    body:
+      encoding: US-ASCII
+      string: ! '[{"Untagged":"teh:latest"}
+
+        ]'
+    http_version: 
+  recorded_at: Thu, 12 Feb 2015 00:55:48 GMT
+recorded_with: VCR 2.9.2

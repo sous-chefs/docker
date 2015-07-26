@@ -1,0 +1,34 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: <DOCKER_HOST>/v1.16/version
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Swipely/Docker-API 1.18.0
+      Content-Type:
+      - text/plain
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      Content-Type:
+      - application/json
+      Job-Name:
+      - version
+      Date:
+      - Thu, 12 Feb 2015 00:56:23 GMT
+      Content-Length:
+      - '144'
+    body:
+      encoding: US-ASCII
+      string: ! '{"ApiVersion":"1.16","Arch":"amd64","GitCommit":"5bc2ff8","GoVersion":"go1.3.3","KernelVersion":"3.17.6-1-ARCH","Os":"linux","Version":"1.4.1"}
+
+'
+    http_version: 
+  recorded_at: Thu, 12 Feb 2015 00:56:23 GMT
+recorded_with: VCR 2.9.2

@@ -1,0 +1,32 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: <DOCKER_HOST>/v1.16/auth
+    body:
+      encoding: UTF-8
+      string: ! '{"username":"<USERNAME>","password":"<PASSWORD>","email":"<USERNAME>@gmail.com","serveraddress":"https://index.docker.io/v1/"}'
+    headers:
+      User-Agent:
+      - Swipely/Docker-API 1.18.0
+      Content-Type:
+      - application/json
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 12 Feb 2015 00:56:24 GMT
+      Content-Length:
+      - '29'
+    body:
+      encoding: US-ASCII
+      string: ! '{"Status":"Login Succeeded"}
+
+'
+    http_version: 
+  recorded_at: Thu, 12 Feb 2015 00:56:24 GMT
+recorded_with: VCR 2.9.2

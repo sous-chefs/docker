@@ -1,0 +1,79 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: <DOCKER_HOST>/v1.16/images/search?term=sshd
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Swipely/Docker-API 1.18.0
+      Content-Type:
+      - text/plain
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 12 Feb 2015 00:56:02 GMT
+    body:
+      encoding: US-ASCII
+      string: ! '[{"description":"","is_official":false,"is_trusted":true,"name":"moul/sshd","star_count":1}
+
+        ,{"description":"Fedora docker file for ssh service which managed by supervisor","is_official":false,"is_trusted":true,"name":"kumarpraveen/fedora-sshd","star_count":1}
+
+        ,{"description":"Dockerized SSH service, built on top of official Ubuntu images.","is_official":false,"is_trusted":true,"name":"rastasheep/ubuntu-sshd","star_count":1}
+
+        ,{"description":"sshd on Fedora 20","is_official":false,"is_trusted":true,"name":"qlkao/sshd","star_count":0}
+
+        ,{"description":"Ubuntu 12.04 with SSHd and ubuntu user (check logs for initial
+        password).","is_official":false,"is_trusted":true,"name":"jimt/sshd","star_count":0}
+
+        ,{"description":"","is_official":false,"is_trusted":true,"name":"ariarijp/sshd","star_count":0}
+
+        ,{"description":"","is_official":false,"is_trusted":true,"name":"mogproject/sshd","star_count":0}
+
+        ,{"description":"","is_official":false,"is_trusted":true,"name":"larrycai/ubuntu-sshd","star_count":0}
+
+        ,{"description":"Run haproxy with sshd","is_official":false,"is_trusted":true,"name":"llamashoes/haproxy-sshd","star_count":0}
+
+        ,{"description":"","is_official":false,"is_trusted":true,"name":"titanous/sshd","star_count":0}
+
+        ,{"description":"","is_official":false,"is_trusted":true,"name":"speg03/sshd-centos","star_count":0}
+
+        ,{"description":"","is_official":false,"is_trusted":true,"name":"nishik20/sshd","star_count":0}
+
+        ,{"description":"","is_official":false,"is_trusted":true,"name":"jdauphant/jenkins-slave-sshd","star_count":0}
+
+        ,{"description":"","is_official":false,"is_trusted":true,"name":"instedd/cdx-sync-sshd","star_count":0}
+
+        ,{"description":"","is_official":false,"is_trusted":true,"name":"danhixon/sshd","star_count":0}
+
+        ,{"description":"A ssh server with password: admin","is_official":false,"is_trusted":true,"name":"wnameless/sshd","star_count":0}
+
+        ,{"description":"","is_official":false,"is_trusted":true,"name":"typester/sshd","star_count":0}
+
+        ,{"description":"","is_official":false,"is_trusted":true,"name":"eyenx/ubuntu-sshd","star_count":0}
+
+        ,{"description":"","is_official":false,"is_trusted":true,"name":"eyenx/archlinux-sshd","star_count":0}
+
+        ,{"description":"","is_official":false,"is_trusted":true,"name":"monokrome/sshd","star_count":0}
+
+        ,{"description":"","is_official":false,"is_trusted":true,"name":"mogproject/sshd-supervisor","star_count":0}
+
+        ,{"description":"Spoke container for etcd.","is_official":false,"is_trusted":true,"name":"radial/sshd","star_count":0}
+
+        ,{"description":"","is_official":false,"is_trusted":true,"name":"eyenx/debian-sshd","star_count":0}
+
+        ,{"description":"","is_official":false,"is_trusted":true,"name":"docku/sshd","star_count":0}
+
+        ,{"description":"","is_official":false,"is_trusted":true,"name":"trobz/sshd","star_count":0}
+
+        ]'
+    http_version: 
+  recorded_at: Thu, 12 Feb 2015 00:56:02 GMT
+recorded_with: VCR 2.9.2

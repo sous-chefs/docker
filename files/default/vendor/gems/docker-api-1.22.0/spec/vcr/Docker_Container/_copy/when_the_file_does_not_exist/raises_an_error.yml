@@ -1,0 +1,136 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: <DOCKER_HOST>/v1.16/images/create?fromImage=debian%3Awheezy
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Swipely/Docker-API 1.18.0
+      Content-Type:
+      - text/plain
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 12 Feb 2015 00:53:37 GMT
+    body:
+      encoding: US-ASCII
+      string: ! "{\"status\":\"The image you are pulling has been verified\",\"id\":\"debian:wheezy\"}\r\n{\"status\":\"Already
+        exists\",\"progressDetail\":{},\"id\":\"511136ea3c5a\"}{\"status\":\"Already
+        exists\",\"progressDetail\":{},\"id\":\"30d39e59ffe2\"}{\"status\":\"Already
+        exists\",\"progressDetail\":{},\"id\":\"c90d655b99b2\"}{\"status\":\"Status:
+        Image is up to date for debian:wheezy\"}\r\n"
+    http_version: 
+  recorded_at: Thu, 12 Feb 2015 00:53:37 GMT
+- request:
+    method: post
+    uri: <DOCKER_HOST>/v1.16/containers/create
+    body:
+      encoding: UTF-8
+      string: ! '{"Image":"c90d655b99b2","Cmd":["touch","/test"]}'
+    headers:
+      User-Agent:
+      - Swipely/Docker-API 1.18.0
+      Content-Type:
+      - application/json
+  response:
+    status:
+      code: 201
+      message: 
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 12 Feb 2015 00:53:38 GMT
+      Content-Length:
+      - '90'
+    body:
+      encoding: US-ASCII
+      string: ! '{"Id":"ed3183772e08bd79efe598b80aaacbe23b1533234b2587b35581c4517558d8e5","Warnings":null}
+
+'
+    http_version: 
+  recorded_at: Thu, 12 Feb 2015 00:53:38 GMT
+- request:
+    method: post
+    uri: <DOCKER_HOST>/v1.16/containers/ed3183772e08bd79efe598b80aaacbe23b1533234b2587b35581c4517558d8e5/start
+    body:
+      encoding: UTF-8
+      string: ! '{}'
+    headers:
+      User-Agent:
+      - Swipely/Docker-API 1.18.0
+      Content-Type:
+      - application/json
+  response:
+    status:
+      code: 204
+      message: 
+    headers:
+      Date:
+      - Thu, 12 Feb 2015 00:53:38 GMT
+    body:
+      encoding: US-ASCII
+      string: ''
+    http_version: 
+  recorded_at: Thu, 12 Feb 2015 00:53:38 GMT
+- request:
+    method: post
+    uri: <DOCKER_HOST>/v1.16/containers/ed3183772e08bd79efe598b80aaacbe23b1533234b2587b35581c4517558d8e5/wait
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Swipely/Docker-API 1.18.0
+      Content-Type:
+      - text/plain
+  response:
+    status:
+      code: 200
+      message: 
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 12 Feb 2015 00:53:38 GMT
+      Content-Length:
+      - '17'
+    body:
+      encoding: US-ASCII
+      string: ! '{"StatusCode":0}
+
+'
+    http_version: 
+  recorded_at: Thu, 12 Feb 2015 00:53:38 GMT
+- request:
+    method: delete
+    uri: <DOCKER_HOST>/v1.16/containers/ed3183772e08bd79efe598b80aaacbe23b1533234b2587b35581c4517558d8e5
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Swipely/Docker-API 1.18.0
+      Content-Type:
+      - text/plain
+  response:
+    status:
+      code: 204
+      message: 
+    headers:
+      Date:
+      - Thu, 12 Feb 2015 00:53:39 GMT
+    body:
+      encoding: US-ASCII
+      string: ''
+    http_version: 
+  recorded_at: Thu, 12 Feb 2015 00:53:39 GMT
+recorded_with: VCR 2.9.2
