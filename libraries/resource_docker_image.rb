@@ -7,7 +7,7 @@ class Chef
       self.resource_name = :docker_image
 
       # FIXME: invetory these
-      actions :build, :build_if_missing, :import, :load, :pull, :pull_if_missing, :push, :remove, :save, :tag
+      actions :build, :build_if_missing, :import, :pull, :pull_if_missing, :push, :remove, :save
       default_action :pull_if_missing
 
       attribute :cmd_timeout, kind_of: Integer, default: 300

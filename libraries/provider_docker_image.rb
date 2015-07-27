@@ -92,9 +92,6 @@ class Chef
         new_resource.updated_by_last_action(true)
       end
 
-      # action :load do
-      # end
-
       action :pull do
         pull_image
         new_resource.updated_by_last_action(true)
@@ -118,9 +115,6 @@ class Chef
         save_image
         new_resource.updated_by_last_action(true)
       end
-
-      # action :tag do
-      # end
 
     end
   end
