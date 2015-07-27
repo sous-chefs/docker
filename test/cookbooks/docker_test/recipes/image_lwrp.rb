@@ -44,10 +44,22 @@ docker_image 'nginx' do
   action :remove
 end
 
+# ########
+# # :save
+# ########
+
+docker_image 'save hello-world' do
+  image_name 'hello-world'
+  destination '/tmp/hello-world.tar'
+  not_if { ::File.exist? '/tmp/hello-world.tar' }
+  action :save
+end
+
 ########
 # :build
 ########
 
+# Build from a Dockerfile
 directory '/tmp/container1' do
   action :create
 end
@@ -70,19 +82,45 @@ execute 'image_1 marker' do
   action :nothing
 end
 
-# docker_image_build_2_dir = '/tmp/docker_image_build_2'
+# Build from a directory
+directory '/tmp/container2' do
+  action :create
+end
 
-# directory docker_image_build_2_dir
+file "/tmp/container2/foo.txt" do
+  content 'Dockerfile_2 contains ADD for this file'
+  action :create
+end
 
-# file "#{docker_image_build_2_dir}/foo.txt" do
-#   content 'Dockerfile_2 contains ADD for this file'
-# end
+cookbook_file '/tmp/container2/Dockerfile' do
+  source 'Dockerfile_2'
+  action :create
+end
 
-# cookbook_file "#{docker_image_build_2_dir}/Dockerfile" do
-#   source 'Dockerfile_2'
-# end
+docker_image 'image_2' do
+  tag 'v0.1.0'
+  source '/tmp/container2'
+  action :build_if_missing
+end
 
-# docker_image 'docker_image_build_2' do
-#   source docker_image_build_2_dir
-#   action :build
-# end
+# Build from a tarball
+cookbook_file '/tmp/image_3.tar' do
+  source 'image_3.tar'
+  action :create
+end
+
+docker_image 'image_3' do
+  tag 'v0.1.0'
+  source '/tmp/image_3.tar'
+  action :build_if_missing
+end
+
+#########
+# :import
+#########
+
+docker_image 'hello-again' do
+  tag 'v0.1.0'
+  source '/tmp/hello-world.tar'
+  action :import
+end

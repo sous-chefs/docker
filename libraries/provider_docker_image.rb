@@ -9,84 +9,118 @@ class Chef
         provides :docker_image
       end
 
-      # Mix in helpers from libraries/helpers.rb
-      include DockerHelpers
+      def build_from_directory
+        i = Docker::Image.build_from_dir(new_resource.source)
+        i.tag('repo' => new_resource.image_name, 'tag' => new_resource.tag, 'force' => true)
+      end
+
+      def build_from_dockerfile
+        i = Docker::Image.build(IO.read(new_resource.source))
+        i.tag('repo' => new_resource.image_name, 'tag' => new_resource.tag, 'force' => true)
+      end
+
+      def build_from_tar
+        i = Docker::Image.build_from_tar(::File.open(new_resource.source, 'r'))
+        i.tag('repo' => new_resource.image_name, 'tag' => new_resource.tag, 'force' => true)
+      end
+
+      def build_image       
+        if ::File.directory?(new_resource.source)
+          build_from_directory
+        elsif ::File.extname(new_resource.source) == '.tar'
+          build_from_tar
+        else
+          build_from_dockerfile
+        end
+      end
+
+      def import_image
+        begin
+          i = Docker::Image.import(new_resource.source)
+          i.tag('repo' => new_resource.image_name, 'tag' => new_resource.tag, 'force' => true)
+        rescue Docker::Error => e
+          fail e.message
+        end
+      end
+
+      def pull_image
+        begin
+          Docker::Image.create(
+            'fromImage' => new_resource.image_name,
+            'tag' => new_resource.tag
+            )
+        rescue Docker::Error => e
+          fail e.message
+        end
+      end
+
+      def remove_image
+        begin
+          i = Docker::Image.get(new_resource.image_name)
+          i.remove
+        rescue Docker::Error => e
+          fail e.message
+        end
+      end
+
+      def save_image
+        begin
+          Docker::Image.save(new_resource.image_name, new_resource.destination)
+        rescue Docker::Error, Errno::ENOENT => e
+          fail e.message
+        end
+      end
+
+      #########
+      # Actions
+      #########
 
       action :build do
-        # FIXME: add some error handling so we get a friendlier error
-        # message if dockerfile isn't found or whatever
-        dockerfile = IO.read(new_resource.source)
-        i = Docker::Image.build(dockerfile)
-        new_resource.updated_by_last_action(true)
-        i.tag('repo' => new_resource.image_name, 'tag' => new_resource.tag, 'force' => true)
+        build_image
         new_resource.updated_by_last_action(true)
       end
 
       action :build_if_missing do
-        # FIXME: reduce code cuplication between if_missing
-        @repotags = []
-        Docker::Image.all.each { |i| @repotags << i.info['RepoTags'] }
-        next if @repotags.include?(["#{new_resource.image_name}:#{new_resource.tag}"])
-
-        dockerfile = IO.read(new_resource.source)
-        i = Docker::Image.build(dockerfile)
-        new_resource.updated_by_last_action(true)
-        i.tag('repo' => new_resource.image_name, 'tag' => new_resource.tag, 'force' => true)
+        next if Docker::Image.exist?("#{new_resource.image_name}:#{new_resource.tag}")
+        action_build
         new_resource.updated_by_last_action(true)
       end
 
       action :import do
+        next if Docker::Image.exist?("#{new_resource.image_name}:#{new_resource.tag}")
+        import_image
+        new_resource.updated_by_last_action(true)
       end
 
-      action :load do
-      end
+      # action :load do
+      # end
 
-      # Explicitly pull every time.
-      # Good for grabing latest tag.
       action :pull do
-        # FIXME: add some error handling so we get a friendlier error
-        # message if an image isn't found or whatever.
-        Docker::Image.create(
-          'fromImage' => new_resource.image_name,
-          'tag' => new_resource.tag
-          )
+        pull_image
         new_resource.updated_by_last_action(true)
       end
 
-      # The convergent version of :pull
       action :pull_if_missing do
-        # test
-        @repotags = []
-        Docker::Image.all.each { |i| @repotags << i.info['RepoTags'] }
-        next if @repotags.include?(["#{new_resource.image_name}:#{new_resource.tag}"])
-
-        # repair
-        Docker::Image.create(
-          'fromImage' => new_resource.image_name,
-          'tag' => new_resource.tag
-          )
-        new_resource.updated_by_last_action(true)
+        next if Docker::Image.exist?("#{new_resource.image_name}:#{new_resource.tag}")
+        action_pull
       end
 
-      action :push do
-      end
+      # action :push do
+      # end
 
       action :remove do
-        begin
-          i = Docker::Image.get(new_resource.image_name)
-          i.remove
-        rescue Docker::Error::NotFoundError
-          next
-        end
+        next unless Docker::Image.exist?("#{new_resource.image_name}:#{new_resource.tag}")
+        remove_image
         new_resource.updated_by_last_action(true)
       end
 
-      # Export to tarball
       action :save do
+        save_image
+        new_resource.updated_by_last_action(true)
       end
 
-      action :tag do
-      end
+      # action :tag do
+      # end
 
     end
   end

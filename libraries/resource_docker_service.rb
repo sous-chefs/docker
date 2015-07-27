@@ -34,7 +34,7 @@ class Chef
       attribute :fixed_cidr_v6, kind_of: String, default: nil
       attribute :group, kind_of: String, default: nil
       attribute :graph, kind_of: String, default: nil
-      attribute :host, kind_of: Array, default: nil
+      attribute :host, kind_of: [String, Array], default: nil
       attribute :icc, kind_of: [TrueClass, FalseClass], default: nil
       attribute :insecure_registry, kind_of: String, default: nil
       attribute :ip, kind_of: String, regex: [IPV4_ADDR, IPV6_ADDR], default: nil

@@ -1,2 +1,2 @@
 FROM busybox
-RUN /bin/echo 'hello from docker_image_build_1'
+RUN /bin/echo 'hello from image_1'
