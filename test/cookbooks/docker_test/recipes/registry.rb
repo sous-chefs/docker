@@ -119,19 +119,6 @@ bash 'signing request for client' do
   action :run
 end
 
-# install certificates
-execute 'copy server cert for registry' do
-  command "cp #{caroot}/server.pem /tmp/registry/auth/server.crt"
-  creates '/tmp/registry/auth/server.crt'
-  action :run
-end
-
-execute 'copy server key for registry' do
-  command "cp #{caroot}/serverkey.pem /tmp/registry/auth/server.key"
-  creates '/tmp/registry/auth/server.key'
-  action :run
-end
-
 # Set up a test registry to test :push
 # https://github.com/docker/distribution/blob/master/docs/authentication.md
 #
@@ -158,9 +145,22 @@ template '/tmp/registry/auth/registry.conf' do
   action :create
 end
 
+# install certificates
+execute 'copy server cert for registry' do
+  command "cp #{caroot}/server.pem /tmp/registry/auth/server.crt"
+  creates '/tmp/registry/auth/server.crt'
+  action :run
+end
+
+execute 'copy server key for registry' do
+  command "cp #{caroot}/serverkey.pem /tmp/registry/auth/server.key"
+  creates '/tmp/registry/auth/server.key'
+  action :run
+end
+
 # testuser / testpassword
-cookbook_file '/tmp/registry/auth/registry.password' do
-  source 'registry/auth/registry.password'
+template '/tmp/registry/auth/registry.password' do
+  source 'registry/auth/registry.password.erb'
   owner 'root'
   mode '0755'
   action :create
