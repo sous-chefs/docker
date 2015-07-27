@@ -34,13 +34,13 @@ end
 #########
 
 # install something so it can be used to test the :remove action
-execute 'pull nginx' do
-  command 'docker pull nginx ; touch /tmp/nginx_marker'
-  creates '/tmp/nginx_marker'
+execute 'pull vbatts/slackware' do
+  command 'docker pull vbatts/slackware ; touch /tmp/slackware_marker'
+  creates '/tmp/slackware_marker'
   action :run
 end
 
-docker_image 'nginx' do
+docker_image 'vbatts/slackware' do
   action :remove
 end
 
@@ -124,3 +124,15 @@ docker_image 'hello-again' do
   source '/tmp/hello-world.tar'
   action :import
 end
+
+################
+# :tag and :push
+################
+
+include_recipe "docker_test::registry"
+
+# docker_image 'tag hello-again' do
+#   image_name 'hello-again'
+#   tag 'localhost:5000/someara/hello-again'
+#   action :tag
+# end
