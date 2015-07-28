@@ -48,6 +48,13 @@ class Chef
         raise e.message
       end
 
+      def push_image
+        i = Docker::Image.get("#{new_resource.repo}:#{new_resource.tag}")
+        i.push
+      rescue Docker::Error => e
+        raise e.message
+      end
+
       def remove_image
         i = Docker::Image.get("#{new_resource.repo}:#{new_resource.tag}")
         i.remove
@@ -92,8 +99,10 @@ class Chef
         action_pull
       end
 
-      # action :push do
-      # end
+      action :push do
+        push_image
+        new_resource.updated_by_last_action(true)
+      end
 
       action :remove do
         next unless Docker::Image.exist?("#{new_resource.repo}:#{new_resource.tag}")

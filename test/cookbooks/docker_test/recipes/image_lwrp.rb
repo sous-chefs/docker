@@ -154,4 +154,10 @@ docker_registry 'localhost:5043' do
   action :login
 end
 
-# require 'pry' ; binding.pry
+docker_image 'localhost:5043/someara/busybox' do
+  action :push
+end
+
+docker_image 'localhost:5043/someara/hello-again' do
+  action :push
+end
