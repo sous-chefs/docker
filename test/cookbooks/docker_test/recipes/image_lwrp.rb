@@ -7,7 +7,7 @@ docker_image 'hello-world'
 
 # non-default name attribute, containing a single quote
 docker_image "Tom's container" do
-  image_name 'tduffield/testcontainerd'
+  repo 'tduffield/testcontainerd'
 end
 
 # :pull action specified
@@ -17,7 +17,7 @@ docker_image 'busybox' do
   notifies :run, 'execute[busybox marker]'
 end
 
-# This marker business is so  chef-client does't :pull  during
+# This marker business is so chef-client does't :pull during
 # subsequent test-kitchen converges.
 execute 'busybox marker' do
   command 'touch /tmp/busybox_marker'
@@ -49,7 +49,7 @@ end
 # ########
 
 docker_image 'save hello-world' do
-  image_name 'hello-world'
+  repo 'hello-world'
   destination '/tmp/hello-world.tar'
   not_if { ::File.exist? '/tmp/hello-world.tar' }
   action :save
@@ -131,8 +131,10 @@ end
 
 include_recipe 'docker_test::registry'
 
-# docker_image 'tag hello-again' do
-#   image_name 'hello-again'
-#   tag 'localhost:5000/someara/hello-again'
-#   action :tag
-# end
+docker_tag 'private repo tag for hello-again:1.0.1' do
+  target_repo 'hello-again'
+  target_tag 'v0.1.0'
+  to_repo 'localhost:5000/someara/hello-again'
+  to_tag 'latest'
+  action :tag
+end

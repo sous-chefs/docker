@@ -49,7 +49,7 @@ class Chef
       end
 
       def remove_image
-        i = Docker::Image.get(new_resource.image_name)
+        i = Docker::Image.get("#{new_resource.image_name}:#{new_resource.tag}")
         i.remove
       rescue Docker::Error => e
         raise e.message
