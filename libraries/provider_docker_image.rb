@@ -1,13 +1,11 @@
-$:.unshift *Dir[File.expand_path('../../files/default/vendor/gems/**/lib', __FILE__)]
+$LOAD_PATH.unshift *Dir[File.expand_path('../../files/default/vendor/gems/**/lib', __FILE__)]
 require 'docker'
 
 class Chef
   class Provider
     class DockerImage < Chef::Provider::LWRPBase
       # register with the resource resolution system
-      if Chef::Provider.respond_to?(:provides)
-        provides :docker_image
-      end
+      provides :docker_image if Chef::Provider.respond_to?(:provides)
 
       def build_from_directory
         i = Docker::Image.build_from_dir(new_resource.source)
@@ -24,7 +22,7 @@ class Chef
         i.tag('repo' => new_resource.image_name, 'tag' => new_resource.tag, 'force' => true)
       end
 
-      def build_image       
+      def build_image
         if ::File.directory?(new_resource.source)
           build_from_directory
         elsif ::File.extname(new_resource.source) == '.tar'
@@ -35,40 +33,32 @@ class Chef
       end
 
       def import_image
-        begin
-          i = Docker::Image.import(new_resource.source)
-          i.tag('repo' => new_resource.image_name, 'tag' => new_resource.tag, 'force' => true)
-        rescue Docker::Error => e
-          fail e.message
-        end
+        i = Docker::Image.import(new_resource.source)
+        i.tag('repo' => new_resource.image_name, 'tag' => new_resource.tag, 'force' => true)
+      rescue Docker::Error => e
+        raise e.message
       end
 
       def pull_image
-        begin
-          Docker::Image.create(
-            'fromImage' => new_resource.image_name,
-            'tag' => new_resource.tag
-            )
-        rescue Docker::Error => e
-          fail e.message
-        end
+        Docker::Image.create(
+          'fromImage' => new_resource.image_name,
+          'tag' => new_resource.tag
+        )
+      rescue Docker::Error => e
+        raise e.message
       end
 
       def remove_image
-        begin
-          i = Docker::Image.get(new_resource.image_name)
-          i.remove
-        rescue Docker::Error => e
-          fail e.message
-        end
+        i = Docker::Image.get(new_resource.image_name)
+        i.remove
+      rescue Docker::Error => e
+        raise e.message
       end
 
       def save_image
-        begin
-          Docker::Image.save(new_resource.image_name, new_resource.destination)
-        rescue Docker::Error, Errno::ENOENT => e
-          fail e.message
-        end
+        Docker::Image.save(new_resource.image_name, new_resource.destination)
+      rescue Docker::Error, Errno::ENOENT => e
+        raise e.message
       end
 
       #########
@@ -115,7 +105,6 @@ class Chef
         save_image
         new_resource.updated_by_last_action(true)
       end
-
     end
   end
 end

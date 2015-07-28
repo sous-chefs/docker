@@ -87,7 +87,7 @@ directory '/tmp/container2' do
   action :create
 end
 
-file "/tmp/container2/foo.txt" do
+file '/tmp/container2/foo.txt' do
   content 'Dockerfile_2 contains ADD for this file'
   action :create
 end
@@ -129,7 +129,7 @@ end
 # :tag and :push
 ################
 
-include_recipe "docker_test::registry"
+include_recipe 'docker_test::registry'
 
 # docker_image 'tag hello-again' do
 #   image_name 'hello-again'
