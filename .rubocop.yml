@@ -34,6 +34,7 @@ Metrics/AbcSize:
 AllCops:
   Exclude:
     - 'Guardfile'
+    - 'files/default/vendor/**/*'
 
 Style/GuardClause:
   Enabled: false
