@@ -3,7 +3,17 @@ v1.0.0 (unreleased)
 --------------------
 * Work in progress... moving from "classic" recipe and attribute based
   cookbook to resource based cookbook  
-* TODO fix up docker_image and docker_container resources
+* TODO fix up docker_container resources
+* TODO update README for new docker_image and docker_container usage
+* ^ see test/cookbooks/docker_test/recipes/image_lwrp.rb for now
+* TODO remove old helper libraries
+
+v0.42.0 (2015-07-28)
+--------------------
+- removing docker_image :load and :tag action
+- adding docker_tag resource
+- renaming docker_tag image_name property to :repo; creating alias
+- implementing docker_image :push action
 
 v0.41.0 (2015-07-26)
 --------------------
