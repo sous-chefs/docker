@@ -129,8 +129,6 @@ end
 # :tag and :push
 ################
 
-include_recipe 'docker_test::registry'
-
 docker_tag 'private repo tag for hello-again:1.0.1' do
   target_repo 'hello-again'
   target_tag 'v0.1.0'
@@ -138,6 +136,16 @@ docker_tag 'private repo tag for hello-again:1.0.1' do
   to_tag 'latest'
   action :tag
 end
+
+docker_tag 'private repo tag for busybox:latest' do
+  target_repo 'busybox'
+  target_tag 'latest'
+  to_repo 'localhost:5043/someara/busybox'
+  to_tag 'latest'
+  action :tag
+end
+
+include_recipe 'docker_test::registry'
 
 docker_registry 'localhost:5043' do
   username 'testuser'

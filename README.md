@@ -6,9 +6,9 @@ Docker Cookbook
 The Docker Cookbook is a library cookbook that provides resources
 (LWRPs) for use in recipes.
 
-Breaking Changes Alert
+Breaking Changes Alert - UNSTABLE until 1.0.0
 ----------------------
-In version 1.0 of this cookbook, we have made a significant
+For version 1.0 of this cookbook (work in progress), we have made (are making) significant
 breaking changes including the way that we handle resources
 (`docker_image`, `docker_container` and `docker_registry`). It is
 highly recommended that you constrain the version of the cookbook you
