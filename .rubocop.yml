@@ -1,6 +1,9 @@
 AlignParameters:
   Enabled: false
 
+AmbiguousOperator:
+  Enabled: false
+
 Encoding:
   Enabled: false
 
@@ -10,11 +13,11 @@ ClassLength:
 MethodLength:
   Enabled: false
 
-LineLength:
+ModuleLength:
   Enabled: false
 
-# HashSyntax:
-#  EnforcedStyle: hash_rockets
+LineLength:
+  Enabled: false
 
 Documentation:
   Enabled: false

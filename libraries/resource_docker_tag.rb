@@ -8,7 +8,7 @@ class Chef
 
       actions :tag
       default_action :tag
-      
+
       attribute :target_repo, kind_of: String, name_attribute: true
       attribute :target_tag, kind_of: String
       attribute :to_repo, kind_of: String

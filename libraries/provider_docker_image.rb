@@ -8,18 +8,30 @@ class Chef
       provides :docker_image if Chef::Provider.respond_to?(:provides)
 
       def build_from_directory
-        i = Docker::Image.build_from_dir(new_resource.source)
-        i.tag('repo' => new_resource.repo, 'tag' => new_resource.tag, 'force' => true)
+        i = Docker::Image.build_from_dir(
+          new_resource.source,
+          'nocache' => new_resource.nocache,
+          'rm' => new_resource.rm
+        )
+        i.tag('repo' => new_resource.repo, 'tag' => new_resource.tag, 'force' => new_resource.force)
       end
 
       def build_from_dockerfile
-        i = Docker::Image.build(IO.read(new_resource.source))
-        i.tag('repo' => new_resource.repo, 'tag' => new_resource.tag, 'force' => true)
+        i = Docker::Image.build(
+          IO.read(new_resource.source),
+          'nocache' => new_resource.nocache,
+          'rm' => new_resource.rm
+        )
+        i.tag('repo' => new_resource.repo, 'tag' => new_resource.tag, 'force' => new_resource.force)
       end
 
       def build_from_tar
-        i = Docker::Image.build_from_tar(::File.open(new_resource.source, 'r'))
-        i.tag('repo' => new_resource.repo, 'tag' => new_resource.tag, 'force' => true)
+        i = Docker::Image.build_from_tar(
+          ::File.open(new_resource.source, 'r'),
+          'nocache' => new_resource.nocache,
+          'rm' => new_resource.rm
+        )
+        i.tag('repo' => new_resource.repo, 'tag' => new_resource.tag, 'force' => new_resource.force)
       end
 
       def build_image
@@ -34,7 +46,7 @@ class Chef
 
       def import_image
         i = Docker::Image.import(new_resource.source)
-        i.tag('repo' => new_resource.repo, 'tag' => new_resource.tag, 'force' => true)
+        i.tag('repo' => new_resource.repo, 'tag' => new_resource.tag, 'force' => new_resource.force)
       rescue Docker::Error => e
         raise e.message
       end
@@ -57,7 +69,7 @@ class Chef
 
       def remove_image
         i = Docker::Image.get("#{new_resource.repo}:#{new_resource.tag}")
-        i.remove
+        i.remove(force: new_resource.force, noprune: new_resource.noprune)
       rescue Docker::Error => e
         raise e.message
       end

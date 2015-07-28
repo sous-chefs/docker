@@ -123,9 +123,10 @@ loading, is out of scope for this cookbook.
 Resources Overview
 ------------------
 * `docker_service`: docker daemon installation and configuration
-* `docker_container`: container operations
 * `docker_image`: image/repository operations
+* `docker_tag`: image tagging operations
 * `docker_registry`: registry operations
+* `docker_container`: container operations
 
 ### Getting Started
 Here's a quick example of pulling the latest image and running a
@@ -160,21 +161,24 @@ docker_image 'apps/crowsnest' do
 end
 
 # Run container
-docker_container 'crowsnest'
+docker_container 'crowsnest' do
+  action :run
+end
 
 # Save current timestamp
 timestamp = Time.new.strftime('%Y%m%d%H%M')
 
 # Commit container changes
-docker_container 'crowsnest' do
-   repository 'apps'
-   tag timestamp
-   action :commit
+docker_tag 'crowsnest current timestamp' do
+   target_repo 'apps/crowsnest'
+   target_tag 'not-latest'
+   to_repo 'apps/crowsnest'
+   to_tag timestamp
+   action :tag
 end
 
 # Push image
-docker_image 'crowsnest' do
-  repository 'apps'
+docker_image 'apps/crowsnest' do
   tag timestamp
   action :push
 end
@@ -224,12 +228,12 @@ the options found in the
 - `source` - URL to the pre-compiled Docker binary used for
   installation. Defaults to a calculated URL based on kernel version,
   Docker version, and platform arch. By default, this will try to get
-  to "http://get.docker.io/builds/".  
+  to "http://get.docker.io/builds/".
 - `version` - Docker version to install
 - `checksum` - sha256 checksum of Docker binary
 - `instance` - Identity for ```docker_service``` resource. Defaults to
   name. Mostly unimportant for the 1.0 version because of its
-  singleton status. | String | nil 
+  singleton status. | String | nil
 - `api_cors_header` - Set CORS headers in the remote API
 - `bridge` - Attach containers to a network bridge
 - `bip` - Specify network bridge IP
@@ -242,9 +246,9 @@ the options found in the
 - `fixed_cidr_v6` - IPv6 subnet for fixed IPs
 - `group` - Posix group for the unix socket
 - `graph` - Root of the Docker runtime - Effectively, the "data
-  directory"  
+  directory"
 - `host` - Daemon socket(s) to connect to - `tcp://host:port`,
-  `unix:///path/to/socket`, `fd://*` or `fd://socketfd`  
+  `unix:///path/to/socket`, `fd://*` or `fd://socketfd`
 - `icc` - Enable inter-container communication
 - `ip` - Enable inter-container communication
 - `ip_forward` - Enable ip forwarding
@@ -274,8 +278,171 @@ the options found in the
 - tmpdir - ENV variable set before for Docker daemon starts
 - logfile - Location of Docker daemon log file
 
-# SAVEGAME: YOU ARE HERE
+#### Actions
+- `:create` - Lays the Docker bits out on disk
+- `:delete` - Removes the Docker bits from the disk
+- `:start` - Makes sure the service provider is set up properly and start it
+- `:stop` - Stops the service
+- `:restart` - Restarts the service
 
+#### Providers
+- Chef::Provider::DockerService::Execute - The simplest provider. Just
+  starts a process. Fire and forget.
+
+- Chef::Provider::DockerService::Sysvinit - Uses a SystemV init script
+  to manage the service state.
+
+- Chef::Provider::DockerService::Upstart - Uses an Upstart script to
+  manage the service state.
+
+- Chef::Provider::DockerService::Systemd - Uses an Systemd unit file to
+  manage the service state. NOTE: This does NOT enable systemd socket
+  activation.
+
+### docker_image
+
+#### Examples
+
+# default action, default properties
+docker_image 'hello-world'
+
+# non-default name attribute
+docker_image "Tom's container" do
+  repo 'tduffield/testcontainerd'
+  action :pull_if_missing
+end
+
+# :pull every time
+docker_image 'busybox' do
+  action :pull
+end
+
+# specify a tag
+docker_image 'alpine' do
+  tag '3.1'
+end
+
+docker_image 'vbatts/slackware' do
+  action :remove
+end
+
+# :save
+docker_image 'save hello-world' do
+  repo 'hello-world'
+  destination '/tmp/hello-world.tar'
+  not_if { ::File.exist? '/tmp/hello-world.tar' }
+  action :save
+end
+
+# :build from a Dockerfile on every chef-client run
+docker_image 'image_1' do
+  tag 'v0.1.0'
+  source '/src/myproject/container1/Dockerfile'
+  action :build
+end
+
+# :build from a directory, only if image is missing
+docker_image 'image_2' do
+  tag 'v0.1.0'
+  source '/src/myproject/container2'
+  action :build_if_missing
+end
+
+# :build from a tarball
+#
+# NOTE: this is not an "export" tarball generated from an an image
+# save.
+#
+# The contents should be a Dockerfile, and anything it references to
+# COPY or ADD
+docker_image 'image_3' do
+  tag 'v0.1.0'
+  source '/tmp/image_3.tar'
+  action :build
+end
+
+docker_image 'hello-again' do
+  tag 'v0.1.0'
+  source '/tmp/hello-world.tar'
+  action :import
+end
+
+# :push
+docker_image 'my.computers.biz:5043/someara/hello-again' do
+  action :push
+end
+
+#### Properties
+The `docker_image` resource properties mostly corresponds to the
+[Docker Remote API](https://docs.docker.com/reference/api/docker_remote_api_v1.16/#2-2-images)
+as driven by the
+[Swipley docker-api Ruby gem](https://github.com/swipely/docker-api)
+
+A `docker_image`'s full identifier is a string in the form
+"<repo>:<tag>". There is some nuance around the naming when the public
+registry vs a private one.
+
+- `repo` - aka `image_name` - The first half of a Docker image's
+  identity. This is a string in the form:
+  `registry:port/owner/image_name`. If the `registry:port` portion is
+  left off, Docker will implicitly use the Docker public registry.
+  "Official Images" omit the owner part. This means a repo id can look
+  as short as `busybox`, `alpine`, or `centos`, to refer to official
+  images on the public registry, and as long as
+  `my.computers.biz:5043:/what/ever` to refer to custom images on an
+  private registry. Often you'll see something like `someara/chef` to
+  refer to private images on the public registry. - Defaults to
+  resource name.
+- `tag` - The second half of a Docker image's identity. - Defaults to `latest`
+- `source` - Path to input for the `:import`, `:build` and `:build_if_missing`
+  actions. For building, this can be a Dockerfile, a tarball
+  containing a Dockerfile in its root, or a directory containing a
+  Dockerfile. For import, this should be a tarball containing Docker
+  formatted image, as generated with `:save`.
+- `destination` - Path for output from the `:save` action.
+- `force` A force boolean used in various actions - Defaults to false
+- `nocache` - Used in `:build` operations. - Defaults to false
+- `noprune` - Used in `:remove` operations - Defaults to false
+- `rm` - Remove intermediate containers after a successful build
+  (default behavior) - Defaults to `true`
+
+#### Actions
+The following actions are available for a `docker_image` resource.
+Defaults to `pull_if_missing`
+
+- `:pull` - Pulls an image from the registry
+- `:pull_if_missing` - Pulls an image from the registry, only if it missing
+- `:build` - Builds an image from a Dockerfile, directory, or tarball
+- `:build_if_missing` - Same build, but only if it is missing
+- `:save` - Exports an image to a tarball at `destination`
+- `:import` - Imports an image from a tarball at `destination`
+- `:remove` - Removes (untags) an image
+- `:push` - Pushes an image to the registry
+
+### docker_tag
+Docker tags work very much like hard links in a Unix filesystem. They
+are just references to an existing image. Therefore, the docker_tag
+resource has taken inspiration from the Chef `link` resource.
+
+#### Examples
+docker_tag 'private repo tag for hello-again:1.0.1' do
+  target_repo 'hello-again'
+  target_tag 'v0.1.0'
+  to_repo 'localhost:5043/someara/hello-again'
+  to_tag 'latest'
+  action :tag
+end
+
+#### Properties
+- `target_repo` - The repo half of the source image identifier.
+- `target_tag` - The tag half of the source image identifier.
+- `to_repo` - The repo half of the new image identifier
+- `to_tag`- The tag half of the new image identifier
+
+#### Actions
+- `:tag` - Tags the image
+
+### SAVEGAME: you are here
 ### docker_container
 
 Below are the available actions for the LWRP, default being `run`.
@@ -572,7 +739,7 @@ This would produce the command:
     --name=logspout \
     -d \
     -h $(hostname) \
-    -v=/var/run/docker.sock:/tmp/docker.sock \  
+    -v=/var/run/docker.sock:/tmp/docker.sock \
     progrium/logspout syslog://logs.papertrailapp.com:999999`
 ```
 
@@ -623,234 +790,6 @@ Wait for a container to finish:
 docker_container 'busybox' do
   command 'sleep 9999'
   action :wait
-end
-```
-
-### docker_image
-
-Below are the available actions for the LWRP, default being `pull`.
-
-These attributes are associated with all LWRP actions.
-
-Attribute | Description | Type | Default
-----------|-------------|------|--------
-cmd_timeout | Timeout for docker commands (catchable exception: `Chef::Provider::Docker::Image::CommandTimeout`) | Integer | `node['docker']['image_cmd_timeout']`
-
-#### docker_image action :build and :build_if_missing
-
-These attributes are associated with this LWRP action.
-
-Attribute | Description | Type | Default
-----------|-------------|------|--------
-dockerfile (*DEPRECATED*) | Dockerfile to build image | String | nil
-image_url (*DEPRECATED*) | URL to grab image | String | nil
-no_cache | Do not use the cache when building the image | TrueClass, FalseClass | false
-path (*DEPRECATED*) | Local path to files | String | nil
-rm | Remove intermediate containers after a successful build | TrueClass, FalseClass | false
-source | Source dockerfile/directory/URL to build | String | nil
-tag | Optional tag for image | String | nil
-
-Build image from Dockerfile:
-
-```ruby
-docker_image 'myImage' do
-  tag 'myTag'
-  source 'myImageDockerfile'
-  action :build_if_missing
-end
-```
-
-Build image from remote repository:
-
-```ruby
-docker_image 'myImage' do
-  source 'example.com/foo/myImage'
-  tag 'myTag'
-  action :build_if_missing
-end
-```
-
-Conditionally rebuild image if changes upstream:
-
-```ruby
-git "#{Chef::Config[:file_cache_path]}/docker-testcontainerd" do
-  repository 'git@github.com:bflad/docker-testcontainerd.git'
-  notifies :build, 'docker_image[tduffield/testcontainerd]', :immediately
-end
-
-docker_image 'tduffield/testcontainerd' do
-  action :pull_if_missing
-end
-```
-
-#### docker_image action :import
-
-These attributes are associated with this LWRP action.
-
-Attribute | Description | Type | Default
-----------|-------------|------|--------
-image_url (*DEPRECATED*) | URL to grab image | String | nil
-repository | Optional repository | String | nil
-source | Source file/directory/URL | String | nil
-tag | Optional tag for image | String | nil
-
-Import image from local directory:
-
-```ruby
-docker_image 'test' do
-  source '/path/to/test'
-  action :import
-end
-```
-
-Import image from local file:
-
-```ruby
-docker_image 'test' do
-  source '/path/to/test.tgz'
-  action :import
-end
-```
-
-Import image from remote URL:
-
-```ruby
-docker_image 'test' do
-  source 'https://example.com/testimage.tgz'
-  action :import
-end
-```
-
-#### docker_image action :load
-
-These attributes are associated with this LWRP action.
-
-Attribute | Description | Type | Default
-----------|-------------|------|--------
-input | Image source (via tar archive file) | String | nil
-source | Image source (via stdin) | String | nil
-
-Load repository via input:
-
-```ruby
-docker_image 'test' do
-  input '/path/to/test.tar'
-  action :load
-end
-```
-
-Load repository via stdin:
-
-```ruby
-docker_image 'test' do
-  source '/path/to/test.tgz'
-  action :load
-end
-```
-
-#### docker_image action :pull and :pull_if_missing
-
-These attributes are associated with this LWRP action.
-
-Attribute | Description | Type | Default
-----------|-------------|------|--------
-registry | Optional registry server | String | nil
-tag | Optional tag for image | String | nil
-
-Pull latest image every Chef run:
-
-```ruby
-docker_image 'busybox'
-```
-
-Pull latest image only if missing:
-
-```ruby
-docker_image 'busybox' do
-  action :pull_if_missing
-end
-```
-
-Pull tagged image:
-
-```ruby
-docker_image 'bflad/test' do
-  tag 'not-latest'
-end
-```
-
-#### docker_image action :push
-
-Push image (after logging in with `docker_registry`):
-
-```ruby
-docker_image 'bflad/test' do
-  action :push
-end
-```
-
-#### docker_image action :remove
-
-These attributes are associated with this LWRP action.
-
-Attribute | Description | Type | Default
-----------|-------------|------|--------
-force | Force removal | TrueClass, FalseClass | nil
-no_prune | Do not delete untagged parents | TrueClass, FalseClass | nil
-
-Remove image:
-
-```ruby
-docker_image 'busybox' do
-  action :remove
-end
-```
-
-#### docker_image action :save
-
-These attributes are associated with this LWRP action.
-
-Attribute | Description | Type | Default
-----------|-------------|------|--------
-destination | Destination path (via stdout) | String | nil
-output | Destination path (via file) | String | nil
-tag | Save specific tag | String | nil
-
-Save repository via file to path:
-
-```ruby
-docker_image 'test' do
-  destination '/path/to/test.tar'
-  action :save
-end
-```
-
-Save repository via stdout to path:
-
-```ruby
-docker_image 'test' do
-  destination '/path/to/test.tgz'
-  action :save
-end
-```
-
-#### docker_image action :tag
-
-These attributes are associated with this LWRP action.
-
-Attribute | Description | Type | Default
-----------|-------------|------|--------
-force | Force operation | Boolean | false
-repository | Remote repository | String | nil
-tag | Specific tag for image | String | nil
-
-Tag image:
-
-```ruby
-docker_image 'test' do
-  repository 'bflad'
-  tag '1.0.0'
-  action :tag
 end
 ```
 

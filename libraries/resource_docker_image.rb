@@ -9,22 +9,19 @@ class Chef
       actions :build, :build_if_missing, :import, :pull, :pull_if_missing, :push, :remove, :save
       default_action :pull_if_missing
 
-      attribute :cmd_timeout, kind_of: Integer, default: 300
-      attribute :created, kind_of: String
-      attribute :destination, kind_of: String
-      attribute :force, kind_of: [TrueClass, FalseClass]
-      attribute :id, kind_of: String
-      attribute :input, kind_of: String
-      attribute :no_cache, kind_of: [TrueClass, FalseClass]
-      attribute :no_prune, kind_of: [TrueClass, FalseClass]
-      attribute :output, kind_of: String
-      attribute :registry, kind_of: String
+      # https://docs.docker.com/reference/api/docker_remote_api_v1.16/
+      attribute :destination, kind_of: String, default: nil
+      attribute :force, kind_of: [TrueClass, FalseClass], default: false
+      attribute :nocache, kind_of: [TrueClass, FalseClass], default: false
+      attribute :noprune, kind_of: [TrueClass, FalseClass], default: false
       attribute :repo, kind_of: String, name_attribute: true
-      attribute :rm, kind_of: [TrueClass, FalseClass]
+      attribute :rm, kind_of: [TrueClass, FalseClass], default: true
       attribute :source, kind_of: String
       attribute :tag, kind_of: String, default: 'latest'
 
       alias_method :image_name, :repo
+      alias_method :no_cache, :nocache
+      alias_method :no_prune, :noprune
     end
   end
 end
