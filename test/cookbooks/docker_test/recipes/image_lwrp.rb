@@ -134,7 +134,16 @@ include_recipe 'docker_test::registry'
 docker_tag 'private repo tag for hello-again:1.0.1' do
   target_repo 'hello-again'
   target_tag 'v0.1.0'
-  to_repo 'localhost:5000/someara/hello-again'
+  to_repo 'localhost:5043/someara/hello-again'
   to_tag 'latest'
   action :tag
 end
+
+docker_registry 'localhost:5043' do
+  username 'testuser'
+  password 'testpassword'
+  email 'alice@computers.biz'
+  action :login
+end
+
+# require 'pry' ; binding.pry

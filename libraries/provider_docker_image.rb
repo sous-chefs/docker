@@ -9,17 +9,17 @@ class Chef
 
       def build_from_directory
         i = Docker::Image.build_from_dir(new_resource.source)
-        i.tag('repo' => new_resource.image_name, 'tag' => new_resource.tag, 'force' => true)
+        i.tag('repo' => new_resource.repo, 'tag' => new_resource.tag, 'force' => true)
       end
 
       def build_from_dockerfile
         i = Docker::Image.build(IO.read(new_resource.source))
-        i.tag('repo' => new_resource.image_name, 'tag' => new_resource.tag, 'force' => true)
+        i.tag('repo' => new_resource.repo, 'tag' => new_resource.tag, 'force' => true)
       end
 
       def build_from_tar
         i = Docker::Image.build_from_tar(::File.open(new_resource.source, 'r'))
-        i.tag('repo' => new_resource.image_name, 'tag' => new_resource.tag, 'force' => true)
+        i.tag('repo' => new_resource.repo, 'tag' => new_resource.tag, 'force' => true)
       end
 
       def build_image
@@ -34,14 +34,14 @@ class Chef
 
       def import_image
         i = Docker::Image.import(new_resource.source)
-        i.tag('repo' => new_resource.image_name, 'tag' => new_resource.tag, 'force' => true)
+        i.tag('repo' => new_resource.repo, 'tag' => new_resource.tag, 'force' => true)
       rescue Docker::Error => e
         raise e.message
       end
 
       def pull_image
         Docker::Image.create(
-          'fromImage' => new_resource.image_name,
+          'fromImage' => new_resource.repo,
           'tag' => new_resource.tag
         )
       rescue Docker::Error => e
@@ -49,14 +49,14 @@ class Chef
       end
 
       def remove_image
-        i = Docker::Image.get("#{new_resource.image_name}:#{new_resource.tag}")
+        i = Docker::Image.get("#{new_resource.repo}:#{new_resource.tag}")
         i.remove
       rescue Docker::Error => e
         raise e.message
       end
 
       def save_image
-        Docker::Image.save(new_resource.image_name, new_resource.destination)
+        Docker::Image.save(new_resource.repo, new_resource.destination)
       rescue Docker::Error, Errno::ENOENT => e
         raise e.message
       end
@@ -71,13 +71,13 @@ class Chef
       end
 
       action :build_if_missing do
-        next if Docker::Image.exist?("#{new_resource.image_name}:#{new_resource.tag}")
+        next if Docker::Image.exist?("#{new_resource.repo}:#{new_resource.tag}")
         action_build
         new_resource.updated_by_last_action(true)
       end
 
       action :import do
-        next if Docker::Image.exist?("#{new_resource.image_name}:#{new_resource.tag}")
+        next if Docker::Image.exist?("#{new_resource.repo}:#{new_resource.tag}")
         import_image
         new_resource.updated_by_last_action(true)
       end
@@ -88,7 +88,7 @@ class Chef
       end
 
       action :pull_if_missing do
-        next if Docker::Image.exist?("#{new_resource.image_name}:#{new_resource.tag}")
+        next if Docker::Image.exist?("#{new_resource.repo}:#{new_resource.tag}")
         action_pull
       end
 
@@ -96,7 +96,7 @@ class Chef
       # end
 
       action :remove do
-        next unless Docker::Image.exist?("#{new_resource.image_name}:#{new_resource.tag}")
+        next unless Docker::Image.exist?("#{new_resource.repo}:#{new_resource.tag}")
         remove_image
         new_resource.updated_by_last_action(true)
       end
