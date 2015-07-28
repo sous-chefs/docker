@@ -155,9 +155,23 @@ docker_registry 'localhost:5043' do
 end
 
 docker_image 'localhost:5043/someara/busybox' do
+  not_if { ::File.exist? '/tmp/private_busybox_marker' }
+  notifies :run, 'execute[private_busybox marker]'
   action :push
 end
 
+execute 'private_busybox marker' do
+  command 'touch /tmp/private_busybox_marker'
+  action :nothing
+end
+
 docker_image 'localhost:5043/someara/hello-again' do
+  not_if { ::File.exist? '/tmp/private_hello-again_marker' }
+  notifies :run, 'execute[private_hello-again marker]'
   action :push
+end
+
+execute 'private_hello-again marker' do
+  command 'touch /tmp/private_hello-again_marker'
+  action :nothing
 end
