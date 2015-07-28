@@ -8,6 +8,11 @@ v1.0.0 (unreleased)
 * ^ see test/cookbooks/docker_test/recipes/image_lwrp.rb for now
 * TODO remove old helper libraries
 
+v0.43.0 (2015-07-28)
+--------------------
+- Updating README to reflect docker_image and docker_tag reality
+- Implementing rm, noprune, nocache and force on docker_image
+
 v0.42.0 (2015-07-28)
 --------------------
 - removing docker_image :load and :tag action
