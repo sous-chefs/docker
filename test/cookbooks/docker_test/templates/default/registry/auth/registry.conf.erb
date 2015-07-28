@@ -1,10 +1,10 @@
 upstream docker-registry {
-  server <%= node['network']['interfaces']['docker0']['addresses'].select { |address, data| data['family'] == 'inet' }.keys[0] %>:5000;
+  server <%= node['ipaddress'] %>:5000;
 }
 
 server {
   listen 443 ssl;
-  server_name <%= node['network']['interfaces']['docker0']['addresses'].select { |address, data| data['family'] == 'inet' }.keys[0] %>;
+  server_name <%= node['ipaddress'] %>;
 
   # Disable SSL for testing registry
   ssl_certificate /etc/nginx/conf.d/server.crt;
