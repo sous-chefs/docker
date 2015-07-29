@@ -13,14 +13,14 @@ default['docker']['init_type'] = value_for_platform(
     'default' => 'sysv'
   },
   %w(redhat centos) => {
-    %w(6.0 6.1 6.2 6.3 6.4 6.5 6.6) => 'sysv',
+    '~> 6.0' => 'sysv',
     'default' => 'systemd'
   },
   %w(fedora) => {
     'default' => 'systemd'
   },
   %w(ubuntu) => {
-    %w(15.04) => 'systemd',
+    '>= 15' => 'systemd',
     'default' => 'upstart'
   },
   'default' => 'upstart'
@@ -85,7 +85,7 @@ default['docker']['package']['name'] = value_for_platform(
     'default' => 'docker'
   },
   %w(centos redhat) => {
-    %w(6.0 6.1 6.2 6.3 6.4 6.5 6.6) => 'docker-io',
+    '~> 6.0' => 'docker-io',
     'default' => 'docker'
   },
   'fedora' => {
@@ -98,7 +98,7 @@ default['docker']['package']['name'] = value_for_platform(
     'default' => 'homebrew/binary/docker'
   },
   'ubuntu' => {
-    %w(12.04 12.10 13.04 13.10 14.04 14.10 15.04) => 'lxc-docker',
+    '>= 12' => 'lxc-docker',
     'default' => 'docker.io'
   },
   'default' => nil
@@ -108,7 +108,7 @@ default['docker']['package']['repo_url'] = value_for_platform(
     'default' => 'https://get.docker.io/ubuntu'
   },
   'ubuntu' => {
-    %w(12.04 12.10 13.04 13.10 14.04 14.10 15.04) => 'https://get.docker.io/ubuntu',
+    '>= 12' => 'https://get.docker.io/ubuntu',
     'default' => nil
   },
   'default' => nil
@@ -171,7 +171,7 @@ default['docker']['storage_opt'] = nil
 # the systemd system dir is different in newer Ubuntu (and debian?)
 default['docker']['systemd_system_dir'] = value_for_platform(
   'ubuntu' => {
-    %w(15.04) => '/lib/systemd/system',
+    '>= 15' => '/lib/systemd/system',
     'default' => '/usr/lib/systemd/system'
   },
   'default' => '/usr/lib/systemd/system'
