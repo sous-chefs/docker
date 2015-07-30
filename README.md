@@ -272,11 +272,11 @@ the options found in the
 - `tlskey` - Path to TLS key file
 - `tlsverify` - Use TLS and verify the remote
 - `default_ulimit` - Set default ulimit settings for containers
-- http_proxy - ENV variable set before for Docker daemon starts
-- https_proxy - ENV variable set before for Docker daemon starts
-- no_proxy - ENV variable set before for Docker daemon starts
-- tmpdir - ENV variable set before for Docker daemon starts
-- logfile - Location of Docker daemon log file
+- `http_proxy` - ENV variable set before for Docker daemon starts
+- `https_proxy` - ENV variable set before for Docker daemon starts
+- `no_proxy` - ENV variable set before for Docker daemon starts
+- `tmpdir` - ENV variable set before for Docker daemon starts
+- `logfile` - Location of Docker daemon log file
 
 #### Actions
 - `:create` - Lays the Docker bits out on disk
