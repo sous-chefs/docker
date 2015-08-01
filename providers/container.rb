@@ -10,6 +10,8 @@ def load_current_resource
     @current_resource.created(ps['created'])
     @current_resource.id(ps['id'])
     @current_resource.status(ps['status'])
+    @current_resource.image(ps['image'])
+    @current_resource.command(ps['command'].gsub!(/^"|"$/, ''))
     break
   end
   @current_resource
@@ -94,7 +96,12 @@ action :restart do
 end
 
 action :run do
-  unless running?
+  if exists? && changed?
+    stop
+    remove_container
+    run
+    new_resource.updated_by_last_action(true)
+  elsif !running?
     if exists?
       start
     else
@@ -275,6 +282,13 @@ end
 
 def exists?
   @current_resource.id
+end
+
+def changed?
+  return true unless @current_resource.name == new_resource.name
+  return true unless @current_resource.image == new_resource.image
+  return true unless (!new_resource.command.nil?) && (!@current_resource.command.nil?) && (@current_resource.command.end_with? new_resource.command)
+  false
 end
 
 def export
