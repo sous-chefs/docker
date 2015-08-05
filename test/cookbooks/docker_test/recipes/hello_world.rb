@@ -5,10 +5,10 @@ docker_service 'default' do
 end
 
 docker_image 'busybox' do
-  action :pull
+  action :pull_if_missing
 end
 
-docker_container 'an echo server' do
+docker_container 'echo_server' do
   image 'busybox'
   port '1234:1234'
   command 'nc -ll -p 1234 -e /bin/cat'
