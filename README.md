@@ -303,21 +303,21 @@ the options found in the
 
 #### Examples
 
-# default action, default properties
+#### default action, default properties
 docker_image 'hello-world'
 
-# non-default name attribute
+#### non-default name attribute
 docker_image "Tom's container" do
   repo 'tduffield/testcontainerd'
   action :pull_if_missing
 end
 
-# :pull every time
+#### :pull every time
 docker_image 'busybox' do
   action :pull
 end
 
-# specify a tag
+#### specify a tag
 docker_image 'alpine' do
   tag '3.1'
 end
@@ -326,7 +326,7 @@ docker_image 'vbatts/slackware' do
   action :remove
 end
 
-# :save
+#### :save
 docker_image 'save hello-world' do
   repo 'hello-world'
   destination '/tmp/hello-world.tar'
@@ -334,27 +334,27 @@ docker_image 'save hello-world' do
   action :save
 end
 
-# :build from a Dockerfile on every chef-client run
+##### :build from a Dockerfile on every chef-client run
 docker_image 'image_1' do
   tag 'v0.1.0'
   source '/src/myproject/container1/Dockerfile'
   action :build
 end
 
-# :build from a directory, only if image is missing
+#### :build from a directory, only if image is missing
 docker_image 'image_2' do
   tag 'v0.1.0'
   source '/src/myproject/container2'
   action :build_if_missing
 end
 
-# :build from a tarball
-#
-# NOTE: this is not an "export" tarball generated from an an image
-# save.
-#
-# The contents should be a Dockerfile, and anything it references to
-# COPY or ADD
+#### :build from a tarball
+####
+#### NOTE: this is not an "export" tarball generated from an an image
+#### save.
+####
+#### The contents should be a Dockerfile, and anything it references to
+#### COPY or ADD
 docker_image 'image_3' do
   tag 'v0.1.0'
   source '/tmp/image_3.tar'
@@ -367,7 +367,7 @@ docker_image 'hello-again' do
   action :import
 end
 
-# :push
+#### :push
 docker_image 'my.computers.biz:5043/someara/hello-again' do
   action :push
 end
@@ -406,7 +406,7 @@ registry vs a private one.
 - `rm` - Remove intermediate containers after a successful build
   (default behavior) - Defaults to `true`
 
-#### Actions
+### Actions
 The following actions are available for a `docker_image` resource.
 Defaults to `pull_if_missing`
 
@@ -419,7 +419,7 @@ Defaults to `pull_if_missing`
 - `:remove` - Removes (untags) an image
 - `:push` - Pushes an image to the registry
 
-### docker_tag
+#### docker_tag
 Docker tags work very much like hard links in a Unix filesystem. They
 are just references to an existing image. Therefore, the docker_tag
 resource has taken inspiration from the Chef `link` resource.
@@ -439,7 +439,7 @@ end
 - `to_repo` - The repo half of the new image identifier
 - `to_tag`- The tag half of the new image identifier
 
-#### Actions
+### Actions
 - `:tag` - Tags the image
 
 ### SAVEGAME: you are here
