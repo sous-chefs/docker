@@ -7,6 +7,10 @@ class Chef
       # register with the resource resolution system
       provides :docker_image if Chef::Provider.respond_to?(:provides)
 
+      ################
+      # Helper methods
+      ################
+
       def build_from_directory
         i = Docker::Image.build_from_dir(
           new_resource.source,

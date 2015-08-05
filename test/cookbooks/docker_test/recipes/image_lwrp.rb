@@ -17,8 +17,7 @@ docker_image 'busybox' do
   notifies :run, 'execute[busybox marker]'
 end
 
-# This marker business is so chef-client does't :pull during
-# subsequent test-kitchen converges.
+# marker to prevent :run on subsequent converges.
 execute 'busybox marker' do
   command 'touch /tmp/busybox_marker'
   action :nothing

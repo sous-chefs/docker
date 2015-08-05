@@ -19,6 +19,7 @@ class Chef
       attribute :source, kind_of: String
       attribute :tag, kind_of: String, default: 'latest'
 
+      alias_method :image, :repo
       alias_method :image_name, :repo
       alias_method :no_cache, :nocache
       alias_method :no_prune, :noprune
