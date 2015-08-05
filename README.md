@@ -304,49 +304,65 @@ the options found in the
 #### Examples
 
 #### default action, default properties
+```ruby
 docker_image 'hello-world'
+```
 
 #### non-default name attribute
+```ruby
 docker_image "Tom's container" do
   repo 'tduffield/testcontainerd'
   action :pull_if_missing
 end
+```
 
 #### :pull every time
+```ruby
 docker_image 'busybox' do
   action :pull
 end
+```
 
 #### specify a tag
+```ruby
 docker_image 'alpine' do
   tag '3.1'
 end
+```
 
+```ruby
 docker_image 'vbatts/slackware' do
   action :remove
 end
+```
 
 #### :save
+```ruby
 docker_image 'save hello-world' do
   repo 'hello-world'
   destination '/tmp/hello-world.tar'
   not_if { ::File.exist? '/tmp/hello-world.tar' }
   action :save
 end
+```
 
 ##### :build from a Dockerfile on every chef-client run
+```ruby
 docker_image 'image_1' do
   tag 'v0.1.0'
   source '/src/myproject/container1/Dockerfile'
   action :build
 end
+```
 
 #### :build from a directory, only if image is missing
+```ruby
 docker_image 'image_2' do
   tag 'v0.1.0'
   source '/src/myproject/container2'
   action :build_if_missing
 end
+```
 
 #### :build from a tarball
 ####
@@ -355,22 +371,28 @@ end
 ####
 #### The contents should be a Dockerfile, and anything it references to
 #### COPY or ADD
+```ruby
 docker_image 'image_3' do
   tag 'v0.1.0'
   source '/tmp/image_3.tar'
   action :build
 end
+```
 
+```ruby
 docker_image 'hello-again' do
   tag 'v0.1.0'
   source '/tmp/hello-world.tar'
   action :import
 end
+```
 
 #### :push
+```ruby
 docker_image 'my.computers.biz:5043/someara/hello-again' do
   action :push
 end
+```
 
 #### Properties
 The `docker_image` resource properties mostly corresponds to the
@@ -425,6 +447,7 @@ are just references to an existing image. Therefore, the docker_tag
 resource has taken inspiration from the Chef `link` resource.
 
 #### Examples
+```ruby
 docker_tag 'private repo tag for hello-again:1.0.1' do
   target_repo 'hello-again'
   target_tag 'v0.1.0'
@@ -432,6 +455,7 @@ docker_tag 'private repo tag for hello-again:1.0.1' do
   to_tag 'latest'
   action :tag
 end
+```
 
 #### Properties
 - `target_repo` - The repo half of the source image identifier.
