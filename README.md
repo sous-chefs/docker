@@ -365,12 +365,10 @@ end
 ```
 
 #### :build from a tarball
-####
-#### NOTE: this is not an "export" tarball generated from an an image
-#### save.
-####
-#### The contents should be a Dockerfile, and anything it references to
-#### COPY or ADD
+NOTE: this is not an "export" tarball generated from an an image save.
+The contents should be a Dockerfile, and anything it references to
+COPY or ADD
+
 ```ruby
 docker_image 'image_3' do
   tag 'v0.1.0'
