@@ -12,6 +12,5 @@ docker_container 'an echo server' do
   image 'busybox'
   port '1234:1234'
   command 'nc -ll -p 1234 -e /bin/cat'
-  detach true
-  init_type false
+  action :run
 end
