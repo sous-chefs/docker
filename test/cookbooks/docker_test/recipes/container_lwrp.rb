@@ -16,15 +16,8 @@ end
 docker_container 'busybox_ls' do
   repo 'busybox'
   command 'ls -la /'
+  not_if "[ ! -z `docker ps -qaf 'name=busybox_ls$'` ]"
   action :run
-  not_if { ::File.exist? '/tmp/container_marker_busybox_ls' }
-  notifies :run, 'execute[container_marker_busybox_ls]', :immediately
-end
-
-# marker to prevent :run on subsequent converges.
-execute 'container_marker_busybox_ls' do
-  command 'touch /tmp/container_marker_busybox_ls'
-  action :nothing
 end
 
 ###############
@@ -65,8 +58,7 @@ end
 # start a container to be killed
 execute 'bill' do
   command 'docker run --name bill -d busybox nc -ll -p 187 -e /bin/cat'
-  not_if "[ ! -z `docker ps -qaf 'name=bill'` ]"
-  not_if { ::File.exist? '/tmp/container_marker_bill' }
+  not_if "[ ! -z `docker ps -qaf 'name=bill$'` ]"
   notifies :run, 'execute[container_marker_bill]', :immediately
   action :run
 end
@@ -88,16 +80,8 @@ end
 # start a container to be stopped
 execute 'hammer_time' do
   command 'docker run --name hammer_time -d busybox nc -ll -p 187 -e /bin/cat'
-  not_if "[ ! -z `docker ps -qaf 'name=hammer_time'` ]"
-  not_if { ::File.exist? '/tmp/container_marker_hammer_time' }
-  notifies :run, 'execute[container_marker_hammer_time]', :immediately
+  not_if "[ ! -z `docker ps -qaf 'name=hammer_time$'` ]"
   action :run
-end
-
-# marker to prevent :run on subsequent converges.
-execute 'container_marker_hammer_time' do
-  command 'touch /tmp/container_marker_hammer_time'
-  action :nothing
 end
 
 docker_container 'hammer_time' do
@@ -112,15 +96,7 @@ end
 execute 'red_light' do
   command 'docker run --name red_light -d busybox nc -ll -p 42 -e /bin/cat'
   not_if "[ ! -z `docker ps -qaf 'name=red_light'` ]"
-  not_if { ::File.exist? '/tmp/container_marker_red_light' }
-  notifies :run, 'execute[container_marker_red_light]', :immediately
   action :run
-end
-
-# marker to prevent :run on subsequent converges.
-execute 'container_marker_red_light' do
-  command 'touch /tmp/container_marker_red_light'
-  action :nothing
 end
 
 docker_container 'red_light' do
@@ -137,16 +113,8 @@ bash 'green_light' do
   docker run --name green_light -d busybox nc -ll -p 42 -e /bin/cat
   docker pause green_light
   EOF
-  not_if "[ ! -z `docker ps -qaf 'name=green_light'` ]"
-  not_if { ::File.exist? '/tmp/container_marker_green_light' }
-  notifies :run, 'execute[container_marker_green_light]', :immediately
+  not_if "[ ! -z `docker ps -qaf 'name=green_light$'` ]"
   action :run
-end
-
-# marker to prevent :run on subsequent converges.
-execute 'container_marker_green_light' do
-  command 'touch /tmp/container_marker_green_light'
-  action :nothing
 end
 
 docker_container 'green_light' do
@@ -183,7 +151,7 @@ bash 'restarter' do
   code <<-EOF
   docker run --name restarter -d busybox nc -ll -p 69 -e /bin/cat
   EOF
-  not_if "[ ! -z `docker ps -qaf 'name=restarter'` ]"
+  not_if "[ ! -z `docker ps -qaf 'name=restarter$'` ]"
   action :run
 end
 
@@ -228,5 +196,101 @@ execute 'redeploy an_echo_server' do
   command 'touch /tmp/container_marker_an_echo_server_redeploy'
   creates '/tmp/container_marker_an_echo_server_redeploy'
   notifies :redeploy, 'docker_container[an_echo_server]'
+  action :run
+end
+
+#############
+# bind mounts
+#############
+
+directory '/hostbits' do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
+
+file '/hostbits/hello.txt' do
+  content 'hello there\n'
+  owner 'root'
+  group 'root'
+  mode '0644'
+  action :create
+end
+
+directory '/more-hostbits' do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
+
+file '/more-hostbits/hello.txt' do
+  content 'hello there\n'
+  owner 'root'
+  group 'root'
+  mode '0644'
+  action :create
+end
+
+# Inspect the docker logs with test-kitchen bussers.
+docker_container 'bind_mounter' do
+  repo 'busybox'
+  command 'ls -la /bits /more-bits'
+  binds ['/hostbits:/bits', '/more-hostbits:/more-bits']
+  not_if "[ ! -z `docker ps -qaf 'name=bind_mounter$'` ]"
+  action :run
+end
+
+##############
+# volumes_from
+##############
+
+# build a chef container
+directory '/chefbuilder' do
+  owner 'root'
+  group 'root'
+  action :create
+end
+
+execute 'copy chef to chefbuilder' do
+  command 'tar cf - /opt/chef | tar xf - -C /chefbuilder'
+  creates '/chefbuilder/opt'
+  action :run
+end
+
+file '/chefbuilder/Dockerfile' do
+  content <<-EOF
+  FROM scratch
+  ADD opt /opt
+  VOLUME /opt/chef
+  EOF
+  action :create
+end
+
+docker_image 'chef' do
+  tag 'latest'
+  source '/chefbuilder'
+  action :build_if_missing
+end
+
+# start a volume container
+docker_container 'chef' do
+  command 'true'
+  repo 'chef'
+  action :create
+end
+
+# mount it from another container
+docker_image "debian" do
+  action :pull_if_missing
+end
+
+# Inspect the docker logs with test-kitchen bussers.
+docker_container 'ohai_debian' do
+  command '/opt/chef/embedded/bin/ohai platform'
+  repo 'debian'
+  volumes_from 'chef'
+  not_if "[ ! -z `docker ps -qaf 'name=ohai_debian$'` ]"
   action :run
 end

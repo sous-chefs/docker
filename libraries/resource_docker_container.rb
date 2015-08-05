@@ -4,7 +4,7 @@ class Chef
       self.resource_name = :docker_container
 
       actions :create, :start, :stop, :kill, :run, :pause, :unpause, :restart, :delete, :redeploy
-      default_action :create
+      default_action :run
 
       attribute :container_name, kind_of: String, name_attribute: true
       attribute :repo, kind_of: String, default: nil
@@ -46,7 +46,7 @@ class Chef
       attribute :tty, kind_of: [TrueClass, FalseClass], default: false
       attribute :ulimits, kind_of: [Hash, Array, NilClass], default: nil
       attribute :user, kind_of: String, default: ''
-      attribute :volumes, kind_of: [Hash, NilClass], default: '' # FIXME: add validate proc and test
+      attribute :volumes, kind_of: [String, Array, NilClass], default: '' # FIXME: add validate proc and test
       attribute :volumes_from, kind_of: [String, Array, NilClass], default: nil # FIXME: add validate proc and test
       attribute :working_dir, kind_of: String, default: ''
 

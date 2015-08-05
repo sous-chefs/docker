@@ -58,6 +58,8 @@ class Chef
 
       # Map container exposed port to the host
       def port_bindings
+        return nil if new_resource.port.nil?
+        return nil if new_resource.port.empty?
         {
           "#{container_port}" => [
             {
@@ -66,6 +68,15 @@ class Chef
             }
           ]
         }
+      end
+
+      def parsed_binds
+        # require 'pry' ; binding.pry if new_resource.container_name == 'bind_mounter'
+        Array(new_resource.binds)
+      end
+
+      def parsed_volumes_from
+        Array(new_resource.volumes_from)
       end
 
       # Most important work is done here.
@@ -91,8 +102,7 @@ class Chef
           'User' => new_resource.user,
           'WorkingDir' => new_resource.working_dir,
           'HostConfig' => {
-            'PortBindings' => port_bindings,
-            'Binds' => new_resource.binds,
+            'Binds' => parsed_binds,
             'CapAdd' => new_resource.cap_add,
             'CapDrop' => new_resource.cap_drop,
             'CgroupParent' => new_resource.cgroup_parent,
@@ -107,11 +117,12 @@ class Chef
             'Memory' => new_resource.memory,
             'MemorySwap' => new_resource.memory_swap,
             'Privileged' => new_resource.privileged,
+            'PortBindings' => port_bindings,
             'PublishAllPorts' => new_resource.publish_all_ports,
             'RestartPolicy' => new_resource.restart_policy,
             'Ulimits' => new_resource.ulimits,
             'Volumes' => new_resource.volumes,
-            'VolumesFrom' => new_resource.volumes_from
+            'VolumesFrom' => parsed_volumes_from
           }
         )
         rescue Docker::Error => e
