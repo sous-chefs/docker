@@ -294,3 +294,23 @@ docker_container 'ohai_debian' do
   not_if "[ ! -z `docker ps -qaf 'name=ohai_debian$'` ]"
   action :run
 end
+
+#############
+# :autoremove
+#############
+
+# Inspect volume container with test-kitchen bussers.
+docker_container 'sean_was_here' do
+  command "touch /opt/chef/sean_was_here-#{Time.new.strftime('%Y%m%d%H%M')}"
+  repo 'debian'
+  volumes_from 'chef'
+  autoremove true
+  not_if { ::File.exist? '/tmp/container_marker_sean_was_here' }
+  notifies :run, 'execute[container_marker_sean_was_here]', :immediately
+  action :run
+end
+
+execute 'container_marker_sean_was_here' do
+  command 'touch /tmp/container_marker_sean_was_here'
+  action :nothing
+end

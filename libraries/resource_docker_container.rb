@@ -11,9 +11,10 @@ class Chef
       attribute :tag, kind_of: String, default: 'latest'
       attribute :command, kind_of: String, default: ''
 
-      attribute :attach_stderr, kind_of: [TrueClass, FalseClass], default: true # FIXME: needs tests
-      attribute :attach_stdin, kind_of: [TrueClass, FalseClass], default: false # FIXME: alias_method?
+      attribute :attach_stderr, kind_of: [TrueClass, FalseClass], default: true
+      attribute :attach_stdin, kind_of: [TrueClass, FalseClass], default: false
       attribute :attach_stdout, kind_of: [TrueClass, FalseClass], default: true
+      attribute :autoremove, kind_of: [TrueClass, FalseClass], default: false
       attribute :binds, kind_of: [String, Array, NilClass], default: nil # FIXME: add validate proc
       attribute :cap_add, kind_of: [String, Array, NilClass], default: nil # FIXME: add validate proc
       attribute :cap_drop, kind_of: [String, Array, NilClass], default: nil # FIXME: add validate proc
@@ -46,13 +47,15 @@ class Chef
       attribute :tty, kind_of: [TrueClass, FalseClass], default: false
       attribute :ulimits, kind_of: [Hash, Array, NilClass], default: nil
       attribute :user, kind_of: String, default: ''
-      attribute :volumes, kind_of: [String, Array, NilClass], default: '' # FIXME: add validate proc and test
-      attribute :volumes_from, kind_of: [String, Array, NilClass], default: nil # FIXME: add validate proc and test
+      attribute :volumes, kind_of: [String, Array, NilClass], default: '' # FIXME: add validate proc
+      attribute :volumes_from, kind_of: [String, Array, NilClass], default: nil # FIXME: add validate proc
       attribute :working_dir, kind_of: String, default: ''
 
       alias_method :image, :repo
       alias_method :image_name, :repo
       alias_method :additional_host, :extra_hosts
+      alias_method :rm, :autoremove
+      alias_method :remove_automatically, :autoremove
     end
   end
 end

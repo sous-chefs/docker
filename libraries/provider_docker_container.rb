@@ -177,6 +177,7 @@ class Chef
       action :run do
         action_create
         action_start
+        action_delete if new_resource.autoremove
       end
 
       action :pause do
