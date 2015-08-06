@@ -410,3 +410,35 @@ docker_container 'env' do
   not_if "[ ! -z `docker ps -qaf 'name=env$'` ]"
   action :run
 end
+
+#########
+# devices
+#########
+
+# create file on disk
+execute 'create disk file' do
+  command 'dd if=/dev/zero of=/root/disk1 bs=1024 count=1'
+  creates '/root/disk1'
+  action :run
+end
+
+# create loop device
+execute 'create loop device' do
+  command 'losetup /dev/loop1 /root/disk1'
+  not_if 'losetup -l | grep ^/dev/loop1'
+  action :run
+end
+
+# host's /root/disk1 md5sum should NOT match 0f343b0931126a20f133d67c2b018a3b
+docker_container 'devices' do
+  repo 'debian'
+  command 'sh -c "lsblk ; dd if=/dev/urandom of=/dev/loop1 bs=1024 count=1"'
+  devices [{
+    'PathOnHost' => '/dev/loop1',
+    'PathInContainer' => '/dev/loop1',
+    'CgroupPermissions' => 'rwm'
+  }]
+  cap_add 'SYS_ADMIN'
+  not_if "[ ! -z `docker ps -qaf 'name=devices$'` ]"
+  action :run
+end

@@ -130,6 +130,11 @@ class Chef
         Array(new_resource.env)
       end
 
+      def parsed_devices
+        return nil if new_resource.devices.nil?
+        Array(new_resource.devices)
+      end
+
       # Most important work is done here.
       def create_container
         Docker::Container.create(
@@ -160,7 +165,7 @@ class Chef
             'CgroupParent' => new_resource.cgroup_parent,
             'CpuShares' => new_resource.cpu_shares,
             'CpusetCpus' => new_resource.cpuset_cpus,
-            'Devices' => new_resource.devices,
+            'Devices' => parsed_devices,
             'Dns' => parsed_dns,
             'DnsSearch' => parsed_dns_search,
             'ExtraHosts' => parsed_extra_hosts,

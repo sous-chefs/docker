@@ -21,7 +21,7 @@ class Chef
       attribute :cgroup_parent, kind_of: String, default: '' # FIXME: add validate proc
       attribute :cpu_shares, kind_of: Fixnum, default: 0 # FIXME: add validate proc
       attribute :cpuset_cpus, kind_of: String, default: '' # FIXME: add validate proc
-      attribute :devices, kind_of: [Hash, NilClass], default: nil # FIXME: add validate proc
+      attribute :devices, kind_of: [Hash, Array, NilClass], default: nil # FIXME: add validate proc
       attribute :dns, kind_of: [String, Array, NilClass], default: nil
       attribute :dns_search, kind_of: [String, Array, NilClass], default: nil
       attribute :domain_name, kind_of: String, default: ''
