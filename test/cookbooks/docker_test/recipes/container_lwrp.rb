@@ -263,7 +263,6 @@ file '/chefbuilder/Dockerfile' do
   content <<-EOF
   FROM scratch
   ADD opt /opt
-  VOLUME /opt/chef
   EOF
   action :create
 end
@@ -278,11 +277,12 @@ end
 docker_container 'chef' do
   command 'true'
   repo 'chef'
+  volumes '/opt/chef'
   action :create
 end
 
 # mount it from another container
-docker_image "debian" do
+docker_image 'debian' do
   action :pull_if_missing
 end
 

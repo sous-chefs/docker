@@ -79,6 +79,15 @@ class Chef
         Array(new_resource.volumes_from)
       end
 
+      def parsed_volumes
+        return nil if new_resource.volumes.nil?
+        return nil if new_resource.volumes.empty?
+        varray = Array(new_resource.volumes)
+        vhash = {}
+        varray.each { |v| vhash[v] = {} }
+        vhash
+      end
+
       # Most important work is done here.
       def create_container
         Docker::Container.create(
@@ -100,6 +109,7 @@ class Chef
           'StdinOnce' => new_resource.stdin_once,
           'Tty' => new_resource.tty,
           'User' => new_resource.user,
+          'Volumes' => parsed_volumes,
           'WorkingDir' => new_resource.working_dir,
           'HostConfig' => {
             'Binds' => parsed_binds,
@@ -121,7 +131,6 @@ class Chef
             'PublishAllPorts' => new_resource.publish_all_ports,
             'RestartPolicy' => new_resource.restart_policy,
             'Ulimits' => new_resource.ulimits,
-            'Volumes' => new_resource.volumes,
             'VolumesFrom' => parsed_volumes_from
           }
         )
