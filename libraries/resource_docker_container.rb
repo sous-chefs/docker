@@ -30,7 +30,7 @@ class Chef
       attribute :extra_hosts, kind_of: [String, Array, NilClass], default: nil # FIXME: needs tests
       attribute :host_name, kind_of: String, default: ''
       attribute :links, kind_of: [String, Array, NilClass], default: nil # FIXME: add validate proc
-      attribute :log_config, kind_of: [Hash, NilClass], default: nil # FIXME: add validate proc
+      attribute :log_config, kind_of: [Hash, NilClass], default: nil # FIXME: add validate proc and tests
       attribute :mac_address, kind_of: String, default: '' # FIXME: needs tests
       attribute :memory, kind_of: Fixnum, default: 0
       attribute :memory_swap, kind_of: Fixnum, default: 0
@@ -56,6 +56,9 @@ class Chef
       alias_method :additional_host, :extra_hosts
       alias_method :rm, :autoremove
       alias_method :remove_automatically, :autoremove
+      alias_method :hostname, :host_name
+      alias_method :domainname, :domain_name
+      alias_method :dnssearch, :dns_search
     end
   end
 end

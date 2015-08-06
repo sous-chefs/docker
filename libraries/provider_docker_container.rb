@@ -1,5 +1,6 @@
 $LOAD_PATH.unshift *Dir[File.expand_path('../../files/default/vendor/gems/**/lib', __FILE__)]
 require 'docker'
+require 'shellwords'
 
 class Chef
   class Provider
@@ -27,7 +28,7 @@ class Chef
 
       # The remote API wants an argv style array
       def parsed_command
-        new_resource.command.gsub(/\s+/m, ' ').gsub(/^\s+|\s+$/m, '').split(' ')
+        ::Shellwords.shellwords(new_resource.command)
       end
 
       # ip:hostPort:containerPort | ip::containerPort | hostPort:containerPort | containerPort
@@ -88,6 +89,47 @@ class Chef
         vhash
       end
 
+      def parsed_cap_add
+        return nil if new_resource.cap_add.nil?
+        return nil if new_resource.cap_add.empty?
+        Array(new_resource.cap_add)
+      end
+
+      def parsed_cap_drop
+        return nil if new_resource.cap_drop.nil?
+        return nil if new_resource.cap_drop.empty?
+        Array(new_resource.cap_drop)
+      end
+
+      def parsed_dns
+        return nil if new_resource.dns.nil?
+        return nil if new_resource.dns.empty?
+        Array(new_resource.dns)
+      end
+
+      def parsed_dns_search
+        return nil if new_resource.dns_search.nil?
+        Array(new_resource.dns_search)
+      end
+
+      def parsed_extra_hosts
+        return nil if new_resource.extra_hosts.nil?
+        return nil if new_resource.extra_hosts.empty?
+        Array(new_resource.extra_hosts)
+      end
+
+      def parsed_links
+        return nil if new_resource.links.nil?
+        return nil if new_resource.links.empty?
+        Array(new_resource.links)
+      end
+
+      def parsed_env
+        return nil if new_resource.env.nil?
+        puts "SEANWASHERE: #{env}"
+        Array(new_resource.env)
+      end
+
       # Most important work is done here.
       def create_container
         Docker::Container.create(
@@ -113,16 +155,16 @@ class Chef
           'WorkingDir' => new_resource.working_dir,
           'HostConfig' => {
             'Binds' => parsed_binds,
-            'CapAdd' => new_resource.cap_add,
-            'CapDrop' => new_resource.cap_drop,
+            'CapAdd' => parsed_cap_add,
+            'CapDrop' => parsed_cap_drop,
             'CgroupParent' => new_resource.cgroup_parent,
             'CpuShares' => new_resource.cpu_shares,
             'CpusetCpus' => new_resource.cpuset_cpus,
             'Devices' => new_resource.devices,
-            'Dns' => new_resource.dns,
-            'DnsSearch' => new_resource.dns_search,
-            'ExtraHosts' => new_resource.extra_hosts,
-            'Links' => new_resource.links,
+            'Dns' => parsed_dns,
+            'DnsSearch' => parsed_dns_search,
+            'ExtraHosts' => parsed_extra_hosts,
+            'Links' => parsed_links,
             'LogConfig' => new_resource.log_config,
             'Memory' => new_resource.memory,
             'MemorySwap' => new_resource.memory_swap,

@@ -137,7 +137,7 @@ end
 
 docker_container 'quitter' do
   not_if { ::File.exist? '/tmp/container_marker_quitter_restarter' }
-  notifies :run, 'execute[container_marker_quitter_restarter]'
+  notifies :run, 'execute[container_marker_quitter_restarter]', :immediately
   action :restart
 end
 
@@ -157,7 +157,7 @@ end
 
 docker_container 'restarter' do
   not_if { ::File.exist? '/tmp/container_marker_restarter_restarter' }
-  notifies :run, 'execute[container_marker_restarter_restarter]'
+  notifies :run, 'execute[container_marker_restarter_restarter]', :immediately
   action :restart
 end
 
@@ -175,7 +175,7 @@ execute 'deleteme' do
   command 'docker run --name deleteme -d busybox nc -ll -p 187 -e /bin/cat'
   not_if "[ ! -z `docker ps -qaf 'name=deleteme'` ]"
   not_if { ::File.exist?('/tmp/container_marker_deleteme') }
-  notifies :run, 'execute[container_marker_deleteme]'
+  notifies :run, 'execute[container_marker_deleteme]', :immediately
   action :run
 end
 
@@ -195,7 +195,7 @@ end
 execute 'redeploy an_echo_server' do
   command 'touch /tmp/container_marker_an_echo_server_redeploy'
   creates '/tmp/container_marker_an_echo_server_redeploy'
-  notifies :redeploy, 'docker_container[an_echo_server]'
+  notifies :redeploy, 'docker_container[an_echo_server]', :immediately
   action :run
 end
 
@@ -233,7 +233,7 @@ file '/more-hostbits/hello.txt' do
   action :create
 end
 
-# Inspect the docker logs with test-kitchen bussers.
+# Inspect the docker logs with test-kitchen bussers
 docker_container 'bind_mounter' do
   repo 'busybox'
   command 'ls -la /bits /more-bits'
@@ -286,7 +286,7 @@ docker_image 'debian' do
   action :pull_if_missing
 end
 
-# Inspect the docker logs with test-kitchen bussers.
+# Inspect the docker logs with test-kitchen bussers
 docker_container 'ohai_debian' do
   command '/opt/chef/embedded/bin/ohai platform'
   repo 'debian'
@@ -299,7 +299,7 @@ end
 # :autoremove
 #############
 
-# Inspect volume container with test-kitchen bussers.
+# Inspect volume container with test-kitchen bussers
 docker_container 'sean_was_here' do
   command "touch /opt/chef/sean_was_here-#{Time.new.strftime('%Y%m%d%H%M')}"
   repo 'debian'
@@ -310,7 +310,103 @@ docker_container 'sean_was_here' do
   action :run
 end
 
+# marker to prevent :run on subsequent converges.
 execute 'container_marker_sean_was_here' do
   command 'touch /tmp/container_marker_sean_was_here'
   action :nothing
+end
+
+#########
+# cap_add
+#########
+
+# Inspect system with test-kitchen bussers
+docker_container 'cap_add_net_admin' do
+  repo 'debian'
+  command 'bash -c "ip addr add 10.9.8.7/24 brd + dev eth0 label eth0:0 ; ip addr list"'
+  cap_add 'NET_ADMIN'
+  not_if "[ ! -z `docker ps -qaf 'name=cap_add_net_admin$'` ]"
+  action :run
+end
+
+#######
+# mknod
+#######
+
+# Inspect container logs with test-kitchen bussers
+docker_container 'cap_drop_mknod' do
+  repo 'debian'
+  command 'bash -c "mknod -m 444 /dev/urandom2 c 1 9 ; ls -la /dev/urandom2"'
+  cap_drop 'MKNOD'
+  not_if "[ ! -z `docker ps -qaf 'name=cap_drop_mknod$'` ]"
+  action :run
+end
+
+###########################
+# host_name and domain_name
+###########################
+
+# Inspect container logs with test-kitchen bussers
+docker_container 'fqdn' do
+  repo 'debian'
+  command 'hostname -f'
+  host_name 'computers'
+  domain_name 'biz'
+  not_if "[ ! -z `docker ps -qaf 'name=fqdn$'` ]"
+  action :run
+end
+
+#####
+# dns
+#####
+
+# Inspect container logs with test-kitchen bussers
+docker_container 'dns' do
+  repo 'debian'
+  command 'cat /etc/resolv.conf'
+  host_name 'computers'
+  dns ['4.3.2.1', '1.2.3.4']
+  dns_search ['computers.biz', 'chef.io']
+  not_if "[ ! -z `docker ps -qaf 'name=dns$'` ]"
+  action :run
+end
+
+#############
+# extra_hosts
+#############
+
+# Inspect container logs with test-kitchen bussers
+docker_container 'extra_hosts' do
+  repo 'debian'
+  command 'cat /etc/hosts'
+  extra_hosts ['east:4.3.2.1', 'west:1.2.3.4']
+  not_if "[ ! -z `docker ps -qaf 'name=extra_hosts$'` ]"
+  action :run
+end
+
+############
+# entrypoint
+############
+
+# Inspect container logs with test-kitchen bussers
+docker_container 'ohai_again_debian' do
+  repo 'debian'
+  volumes_from 'chef'
+  entrypoint '/opt/chef/embedded/bin/ohai'
+  command 'platform'
+  not_if "[ ! -z `docker ps -qaf 'name=ohai_again_debian$'` ]"
+  action :run
+end
+
+#####
+# env
+#####
+
+# Inspect container logs with test-kitchen bussers
+docker_container 'env' do
+  repo 'debian'
+  env [ 'PATH=/usr/bin', 'FOO=bar' ]
+  command 'env'
+  not_if "[ ! -z `docker ps -qaf 'name=env$'` ]"
+  action :run
 end
