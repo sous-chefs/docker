@@ -405,7 +405,7 @@ end
 # Inspect container logs with test-kitchen bussers
 docker_container 'env' do
   repo 'debian'
-  env [ 'PATH=/usr/bin', 'FOO=bar' ]
+  env ['PATH=/usr/bin', 'FOO=bar']
   command 'env'
   not_if "[ ! -z `docker ps -qaf 'name=env$'` ]"
   action :run
