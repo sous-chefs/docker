@@ -65,7 +65,7 @@ end
 
 # marker to prevent :run on subsequent converges.
 execute 'container_marker_bill' do
-  command 'touch /tmp/container_marker_bill'
+  command 'touch /container_marker_bill'
   action :nothing
 end
 
@@ -136,13 +136,13 @@ bash 'quitter' do
 end
 
 docker_container 'quitter' do
-  not_if { ::File.exist? '/tmp/container_marker_quitter_restarter' }
+  not_if { ::File.exist? '/container_marker_quitter_restarter' }
   notifies :run, 'execute[container_marker_quitter_restarter]', :immediately
   action :restart
 end
 
 execute 'container_marker_quitter_restarter' do
-  command 'touch /tmp/container_marker_quitter_restarter'
+  command 'touch /container_marker_quitter_restarter'
   action :nothing
 end
 
@@ -156,13 +156,13 @@ bash 'restarter' do
 end
 
 docker_container 'restarter' do
-  not_if { ::File.exist? '/tmp/container_marker_restarter_restarter' }
+  not_if { ::File.exist? '/container_marker_restarter_restarter' }
   notifies :run, 'execute[container_marker_restarter_restarter]', :immediately
   action :restart
 end
 
 execute 'container_marker_restarter_restarter' do
-  command 'touch /tmp/container_marker_restarter_restarter'
+  command 'touch /container_marker_restarter_restarter'
   action :nothing
 end
 
@@ -174,13 +174,13 @@ end
 execute 'deleteme' do
   command 'docker run --name deleteme -d busybox nc -ll -p 187 -e /bin/cat'
   not_if "[ ! -z `docker ps -qaf 'name=deleteme'` ]"
-  not_if { ::File.exist?('/tmp/container_marker_deleteme') }
+  not_if { ::File.exist?('/container_marker_deleteme') }
   notifies :run, 'execute[container_marker_deleteme]', :immediately
   action :run
 end
 
 execute 'container_marker_deleteme' do
-  command 'touch /tmp/container_marker_deleteme'
+  command 'touch /container_marker_deleteme'
   action :nothing
 end
 
@@ -193,8 +193,8 @@ end
 ##################
 
 execute 'redeploy an_echo_server' do
-  command 'touch /tmp/container_marker_an_echo_server_redeploy'
-  creates '/tmp/container_marker_an_echo_server_redeploy'
+  command 'touch /container_marker_an_echo_server_redeploy'
+  creates '/container_marker_an_echo_server_redeploy'
   notifies :redeploy, 'docker_container[an_echo_server]', :immediately
   action :run
 end
@@ -305,14 +305,14 @@ docker_container 'sean_was_here' do
   repo 'debian'
   volumes_from 'chef'
   autoremove true
-  not_if { ::File.exist? '/tmp/container_marker_sean_was_here' }
+  not_if { ::File.exist? '/container_marker_sean_was_here' }
   notifies :run, 'execute[container_marker_sean_was_here]', :immediately
   action :run
 end
 
 # marker to prevent :run on subsequent converges.
 execute 'container_marker_sean_was_here' do
-  command 'touch /tmp/container_marker_sean_was_here'
+  command 'touch /container_marker_sean_was_here'
   action :nothing
 end
 
@@ -476,12 +476,33 @@ end
 ################
 
 # docker inspect restart_policy | grep 'RestartPolicy'
-docker_container 'restart_policy' do
+docker_container 'try_try_again' do
   repo 'alpine'
   tag '3.1'
   command 'grep asdasdasd /etc/passwd'
   restart_policy 'on-failure'
-  restart_maximum_retry_count 3
-  not_if "[ ! -z `docker ps -qaf 'name=restart_policy$'` ]"
+  restart_maximum_retry_count 2
+  not_if "[ ! -z `docker ps -qaf 'name=restart_policy_try_try_again$'` ]"
+  action :run
+end
+
+docker_container 'reboot_survivor' do
+  repo 'alpine'
+  tag '3.1'
+  command 'nc -ll -p 123 -e /bin/cat'
+  port '123'
+  restart_policy 'always'
+  not_if "[ ! -z `docker ps -qaf 'name=reboot_survivor$'` ]"
+  action :run
+end
+
+docker_container 'reboot_survivor_retry' do
+  repo 'alpine'
+  tag '3.1'
+  command 'nc -ll -p 123 -e /bin/cat'
+  port '123'
+  restart_policy 'always'
+  restart_maximum_retry_count 2
+  not_if "[ ! -z `docker ps -qaf 'name=reboot_survivor_retry$'` ]"
   action :run
 end
