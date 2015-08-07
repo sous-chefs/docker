@@ -20,6 +20,14 @@ docker_container 'busybox_ls' do
   action :run
 end
 
+# so will this one
+docker_container 'alpine_ls' do
+  repo 'alpine'
+  tag '3.1'
+  command 'ls -la /'
+  action :run_if_missing
+end
+
 ###############
 # port property
 ###############
@@ -131,7 +139,7 @@ bash 'quitter' do
   docker run --name quitter -d busybox nc -ll -p 69 -e /bin/cat
   docker kill quitter
   EOF
-  not_if "[ ! -z `docker ps -qaf 'name=quitter'` ]"
+  not_if "[ ! -z `docker ps -qaf 'name=quitter$'` ]"
   action :run
 end
 
@@ -238,8 +246,7 @@ docker_container 'bind_mounter' do
   repo 'busybox'
   command 'ls -la /bits /more-bits'
   binds ['/hostbits:/bits', '/more-hostbits:/more-bits']
-  not_if "[ ! -z `docker ps -qaf 'name=bind_mounter$'` ]"
-  action :run
+  action :run_if_missing
 end
 
 ##############
@@ -291,8 +298,7 @@ docker_container 'ohai_debian' do
   command '/opt/chef/embedded/bin/ohai platform'
   repo 'debian'
   volumes_from 'chef'
-  not_if "[ ! -z `docker ps -qaf 'name=ohai_debian$'` ]"
-  action :run
+  action :run_if_missing
 end
 
 #############
@@ -325,21 +331,19 @@ docker_container 'cap_add_net_admin' do
   repo 'debian'
   command 'bash -c "ip addr add 10.9.8.7/24 brd + dev eth0 label eth0:0 ; ip addr list"'
   cap_add 'NET_ADMIN'
-  not_if "[ ! -z `docker ps -qaf 'name=cap_add_net_admin$'` ]"
-  action :run
+  action :run_if_missing
 end
 
-#######
-# mknod
-#######
+##########
+# cap_drop
+##########
 
 # Inspect container logs with test-kitchen bussers
 docker_container 'cap_drop_mknod' do
   repo 'debian'
   command 'bash -c "mknod -m 444 /dev/urandom2 c 1 9 ; ls -la /dev/urandom2"'
   cap_drop 'MKNOD'
-  not_if "[ ! -z `docker ps -qaf 'name=cap_drop_mknod$'` ]"
-  action :run
+  action :run_if_missing
 end
 
 ###########################
@@ -352,8 +356,7 @@ docker_container 'fqdn' do
   command 'hostname -f'
   host_name 'computers'
   domain_name 'biz'
-  not_if "[ ! -z `docker ps -qaf 'name=fqdn$'` ]"
-  action :run
+  action :run_if_missing
 end
 
 #####
@@ -367,8 +370,7 @@ docker_container 'dns' do
   host_name 'computers'
   dns ['4.3.2.1', '1.2.3.4']
   dns_search ['computers.biz', 'chef.io']
-  not_if "[ ! -z `docker ps -qaf 'name=dns$'` ]"
-  action :run
+  action :run_if_missing
 end
 
 #############
@@ -380,8 +382,7 @@ docker_container 'extra_hosts' do
   repo 'debian'
   command 'cat /etc/hosts'
   extra_hosts ['east:4.3.2.1', 'west:1.2.3.4']
-  not_if "[ ! -z `docker ps -qaf 'name=extra_hosts$'` ]"
-  action :run
+  action :run_if_missing
 end
 
 ############
@@ -394,8 +395,7 @@ docker_container 'ohai_again_debian' do
   volumes_from 'chef'
   entrypoint '/opt/chef/embedded/bin/ohai'
   command 'platform'
-  not_if "[ ! -z `docker ps -qaf 'name=ohai_again_debian$'` ]"
-  action :run
+  action :run_if_missing
 end
 
 #####
@@ -407,8 +407,7 @@ docker_container 'env' do
   repo 'debian'
   env ['PATH=/usr/bin', 'FOO=bar']
   command 'env'
-  not_if "[ ! -z `docker ps -qaf 'name=env$'` ]"
-  action :run
+  action :run_if_missing
 end
 
 #########
@@ -439,8 +438,7 @@ docker_container 'devices' do
     'CgroupPermissions' => 'rwm'
   }]
   cap_add 'SYS_ADMIN'
-  not_if "[ ! -z `docker ps -qaf 'name=devices$'` ]"
-  action :run
+  action :run_if_missing
 end
 
 ############
@@ -453,8 +451,7 @@ docker_container 'cpu_shares' do
   tag '3.1'
   command 'ls -la'
   cpu_shares 512
-  not_if "[ ! -z `docker ps -qaf 'name=cpu_shares$'` ]"
-  action :run
+  action :run_if_missing
 end
 
 #############
@@ -467,8 +464,7 @@ docker_container 'cpuset_cpus' do
   tag '3.1'
   command 'ls -la'
   cpuset_cpus '0,1'
-  not_if "[ ! -z `docker ps -qaf 'name=cpuset_cpus$'` ]"
-  action :run
+  action :run_if_missing
 end
 
 ################
@@ -482,8 +478,7 @@ docker_container 'try_try_again' do
   command 'grep asdasdasd /etc/passwd'
   restart_policy 'on-failure'
   restart_maximum_retry_count 2
-  not_if "[ ! -z `docker ps -qaf 'name=try_try_again$'` ]"
-  action :run
+  action :run_if_missing
 end
 
 docker_container 'reboot_survivor' do
@@ -492,8 +487,7 @@ docker_container 'reboot_survivor' do
   command 'nc -ll -p 123 -e /bin/cat'
   port '123'
   restart_policy 'always'
-  not_if "[ ! -z `docker ps -qaf 'name=reboot_survivor$'` ]"
-  action :run
+  action :run_if_missing
 end
 
 docker_container 'reboot_survivor_retry' do
@@ -503,6 +497,54 @@ docker_container 'reboot_survivor_retry' do
   port '123'
   restart_policy 'always'
   restart_maximum_retry_count 2
-  not_if "[ ! -z `docker ps -qaf 'name=reboot_survivor_retry$'` ]"
+  action :run_if_missing
+end
+
+# #####@
+# links
+#######
+
+# a long running process
+# docker inspect -f "{{ .HostConfig.Links }}" link_target
+# docker inspect -f "{{ .Config.Env }}" link_source
+docker_container 'link_source' do
+  repo 'alpine'
+  tag '3.1'
+  env ['FOO=bar', 'BIZ=baz']
+  command 'nc -ll -p 321 -e /bin/cat'
+  port '321'
+  action :run_if_missing
+end
+
+# docker inspect -f "{{ .HostConfig.Links }}" linker_target_1
+# docker inspect -f "{{ .Config.Env }}" link_target_1
+docker_container 'link_target_1' do
+  repo 'alpine'
+  tag '3.1'
+  env ['ASD=asd']
+  command 'ping -c 1 hello'
+  restart_policy 'on-failure'
+  restart_maximum_retry_count 3
+  links ['link_source:hello']
+  action :run_if_missing
+end
+
+# docker logs linker_target_2
+docker_container 'link_target_2' do
+  repo 'alpine'
+  tag '3.1'
+  command 'env'
+  restart_policy 'on-failure'
+  restart_maximum_retry_count 3
+  links ['link_source:hello']
+  action :run_if_missing
+end
+
+execute 'redeploy_link_source' do
+  command 'touch /container_marker_redeploy_link_source'
+  creates '/container_marker_redeploy_link_source'
+  notifies :redeploy, 'docker_container[link_source]'
+  notifies :redeploy, 'docker_container[link_target_1]'
+  notifies :redeploy, 'docker_container[link_target_2]'
   action :run
 end

@@ -3,7 +3,7 @@ class Chef
     class DockerContainer < Chef::Resource::LWRPBase
       self.resource_name = :docker_container
 
-      actions :create, :start, :stop, :kill, :run, :pause, :unpause, :restart, :delete, :redeploy
+      actions :create, :start, :stop, :kill, :run, :pause, :unpause, :restart, :delete, :redeploy, :run_if_missing
       default_action :run
 
       attribute :container_name, kind_of: String, name_attribute: true

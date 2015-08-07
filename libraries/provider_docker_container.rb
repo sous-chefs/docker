@@ -125,7 +125,6 @@ class Chef
 
       def parsed_env
         return nil if new_resource.env.nil?
-        puts "SEANWASHERE: #{env}"
         Array(new_resource.env)
       end
 
@@ -240,6 +239,11 @@ class Chef
         action_create
         action_start
         action_delete if new_resource.autoremove
+      end
+
+      action :run_if_missing do
+        next if container_created?
+        action_run
       end
 
       action :pause do
