@@ -19,7 +19,7 @@ class Chef
       attribute :cap_add, kind_of: [String, Array, NilClass], default: nil # FIXME: add validate proc
       attribute :cap_drop, kind_of: [String, Array, NilClass], default: nil # FIXME: add validate proc
       attribute :cgroup_parent, kind_of: String, default: '' # FIXME: add validate proc
-      attribute :cpu_shares, kind_of: Fixnum, default: 0 # FIXME: add validate proc
+      attribute :cpu_shares, kind_of: [Fixnum, NilClass], default: nil # FIXME: add validate proc
       attribute :cpuset_cpus, kind_of: String, default: '' # FIXME: add validate proc
       attribute :devices, kind_of: [Hash, Array, NilClass], default: nil # FIXME: add validate proc
       attribute :dns, kind_of: [String, Array, NilClass], default: nil
@@ -41,6 +41,7 @@ class Chef
       attribute :privileged, kind_of: [TrueClass, FalseClass], default: false
       attribute :publish_all_ports, kind_of: [TrueClass, FalseClass], default: false
       attribute :restart_policy, equal_to: %w(no on-failure always), default: 'no'
+      attribute :restart_maximum_retry_count, kind_of: Fixnum, default: 0
       attribute :security_opts, kind_of: [String, Array], default: ['']
       attribute :signal, kind_of: String, default: 'SIGKILL'
       attribute :stdin_once, kind_of: [TrueClass, FalseClass], default: false
@@ -59,6 +60,7 @@ class Chef
       alias_method :hostname, :host_name
       alias_method :domainname, :domain_name
       alias_method :dnssearch, :dns_search
+      alias_method :restart_maximum_retries, :restart_maximum_retry_count
     end
   end
 end

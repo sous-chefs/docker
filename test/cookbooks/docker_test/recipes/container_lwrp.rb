@@ -442,3 +442,46 @@ docker_container 'devices' do
   not_if "[ ! -z `docker ps -qaf 'name=devices$'` ]"
   action :run
 end
+
+############
+# cpu_shares
+############
+
+# docker inspect cpu_shares | grep '"CpuShares": 512'
+docker_container 'cpu_shares' do
+  repo 'alpine'
+  tag '3.1'
+  command 'ls -la'
+  cpu_shares 512
+  not_if "[ ! -z `docker ps -qaf 'name=cpu_shares$'` ]"
+  action :run
+end
+
+#############
+# cpuset_cpus
+#############
+
+# docker inspect cpu_shares | grep '"CpusetCpus": "0,1"'
+docker_container 'cpuset_cpus' do
+  repo 'alpine'
+  tag '3.1'
+  command 'ls -la'
+  cpuset_cpus '0,1'
+  not_if "[ ! -z `docker ps -qaf 'name=cpuset_cpus$'` ]"
+  action :run
+end
+
+################
+# restart_policy
+################
+
+# docker inspect restart_policy | grep 'RestartPolicy'
+docker_container 'restart_policy' do
+  repo 'alpine'
+  tag '3.1'
+  command 'grep asdasdasd /etc/passwd'
+  restart_policy 'on-failure'
+  restart_maximum_retry_count 3
+  not_if "[ ! -z `docker ps -qaf 'name=restart_policy$'` ]"
+  action :run
+end

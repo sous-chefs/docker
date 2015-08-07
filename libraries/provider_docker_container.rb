@@ -72,7 +72,6 @@ class Chef
       end
 
       def parsed_binds
-        # require 'pry' ; binding.pry if new_resource.container_name == 'bind_mounter'
         Array(new_resource.binds)
       end
 
@@ -135,6 +134,13 @@ class Chef
         Array(new_resource.devices)
       end
 
+      def parsed_restart_policy
+        {
+          'MaximumRetryCount' => new_resource.restart_maximum_retry_count,
+          'Name' => new_resource.restart_policy
+        }
+      end
+
       # Most important work is done here.
       def create_container
         Docker::Container.create(
@@ -176,7 +182,7 @@ class Chef
             'Privileged' => new_resource.privileged,
             'PortBindings' => port_bindings,
             'PublishAllPorts' => new_resource.publish_all_ports,
-            'RestartPolicy' => new_resource.restart_policy,
+            'RestartPolicy' => parsed_restart_policy,
             'Ulimits' => new_resource.ulimits,
             'VolumesFrom' => parsed_volumes_from
           }

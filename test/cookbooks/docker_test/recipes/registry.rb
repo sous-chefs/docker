@@ -175,7 +175,7 @@ bash 'start docker registry' do
   --restart=always \
   registry:2
   EOF
-  not_if 'docker ps | grep registry_service'
+  not_if "[ ! -z `docker ps -qaf 'name=registry_service$'` ]"
 end
 
 bash 'start docker registry proxy' do
@@ -188,5 +188,5 @@ bash 'start docker registry proxy' do
   -v /tmp/registry/auth/:/etc/nginx/conf.d \
   nginx:1.9
   EOF
-  not_if 'docker ps | grep registry_proxy'
+  not_if "[ ! -z `docker ps -qaf 'name=registry_proxy$'` ]"
 end
