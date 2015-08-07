@@ -482,7 +482,7 @@ docker_container 'try_try_again' do
   command 'grep asdasdasd /etc/passwd'
   restart_policy 'on-failure'
   restart_maximum_retry_count 2
-  not_if "[ ! -z `docker ps -qaf 'name=restart_policy_try_try_again$'` ]"
+  not_if "[ ! -z `docker ps -qaf 'name=try_try_again$'` ]"
   action :run
 end
 
