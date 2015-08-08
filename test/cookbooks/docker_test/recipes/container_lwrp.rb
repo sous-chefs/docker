@@ -500,7 +500,7 @@ docker_container 'reboot_survivor_retry' do
   action :run_if_missing
 end
 
-# #####@
+#######
 # links
 #######
 
@@ -523,8 +523,6 @@ docker_container 'link_target_1' do
   tag '3.1'
   env ['ASD=asd']
   command 'ping -c 1 hello'
-  restart_policy 'on-failure'
-  restart_maximum_retry_count 3
   links ['link_source:hello']
   action :run_if_missing
 end
@@ -534,8 +532,6 @@ docker_container 'link_target_2' do
   repo 'alpine'
   tag '3.1'
   command 'env'
-  restart_policy 'on-failure'
-  restart_maximum_retry_count 3
   links ['link_source:hello']
   action :run_if_missing
 end
@@ -543,8 +539,8 @@ end
 execute 'redeploy_link_source' do
   command 'touch /container_marker_redeploy_link_source'
   creates '/container_marker_redeploy_link_source'
-  notifies :redeploy, 'docker_container[link_source]'
-  notifies :redeploy, 'docker_container[link_target_1]'
-  notifies :redeploy, 'docker_container[link_target_2]'
+  notifies :redeploy, 'docker_container[link_source]', :immediately
+  notifies :redeploy, 'docker_container[link_target_1]', :immediately
+  notifies :redeploy, 'docker_container[link_target_2]', :immediately
   action :run
 end
