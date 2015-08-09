@@ -576,3 +576,54 @@ execute 'link remover' do
   notifies :remove_link, 'docker_container[another_link_target]', :immediately
   action :run
 end
+
+################
+# volume removal
+################
+
+directory '/dangler' do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
+
+file '/dangler/Dockerfile' do
+  content <<-EOF
+  FROM busybox
+  RUN mkdir /stuff
+  VOLUME /stuff
+  EOF
+  action :create
+end
+
+docker_image 'dangler' do
+  tag 'latest'
+  source '/dangler'
+  action :build_if_missing
+end
+
+# create a volume container
+docker_container 'dangler' do
+  command 'true'
+  action :create
+end
+
+execute 'start a volume container' do
+  command 'docker create --name dangler dangler true'
+  not_if "[ ! -z `docker ps -qaf 'name=dangler$'` ]"
+end
+
+# read this with a test-kitchen busser and make sure its gone.
+ruby_block 'stash dangler volpath on filesystem' do
+  block do
+    result = shell_out!('docker inspect -f "{{ .Volumes }}" dangler')
+    volpath = result.stdout.scan(/\[(.*?)\]/)[0][0].split(':')[1]
+    shell_out!("echo #{volpath} > /dangler_volpath")
+  end
+end
+
+docker_container 'dangler' do
+  remove_volumes true
+  action :delete
+end

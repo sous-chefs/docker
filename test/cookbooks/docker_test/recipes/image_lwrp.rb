@@ -73,6 +73,7 @@ docker_image 'image_1' do
   source '/usr/local/src/container1/Dockerfile'
   not_if { ::File.exist? '/image_marker_image_1' }
   notifies :run, 'execute[image_marker_image_1]'
+  force true
   action :build
 end
 

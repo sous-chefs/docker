@@ -282,9 +282,13 @@ class Chef
         action_stop
         c = Docker::Container.get("#{new_resource.container_name}")
         converge_by "deleting #{new_resource.container_name}" do
-          c.delete(force: true)
+          c.delete(force: new_resource.force, v: new_resource.remove_volumes)
         end
         new_resource.updated_by_last_action(true)
+      end
+
+      action :remove do
+        action_delete
       end
 
       action :remove_link do

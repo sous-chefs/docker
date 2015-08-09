@@ -28,6 +28,7 @@ class Chef
       attribute :entrypoint, kind_of: String, default: '' # FIXME: needs tests
       attribute :env, kind_of: [String, Array], default: '' # FIXME: needs tests
       attribute :extra_hosts, kind_of: [String, Array, NilClass], default: nil # FIXME: needs tests
+      attribute :force, kind_of: [TrueClass, FalseClass], default: false
       attribute :host_name, kind_of: String, default: ''
       attribute :links, kind_of: [String, Array, NilClass], default: nil # FIXME: add validate proc
       attribute :log_config, kind_of: [Hash, NilClass], default: nil # FIXME: add validate proc and tests
@@ -40,6 +41,7 @@ class Chef
       attribute :port, kind_of: String, default: ''
       attribute :privileged, kind_of: [TrueClass, FalseClass], default: false
       attribute :publish_all_ports, kind_of: [TrueClass, FalseClass], default: false
+      attribute :remove_volumes, kind_of: [TrueClass, FalseClass], default: false
       attribute :restart_policy, equal_to: %w(no on-failure always), default: 'no'
       attribute :restart_maximum_retry_count, kind_of: Fixnum, default: 0
       attribute :security_opts, kind_of: [String, Array], default: ['']
@@ -61,6 +63,8 @@ class Chef
       alias_method :domainname, :domain_name
       alias_method :dnssearch, :dns_search
       alias_method :restart_maximum_retries, :restart_maximum_retry_count
+      alias_method :retries, :restart_maximum_retry_count
+      alias_method :volume_from, :volumes_from
     end
   end
 end
