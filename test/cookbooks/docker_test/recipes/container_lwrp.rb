@@ -2,7 +2,7 @@
 # action :create
 ################
 
-# default action, default properties
+# create a container without starting it
 docker_container 'hello-world' do
   command '/hello'
   action :create
@@ -12,7 +12,8 @@ end
 # action :run
 #############
 
-# This command will exit and the container will stop.
+# This command will exit succesfully. This will happen on every
+# chef-client run.
 docker_container 'busybox_ls' do
   repo 'busybox'
   command 'ls -la /'
@@ -20,7 +21,8 @@ docker_container 'busybox_ls' do
   action :run
 end
 
-# so will this one
+# The :run_if_missing action will only run once. It iss the default
+# action.
 docker_container 'alpine_ls' do
   repo 'alpine'
   tag '3.1'
@@ -32,7 +34,8 @@ end
 # port property
 ###############
 
-# a long running process
+# This process remains running between chef-client runs, :run will do
+# nothing on subsequent converges.
 docker_container 'an_echo_server' do
   repo 'alpine'
   tag '3.1'
@@ -246,7 +249,6 @@ docker_container 'bind_mounter' do
   repo 'busybox'
   command 'ls -la /bits /more-bits'
   binds ['/hostbits:/bits', '/more-hostbits:/more-bits']
-  action :run_if_missing
 end
 
 ##############
@@ -274,16 +276,15 @@ file '/chefbuilder/Dockerfile' do
   action :create
 end
 
-docker_image 'chef' do
+docker_image 'chef_container' do
   tag 'latest'
   source '/chefbuilder'
   action :build_if_missing
 end
 
-# start a volume container
-docker_container 'chef' do
+# create a volume container
+docker_container 'chef_container' do
   command 'true'
-  repo 'chef'
   volumes '/opt/chef'
   action :create
 end
@@ -297,8 +298,7 @@ end
 docker_container 'ohai_debian' do
   command '/opt/chef/embedded/bin/ohai platform'
   repo 'debian'
-  volumes_from 'chef'
-  action :run_if_missing
+  volumes_from 'chef_container'
 end
 
 #############
@@ -309,7 +309,7 @@ end
 docker_container 'sean_was_here' do
   command "touch /opt/chef/sean_was_here-#{Time.new.strftime('%Y%m%d%H%M')}"
   repo 'debian'
-  volumes_from 'chef'
+  volumes_from 'chef_container'
   autoremove true
   not_if { ::File.exist? '/container_marker_sean_was_here' }
   notifies :run, 'execute[container_marker_sean_was_here]', :immediately
@@ -392,7 +392,7 @@ end
 # Inspect container logs with test-kitchen bussers
 docker_container 'ohai_again_debian' do
   repo 'debian'
-  volumes_from 'chef'
+  volumes_from 'chef_container'
   entrypoint '/opt/chef/embedded/bin/ohai'
   command 'platform'
   action :run_if_missing
@@ -536,11 +536,43 @@ docker_container 'link_target_2' do
   action :run_if_missing
 end
 
+# When we deploy the link_source container links are broken and we
+# have to redeploy the linked containers to fix them.
 execute 'redeploy_link_source' do
   command 'touch /container_marker_redeploy_link_source'
   creates '/container_marker_redeploy_link_source'
   notifies :redeploy, 'docker_container[link_source]', :immediately
   notifies :redeploy, 'docker_container[link_target_1]', :immediately
   notifies :redeploy, 'docker_container[link_target_2]', :immediately
+  action :run
+end
+
+##############
+# link removal
+##############
+
+# docker inspect -f "{{ .Volumes }}" another_link_source
+# docker inspect -f "{{ .HostConfig.Links }}" another_link_source
+docker_container 'another_link_source' do
+  repo 'alpine'
+  tag '3.1'
+  command 'nc -ll -p 456 -e /bin/cat'
+  port '456'
+  action :run_if_missing
+end
+
+# docker inspect -f "{{ .HostConfig.Links }}" another_link_target
+docker_container 'another_link_target' do
+  repo 'alpine'
+  tag '3.1'
+  command 'ping -c 1 hello'
+  links ['another_link_source:derp']
+  action :run_if_missing
+end
+
+execute 'link remover' do
+  command 'touch /container_marker_remover'
+  creates '/container_marker_remover'
+  notifies :remove_link, 'docker_container[another_link_target]', :immediately
   action :run
 end

@@ -286,6 +286,16 @@ class Chef
         end
         new_resource.updated_by_last_action(true)
       end
+
+      action :remove_link do
+        # Help! I couldn't get this working from the CLI in docker 1.6.2.
+        # It's of dubious usefulness, and it looks like this stuff is
+        # changing in 1.7.x anyway.
+        converge_by "removing links for #{new_resource.container_name}" do
+          Chef::Log.info(':remove_link not currently implemented')
+        end
+        new_resource.updated_by_last_action(true)
+      end
     end
   end
 end
