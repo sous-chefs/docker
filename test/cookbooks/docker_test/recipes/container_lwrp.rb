@@ -9,7 +9,7 @@ docker_container 'hello-world' do
 end
 
 #############
-# action :run
+# action :run - default action
 #############
 
 # This command will exit succesfully. This will happen on every
@@ -70,14 +70,7 @@ end
 execute 'bill' do
   command 'docker run --name bill -d busybox nc -ll -p 187 -e /bin/cat'
   not_if "[ ! -z `docker ps -qaf 'name=bill$'` ]"
-  notifies :run, 'execute[container_marker_bill]', :immediately
   action :run
-end
-
-# marker to prevent :run on subsequent converges.
-execute 'container_marker_bill' do
-  command 'touch /container_marker_bill'
-  action :nothing
 end
 
 docker_container 'bill' do
@@ -106,7 +99,7 @@ end
 # start a container to be paused
 execute 'red_light' do
   command 'docker run --name red_light -d busybox nc -ll -p 42 -e /bin/cat'
-  not_if "[ ! -z `docker ps -qaf 'name=red_light'` ]"
+  not_if "[ ! -z `docker ps -qaf 'name=red_light$'` ]"
   action :run
 end
 
@@ -147,34 +140,28 @@ bash 'quitter' do
 end
 
 docker_container 'quitter' do
-  not_if { ::File.exist? '/container_marker_quitter_restarter' }
-  notifies :run, 'execute[container_marker_quitter_restarter]', :immediately
+  not_if { ::File.exist? '/marker_container_quitter_restarter' }
   action :restart
 end
 
-execute 'container_marker_quitter_restarter' do
-  command 'touch /container_marker_quitter_restarter'
-  action :nothing
+file '/marker_container_quitter_restarter' do
+  action :create
 end
 
 # start a container to be restarted
-bash 'restarter' do
-  code <<-EOF
-  docker run --name restarter -d busybox nc -ll -p 69 -e /bin/cat
-  EOF
+execute 'restarter' do
+  command 'docker run --name restarter -d busybox nc -ll -p 69 -e /bin/cat'
   not_if "[ ! -z `docker ps -qaf 'name=restarter$'` ]"
   action :run
 end
 
 docker_container 'restarter' do
-  not_if { ::File.exist? '/container_marker_restarter_restarter' }
-  notifies :run, 'execute[container_marker_restarter_restarter]', :immediately
+  not_if { ::File.exist? '/marker_container_restarter' }
   action :restart
 end
 
-execute 'container_marker_restarter_restarter' do
-  command 'touch /container_marker_restarter_restarter'
-  action :nothing
+file '/marker_container_restarter' do
+  action :create
 end
 
 ################
@@ -184,15 +171,12 @@ end
 # create a container to be deleted
 execute 'deleteme' do
   command 'docker run --name deleteme -d busybox nc -ll -p 187 -e /bin/cat'
-  not_if "[ ! -z `docker ps -qaf 'name=deleteme'` ]"
-  not_if { ::File.exist?('/container_marker_deleteme') }
-  notifies :run, 'execute[container_marker_deleteme]', :immediately
+  not_if { ::File.exist?('/marker_container_deleteme') }
   action :run
 end
 
-execute 'container_marker_deleteme' do
-  command 'touch /container_marker_deleteme'
-  action :nothing
+file '/marker_container_deleteme' do
+  action :create
 end
 
 docker_container 'deleteme' do
@@ -203,10 +187,18 @@ end
 # action :redeploy
 ##################
 
-execute 'redeploy an_echo_server' do
-  command 'touch /container_marker_an_echo_server_redeploy'
-  creates '/container_marker_an_echo_server_redeploy'
-  notifies :redeploy, 'docker_container[an_echo_server]', :immediately
+docker_container 'redeployer' do
+  repo 'alpine'
+  tag '3.1'
+  command 'nc -ll -p 7777 -e /bin/cat'
+  port '7'
+  action :run
+end
+
+execute 'redeploy redeployer' do
+  command 'touch /marker_container_redeployer'
+  creates '/marker_container_redeployer'
+  notifies :redeploy, 'docker_container[redeployer]', :immediately
   action :run
 end
 
@@ -249,6 +241,7 @@ docker_container 'bind_mounter' do
   repo 'busybox'
   command 'ls -la /bits /more-bits'
   binds ['/hostbits:/bits', '/more-hostbits:/more-bits']
+  action :run_if_missing
 end
 
 ##############
@@ -311,15 +304,13 @@ docker_container 'sean_was_here' do
   repo 'debian'
   volumes_from 'chef_container'
   autoremove true
-  not_if { ::File.exist? '/container_marker_sean_was_here' }
-  notifies :run, 'execute[container_marker_sean_was_here]', :immediately
+  not_if { ::File.exist? '/marker_container_sean_was_here' }
   action :run
 end
 
 # marker to prevent :run on subsequent converges.
-execute 'container_marker_sean_was_here' do
-  command 'touch /container_marker_sean_was_here'
-  action :nothing
+file '/marker_container_sean_was_here' do
+  action :create
 end
 
 #########
@@ -539,8 +530,8 @@ end
 # When we deploy the link_source container links are broken and we
 # have to redeploy the linked containers to fix them.
 execute 'redeploy_link_source' do
-  command 'touch /container_marker_redeploy_link_source'
-  creates '/container_marker_redeploy_link_source'
+  command 'touch /marker_container_redeploy_link_source'
+  creates '/marker_container_redeploy_link_source'
   notifies :redeploy, 'docker_container[link_source]', :immediately
   notifies :redeploy, 'docker_container[link_target_1]', :immediately
   notifies :redeploy, 'docker_container[link_target_2]', :immediately
@@ -570,11 +561,9 @@ docker_container 'another_link_target' do
   action :run_if_missing
 end
 
-execute 'link remover' do
-  command 'touch /container_marker_remover'
-  creates '/container_marker_remover'
+file '/marker_container_remover' do
   notifies :remove_link, 'docker_container[another_link_target]', :immediately
-  action :run
+  action :create
 end
 
 ################
@@ -606,12 +595,12 @@ end
 # create a volume container
 docker_container 'dangler' do
   command 'true'
+  not_if { ::File.exist?('/marker_container_dangler') }
   action :create
 end
 
-execute 'start a volume container' do
-  command 'docker create --name dangler dangler true'
-  not_if "[ ! -z `docker ps -qaf 'name=dangler$'` ]"
+file '/marker_container_dangler' do
+  action :create
 end
 
 # read this with a test-kitchen busser and make sure its gone.
@@ -621,6 +610,8 @@ ruby_block 'stash dangler volpath on filesystem' do
     volpath = result.stdout.scan(/\[(.*?)\]/)[0][0].split(':')[1]
     shell_out!("echo #{volpath} > /dangler_volpath")
   end
+  not_if { ::File.exist?('/dangler_volpath') }
+  action :run
 end
 
 docker_container 'dangler' do

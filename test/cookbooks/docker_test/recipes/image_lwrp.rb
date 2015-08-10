@@ -13,14 +13,12 @@ end
 # :pull action specified
 docker_image 'busybox' do
   action :pull
-  not_if { ::File.exist? '/image_marker_busybox' }
-  notifies :run, 'execute[image_marker_busybox]'
+  not_if { ::File.exist? '/marker_image_busybox' }
 end
 
 # marker to prevent :run on subsequent converges.
-execute 'image_marker_busybox' do
-  command 'touch /image_marker_busybox'
-  action :nothing
+file '/marker_image_busybox' do
+  action :create
 end
 
 # specify a tag
@@ -34,8 +32,8 @@ end
 
 # install something so it can be used to test the :remove action
 execute 'pull vbatts/slackware' do
-  command 'docker pull vbatts/slackware ; touch /image_marker_slackware'
-  creates '/image_marker_slackware'
+  command 'docker pull vbatts/slackware ; touch /marker_image_slackware'
+  creates '/marker_image_slackware'
   action :run
 end
 
@@ -43,9 +41,9 @@ docker_image 'vbatts/slackware' do
   action :remove
 end
 
-# ########
-# # :save
-# ########
+########
+# :save
+########
 
 docker_image 'save hello-world' do
   repo 'hello-world'
@@ -71,15 +69,13 @@ end
 docker_image 'image_1' do
   tag 'v0.1.0'
   source '/usr/local/src/container1/Dockerfile'
-  not_if { ::File.exist? '/image_marker_image_1' }
-  notifies :run, 'execute[image_marker_image_1]'
   force true
+  not_if { ::File.exist? '/marker_image_image_1' }
   action :build
 end
 
-execute 'image_marker_image_1' do
-  command 'touch /image_marker_image_1'
-  action :nothing
+file '/marker_image_image_1' do
+  action :create
 end
 
 # Build from a directory
@@ -155,23 +151,19 @@ docker_registry 'localhost:5043' do
 end
 
 docker_image 'localhost:5043/someara/busybox' do
-  not_if { ::File.exist? '/image_marker_private_busybox' }
-  notifies :run, 'execute[image_marker_private_busybox]'
+  not_if { ::File.exist? '/marker_image_private_busybox' }
   action :push
 end
 
-execute 'image_marker_private_busybox' do
-  command 'touch /image_marker_private_busybox'
-  action :nothing
+file '/marker_image_private_busybox' do
+  action :create
 end
 
 docker_image 'localhost:5043/someara/hello-again' do
-  not_if { ::File.exist? '/image_marker_private_hello-again' }
-  notifies :run, 'execute[image_marker_private_hello-again]'
+  not_if { ::File.exist? '/marker_image_private_hello-again' }
   action :push
 end
 
-execute 'image_marker_private_hello-again' do
-  command 'touch /image_marker_private_hello-again'
-  action :nothing
+file '/marker_image_private_hello-again' do
+  action :create
 end
