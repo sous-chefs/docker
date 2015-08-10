@@ -124,7 +124,7 @@ suites:
   run_list:
   - recipe[docker_service_test::socket]
 
-- name: service-tcp-tls
+- name: service-tls
   includes: [
     'amazon-2014.09',
     'fedora-21',
@@ -137,9 +137,9 @@ suites:
     'ubuntu-15.04',
   ]
   run_list:
-  - recipe[docker_service_test::tcp-tls]
+  - recipe[docker_service_test::tls]
 
-- name: image_and_container
+- name: resources
   includes: [
     'fedora-21',
     'centos-7.0',
@@ -150,10 +150,5 @@ suites:
   ]
   run_list:
   - recipe[docker_test::default]
-  - recipe[docker_test::image_lwrp]
-  - recipe[docker_test::container_lwrp]
-
-- name: hello_world
-  includes: [ 'ubuntu-15.04' ]
-  run_list:
-  - recipe[docker_test::hello_world]
+  - recipe[docker_test::image]
+  - recipe[docker_test::container]
