@@ -30,18 +30,6 @@ docker_container 'alpine_ls' do
   action :run_if_missing
 end
 
-#####
-# env
-#####
-
-# Inspect container logs with test-kitchen bussers
-docker_container 'env' do
-  repo 'debian'
-  env ['PATH=/usr/bin', 'FOO=bar']
-  command 'env'
-  action :run_if_missing
-end
-
 ###############
 # port property
 ###############
@@ -304,6 +292,18 @@ docker_container 'ohai_debian' do
   command '/opt/chef/embedded/bin/ohai platform'
   repo 'debian'
   volumes_from 'chef_container'
+end
+
+#####
+# env
+#####
+
+# Inspect container logs with test-kitchen bussers
+docker_container 'env' do
+  repo 'debian'
+  env ['PATH=/usr/bin', 'FOO=bar']
+  command 'env'
+  action :run_if_missing
 end
 
 ############

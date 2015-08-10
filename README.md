@@ -19,9 +19,6 @@ are using in the appropriate places.
 - Berksfile
 - Chef Policyfile
 
-More details about specific changes will be documented in the
-[1.0_CHANGES.md](1.0_CHANGES.md) file.
-
 Scope
 -----
 This cookbook is concerned with the [Docker](http://docker.io)
@@ -87,6 +84,7 @@ docker_container 'an echo server' do
   command "nc -ll -p 1234 -e /bin/cat"
 end
 ```
+
 Test Cookbooks as Examples
 --------------------------
 The cookbooks ran under test-kitchen make excellent usage examples.
@@ -139,7 +137,7 @@ docker_image 'nginx' do
 end
 
 # Run container exposing ports
-docker_container 'my_nginx' do  
+docker_container 'my_nginx' do
   repo 'nginx'
   tag '1.9'
   port '80:80'
@@ -234,8 +232,7 @@ the options found in the
 - `fixed_cidr` - IPv4 subnet for fixed IPs
 - `fixed_cidr_v6` - IPv6 subnet for fixed IPs
 - `group` - Posix group for the unix socket
-- `graph` - Root of the Docker runtime - Effectively, the "data
-  directory"
+- `graph` - Root of the Docker runtime - Effectively, the "data directory"
 - `host` - Daemon socket(s) to connect to - `tcp://host:port`,
   `unix:///path/to/socket`, `fd://*` or `fd://socketfd`
 - `icc` - Enable inter-container communication
@@ -261,11 +258,11 @@ the options found in the
 - `tlskey` - Path to TLS key file
 - `tlsverify` - Use TLS and verify the remote
 - `default_ulimit` - Set default ulimit settings for containers
-- http_proxy - ENV variable set before for Docker daemon starts
-- https_proxy - ENV variable set before for Docker daemon starts
-- no_proxy - ENV variable set before for Docker daemon starts
-- tmpdir - ENV variable set before for Docker daemon starts
-- logfile - Location of Docker daemon log file
+- `http_proxy` - ENV variable set before for Docker daemon starts
+- `https_proxy` - ENV variable set before for Docker daemon starts
+- `no_proxy` - ENV variable set before for Docker daemon starts
+- `tmpdir` - ENV variable set before for Docker daemon starts
+- `logfile` - Location of Docker daemon log file
 
 #### Actions
 - `:create` - Lays the Docker bits out on disk
@@ -275,16 +272,16 @@ the options found in the
 - `:restart` - Restarts the service
 
 #### Providers
-- Chef::Provider::DockerService::Execute - The simplest provider. Just
+- `Chef::Provider::DockerService::Execute` - The simplest provider. Just
   starts a process. Fire and forget.
 
-- Chef::Provider::DockerService::Sysvinit - Uses a SystemV init script
+- `Chef::Provider::DockerService::Sysvinit` - Uses a SystemV init script
   to manage the service state.
 
-- Chef::Provider::DockerService::Upstart - Uses an Upstart script to
+- `Chef::Provider::DockerService::Upstart` - Uses an Upstart script to
   manage the service state.
 
-- Chef::Provider::DockerService::Systemd - Uses an Systemd unit file to
+- `Chef::Provider::DockerService::Systemd` - Uses an Systemd unit file to
   manage the service state. NOTE: This does NOT enable systemd socket
   activation.
 
@@ -338,7 +335,7 @@ docker_image 'save hello-world' do
 end
 ```
 
-##### :build from a Dockerfile on every chef-client run
+#### :build from a Dockerfile on every chef-client run
 ```ruby
 docker_image 'image_1' do
   tag 'v0.1.0'
@@ -391,7 +388,7 @@ as driven by the
 [Swipley docker-api Ruby gem](https://github.com/swipely/docker-api)
 
 A `docker_image`'s full identifier is a string in the form
-"<repo>:<tag>". There is some nuance around the naming when the public
+"\<repo\>:\<tag\>". There is some nuance around the naming when the public
 registry vs a private one.
 
 - `repo` - aka `image_name` - The first half of a Docker image's
@@ -808,10 +805,12 @@ end
 ```
 
 #### Properties
+
+SAVEGAME: you are here
+
 #### Actions
 
 ### docker_registry
-SAVEGAME: you are here
 FIXME: blah blah blah
 
 #### docker_registry action :login
