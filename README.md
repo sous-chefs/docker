@@ -125,7 +125,7 @@ Resources Overview
 * `docker_registry`: registry operations
 * `docker_container`: container operations
 
-### Getting Started
+## Getting Started
 Here's a quick example of pulling the latest image and running a
 container with exposed ports (creates service automatically):
 
@@ -179,7 +179,7 @@ Resources Details
 The ```docker_service```, ```docker_image```, ```docker_container```,
 and ```docker_registry``` resources are documented in full below.
 
-### docker_service
+## docker_service
 The `docker_service` manages a Docker daemon.
 
 The `:create` action manages software installation.
@@ -285,7 +285,7 @@ the options found in the
   manage the service state. NOTE: This does NOT enable systemd socket
   activation.
 
-### docker_image
+## docker_image
 The `docker_image` is responsible for managing Docker image pulls,
 builds, and deletions. It speaks directly to the
 [Docker remote API](https://docs.docker.com/reference/api/docker_remote_api_v1.16/).
@@ -428,7 +428,7 @@ Defaults to `pull_if_missing`
 - `:remove` - Removes (untags) an image
 - `:push` - Pushes an image to the registry
 
-### docker_tag
+## docker_tag
 Docker tags work very much like hard links in a Unix filesystem. They
 are just references to an existing image. Therefore, the docker_tag
 resource has taken inspiration from the Chef `link` resource.
@@ -453,7 +453,7 @@ end
 #### Actions
 - `:tag` - Tags the image
 
-### docker_container
+## docker_container
 The `docker_container` is responsible for managing Docker container
 actions. It speaks directly to the [Docker remote API](https://docs.docker.com/reference/api/docker_remote_api_v1.16/).
 
@@ -810,7 +810,7 @@ SAVEGAME: you are here
 
 #### Actions
 
-### docker_registry
+## docker_registry
 FIXME: blah blah blah
 
 #### docker_registry action :login
