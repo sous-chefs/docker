@@ -81,11 +81,10 @@ docker_image 'busybox' do
 end
 
 docker_container 'an echo server' do
-  image 'busybox'
+  repo 'busybox'
+  tag 'latest'
   port '1234:1234'
   command "nc -ll -p 1234 -e /bin/cat"
-  detach true
-  init_type false
 end
 ```
 Test Cookbooks as Examples
@@ -134,53 +133,43 @@ container with exposed ports (creates service automatically):
 
 ```ruby
 # Pull latest image
-docker_image 'samalba/docker-registry'
+docker_image 'nginx' do
+  tag '1.9'
+  action :pull_if_missing
+end
 
 # Run container exposing ports
-docker_container 'samalba/docker-registry' do
-  detach true
-  port '5000:5000'
-  env 'SETTINGS_FLAVOR=local'
-  volume '/mnt/docker:/docker-storage'
+docker_container 'my_nginx' do  
+  repo 'nginx'
+  tag '1.9'
+  port '80:80'
+  hostname 'www'
+  domain_name 'computers.biz'
+  env 'FOO=bar'
+  binds [ '/some/local/files/:/etc/nginx/conf.d' ]
 end
 ```
 
-Maybe you want to automatically update your private registry with
-changes from your container?
+You might run a private registry
 
 ```ruby
 # Login to private registry
-docker_registry 'https://docker-registry.example.com/' do
+docker_registry 'https://registry.computers.biz/' do
   username 'shipper'
   password 'iloveshipping'
 end
 
 # Pull tagged image
-docker_image 'apps/crowsnest' do
-  tag 'not-latest'
+docker_image 'registry.computers.biz:443/my_project/my_container' do
+  tag 'latest'
+  action :pull
 end
 
 # Run container
 docker_container 'crowsnest' do
+  repo 'registry.computers.biz:443/my_project/my_container'
+  tag 'latest'
   action :run
-end
-
-# Save current timestamp
-timestamp = Time.new.strftime('%Y%m%d%H%M')
-
-# Commit container changes
-docker_tag 'crowsnest current timestamp' do
-   target_repo 'apps/crowsnest'
-   target_tag 'not-latest'
-   to_repo 'apps/crowsnest'
-   to_tag timestamp
-   action :tag
-end
-
-# Push image
-docker_image 'apps/crowsnest' do
-  tag timestamp
-  action :push
 end
 ```
 
@@ -471,7 +460,9 @@ end
 The `docker_container` is responsible for managing Docker container
 actions. It speaks directly to the [Docker remote API](https://docs.docker.com/reference/api/docker_remote_api_v1.16/).
 
-The `docker_container` resource
+Containers are process oriented, and move through an event cycle.
+Thanks to [Glider Labs](http://gliderlabs.com/) for this excellent diagram.
+![alt tag](http://gliderlabs.com/images/docker_events.png)
 
 #### Examples
 
