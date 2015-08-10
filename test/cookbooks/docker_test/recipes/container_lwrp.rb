@@ -636,8 +636,7 @@ docker_container 'mutator' do
   command "sh -c 'touch /mutator-`date +\"%Y-%m-%d_%H-%M-%S\"`'"
   outfile '/mutator.tar'
   force true
-  not_if { ::File.exist?('/marker_container_mutator') }
-  action :run
+  action :run_if_missing
 end
 
 execute 'commit mutator' do
