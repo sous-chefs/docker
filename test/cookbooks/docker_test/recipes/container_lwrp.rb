@@ -618,3 +618,33 @@ docker_container 'dangler' do
   remove_volumes true
   action :delete
 end
+
+#########
+# mutator
+#########
+
+docker_tag 'mutator_from_busybox' do
+  target_repo 'busybox'
+  target_tag 'latest'
+  to_repo 'someara/mutator'
+  target_tag 'latest'
+end
+
+docker_container 'mutator' do
+  repo 'someara/mutator'
+  tag 'latest'
+  command "sh -c 'touch /mutator-`date +\"%Y-%m-%d_%H-%M-%S\"`'"
+  outfile '/mutator.tar'
+  force true
+  not_if { ::File.exist?('/marker_container_mutator') }
+  action :run
+end
+
+execute 'commit mutator' do
+  command 'touch /marker_container_mutator'
+  creates '/marker_container_mutator'
+  notifies :commit, 'docker_container[mutator]', :immediately
+  notifies :export, 'docker_container[mutator]', :immediately
+  notifies :redeploy, 'docker_container[mutator]', :immediately
+  action :run
+end

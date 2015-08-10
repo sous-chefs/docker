@@ -300,6 +300,24 @@ class Chef
         end
         new_resource.updated_by_last_action(true)
       end
+
+      action :commit do
+        c = Docker::Container.get("#{new_resource.container_name}")
+        converge_by "committing #{new_resource.container_name}" do
+          new_image = c.commit
+          new_image.tag('repo' => new_resource.repo, 'tag' => new_resource.tag, 'force' => new_resource.force)
+        end
+      end
+
+      action :export do
+        fail "Please set outfile property on #{new_resource.container_name}" if new_resource.outfile.nil?
+        c = Docker::Container.get("#{new_resource.container_name}")
+        converge_by "exporting #{new_resource.container_name}" do
+          ::File.open(new_resource.outfile, 'w') do |f|
+            c.export { |chunk| f.write(chunk) }
+          end
+        end
+      end
     end
   end
 end

@@ -38,6 +38,7 @@ class Chef
       attribute :network_disabled, kind_of: [TrueClass, FalseClass], default: false
       attribute :network_mode, kind_of: String, default: ''
       attribute :open_stdin, kind_of: [TrueClass, FalseClass], default: false
+      attribute :outfile, kind_of: String, default: nil
       attribute :port, kind_of: String, default: ''
       attribute :privileged, kind_of: [TrueClass, FalseClass], default: false
       attribute :publish_all_ports, kind_of: [TrueClass, FalseClass], default: false
@@ -65,6 +66,7 @@ class Chef
       alias_method :restart_maximum_retries, :restart_maximum_retry_count
       alias_method :retries, :restart_maximum_retry_count
       alias_method :volume_from, :volumes_from
+      alias_method :destination, :outfile
     end
   end
 end
