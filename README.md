@@ -300,6 +300,9 @@ the options found in the
   activation.
 
 ### docker_image
+The `docker_image` is responsible for managing Docker image pulls,
+builds, and deletions. It speaks directly to the
+[Docker remote API](https://docs.docker.com/reference/api/docker_remote_api_v1.16/).
 
 #### Examples
 
@@ -426,7 +429,7 @@ registry vs a private one.
 - `rm` - Remove intermediate containers after a successful build
   (default behavior) - Defaults to `true`
 
-### Actions
+#### Actions
 The following actions are available for a `docker_image` resource.
 Defaults to `pull_if_missing`
 
@@ -439,7 +442,7 @@ Defaults to `pull_if_missing`
 - `:remove` - Removes (untags) an image
 - `:push` - Pushes an image to the registry
 
-#### docker_tag
+### docker_tag
 Docker tags work very much like hard links in a Unix filesystem. They
 are just references to an existing image. Therefore, the docker_tag
 resource has taken inspiration from the Chef `link` resource.
@@ -461,361 +464,363 @@ end
 - `to_repo` - The repo half of the new image identifier
 - `to_tag`- The tag half of the new image identifier
 
-### Actions
+#### Actions
 - `:tag` - Tags the image
 
-### SAVEGAME: you are here
 ### docker_container
+The `docker_container` is responsible for managing Docker container
+actions. It speaks directly to the [Docker remote API](https://docs.docker.com/reference/api/docker_remote_api_v1.16/).
 
-Below are the available actions for the LWRP, default being `run`.
+The `docker_container` resource
 
-These attributes are associated with all LWRP actions.
+#### Examples
 
-Property | Description | Type | Default
----------|-------------|------|---------
-cmd_timeout | Timeout for docker commands (catchable exception: `Chef::Provider::Docker::Container::CommandTimeout`) | Integer | 60
-command | Command to run in or identify container | String  | nil
-container_name | Name for container/service | String | nil
-
-#### docker_container action :commit
-
-These attributes are associated with this LWRP action.
-
-Attribute | Description | Type | Default
-----------|-------------|------|--------
-author | Author for commit | String | nil
-message | Message for commit | String | nil
-repository | Remote repository | String | nil
-run | Configuration to be applied when the image is launched with `docker run` | String | nil
-tag | Specific tag for image | String | nil
-
-Commit a container with optional repository, run specification, and tag:
+Create a container without starting it.
 
 ```ruby
-docker_container 'myApp' do
-repository 'myRepo'
-tag Time.new.strftime("%Y%m%d%H%M")
-run '{"Cmd": ["cat", "/world"], "PortSpecs": ["22"]}'
-action :commit
+docker_container 'hello-world' do
+  command '/hello'
+  action :create
 end
 ```
 
-#### docker_container action :cp
-
-These attributes are associated with this LWRP action.
-
-Attribute | Description | Type | Default
-----------|-------------|------|--------
-destination | Host path to copy file | String | nil
-source | Container path to get file | String | nil
-
-Copying a file from container to host:
+This command will exit succesfully. This will happen on every
+chef-client run.
 
 ```ruby
-docker_container 'myApp' do
-  source '/path/to/container/file'
-  destination '/path/to/save/on/host'
-  action :cp
-end
-```
-
-#### docker_container action :create
-
-By default, this will handle creating a service for the container when action is create, run or start. `set['docker']['container_init_type'] = false` or add `init_type false` for LWRP to disable this behavior.
-
-Attributes for this action can be found in the `run` action (except for the `detach` attribute).
-
-#### docker_container action :export
-
-These attributes are associated with this LWRP action.
-
-Attribute | Description | Type | Default
-----------|-------------|------|--------
-destination | Host path to save tarball | String | nil
-
-Exporting container to host:
-
-```ruby
-docker_container 'myApp' do
-  destination '/path/to/save/on/host.tgz'
-  action :export
-end
-```
-
-#### docker_container action :kill
-
-These attributes are associated with this LWRP action.
-
-Attribute | Description | Type | Default
-----------|-------------|------|--------
-cookbook | Cookbook to grab any templates | String | docker
-init_type | Init type for container service handling | FalseClass, String | `node['docker']['container_init_type']`
-init_template | Template to use for init configuration | String | nil
-signal | Signal to send to the container | String | nil (implicitly KILL)
-socket_template | Template to use for configuring socket (relevent for init_type systemd only) | String | nil
-
-Kill a running container:
-
-```ruby
-docker_container 'shipyard' do
-  action :kill
-end
-```
-
-Send SIGQUIT to a running container:
-
-```ruby
-docker_container 'shipyard' do
-  signal 'QUIT'
-  action :kill
-end
-```
-
-#### docker_container action :redeploy
-
-Stops, removes, and runs a container. Useful for notifications from image build/pull.
-
-Attributes for this action can be found in the `stop`, `remove`, and `run` actions.
-
-Redeploy container when new image is pulled:
-
-```ruby
-docker_image 'shipyard/shipyard' do
-  action :pull
-  notifies :redeploy, 'docker_container[shipyard]', :immediately
-end
-
-docker_container 'shipyard' do
-  # Other attributes
+docker_container 'busybox_ls' do
+  repo 'busybox'
+  command 'ls -la /'
   action :run
 end
 ```
 
-#### docker_container action :remove
-
-These attributes are associated with this LWRP action.
-
-Attribute | Description | Type | Default
-----------|-------------|------|--------
-cookbook | Cookbook to grab any templates | String | docker
-force | Force removal | TrueClass, FalseClass | nil
-init_type | Init type for container service handling | FalseClass, String | `node['docker']['container_init_type']`
-init_template | Template to use for init configuration | String | nil
-socket_template | Template to use for configuring socket (relevent for init_type systemd only) | String | nil
-
-Remove a container:
+The :run_if_missing action will only run once. It is the default action.
 
 ```ruby
-docker_container 'shipyard' do
-  action :remove
+docker_container 'alpine_ls' do
+  repo 'alpine'
+  tag '3.1'
+  command 'ls -la /'
+  action :run_if_missing
 end
 ```
 
-#### docker_container action :remove_link
-
-These attributes are associated with this LWRP action.
-
-Attribute | Description | Type | Default
-----------|-------------|------|--------
-link | Link to remove from container | String | nil
-
-Remove a container:
+Set environment variables in a container
 
 ```ruby
-docker_container 'shipyard' do
-  link 'foo'
-  action :remove_link
+docker_container 'env' do
+  repo 'debian'
+  env ['PATH=/usr/bin', 'FOO=bar']
+  command 'env'
+  action :run_if_missing
 end
 ```
 
-#### docker_container action :remove_volume
-
-These attributes are associated with this LWRP action.
-
-Attribute | Description | Type | Default
-----------|-------------|------|--------
-volume | Volume(s) to remove from container | String, Array | nil
-
-Remove a container:
+This process remains running between chef-client runs, :run will do nothing on subsequent converges.
 
 ```ruby
-docker_container 'shipyard' do
-  volume %w(/extravol1 /extravol2)
-  action :remove_volume
-end
-```
-
-#### docker_container action :restart
-
-These attributes are associated with this LWRP action.
-
-Attribute | Description | Type | Default
-----------|-------------|------|--------
-cookbook | Cookbook to grab any templates | String | docker
-init_type | Init type for container service handling | FalseClass, String | `node['docker']['container_init_type']`
-init_template | Template to use for init configuration | String | nil
-socket_template | Template to use for configuring socket (relevent for init_type systemd only) | String | nil
-
-Restart a container:
-
-```ruby
-docker_container 'shipyard' do
-  action :restart
-end
-```
-
-#### docker_container action :run
-
-By default, this will handle creating a service for the container when action is create, run or start. `set['docker']['container_init_type'] = false` or add `init_type false` for LWRP to disable this behavior.
-
-These attributes are associated with this LWRP action.
-
-Attribute | Description | Type | Default
-----------|-------------|------|--------
-additional_host | Add a custom host-to-IP mapping (host:ip) | String, Array | nil
-attach | Attach container's stdout/stderr and forward all signals to the process | TrueClass, FalseClass | nil
-cap_add | Capabilities to add to container | String, Array | nil
-cidfile | File to store container ID | String | nil
-container_name | Name for container/service | String | nil
-cookbook | Cookbook to grab any templates | String | docker
-cpu_shares | CPU shares for container | Fixnum | nil
-detach | Detach from container when starting | TrueClass, FalseClass | nil
-device | Device(s) to pass through to container | String, Array | nil
-dns | DNS servers for container | String, Array | nil
-dns_search | DNS search domains for container | String, Array | nil
-entrypoint | Overwrite the default entrypoint set by the image | String | nil
-env | Environment variables to pass to container | String, Array | nil
-env_file | Read in a line delimited file of ENV variables | String | nil
-expose | Expose a port from the container without publishing it to your host | Fixnum, String, Array | nil
-hostname | Container hostname | String | nil
-image | Image for container | String | LWRP name
-init_type | Init type for container service handling | FalseClass, String | `node['docker']['container_init_type']`
-init_template | Template to use for init configuration | String | nil
-link | Add link to another container | String, Array | nil
-label | Options to pass to underlying labeling system | String | nil
-lxc_conf | Custom LXC options | String, Array | nil
-memory | Set memory limit for container | Fixnum, String | nil
-net | [Configure networking](http://docs.docker.io/reference/run/#network-settings) for container | String | nil
-networking (*DEPRECATED*) | Configure networking for container | TrueClass, FalseClass | true
-opt | Custom driver options | String, Array | nil
-port | Map network port(s) to the container | Fixnum (*DEPRECATED*), String, Array | nil
-privileged | Give extended privileges | TrueClass, FalseClass | nil
-public_port (*DEPRECATED*) | Map host port to container | Fixnum | nil
-publish_exposed_ports | Publish all exposed ports to the host interfaces | TrueClass, FalseClass | false
-remove_automatically | Automatically remove the container when it exits (incompatible with detach) | TrueClass, FalseClass | false
-restart | Restart policy for the container (no, on-failure, always) | String | nil
-socket_template | Template to use for configuring socket (relevent for init_type systemd only) | String | nil
-stdin | Attach container's stdin | TrueClass, FalseClass | nil
-tty | Allocate a pseudo-tty | TrueClass, FalseClass | nil
-user | User to run container | String | nil
-volume | Create bind mount(s) with: [host-dir]:[container-dir]:[rw\|ro]. If "container-dir" is missing, then docker creates a new volume. | String, Array | nil
-volumes_from | Mount all volumes from the given container(s) | String | nil
-working_directory | Working directory inside the container | String | nil
-
-Run a container:
-
-```ruby
-docker_container 'myImage' do
-  detach true
-end
-```
-
-Run a container via command:
-
-```ruby
-docker_container 'busybox' do
-  command 'sleep 9999'
-  detach true
-end
-```
-
-Run a container from image (docker-registry for example):
-
-```ruby
-docker_container 'docker-registry' do
-  image 'samalba/docker-registry'
-  detach true
-  hostname 'docker-registry.example.com'
-  port '5000:5000'
-  env 'SETTINGS_FLAVOR=local'
-  volume '/mnt/docker:/docker-storage'
-end
-```
-
-Run a container form image with arguments (logspout for example):
-
-```ruby
-docker_container 'progrium/logspout syslog://logs.papertrailapp.com:999999' do
+docker_container 'an_echo_server' do
+  repo 'alpine'
+  tag '3.1'
+  command 'nc -ll -p 7 -e /bin/cat'
+  port '7:7'
   action :run
-  container_name 'logspout'
-  detach true
-  hostname node[:hostname]
-  volume '/var/run/docker.sock:/tmp/docker.sock'
 end
 ```
 
-This would produce the command:
-
-```
-%> docker run \
-    --name=logspout \
-    -d \
-    -h $(hostname) \
-    -v=/var/run/docker.sock:/tmp/docker.sock \
-    progrium/logspout syslog://logs.papertrailapp.com:999999`
-```
-
-#### docker_container action :start
-
-These attributes are associated with this LWRP action.
-
-Attribute | Description | Type | Default
-----------|-------------|------|--------
-attach | Attach container's stdout/stderr and forward all signals to the cookbook | Cookbook to grab any templates | String | docker
-init_type | Init type for container service handling | FalseClass, String | `node['docker']['container_init_type']`
-init_template | Template to use for init configuration | String | nil
-socket_template | Template to use for configuring socket (relevent for init_type systemd only) | String | nil
-stdin | Attach container's stdin | TrueClass, FalseClass | nil
-
-Start a stopped container:
+Let docker pick the host port
 
 ```ruby
-docker_container 'shipyard' do
-  action :start
+docker_container 'another_echo_server' do
+  repo 'alpine'
+  tag '3.1'
+  command 'nc -ll -p 7 -e /bin/cat'
+  port '7'
+  action :run
 end
 ```
 
-#### docker_container action :stop
-
-These attributes are associated with this LWRP action.
-
-Attribute | Description | Type | Default
-----------|-------------|------|--------
-cookbook | Cookbook to grab any templates | String | docker
-init_type | Init type for container service handling | FalseClass, String | `node['docker']['container_init_type']`
-init_template | Template to use for init configuration | String | nil
-socket_template | Template to use for configuring socket (relevent for init_type systemd only) | String | nil
-
-Stop a running container:
+Specify the udp protocol
 
 ```ruby
-docker_container 'shipyard' do
+docker_container 'an_udp_echo_server' do
+  repo 'alpine'
+  tag '3.1'
+  command 'nc -ul -p 7 -e /bin/cat'
+  port '5007:7/udp'
+  action :run
+end
+```
+
+Kill a container
+
+```ruby
+docker_container 'bill' do
+  action :kill
+end
+```
+
+Stop a container
+
+```ruby
+docker_container 'hammer_time' do
   action :stop
 end
 ```
 
-#### docker_container action :wait
-
-Wait for a container to finish:
+Pause a container
 
 ```ruby
-docker_container 'busybox' do
-  command 'sleep 9999'
-  action :wait
+docker_container 'red_light' do
+  action :pause
 end
 ```
 
+Unpause a container
+
+```ruby
+docker_container 'green_light' do
+  action :unpause
+end
+```
+
+Restart a container
+
+```ruby
+docker_container 'restarter' do
+  action :restart
+end
+```
+
+Delete a container
+
+```ruby
+docker_container 'deleteme' do
+  remove_volumes true
+  action :delete
+end
+```
+
+Redeploy a container
+
+```ruby
+docker_container 'redeployer' do
+  repo 'alpine'
+  tag '3.1'
+  command 'nc -ll -p 7777 -e /bin/cat'
+  port '7'
+  action :run
+end
+
+execute 'redeploy redeployer' do
+  notifies :redeploy, 'docker_container[redeployer]', :immediately
+  action :run
+end
+```
+
+Bind mount local directories
+
+```ruby
+docker_container 'bind_mounter' do
+  repo 'busybox'
+  command 'ls -la /bits /more-bits'
+  binds ['/hostbits:/bits', '/more-hostbits:/more-bits']
+  action :run_if_missing
+end
+```
+
+Mount volumes from another container
+
+```ruby
+docker_container 'chef_container' do
+  command 'true'
+  volumes '/opt/chef'
+  action :create
+end
+
+docker_container 'ohai_debian' do
+  command '/opt/chef/embedded/bin/ohai platform'
+  repo 'debian'
+  volumes_from 'chef_container'
+end
+```
+
+Set a container's entrypoint
+
+```ruby
+docker_container 'ohai_again_debian' do
+  repo 'debian'
+  volumes_from 'chef_container'
+  entrypoint '/opt/chef/embedded/bin/ohai'
+  command 'platform'
+  action :run_if_missing
+end
+```
+
+Automatically remove a container after it exits
+
+```ruby
+docker_container 'sean_was_here' do
+  command "touch /opt/chef/sean_was_here-#{Time.new.strftime('%Y%m%d%H%M')}"
+  repo 'debian'
+  volumes_from 'chef_container'
+  autoremove true
+  action :run
+end
+```
+
+Grant NET_ADMIN rights to a container
+
+```ruby
+docker_container 'cap_add_net_admin' do
+  repo 'debian'
+  command 'bash -c "ip addr add 10.9.8.7/24 brd + dev eth0 label eth0:0 ; ip addr list"'
+  cap_add 'NET_ADMIN'
+  action :run_if_missing
+end
+```
+
+Revoke MKNOD rights to a container
+```ruby
+docker_container 'cap_drop_mknod' do
+  repo 'debian'
+  command 'bash -c "mknod -m 444 /dev/urandom2 c 1 9 ; ls -la /dev/urandom2"'
+  cap_drop 'MKNOD'
+  action :run_if_missing
+end
+```
+
+Set a container's hostname and domainname
+
+```ruby
+docker_container 'fqdn' do
+  repo 'debian'
+  command 'hostname -f'
+  host_name 'computers'
+  domain_name 'biz'
+  action :run_if_missing
+end
+```
+
+Set a container's DNS resolution
+
+```ruby
+docker_container 'dns' do
+  repo 'debian'
+  command 'cat /etc/resolv.conf'
+  host_name 'computers'
+  dns ['4.3.2.1', '1.2.3.4']
+  dns_search ['computers.biz', 'chef.io']
+  action :run_if_missing
+end
+```
+
+Add extra hosts to a container's `/etc/hosts`
+
+```ruby
+docker_container 'extra_hosts' do
+  repo 'debian'
+  command 'cat /etc/hosts'
+  extra_hosts ['east:4.3.2.1', 'west:1.2.3.4']
+  action :run_if_missing
+end
+```
+
+Manage container's restart_policy
+
+```ruby
+docker_container 'try_try_again' do
+  repo 'alpine'
+  tag '3.1'
+  command 'grep asdasdasd /etc/passwd'
+  restart_policy 'on-failure'
+  restart_maximum_retry_count 2
+  action :run_if_missing
+end
+
+docker_container 'reboot_survivor' do
+  repo 'alpine'
+  tag '3.1'
+  command 'nc -ll -p 123 -e /bin/cat'
+  port '123'
+  restart_policy 'always'
+  action :run_if_missing
+end
+```
+
+Manage container links
+
+```ruby
+docker_container 'link_source' do
+  repo 'alpine'
+  tag '3.1'
+  env ['FOO=bar', 'BIZ=baz']
+  command 'nc -ll -p 321 -e /bin/cat'
+  port '321'
+  action :run_if_missing
+end
+
+docker_container 'link_target_1' do
+  repo 'alpine'
+  tag '3.1'
+  env ['ASD=asd']
+  command 'ping -c 1 hello'
+  links ['link_source:hello']
+  action :run_if_missing
+end
+
+docker_container 'link_target_2' do
+  repo 'alpine'
+  tag '3.1'
+  command 'env'
+  links ['link_source:hello']
+  action :run_if_missing
+end
+
+execute 'redeploy_link_source' do
+  command 'touch /marker_container_redeploy_link_source'
+  creates '/marker_container_redeploy_link_source'
+  notifies :redeploy, 'docker_container[link_source]', :immediately
+  notifies :redeploy, 'docker_container[link_target_1]', :immediately
+  notifies :redeploy, 'docker_container[link_target_2]', :immediately
+  action :run
+end
+```
+
+Mutate a container between chef-client runs
+
+```ruby
+docker_tag 'mutator_from_busybox' do
+  target_repo 'busybox'
+  target_tag 'latest'
+  to_repo 'someara/mutator'
+  target_tag 'latest'
+end
+
+docker_container 'mutator' do
+  repo 'someara/mutator'
+  tag 'latest'
+  command "sh -c 'touch /mutator-`date +\"%Y-%m-%d_%H-%M-%S\"`'"
+  outfile '/mutator.tar'
+  force true
+  action :run_if_missing
+end
+
+execute 'commit mutator' do
+  command 'true'
+  notifies :commit, 'docker_container[mutator]', :immediately
+  notifies :export, 'docker_container[mutator]', :immediately
+  notifies :redeploy, 'docker_container[mutator]', :immediately
+  action :run
+end
+```
+
+#### Properties
+#### Actions
+
 ### docker_registry
+SAVEGAME: you are here
 FIXME: blah blah blah
 
 #### docker_registry action :login

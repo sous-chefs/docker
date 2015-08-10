@@ -9,7 +9,7 @@ docker_container 'hello-world' do
 end
 
 #############
-# action :run - default action
+# action :run
 #############
 
 # This command will exit succesfully. This will happen on every
@@ -21,12 +21,24 @@ docker_container 'busybox_ls' do
   action :run
 end
 
-# The :run_if_missing action will only run once. It iss the default
+# The :run_if_missing action will only run once. It is the default
 # action.
 docker_container 'alpine_ls' do
   repo 'alpine'
   tag '3.1'
   command 'ls -la /'
+  action :run_if_missing
+end
+
+#####
+# env
+#####
+
+# Inspect container logs with test-kitchen bussers
+docker_container 'env' do
+  repo 'debian'
+  env ['PATH=/usr/bin', 'FOO=bar']
+  command 'env'
   action :run_if_missing
 end
 
@@ -294,6 +306,19 @@ docker_container 'ohai_debian' do
   volumes_from 'chef_container'
 end
 
+############
+# entrypoint
+############
+
+# Inspect container logs with test-kitchen bussers
+docker_container 'ohai_again_debian' do
+  repo 'debian'
+  volumes_from 'chef_container'
+  entrypoint '/opt/chef/embedded/bin/ohai'
+  command 'platform'
+  action :run_if_missing
+end
+
 #############
 # :autoremove
 #############
@@ -373,31 +398,6 @@ docker_container 'extra_hosts' do
   repo 'debian'
   command 'cat /etc/hosts'
   extra_hosts ['east:4.3.2.1', 'west:1.2.3.4']
-  action :run_if_missing
-end
-
-############
-# entrypoint
-############
-
-# Inspect container logs with test-kitchen bussers
-docker_container 'ohai_again_debian' do
-  repo 'debian'
-  volumes_from 'chef_container'
-  entrypoint '/opt/chef/embedded/bin/ohai'
-  command 'platform'
-  action :run_if_missing
-end
-
-#####
-# env
-#####
-
-# Inspect container logs with test-kitchen bussers
-docker_container 'env' do
-  repo 'debian'
-  env ['PATH=/usr/bin', 'FOO=bar']
-  command 'env'
   action :run_if_missing
 end
 
