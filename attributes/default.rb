@@ -174,6 +174,9 @@ default['docker']['systemd_system_dir'] = value_for_platform(
     %w(15.04) => '/lib/systemd/system',
     'default' => '/usr/lib/systemd/system'
   },
+  'debian' => {
+    'default' => '/etc/systemd/system'
+  },
   'default' => '/usr/lib/systemd/system'
 )
 
