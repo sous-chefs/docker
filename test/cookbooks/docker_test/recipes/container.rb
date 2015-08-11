@@ -350,6 +350,12 @@ docker_container 'cap_add_net_admin' do
   action :run_if_missing
 end
 
+docker_container 'cap_add_net_admin_error' do
+  repo 'debian'
+  command 'bash -c "ip addr add 10.9.8.7/24 brd + dev eth0 label eth0:0 ; ip addr list"'
+  action :run_if_missing
+end
+
 ##########
 # cap_drop
 ##########
@@ -359,6 +365,12 @@ docker_container 'cap_drop_mknod' do
   repo 'debian'
   command 'bash -c "mknod -m 444 /dev/urandom2 c 1 9 ; ls -la /dev/urandom2"'
   cap_drop 'MKNOD'
+  action :run_if_missing
+end
+
+docker_container 'cap_drop_mknod_error' do
+  repo 'debian'
+  command 'bash -c "mknod -m 444 /dev/urandom2 c 1 9 ; ls -la /dev/urandom2"'
   action :run_if_missing
 end
 
@@ -402,7 +414,7 @@ docker_container 'extra_hosts' do
 end
 
 #########
-# devices
+# devices sans CAP_SYS_ADMIN
 #########
 
 # create file on disk
@@ -419,24 +431,54 @@ execute 'create loop device' do
   action :run
 end
 
-# # host's /root/disk1 md5sum should NOT match 0f343b0931126a20f133d67c2b018a3b
-# docker_container 'devices' do
-#   repo 'debian'
-#   command 'sh -c "lsblk ; dd if=/dev/urandom of=/dev/loop1 bs=1024 count=1"'
-#   devices [{
-#     'PathOnHost' => '/dev/loop1',
-#     'PathInContainer' => '/dev/loop1',
-#     'CgroupPermissions' => 'rwm'
-#   }]
-#   # cap_add 'SYS_ADMIN'
-#   action :run_if_missing
-# end
+# host's /root/disk1 md5sum should match 0f343b0931126a20f133d67c2b018a3b
+docker_container 'devices_sans_cap_sys_admin' do
+  repo 'debian'
+  command 'sh -c "lsblk ; dd if=/dev/urandom of=/dev/loop1 bs=1024 count=1"'
+  devices [{
+    'PathOnHost' => '/dev/loop1',
+    'PathInContainer' => '/dev/loop1',
+    'CgroupPermissions' => 'rwm'
+  }]
+  action :run_if_missing
+end
+
+#########
+# devices with CAP_SYS_ADMIN
+#########
+
+# create file on disk
+execute 'create disk file' do
+  command 'dd if=/dev/zero of=/root/disk2 bs=1024 count=1'
+  creates '/root/disk2'
+  action :run
+end
+
+# create loop device
+execute 'create loop device' do
+  command 'losetup /dev/loop2 /root/disk2'
+  not_if 'losetup -l | grep ^/dev/loop2'
+  action :run
+end
+
+# host's /root/disk1 md5sum should NOT match 0f343b0931126a20f133d67c2b018a3b
+docker_container 'devices_with_cap_sys_admin' do
+  repo 'debian'
+  command 'sh -c "lsblk ; dd if=/dev/urandom of=/dev/loop2 bs=1024 count=1"'
+  devices [{
+    'PathOnHost' => '/dev/loop2',
+    'PathInContainer' => '/dev/loop2',
+    'CgroupPermissions' => 'rwm'
+  }]
+  cap_add 'SYS_ADMIN'
+  action :run_if_missing
+end
 
 ############
 # cpu_shares
 ############
 
-# docker inspect cpu_shares | grep '"CpuShares": 512'
+# docker inspect -f '{{ .HostConfig.CpuShares }}' cpu_shares
 docker_container 'cpu_shares' do
   repo 'alpine'
   tag '3.1'
@@ -495,9 +537,8 @@ end
 # links
 #######
 
-# a long running process
-# docker inspect -f "{{ .HostConfig.Links }}" link_target
 # docker inspect -f "{{ .Config.Env }}" link_source
+# docker inspect -f "{{ .NetworkSettings.IPAddress }}" link_source
 docker_container 'link_source' do
   repo 'alpine'
   tag '3.1'
@@ -507,7 +548,7 @@ docker_container 'link_source' do
   action :run_if_missing
 end
 
-# docker inspect -f "{{ .HostConfig.Links }}" linker_target_1
+# docker inspect -f "{{ .HostConfig.Links }}" link_target_1
 # docker inspect -f "{{ .Config.Env }}" link_target_1
 docker_container 'link_target_1' do
   repo 'alpine'
