@@ -822,7 +822,7 @@ Most `docker_container` properties are the `snake_case` version of the
 - `binds` - An array of `:` separated paths to bind mount from the
   host into the container in the form
   `['/host-bits:/container-bits', '/more-host-bits:/more-container-bits']`.
-  Defaults to `nil.
+  Defaults to `nil`.
 - `cap_add` - An array Linux Capabilities (`man 7 capabilities`) to
   add to grant the container beyond what it normally gets.
 - `cap_drop` - An array Linux Capabilities (`man 7 capabilities`) to
@@ -888,11 +888,21 @@ Most `docker_container` properties are the `snake_case` version of the
 
 #### Actions
 
-SAVEGAME: YOU ARE HERE
+- `:create` - Creates the container but does not start it. Useful for
+  Volume containers.
+- `:start` - Starts the container. Useful for containers that run
+  jobs.. command that exit.
+- `:run` - Both `:create` and `:start` the container in one action.
+- `:run_if_missing` - The default action. Runs a container only once.
+- `:stop` - Stops the container.
+- `:restart` - Stops the starts the container.
+- `:kill` - Send a signal to the container process. Defaults to `SIGKILL`.
+- `:pause` - Pauses the container.
+- `:unpause` - Unpauses the container.
+- `:delete` - Deletes the container.
+- `:redeploy` - Deletes and runs the container.
 
 ## docker_registry
-
-FIXME: blah blah blah
 
 #### docker_registry action :login
 
