@@ -14,7 +14,7 @@ class Chef
 
       # This is called a lot.. maybe this should turn into an instance variable
       def container_created?
-        Docker::Container.get("#{new_resource.container_name}")
+        Docker::Container.get(new_resource.container_name)
         return true
       rescue Docker::Error::NotFoundError
         return false
@@ -54,7 +54,7 @@ class Chef
 
       # 22/tcp, 53/udp, etc
       def exposed_ports
-        { "#{container_port}" => {} }
+        { container_port => {} }
       end
 
       # Map container exposed port to the host
@@ -64,8 +64,8 @@ class Chef
         {
           "#{container_port}" => [
             {
-              'HostIp' => "#{host_ip}",
-              'HostPort' => "#{host_port}"
+              'HostIp' => host_ip,
+              'HostPort' => host_port
             }
           ]
         }
@@ -206,7 +206,7 @@ class Chef
       end
 
       action :start do
-        c = Docker::Container.get("#{new_resource.container_name}")
+        c = Docker::Container.get(new_resource.container_name)
         next if c.info['State']['Restarting']
         next if c.info['State']['Running']
         converge_by "starting #{new_resource.container_name}" do
@@ -217,7 +217,7 @@ class Chef
 
       action :stop do
         next unless container_created?
-        c = Docker::Container.get("#{new_resource.container_name}")
+        c = Docker::Container.get(new_resource.container_name)
         next unless c.info['State']['Running']
         converge_by "stopping #{new_resource.container_name}" do
           c.stop
@@ -227,7 +227,7 @@ class Chef
 
       action :kill do
         next unless container_created?
-        c = Docker::Container.get("#{new_resource.container_name}")
+        c = Docker::Container.get(new_resource.container_name)
         next unless c.info['State']['Running']
         converge_by "killing #{new_resource.container_name}" do
           c.kill(signal: new_resource.signal)
@@ -248,7 +248,7 @@ class Chef
 
       action :pause do
         next unless container_created?
-        c = Docker::Container.get("#{new_resource.container_name}")
+        c = Docker::Container.get(new_resource.container_name)
         next if c.info['State']['Paused']
         converge_by "pausing #{new_resource.container_name}" do
           c.pause
@@ -258,7 +258,7 @@ class Chef
 
       action :unpause do
         next unless container_created?
-        c = Docker::Container.get("#{new_resource.container_name}")
+        c = Docker::Container.get(new_resource.container_name)
         next unless c.info['State']['Paused']
         converge_by "unpausing #{new_resource.container_name}" do
           c.unpause
@@ -280,7 +280,7 @@ class Chef
         next unless container_created?
         action_unpause
         action_stop
-        c = Docker::Container.get("#{new_resource.container_name}")
+        c = Docker::Container.get(new_resource.container_name)
         converge_by "deleting #{new_resource.container_name}" do
           c.delete(force: new_resource.force, v: new_resource.remove_volumes)
         end
@@ -302,7 +302,7 @@ class Chef
       end
 
       action :commit do
-        c = Docker::Container.get("#{new_resource.container_name}")
+        c = Docker::Container.get(new_resource.container_name)
         converge_by "committing #{new_resource.container_name}" do
           new_image = c.commit
           new_image.tag('repo' => new_resource.repo, 'tag' => new_resource.tag, 'force' => new_resource.force)
@@ -311,7 +311,7 @@ class Chef
 
       action :export do
         fail "Please set outfile property on #{new_resource.container_name}" if new_resource.outfile.nil?
-        c = Docker::Container.get("#{new_resource.container_name}")
+        c = Docker::Container.get(new_resource.container_name)
         converge_by "exporting #{new_resource.container_name}" do
           ::File.open(new_resource.outfile, 'w') do |f|
             c.export { |chunk| f.write(chunk) }
