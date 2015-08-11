@@ -39,8 +39,8 @@ class Chef
 
           # avoid 'Unit file changed on disk' warning
           execute 'systemctl daemon-reload' do
-            command '/bin/systemctl daemon-reload' if node['platform'] == 'ubuntu'
-            command '/usr/bin/systemctl daemon-reload' unless node['platform'] == 'ubuntu'
+            command '/bin/systemctl daemon-reload' if node['platform'] == 'ubuntu' || node['platform'] == 'debian'
+            command '/usr/bin/systemctl daemon-reload' unless node['platform'] == 'ubuntu' || node['platform'] == 'debian'
             action :nothing
           end
 
