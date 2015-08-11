@@ -806,11 +806,92 @@ end
 
 #### Properties
 
-SAVEGAME: you are here
+Most `docker_container` properties are the `snake_case` version of the
+`CamelCase` keys found in the
+[Docker Remote Api](https://docs.docker.com/reference/api/docker_remote_api_v1.16/)
+
+- `container_name` - The name of the container. Defaults to the name
+  of the `docker_container` resource.
+- `repo` - aka `image_name`. The first half of a the complete
+  identifier for a Docker Image.
+- `tag` - The second half of a Docker image's identity. - Defaults to
+  `latest`.
+- `command` - The command to run when starting the container.
+- `autoremove` - Boolean - Automatically delete a container when it's
+  command exits. Defaults to `false`.
+- `binds` - An array of `:` separated paths to bind mount from the
+  host into the container in the form
+  `['/host-bits:/container-bits', '/more-host-bits:/more-container-bits']`.
+  Defaults to `nil.
+- `cap_add` - An array Linux Capabilities (`man 7 capabilities`) to
+  add to grant the container beyond what it normally gets.
+- `cap_drop` - An array Linux Capabilities (`man 7 capabilities`) to
+  revoke that the container normally has.
+- `cpu_shares` - An integer value containing the CPU Shares for the
+  container.
+- `devices` - A Hash of devices to add to the container.
+- `dns` - An array of DNS servers the container will use for name
+  resolution.
+- `dns_search` - An array of domains the container will search for
+  name resolution.
+- `domain_name` - Set's the container's dnsdomainname as returned by
+  the `dnsdomainname` command.
+- `entry_point` - Set the entry point for the container as a string or
+  an array of strings.
+- `env` - Set environment variables in the container in the form
+  `['FOO=bar', 'BIZ=baz']`
+- `extra_hosts` - An array of hosts to add to the container's
+  `/etc/hosts` in the form `['host_a:10.9.8.7', 'host_b:10.9.8.6']`
+- `force` - A boolean to use in container operations that support a
+  `force` option. Defaults to `false`
+- `host_name` - The hostname for the container.
+- `links` - An array of source container/alias pairs to link the
+  container to in the form `[container_a:www', container_b:db']`
+- `mac_address` - The mac address for the container to use.
+- `memory` - Memory limit in bytes.
+- `memory_swap` - Total memory limit (memory + swap); set `-1` to
+  disable swap. You must use this with memory and make the swap value
+  larger than memory.
+- `network_disabled` - Boolean to disable networking. Defaults to `false`.
+- `network_mode` - Sets the networking mode for the container.
+- `open_stdin` - Boolean value, opens stdin. Defaults to `false`.
+- `outfile` - The path to write the file when using `:export` action.
+- `port` - The port configuration to use in the container. Matches the
+  syntax used by the `docker` CLI tool.
+- `privileged` - Boolean to start the container in privileged more.
+  Defaults to `false`
+- `publish_all_ports` - Allocates a random host port for all of a
+  container’s exposed ports.
+- `remove_volumes` - A boolean to clean up "dangling" volumes when
+  removing the last container with a reference to it. Default to
+  `false` to match the Docker CLI behavior.
+- `restart_policy` - One of `no`, `on-failure`, or `always`. Use
+  `always` if you want a service container to survive a Dockerhost
+  reboot. Defaults to `no`.
+- `restart_maximum_retry_count` - Maximum number of restarts to try
+  when `restart_policy` is `on-failure`. Defaults to an ever
+  increasing delay (double the previous delay, starting at 100mS), to
+  prevent flooding the server.
+- `security_opts` - A list of string values to customize labels for
+  MLS systems, such as SELinux.
+- `signal` - The signal to send when using the `:kill` action.
+  Defaults to `SIGKILL`.
+- `tty` - Boolean value to allocate a pseudo-TTY. Defaults to `false`.
+- `user` - A string value specifying the user inside the container.
+- `volumes` - An Array of paths inside the container to expose. Does
+  the same thing as the `VOLUME` directive in a Dockerfile, but works
+  on container creation.
+- `volumes_from` - A list of volumes to inherit from another
+  container. Specified in the form `<container name>[:<ro|rw>]`
+- `working_dir` - A string specifying the working directory for
+  commands to run in.
 
 #### Actions
 
+SAVEGAME: YOU ARE HERE
+
 ## docker_registry
+
 FIXME: blah blah blah
 
 #### docker_registry action :login
@@ -836,7 +917,6 @@ end
 
 ## Testing and Development
 
-* Quickly testing with Vagrant: [VAGRANT.md](VAGRANT.md)
 * Full development and testing workflow with Test Kitchen and friends: [TESTING.md](TESTING.md)
 
 ## Contributing
@@ -848,7 +928,7 @@ Please see contributing information in: [CONTRIBUTING.md](CONTRIBUTING.md)
 * Tom Duffield (http://tomduffield.com)
 * Brian Flad (<bflad417@gmail.com>)
 * Fletcher Nichol (<fnichol@nichol.ca>)
-* Sean OMeara (sean@chef.io)
+* Sean OMeara (<sean@chef.io>)
 
 ## License
 Licensed under the Apache License, Version 2.0 (the "License");

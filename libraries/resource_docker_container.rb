@@ -55,6 +55,7 @@ class Chef
       attribute :volumes_from, kind_of: [String, Array, NilClass], default: nil # FIXME: add validate proc
       attribute :working_dir, kind_of: String, default: ''
 
+      alias_method :cmd, :command
       alias_method :image, :repo
       alias_method :image_name, :repo
       alias_method :additional_host, :extra_hosts
