@@ -236,7 +236,7 @@ file '/more-hostbits/hello.txt' do
   action :create
 end
 
-# Inspect the docker logs with test-kitchen bussers
+# docker inspect -f "{{ .HostConfig.Binds }}"
 docker_container 'bind_mounter' do
   repo 'busybox'
   command 'ls -la /bits /more-bits'
@@ -419,18 +419,18 @@ execute 'create loop device' do
   action :run
 end
 
-# host's /root/disk1 md5sum should NOT match 0f343b0931126a20f133d67c2b018a3b
-docker_container 'devices' do
-  repo 'debian'
-  command 'sh -c "lsblk ; dd if=/dev/urandom of=/dev/loop1 bs=1024 count=1"'
-  devices [{
-    'PathOnHost' => '/dev/loop1',
-    'PathInContainer' => '/dev/loop1',
-    'CgroupPermissions' => 'rwm'
-  }]
-  cap_add 'SYS_ADMIN'
-  action :run_if_missing
-end
+# # host's /root/disk1 md5sum should NOT match 0f343b0931126a20f133d67c2b018a3b
+# docker_container 'devices' do
+#   repo 'debian'
+#   command 'sh -c "lsblk ; dd if=/dev/urandom of=/dev/loop1 bs=1024 count=1"'
+#   devices [{
+#     'PathOnHost' => '/dev/loop1',
+#     'PathInContainer' => '/dev/loop1',
+#     'CgroupPermissions' => 'rwm'
+#   }]
+#   # cap_add 'SYS_ADMIN'
+#   action :run_if_missing
+# end
 
 ############
 # cpu_shares

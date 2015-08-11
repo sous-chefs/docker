@@ -127,7 +127,7 @@ Resources Overview
 
 ## Getting Started
 Here's a quick example of pulling the latest image and running a
-container with exposed ports (creates service automatically):
+container with exposed ports.
 
 ```ruby
 # Pull latest image
