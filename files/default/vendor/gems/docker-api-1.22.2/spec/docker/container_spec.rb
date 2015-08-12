@@ -37,23 +37,48 @@ describe Docker::Container do
   end
 
   describe '#streaming_logs' do
-    subject {
-      described_class.create('Cmd' => "echo hello", 'Image' => 'debian:wheezy')
-    }
+    let(:options) { {} }
+    subject do
+      described_class.create(
+        {'Cmd' => ['/bin/bash', '-lc', 'echo hello'], 'Image' => 'debian:wheezy'}.merge(options)
+      )
+    end
+
+    before(:each) { subject.tap(&:start).wait }
     after(:each) { subject.remove }
 
-    context "when not selecting any stream" do
-      let(:non_destination) { subject.logs }
+    context 'when not selecting any stream' do
+      let(:non_destination) { subject.streaming_logs }
       it 'raises a client error', :vcr do
         expect { non_destination }.to raise_error(Docker::Error::ClientError)
       end
     end
 
-    context "when selecting stdout" do
-      let(:stdout) { subject.logs(stdout: 1) }
+    context 'when selecting stdout' do
+      let(:stdout) { subject.streaming_logs(stdout: 1) }
       it 'returns blank logs', :vcr do
         expect(stdout).to be_a String
-        expect(stdout).to eq ""
+        expect(stdout).to eq "hello\n"
+      end
+    end
+
+    context 'when using a tty' do
+      let(:options) { { 'Tty' => true } }
+
+      let(:output) { subject.streaming_logs(stdout: 1, tty: 1) }
+      it 'returns `hello`', :vcr do
+        expect(output).to be_a(String)
+        expect(output).to eq("hello\n")
+      end
+    end
+
+    context 'when passing a block' do
+      let(:lines) { [] }
+      let(:output) { subject.streaming_logs(stdout: 1, follow: 1) { |s,c| lines << c } }
+      it 'returns `hello`', :vcr do
+        expect(output).to be_a(String)
+        expect(output).to eq("hello\n")
+        expect(lines).to eq(["hello\n"])
       end
     end
   end

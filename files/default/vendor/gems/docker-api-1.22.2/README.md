@@ -94,6 +94,8 @@ Docker.options = {
 }
 ```
 
+If you need to disable SSL verification, set the DOCKER_SSL_VERIFY variable to 'false'.
+
 ## Global calls
 
 All of the following examples require a connection to a Docker server. See the <a href="#starting-up">Starting up</a> section above for more information.

@@ -154,7 +154,7 @@ docker_tag 'private repo tag for name-w-dashes:v1.0.1' do
   action :tag
 end
 
-# FIXME name.w.dots broken right now
+# FIXME: name.w.dots broken right now
 
 # # for pushing to public repo
 # docker_tag 'public repo tag for name.w.dots' do

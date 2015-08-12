@@ -139,7 +139,7 @@ class Docker::Image
       query = {}
       query.compare_by_identity
       Array(names).each do |name|
-        query['names'] = URI.encode(name)
+        query['names'.dup] = URI.encode(name)
       end
 
       if filename

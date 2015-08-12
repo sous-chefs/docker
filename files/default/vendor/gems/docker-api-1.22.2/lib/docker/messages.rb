@@ -43,6 +43,15 @@ class Docker::Messages
     @stdout_messages += messages.stdout_messages
     @stderr_messages += messages.stderr_messages
     @all_messages += messages.all_messages
+    messages.clear
+
+    @all_messages
+  end
+
+  def clear
+    stdout_messages.clear
+    stderr_messages.clear
+    all_messages.clear
   end
 
   # Method to break apart application/vnd.docker.raw-stream headers
