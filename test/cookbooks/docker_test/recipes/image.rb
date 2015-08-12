@@ -71,15 +71,15 @@ cookbook_file '/usr/local/src/container1/Dockerfile' do
   action :create
 end
 
-docker_image 'image_1' do
+docker_image 'someara/image-1' do
   tag 'v0.1.0'
   source '/usr/local/src/container1/Dockerfile'
   force true
-  not_if { ::File.exist? '/marker_image_image_1' }
+  not_if { ::File.exist? '/marker_image_image-1' }
   action :build
 end
 
-file '/marker_image_image_1' do
+file '/marker_image_image-1' do
   action :create
 end
 
@@ -98,7 +98,7 @@ cookbook_file '/usr/local/src/container2/Dockerfile' do
   action :create
 end
 
-docker_image 'image_2' do
+docker_image 'someara/image.2' do
   tag 'v0.1.0'
   source '/usr/local/src/container2'
   action :build_if_missing
@@ -130,21 +130,53 @@ end
 # :tag and :push
 ################
 
-docker_tag 'private repo tag for hello-again:1.0.1' do
+# Test dots and dashes in repo names
+
+# [GH-356]
+
+docker_image 'someara/name-w-dashes'
+
+# # for pushing to public repo
+# docker_tag 'public repo tag for name-w-dashes:v1.0.1' do
+#   target_repo 'hello-again'
+#   target_tag 'v0.1.0'
+#   to_repo 'someara/name-w-dashes'
+#   to_tag 'latest'
+#   action :tag
+# end
+
+# for pushing to private repo
+docker_tag 'private repo tag for name-w-dashes:v1.0.1' do
   target_repo 'hello-again'
   target_tag 'v0.1.0'
-  to_repo 'localhost:5043/someara/hello-again'
+  to_repo 'localhost:5043/someara/name-w-dashes'
   to_tag 'latest'
   action :tag
 end
 
-docker_tag 'private repo tag for busybox:latest' do
+# FIXME name.w.dots broken right now
+
+# # for pushing to public repo
+# docker_tag 'public repo tag for name.w.dots' do
+#   target_repo 'busybox'
+#   target_tag 'latest'
+#   to_repo 'someara/name.w.dots'
+#   to_tag 'latest'
+#   action :tag
+# end
+
+# # for pushing to private repo
+docker_tag 'private repo tag for name.w.dots' do
   target_repo 'busybox'
   target_tag 'latest'
-  to_repo 'localhost:5043/someara/busybox'
+  to_repo 'localhost:5043/someara/name.w.dots'
   to_tag 'latest'
   action :tag
 end
+
+include_recipe 'docker_test::registry'
+
+# AUTH
 
 # docker_registry 'https://index.docker.io/v1/' do
 #   username 'youthere'
@@ -152,28 +184,48 @@ end
 #   email 'youthere@computers.biz'
 # end
 
-include_recipe 'docker_test::registry'
-
 docker_registry 'localhost:5043' do
   username 'testuser'
   password 'testpassword'
   email 'alice@computers.biz'
 end
 
-docker_image 'localhost:5043/someara/busybox' do
-  not_if { ::File.exist? '/marker_image_private_busybox' }
+# # comment me out
+# docker_image 'someara/hello-again' do
+#   not_if { ::File.exist? '/marker_image_public_name-w-dashes' }
+#   action :push
+# end
+
+# # comment me out
+# file '/marker_image_public_name-w-dashes' do
+#   action :create
+# end
+
+docker_image 'localhost:5043/someara/name-w-dashes' do
+  not_if { ::File.exist? '/marker_image_private_name-w-dashes' }
   action :push
 end
 
-file '/marker_image_private_busybox' do
+file '/marker_image_private_name-w-dashes' do
   action :create
 end
 
-docker_image 'localhost:5043/someara/hello-again' do
-  not_if { ::File.exist? '/marker_image_private_hello-again' }
+# # comment me out
+# docker_image 'someara/name.w.dots' do
+#   not_if { ::File.exist? '/marker_image_public_name.w.dots' }
+#   action :push
+# end
+
+# # comment me out
+# file '/marker_image_public_name.w.dots' do
+#   action :create
+# end
+
+docker_image 'localhost:5043/someara/name.w.dots' do
+  not_if { ::File.exist? '/marker_image_private_name.w.dots' }
   action :push
 end
 
-file '/marker_image_private_hello-again' do
+file '/marker_image_private_name.w.dots' do
   action :create
 end
