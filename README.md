@@ -28,8 +28,8 @@ cgroups or aufs.
 
 Requirements
 ------------
-- Chef 11 or higher
-- Ruby 1.9 or higher (preferably from the Chef full-stack installer)
+- Chef 12 or higher
+- Ruby 1.9 or higher (preferably, the Chef full-stack installer)
 - Network accessible web server hosting the docker binary.
 
 Platform Support
@@ -122,8 +122,8 @@ Resources Overview
 * `docker_service`: docker daemon installation and configuration
 * `docker_image`: image/repository operations
 * `docker_tag`: image tagging operations
-* `docker_registry`: registry operations
 * `docker_container`: container operations
+* `docker_registry`: registry operations
 
 ## Getting Started
 Here's a quick example of pulling the latest image and running a
@@ -155,6 +155,7 @@ You might run a private registry
 docker_registry 'https://registry.computers.biz/' do
   username 'shipper'
   password 'iloveshipping'
+  email 'shipper@computers.biz'
 end
 
 # Pull tagged image
@@ -904,24 +905,29 @@ Most `docker_container` properties are the `snake_case` version of the
 
 ## docker_registry
 
+The `docker_registry` resource is responsible for managing the
+connection auth information to a Docker registry.
+
 #### docker_registry action :login
 
 Log into or register with public registry:
 
 ```ruby
 docker_registry 'https://index.docker.io/v1/' do
-  email 'publicme@example.com'
   username 'publicme'
   password 'hope_this_is_in_encrypted_databag'
+  email 'publicme@computers.biz'
 end
 ```
 
 Log into private registry with optional port:
 
 ```ruby
-docker_registry 'https://docker-registry.example.com:8443/' do
+docker_registry 'my local registry' do
+   serveraddress 'https://registry.computers.biz:8443/'
    username 'privateme'
    password 'still_hope_this_is_in_encrypted_databag'
+   email privateme@computers.biz'
 end
 ```
 

@@ -1,319 +1,136 @@
-# Docker module
-module Docker
-  # Docker::Helpers module
-  module Helpers
-    # Exception to signify that the Docker daemon is not yet ready to handle
-    # docker commands.
-    class DockerNotReady < StandardError
-      def initialize(timeout)
-        super <<-EOH
-The Docker daemon did not become ready within #{timeout} seconds.
-This most likely means that Docker failed to start.
-Docker can fail to start if:
+# Constants
+IPV6_ADDR ||= /(
+([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|
+([0-9a-fA-F]{1,4}:){1,7}:|
+([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|
+([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|
+([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|
+([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|
+([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|
+[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|
+:((:[0-9a-fA-F]{1,4}){1,7}|:)|
+fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|
+::(ffff(:0{1,4}){0,1}:){0,1}
+((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}
+(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|
+([0-9a-fA-F]{1,4}:){1,4}:
+((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}
+(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])
+)/
 
-  - a configuration file is invalid
-  - permissions are incorrect for the root directory of the docker runtime.
+IPV4_ADDR ||= /((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])/
 
-If this problem persists, check your service log files.
-EOH
+module DockerHelpers
+  # Path to docker executable
+  def docker_arch
+    node['kernel']['machine']
+  end
+
+  def docker_bin
+    '/usr/bin/docker'
+  end
+
+  def docker_kernel
+    node['kernel']['name']
+  end
+
+  def docker_log
+    '/var/log/docker.log'
+  end
+
+  def docker_name
+    'docker'
+  end
+
+  def parsed_checksum
+    case docker_arch
+    when 'Darwin'
+      case parsed_version
+      when '1.6.0' then '9e960e925561b4ec2b81f52b6151cd129739c1f4fba91ce94bdc0333d7d98c38'
+      when '1.6.2' then 'f29b8b2185c291bd276f7cdac45a674f904e964426d5b969fda7b8ef6b8ab557'
+      when '1.7.0' then '1c8ee59249fdde401afebc9a079cb75d7674f03d2491789fb45c88020a8c5783'
       end
-    end
-
-    # Exception to signify that the docker command timed out.
-    class CommandTimeout < RuntimeError; end
-
-    # Daemon service name
-    def self.docker_service(node)
-      return 'docker.io' if Docker::Helpers.using_docker_io_package?(node)
-      'docker'
-    end
-
-    # Path to settings file
-    def self.docker_settings_file(node)
-      case node['platform']
-      when 'debian'
-        '/etc/default/docker'
-      when 'ubuntu'
-        if Docker::Helpers.using_docker_io_package?(node)
-          '/etc/default/docker.io'
-        else
-          '/etc/default/docker'
-        end
-      else
-        '/etc/sysconfig/docker'
-      end
-    end
-
-    # Path to Upstart configuration file
-    def self.docker_upstart_conf_file(node)
-      case node['platform']
-      when 'ubuntu'
-        if Docker::Helpers.using_docker_io_package?(node)
-          '/etc/init/docker.io.conf'
-        else
-          '/etc/init/docker.conf'
-        end
-      else
-        '/etc/init/docker.conf'
-      end
-    end
-
-    # Path to docker executable
-    def self.executable(node)
-      return '/usr/bin/docker.io' if Docker::Helpers.using_docker_io_package?(node)
-      "#{node['docker']['install_dir']}/docker"
-    end
-
-    # Boolean to determine whether or not we are using the docker.io package
-    def self.using_docker_io_package?(node)
-      node['docker']['install_type'] == 'package' &&
-        node['docker']['package']['name'] == 'docker.io'
-    end
-
-    def self.daemon_cli_args(node)
-      daemon_options = Docker::Helpers.cli_args(
-        'api-enable-cors' => node['docker']['api_enable_cors'],
-        'bip' => node['docker']['bip'],
-        'bridge' => node['docker']['bridge'],
-        'debug' => node['docker']['debug'],
-        'dns' => Array(node['docker']['dns']),
-        'dns-search' => Array(node['docker']['dns_search']),
-        'exec-driver' => node['docker']['exec_driver'],
-        'host' => Array(node['docker']['host']),
-        'graph' => node['docker']['graph'],
-        'group' => node['docker']['group'],
-        'icc' => node['docker']['icc'],
-        'insecure-registry' => Array(node['docker']['insecure-registry']),
-        'ip' => node['docker']['ip'],
-        'iptables' => node['docker']['iptables'],
-        'mtu' => node['docker']['mtu'],
-        'pidfile' => node['docker']['pidfile'],
-        'registry-mirror' => Array(node['docker']['registry-mirror']),
-        'restart' => node['docker']['restart'],
-        'selinux-enabled' => node['docker']['selinux_enabled'],
-        'storage-driver' => node['docker']['storage_driver'],
-        'storage-opt' => Array(node['docker']['storage_opt']),
-        'tls' => node['docker']['tls'],
-        'tlscacert' => node['docker']['tlscacert'],
-        'tlscert' => node['docker']['tlscert'],
-        'tlskey' => node['docker']['tlskey'],
-        'tlsverify' => node['docker']['tlsverify']
-      )
-      daemon_options += " #{node['docker']['options']}" if node['docker']['options']
-      daemon_options
-    end
-
-    # NOTE: This method has custom daemon arg handling for
-    # the daemon options since they do not parse quotes correctly
-    # e.g. --exec-driver="lxc"
-    # e.g. --host="unix:///var/run/docker.sock"
-    # e.g. --storage-driver="aufs"
-    # This probably should be opened as a bug in Docker
-    def self.cli_args(spec)
-      cli_line = ''
-      spec.each_pair do |arg, value|
-        case value
-        when Array
-          next if value.empty?
-          args = value.map do |v|
-            " --#{arg}=#{v}"
-          end
-          cli_line += args.join
-        when FalseClass, Fixnum, Integer, String, TrueClass
-          cli_line += " --#{arg}=#{value}"
-        end
-      end
-      cli_line
-    end
-
-    def cli_args(spec)
-      cli_line = ''
-      spec.each_pair do |arg, value|
-        case value
-        when Array
-          next if value.empty?
-          args = value.map do |v|
-            v = "\"#{v}\"" if v.is_a?(String)
-            " --#{arg}=#{v}"
-          end
-          cli_line += args.join
-        when FalseClass, Fixnum, Integer, String, TrueClass
-          value = "\"#{value}\"" if value.is_a?(String)
-          cli_line += " --#{arg}=#{value}"
-        end
-      end
-      cli_line
-    end
-
-    def docker_inspect(id)
-      require 'json'
-      JSON.parse(docker_cmd("inspect #{id}").stdout)[0]
-    end
-
-    def docker_inspect_id(id)
-      inspect = docker_inspect(id)
-      # in docker < 1.0.0 the field is called 'id', but docker >= 1.0.0 it's called 'Id'.
-      (inspect['id'] || inspect['Id']) if inspect
-    end
-
-    def dockercfg_parse
-      require 'json'
-      dockercfg = JSON.parse(::File.read(::File.join(::Dir.home, '.dockercfg')))
-      dockercfg.each_pair do |k, v|
-        dockercfg[k].merge!(dockercfg_parse_auth(v['auth']))
-      end
-      dockercfg
-    rescue
-      nil
-    end
-
-    def dockercfg_parse_auth(str)
-      require 'base64'
-      decoded_str = Base64.decode64(str)
-      if decoded_str
-        auth = {}
-        auth['username'], auth['password'] = decoded_str.split(':')
-        return auth
-      end
-      nil
-    end
-
-    def timeout
-      node['docker']['docker_daemon_timeout']
-    end
-
-    # This is based upon wait_until_ready! from the opscode jenkins cookbook.
-    #
-    # Since the docker service returns immediately and the actual docker
-    # process is started as a daemon, we block the Chef Client run until the
-    # daemon is actually ready.
-    #
-    # This method will effectively "block" the current thread until the docker
-    # daemon is ready
-    #
-    # @raise [DockerNotReady]
-    #   if the Docker master does not respond within (+timeout+) seconds
-    #
-    def wait_until_ready!
-      Timeout.timeout(timeout) do
-        loop do
-          result = shell_out('docker info')
-          break if Array(result.valid_exit_codes).include?(result.exitstatus)
-          Chef::Log.debug("Docker daemon is not running - #{result.stdout}\n#{result.stderr}")
-          sleep(0.5)
-        end
-      end
-    rescue Timeout::Error
-      raise DockerNotReady.new(timeout), 'docker timeout exceeded'
-    end
-
-    # the Error message to display if a command times out. Subclasses
-    # may want to override this to provide more details on the timeout.
-    def command_timeout_error_message(cmd)
-      <<-EOM
-
-Command timed out:
-#{cmd}
-
-EOM
-    end
-
-    # Runs a docker command. Does not raise exception on non-zero exit code.
-    def docker_cmd(cmd, timeout = new_resource.cmd_timeout)
-      execute_cmd('docker ' + cmd, timeout)
-    end
-
-    # Executes the given command with the specified timeout. Does not raise an
-    # exception on a non-zero exit code.
-    def execute_cmd(cmd, timeout = new_resource.cmd_timeout)
-      Chef::Log.debug('Executing: ' + cmd)
-      begin
-        shell_out(cmd, timeout: timeout)
-      rescue Mixlib::ShellOut::CommandTimeout
-        raise CommandTimeout, command_timeout_error_message(cmd)
-      end
-    end
-
-    # Executes the given docker command with the specified timeout. Raises an
-    # exception if the command returns a non-zero exit code.
-    def docker_cmd!(cmd, timeout = new_resource.cmd_timeout)
-      execute_cmd!('docker ' + cmd, timeout)
-    end
-
-    # Executes the given command with the specified timeout. Raises an
-    # exception if the command returns a non-zero exit code.
-    def execute_cmd!(cmd, timeout = new_resource.cmd_timeout)
-      cmd = execute_cmd(cmd, timeout)
-      cmd.error!
-      cmd
-    end
-
-    def binary_installed?(bin)
-      !shell_out("which #{bin}").error?
-    end
-
-    #
-    # Pairs with the dep_check recipe.
-    #
-    # Parameters:
-    # @execption - DockerCookbook exception to throw
-    # @action - symbol representing which action to take
-    # @msg - string of message to print
-    #
-    def alert_on_error(exception, action, msg)
-      case action
-      when :warn
-        Chef::Log.warn <<-MSG
-WARNING: #{exception}
-#{msg}
-        MSG
-      when :fatal
-        fail exception, msg
+    when 'Linux'
+      case parsed_version
+      when '1.6.0' then '526fbd15dc6bcf2f24f99959d998d080136e290bbb017624a5a3821b63916ae8'
+      when '1.6.2' then 'e131b2d78d9f9e51b0e5ca8df632ac0a1d48bcba92036d0c839e371d6cf960ec'
+      when '1.7.0' then 'a27669f3409f5889cb86e6d9e7914d831788a9d96c12ecabb24472a6cd7b1007'
       end
     end
   end
-end
 
-# class Chef
-class Chef
-  # class Chef::Node
-  class Node
-    # recipe? is already taken
-    # rubocop:disable PredicateName
-    def has_recipe?(recipe_name)
-      loaded_recipes.include?(with_default(recipe_name))
-    end
-    # rubocop:enable PredicateName
-
-    private
-
-    #
-    # Automatically appends "+::default+" to recipes that need them.
-    #
-    # @param [String] name
-    #
-    # @return [String]
-    #
-    def with_default(name)
-      name.include?('::') ? name : "#{name}::default"
-    end
-
-    #
-    # The list of loaded recipes on the Chef run (normalized)
-    #
-    # @return [Array<String>]
-    #
-    def loaded_recipes
-      node.run_context.loaded_recipes.map { |name| with_default(name) }
-    end
+  def parsed_pidfile
+    return new_resource.pidfile if new_resource.pidfile
+    "/var/run/#{docker_name}.pid"
   end
-end
 
-class DockerCookbook
-  class Exceptions
-    class MissingDependency < RuntimeError; end
-    class InvalidPlatformVersion < StandardError; end
-    class InvalidArchitecture < StandardError; end
-    class InvalidKernelVersion < StandardError; end
+  def parsed_version
+    return new_resource.version if new_resource.version
+    '1.6.2'
+  end
+
+  def parsed_source
+    return new_resource.source if new_resource.source
+    "http://get.docker.io/builds/#{docker_kernel}/#{docker_arch}/docker-#{parsed_version}"
+  end
+
+  def docker_daemon_cmd
+    cmd = "#{docker_bin} -d"
+    docker_opts.each { |opt| cmd << opt }
+    cmd
+  end
+
+  # strip out invalid host arguments
+  def parsed_host
+    sockets = new_resource.host.split if new_resource.host.class == String
+    sockets = new_resource.host if new_resource.host.class == Array
+    r = []
+    sockets.each do |s|
+      if s.match(/^unix:/) || s.match(/^tcp:/) || s.match(/^fd:/)
+        r << s
+      else
+        Chef::Log.info("WARNING: docker_service host property #{s} not valid")
+      end
+    end
+    r
+  end
+
+  def docker_opts
+    opts = []
+    opts << " --api-cors-header=#{new_resource.api_cors_header}" if new_resource.api_cors_header
+    opts << " --bridge=#{new_resource.bridge}" if new_resource.bridge
+    opts << " --bip=#{new_resource.bip}" if new_resource.bip
+    opts << ' --debug' if new_resource.debug
+    opts << " --default-ulimit=#{new_resource.default_ulimit}" if new_resource.default_ulimit
+    opts << " --dns=#{new_resource.dns}" if new_resource.dns
+    opts << " --dns-search=#{new_resource.dns_search}" if new_resource.dns_search
+    opts << " --exec-driver=#{new_resource.exec_driver}" if new_resource.exec_driver
+    opts << " --fixed-cidr=#{new_resource.fixed_cidr}" if new_resource.fixed_cidr
+    opts << " --fixed-cidr-v6=#{new_resource.fixed_cidr_v6}" if new_resource.fixed_cidr_v6
+    opts << " --group=#{new_resource.group}" if new_resource.group
+    opts << " --graph=#{new_resource.graph}" if new_resource.graph
+    parsed_host.each { |h| opts << " -H #{h}" } if new_resource.host
+    opts << ' --icc=true' if new_resource.icc
+    opts << " --insecure-registry=#{new_resource.insecure_registry}" if new_resource.insecure_registry
+    opts << " --ip=#{new_resource.ip}" if new_resource.ip
+    opts << ' --ip-forward=true' if new_resource.ip_forward
+    opts << ' --ip-masq=true' if new_resource.ip_masq
+    opts << ' --iptables=true' if new_resource.iptables
+    opts << ' --ipv6=true' if new_resource.ipv6
+    opts << " --log-level=#{new_resource.log_level}" if new_resource.log_level
+    opts << " --label=#{new_resource.label}" if new_resource.label
+    opts << " --log-driver=#{new_resource.log_driver}" if new_resource.log_driver
+    opts << " --mtu=#{new_resource.mtu}" if new_resource.mtu
+    opts << " --pidfile=#{new_resource.pidfile}" if new_resource.pidfile
+    opts << " --registry-mirror=#{new_resource.registry_mirror}" if new_resource.registry_mirror
+    opts << " --storage-driver=#{new_resource.storage_driver}" if new_resource.storage_driver
+    opts << ' --selinux-enabled=true' if new_resource.selinux_enabled
+    opts << " --storage-opt=#{new_resource.storage_opt}" if new_resource.storage_opt
+    opts << ' --tls=true' if new_resource.tls
+    opts << " --tlscacert=#{new_resource.tlscacert}" if new_resource.tlscacert
+    opts << " --tlscert=#{new_resource.tlscert}" if new_resource.tlscert
+    opts << " --tlskey=#{new_resource.tlskey}" if new_resource.tlskey
+    opts << ' --tlsverify=true' if new_resource.tlsverify
+    opts
   end
 end

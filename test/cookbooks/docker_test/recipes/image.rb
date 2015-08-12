@@ -16,6 +16,11 @@ docker_image 'busybox' do
   not_if { ::File.exist? '/marker_image_busybox' }
 end
 
+# :pull_if_missing - default action
+docker_image 'debian' do
+  action :pull_if_missing
+end
+
 # marker to prevent :run on subsequent converges.
 file '/marker_image_busybox' do
   action :create
@@ -141,13 +146,18 @@ docker_tag 'private repo tag for busybox:latest' do
   action :tag
 end
 
+# docker_registry 'https://index.docker.io/v1/' do
+#   username 'youthere'
+#   password 'p4sswh1rr3d'
+#   email 'youthere@computers.biz'
+# end
+
 include_recipe 'docker_test::registry'
 
 docker_registry 'localhost:5043' do
   username 'testuser'
   password 'testpassword'
   email 'alice@computers.biz'
-  action :login
 end
 
 docker_image 'localhost:5043/someara/busybox' do
