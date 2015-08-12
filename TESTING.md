@@ -7,20 +7,39 @@ This cookbook uses a variety of testing components:
 
 Prerequisites
 -------------
-To develop on this cookbook, you must have a sane Ruby 1.9+ environment. Given the nature of this installation process (and it's variance across multiple operating systems), we will leave this installation process to the user.
+This cookbook was developed using the
+[Chef Development Kit](https://downloads.chef.io/chef-dk/).
 
-You must also have `bundler` installed:
+[Test Kitchen](http://kitchen.ci/) is used to instantiate VMs and run
+recipes that come with the cookbook. In the case of library cookbooks
+(those that ship resources instead of recipes), it used Berkshelf to
+point at test cookbooks shipped under test/cookbooks that exercise the
+resources.)
 
-    $ gem install bundler
+Test Kitchen can drive local VMs (VirtualBox, VMWare) via the Vagrant
+plugin, or it can drive IaaS providers via plugins. (chef gem install kitchen-ec2)
 
-You must also have Vagrant and VirtualBox installed:
+This cookbook's `.kitchen.yml` comes pre-configured to use the Vagrant
+plugin to drive Virtualbox. To use it, you must also have Vagrant and
+VirtualBox installed:
 
 - [Vagrant](https://vagrantup.com)
 - [VirtualBox](https://virtualbox.org)
 
-Once installed, you must install the `vagrant-berkshelf` plugin:
+There is also a `.kitchen.cloud.yml`. That will drive various IaaS
+providers. To use it, `export KITCHEN_YAML=.kitchen.cloud.yml`. You
+will need to inspect it and manually install the necessary plugins.
+It'll look something like this:
 
-    $ vagrant plugin install vagrant-berkshelf
+`chef gem install kitchen-sync`
+`chef gem install kitchen-ec2`
+`chef gem install kitchen-digitalocean`
+
+Beyond that, you'll need to create accounts on the IaaS services and
+manage the API and SSH secrets referred to.
+
+This will pay off if you have a cookbook with a large amount of
+suites. `kitchen converge -c` is a powerful thing.
 
 Development
 -----------
@@ -28,54 +47,16 @@ Development
 
         $ git clone git@github.com:bflad/chef-COOKBOOK.git
 
-2. Install the dependencies using bundler:
-
-        $ bundle install
-
-3. Create a branch for your changes:
+2. Create a branch for your changes:
 
         $ git checkout -b my_bug_fix
 
-4. Make any changes
-5. Write tests to support those changes. It is highly recommended you write both unit and integration tests.
-6. Run the tests:
-    - `bundle exec rspec`
-    - `bundle exec foodcritic .`
-    - `bundle exec rubocop`
-    - `bundle exec kitchen test`
+3. Make any changes
+4. Write tests to support those changes. It is highly recommended you write both unit and integration tests.
+5. Run the tests:
+    - `rspec`
+    - `foodcritic .`
+    - `rubocop`
+    - `kitchen test`
 
-7. Assuming the tests pass, open a Pull Request on GitHub
-
-Instance                        Status          Reason
-package-native-centos-65        pass            
-package-native-debian-72        pass
-package-native-debian-74        pass
-package-native-fedora-19        pass
-package-native-fedora-20        pass
-package-native-ubuntu-1204      pass
-package-native-ubuntu-1304      pass
-package-native-ubuntu-1310      pass
-package-lxc-centos-65           pass
-package-lxc-debian-72           pass
-package-lxc-debian-74           pass
-package-lxc-fedora-19           fail            fedora doesn’t like lxc
-package-lxc-fedora-20           fail            fedora doesn’t like lxc
-package-lxc-ubuntu-1204         pass
-package-lxc-ubuntu-1304         pass
-package-lxc-ubuntu-1310         pass
-binary-native-centos-65         fail            bad kernel 2.6.32
-binary-native-debian-72         pass
-binary-native-debian-74         pass
-binary-native-fedora-19         pass
-binary-native-fedora-20         pass
-binary-native-ubuntu-1204       pass
-binary-native-ubuntu-1304       pass
-binary-native-ubuntu-1310       pass
-binary-lxc-centos-65            (skipped)       bad kernel 
-binary-lxc-debian-72            unstable
-binary-lxc-debian-74            pass
-binary-lxc-fedora-19            fail
-binary-lxc-fedora-20            fail
-binary-lxc-ubuntu-1204          pass
-binary-lxc-ubuntu-1304          pass 
-binary-lxc-ubuntu-1310          pass
+6. Assuming the tests pass, open a Pull Request on GitHub

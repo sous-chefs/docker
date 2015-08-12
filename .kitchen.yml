@@ -7,178 +7,90 @@ driver_config:
 
 provisioner:
   name: chef_zero
-  require_chef_omnibus: latest
-  data_path: test/shared
+  require_chef_omnibus: true
   attributes:
     docker:
       container_cmd_timeout: 30
-
 
 platforms:
 - name: centos-6.5
   driver_config:
     box: opscode-centos-6.5
     box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-6.5_chef-provisionerless.box
+
 - name: centos-7.0
   driver_config:
     box: opscode-centos-7.0
     box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-7.0_chef-provisionerless.box
-#- name: oracle-6
-#- name: macosx-10.7
-#- name: macosx-10.8
-#- name: macosx-10.9
-#- name: opensuse-12.3
-#
-# Because the Debian Bento boxes have kernel v3.2, the checks will fail. For the time
-# being this platform will be removed from the test suite until we can build
-# out own debian boxes with the correct kernel version.
-#
-# - name: debian-7.7
-#   driver_config:
-#     box: opscode-debian-7.7
-#     box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_debian-7.7_chef-provisionerless.box
-- name: fedora-19
+
+- name: debian-8.1
   driver_config:
-    box: opscode-fedora-19
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_fedora-19_chef-provisionerless.box
-- name: fedora-20
+    box: opscode-debian-8.1
+    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_debian-7.7_chef-provisionerless.box
+
+- name: fedora-21
   driver_config:
-    box: opscode-fedora-20
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_fedora-20_chef-provisionerless.box
-- name: ubuntu-12.04
-  driver_config:
-    box: opscode-ubuntu-12.04
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-12.04_chef-provisionerless.box
-#
-# There appears to be an issue with the apt cookbook on 13.04. We will eventually
-# take care of this but for the time being we are disabling this platform
-# from the test suite.
-#
-# - name: ubuntu-13.04
-#   run_list:
-#     - recipe[apt]
-#   driver_config:
-#     box: opscode-ubuntu-13.04
-#     box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-13.04_chef-provisionerless.box
-- name: ubuntu-13.10
-  driver_config:
-    box: opscode-ubuntu-13.10
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-13.10_chef-provisionerless.box
-    require_chef_omnibus: latest
+    box: opscode-fedora-21
+    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_fedora-21_chef-provisionerless.box
+
 - name: ubuntu-14.04
   run_list:
-    - recipe[build-essential]
+    - recipe[apt]
   driver_config:
     box: opscode-ubuntu-14.04
     box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-14.04_chef-provisionerless.box
-    require_chef_omnibus: latest
-- name: ubuntu-14.10
+
+- name: ubuntu-14.04
   run_list:
-    - recipe[build-essential]
+    - recipe[apt]
   driver_config:
-    box: opscode-ubuntu-14.10
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-14.10_chef-provisionerless.box
-    require_chef_omnibus: latest
+    box: opscode-ubuntu-14.04
+    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-14.04_chef-provisionerless.box
+
+- name: ubuntu-15.04
+  run_list:
+    - recipe[apt]
+  driver_config:
+    box: opscode-ubuntu-15.04
+    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-15.04_chef-provisionerless.box
 
 suites:
 #
-# Package Installations
+# Resource behavior testing cookbooks
 #
-- name: package-native
+- name: service-socket
+  includes: [
+    'centos-6.5',
+    'centos-7.0',
+    'fedora-21',
+    'debian-8.1',
+    'ubuntu-14.04',
+    'ubuntu-15.04'
+  ]
   run_list:
-  - recipe[build-essential]
-  - recipe[docker_test::default]
-  - recipe[docker_test::image_lwrp]
-  - recipe[docker_test::container_lwrp]
-  attributes:
-    docker:
-      install_type: package
-- name: package-lxc
+  - recipe[docker_service_test::socket]
+
+- name: service-tls
+  includes: [
+    'centos-6.5',
+    'centos-7.0',
+    'fedora-21',
+    'debian-8.1',
+    'ubuntu-14.04',
+    'ubuntu-15.04',
+  ]
   run_list:
-  - recipe[build-essential]
-  - recipe[docker_test::default]
-  - recipe[docker_test::image_lwrp]
-  - recipe[docker_test::container_lwrp]
-  excludes:
-    - fedora-19 # There is some bug with removing containers. We will address
-    - fedora-20 # this bug in a future release.
-  attributes:
-    docker:
-      install_type: package
-      exec_driver: lxc
+  - recipe[docker_service_test::tls]
 
-#
-# Binary Installations
-#
-- name: binary-native
-  excludes:
-  - centos-6.5
+- name: resources
+  includes: [
+    'fedora-21',
+    'centos-7.0',
+    'debian-8.1',
+    'ubuntu-14.04',
+    'ubuntu-15.04',
+  ]
   run_list:
-  - recipe[build-essential]
   - recipe[docker_test::default]
-  - recipe[docker_test::image_lwrp]
-  - recipe[docker_test::container_lwrp]
-  attributes:
-    docker:
-      install_type: binary
-- name: binary-lxc
-  excludes:
-  - centos-6.5
-  - fedora-19
-  - fedora-20
-  - ubuntu-14.10
-  run_list:
-  - recipe[build-essential]
-  - recipe[docker_test::default]
-  - recipe[docker_test::image_lwrp]
-  - recipe[docker_test::container_lwrp]
-  attributes:
-    docker:
-      install_type: binary
-      exec_driver: lxc
-
-
-#
-# Source Installations
-#
-#- name: source-native
-#  excludes:
-#  - centos-6.5
-#  run_list:
-#  - recipe[docker_test::default]
-#  - recipe[docker_test::image_lwrp]
-#  - recipe[docker_test::container_lwrp]
-#  attributes:
-#    docker:
-#      install_type: source
-#- name: source-lxc
-#  excludes:
-#  - centos-6.5
-#  run_list:
-#  - recipe[docker_test::default]
-#  - recipe[docker_test::image_lwrp]
-#  - recipe[docker_test::container_lwrp]
-#  attributes:
-#    docker:
-#      install_type: source
-#      exec_driver: lxc
-
-#
-# Archived Tests
-#
-#- name: docker-lwrp-native
-#  run_list:
-#  - recipe[minitest-handler]
-#  - recipe[docker_test::default]
-#  - recipe[docker_test::image_lwrp]
-#  - recipe[docker_test::container_lwrp]
-#- name: docker-lwrp-lxc
-#  run_list:
-#  - recipe[minitest-handler]
-#  - recipe[lxc]
-#  - recipe[docker_test::default]
-#  - recipe[docker_test::image_lwrp]
-#  - recipe[docker_test::container_lwrp]
-#  attributes:
-#    docker:
-#      exec_driver: lxc
+  - recipe[docker_test::image]
+  - recipe[docker_test::container]
