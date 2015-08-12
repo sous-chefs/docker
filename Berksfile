@@ -7,4 +7,3 @@ group :integration do
   cookbook 'docker_test', path: 'test/cookbooks/docker_test'
   cookbook 'docker_service_test', path: 'test/cookbooks/docker_service_test'
 end
-
