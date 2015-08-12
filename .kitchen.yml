@@ -23,10 +23,11 @@ platforms:
     box: opscode-centos-7.0
     box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-7.0_chef-provisionerless.box
 
-- name: debian-8.1
-  driver_config:
-    box: opscode-debian-8.1
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_debian-7.7_chef-provisionerless.box
+# *shakes fist at systemd*
+# - name: debian-8.1
+#   driver_config:
+#     box: opscode-debian-8.1
+#     box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_debian-7.7_chef-provisionerless.box
 
 - name: fedora-21
   driver_config:
