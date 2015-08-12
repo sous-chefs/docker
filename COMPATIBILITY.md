@@ -1,5 +1,8 @@
 ## chef-docker Compatibility ##
 
+This document is valid for pre v1.0.0 versions of this cookbook.
+It should be updated or removed.
+
 ### Installation Compatibility ###
 
 Cookbook compatibility based on platform, installation type (`node['docker']['install_type']`), and architecture (`node['docker']['arch']`)

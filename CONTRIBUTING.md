@@ -1,6 +1,6 @@
 # Contributing to @bflad Cookbooks
 
-Below is a modified version of Opscode's CONTRIBUTING.md in their public cookbooks. Thanks to them for the great documentation!
+Below is a modified version of Chef's CONTRIBUTING.md in their public cookbooks. Thanks to them for the great documentation!
 
 ## Quick-contribute
 
@@ -77,18 +77,18 @@ downloading the branch.
 ### More information
 
 Additional help with git is available on the
-[Working with Git](http://wiki.opscode.com/display/chef/Working+with+Git)
+[Working with Git](http://wiki.chef.io/display/chef/Working+with+Git)
 wiki page.
 
 ## Functional and Unit Tests
 
 This cookbook is set up to run tests under
-[Opscode's test-kitchen](https://github.com/opscode/test-kitchen). It
+[Chef's test-kitchen](https://github.com/opscode/test-kitchen). It
 uses minitest-chef to run integration tests after the node has been
 converged to verify that the state of the node.
 
 Test kitchen should run completely without exception using the default
-[baseboxes provided by Opscode](https://github.com/opscode/bento).
+[baseboxes provided by Chef](https://github.com/chef/bento).
 Because Test Kitchen creates VirtualBox machines and runs through
 every configuration in the Kitchenfile, it may take some time for
 these tests to complete.
@@ -130,21 +130,21 @@ The versioning for my projects is X.Y.Z and uses [Semantic Versioning](http://se
 These resources will help you learn more about Chef and connect to
 other members of the Chef community:
 
-* [chef](http://lists.opscode.com/sympa/info/chef) and
-  [chef-dev](http://lists.opscode.com/sympa/info/chef-dev) mailing
+* [chef](http://lists.chef.io/sympa/info/chef) and
+  [chef-dev](http://lists.chef.io/sympa/info/chef-dev) mailing
   lists
 * #chef and #chef-hacking IRC channels on irc.freenode.net
-* [Community Cookbook site](http://community.opscode.com)
-* [Chef wiki](http://wiki.opscode.com/display/chef)
-* Opscode Chef [product page](http://www.opscode.com/chef)
+* [Community Cookbook site](http://supermarket.chef.io)
+* [Chef wiki](http://wiki.chef.io/display/chef)
+* Chef Chef [product page](http://www.chef.io/chef)
 
 ## Cookbook Contribution Do's and Don't's
 
 Please do include tests for your contribution. If you need help, ask
 on the
-[chef-dev mailing list](http://lists.opscode.com/sympa/info/chef-dev)
+[chef-dev mailing list](http://lists.chef.io/sympa/info/chef-dev)
 or the
-[#chef-hacking IRC channel](http://community.opscode.com/chat/chef-hacking).
+[#chef-hacking IRC channel](http://community.chef.io/chat/chef-hacking).
 Not all platforms that a cookbook supports may be supported by Test
 Kitchen. Please provide evidence of testing your contribution if it
 isn't trivial so we don't have to duplicate effort in testing. Chef
@@ -166,11 +166,11 @@ Please do ensure that your changes do not break or modify behavior for
 other platforms supported by the cookbook. For example if your changes
 are for Debian, make sure that they do not break on CentOS.
 
-Please do not modify the version number in the metadata.rb, Opscode
+Please do not modify the version number in the metadata.rb, Chef
 will select the appropriate version based on the release cycle
 information above.
 
 Please do not update the CHANGELOG.md for a new version. Not all
 changes to a cookbook may be merged and released in the same versions.
-Opscode will update the CHANGELOG.md when releasing a new version of
+Chef will update the CHANGELOG.md when releasing a new version of
 the cookbook.
