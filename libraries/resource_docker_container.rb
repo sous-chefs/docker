@@ -25,9 +25,9 @@ class Chef
       attribute :dns, kind_of: [String, Array, NilClass], default: nil
       attribute :dns_search, kind_of: [String, Array, NilClass], default: nil
       attribute :domain_name, kind_of: String, default: ''
-      attribute :entrypoint, kind_of: String, default: '' # FIXME: needs tests
-      attribute :env, kind_of: [String, Array], default: '' # FIXME: needs tests
-      attribute :extra_hosts, kind_of: [String, Array, NilClass], default: nil # FIXME: needs tests
+      attribute :entrypoint, kind_of: String, default: nil
+      attribute :env, kind_of: [String, Array], default: nil
+      attribute :extra_hosts, kind_of: [String, Array, NilClass], default: nil
       attribute :force, kind_of: [TrueClass, FalseClass], default: false
       attribute :host_name, kind_of: String, default: ''
       attribute :links, kind_of: [String, Array, NilClass], default: nil # FIXME: add validate proc

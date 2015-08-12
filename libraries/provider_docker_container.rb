@@ -151,7 +151,7 @@ class Chef
           'AttachStdout' => new_resource.attach_stdout,
           'Domainname' => new_resource.domain_name,
           'Entrypoint' => new_resource.entrypoint,
-          'Env' => new_resource.env,
+          'Env' => parsed_env,
           'ExposedPorts' => exposed_ports,
           'Hostname' => new_resource.host_name,
           'MacAddress' => new_resource.mac_address,
