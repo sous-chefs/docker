@@ -1,0 +1,35 @@
+# Docker Upstart and SysVinit configuration file
+
+# Customize location of Docker binary (especially for development testing).
+DOCKER="<%= @docker_bin %>"
+
+<% if @config.docker_log %>
+DOCKER_LOGFILE=<%= @config.logfile %>
+<% end %>
+
+# Use DOCKER_OPTS to modify the daemon startup options.
+DOCKER_OPTS="<% @docker_opts.each do |opt| %><%= opt %><% end %>"
+# FIXME
+
+<% if @config.pidfile %>
+DOCKER_PIDFILE=@config.pidfile %>
+<% end %>
+
+# If you need Docker to use an HTTP proxy, it can also be specified here.
+<% if @config.http_proxy %>
+export HTTP_PROXY=<%= @config.http_proxy %>
+<% end %>
+
+# If you need Docker to use an HTTP proxy, it can also be specified here.
+<% if @config.https_proxy %>
+export HTTPS_PROXY=<%= @config.http_proxy %>
+<% end %>
+
+<% if @config.no_proxy %>
+export NO_PROXY=<%= @config.no_proxy %>
+<% end %>
+
+# This is also a handy place to tweak where Docker's temporary files go.
+<% if @config.tmpdir %>
+export TMPDIR="<%= @config.tmpdir %>"
+<% end %>

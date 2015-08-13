@@ -124,6 +124,5 @@ docker_service 'tls_test:2376' do
   tlscert "#{caroot}/server.pem"
   tlskey "#{caroot}/serverkey.pem"
   tlsverify true
-  # provider Chef::Provider::DockerService::Execute
   action [:create, :start]
 end

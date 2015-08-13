@@ -1,0 +1,163 @@
+#!/bin/sh
+#
+#       /etc/rc.d/init.d/docker
+#
+#       Daemon for docker.com
+#
+# chkconfig:   2345 95 95
+# description: Daemon for docker.com
+
+### BEGIN INIT INFO
+# Provides:       docker
+# Required-Start: $network cgconfig
+# Required-Stop:
+# Should-Start:
+# Should-Stop:
+# Default-Start: 2 3 4 5
+# Default-Stop:  0 1 6
+# Short-Description: start and stop docker
+# Description: Daemon for docker.com
+### END INIT INFO
+
+# Source functions
+<% if node['platform_family'] == 'rhel' %>
+# Source RHEL function library.
+. /etc/rc.d/init.d/functions
+<% end %>
+
+exec="<%= @config.docker_bin %>"
+prog="docker"
+unshare=/usr/bin/unshare
+<% if @pidfile -%>
+pidfile="<%= @pidfile %>"
+<% else -%>
+pidfile="/var/run/$prog.pid"
+<% end -%>
+lockfile="/var/lock/subsys/$prog"
+<% if @config.docker_log -%>
+logfile="<%= @config.docker_log %>"
+<% else -%>
+logfile="/var/log/$prog"
+<% end -%>
+
+[ -e /etc/sysconfig/$prog ] && . /etc/sysconfig/$prog
+
+prestart() {
+    service cgconfig status > /dev/null
+
+    if [[ $? != 0 ]]; then
+        service cgconfig start
+    fi
+
+    export HTTP_PROXY=<%= @config.http_proxy %>
+    export HTTPS_PROXY=<%= @config.https_proxy %>
+    export NO_PROXY=<%= @config.no_proxy %>
+    export TMPDIR=<%= @config.tmpdir %>
+
+    [ -x /sbin/sysctl ] || exit 6
+    <% if @config.ipv4_forward %>
+    /sbin/sysctl -w net.ipv4.ip_forward=1 > /dev/null 2>&1
+    <% end %>
+    <% if @config.ipv6_forward %>
+    /sbin/sysctl -w net.ipv6.conf.all.forwarding=1 > /dev/null 2>&1
+    <% end %>
+}
+
+start() {
+    [ -x $exec ] || exit 5
+
+    check_for_cleanup
+
+    if ! [ -f $pidfile ]; then
+        prestart
+        printf "Starting $prog:\t"
+        echo "\n$(date)\n" >> $logfile
+        "$unshare" -m -- $exec -d <% @docker_opts.each do |opt| %><%= opt %><% end %> &>> $logfile &
+        pid=$!
+        touch $lockfile
+        # wait up to 10 seconds for the pidfile to exist.  see
+        # https://github.com/dotcloud/docker/issues/5359
+        tries=0
+        while [ ! -f $pidfile -a $tries -lt 10 ]; do
+            sleep 1
+            tries=$((tries + 1))
+        done
+        success
+        echo
+    else
+        <% if node['platform_family'] == 'rhel' %>
+        action $"$pidfile still exists...\n " /bin/false
+        <% else %>
+        printf "$pidfile still exists...\n"
+        <% end %>
+    fi
+}
+
+stop() {
+    echo -n $"Stopping $prog: "
+    killproc -p $pidfile -d 300 $prog
+    retval=$?
+    echo
+    [ $retval -eq 0 ] && rm -f $lockfile
+    return $retval
+}
+
+restart() {
+    stop
+    start
+}
+
+reload() {
+    restart
+}
+
+force_reload() {
+    restart
+}
+
+rh_status() {
+    status -p $pidfile $prog
+}
+
+rh_status_q() {
+    rh_status >/dev/null 2>&1
+}
+
+check_for_cleanup() {
+    if [ -f ${pidfile} ]; then
+        /bin/ps -fp $(cat ${pidfile}) > /dev/null || rm ${pidfile}
+    fi
+}
+
+case "$1" in
+    start)
+        rh_status_q && exit 0
+        $1
+        ;;
+    stop)
+        rh_status_q || exit 0
+        $1
+        ;;
+    restart)
+        $1
+        ;;
+    reload)
+        rh_status_q || exit 7
+        $1
+        ;;
+    force-reload)
+        force_reload
+        ;;
+    status)
+        rh_status
+        ;;
+    condrestart|try-restart)
+        rh_status_q || exit 0
+        restart
+        ;;
+    *)
+        echo $"Usage: $0 {start|stop|status|restart|condrestart|try-restart|reload|force-reload}"
+        exit 2
+esac
+
+exit $?

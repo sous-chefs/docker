@@ -76,6 +76,12 @@ module DockerHelpers
     '1.8.1'
   end
 
+  def docker_major_version
+    ray = parsed_version.split('.')
+    ray.pop
+    ray.push.join('.')
+  end
+
   def parsed_source
     return new_resource.source if new_resource.source
     "http://get.docker.io/builds/#{docker_kernel}/#{docker_arch}/docker-#{parsed_version}"
@@ -110,7 +116,7 @@ module DockerHelpers
     opts << ' --debug' if new_resource.debug
     opts << " --default-ulimit=#{new_resource.default_ulimit}" if new_resource.default_ulimit
     opts << " --dns=#{new_resource.dns}" if new_resource.dns
-    opts << " --dns-search=#{new_resource.dns_search}" if new_resource.dns_search
+    new_resource.dns_search.each { |dns| opts << " --dns-search=#{dns}" } if new_resource.dns_search
     opts << " --exec-driver=#{new_resource.exec_driver}" if new_resource.exec_driver
     opts << " --fixed-cidr=#{new_resource.fixed_cidr}" if new_resource.fixed_cidr
     opts << " --fixed-cidr-v6=#{new_resource.fixed_cidr_v6}" if new_resource.fixed_cidr_v6
