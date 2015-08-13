@@ -34,28 +34,24 @@ Requirements
 
 Platform Support
 ----------------
-The following platforms have been tested with Test Kitchen:
+The following platforms have been tested with Test Kitchen: You may be
+able to get it working on other platforms, with appropriate
+configuration of cgroups and storage back ends.
 
 ```
-|--------------+-------|
-|              | 1.6.0 |
-|--------------+-------|
-| amazon       | X     |
-|--------------+-------|
-| centos-6     | X     |
-|--------------+-------|
-| centos-7     | X     |
-|--------------+-------|
-| fedora-21    | X     |
-|--------------+-------|
-| debian-7     | X     |
-|--------------+-------|
-| ubuntu-12.04 | X     |
-|--------------+-------|
-| ubuntu-14.04 | X     |
-|--------------+-------|
-| ubuntu-15.04 | X     |
-|--------------+-------|
+|--------------+-------+-------|
+|              | 1.6.2 | 1.7.1 |
+|--------------+-------+-------|
+| debian-8     | X     | X     |
+|--------------+-------+-------|
+| centos-7     | X     | X     |
+|--------------+-------+-------|
+| fedora-21    | X     | X     |
+|--------------+-------+-------|
+| ubuntu-14.04 | X     |       |
+|--------------+-------+-------|
+| ubuntu-15.04 | X     | X     |
+|--------------+-------+-------|
 ```
 
 Cookbook Dependencies

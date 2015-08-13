@@ -128,7 +128,7 @@ docker_image 'nginx' do
 end
 
 docker_image 'registry' do
-  tag '2'
+  tag '2.1'
 end
 
 directory '/tmp/registry/auth' do

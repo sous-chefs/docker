@@ -24,10 +24,10 @@ platforms:
     box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-7.0_chef-provisionerless.box
 
 # *shakes fist at systemd*
-# - name: debian-8.1
-#   driver_config:
-#     box: opscode-debian-8.1
-#     box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_debian-7.7_chef-provisionerless.box
+- name: debian-8.1
+  driver_config:
+    box: opscode-debian-8.1
+    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_debian-8.1_chef-provisionerless.box
 
 - name: fedora-21
   driver_config:
@@ -59,35 +59,35 @@ suites:
 #
 # Resource behavior testing cookbooks
 #
-- name: service-socket
-  includes: [
-    'centos-6.5',
-    'centos-7.0',
-    'fedora-21',
-    'debian-8.1',
-    'ubuntu-14.04',
-    'ubuntu-15.04'
-  ]
-  run_list:
-  - recipe[docker_service_test::socket]
+# - name: service-socket
+#   includes: [
+#     'centos-6.5',
+#     'centos-7.0',
+#     'fedora-21',
+#     'debian-8.1',
+#     'ubuntu-14.04',
+#     'ubuntu-15.04'
+#   ]
+#   run_list:
+#   - recipe[docker_service_test::socket]
 
-- name: service-tls
-  includes: [
-    'centos-6.5',
-    'centos-7.0',
-    'fedora-21',
-    'debian-8.1',
-    'ubuntu-14.04',
-    'ubuntu-15.04',
-  ]
-  run_list:
-  - recipe[docker_service_test::tls]
+# - name: service-tls
+#   includes: [
+#     'centos-6.5',
+#     'centos-7.0',
+#     'fedora-21',
+#     'debian-8.1',
+#     'ubuntu-14.04',
+#     'ubuntu-15.04',
+#   ]
+#   run_list:
+#   - recipe[docker_service_test::tls]
 
 - name: resources
   includes: [
-    'fedora-21',
     'centos-7.0',
     'debian-8.1',
+    'fedora-21',
     'ubuntu-14.04',
     'ubuntu-15.04',
   ]

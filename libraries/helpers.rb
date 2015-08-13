@@ -67,6 +67,10 @@ module DockerHelpers
 
   def parsed_version
     return new_resource.version if new_resource.version
+    return '1.6.2' if node['platform'] == 'amazon'
+    return '1.6.2' if node['platform'] == 'ubuntu' && node['platform_version'].to_f < 15.04
+    return '1.6.2' if node['platform_family'] == 'rhel' && node['platform_version'].to_i < 7
+    return '1.6.2' if node['platform_family'] == 'debian' && node['platform_version'].to_i <= 7
     '1.7.1'
   end
 

@@ -60,7 +60,7 @@ platforms:
   run_list:
   - recipe[apt]
 
-# - name: debian-8
+# - name: debian-8.1
 #   driver_plugin: digital_ocean
 #   driver_config:
 #     size: 2gb
@@ -109,42 +109,41 @@ suites:
 #
 # Resource behavior testing cookbooks
 #
-- name: service-socket
-  includes: [
-    'amazon-2014.09',
-    'fedora-21',
-    'centos-6.5',
-    'centos-7.0',
-    'debian-7.0',
-    'debian-8',
-    'ubuntu-12.04',
-    'ubuntu-14.04',
-    'ubuntu-15.04'
-  ]
-  run_list:
-  - recipe[docker_service_test::socket]
+# - name: service-socket
+#   includes: [
+#     'amazon-2014.09',
+#     'fedora-21',
+#     'centos-6.5',
+#     'centos-7.0',
+#     'debian-7.0',
+#     'debian-8',
+#     'ubuntu-12.04',
+#     'ubuntu-14.04',
+#     'ubuntu-15.04'
+#   ]
+#   run_list:
+#   - recipe[docker_service_test::socket]
 
-- name: service-tls
-  includes: [
-    'amazon-2014.09',
-    'fedora-21',
-    'centos-6.5',
-    'centos-7.0',
-    'debian-7.0',
-    'debian-8',
-    'ubuntu-12.04',
-    'ubuntu-14.04',
-    'ubuntu-15.04',
-  ]
-  run_list:
-  - recipe[docker_service_test::tls]
+# - name: service-tls
+#   includes: [
+#     'amazon-2014.09',
+#     'fedora-21',
+#     'centos-6.5',
+#     'centos-7.0',
+#     'debian-7.0',
+#     'debian-8',
+#     'ubuntu-12.04',
+#     'ubuntu-14.04',
+#     'ubuntu-15.04',
+#   ]
+#   run_list:
+#   - recipe[docker_service_test::tls]
 
 - name: resources
   includes: [
-    'fedora-21',
+    'debian-8.1',
     'centos-7.0',
-    'debian-8',
-    'ubuntu-12.04',
+    'fedora-21',
     'ubuntu-14.04',
     'ubuntu-15.04',
   ]

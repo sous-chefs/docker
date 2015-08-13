@@ -7,12 +7,17 @@ class Chef
       provides :docker_registry if Chef::Provider.respond_to?(:provides)
 
       action :login do
-        Docker.authenticate!(
-          'serveraddress' => new_resource.serveraddress,
-          'username' => new_resource.username,
-          'password' => new_resource.password,
-          'email' => new_resource.email
-        )
+        begin
+          tries ||= new_resource.retries
+          Docker.authenticate!(
+            'serveraddress' => new_resource.serveraddress,
+            'username' => new_resource.username,
+            'password' => new_resource.password,
+            'email' => new_resource.email
+            )
+        rescue Docker::Error::AuthenticationError => e
+          retry unless (tries -= 1).zero?
+        end
       end
     end
   end
