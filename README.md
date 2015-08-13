@@ -8,6 +8,14 @@ The Docker Cookbook is a library cookbook that provides resources
 
 Breaking Changes Alert - UNSTABLE until 1.0.0
 ----------------------
+
+I PROMISE 1.0.0 will come soon... I'm currently shaving the remaining yaks related to 1.7.1 and 1.8.1 releases.
+----------------------
+
+The docker_container and docker_image resources are now stable...
+docker_service is needs work and testing before the 1.0.x release
+-----------------------------------------------------------------
+
 For version 1.0 of this cookbook (work in progress), we have made (are making) significant
 breaking changes including the way that we handle resources
 (`docker_image`, `docker_container` and `docker_registry`). It is
