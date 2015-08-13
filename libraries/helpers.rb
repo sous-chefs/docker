@@ -50,12 +50,14 @@ module DockerHelpers
       when '1.6.2' then 'f29b8b2185c291bd276f7cdac45a674f904e964426d5b969fda7b8ef6b8ab557'
       when '1.7.0' then '1c8ee59249fdde401afebc9a079cb75d7674f03d2491789fb45c88020a8c5783'
       when '1.7.1' then 'b8209b4382d0b4292c756dd055c12e5efacec2055d5900ac91efc8e81d317cf9'
+      when '1.8.1' then '0f5db35127cf14b57614ad7513296be600ddaa79182d8d118d095cb90c721e3a'
       end
     when 'Linux'
       case parsed_version
       when '1.6.0' then '526fbd15dc6bcf2f24f99959d998d080136e290bbb017624a5a3821b63916ae8'
       when '1.6.2' then 'e131b2d78d9f9e51b0e5ca8df632ac0a1d48bcba92036d0c839e371d6cf960ec'
       when '1.7.1' then '4d535a62882f2123fb9545a5d140a6a2ccc7bfc7a3c0ec5361d33e498e4876d5'
+      when '1.8.1' then '843f90f5001e87d639df82441342e6d4c53886c65f72a5cc4765a7ba3ad4fc57'
       end
     end
   end
@@ -71,7 +73,7 @@ module DockerHelpers
     return '1.6.2' if node['platform'] == 'ubuntu' && node['platform_version'].to_f < 15.04
     return '1.6.2' if node['platform_family'] == 'rhel' && node['platform_version'].to_i < 7
     return '1.6.2' if node['platform_family'] == 'debian' && node['platform_version'].to_i <= 7
-    '1.7.1'
+    '1.8.1'
   end
 
   def parsed_source

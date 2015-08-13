@@ -14,8 +14,8 @@ class Chef
             'username' => new_resource.username,
             'password' => new_resource.password,
             'email' => new_resource.email
-            )
-        rescue Docker::Error::AuthenticationError => e
+          )
+        rescue Docker::Error::AuthenticationError
           retry unless (tries -= 1).zero?
         end
       end

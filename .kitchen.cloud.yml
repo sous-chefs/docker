@@ -33,12 +33,12 @@ platforms:
     ssh_key_ids: <%= ENV['DIGITALOCEAN_SSH_KEYS'] %>
     ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
 
-- name: amazon-2014.09
-  driver_plugin: ec2
-  driver_config:
-    image_id: ami-9a6ed3f2
-    username: ec2-user
-    ssh_key: <%= ENV['EC2_SSH_KEY_PATH'] %>
+# - name: amazon-2014.09
+#   driver_plugin: ec2
+#   driver_config:
+#     image_id: ami-9a6ed3f2
+#     username: ec2-user
+#     ssh_key: <%= ENV['EC2_SSH_KEY_PATH'] %>
 
 - name: fedora-21
   driver_plugin: digital_ocean
@@ -104,40 +104,39 @@ platforms:
   run_list:
   - recipe[apt]
 
-
 suites:
 #
 # Resource behavior testing cookbooks
 #
-# - name: service-socket
-#   includes: [
-#     'amazon-2014.09',
-#     'fedora-21',
-#     'centos-6.5',
-#     'centos-7.0',
-#     'debian-7.0',
-#     'debian-8',
-#     'ubuntu-12.04',
-#     'ubuntu-14.04',
-#     'ubuntu-15.04'
-#   ]
-#   run_list:
-#   - recipe[docker_service_test::socket]
+- name: service-socket
+  includes: [
+    'amazon-2014.09',
+    'fedora-21',
+    'centos-6.5',
+    'centos-7.0',
+    'debian-7.0',
+    'debian-8',
+    'ubuntu-12.04',
+    'ubuntu-14.04',
+    'ubuntu-15.04'
+  ]
+  run_list:
+  - recipe[docker_service_test::socket]
 
-# - name: service-tls
-#   includes: [
-#     'amazon-2014.09',
-#     'fedora-21',
-#     'centos-6.5',
-#     'centos-7.0',
-#     'debian-7.0',
-#     'debian-8',
-#     'ubuntu-12.04',
-#     'ubuntu-14.04',
-#     'ubuntu-15.04',
-#   ]
-#   run_list:
-#   - recipe[docker_service_test::tls]
+- name: service-tls
+  includes: [
+    'amazon-2014.09',
+    'fedora-21',
+    'centos-6.5',
+    'centos-7.0',
+    'debian-7.0',
+    'debian-8',
+    'ubuntu-12.04',
+    'ubuntu-14.04',
+    'ubuntu-15.04',
+  ]
+  run_list:
+  - recipe[docker_service_test::tls]
 
 - name: resources
   includes: [
