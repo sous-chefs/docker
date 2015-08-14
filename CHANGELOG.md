@@ -1,4 +1,9 @@
 
+v1.0.1
+--------------------
+- Switching docker_service default TLS setting to false to it works
+  out of the box
+
 v1.0.0
 --------------------
 - vendoring the docker-api rubygem
