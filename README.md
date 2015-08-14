@@ -19,6 +19,7 @@ Requirements
 - Ruby 1.9 or higher (preferably, the Chef full-stack installer)
 - Network accessible web server hosting the docker binary.
 
+
 Platform Support
 ----------------
 The following platforms have been tested with Test Kitchen: You may be
@@ -26,19 +27,19 @@ able to get it working on other platforms, with appropriate
 configuration of cgroups and storage back ends.
 
 ```
-|--------------+-------+-------|
-|              | 1.6.2 | 1.7.1 |
-|--------------+-------+-------|
-| debian-8     | X     | X     |
-|--------------+-------+-------|
-| centos-7     | X     | X     |
-|--------------+-------+-------|
-| fedora-21    | X     | X     |
-|--------------+-------+-------|
-| ubuntu-14.04 | X     |       |
-|--------------+-------+-------|
-| ubuntu-15.04 | X     | X     |
-|--------------+-------+-------|
+|--------------+-------+-------+-------|
+|              | 1.6.2 | 1.7.1 | 1.8.1 |
+|--------------+-------+-------+-------|
+| debian-8     | X     | X     | x     |
+|--------------+-------+-------+-------|
+| centos-7     | X     | X     | x     |
+|--------------+-------+-------+-------|
+| fedora-21    | X     | X     | x     |
+|--------------+-------+-------+-------|
+| ubuntu-14.04 | X     |       |       |
+|--------------+-------+-------+-------|
+| ubuntu-15.04 | X     | X     | x     |
+|--------------+-------+-------+-------|
 ```
 
 Cookbook Dependencies
