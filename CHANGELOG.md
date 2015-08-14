@@ -1,12 +1,14 @@
 
-v1.0.0 (unreleased)
+v1.0.0
 --------------------
-* Work in progress... moving from "classic" recipe and attribute based
-  cookbook to resource based cookbook  
-* TODO fix up docker_container resources
-* TODO update README for new docker_image and docker_container usage
-* ^ see test/cookbooks/docker_test/recipes/image_lwrp.rb for now
-* TODO remove old helper libraries
+- vendoring the docker-api rubygem
+- docker_image and docker_container resources now use speak to the
+  Docker Remote API instead of shelling out
+- docker_containers must now have unique names
+- "volumes" property now acts like the VOLUMES directive in a Dockerfile
+- added "binds" property for local mounting
+- standardizing on "repo" and "tag" as components of an image
+  identifier
 
 v0.43.0 (2015-07-28)
 --------------------
