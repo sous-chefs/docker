@@ -3,6 +3,7 @@ driver_plugin: vagrant
 
 driver_config:
   customize:
+    cpus: 2
     memory: 1024
 
 provisioner:

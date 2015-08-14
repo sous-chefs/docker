@@ -51,7 +51,7 @@ class Chef
       attribute :storage_driver, kind_of: String, default: nil
       attribute :selinux_enabled, kind_of: [TrueClass, FalseClass], default: nil
       attribute :storage_opt, kind_of: String, default: nil
-      attribute :tls, kind_of: [TrueClass, FalseClass], default: true
+      attribute :tls, kind_of: [TrueClass, FalseClass], default: false
       attribute :tlscacert, kind_of: String, default: nil
       attribute :tlscert, kind_of: String, default: nil
       attribute :tlskey, kind_of: String, default: nil
