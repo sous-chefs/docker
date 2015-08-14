@@ -10,6 +10,10 @@ volumes_filter = '{{ .Volumes }}' if docker_version =~ /1.6/
 volumes_filter = '{{ .Volumes }}' if docker_version =~ /1.7/
 volumes_filter = '{{ .Config.Volumes }}' if docker_version =~ /1.8/
 
+mounts_filter = '{{ .Volumes }}' if docker_version =~ /1.6/
+mounts_filter = '{{ .Volumes }}' if docker_version =~ /1.7/
+mounts_filter = '{{ .Mounts }}' if docker_version =~ /1.8/
+
 ##############################################
 #  test/cookbooks/docker_test/recipes/image.rb
 ##############################################
@@ -245,9 +249,9 @@ describe command("docker ps -af 'name=ohai_debian$'") do
   its(:stdout) { should match(/Exited/) }
 end
 
-describe command("docker inspect -f \"#{ volumes_filter }\" ohai_debian") do
+describe command("docker inspect -f \"#{ mounts_filter }\" ohai_debian") do
   its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(%r{\/opt\/chef\:}) }
+  its(:stdout) { should match(%r{\/opt\/chef}) }
 end
 
 # docker_container[env]
