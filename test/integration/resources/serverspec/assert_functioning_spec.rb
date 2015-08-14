@@ -31,7 +31,7 @@ end
 
 describe command('docker images') do
   its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/^tduffield\/testcontainerd\s.*latest/) }
+  its(:stdout) { should match(%r{^tduffield\/testcontainerd\s.*latest}) }
 end
 
 # docker_image[busybox]
@@ -237,7 +237,7 @@ describe command("docker ps -af 'name=chef_container$'") do
   its(:stdout) { should_not match(/Up/) }
 end
 
-describe command("docker inspect -f \"#{ volumes_filter }\" chef_container") do
+describe command("docker inspect -f \"#{volumes_filter}\" chef_container") do
   its(:exit_status) { should eq 0 }
   its(:stdout) { should match(%r{\/opt\/chef\:}) }
 end
@@ -249,7 +249,7 @@ describe command("docker ps -af 'name=ohai_debian$'") do
   its(:stdout) { should match(/Exited/) }
 end
 
-describe command("docker inspect -f \"#{ mounts_filter }\" ohai_debian") do
+describe command("docker inspect -f \"#{mounts_filter}\" ohai_debian") do
   its(:exit_status) { should eq 0 }
   its(:stdout) { should match(%r{\/opt\/chef}) }
 end
