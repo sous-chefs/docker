@@ -31,7 +31,7 @@ end
 
 describe command('docker images') do
   its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(%r{^tduffield\/testcontainerd\s.*latest}) }
+  its(:stdout) { should match(/^tduffield\/testcontainerd\s.*latest/) }
 end
 
 # docker_image[busybox]
@@ -87,14 +87,14 @@ end
 
 describe command('docker images') do
   its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/^localhost\:5043\/someara\/name-w-dashes\s.*latest/) }
+  its(:stdout) { should match(%r{^localhost\:5043/someara/name-w-dashes\s.*latest}) }
 end
 
 # docker_tag[private repo tag for name.w.dots:latest]
 
 describe command('docker images') do
   its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(%r{^localhost\:5043\/someara\/name\.w\.dots\s.*latest}) }
+  its(:stdout) { should match(%r{^localhost\:5043/someara/name\.w\.dots\s.*latest}) }
 end
 
 # FIXME: We need to test the "docker_registry" stuff...
