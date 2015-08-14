@@ -15,6 +15,7 @@ class Chef
       attribute :nocache, kind_of: [TrueClass, FalseClass], default: false
       attribute :noprune, kind_of: [TrueClass, FalseClass], default: false
       attribute :repo, kind_of: String, name_attribute: true
+      attribute :retries, kind_of: Fixnum, default: 3
       attribute :rm, kind_of: [TrueClass, FalseClass], default: true
       attribute :source, kind_of: String
       attribute :tag, kind_of: String, default: 'latest'

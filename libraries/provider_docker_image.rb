@@ -49,38 +49,48 @@ class Chef
       end
 
       def import_image
+        retries ||= new_resource.retries
         i = Docker::Image.import(new_resource.source)
         i.tag('repo' => new_resource.repo, 'tag' => new_resource.tag, 'force' => new_resource.force)
       rescue Docker::Error => e
+        retry unless (tries -= 1).zero?
         raise e.message
       end
 
       def pull_image
+        retries ||= new_resource.retries
         Docker::Image.create(
           'fromImage' => new_resource.repo,
           'tag' => new_resource.tag
         )
       rescue Docker::Error => e
+        retry unless (tries -= 1).zero?
         raise e.message
       end
 
       def push_image
+        retries ||= new_resource.retries
         i = Docker::Image.get("#{new_resource.repo}:#{new_resource.tag}")
         i.push
       rescue Docker::Error => e
+        retry unless (tries -= 1).zero?
         raise e.message
       end
 
       def remove_image
+        retries ||= new_resource.retries
         i = Docker::Image.get("#{new_resource.repo}:#{new_resource.tag}")
         i.remove(force: new_resource.force, noprune: new_resource.noprune)
       rescue Docker::Error => e
+        retry unless (tries -= 1).zero?
         raise e.message
       end
 
       def save_image
+        retries ||= new_resource.retries
         Docker::Image.save(new_resource.repo, new_resource.destination)
       rescue Docker::Error, Errno::ENOENT => e
+        retry unless (tries -= 1).zero?
         raise e.message
       end
 
