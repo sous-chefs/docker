@@ -34,12 +34,12 @@ platforms:
     box: opscode-fedora-21
     box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_fedora-21_chef-provisionerless.box
 
-- name: ubuntu-14.04
+- name: ubuntu-12.04
   run_list:
     - recipe[apt]
   driver_config:
-    box: opscode-ubuntu-14.04
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-14.04_chef-provisionerless.box
+    box: opscode-ubuntu-12.04
+    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-12.04_chef-provisionerless.box
 
 - name: ubuntu-14.04
   run_list:
