@@ -34,7 +34,7 @@ class Chef
       # 22/tcp, 53/udp, etc
       def exposed_ports
         return nil if parsed_ports.empty?
-        parsed_ports.inject({}) { |exp, port| expand_port_exposure(exp, port) }
+        parsed_ports.inject({}) { |a, e| expand_port_exposure(a, e) }
       end
 
       def expand_port_exposure(exposings, value)
@@ -44,7 +44,7 @@ class Chef
       # Map container exposed port to the host
       def port_bindings
         return nil if parsed_ports.empty?
-        parsed_ports.inject({}) { |binds, port| expand_port_binding(binds, port) }
+        parsed_ports.inject({}) { |a, e| expand_port_binding(a, e) }
       end
 
       def expand_port_binding(binds, value)
