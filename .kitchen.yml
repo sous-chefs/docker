@@ -88,6 +88,7 @@ suites:
     'centos-7.0',
     'debian-8.1',
     'fedora-21',
+    'ubuntu-12.04',
     'ubuntu-14.04',
     'ubuntu-15.04',
   ]
