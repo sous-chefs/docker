@@ -1,4 +1,8 @@
 
+v1.0.3
+--------------------
+- #366 - Using docker_kernel instead of docker_arch in parsed_checksum
+
 v1.0.2
 --------------------
 - #365 - Fix logic for parsing an array of hosts
