@@ -1,4 +1,9 @@
 
+v1.0.2
+--------------------
+- #365 - Fix logic for parsing an array of hosts
+- #363 - Allow an array for port property
+
 v1.0.1
 --------------------
 - Switching docker_service default TLS setting to false to it works
