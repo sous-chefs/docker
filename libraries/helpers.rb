@@ -95,8 +95,8 @@ module DockerHelpers
 
   # strip out invalid host arguments
   def parsed_host
-    sockets = new_resource.host.split if new_resource.host.kind_of?(String)
-    sockets = new_resource.host if new_resource.host.kind_of?(Array)
+    sockets = new_resource.host.split if new_resource.host.is_a?(String)
+    sockets = new_resource.host if new_resource.host.is_a?(Array)
     r = []
     sockets.each do |s|
       if s.match(/^unix:/) || s.match(/^tcp:/) || s.match(/^fd:/)
