@@ -10,8 +10,8 @@ Scope
 -----
 This cookbook is concerned with the [Docker](http://docker.io)
 container engine as distributed by Docker, Inc. It does not address
-with docker ecosystem tooling or prerequisite technology such as
-cgroups or aufs.
+Docker ecosystem tooling or prerequisite technology such as cgroups or
+aufs.
 
 Requirements
 ------------
