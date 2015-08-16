@@ -43,7 +43,7 @@ module DockerHelpers
   end
 
   def parsed_checksum
-    case docker_arch
+    case docker_kernel
     when 'Darwin'
       case parsed_version
       when '1.6.0' then '9e960e925561b4ec2b81f52b6151cd129739c1f4fba91ce94bdc0333d7d98c38'
