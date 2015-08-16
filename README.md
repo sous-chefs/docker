@@ -49,8 +49,8 @@ Cookbook Dependencies
 Usage
 -----
 - Add ```depends 'docker', '~> 1.0'``` to your cookbook's metadata.rb
-- Place resources shipped in this cookbook in a recipe, the same way
-  you'd use core Chef resources (file, template, directory, package, etc).
+- Use resources shipped in cookbook in a recipe, the same way you'd
+  use core Chef resources (file, template, directory, package, etc).
 
 ```ruby
 docker_service 'default' do
@@ -72,11 +72,8 @@ end
 Test Cookbooks as Examples
 --------------------------
 The cookbooks ran under test-kitchen make excellent usage examples.
-The above recipe is actually used as a smoke test, and is converged by
-test-kitchen during development. It is located in this repo at
-`test/cookbooks/docker_test/recipes/hello_world.rb`
 
-More example recipes can be found at:
+The test recipes are found at:
 ```ruby
 test/cookbooks/docker_test/
 test/cookbooks/docker_service_test/
@@ -87,7 +84,7 @@ Cgroups, Execution and Storage drivers
 Beginning in chef-docker 1.0, support for LXC execution driver has
 been removed in favor of native. Cgroups and storage drivers are now
 loosely coupled dependencies and should be configured using other
-cookbooks.
+cookbooks if needed.
 
 Storage drivers can be selected with the `storage_driver` property on
 the `docker_service` resource like this:
