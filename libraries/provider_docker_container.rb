@@ -31,44 +31,30 @@ class Chef
         ::Shellwords.shellwords(new_resource.command)
       end
 
-      # ip:hostPort:containerPort | ip::containerPort | hostPort:containerPort | containerPort
-      def host_ip
-        parts = new_resource.port.split(':')
-        return parts[0] if parts.size == 3
-        '0.0.0.0'
-      end
-
-      def host_port
-        parts = new_resource.port.split(':')
-        return parts[1] if parts.size == 3
-        return parts[0] if parts.size == 2
-        nil
-      end
-
-      def container_port
-        parts = new_resource.port.split(':')
-        return parts[2] if parts.size == 3
-        return parts[1] if parts.size == 2
-        return parts[0] if parts.size == 1
-      end
-
       # 22/tcp, 53/udp, etc
       def exposed_ports
-        { container_port => {} }
+        return nil if parsed_ports.empty?
+        parsed_ports.inject({}) { |a, e| expand_port_exposure(a, e) }
+      end
+
+      def expand_port_exposure(exposings, value)
+        exposings.merge(PortBinding.new(value).exposure)
       end
 
       # Map container exposed port to the host
       def port_bindings
-        return nil if new_resource.port.nil?
-        return nil if new_resource.port.empty?
-        {
-          "#{container_port}" => [
-            {
-              'HostIp' => host_ip,
-              'HostPort' => host_port
-            }
-          ]
-        }
+        return nil if parsed_ports.empty?
+        parsed_ports.inject({}) { |a, e| expand_port_binding(a, e) }
+      end
+
+      def expand_port_binding(binds, value)
+        binds.merge(PortBinding.new(value).binding)
+      end
+
+      def parsed_ports
+        return [] if new_resource.port.nil?
+        return [] if new_resource.port.empty?
+        Array(new_resource.port)
       end
 
       def parsed_binds
