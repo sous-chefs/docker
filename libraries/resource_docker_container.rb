@@ -39,7 +39,7 @@ class Chef
       attribute :network_mode, kind_of: String, default: ''
       attribute :open_stdin, kind_of: [TrueClass, FalseClass], default: false
       attribute :outfile, kind_of: String, default: nil
-      attribute :port, kind_of: String, default: ''
+      attribute :port, kind_of: [String, Array], default: ''
       attribute :privileged, kind_of: [TrueClass, FalseClass], default: false
       attribute :publish_all_ports, kind_of: [TrueClass, FalseClass], default: false
       attribute :remove_volumes, kind_of: [TrueClass, FalseClass], default: false
