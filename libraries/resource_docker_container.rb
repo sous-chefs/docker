@@ -21,6 +21,7 @@ class Chef
       attribute :cgroup_parent, kind_of: String, default: '' # FIXME: add validate proc
       attribute :cpu_shares, kind_of: [Fixnum, NilClass], default: nil # FIXME: add validate proc
       attribute :cpuset_cpus, kind_of: String, default: '' # FIXME: add validate proc
+      attribute :detach, kind_of: [TrueClass, FalseClass], default: true
       attribute :devices, kind_of: [Hash, Array, NilClass], default: nil # FIXME: add validate proc
       attribute :dns, kind_of: [String, Array, NilClass], default: nil
       attribute :dns_search, kind_of: [String, Array, NilClass], default: nil
@@ -49,6 +50,7 @@ class Chef
       attribute :security_opts, kind_of: [String, Array], default: ['']
       attribute :signal, kind_of: String, default: 'SIGKILL'
       attribute :stdin_once, kind_of: [TrueClass, FalseClass], default: false
+      attribute :timeout, kind_of: Fixnum, default: nil
       attribute :tty, kind_of: [TrueClass, FalseClass], default: false
       attribute :ulimits, kind_of: [Hash, Array, NilClass], default: nil
       attribute :user, kind_of: String, default: ''

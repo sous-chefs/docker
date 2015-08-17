@@ -200,7 +200,18 @@ class Chef
         converge_by "starting #{new_resource.container_name}" do
           begin
             tries ||= new_resource.retries
-            c.start
+
+            if new_resource.detach
+              new_resource.attach_stdin false
+              new_resource.attach_stdout false
+              new_resource.attach_stderr false
+              new_resource.stdin_once false
+              c.start
+            else
+              c.start
+              new_resource.timeout ? c.wait(new_resource.timeout) : c.wait
+            end
+
           rescue Docker::Error => e
             retry unless (tries -= 1).zero?
             raise e.message
