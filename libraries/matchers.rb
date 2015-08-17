@@ -54,6 +54,10 @@ if defined?(ChefSpec)
     ChefSpec::Matchers::ResourceMatcher.new(:docker_container, :run, resource_name)
   end
 
+  def run_if_missing_docker_container(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_container, :run_if_missing, resource_name)
+  end
+
   def start_docker_container(resource_name)
     ChefSpec::Matchers::ResourceMatcher.new(:docker_container, :start, resource_name)
   end
