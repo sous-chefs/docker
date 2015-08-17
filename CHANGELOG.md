@@ -1,4 +1,9 @@
 
+v1.0.4
+--------------------
+- #368 - Fixing port property to be kind_of [String, Array]
+- Adding missing detach property. Defaulting to false.
+
 v1.0.3
 --------------------
 - #366 - Using docker_kernel instead of docker_arch in parsed_checksum
