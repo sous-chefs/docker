@@ -471,5 +471,5 @@ end
 
 describe command("docker inspect -f '{{ .HostConfig.NetworkMode }}' network_mode") do
   its(:exit_status) { should eq 0 }
-  its(:stdout) { should_not match(/default/) }
+  its(:stdout) { should match(/host/) }
 end
