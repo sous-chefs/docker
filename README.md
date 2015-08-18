@@ -218,7 +218,7 @@ the options found in the
 - `host` - Daemon socket(s) to connect to - `tcp://host:port`,
   `unix:///path/to/socket`, `fd://*` or `fd://socketfd`
 - `icc` - Enable inter-container communication
-- `ip` - Enable inter-container communication
+- `ip` - Default IP when binding container ports
 - `ip_forward` - Enable ip forwarding
 - `ipv4_forward` - Enable net.ipv4.ip_forward
 - `ipv6_forward` - Enable net.ipv6.ip_forward
