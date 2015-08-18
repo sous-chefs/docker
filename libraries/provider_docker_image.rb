@@ -59,10 +59,13 @@ class Chef
 
       def pull_image
         retries ||= new_resource.retries
-        Docker::Image.create(
+        o = Docker::Image.get("#{new_resource.repo}:#{new_resource.tag}") if Docker::Image.exist?("#{new_resource.repo}:#{new_resource.tag}")
+        i = Docker::Image.create(
           'fromImage' => new_resource.repo,
           'tag' => new_resource.tag
         )
+        return false if o && o.id =~ /^#{i.id}/
+        return true
       rescue Docker::Error => e
         retry unless (tries -= 1).zero?
         raise e.message
@@ -116,8 +119,8 @@ class Chef
       end
 
       action :pull do
-        pull_image
-        new_resource.updated_by_last_action(true)
+        r = pull_image
+        new_resource.updated_by_last_action(r)
       end
 
       action :pull_if_missing do
