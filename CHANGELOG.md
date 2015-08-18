@@ -1,3 +1,8 @@
+v1.0.5
+--------------------
+- #241 - Only updating docker_image resource on :pull if new bits were pulled
+  on tag (useful for latest)
+- Changing docker_image default action to :pull
 
 v1.0.4
 --------------------
