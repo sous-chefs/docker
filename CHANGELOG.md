@@ -1,3 +1,7 @@
+v1.0.6
+--------------------
+- #369 - Fixing up HostConfig.NetworkMode to work as expected
+
 v1.0.5
 --------------------
 - #241 - Only updating docker_image resource on :pull if new bits were pulled
