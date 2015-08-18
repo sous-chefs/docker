@@ -275,27 +275,27 @@ builds, and deletions. It speaks directly to the
 
 #### Examples
 
-#### default action, default properties
+default action, default properties
 ```ruby
 docker_image 'hello-world'
 ```
 
-#### non-default name attribute
+non-default name attribute
 ```ruby
 docker_image "Tom's container" do
   repo 'tduffield/testcontainerd'
-  action :pull_if_missing
+  action :pull
 end
 ```
 
-#### :pull every time
+:pull every time
 ```ruby
 docker_image 'busybox' do
   action :pull
 end
 ```
 
-#### specify a tag
+specify a tag
 ```ruby
 docker_image 'alpine' do
   tag '3.1'
@@ -308,7 +308,7 @@ docker_image 'vbatts/slackware' do
 end
 ```
 
-#### :save
+:save
 ```ruby
 docker_image 'save hello-world' do
   repo 'hello-world'
@@ -318,7 +318,7 @@ docker_image 'save hello-world' do
 end
 ```
 
-#### :build from a Dockerfile on every chef-client run
+:build from a Dockerfile on every chef-client run
 ```ruby
 docker_image 'image_1' do
   tag 'v0.1.0'
@@ -327,7 +327,7 @@ docker_image 'image_1' do
 end
 ```
 
-#### :build from a directory, only if image is missing
+:build from a directory, only if image is missing
 ```ruby
 docker_image 'image_2' do
   tag 'v0.1.0'
@@ -336,7 +336,7 @@ docker_image 'image_2' do
 end
 ```
 
-#### :build from a tarball
+:build from a tarball
 NOTE: this is not an "export" tarball generated from an an image save.
 The contents should be a Dockerfile, and anything it references to
 COPY or ADD
@@ -357,7 +357,7 @@ docker_image 'hello-again' do
 end
 ```
 
-#### :push
+:push
 ```ruby
 docker_image 'my.computers.biz:5043/someara/hello-again' do
   action :push
