@@ -64,7 +64,6 @@ end
 
 docker_container 'an echo server' do
   repo 'busybox'
-  tag 'latest'
   port '1234:1234'
   command "nc -ll -p 1234 -e /bin/cat"
 end
@@ -114,14 +113,15 @@ container with exposed ports.
 ```ruby
 # Pull latest image
 docker_image 'nginx' do
-  tag '1.9'
-  action :pull_if_missing
+  tag 'latest'
+  action :pull
+  notifies :redeploy, 'docker_container[my_nginx]'
 end
 
 # Run container exposing ports
 docker_container 'my_nginx' do
   repo 'nginx'
-  tag '1.9'
+  tag 'latest'
   port '80:80'
   hostname 'www'
   domain_name 'computers.biz'
