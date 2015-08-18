@@ -48,6 +48,10 @@ class Chef
         end
       end
 
+      def image_identifier
+        "#{new_resource.repo}:#{new_resource.tag}"
+      end
+
       def import_image
         retries ||= new_resource.retries
         i = Docker::Image.import(new_resource.source)
@@ -59,7 +63,7 @@ class Chef
 
       def pull_image
         retries ||= new_resource.retries
-        o = Docker::Image.get("#{new_resource.repo}:#{new_resource.tag}") if Docker::Image.exist?("#{new_resource.repo}:#{new_resource.tag}")
+        o = Docker::Image.get(image_identifier) if Docker::Image.exist?(image_identifier)
         i = Docker::Image.create(
           'fromImage' => new_resource.repo,
           'tag' => new_resource.tag
@@ -73,7 +77,7 @@ class Chef
 
       def push_image
         retries ||= new_resource.retries
-        i = Docker::Image.get("#{new_resource.repo}:#{new_resource.tag}")
+        i = Docker::Image.get(image_identifier)
         i.push
       rescue Docker::Error => e
         retry unless (tries -= 1).zero?
@@ -82,7 +86,7 @@ class Chef
 
       def remove_image
         retries ||= new_resource.retries
-        i = Docker::Image.get("#{new_resource.repo}:#{new_resource.tag}")
+        i = Docker::Image.get(image_identifier)
         i.remove(force: new_resource.force, noprune: new_resource.noprune)
       rescue Docker::Error => e
         retry unless (tries -= 1).zero?
@@ -107,13 +111,13 @@ class Chef
       end
 
       action :build_if_missing do
-        next if Docker::Image.exist?("#{new_resource.repo}:#{new_resource.tag}")
+        next if Docker::Image.exist?(image_identifier)
         action_build
         new_resource.updated_by_last_action(true)
       end
 
       action :import do
-        next if Docker::Image.exist?("#{new_resource.repo}:#{new_resource.tag}")
+        next if Docker::Image.exist?(image_identifier)
         import_image
         new_resource.updated_by_last_action(true)
       end
@@ -124,7 +128,7 @@ class Chef
       end
 
       action :pull_if_missing do
-        next if Docker::Image.exist?("#{new_resource.repo}:#{new_resource.tag}")
+        next if Docker::Image.exist?(image_identifier)
         action_pull
       end
 
@@ -134,7 +138,7 @@ class Chef
       end
 
       action :remove do
-        next unless Docker::Image.exist?("#{new_resource.repo}:#{new_resource.tag}")
+        next unless Docker::Image.exist?(image_identifier)
         remove_image
         new_resource.updated_by_last_action(true)
       end

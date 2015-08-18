@@ -7,7 +7,7 @@ class Chef
       self.resource_name = :docker_image
 
       actions :build, :build_if_missing, :import, :pull, :pull_if_missing, :push, :remove, :save
-      default_action :pull_if_missing
+      default_action :pull
 
       # https://docs.docker.com/reference/api/docker_remote_api_v1.16/
       attribute :destination, kind_of: String, default: nil

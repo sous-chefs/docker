@@ -282,11 +282,6 @@ docker_container 'chef_container' do
   action :create
 end
 
-# mount it from another container
-docker_image 'debian' do
-  action :pull_if_missing
-end
-
 # Inspect the docker logs with test-kitchen bussers
 docker_container 'ohai_debian' do
   command '/opt/chef/embedded/bin/ohai platform'

@@ -13,17 +13,11 @@ end
 # :pull action specified
 docker_image 'busybox' do
   action :pull
-  not_if { ::File.exist? '/marker_image_busybox' }
 end
 
-# :pull_if_missing - default action
+# :pull_if_missing
 docker_image 'debian' do
   action :pull_if_missing
-end
-
-# marker to prevent :run on subsequent converges.
-file '/marker_image_busybox' do
-  action :create
 end
 
 # specify a tag
