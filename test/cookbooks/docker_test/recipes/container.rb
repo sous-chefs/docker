@@ -685,3 +685,16 @@ execute 'commit mutator' do
   notifies :redeploy, 'docker_container[mutator]', :immediately
   action :run
 end
+
+##############
+# network_mode
+##############
+
+docker_container 'network_mode' do
+  repo 'alpine'
+  tag '3.1'
+  command 'nc -ll -p 777 -e /bin/cat'
+  port '777:777'
+  network_mode 'host'
+  action :run
+end

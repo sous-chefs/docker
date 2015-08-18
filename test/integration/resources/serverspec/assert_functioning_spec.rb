@@ -461,3 +461,15 @@ end
 describe command('ls -la /mutator.tar') do
   its(:exit_status) { should eq 0 }
 end
+
+# docker_container[network_mode]
+
+describe command("docker ps -af 'name=network_mode$'") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should_not match(/Exited/) }
+end
+
+describe command("docker inspect -f '{{ .HostConfig.NetworkMode }}' network_mode") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should_not match(/default/) }
+end

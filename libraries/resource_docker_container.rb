@@ -37,7 +37,7 @@ class Chef
       attribute :memory, kind_of: Fixnum, default: 0
       attribute :memory_swap, kind_of: Fixnum, default: 0
       attribute :network_disabled, kind_of: [TrueClass, FalseClass], default: false
-      attribute :network_mode, kind_of: String, default: ''
+      attribute :network_mode, kind_of: String, default: nil
       attribute :open_stdin, kind_of: [TrueClass, FalseClass], default: false
       attribute :outfile, kind_of: String, default: nil
       attribute :port, kind_of: [String, Array], default: ''
