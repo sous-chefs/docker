@@ -157,6 +157,7 @@ class Chef
             'CpuShares' => new_resource.cpu_shares,
             'CpusetCpus' => new_resource.cpuset_cpus,
             'Devices' => parsed_devices,
+            'NetworkMode' => new_resource.network_mode,
             'Dns' => parsed_dns,
             'DnsSearch' => parsed_dns_search,
             'ExtraHosts' => parsed_extra_hosts,
