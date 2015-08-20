@@ -1,3 +1,7 @@
+v1.0.8
+--------------------
+- #382 - Fixing docker_service to accept an array for storage_opt
+
 v1.0.7
 --------------------
 - #381 - Removing prepended whitespace in DOCKER_OPTS
