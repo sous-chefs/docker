@@ -1,3 +1,7 @@
+v1.0.7
+--------------------
+- #381 - Removing prepended whitespace in DOCKER_OPTS
+
 v1.0.6
 --------------------
 - #369 - Fixing up HostConfig.NetworkMode to work as expected
