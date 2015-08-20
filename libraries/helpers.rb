@@ -88,9 +88,8 @@ module DockerHelpers
   end
 
   def docker_daemon_cmd
-    cmd = "#{docker_bin} -d"
-    docker_opts.each { |opt| cmd << opt }
-    cmd
+    cmd = ["#{docker_bin} -d"].concat(docker_opts)
+    cmd.join(" ")
   end
 
   # strip out invalid host arguments
@@ -110,40 +109,40 @@ module DockerHelpers
 
   def docker_opts
     opts = []
-    opts << " --api-cors-header=#{new_resource.api_cors_header}" if new_resource.api_cors_header
-    opts << " --bridge=#{new_resource.bridge}" if new_resource.bridge
-    opts << " --bip=#{new_resource.bip}" if new_resource.bip
-    opts << ' --debug' if new_resource.debug
-    opts << " --default-ulimit=#{new_resource.default_ulimit}" if new_resource.default_ulimit
-    opts << " --dns=#{new_resource.dns}" if new_resource.dns
-    new_resource.dns_search.each { |dns| opts << " --dns-search=#{dns}" } if new_resource.dns_search
-    opts << " --exec-driver=#{new_resource.exec_driver}" if new_resource.exec_driver
-    opts << " --fixed-cidr=#{new_resource.fixed_cidr}" if new_resource.fixed_cidr
-    opts << " --fixed-cidr-v6=#{new_resource.fixed_cidr_v6}" if new_resource.fixed_cidr_v6
-    opts << " --group=#{new_resource.group}" if new_resource.group
-    opts << " --graph=#{new_resource.graph}" if new_resource.graph
-    parsed_host.each { |h| opts << " -H #{h}" } if new_resource.host
-    opts << ' --icc=true' if new_resource.icc
-    opts << " --insecure-registry=#{new_resource.insecure_registry}" if new_resource.insecure_registry
-    opts << " --ip=#{new_resource.ip}" if new_resource.ip
-    opts << ' --ip-forward=true' if new_resource.ip_forward
-    opts << ' --ip-masq=true' if new_resource.ip_masq
-    opts << ' --iptables=true' if new_resource.iptables
-    opts << ' --ipv6=true' if new_resource.ipv6
-    opts << " --log-level=#{new_resource.log_level}" if new_resource.log_level
-    opts << " --label=#{new_resource.label}" if new_resource.label
-    opts << " --log-driver=#{new_resource.log_driver}" if new_resource.log_driver
-    opts << " --mtu=#{new_resource.mtu}" if new_resource.mtu
-    opts << " --pidfile=#{new_resource.pidfile}" if new_resource.pidfile
-    opts << " --registry-mirror=#{new_resource.registry_mirror}" if new_resource.registry_mirror
-    opts << " --storage-driver=#{new_resource.storage_driver}" if new_resource.storage_driver
-    opts << ' --selinux-enabled=true' if new_resource.selinux_enabled
-    opts << " --storage-opt=#{new_resource.storage_opt}" if new_resource.storage_opt
-    opts << ' --tls=true' if new_resource.tls
-    opts << " --tlscacert=#{new_resource.tlscacert}" if new_resource.tlscacert
-    opts << " --tlscert=#{new_resource.tlscert}" if new_resource.tlscert
-    opts << " --tlskey=#{new_resource.tlskey}" if new_resource.tlskey
-    opts << ' --tlsverify=true' if new_resource.tlsverify
+    opts << "--api-cors-header=#{new_resource.api_cors_header}" if new_resource.api_cors_header
+    opts << "--bridge=#{new_resource.bridge}" if new_resource.bridge
+    opts << "--bip=#{new_resource.bip}" if new_resource.bip
+    opts << '--debug' if new_resource.debug
+    opts << "--default-ulimit=#{new_resource.default_ulimit}" if new_resource.default_ulimit
+    opts << "--dns=#{new_resource.dns}" if new_resource.dns
+    new_resource.dns_search.each { |dns| opts << "--dns-search=#{dns}" } if new_resource.dns_search
+    opts << "--exec-driver=#{new_resource.exec_driver}" if new_resource.exec_driver
+    opts << "--fixed-cidr=#{new_resource.fixed_cidr}" if new_resource.fixed_cidr
+    opts << "--fixed-cidr-v6=#{new_resource.fixed_cidr_v6}" if new_resource.fixed_cidr_v6
+    opts << "--group=#{new_resource.group}" if new_resource.group
+    opts << "--graph=#{new_resource.graph}" if new_resource.graph
+    parsed_host.each { |h| opts << "-H #{h}" } if new_resource.host
+    opts << '--icc=true' if new_resource.icc
+    opts << "--insecure-registry=#{new_resource.insecure_registry}" if new_resource.insecure_registry
+    opts << "--ip=#{new_resource.ip}" if new_resource.ip
+    opts << '--ip-forward=true' if new_resource.ip_forward
+    opts << '--ip-masq=true' if new_resource.ip_masq
+    opts << '--iptables=true' if new_resource.iptables
+    opts << '--ipv6=true' if new_resource.ipv6
+    opts << "--log-level=#{new_resource.log_level}" if new_resource.log_level
+    opts << "--label=#{new_resource.label}" if new_resource.label
+    opts << "-log-driver=#{new_resource.log_driver}" if new_resource.log_driver
+    opts << "-mtu=#{new_resource.mtu}" if new_resource.mtu
+    opts << "-pidfile=#{new_resource.pidfile}" if new_resource.pidfile
+    opts << "--registry-mirror=#{new_resource.registry_mirror}" if new_resource.registry_mirror
+    opts << "--storage-driver=#{new_resource.storage_driver}" if new_resource.storage_driver
+    opts << '--selinux-enabled=true' if new_resource.selinux_enabled
+    opts << "--storage-opt=#{new_resource.storage_opt}" if new_resource.storage_opt
+    opts << '--tls=true' if new_resource.tls
+    opts << "--tlscacert=#{new_resource.tlscacert}" if new_resource.tlscacert
+    opts << "--tlscert=#{new_resource.tlscert}" if new_resource.tlscert
+    opts << "--tlskey=#{new_resource.tlskey}" if new_resource.tlskey
+    opts << '--tlsverify=true' if new_resource.tlsverify
     opts
   end
 end

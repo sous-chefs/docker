@@ -72,7 +72,7 @@ start() {
         prestart
         printf "Starting $prog:\t"
         echo "\n$(date)\n" >> $logfile
-        "$unshare" -m -- $exec daemon <% @docker_opts.each do |opt| %><%= opt %><% end %> &>> $logfile &
+        "$unshare" -m -- $exec daemon <%= @docker_opts.join(' ') %> &>> $logfile &
         pid=$!
         touch $lockfile
         # wait up to 10 seconds for the pidfile to exist.  see
