@@ -288,10 +288,10 @@ describe command("docker ps -af 'name=cmd_test$'") do
   its(:stdout) { should match(/Exited/) }
 end
 
-# describe command("docker logs cmd_test") do
-#   its(:exit_status) { should eq 0 }
-#   its(:stdout) { should match(//) }
-# end
+describe command("docker logs cmd_test") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/.dockerinit/) }
+end
 
 # docker_container[sean_was_here]
 describe command("[ ! -z `docker ps -aqf 'name=sean_was_here$'` ]") do
