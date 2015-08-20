@@ -306,11 +306,44 @@ end
 ############
 
 # Inspect container logs with test-kitchen bussers
+docker_container 'ohai_again' do
+  repo 'debian'
+  volumes_from 'chef_container'
+  entrypoint '/opt/chef/embedded/bin/ohai'
+  action :run_if_missing
+end
+
 docker_container 'ohai_again_debian' do
   repo 'debian'
   volumes_from 'chef_container'
   entrypoint '/opt/chef/embedded/bin/ohai'
   command 'platform'
+  action :run_if_missing
+end
+
+##########
+# cmd_test
+##########
+directory '/cmd_test' do
+  action :create
+end
+
+file '/cmd_test/Dockerfile' do
+  content <<-EOF
+  FROM alpine
+  # CMD '/bin/ls -la /'
+  CMD ['/bin/ls', '-la', '/']
+  EOF
+  action :create
+end
+
+docker_image 'cmd_test' do
+  tag 'latest'
+  source '/cmd_test'
+  action :build_if_missing
+end
+
+docker_container 'cmd_test' do
   action :run_if_missing
 end
 

@@ -243,10 +243,14 @@ describe command("docker inspect -f \"#{volumes_filter}\" chef_container") do
 end
 
 # docker_container[ohai_debian]
-
 describe command("docker ps -af 'name=ohai_debian$'") do
   its(:exit_status) { should eq 0 }
   its(:stdout) { should match(/Exited/) }
+end
+
+describe command("docker logs ohai_debian") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/debian/) }
 end
 
 describe command("docker inspect -f \"#{mounts_filter}\" ohai_debian") do
@@ -266,7 +270,30 @@ describe command("docker inspect -f \"{{ .Config.Env }}\" env") do
   its(:stdout) { should match(%r{\[PATH=\/usr\/bin FOO=bar\]}) }
 end
 
-# docker_container[ohai_again_debian
+# docker_container[ohai_again]
+describe command("docker ps -af 'name=ohai_again$'") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/Exited/) }
+end
+
+describe command("docker logs ohai_again") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/ohai_time/) }
+end
+
+# docker_container[cmd_test]
+
+describe command("docker ps -af 'name=cmd_test$'") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/Exited/) }
+end
+
+# describe command("docker logs cmd_test") do
+#   its(:exit_status) { should eq 0 }
+#   its(:stdout) { should match(//) }
+# end
+
+# docker_container[sean_was_here]
 describe command("[ ! -z `docker ps -aqf 'name=sean_was_here$'` ]") do
   its(:exit_status) { should eq 1 }
 end
