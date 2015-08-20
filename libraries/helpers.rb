@@ -89,7 +89,7 @@ module DockerHelpers
 
   def docker_daemon_cmd
     cmd = ["#{docker_bin} -d"].concat(docker_opts)
-    cmd.join(" ")
+    cmd.join(' ')
   end
 
   # strip out invalid host arguments

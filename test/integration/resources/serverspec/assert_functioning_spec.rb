@@ -248,7 +248,7 @@ describe command("docker ps -af 'name=ohai_debian$'") do
   its(:stdout) { should match(/Exited/) }
 end
 
-describe command("docker logs ohai_debian") do
+describe command('docker logs ohai_debian') do
   its(:exit_status) { should eq 0 }
   its(:stdout) { should match(/debian/) }
 end
@@ -276,7 +276,7 @@ describe command("docker ps -af 'name=ohai_again$'") do
   its(:stdout) { should match(/Exited/) }
 end
 
-describe command("docker logs ohai_again") do
+describe command('docker logs ohai_again') do
   its(:exit_status) { should eq 0 }
   its(:stdout) { should match(/ohai_time/) }
 end
@@ -288,7 +288,7 @@ describe command("docker ps -af 'name=cmd_test$'") do
   its(:stdout) { should match(/Exited/) }
 end
 
-describe command("docker logs cmd_test") do
+describe command('docker logs cmd_test') do
   its(:exit_status) { should eq 0 }
   its(:stdout) { should match(/.dockerinit/) }
 end
