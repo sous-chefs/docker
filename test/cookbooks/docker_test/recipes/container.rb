@@ -332,7 +332,8 @@ file '/cmd_test/Dockerfile' do
   content <<-EOF
   FROM alpine
   # CMD '/bin/ls -la /'
-  CMD ['/bin/ls', '-la', '/']
+  # CMD /bin/ls -la /
+  CMD [ "/bin/ls", "-la", "/" ]
   EOF
   action :create
 end
