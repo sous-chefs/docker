@@ -48,7 +48,7 @@ class Chef
       attribute :mtu, kind_of: String, default: nil
       attribute :pidfile, kind_of: String, default: nil
       attribute :registry_mirror, kind_of: String, default: nil
-      attribute :storage_driver, kind_of: String, default: nil
+      attribute :storage_driver, kind_of: [String, Array], default: nil
       attribute :selinux_enabled, kind_of: [TrueClass, FalseClass], default: nil
       attribute :storage_opt, kind_of: String, default: nil
       attribute :tls, kind_of: [TrueClass, FalseClass], default: false
