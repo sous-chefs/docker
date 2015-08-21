@@ -500,3 +500,14 @@ describe command("docker inspect -f '{{ .HostConfig.NetworkMode }}' network_mode
   its(:exit_status) { should eq 0 }
   its(:stdout) { should match(/host/) }
 end
+
+# docker_container[ulimit]
+describe command("docker ps -af 'name=ulimit$'") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should_not match(/Exited/) }
+end
+
+describe command("docker inspect -f '{{ .HostConfig.Ulimits }}' ulimits") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/nofile=40960:40960 core=100000000:100000000 memlock=100000000:100000000/) }
+end

@@ -732,3 +732,20 @@ docker_container 'network_mode' do
   network_mode 'host'
   action :run
 end
+
+#########
+# ulimits
+#########
+
+docker_container 'ulimits' do
+  repo 'alpine'
+  tag '3.1'
+  command 'nc -ll -p 778 -e /bin/cat'
+  port '778:778'
+  ulimits [
+    { 'Name' => 'nofile', 'Soft' => 40_960, 'Hard' => 40_960 },
+    { 'Name' => 'core', 'Soft' => 100_000_000, 'Hard' => 100_000_000 },
+    { 'Name' => 'memlock', 'Soft' => 100_000_000, 'Hard' => 100_000_000 }
+  ]
+  action :run
+end
