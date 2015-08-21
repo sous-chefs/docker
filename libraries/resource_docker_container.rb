@@ -1,6 +1,11 @@
 class Chef
   class Resource
     class DockerContainer < Chef::Resource::LWRPBase
+      def initialize(*args)
+        super
+        @retries = 2
+      end
+
       self.resource_name = :docker_container
 
       actions :create, :start, :stop, :kill, :run, :pause, :unpause, :restart, :delete, :redeploy, :run_if_missing, :remove_link

@@ -1,6 +1,11 @@
 class Chef
   class Resource
     class DockerRegistry < Chef::Resource::LWRPBase
+      def initialize(*args)
+        super
+        @retries = 2
+      end
+      
       self.resource_name = :docker_registry
 
       actions :login
