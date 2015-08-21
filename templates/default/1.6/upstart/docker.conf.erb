@@ -6,6 +6,7 @@ limit nofile 524288 1048576
 limit nproc 524288 1048576
 
 respawn
+respawn limit 2 10
 
 pre-start script
   [ -x /sbin/sysctl ] || exit 6
