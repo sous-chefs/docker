@@ -46,7 +46,6 @@ class Chef
       attribute :remove_volumes, kind_of: [TrueClass, FalseClass], default: false
       attribute :restart_policy, equal_to: %w(no on-failure always), default: 'no'
       attribute :restart_maximum_retry_count, kind_of: Fixnum, default: 0
-      attribute :retries, kind_of: Fixnum, default: 3
       attribute :security_opts, kind_of: [String, Array], default: ['']
       attribute :signal, kind_of: String, default: 'SIGKILL'
       attribute :stdin_once, kind_of: [TrueClass, FalseClass], default: false
@@ -68,7 +67,6 @@ class Chef
       alias_method :domainname, :domain_name
       alias_method :dnssearch, :dns_search
       alias_method :restart_maximum_retries, :restart_maximum_retry_count
-      alias_method :retries, :restart_maximum_retry_count
       alias_method :volume_from, :volumes_from
       alias_method :destination, :outfile
     end
