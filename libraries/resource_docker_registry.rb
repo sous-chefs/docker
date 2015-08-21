@@ -5,7 +5,7 @@ class Chef
         super
         @retries = 2
       end
-      
+
       self.resource_name = :docker_registry
 
       actions :login
