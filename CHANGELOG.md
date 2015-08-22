@@ -1,3 +1,7 @@
+v1.0.9
+--------------------
+- Fixing Upstart respawn limit
+
 v1.0.8
 --------------------
 - #382 - Fixing docker_service to accept an array for storage_opt
