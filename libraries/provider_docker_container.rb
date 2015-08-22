@@ -128,7 +128,6 @@ class Chef
 
       # Most important work is done here.
       def create_container
-        tries ||= new_resource.retries
         Docker::Container.create(
           'name' => new_resource.container_name,
           'Image' => "#{parsed_repo}:#{new_resource.tag}",
@@ -173,9 +172,6 @@ class Chef
             'VolumesFrom' => parsed_volumes_from
           }
         )
-      rescue Docker::Error => e
-        retry unless (tries -= 1).zero?
-        raise e.message
       end
 
       # Super handy visual reference!
@@ -198,23 +194,15 @@ class Chef
         next if c.info['State']['Restarting']
         next if c.info['State']['Running']
         converge_by "starting #{new_resource.container_name}" do
-          begin
-            tries ||= new_resource.retries
-
-            if new_resource.detach
-              new_resource.attach_stdin false
-              new_resource.attach_stdout false
-              new_resource.attach_stderr false
-              new_resource.stdin_once false
-              c.start
-            else
-              c.start
-              new_resource.timeout ? c.wait(new_resource.timeout) : c.wait
-            end
-
-          rescue Docker::Error => e
-            retry unless (tries -= 1).zero?
-            raise e.message
+          if new_resource.detach
+            new_resource.attach_stdin false
+            new_resource.attach_stdout false
+            new_resource.attach_stderr false
+            new_resource.stdin_once false
+            c.start
+          else
+            c.start
+            new_resource.timeout ? c.wait(new_resource.timeout) : c.wait
           end
         end
         new_resource.updated_by_last_action(true)
@@ -225,13 +213,7 @@ class Chef
         c = Docker::Container.get(new_resource.container_name)
         next unless c.info['State']['Running']
         converge_by "stopping #{new_resource.container_name}" do
-          begin
-            tries ||= new_resource.retries
-            c.stop
-          rescue Docker::Error => e
-            retry unless (tries -= 1).zero?
-            raise e.message
-          end
+          c.stop
         end
         new_resource.updated_by_last_action(true)
       end
@@ -241,13 +223,7 @@ class Chef
         c = Docker::Container.get(new_resource.container_name)
         next unless c.info['State']['Running']
         converge_by "killing #{new_resource.container_name}" do
-          begin
-            tries ||= new_resource.retries
-            c.kill(signal: new_resource.signal)
-          rescue Docker::Error => e
-            retry unless (tries -= 1).zero?
-            raise e.message
-          end
+          c.kill(signal: new_resource.signal)
         end
         new_resource.updated_by_last_action(true)
       end
@@ -268,13 +244,7 @@ class Chef
         c = Docker::Container.get(new_resource.container_name)
         next if c.info['State']['Paused']
         converge_by "pausing #{new_resource.container_name}" do
-          begin
-            tries ||= new_resource.retries
-            c.pause
-          rescue Docker::Error => e
-            retry unless (tries -= 1).zero?
-            raise e.message
-          end
+          c.pause
         end
         new_resource.updated_by_last_action(true)
       end
@@ -284,13 +254,7 @@ class Chef
         c = Docker::Container.get(new_resource.container_name)
         next unless c.info['State']['Paused']
         converge_by "unpausing #{new_resource.container_name}" do
-          begin
-            tries ||= new_resource.retries
-            c.unpause
-          rescue Docker::Error => e
-            retry unless (tries -= 1).zero?
-            raise e.message
-          end
+          c.unpause
         end
         new_resource.updated_by_last_action(true)
       end
@@ -311,13 +275,7 @@ class Chef
         action_stop
         c = Docker::Container.get(new_resource.container_name)
         converge_by "deleting #{new_resource.container_name}" do
-          begin
-            tries ||= new_resource.retries
-            c.delete(force: new_resource.force, v: new_resource.remove_volumes)
-          rescue Docker::Error => e
-            retry unless (tries -= 1).zero?
-            raise e.message
-          end
+          c.delete(force: new_resource.force, v: new_resource.remove_volumes)
         end
         new_resource.updated_by_last_action(true)
       end
@@ -339,14 +297,8 @@ class Chef
       action :commit do
         c = Docker::Container.get(new_resource.container_name)
         converge_by "committing #{new_resource.container_name}" do
-          begin
-            tries ||= new_resource.retries
-            new_image = c.commit
-            new_image.tag('repo' => new_resource.repo, 'tag' => new_resource.tag, 'force' => new_resource.force)
-          rescue Docker::Error => e
-            retry unless (tries -= 1).zero?
-            raise e.message
-          end
+          new_image = c.commit
+          new_image.tag('repo' => new_resource.repo, 'tag' => new_resource.tag, 'force' => new_resource.force)
         end
       end
 
@@ -354,13 +306,7 @@ class Chef
         fail "Please set outfile property on #{new_resource.container_name}" if new_resource.outfile.nil?
         c = Docker::Container.get(new_resource.container_name)
         converge_by "exporting #{new_resource.container_name}" do
-          begin
-            tries ||= new_resource.retries
-            ::File.open(new_resource.outfile, 'w') { |f| c.export { |chunk| f.write(chunk) } }
-          rescue Docker::Error => e
-            retry unless (tries -= 1).zero?
-            raise e.message
-          end
+          ::File.open(new_resource.outfile, 'w') { |f| c.export { |chunk| f.write(chunk) } }
         end
       end
     end

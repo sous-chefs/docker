@@ -1,6 +1,11 @@
 class Chef
   class Resource
     class DockerImage < Chef::Resource::LWRPBase
+      def initialize(*args)
+        super
+        @retries = 2
+      end
+
       # Manually set the resource name because we're creating the classes
       # manually instead of letting the resource/ and providers/
       # directories auto-name things.
@@ -15,7 +20,6 @@ class Chef
       attribute :nocache, kind_of: [TrueClass, FalseClass], default: false
       attribute :noprune, kind_of: [TrueClass, FalseClass], default: false
       attribute :repo, kind_of: String, name_attribute: true
-      attribute :retries, kind_of: Fixnum, default: 3
       attribute :rm, kind_of: [TrueClass, FalseClass], default: true
       attribute :source, kind_of: String
       attribute :tag, kind_of: String, default: 'latest'

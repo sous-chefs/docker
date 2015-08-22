@@ -1,6 +1,11 @@
 class Chef
   class Resource
     class DockerService < Chef::Resource::LWRPBase
+      def initialize(*args)
+        super
+        @retries = 2
+      end
+
       # Manually set the resource name because we're creating the classes
       # manually instead of letting the resource/ and providers/
       # directories auto-name things.
