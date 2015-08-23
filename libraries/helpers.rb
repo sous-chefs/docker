@@ -147,6 +147,7 @@ module DockerHelpers
     opts << "--tlscert=#{new_resource.tlscert}" if new_resource.tlscert
     opts << "--tlskey=#{new_resource.tlskey}" if new_resource.tlskey
     opts << '--tlsverify=true' if new_resource.tlsverify
+    opts << "--userland-proxy=#{new_resource.userland_proxy}" unless new_resource.userland_proxy.nil?
     opts
   end
 end

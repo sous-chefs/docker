@@ -57,6 +57,7 @@ class Chef
       attribute :tlskey, kind_of: String, default: nil
       attribute :tlsverify, kind_of: [TrueClass, FalseClass], default: nil
       attribute :default_ulimit, kind_of: String, default: nil
+      attribute :userland_proxy, kind_of: [TrueClass, FalseClass], default: nil
 
       # environment variables to set before running daemon
       attribute :http_proxy, kind_of: String, default: nil
