@@ -129,7 +129,7 @@ module DockerHelpers
     opts << '--icc=true' if new_resource.icc
     opts << "--insecure-registry=#{new_resource.insecure_registry}" if new_resource.insecure_registry
     opts << "--ip=#{new_resource.ip}" if new_resource.ip
-    opts << '--ip-forward=true' if new_resource.ip_forward
+    opts << "--ip-forward=#{new_resource.ip_forward}" unless new_resource.ip_forward.nil?
     opts << '--ip-masq=true' if new_resource.ip_masq
     opts << '--iptables=true' if new_resource.iptables
     opts << '--ipv6=true' if new_resource.ipv6
