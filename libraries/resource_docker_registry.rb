@@ -6,11 +6,11 @@ class Chef
       actions :login
       default_action :login
 
+      attribute :api_retries, kind_of: Fixnum, default: 3
+      attribute :email, kind_of: String
+      attribute :password, kind_of: String
       attribute :serveraddress, kind_of: String, name_attribute: true
       attribute :username, kind_of: String
-      attribute :password, kind_of: String
-      attribute :email, kind_of: String
-      attribute :retries, kind_of: Fixnum, default: 3
     end
   end
 end

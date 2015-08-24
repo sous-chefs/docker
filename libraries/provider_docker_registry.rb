@@ -8,7 +8,7 @@ class Chef
 
       action :login do
         begin
-          tries ||= new_resource.retries
+          tries ||= new_resource.api_retries
           Docker.authenticate!(
             'serveraddress' => new_resource.serveraddress,
             'username' => new_resource.username,
