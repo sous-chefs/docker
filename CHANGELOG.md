@@ -1,3 +1,7 @@
+v1.0.11
+--------------------
+- Renaming retries to api_retries to not conflict with Chef::Resource
+
 v1.0.10
 --------------------
 - Accepting userland-proxy flag
