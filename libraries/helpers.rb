@@ -108,7 +108,7 @@ module DockerHelpers
   end
 
   def parsed_storage_driver
-    Array(storage_driver)
+    Array(new_resource.storage_driver)
   end
 
   def docker_opts
