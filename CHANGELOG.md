@@ -1,3 +1,10 @@
+v1.0.10
+--------------------
+- Accepting userland-proxy flag
+- Fix bug in parsed_storage_driver method
+- Correcting usage of ip_forwarding flag
+- Let Docker pick --log-level instead of defaulting to :info
+
 v1.0.9
 --------------------
 - Fixing Upstart respawn limit
