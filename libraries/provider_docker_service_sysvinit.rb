@@ -27,8 +27,8 @@ class Chef
           end
 
           service 'docker' do
-            provider Chef::Provider::Service::Init::Redhat if node['platform_family'] == 'redhat'
-            provider Chef::Provider::Service::Init::Insserv if node['platform_family'] == 'debian'
+            provider Chef::Provider::Service::Init::Redhat if platform_family?('rhel')
+            provider Chef::Provider::Service::Init::Insserv if platform_family?('debian')
             supports restart: true, status: true
             action [:enable, :start]
           end
@@ -36,8 +36,8 @@ class Chef
 
         action :stop do
           service 'docker' do
-            provider Chef::Provider::Service::Init::Redhat if node['platform_family'] == 'redhat'
-            provider Chef::Provider::Service::Init::Insserv if node['platform_family'] == 'debian'
+            provider Chef::Provider::Service::Init::Redhat if platform_family?('rhel')
+            provider Chef::Provider::Service::Init::Insserv if platform_family?('debian')
             supports restart: true, status: true
             action [:stop]
           end
@@ -45,8 +45,8 @@ class Chef
 
         action :restart do
           service 'docker' do
-            provider Chef::Provider::Service::Init::Redhat if node['platform_family'] == 'redhat'
-            provider Chef::Provider::Service::Init::Insserv if node['platform_family'] == 'debian'
+            provider Chef::Provider::Service::Init::Redhat if platform_family?('rhel')
+            provider Chef::Provider::Service::Init::Insserv if platform_family?('debian')
             action :reload
           end
         end
