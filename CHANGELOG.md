@@ -1,3 +1,7 @@
+v1.0.12
+--------------------
+- Fixing platform_family string (redhat -> rhel) in docker_service sysvinit provider
+
 v1.0.11
 --------------------
 - Renaming retries to api_retries to not conflict with Chef::Resource
