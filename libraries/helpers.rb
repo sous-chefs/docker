@@ -135,9 +135,9 @@ module DockerHelpers
     opts << '--ipv6=true' if new_resource.ipv6
     opts << "--log-level=#{new_resource.log_level}" if new_resource.log_level
     opts << "--label=#{new_resource.label}" if new_resource.label
-    opts << "-log-driver=#{new_resource.log_driver}" if new_resource.log_driver
-    opts << "-mtu=#{new_resource.mtu}" if new_resource.mtu
-    opts << "-pidfile=#{new_resource.pidfile}" if new_resource.pidfile
+    opts << "--log-driver=#{new_resource.log_driver}" if new_resource.log_driver
+    opts << "--mtu=#{new_resource.mtu}" if new_resource.mtu
+    opts << "--pidfile=#{new_resource.pidfile}" if new_resource.pidfile
     opts << "--registry-mirror=#{new_resource.registry_mirror}" if new_resource.registry_mirror
     parsed_storage_driver.each { |s| opts << "--storage-driver=#{s}" } if new_resource.storage_driver
     opts << '--selinux-enabled=true' if new_resource.selinux_enabled
