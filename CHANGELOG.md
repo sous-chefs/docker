@@ -1,3 +1,7 @@
+v1.0.13
+--------------------
+- Fixing docker_service CLI argument generation for log-driver mtu and pidfile
+
 v1.0.12
 --------------------
 - Fixing platform_family string (redhat -> rhel) in docker_service sysvinit provider
