@@ -25,6 +25,12 @@ docker_image 'alpine' do
   tag '3.1'
 end
 
+# specify read/write timeouts
+docker_image 'alpine' do
+  read_timeout 60
+  write_timeout 60
+end
+
 #########
 # :remove
 #########

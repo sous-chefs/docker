@@ -11,6 +11,11 @@ class Chef
       # Helper methods
       ################
 
+      def api_timeouts
+        Docker.options[:read_timeout] = new_resource.read_timeout unless new_resource.read_timeout.nil?
+        Docker.options[:write_timeout] = new_resource.write_timeout unless new_resource.write_timeout.nil?
+      end
+
       def build_from_directory
         i = Docker::Image.build_from_dir(
           new_resource.source,
@@ -39,6 +44,7 @@ class Chef
       end
 
       def build_image
+        api_timeouts
         if ::File.directory?(new_resource.source)
           build_from_directory
         elsif ::File.extname(new_resource.source) == '.tar'
@@ -53,6 +59,7 @@ class Chef
       end
 
       def import_image
+        api_timeouts
         retries ||= new_resource.api_retries
         i = Docker::Image.import(new_resource.source)
         i.tag('repo' => new_resource.repo, 'tag' => new_resource.tag, 'force' => new_resource.force)
@@ -62,6 +69,7 @@ class Chef
       end
 
       def pull_image
+        api_timeouts
         retries ||= new_resource.api_retries
         o = Docker::Image.get(image_identifier) if Docker::Image.exist?(image_identifier)
         i = Docker::Image.create(
@@ -76,6 +84,7 @@ class Chef
       end
 
       def push_image
+        api_timeouts
         retries ||= new_resource.api_retries
         i = Docker::Image.get(image_identifier)
         i.push
@@ -85,6 +94,7 @@ class Chef
       end
 
       def remove_image
+        api_timeouts
         retries ||= new_resource.api_retries
         i = Docker::Image.get(image_identifier)
         i.remove(force: new_resource.force, noprune: new_resource.noprune)
@@ -94,6 +104,7 @@ class Chef
       end
 
       def save_image
+        api_timeouts
         retries ||= new_resource.api_retries
         Docker::Image.save(new_resource.repo, new_resource.destination)
       rescue Docker::Error, Errno::ENOENT => e
