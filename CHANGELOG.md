@@ -1,3 +1,7 @@
+v1.0.14
+--------------------
+- Adding api read and write timeouts
+
 v1.0.13
 --------------------
 - Fixing docker_service CLI argument generation for log-driver mtu and pidfile
