@@ -755,6 +755,7 @@ end
 ##############
 
 docker_container 'api_timeouts' do
+  command 'nc -ll -p 779 -e /bin/cat'
   repo 'alpine'
   read_timeout 60
   write_timeout 60
