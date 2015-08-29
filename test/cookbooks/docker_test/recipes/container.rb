@@ -749,3 +749,13 @@ docker_container 'ulimits' do
   ]
   action :run
 end
+
+##############
+# api_timeouts
+##############
+
+docker_container 'api_timeouts' do
+  repo 'alpine'
+  read_timeout 60
+  write_timeout 60
+end

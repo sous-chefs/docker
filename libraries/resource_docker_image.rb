@@ -15,10 +15,12 @@ class Chef
       attribute :force, kind_of: [TrueClass, FalseClass], default: false
       attribute :nocache, kind_of: [TrueClass, FalseClass], default: false
       attribute :noprune, kind_of: [TrueClass, FalseClass], default: false
+      attribute :read_timeout, kind_of: [Fixnum, NilClass], default: nil
       attribute :repo, kind_of: String, name_attribute: true
       attribute :rm, kind_of: [TrueClass, FalseClass], default: true
       attribute :source, kind_of: String
       attribute :tag, kind_of: String, default: 'latest'
+      attribute :write_timeout, kind_of: [Fixnum, NilClass], default: nil
 
       alias_method :image, :repo
       alias_method :image_name, :repo

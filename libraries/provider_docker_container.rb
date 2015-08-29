@@ -12,6 +12,11 @@ class Chef
       # Helper methods
       ################
 
+      def api_timeouts
+        Docker.options[:read_timeout] = new_resource.read_timeout unless new_resource.read_timeout.nil?
+        Docker.options[:write_timeout] = new_resource.write_timeout unless new_resource.write_timeout.nil?
+      end
+
       # This is called a lot.. maybe this should turn into an instance variable
       def container_created?
         Docker::Container.get(new_resource.container_name)
@@ -128,6 +133,7 @@ class Chef
 
       # Most important work is done here.
       def create_container
+        api_timeouts
         tries ||= new_resource.api_retries
         Docker::Container.create(
           'name' => new_resource.container_name,
@@ -194,6 +200,7 @@ class Chef
       end
 
       action :start do
+        api_timeouts
         c = Docker::Container.get(new_resource.container_name)
         next if c.info['State']['Restarting']
         next if c.info['State']['Running']
@@ -221,6 +228,7 @@ class Chef
       end
 
       action :stop do
+        api_timeouts
         next unless container_created?
         c = Docker::Container.get(new_resource.container_name)
         next unless c.info['State']['Running']
@@ -237,6 +245,7 @@ class Chef
       end
 
       action :kill do
+        api_timeouts
         next unless container_created?
         c = Docker::Container.get(new_resource.container_name)
         next unless c.info['State']['Running']
@@ -264,6 +273,7 @@ class Chef
       end
 
       action :pause do
+        api_timeouts
         next unless container_created?
         c = Docker::Container.get(new_resource.container_name)
         next if c.info['State']['Paused']
@@ -280,6 +290,7 @@ class Chef
       end
 
       action :unpause do
+        api_timeouts
         next unless container_created?
         c = Docker::Container.get(new_resource.container_name)
         next unless c.info['State']['Paused']
@@ -337,6 +348,7 @@ class Chef
       end
 
       action :commit do
+        api_timeouts
         c = Docker::Container.get(new_resource.container_name)
         converge_by "committing #{new_resource.container_name}" do
           begin
@@ -351,6 +363,7 @@ class Chef
       end
 
       action :export do
+        api_timeouts
         fail "Please set outfile property on #{new_resource.container_name}" if new_resource.outfile.nil?
         c = Docker::Container.get(new_resource.container_name)
         converge_by "exporting #{new_resource.container_name}" do

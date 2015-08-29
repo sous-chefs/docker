@@ -302,6 +302,14 @@ docker_image 'alpine' do
 end
 ```
 
+specify read/write timeouts
+```ruby
+docker_image 'alpine' do
+  read_timeout 60
+  write_timeout 60
+end
+```
+
 ```ruby
 docker_image 'vbatts/slackware' do
   action :remove
@@ -392,11 +400,13 @@ registry vs a private one.
   Dockerfile. For import, this should be a tarball containing Docker
   formatted image, as generated with `:save`.
 - `destination` - Path for output from the `:save` action.
-- `force` A force boolean used in various actions - Defaults to false
+- `force` - A force boolean used in various actions - Defaults to false
 - `nocache` - Used in `:build` operations. - Defaults to false
 - `noprune` - Used in `:remove` operations - Defaults to false
 - `rm` - Remove intermediate containers after a successful build
   (default behavior) - Defaults to `true`
+- `read_timeout` - May need to increase for long image builds/pulls
+- `write_timeout` - May need to increase for long image builds/pulls
 
 #### Actions
 The following actions are available for a `docker_image` resource.
@@ -787,6 +797,16 @@ execute 'commit mutator' do
 end
 ```
 
+Specify read/write timeouts
+
+```ruby
+docker_container 'api_timeouts' do
+  repo 'alpine'
+  read_timeout 60
+  write_timeout 60
+end
+```
+
 #### Properties
 
 Most `docker_container` properties are the `snake_case` version of the
@@ -868,6 +888,8 @@ Most `docker_container` properties are the `snake_case` version of the
   container. Specified in the form `<container name>[:<ro|rw>]`
 - `working_dir` - A string specifying the working directory for
   commands to run in.
+- `read_timeout` - May need to increase for commits or exports that are slow
+- `write_timeout` - May need to increase for commits or exports that are slow
 
 #### Actions
 

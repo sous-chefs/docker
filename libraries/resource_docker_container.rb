@@ -44,6 +44,7 @@ class Chef
       attribute :port, kind_of: [String, Array], default: ''
       attribute :privileged, kind_of: [TrueClass, FalseClass], default: false
       attribute :publish_all_ports, kind_of: [TrueClass, FalseClass], default: false
+      attribute :read_timeout, kind_of: [Fixnum, NilClass], default: nil
       attribute :remove_volumes, kind_of: [TrueClass, FalseClass], default: false
       attribute :restart_maximum_retry_count, kind_of: Fixnum, default: 0
       attribute :restart_policy, equal_to: %w(no on-failure always), default: 'no'
@@ -57,6 +58,7 @@ class Chef
       attribute :volumes, kind_of: [String, Array, NilClass], default: '' # FIXME: add validate proc
       attribute :volumes_from, kind_of: [String, Array, NilClass], default: nil # FIXME: add validate proc
       attribute :working_dir, kind_of: String, default: ''
+      attribute :write_timeout, kind_of: [Fixnum, NilClass], default: nil
 
       alias_method :cmd, :command
       alias_method :image, :repo
