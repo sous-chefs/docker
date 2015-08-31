@@ -1,3 +1,7 @@
+v1.0.16
+--------------------
+- Adding CIDR support for docker_service bip property
+
 v1.0.15
 --------------------
 - #309 - Adding bits to enable container re-deployment when properties change
