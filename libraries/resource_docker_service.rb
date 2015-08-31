@@ -22,7 +22,7 @@ class Chef
       attribute :instance, kind_of: String, name_attribute: true, required: true
       attribute :api_cors_header, kind_of: String, default: nil
       attribute :bridge, kind_of: String, regex: [IPV4_ADDR, IPV6_ADDR], default: nil
-      attribute :bip, kind_of: String, regex: IPV4_ADDR,  default: nil
+      attribute :bip, kind_of: String, regex: [IPV4_ADDR, IPV4_CIDR, IPV6_ADDR, IPV6_CIDR],  default: nil
       attribute :debug, kind_of: [TrueClass, FalseClass], default: nil
       attribute :daemon, kind_of: [TrueClass, FalseClass], default: true
       attribute :dns, kind_of: String, default: nil
