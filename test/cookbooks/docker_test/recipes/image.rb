@@ -20,13 +20,9 @@ docker_image 'debian' do
   action :pull_if_missing
 end
 
-# specify a tag
+# specify a tag and read/write timeouts
 docker_image 'alpine' do
   tag '3.1'
-end
-
-# specify read/write timeouts
-docker_image 'alpine' do
   read_timeout 60
   write_timeout 60
 end

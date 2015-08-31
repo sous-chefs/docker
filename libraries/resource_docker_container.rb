@@ -9,7 +9,7 @@ class Chef
       attribute :container_name, kind_of: String, name_attribute: true
       attribute :repo, kind_of: String, default: nil
       attribute :tag, kind_of: String, default: 'latest'
-      attribute :command, kind_of: String, default: ''
+      attribute :command, kind_of: [String, Array], default: ''
 
       attribute :api_retries, kind_of: Fixnum, default: 3
       attribute :attach_stderr, kind_of: [TrueClass, FalseClass], default: true
@@ -20,7 +20,7 @@ class Chef
       attribute :cap_add, kind_of: [String, Array, NilClass], default: nil # FIXME: add validate proc
       attribute :cap_drop, kind_of: [String, Array, NilClass], default: nil # FIXME: add validate proc
       attribute :cgroup_parent, kind_of: String, default: '' # FIXME: add validate proc
-      attribute :cpu_shares, kind_of: [Fixnum, NilClass], default: nil # FIXME: add validate proc
+      attribute :cpu_shares, kind_of: [Fixnum, NilClass], default: 0 # FIXME: add validate proc
       attribute :cpuset_cpus, kind_of: String, default: '' # FIXME: add validate proc
       attribute :detach, kind_of: [TrueClass, FalseClass], default: true
       attribute :devices, kind_of: [Hash, Array, NilClass], default: nil # FIXME: add validate proc
@@ -30,32 +30,34 @@ class Chef
       attribute :entrypoint, kind_of: [String, Array, NilClass], default: nil
       attribute :env, kind_of: [String, Array], default: nil
       attribute :extra_hosts, kind_of: [String, Array, NilClass], default: nil
+      attribute :exposed_ports, kind_of: Hash, default: nil
       attribute :force, kind_of: [TrueClass, FalseClass], default: false
-      attribute :host_name, kind_of: String, default: ''
+      attribute :host_name, kind_of: String, default: nil
       attribute :links, kind_of: [String, Array, NilClass], default: nil # FIXME: add validate proc
       attribute :log_config, kind_of: [Hash, NilClass], default: nil # FIXME: add validate proc and tests
       attribute :mac_address, kind_of: String, default: '' # FIXME: needs tests
       attribute :memory, kind_of: Fixnum, default: 0
       attribute :memory_swap, kind_of: Fixnum, default: 0
       attribute :network_disabled, kind_of: [TrueClass, FalseClass], default: false
-      attribute :network_mode, kind_of: String, default: nil
+      attribute :network_mode, kind_of: [String, NilClass], default: 'default'
       attribute :open_stdin, kind_of: [TrueClass, FalseClass], default: false
       attribute :outfile, kind_of: String, default: nil
-      attribute :port, kind_of: [String, Array], default: ''
+      attribute :port, kind_of: [String, Array], default: nil
+      attribute :port_bindings, kind_of: [String, Array, Hash], default: nil
       attribute :privileged, kind_of: [TrueClass, FalseClass], default: false
       attribute :publish_all_ports, kind_of: [TrueClass, FalseClass], default: false
       attribute :read_timeout, kind_of: [Fixnum, NilClass], default: nil
       attribute :remove_volumes, kind_of: [TrueClass, FalseClass], default: false
       attribute :restart_maximum_retry_count, kind_of: Fixnum, default: 0
-      attribute :restart_policy, equal_to: %w(no on-failure always), default: 'no'
+      attribute :restart_policy, kind_of: [String, Hash, NilClass], default: 'no' # FIXME: validation proc: equal_to: %w(no on-failure always)
       attribute :security_opts, kind_of: [String, Array], default: ['']
       attribute :signal, kind_of: String, default: 'SIGKILL'
-      attribute :stdin_once, kind_of: [TrueClass, FalseClass], default: false
+      attribute :stdin_once, kind_of: [TrueClass, FalseClass, NilClass], default: false
       attribute :timeout, kind_of: Fixnum, default: nil
       attribute :tty, kind_of: [TrueClass, FalseClass], default: false
       attribute :ulimits, kind_of: [Hash, Array, NilClass], default: nil
       attribute :user, kind_of: String, default: ''
-      attribute :volumes, kind_of: [String, Array, NilClass], default: '' # FIXME: add validate proc
+      attribute :volumes, kind_of: [String, Array, Hash, NilClass], default: nil # FIXME: add validate proc
       attribute :volumes_from, kind_of: [String, Array, NilClass], default: nil # FIXME: add validate proc
       attribute :working_dir, kind_of: String, default: ''
       attribute :write_timeout, kind_of: [Fixnum, NilClass], default: nil

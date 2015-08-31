@@ -1,6 +1,7 @@
 $LOAD_PATH.unshift *Dir[File.expand_path('../../files/default/vendor/gems/**/lib', __FILE__)]
 require 'docker'
 require 'shellwords'
+require_relative 'helpers_container'
 
 class Chef
   class Provider
@@ -8,127 +9,99 @@ class Chef
       # register with the resource resolution system
       provides :docker_container if Chef::Provider.respond_to?(:provides)
 
-      ################
-      # Helper methods
-      ################
+      include DockerHelpers::Container
+      use_inline_resources
 
-      def api_timeouts
-        Docker.options[:read_timeout] = new_resource.read_timeout unless new_resource.read_timeout.nil?
-        Docker.options[:write_timeout] = new_resource.write_timeout unless new_resource.write_timeout.nil?
+      def load_current_resource
+        @current_resource = Chef::Resource::DockerContainer.new(new_resource.name)
+        begin
+          c = Docker::Container.get(new_resource.container_name)
+          @current_resource.attach_stderr c.info['Config']['AttachStderr']
+          @current_resource.attach_stdin c.info['Config']['AttachStdin']
+          @current_resource.attach_stdout c.info['Config']['AttachStdout']
+          @current_resource.binds c.info['HostConfig']['Binds']
+          @current_resource.cap_add c.info['HostConfig']['CapAdd']
+          @current_resource.cap_drop c.info['HostConfig']['CapDrop']
+          @current_resource.cgroup_parent c.info['HostConfig']['CgroupParent']
+          @current_resource.command c.info['Config']['Cmd']
+          @current_resource.cpu_shares c.info['HostConfig']['CpuShares']
+          @current_resource.cpuset_cpus c.info['HostConfig']['CpusetCpus']
+          @current_resource.devices c.info['HostConfig']['Devices']
+          @current_resource.dns c.info['HostConfig']['Dns']
+          @current_resource.dns_search c.info['HostConfig']['DnsSearch']
+          @current_resource.domainname c.info['Config']['Domainname']
+          @current_resource.entrypoint c.info['Config']['Entrypoint']
+          @current_resource.env c.info['Config']['Env']
+          @current_resource.exposed_ports c.info['Config']['ExposedPorts']
+          @current_resource.extra_hosts c.info['HostConfig']['ExtraHosts']
+          @current_resource.hostname c.info['Config']['Hostname']
+          @current_resource.image c.info['Config']['Image']
+          @current_resource.links c.info['HostConfig']['Links']
+          @current_resource.log_config c.info['HostConfig']['LogConfig']
+          @current_resource.mac_address c.info['Config']['MacAddress']
+          @current_resource.memory c.info['HostConfig']['Memory']
+          @current_resource.memory_swap c.info['HostConfig']['MemorySwap']
+          @current_resource.network_disabled c.info['Config']['NetworkDisabled']
+          @current_resource.network_mode c.info['HostConfig']['NetworkMode']
+          @current_resource.open_stdin c.info['Config']['OpenStdin']
+          @current_resource.port_bindings c.info['HostConfig']['PortBindings']
+          @current_resource.privileged c.info['HostConfig']['Privileged']
+          @current_resource.publish_all_ports c.info['HostConfig']['PublishAllPorts']
+          @current_resource.restart_policy c.info['HostConfig']['RestartPolicy']
+          @current_resource.stdin_once c.info['Config']['StdinOnce']
+          @current_resource.tty c.info['Config']['Tty']
+          @current_resource.ulimits c.info['HostConfig']['Ulimits']
+          @current_resource.user c.info['Config']['User']
+          @current_resource.volumes c.info['Config']['Volumes']
+          @current_resource.volumes_from c.info['HostConfig']['VolumesFrom']
+          @current_resource.working_dir c.info['Config']['WorkingDir']
+        rescue Docker::Error::NotFoundError
+          return @current_resource
+        end
       end
 
-      # This is called a lot.. maybe this should turn into an instance variable
-      def container_created?
-        Docker::Container.get(new_resource.container_name)
-        return true
-      rescue Docker::Error::NotFoundError
-        return false
-      end
-
-      # Use this instead of new_resource.repo
-      def parsed_repo
-        return new_resource.repo if new_resource.repo
-        new_resource.container_name
-      end
-
-      # The remote API wants an argv style array
-      def parsed_command
-        ::Shellwords.shellwords(new_resource.command)
-      end
-
-      # 22/tcp, 53/udp, etc
-      def exposed_ports
-        return nil if parsed_ports.empty?
-        parsed_ports.inject({}) { |a, e| expand_port_exposure(a, e) }
-      end
-
-      def expand_port_exposure(exposings, value)
-        exposings.merge(PortBinding.new(value).exposure)
-      end
-
-      # Map container exposed port to the host
-      def port_bindings
-        return nil if parsed_ports.empty?
-        parsed_ports.inject({}) { |a, e| expand_port_binding(a, e) }
-      end
-
-      def expand_port_binding(binds, value)
-        binds.merge(PortBinding.new(value).binding)
-      end
-
-      def parsed_ports
-        return [] if new_resource.port.nil?
-        return [] if new_resource.port.empty?
-        Array(new_resource.port)
-      end
-
-      def parsed_binds
-        Array(new_resource.binds)
-      end
-
-      def parsed_volumes_from
-        Array(new_resource.volumes_from)
-      end
-
-      def parsed_volumes
-        return nil if new_resource.volumes.nil?
-        return nil if new_resource.volumes.empty?
-        varray = Array(new_resource.volumes)
-        vhash = {}
-        varray.each { |v| vhash[v] = {} }
-        vhash
-      end
-
-      def parsed_cap_add
-        return nil if new_resource.cap_add.nil?
-        return nil if new_resource.cap_add.empty?
-        Array(new_resource.cap_add)
-      end
-
-      def parsed_cap_drop
-        return nil if new_resource.cap_drop.nil?
-        return nil if new_resource.cap_drop.empty?
-        Array(new_resource.cap_drop)
-      end
-
-      def parsed_dns
-        return nil if new_resource.dns.nil?
-        return nil if new_resource.dns.empty?
-        Array(new_resource.dns)
-      end
-
-      def parsed_dns_search
-        return nil if new_resource.dns_search.nil?
-        Array(new_resource.dns_search)
-      end
-
-      def parsed_extra_hosts
-        return nil if new_resource.extra_hosts.nil?
-        return nil if new_resource.extra_hosts.empty?
-        Array(new_resource.extra_hosts)
-      end
-
-      def parsed_links
-        return nil if new_resource.links.nil?
-        return nil if new_resource.links.empty?
-        Array(new_resource.links)
-      end
-
-      def parsed_env
-        return nil if new_resource.env.nil?
-        Array(new_resource.env)
-      end
-
-      def parsed_devices
-        return nil if new_resource.devices.nil?
-        Array(new_resource.devices)
-      end
-
-      def parsed_restart_policy
-        {
-          'MaximumRetryCount' => new_resource.restart_maximum_retry_count,
-          'Name' => new_resource.restart_policy
-        }
+      def resource_changes
+        changes = []
+        changes << :attach_stderr if current_resource.attach_stderr != parsed_attach_stderr
+        changes << :attach_stdin if current_resource.attach_stdin != parsed_attach_stdin
+        changes << :attach_stdout if current_resource.attach_stdout != parsed_attach_stdout
+        changes << :binds if  current_resource.binds != parsed_binds
+        changes << :cap_add if current_resource.cap_add != parsed_cap_add
+        changes << :cap_drop if  current_resource.cap_drop != parsed_cap_drop
+        changes << :cgroup_parent if current_resource.cgroup_parent != new_resource.cgroup_parent
+        changes << :command if  current_resource.command != parsed_command
+        changes << :cpu_shares if current_resource.cpu_shares != new_resource.cpu_shares
+        changes << :cpuset_cpus if current_resource.cpuset_cpus != new_resource.cpuset_cpus
+        changes << :devices if current_resource.devices != parsed_devices
+        changes << :dns if current_resource.dns != parsed_dns
+        changes << :dns_search if current_resource.dns_search != parsed_dns_search
+        changes << :domainname if current_resource.domainname != new_resource.domainname
+        changes << :entrypoint if current_resource.entrypoint != parsed_entrypoint
+        changes << :env if current_resource.env != parsed_env
+        changes << :exposed_ports if current_resource.exposed_ports != exposed_ports
+        changes << :extra_hosts if current_resource.extra_hosts != parsed_extra_hosts
+        changes << :hostname if (!new_resource.hostname.nil?) && (current_resource.hostname != new_resource.hostname)
+        changes << :image if current_resource.image != "#{parsed_repo}:#{new_resource.tag}"
+        changes << :links if current_resource.links != serialized_links
+        changes << :log_config if current_resource.log_config != serialized_log_config
+        changes << :mac_address if current_resource.mac_address != new_resource.mac_address
+        changes << :memory if current_resource.memory != new_resource.memory
+        changes << :memory_swap if current_resource.memory_swap != new_resource.memory_swap
+        changes << :network_disabled if current_resource.network_disabled != new_resource.network_disabled
+        changes << :network_mode if current_resource.network_mode != new_resource.network_mode
+        changes << :open_stdin if current_resource.open_stdin != new_resource.open_stdin
+        changes << :port_bindings if current_resource.port_bindings != port_bindings
+        changes << :privileged if current_resource.privileged != new_resource.privileged
+        changes << :publish_all_ports if current_resource.publish_all_ports != new_resource.publish_all_ports
+        changes << :restart_policy if current_resource.restart_policy != parsed_restart_policy
+        changes << :stdin_once if current_resource.stdin_once != parsed_stdin_once
+        changes << :tty if current_resource.tty != new_resource.tty
+        changes << :ulimits if current_resource.ulimits != new_resource.ulimits
+        changes << :user if current_resource.user != new_resource.user
+        changes << :volumes if current_resource.volumes != parsed_volumes
+        changes << :volumes_from if current_resource.volumes_from != parsed_volumes_from
+        changes << :working_dir if current_resource.working_dir != new_resource.working_dir
+        changes
       end
 
       # Most important work is done here.
@@ -139,9 +112,9 @@ class Chef
           'name' => new_resource.container_name,
           'Image' => "#{parsed_repo}:#{new_resource.tag}",
           'Cmd' => parsed_command,
-          'AttachStderr' => new_resource.attach_stderr,
-          'AttachStdin' => new_resource.attach_stdin,
-          'AttachStdout' => new_resource.attach_stdout,
+          'AttachStderr' => parsed_attach_stderr,
+          'AttachStdin' => parsed_attach_stdin,
+          'AttachStdout' => parsed_attach_stdout,
           'Domainname' => new_resource.domain_name,
           'Entrypoint' => new_resource.entrypoint,
           'Env' => parsed_env,
@@ -150,7 +123,7 @@ class Chef
           'MacAddress' => new_resource.mac_address,
           'NetworkDisabled' => new_resource.network_disabled,
           'OpenStdin' => new_resource.open_stdin,
-          'StdinOnce' => new_resource.stdin_once,
+          'StdinOnce' => parsed_stdin_once,
           'Tty' => new_resource.tty,
           'User' => new_resource.user,
           'Volumes' => parsed_volumes,
@@ -192,6 +165,8 @@ class Chef
       #########
 
       action :create do
+        action_delete unless resource_changes.empty? || !container_created?
+
         next if container_created?
         converge_by "creating #{new_resource.container_name}" do
           create_container

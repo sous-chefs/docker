@@ -584,7 +584,7 @@ docker_container 'link_target_1' do
   tag '3.1'
   env ['ASD=asd']
   command 'ping -c 1 hello'
-  links ['link_source:hello']
+  links 'link_source:hello'
   action :run_if_missing
 end
 
@@ -757,6 +757,52 @@ end
 docker_container 'api_timeouts' do
   command 'nc -ll -p 779 -e /bin/cat'
   repo 'alpine'
+  tag '3.1'
   read_timeout 60
   write_timeout 60
+end
+
+##############
+# uber_options
+##############
+
+# start a container to be modified
+execute 'uber_options' do
+  command 'docker run --name uber_options -d busybox nc -ll -p 187 -e /bin/cat'
+  not_if "[ ! -z `docker ps -qaf 'name=uber_options$'` ]"
+  action :run
+end
+
+docker_container 'uber_options' do
+  repo 'alpine'
+  tag '3.1'
+  hostname 'www'
+  domainname 'computers.biz'
+  env ['FOO=foo', 'BAR=bar']
+  mac_address '00:00:DE:AD:BE:EF'
+  network_disabled false
+  tty true
+  volumes ['/root']
+  working_dir '/'
+  binds ['/hostbits:/bits', '/more-hostbits:/more-bits']
+  cap_add 'NET_ADMIN'
+  cap_drop 'MKNOD'
+  cpu_shares 512
+  cpuset_cpus '0,1'
+  dns ['8.8.8.8', '8.8.4.4']
+  dns_search ['computers.biz']
+  extra_hosts ['east:4.3.2.1', 'west:1.2.3.4']
+  links ['link_source:hello']
+  network_mode 'default'
+  port '1234:1234'
+  volumes_from 'chef_container'
+  user 'operator'
+  command "-c 'nc -ll -p 1234 -e /bin/cat'"
+  entrypoint '/bin/sh'
+  ulimits [
+    { 'Name' => 'nofile', 'Soft' => 40_960, 'Hard' => 40_960 },
+    { 'Name' => 'core', 'Soft' => 100_000_000, 'Hard' => 100_000_000 },
+    { 'Name' => 'memlock', 'Soft' => 100_000_000, 'Hard' => 100_000_000 }
+  ]
+  action :run
 end

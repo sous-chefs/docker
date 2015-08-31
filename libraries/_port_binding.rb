@@ -3,9 +3,9 @@ class PortBinding
 
   def initialize(value)
     @definition = value
-    @host_ip = nil
-    @host_port = nil
-    @container_port = nil
+    @host_ip = ''
+    @host_port = ''
+    @container_port = ''
     parse(value)
   end
 

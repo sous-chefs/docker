@@ -511,3 +511,24 @@ describe command("docker inspect -f '{{ .HostConfig.Ulimits }}' ulimits") do
   its(:exit_status) { should eq 0 }
   its(:stdout) { should match(/nofile=40960:40960 core=100000000:100000000 memlock=100000000:100000000/) }
 end
+
+# docker_container[uber_options]
+describe command("docker ps -af 'name=uber_options$'") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should_not match(/Exited/) }
+end
+
+describe command("docker inspect -f '{{ .Config.Domainname }}' uber_options") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/computers.biz/) }
+end
+
+describe command("docker inspect -f '{{ .Config.MacAddress }}' uber_options") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/00:00:DE:AD:BE:EF/) }
+end
+
+describe command("docker inspect -f '{{ .HostConfig.Ulimits }}' uber_options") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/nofile=40960:40960 core=100000000:100000000 memlock=100000000:100000000/) }
+end
