@@ -1,3 +1,7 @@
+v1.0.15
+--------------------
+- #309 - Adding bits to enable container re-deployment when properties change
+
 v1.0.14
 --------------------
 - Adding api read and write timeouts
