@@ -13,6 +13,8 @@ class Chef
       use_inline_resources
 
       def load_current_resource
+        @api_version = Docker.version['ApiVersion'].to_f
+
         @current_resource = Chef::Resource::DockerContainer.new(new_resource.name)
         begin
           c = Docker::Container.get(new_resource.container_name)
@@ -88,7 +90,7 @@ class Chef
         changes << :memory if current_resource.memory != new_resource.memory
         changes << :memory_swap if current_resource.memory_swap != new_resource.memory_swap
         changes << :network_disabled if current_resource.network_disabled != new_resource.network_disabled
-        changes << :network_mode if current_resource.network_mode != new_resource.network_mode
+        changes << :network_mode if current_resource.network_mode != parsed_network_mode
         changes << :open_stdin if current_resource.open_stdin != new_resource.open_stdin
         changes << :port_bindings if current_resource.port_bindings != port_bindings
         changes << :privileged if current_resource.privileged != new_resource.privileged
@@ -143,7 +145,7 @@ class Chef
             'LogConfig' => new_resource.log_config,
             'Memory' => new_resource.memory,
             'MemorySwap' => new_resource.memory_swap,
-            'NetworkMode' => new_resource.network_mode,
+            'NetworkMode' => parsed_network_mode,
             'Privileged' => new_resource.privileged,
             'PortBindings' => port_bindings,
             'PublishAllPorts' => new_resource.publish_all_ports,
@@ -165,6 +167,14 @@ class Chef
       #########
 
       action :create do
+        # log "current_resource.log_config: :#{current_resource.log_config}: serialized_log_config :#{serialized_log_config}:"
+
+        # require 'pry' ; binding.pry
+
+        resource_changes.each do |change|
+          log "#{change} - :#{current_resource.send(change)}: :#{new_resource.send(change)}:"
+        end
+
         action_delete unless resource_changes.empty? || !container_created?
 
         next if container_created?

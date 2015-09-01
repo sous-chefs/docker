@@ -156,10 +156,26 @@ module DockerHelpers
     # effectivly means only the json-file is suppored.
     #
     def serialized_log_config
-      {
-        'Type' => 'json-file',
-        'Config' => {}
-      }
+      if @api_version < 1.20
+        {
+          'Type' => 'json-file',
+          'Config' => nil
+        }
+      else
+        {
+          'Type' => 'json-file',
+          'Config' => {}
+        }
+      end
+    end
+
+    def parsed_network_mode
+      return new_resource.network_mode if new_resource.network_mode
+      if @api_version < 1.20
+        return ''
+      else
+        return 'default'
+      end
     end
 
     def parsed_env
