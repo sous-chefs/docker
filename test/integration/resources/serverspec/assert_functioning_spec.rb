@@ -6,6 +6,8 @@ puts "os: #{os}"
 docker_version_string = `docker -v`
 docker_version = docker_version_string.split(/\s/)[2].split(',')[0]
 
+puts "docker_version: #{docker_version}"
+
 volumes_filter = '{{ .Volumes }}' if docker_version =~ /1.6/
 volumes_filter = '{{ .Volumes }}' if docker_version =~ /1.7/
 volumes_filter = '{{ .Config.Volumes }}' if docker_version =~ /1.8/
@@ -501,34 +503,38 @@ describe command("docker inspect -f '{{ .HostConfig.NetworkMode }}' network_mode
   its(:stdout) { should match(/host/) }
 end
 
-# docker_container[ulimit]
-describe command("docker ps -af 'name=ulimit$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should_not match(/Exited/) }
+if docker_version.to_f > 1.6
+  # docker_container[ulimit]
+  describe command("docker ps -af 'name=ulimit$'") do
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should_not match(/Exited/) }
+  end
+
+  describe command("docker inspect -f '{{ .HostConfig.Ulimits }}' ulimits") do
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match(/nofile=40960:40960 core=100000000:100000000 memlock=100000000:100000000/) }
+  end
 end
 
-describe command("docker inspect -f '{{ .HostConfig.Ulimits }}' ulimits") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/nofile=40960:40960 core=100000000:100000000 memlock=100000000:100000000/) }
-end
+if docker_version.to_f > 1.6
+  # docker_container[uber_options]
+  describe command("docker ps -af 'name=uber_options$'") do
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should_not match(/Exited/) }
+  end
 
-# docker_container[uber_options]
-describe command("docker ps -af 'name=uber_options$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should_not match(/Exited/) }
-end
+  describe command("docker inspect -f '{{ .Config.Domainname }}' uber_options") do
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match(/computers.biz/) }
+  end
 
-describe command("docker inspect -f '{{ .Config.Domainname }}' uber_options") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/computers.biz/) }
-end
+  describe command("docker inspect -f '{{ .Config.MacAddress }}' uber_options") do
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match(/00:00:DE:AD:BE:EF/) }
+  end
 
-describe command("docker inspect -f '{{ .Config.MacAddress }}' uber_options") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/00:00:DE:AD:BE:EF/) }
-end
-
-describe command("docker inspect -f '{{ .HostConfig.Ulimits }}' uber_options") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/nofile=40960:40960 core=100000000:100000000 memlock=100000000:100000000/) }
+  describe command("docker inspect -f '{{ .HostConfig.Ulimits }}' uber_options") do
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match(/nofile=40960:40960 core=100000000:100000000 memlock=100000000:100000000/) }
+  end
 end
