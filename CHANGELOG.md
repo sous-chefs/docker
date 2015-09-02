@@ -1,3 +1,7 @@
+v1.0.18
+--------------------
+- Removing leftover log resources used for debugging in development
+
 v1.0.17
 --------------------
 - Fixing up regressions in older Docker API versions introduced in cookbook release 1.0.15
