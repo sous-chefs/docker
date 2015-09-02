@@ -167,14 +167,6 @@ class Chef
       #########
 
       action :create do
-        # log "current_resource.log_config: :#{current_resource.log_config}: serialized_log_config :#{serialized_log_config}:"
-
-        # require 'pry' ; binding.pry
-
-        resource_changes.each do |change|
-          log "#{change} - :#{current_resource.send(change)}: :#{new_resource.send(change)}:"
-        end
-
         action_delete unless resource_changes.empty? || !container_created?
 
         next if container_created?
