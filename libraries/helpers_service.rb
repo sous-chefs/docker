@@ -47,6 +47,7 @@ module DockerHelpers
   end
 
   def parsed_checksum
+    return new_resource.checksum if new_resource.checksum
     case docker_kernel
     when 'Darwin'
       case parsed_version
