@@ -73,6 +73,7 @@ class Chef
       alias_method :dnssearch, :dns_search
       alias_method :restart_maximum_retries, :restart_maximum_retry_count
       alias_method :api_retries, :restart_maximum_retry_count
+      alias_method :volume, :volumes
       alias_method :volume_from, :volumes_from
       alias_method :destination, :outfile
     end

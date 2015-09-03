@@ -16,6 +16,10 @@ mounts_filter = '{{ .Volumes }}' if docker_version =~ /1.6/
 mounts_filter = '{{ .Volumes }}' if docker_version =~ /1.7/
 mounts_filter = '{{ .Mounts }}' if docker_version =~ /1.8/
 
+nil_string = '<no value>' if docker_version =~ /1.6/
+nil_string = '<nil>' if docker_version =~ /1.7/
+nil_string = '<nil>' if docker_version =~ /1.8/
+
 ##############################################
 #  test/cookbooks/docker_test/recipes/image.rb
 ##############################################
@@ -537,4 +541,58 @@ if docker_version.to_f > 1.6
     its(:exit_status) { should eq 0 }
     its(:stdout) { should match(/nofile=40960:40960 core=100000000:100000000 memlock=100000000:100000000/) }
   end
+end
+
+# docker_container[overrides-1]
+
+describe command("docker ps -af 'name=overrides-1$'") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/Exited/) }
+end
+
+describe command('docker inspect -f "{{ .Config.User }}" overrides-1') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/operator/) }
+end
+
+describe command('docker inspect -f "{{ .Config.Env }}" overrides-1') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(%r{[PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin FOO=foo BAR=bar BIZ=biz BAZ=baz]}) }
+end
+
+describe command('docker inspect -f "{{ .Config.Entrypoint }}" overrides-1') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/#{nil_string}/) }
+end
+
+describe command('docker inspect -f "{{ .Config.Cmd }}" overrides-1') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(%r{[ls -la /]}) }
+end
+
+# docker_container[overrides-2]
+
+describe command("docker ps -af 'name=overrides-2$'") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/Exited/) }
+end
+
+describe command('docker inspect -f "{{ .Config.User }}" overrides-2') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/backup/) }
+end
+
+describe command('docker inspect -f "{{ .Config.Env }}" overrides-2') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(%r{[FOO=biz PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin BAR=bar BIZ=biz BAZ=baz]}) }
+end
+
+describe command('docker inspect -f "{{ .Config.Entrypoint }}" overrides-2') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(%r{[/bin/sh -c]}) }
+end
+
+describe command('docker inspect -f "{{ .Config.Cmd }}" overrides-2') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(%r{[ls -laR /]}) }
 end

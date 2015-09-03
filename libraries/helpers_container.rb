@@ -32,7 +32,7 @@ module DockerHelpers
 
     def parsed_entrypoint
       return nil if new_resource.entrypoint.nil?
-      Array(new_resource.entrypoint)
+      ::Shellwords.shellwords(new_resource.entrypoint)
     end
 
     def parsed_attach_stderr
@@ -193,6 +193,40 @@ module DockerHelpers
         'MaximumRetryCount' => new_resource.restart_maximum_retry_count,
         'Name' => new_resource.restart_policy
       }
+    end
+
+    # There is no way to determine if these values originated from
+    # an image build, or from a previous chef-client run. Therefore,
+    # we need to treat them as "unmanaged" in the event they're not
+    # specified on the resource.
+    def update_command?
+      return true unless parsed_command.empty? || (current_resource.command == parsed_command)
+      false
+    end
+
+    def update_user?
+      return true unless parsed_user.nil? || (current_resource.user == new_resource.user)
+      false
+    end
+
+    def update_env?
+      return false if parsed_env.nil?
+      return false if current_resource.env.nil?
+      return true unless parsed_env.each { |v| current_resource.env.include?(v) }
+      false
+    end
+
+    def update_entrypoint?
+      return false if parsed_entrypoint.nil?
+      return false if parsed_entrypoint.empty?
+      return true if current_resource.entrypoint != parsed_entrypoint
+      false
+    end
+
+    def update_volumes?
+      return false if parsed_volumes.nil?
+      return true unless parsed_volumes.each { |v| current_resource.volumes.include?(v) }
+      false
     end
   end
 end

@@ -71,15 +71,15 @@ class Chef
         changes << :cap_add if current_resource.cap_add != parsed_cap_add
         changes << :cap_drop if  current_resource.cap_drop != parsed_cap_drop
         changes << :cgroup_parent if current_resource.cgroup_parent != new_resource.cgroup_parent
-        changes << :command if  current_resource.command != parsed_command
+        changes << :command if update_command?
         changes << :cpu_shares if current_resource.cpu_shares != new_resource.cpu_shares
         changes << :cpuset_cpus if current_resource.cpuset_cpus != new_resource.cpuset_cpus
         changes << :devices if current_resource.devices != parsed_devices
         changes << :dns if current_resource.dns != parsed_dns
         changes << :dns_search if current_resource.dns_search != parsed_dns_search
         changes << :domainname if current_resource.domainname != new_resource.domainname
-        changes << :entrypoint if current_resource.entrypoint != parsed_entrypoint
-        changes << :env if current_resource.env != parsed_env
+        changes << :entrypoint if update_entrypoint?
+        changes << :env if update_env?
         changes << :exposed_ports if current_resource.exposed_ports != exposed_ports
         changes << :extra_hosts if current_resource.extra_hosts != parsed_extra_hosts
         changes << :hostname if (!new_resource.hostname.nil?) && (current_resource.hostname != new_resource.hostname)
@@ -118,7 +118,7 @@ class Chef
           'AttachStdin' => parsed_attach_stdin,
           'AttachStdout' => parsed_attach_stdout,
           'Domainname' => new_resource.domain_name,
-          'Entrypoint' => new_resource.entrypoint,
+          'Entrypoint' => parsed_entrypoint,
           'Env' => parsed_env,
           'ExposedPorts' => exposed_ports,
           'Hostname' => new_resource.host_name,
@@ -159,12 +159,12 @@ class Chef
         raise e.message
       end
 
-      # Super handy visual reference!
-      # http://gliderlabs.com/images/docker_events.png
-
       #########
       # Actions
       #########
+
+      # Super handy visual reference!
+      # http://gliderlabs.com/images/docker_events.png
 
       action :create do
         action_delete unless resource_changes.empty? || !container_created?
