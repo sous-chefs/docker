@@ -4,8 +4,7 @@ describe 'Chef::Provider::DockerService::Sysvinit with Centos' do
   let(:chef_run) do
     ChefSpec::SoloRunner.new(
       platform: 'centos',
-      version: '7.0',
-      step_into: 'docker_service'
+      version: '7.0'
     ).converge('docker_service_test::sysvinit')
   end
 
