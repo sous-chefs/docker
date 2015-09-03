@@ -1,3 +1,8 @@
+v1.0.20
+--------------------
+- Handling the situation where USER COMMAND ENV and ENTRYPOINT are set in
+  an image build, but not in a docker_container resource
+
 v1.0.19
 --------------------
 - Raising error on authentication error in docker_registry
