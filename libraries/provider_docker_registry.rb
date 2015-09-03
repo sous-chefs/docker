@@ -16,7 +16,11 @@ class Chef
             'email' => new_resource.email
           )
         rescue Docker::Error::AuthenticationError
-          retry unless (tries -= 1).zero?
+          if (tries -= 1).zero?
+            raise Docker::Error::AuthenticationError, "#{new_resource.username} failed to authenticate with #{new_resource.serveraddress}"
+          else
+            retry
+          end
         end
       end
     end

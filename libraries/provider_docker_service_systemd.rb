@@ -45,7 +45,7 @@ class Chef
           end
 
           # tmpfiles.d config so the service survives reboot
-          template '/usr//lib/tmpfiles.d/docker.conf' do
+          template '/usr/lib/tmpfiles.d/docker.conf' do
             path '/usr/lib/tmpfiles.d/docker.conf'
             source "#{docker_major_version}/systemd/tmpfiles.d.conf.erb"
             owner 'root'
