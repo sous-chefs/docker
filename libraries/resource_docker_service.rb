@@ -50,7 +50,7 @@ class Chef
       attribute :registry_mirror, kind_of: String, default: nil
       attribute :storage_driver, kind_of: [String, Array], default: nil
       attribute :selinux_enabled, kind_of: [TrueClass, FalseClass], default: nil
-      attribute :storage_opts, kind_of: Array, default: []
+      attribute :storage_opts, kind_of: [String, Array], default: []
       attribute :tls, kind_of: [TrueClass, FalseClass], default: false
       attribute :tlscacert, kind_of: String, default: nil
       attribute :tlscert, kind_of: String, default: nil

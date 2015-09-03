@@ -116,6 +116,10 @@ module DockerHelpers
     Array(new_resource.storage_driver)
   end
 
+  def parsed_storage_opts
+    Array(new_resource.storage_opts)
+  end
+
   def docker_opts
     opts = []
     opts << "--api-cors-header=#{new_resource.api_cors_header}" if new_resource.api_cors_header
@@ -146,7 +150,7 @@ module DockerHelpers
     opts << "--registry-mirror=#{new_resource.registry_mirror}" if new_resource.registry_mirror
     parsed_storage_driver.each { |s| opts << "--storage-driver=#{s}" } if new_resource.storage_driver
     opts << '--selinux-enabled=true' if new_resource.selinux_enabled
-    new_resource.storage_opts.each { |storage_opt| opts << "--storage-opt=#{storage_opt}" }
+    parsed_storage_opts.each { |storage_opt| opts << "--storage-opt=#{storage_opt}" }
     opts << '--tls=true' if new_resource.tls
     opts << "--tlscacert=#{new_resource.tlscacert}" if new_resource.tlscacert
     opts << "--tlscert=#{new_resource.tlscert}" if new_resource.tlscert
