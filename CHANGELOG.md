@@ -1,3 +1,10 @@
+v1.0.19
+--------------------
+- Raising error on authentication error in docker_registry
+- Allowing an array for storage_opts in docker_service
+- Fixing parsed_checksum in docker_service
+- Fixing entrypoint parsing in docker_container
+
 v1.0.18
 --------------------
 - Removing leftover log resources used for debugging in development
