@@ -14,6 +14,6 @@ describe 'Chef::Provider::DockerService::Sysvinit with Centos' do
   end
 
   it 'creates the sysvinit file' do
-    expect(chef_run).to render_file('/etc/init.d/docker')
+    expect(chef_run).to create_template('/etc/init.d/docker')
   end
 end
