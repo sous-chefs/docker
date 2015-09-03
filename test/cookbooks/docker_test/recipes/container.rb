@@ -806,3 +806,44 @@ docker_container 'uber_options' do
   ]
   action :run
 end
+
+###########
+# overrides
+###########
+
+# build a chef container
+directory '/overrides' do
+  owner 'root'
+  group 'root'
+  action :create
+end
+
+file '/overrides/Dockerfile' do
+  content <<-EOF
+  FROM busybox
+  CMD [ "ls", "-la", "/" ]
+  EOF
+  notifies :build, 'docker_image[overrides]', :immediately
+  action :create
+end
+
+docker_image 'overrides' do
+  tag 'latest'
+  source '/overrides'
+  force true
+  action :build_if_missing
+end
+
+# create a volume container
+# docker_container 'overrides-1' do
+#   repo 'overrides'
+#   action :create
+# end
+
+# docker_container 'overrides-2' do
+#   repo 'overrides'
+#   # entrypoint '/bin/sh -c'
+#   # command 'ls -laR /'
+#   # env ['FOO=biz']
+#   action :create
+# end

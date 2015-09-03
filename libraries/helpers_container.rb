@@ -32,7 +32,7 @@ module DockerHelpers
 
     def parsed_entrypoint
       return nil if new_resource.entrypoint.nil?
-      ::Shellwords.shellwords(new_resource.entrypoint)
+      Array(new_resource.entrypoint)
     end
 
     def parsed_attach_stderr
