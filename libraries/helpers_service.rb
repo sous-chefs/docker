@@ -47,6 +47,7 @@ module DockerHelpers
   end
 
   def parsed_checksum
+    return new_resource.checksum if new_resource.checksum
     case docker_kernel
     when 'Darwin'
       case parsed_version
@@ -145,7 +146,7 @@ module DockerHelpers
     opts << "--registry-mirror=#{new_resource.registry_mirror}" if new_resource.registry_mirror
     parsed_storage_driver.each { |s| opts << "--storage-driver=#{s}" } if new_resource.storage_driver
     opts << '--selinux-enabled=true' if new_resource.selinux_enabled
-    opts << "--storage-opt=#{new_resource.storage_opt}" if new_resource.storage_opt
+    new_resource.storage_opts.each { |storage_opt| opts << "--storage-opt=#{storage_opt}" }
     opts << '--tls=true' if new_resource.tls
     opts << "--tlscacert=#{new_resource.tlscacert}" if new_resource.tlscacert
     opts << "--tlscert=#{new_resource.tlscert}" if new_resource.tlscert
