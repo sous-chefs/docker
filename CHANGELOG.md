@@ -1,3 +1,7 @@
+v1.0.21
+--------------------
+- #379 and #356 - patching vendored docker-api gem authentication headers
+
 v1.0.20
 --------------------
 - Handling the situation where USER COMMAND ENV and ENTRYPOINT are set in
