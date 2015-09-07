@@ -97,3 +97,10 @@ suites:
   - recipe[docker_test::default]
   - recipe[docker_test::image]
   - recipe[docker_test::container]
+
+- name: notifications
+  includes: [
+    'ubuntu-15.04'
+  ]
+  run_list:
+  - recipe[docker_test::notifications]
