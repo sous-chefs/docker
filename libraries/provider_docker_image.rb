@@ -64,23 +64,32 @@ class Chef
         i = Docker::Image.import(new_resource.source)
         i.tag('repo' => new_resource.repo, 'tag' => new_resource.tag, 'force' => new_resource.force)
       rescue Docker::Error => e
-        retry unless (tries -= 1).zero?
+        retry unless (retries -= 1).zero?
         raise e.message
       end
 
       def pull_image
-        api_timeouts
-        retries ||= new_resource.api_retries
-        o = Docker::Image.get(image_identifier) if Docker::Image.exist?(image_identifier)
-        i = Docker::Image.create(
-          'fromImage' => new_resource.repo,
-          'tag' => new_resource.tag
-        )
+        begin
+          cred_stash ||= Docker.creds
+          retries ||= new_resource.api_retries
+          api_timeouts
+          o = Docker::Image.get(image_identifier) if Docker::Image.exist?(image_identifier)
+          i = Docker::Image.create(
+            'fromImage' => new_resource.repo,
+            'tag' => new_resource.tag
+          )
+        rescue Docker::Error::ArgumentError => e
+          # Dirty hack around what seems to be a bug (feature?) in
+          # docker-api authentication header handling when pulling
+          # from the public registry with invalid creds are set
+          Docker.creds = {}
+          retry unless (retries -= 1).zero?
+          raise e.message
+        ensure
+          Docker.creds = cred_stash
+        end
         return false if o && o.id =~ /^#{i.id}/
-        return true
-      rescue Docker::Error => e
-        retry unless (tries -= 1).zero?
-        raise e.message
+        true
       end
 
       def push_image
@@ -89,7 +98,7 @@ class Chef
         i = Docker::Image.get(image_identifier)
         i.push
       rescue Docker::Error => e
-        retry unless (tries -= 1).zero?
+        retry unless (retries -= 1).zero?
         raise e.message
       end
 
@@ -99,7 +108,7 @@ class Chef
         i = Docker::Image.get(image_identifier)
         i.remove(force: new_resource.force, noprune: new_resource.noprune)
       rescue Docker::Error => e
-        retry unless (tries -= 1).zero?
+        retry unless (retries -= 1).zero?
         raise e.message
       end
 
@@ -108,7 +117,7 @@ class Chef
         retries ||= new_resource.api_retries
         Docker::Image.save(new_resource.repo, new_resource.destination)
       rescue Docker::Error, Errno::ENOENT => e
-        retry unless (tries -= 1).zero?
+        retry unless (retries -= 1).zero?
         raise e.message
       end
 

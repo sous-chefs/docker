@@ -126,20 +126,85 @@ end
 # :tag and :push
 ################
 
-# Test dots and dashes in repo names
+######################
+# This commented out section was manually tested by replacing the
+# authentication creds with real live Dockerhub creds.
+#####################
 
-# [GH-356]
+# docker_registry 'https://index.docker.io/v1/' do
+#   username 'youthere'
+#   password 'p4sswh1rr3d'
+#   email 'youthere@computers.biz'
+# end
 
-docker_image 'someara/name-w-dashes'
-
-# # for pushing to public repo
-# docker_tag 'public repo tag for name-w-dashes:v1.0.1' do
+# # name-w-dashes
+# docker_tag 'public dockerhub someara/name-w-dashes:v1.0.1' do
 #   target_repo 'hello-again'
 #   target_tag 'v0.1.0'
 #   to_repo 'someara/name-w-dashes'
 #   to_tag 'latest'
 #   action :tag
 # end
+
+# docker_image 'push someara/name-w-dashes' do
+#   repo 'someara/name-w-dashes'
+#   not_if { ::File.exist? '/marker_image_public_name-w-dashes' }
+#   action :push
+# end
+
+# file '/marker_image_public_name-w-dashes' do
+#   action :create
+# end
+
+# # name.w.dots
+# docker_tag 'public dockerhub someara/name.w.dots:latest' do
+#   target_repo 'busybox'
+#   target_tag 'latest'
+#   to_repo 'someara/name.w.dots'
+#   to_tag 'latest'
+#   action :tag
+# end
+
+# docker_image 'push someara/name.w.dots' do
+#   repo 'someara/name.w.dots'
+#   not_if { ::File.exist? '/marker_image_public_name.w.dots' }
+#   action :push
+# end
+
+# file '/marker_image_public_name.w.dots' do
+#   action :create
+# end
+
+# # private-repo-test
+# docker_tag 'public dockerhub someara/private-repo-test:v1.0.1' do
+#   target_repo 'hello-world'
+#   target_tag 'latest'
+#   to_repo 'someara/private-repo-test'
+#   to_tag 'latest'
+#   action :tag
+# end
+
+# docker_image 'push someara/private-repo-test' do
+#   repo 'someara/private-repo-test'
+#   not_if { ::File.exist? '/marker_image_public_private-repo-test' }
+#   action :push
+# end
+
+# file '/marker_image_public_private-repo-test' do
+#   action :create
+# end
+
+# docker_image 'someara/private-repo-test'
+
+# public images
+docker_image 'someara/name-w-dashes'
+docker_image 'someara/name.w.dots'
+
+##################
+# Private registry
+##################
+
+include_recipe 'docker_test::registry'
 
 # for pushing to private repo
 docker_tag 'private repo tag for name-w-dashes:v1.0.1' do
@@ -150,18 +215,7 @@ docker_tag 'private repo tag for name-w-dashes:v1.0.1' do
   action :tag
 end
 
-# FIXME: name.w.dots broken right now
-
-# # for pushing to public repo
-# docker_tag 'public repo tag for name.w.dots' do
-#   target_repo 'busybox'
-#   target_tag 'latest'
-#   to_repo 'someara/name.w.dots'
-#   to_tag 'latest'
-#   action :tag
-# end
-
-# # for pushing to private repo
+# for pushing to private repo
 docker_tag 'private repo tag for name.w.dots' do
   target_repo 'busybox'
   target_tag 'latest'
@@ -170,32 +224,11 @@ docker_tag 'private repo tag for name.w.dots' do
   action :tag
 end
 
-include_recipe 'docker_test::registry'
-
-# AUTH
-
-# docker_registry 'https://index.docker.io/v1/' do
-#   username 'youthere'
-#   password 'p4sswh1rr3d'
-#   email 'youthere@computers.biz'
-# end
-
 docker_registry 'localhost:5043' do
   username 'testuser'
   password 'testpassword'
   email 'alice@computers.biz'
 end
-
-# # comment me out
-# docker_image 'someara/hello-again' do
-#   not_if { ::File.exist? '/marker_image_public_name-w-dashes' }
-#   action :push
-# end
-
-# # comment me out
-# file '/marker_image_public_name-w-dashes' do
-#   action :create
-# end
 
 docker_image 'localhost:5043/someara/name-w-dashes' do
   not_if { ::File.exist? '/marker_image_private_name-w-dashes' }
@@ -206,17 +239,6 @@ file '/marker_image_private_name-w-dashes' do
   action :create
 end
 
-# # comment me out
-# docker_image 'someara/name.w.dots' do
-#   not_if { ::File.exist? '/marker_image_public_name.w.dots' }
-#   action :push
-# end
-
-# # comment me out
-# file '/marker_image_public_name.w.dots' do
-#   action :create
-# end
-
 docker_image 'localhost:5043/someara/name.w.dots' do
   not_if { ::File.exist? '/marker_image_private_name.w.dots' }
   action :push
@@ -224,4 +246,11 @@ end
 
 file '/marker_image_private_name.w.dots' do
   action :create
+end
+
+# Pull from the public Dockerhub after being authenticated to a
+# private one
+
+docker_image 'fedora' do
+  action :pull
 end
