@@ -1,3 +1,8 @@
+v1.0.22
+--------------------
+- Removed patch authentication header to bundled docker-api gem
+- Moved credential reset logic into image provider
+
 v1.0.21
 --------------------
 - #379 and #356 - patching vendored docker-api gem authentication headers
