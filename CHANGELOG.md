@@ -1,3 +1,7 @@
+v1.0.23
+--------------------
+- Fixing Dockerfile / resource override behavior for working_dir
+
 v1.0.22
 --------------------
 - Removed patch authentication header to bundled docker-api gem
