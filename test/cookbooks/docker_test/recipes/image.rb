@@ -225,8 +225,3 @@ end
 file '/marker_image_private_name.w.dots' do
   action :create
 end
-
-# pull form public after pulling from private
-docker_image 'fedora' do
-  action :pull_if_missing
-end
