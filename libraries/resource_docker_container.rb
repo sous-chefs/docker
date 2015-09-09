@@ -59,7 +59,7 @@ class Chef
       attribute :user, kind_of: String, default: ''
       attribute :volumes, kind_of: [String, Array, Hash, NilClass], default: nil # FIXME: add validate proc
       attribute :volumes_from, kind_of: [String, Array, NilClass], default: nil # FIXME: add validate proc
-      attribute :working_dir, kind_of: String, default: ''
+      attribute :working_dir, kind_of: String, default: nil
       attribute :write_timeout, kind_of: [Fixnum, NilClass], default: nil
 
       alias_method :cmd, :command
@@ -76,6 +76,7 @@ class Chef
       alias_method :volume, :volumes
       alias_method :volume_from, :volumes_from
       alias_method :destination, :outfile
+      alias_method :workdir, :working_dir
     end
   end
 end

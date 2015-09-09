@@ -821,11 +821,14 @@ end
 file '/overrides/Dockerfile' do
   content <<-EOF
   FROM busybox
+  RUN adduser -D bob
   CMD [ "ls", "-la", "/" ]
-  USER operator
+  USER bob
   ENV FOO foo
   ENV BAR bar
   ENV BIZ=biz BAZ=baz
+  VOLUME /home
+  WORKDIR /var
   EOF
   notifies :build, 'docker_image[overrides]'
   action :create
@@ -836,11 +839,10 @@ docker_image 'overrides' do
   source '/overrides'
   force true
   action :build_if_missing
-  notifies :restart, 'docker_container[overrides-1]'
-  notifies :restart, 'docker_container[overrides-2]'
+  notifies :redeploy, 'docker_container[overrides-1]'
+  notifies :redeploy, 'docker_container[overrides-2]'
 end
 
-# create a volume container
 docker_container 'overrides-1' do
   repo 'overrides'
   action :run_if_missing
@@ -848,9 +850,11 @@ end
 
 docker_container 'overrides-2' do
   repo 'overrides'
-  user 'backup'
+  user 'operator'
   entrypoint '/bin/sh -c'
   command 'ls -laR /'
   env ['FOO=biz']
+  volume '/var/log'
+  workdir '/tmp'
   action :run_if_missing
 end

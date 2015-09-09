@@ -102,7 +102,7 @@ class Chef
         changes << :user if current_resource.user != new_resource.user
         changes << :volumes if current_resource.volumes != parsed_volumes
         changes << :volumes_from if current_resource.volumes_from != parsed_volumes_from
-        changes << :working_dir if current_resource.working_dir != new_resource.working_dir
+        changes << :working_dir if update_working_dir?
         changes
       end
 
@@ -167,6 +167,15 @@ class Chef
       # http://gliderlabs.com/images/docker_events.png
 
       action :create do
+        # Debug logging for things that have given trouble in the past
+        Chef::Log.debug("DOCKER: command - current:#{current_resource.command}: parsed:#{parsed_command}:")
+        Chef::Log.debug("DOCKER: user - current:#{current_resource.user}: new:#{new_resource.user}:")
+        Chef::Log.debug("DOCKER: env - current:#{current_resource.env}: parsed:#{parsed_env}:")
+        Chef::Log.debug("DOCKER: entrypoint - current:#{current_resource.entrypoint}: parsed:#{parsed_entrypoint}:")
+        Chef::Log.debug("DOCKER: volumes - current:#{current_resource.volumes}: parsed:#{parsed_volumes}:")
+        Chef::Log.debug("DOCKER: log_config - current:#{current_resource.log_config}: serialized:#{serialized_log_config}:")
+        Chef::Log.debug("DOCKER: working_dir - current:#{current_resource.working_dir}: new:#{new_resource.working_dir}:")
+
         action_delete unless resource_changes.empty? || !container_created?
 
         next if container_created?

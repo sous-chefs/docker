@@ -552,7 +552,7 @@ end
 
 describe command('docker inspect -f "{{ .Config.User }}" overrides-1') do
   its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/operator/) }
+  its(:stdout) { should match(/bob/) }
 end
 
 describe command('docker inspect -f "{{ .Config.Env }}" overrides-1') do
@@ -570,6 +570,16 @@ describe command('docker inspect -f "{{ .Config.Cmd }}" overrides-1') do
   its(:stdout) { should match(%r{[ls -la /]}) }
 end
 
+describe command('docker inspect -f "{{ .Config.WorkingDir }}" overrides-1') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(%r{/var}) }
+end
+
+describe command('docker inspect -f "{{ .Config.Volumes }}" overrides-1') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(%r{map\[/home:{}\]}) }
+end
+
 # docker_container[overrides-2]
 
 describe command("docker ps -af 'name=overrides-2$'") do
@@ -579,7 +589,7 @@ end
 
 describe command('docker inspect -f "{{ .Config.User }}" overrides-2') do
   its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/backup/) }
+  its(:stdout) { should match(/operator/) }
 end
 
 describe command('docker inspect -f "{{ .Config.Env }}" overrides-2') do
@@ -595,4 +605,9 @@ end
 describe command('docker inspect -f "{{ .Config.Cmd }}" overrides-2') do
   its(:exit_status) { should eq 0 }
   its(:stdout) { should match(%r{[ls -laR /]}) }
+end
+
+describe command('docker inspect -f "{{ .Config.WorkingDir }}" overrides-2') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(%r{/tmp}) }
 end

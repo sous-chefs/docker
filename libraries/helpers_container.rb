@@ -228,5 +228,11 @@ module DockerHelpers
       return true unless parsed_volumes.each { |v| current_resource.volumes.include?(v) }
       false
     end
+
+    def update_working_dir?
+      return false if new_resource.working_dir.nil?
+      return true if current_resource.working_dir != new_resource.working_dir
+      false
+    end
   end
 end
