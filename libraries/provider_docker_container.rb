@@ -98,7 +98,7 @@ class Chef
         changes << :restart_policy if current_resource.restart_policy != parsed_restart_policy
         changes << :stdin_once if current_resource.stdin_once != parsed_stdin_once
         changes << :tty if current_resource.tty != new_resource.tty
-        changes << :ulimits if current_resource.ulimits != new_resource.ulimits
+        changes << :ulimits if current_resource.ulimits != update_ulimits?
         changes << :user if current_resource.user != new_resource.user
         changes << :volumes if current_resource.volumes != parsed_volumes
         changes << :volumes_from if current_resource.volumes_from != parsed_volumes_from
@@ -175,6 +175,11 @@ class Chef
         Chef::Log.debug("DOCKER: volumes - current:#{current_resource.volumes}: parsed:#{parsed_volumes}:")
         Chef::Log.debug("DOCKER: log_config - current:#{current_resource.log_config}: serialized:#{serialized_log_config}:")
         Chef::Log.debug("DOCKER: working_dir - current:#{current_resource.working_dir}: new:#{new_resource.working_dir}:")
+        Chef::Log.debug("DOCKER: ulimits - current:#{current_resource.ulimits}: new:#{new_resource.ulimits}:")
+
+        resource_changes.each do |change|
+          Chef::Log.debug("DOCKER: change - :#{change}")
+        end
 
         action_delete unless resource_changes.empty? || !container_created?
 

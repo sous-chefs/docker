@@ -541,6 +541,11 @@ if docker_version.to_f > 1.6
     its(:exit_status) { should eq 0 }
     its(:stdout) { should match(/nofile=40960:40960 core=100000000:100000000 memlock=100000000:100000000/) }
   end
+
+  describe command("docker inspect -f '{{ .HostConfig.NetworkMode }}' uber_options") do
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match(/host/) }
+  end
 end
 
 # docker_container[overrides-1]

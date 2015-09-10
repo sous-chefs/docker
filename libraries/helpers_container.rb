@@ -156,7 +156,7 @@ module DockerHelpers
     # effectivly means only the json-file is suppored.
     #
     def serialized_log_config
-      if @api_version < 1.20
+      if @api_version < 1.19
         {
           'Type' => 'json-file',
           'Config' => nil
@@ -233,6 +233,10 @@ module DockerHelpers
       return false if new_resource.working_dir.nil?
       return true if current_resource.working_dir != new_resource.working_dir
       false
+    end
+
+    def update_ulimits?
+      return true if current_resource.ulimits != new_resource.ulimits
     end
   end
 end

@@ -793,7 +793,7 @@ docker_container 'uber_options' do
   dns_search ['computers.biz']
   extra_hosts ['east:4.3.2.1', 'west:1.2.3.4']
   links ['link_source:hello']
-  network_mode 'default'
+  network_mode 'host'
   port '1234:1234'
   volumes_from 'chef_container'
   user 'operator'
