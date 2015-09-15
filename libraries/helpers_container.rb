@@ -156,7 +156,7 @@ module DockerHelpers
     # effectivly means only the json-file is suppored.
     #
     def serialized_log_config
-      if @api_version < 1.19
+      if @api_version.to_f < 1.19
         {
           'Type' => 'json-file',
           'Config' => nil
@@ -171,10 +171,15 @@ module DockerHelpers
 
     def parsed_network_mode
       return new_resource.network_mode if new_resource.network_mode
-      if @api_version < 1.20
-        return ''
-      else
+      # puts "SEANDEBUG: api_version :#{@api_version}:"
+      # puts "SEANDEBUG: current network_mode :#{current_resource.network_mode}:"
+      case @api_version
+      when '1.20'
         return 'default'
+      when '1.19'
+        return 'bridge'
+      else
+        return ''
       end
     end
 

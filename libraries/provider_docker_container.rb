@@ -13,7 +13,7 @@ class Chef
       use_inline_resources
 
       def load_current_resource
-        @api_version = Docker.version['ApiVersion'].to_f
+        @api_version = Docker.version['ApiVersion']
 
         @current_resource = Chef::Resource::DockerContainer.new(new_resource.name)
         begin
