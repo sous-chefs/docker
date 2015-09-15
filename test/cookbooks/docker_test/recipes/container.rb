@@ -742,6 +742,7 @@ docker_container 'ulimits' do
   tag '3.1'
   command 'nc -ll -p 778 -e /bin/cat'
   port '778:778'
+  cap_add 'SYS_RESOURCE'
   ulimits [
     { 'Name' => 'nofile', 'Soft' => 40_960, 'Hard' => 40_960 },
     { 'Name' => 'core', 'Soft' => 100_000_000, 'Hard' => 100_000_000 },
@@ -785,7 +786,7 @@ docker_container 'uber_options' do
   volumes ['/root']
   working_dir '/'
   binds ['/hostbits:/bits', '/more-hostbits:/more-bits']
-  cap_add 'NET_ADMIN'
+  cap_add [ 'NET_ADMIN', 'SYS_RESOURCE' ]
   cap_drop 'MKNOD'
   cpu_shares 512
   cpuset_cpus '0,1'
