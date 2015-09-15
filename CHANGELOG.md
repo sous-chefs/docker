@@ -1,3 +1,9 @@
+v1.0.24
+--------------------
+- #410 - Fixing Dockerfile override behavior for hostname and ulimits
+   on api 1.9
+- Upgrading to Docker 1.8.2 for default version
+
 v1.0.23
 --------------------
 - Fixing Dockerfile / resource override behavior for working_dir
