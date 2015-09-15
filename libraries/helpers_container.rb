@@ -199,6 +199,7 @@ module DockerHelpers
     # an image build, or from a previous chef-client run. Therefore,
     # we need to treat them as "unmanaged" in the event they're not
     # specified on the resource.
+
     def update_command?
       return true unless parsed_command.empty? || (current_resource.command == parsed_command)
       false
@@ -207,6 +208,11 @@ module DockerHelpers
     def update_user?
       return true unless parsed_user.nil? || (current_resource.user == new_resource.user)
       false
+    end
+
+    def parsed_ulimits
+      return new_resource.ulimits if new_resource.ulimits
+      return nil if new_resource.ulimits.nil?
     end
 
     def update_env?
@@ -236,7 +242,15 @@ module DockerHelpers
     end
 
     def update_ulimits?
-      return true if current_resource.ulimits != new_resource.ulimits
+      return false if parsed_ulimits.nil?
+      return true if current_resource.ulimits != parsed_ulimits
+      false
+    end
+
+    def update_hostname?
+      return false if new_resource.network_mode == 'host'
+      return true if (!new_resource.hostname.nil?) && (current_resource.hostname != new_resource.hostname)
+      false
     end
   end
 end

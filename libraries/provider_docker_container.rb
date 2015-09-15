@@ -82,7 +82,7 @@ class Chef
         changes << :env if update_env?
         changes << :exposed_ports if current_resource.exposed_ports != exposed_ports
         changes << :extra_hosts if current_resource.extra_hosts != parsed_extra_hosts
-        changes << :hostname if (!new_resource.hostname.nil?) && (current_resource.hostname != new_resource.hostname)
+        changes << :hostname if update_hostname?
         changes << :image if current_resource.image != "#{parsed_repo}:#{new_resource.tag}"
         changes << :links if current_resource.links != serialized_links
         changes << :log_config if current_resource.log_config != serialized_log_config
@@ -98,7 +98,7 @@ class Chef
         changes << :restart_policy if current_resource.restart_policy != parsed_restart_policy
         changes << :stdin_once if current_resource.stdin_once != parsed_stdin_once
         changes << :tty if current_resource.tty != new_resource.tty
-        changes << :ulimits if current_resource.ulimits != update_ulimits?
+        changes << :ulimits if update_ulimits?
         changes << :user if current_resource.user != new_resource.user
         changes << :volumes if current_resource.volumes != parsed_volumes
         changes << :volumes_from if current_resource.volumes_from != parsed_volumes_from
@@ -168,14 +168,16 @@ class Chef
 
       action :create do
         # Debug logging for things that have given trouble in the past
-        Chef::Log.debug("DOCKER: command - current:#{current_resource.command}: parsed:#{parsed_command}:")
         Chef::Log.debug("DOCKER: user - current:#{current_resource.user}: new:#{new_resource.user}:")
-        Chef::Log.debug("DOCKER: env - current:#{current_resource.env}: parsed:#{parsed_env}:")
-        Chef::Log.debug("DOCKER: entrypoint - current:#{current_resource.entrypoint}: parsed:#{parsed_entrypoint}:")
-        Chef::Log.debug("DOCKER: volumes - current:#{current_resource.volumes}: parsed:#{parsed_volumes}:")
-        Chef::Log.debug("DOCKER: log_config - current:#{current_resource.log_config}: serialized:#{serialized_log_config}:")
         Chef::Log.debug("DOCKER: working_dir - current:#{current_resource.working_dir}: new:#{new_resource.working_dir}:")
-        Chef::Log.debug("DOCKER: ulimits - current:#{current_resource.ulimits}: new:#{new_resource.ulimits}:")
+        Chef::Log.debug("DOCKER: command - current:#{current_resource.command}: parsed:#{parsed_command}:")
+        Chef::Log.debug("DOCKER: entrypoint - current:#{current_resource.entrypoint}: parsed:#{parsed_entrypoint}:")
+        Chef::Log.debug("DOCKER: env - current:#{current_resource.env}: parsed:#{parsed_env}:")
+        Chef::Log.debug("DOCKER: volumes - current:#{current_resource.volumes}: parsed:#{parsed_volumes}:")
+        Chef::Log.debug("DOCKER: network_mode - current:#{current_resource.network_mode}: parsed:#{parsed_network_mode}:")
+        Chef::Log.debug("DOCKER: log_config - current:#{current_resource.log_config}: serialized:#{serialized_log_config}:")
+        Chef::Log.debug("DOCKER: ulimits - current:#{current_resource.ulimits}:")
+        Chef::Log.debug("DOCKER: ulimits -     new:#{new_resource.ulimits}:")
 
         resource_changes.each do |change|
           Chef::Log.debug("DOCKER: change - :#{change}")
