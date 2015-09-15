@@ -56,6 +56,7 @@ module DockerHelpers
       when '1.7.0' then '1c8ee59249fdde401afebc9a079cb75d7674f03d2491789fb45c88020a8c5783'
       when '1.7.1' then 'b8209b4382d0b4292c756dd055c12e5efacec2055d5900ac91efc8e81d317cf9'
       when '1.8.1' then '0f5db35127cf14b57614ad7513296be600ddaa79182d8d118d095cb90c721e3a'
+      when '1.8.2' then 'cef593612752e5a50bd075931956075a534b293b7002892072397c3093fe11a6'
       end
     when 'Linux'
       case parsed_version
@@ -63,6 +64,7 @@ module DockerHelpers
       when '1.6.2' then 'e131b2d78d9f9e51b0e5ca8df632ac0a1d48bcba92036d0c839e371d6cf960ec'
       when '1.7.1' then '4d535a62882f2123fb9545a5d140a6a2ccc7bfc7a3c0ec5361d33e498e4876d5'
       when '1.8.1' then '843f90f5001e87d639df82441342e6d4c53886c65f72a5cc4765a7ba3ad4fc57'
+      when '1.8.2' then '97a3f5924b0b831a310efa8bf0a4c91956cd6387c4a8667d27e2b2dd3da67e4d'
       end
     end
   end
@@ -78,7 +80,7 @@ module DockerHelpers
     return '1.6.2' if node['platform'] == 'ubuntu' && node['platform_version'].to_f < 15.04
     return '1.6.2' if node['platform_family'] == 'rhel' && node['platform_version'].to_i < 7
     return '1.6.2' if node['platform_family'] == 'debian' && node['platform_version'].to_i <= 7
-    '1.8.1'
+    '1.8.2'
   end
 
   def docker_major_version
@@ -87,6 +89,8 @@ module DockerHelpers
     ray.push.join('.')
   end
 
+  # http://get.docker.io/builds/Linux/x86_64/docker-1.8.2
+  # http://get.docker.io/builds/Darwin/x86_64/docker-1.8.2
   def parsed_source
     return new_resource.source if new_resource.source
     "http://get.docker.io/builds/#{docker_kernel}/#{docker_arch}/docker-#{parsed_version}"

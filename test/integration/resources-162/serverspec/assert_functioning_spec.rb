@@ -12,6 +12,10 @@ volumes_filter = '{{ .Volumes }}' if docker_version =~ /1.6/
 volumes_filter = '{{ .Volumes }}' if docker_version =~ /1.7/
 volumes_filter = '{{ .Config.Volumes }}' if docker_version =~ /1.8/
 
+overrides_volumes_value = %r{map\[\/home:map\[\]\]} if docker_version =~ /1.6/
+overrides_volumes_value = %r{map\[/home:{}\]} if docker_version =~ /1.7/
+overrides_volumes_value = %r{map\[/home:{}\]} if docker_version =~ /1.8/
+
 mounts_filter = '{{ .Volumes }}' if docker_version =~ /1.6/
 mounts_filter = '{{ .Volumes }}' if docker_version =~ /1.7/
 mounts_filter = '{{ .Mounts }}' if docker_version =~ /1.8/
@@ -582,7 +586,7 @@ end
 
 describe command('docker inspect -f "{{ .Config.Volumes }}" overrides-1') do
   its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(%r{map\[/home:{}\]}) }
+  its(:stdout) { should match(overrides_volumes_value)}
 end
 
 # docker_container[overrides-2]
