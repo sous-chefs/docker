@@ -786,7 +786,7 @@ docker_container 'uber_options' do
   volumes ['/root']
   working_dir '/'
   binds ['/hostbits:/bits', '/more-hostbits:/more-bits']
-  cap_add [ 'NET_ADMIN', 'SYS_RESOURCE' ]
+  cap_add %w(NET_ADMIN SYS_RESOURCE)
   cap_drop 'MKNOD'
   cpu_shares 512
   cpuset_cpus '0,1'
