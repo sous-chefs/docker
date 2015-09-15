@@ -586,7 +586,7 @@ end
 
 describe command('docker inspect -f "{{ .Config.Volumes }}" overrides-1') do
   its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(overrides_volumes_value)}
+  its(:stdout) { should match(overrides_volumes_value) }
 end
 
 # docker_container[overrides-2]
