@@ -1,3 +1,9 @@
+v1.0.25
+--------------------
+- Updating checksum in specs for 1.8.2
+- Downloading over https
+- Removing nonexistent action :enable from docker_service
+
 v1.0.24
 --------------------
 - #410 - Fixing Dockerfile override behavior for hostname and ulimits
