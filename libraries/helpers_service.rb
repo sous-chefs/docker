@@ -89,11 +89,11 @@ module DockerHelpers
     ray.push.join('.')
   end
 
-  # http://get.docker.io/builds/Linux/x86_64/docker-1.8.2
-  # http://get.docker.io/builds/Darwin/x86_64/docker-1.8.2
+  # https://get.docker.io/builds/Linux/x86_64/docker-1.8.2
+  # https://get.docker.io/builds/Darwin/x86_64/docker-1.8.2
   def parsed_source
     return new_resource.source if new_resource.source
-    "http://get.docker.io/builds/#{docker_kernel}/#{docker_arch}/docker-#{parsed_version}"
+    "https://get.docker.io/builds/#{docker_kernel}/#{docker_arch}/docker-#{parsed_version}"
   end
 
   def docker_daemon_cmd
