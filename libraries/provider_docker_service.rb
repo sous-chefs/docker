@@ -50,9 +50,6 @@ class Chef
 
       action :restart do
       end
-
-      action :enable do
-      end
     end
   end
 end
