@@ -1,3 +1,7 @@
+v1.0.26
+--------------------
+- switching from get.docker.io to get.docker.com
+
 v1.0.25
 --------------------
 - Updating checksum in specs for 1.8.2
