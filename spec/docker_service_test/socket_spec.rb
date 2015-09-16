@@ -22,8 +22,8 @@ describe 'docker_service_test::socket on centos-7.0' do
     it 'creates remote_file[/usr/bin/docker]' do
       expect(default).to create_remote_file('/usr/bin/docker')
         .with(
-          source: 'https://get.docker.io/builds/Linux/x86_64/docker-1.8.1',
-          checksum: '843f90f5001e87d639df82441342e6d4c53886c65f72a5cc4765a7ba3ad4fc57',
+          source: 'https://get.docker.io/builds/Linux/x86_64/docker-1.8.2',
+          checksum: '97a3f5924b0b831a310efa8bf0a4c91956cd6387c4a8667d27e2b2dd3da67e4d',
           owner: 'root',
           group: 'root',
           mode: '0755'
