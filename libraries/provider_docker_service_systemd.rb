@@ -23,7 +23,7 @@ class Chef
           # this is the main systemd unit file
           template '/lib/systemd/system/docker.service' do
             path '/lib/systemd/system/docker.service'
-            source "systemd/docker.service.erb"
+            source 'systemd/docker.service.erb'
             owner 'root'
             group 'root'
             mode '0644'
@@ -48,7 +48,7 @@ class Chef
           # tmpfiles.d config so the service survives reboot
           template '/usr/lib/tmpfiles.d/docker.conf' do
             path '/usr/lib/tmpfiles.d/docker.conf'
-            source "systemd/tmpfiles.d.conf.erb"
+            source 'systemd/tmpfiles.d.conf.erb'
             owner 'root'
             group 'root'
             mode '0644'

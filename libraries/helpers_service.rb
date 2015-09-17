@@ -98,9 +98,9 @@ module DockerHelpers
 
   def docker_daemon_arg
     if docker_major_version.to_f < 1.8
-      "-d"
+      '-d'
     else
-      "daemon"
+      'daemon'
     end
   end
 

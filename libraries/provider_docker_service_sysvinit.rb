@@ -13,7 +13,7 @@ class Chef
         action :start do
           template '/etc/init.d/docker' do
             path '/etc/init.d/docker'
-            source "sysvinit/docker.erb"
+            source 'sysvinit/docker.erb'
             owner 'root'
             group 'root'
             mode '0755'
