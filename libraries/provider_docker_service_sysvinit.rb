@@ -13,13 +13,14 @@ class Chef
         action :start do
           template '/etc/init.d/docker' do
             path '/etc/init.d/docker'
-            source "#{docker_major_version}/sysvinit/docker.erb"
+            source 'sysvinit/docker.erb'
             owner 'root'
             group 'root'
             mode '0755'
             cookbook 'docker'
             variables(
               config: new_resource,
+              docker_daemon_arg: docker_daemon_arg,
               docker_opts: docker_opts,
               pidfile: parsed_pidfile
             )

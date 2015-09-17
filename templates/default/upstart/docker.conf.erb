@@ -46,7 +46,7 @@ script
 	if [ -f /etc/default/$UPSTART_JOB ]; then
 		. /etc/default/$UPSTART_JOB
 	fi
-	exec "$DOCKER" daemon $DOCKER_OPTS >> <%= @config.logfile %>
+	exec "$DOCKER" <%= @docker_daemon_arg %> $DOCKER_OPTS >> <%= @config.logfile %>
 end script
 
 # Don't emit "started" event until docker.sock is ready.

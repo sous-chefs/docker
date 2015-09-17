@@ -96,9 +96,16 @@ module DockerHelpers
     "https://get.docker.com/builds/#{docker_kernel}/#{docker_arch}/docker-#{parsed_version}"
   end
 
+  def docker_daemon_arg
+    if docker_major_version.to_f < 1.8
+      '-d'
+    else
+      'daemon'
+    end
+  end
+
   def docker_daemon_cmd
-    cmd = ["#{docker_bin} -d"].concat(docker_opts)
-    cmd.join(' ')
+    [docker_bin, docker_daemon_arg, docker_opts].join(' ')
   end
 
   # strip out invalid host arguments
