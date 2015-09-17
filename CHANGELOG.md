@@ -1,3 +1,7 @@
+v1.0.27
+--------------------
+- Cleaning up code duplication across docker_service init templates
+
 v1.0.26
 --------------------
 - switching from get.docker.io to get.docker.com
