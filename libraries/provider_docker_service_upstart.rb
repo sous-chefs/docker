@@ -8,7 +8,7 @@ class Chef
 
         action :start do
           template '/etc/default/docker' do
-            source "#{docker_major_version}/upstart/etc.default.docker.erb"
+            source "upstart/etc.default.docker.erb"
             mode '0644'
             owner 'root'
             group 'root'
@@ -23,13 +23,13 @@ class Chef
 
           template '/etc/init/docker.conf' do
             path '/etc/init/docker.conf'
-            source "#{docker_major_version}/upstart/docker.conf.erb"
+            source "upstart/docker.conf.erb"
             owner 'root'
             group 'root'
             mode '0644'
             variables(
               config: new_resource,
-              docker_daemon_cmd: docker_daemon_cmd
+              docker_daemon_arg: docker_daemon_arg
             )
             cookbook 'docker'
             action :create
