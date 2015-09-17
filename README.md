@@ -232,7 +232,8 @@ the options found in the
 - `ipv6` - Enable IPv6 networking
 - `log_level` - Set the logging level
 - `label` - Set key=value labels to the daemon
-- `log_driver` - Container's logging driver (json-file/none)
+- `log_driver` - Container's logging driver (json-file/syslog/journald/gelf/fluentd/none)
+- `log_opts` - Container's logging driver options (driver-specific)
 - `mtu` - Container's logging driver (json-file/none)
 - `pidfile` - Path to use for daemon PID file
 - `registry_mirror` - Preferred Docker registry mirror
