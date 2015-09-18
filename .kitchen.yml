@@ -84,7 +84,7 @@ suites:
 #   run_list:
 #   - recipe[docker_service_test::tls]
 
-- name: resources
+- name: resources-162
   includes: [
     'centos-7.0',
     'debian-8.1',
@@ -93,6 +93,43 @@ suites:
     'ubuntu-14.04',
     'ubuntu-15.04',
   ]
+  attributes:
+    docker:
+      version: '1.6.2'
+  run_list:
+  - recipe[docker_test::default]
+  - recipe[docker_test::image]
+  - recipe[docker_test::container]
+
+- name: resources-171
+  includes: [
+    'centos-7.0',
+    'debian-8.1',
+    'fedora-21',
+    'ubuntu-12.04',
+    'ubuntu-14.04',
+    'ubuntu-15.04',
+  ]
+  attributes:
+    docker:
+      version: '1.7.1'
+  run_list:
+  - recipe[docker_test::default]
+  - recipe[docker_test::image]
+  - recipe[docker_test::container]
+
+- name: resources-182
+  includes: [
+    'centos-7.0',
+    'debian-8.1',
+    'fedora-21',
+    'ubuntu-12.04',
+    'ubuntu-14.04',
+    'ubuntu-15.04',
+  ]
+  attributes:
+    docker:
+      version: '1.8.2'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::image]
