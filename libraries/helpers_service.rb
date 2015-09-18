@@ -108,6 +108,10 @@ module DockerHelpers
     [docker_bin, docker_daemon_arg, docker_opts].join(' ')
   end
 
+  def parsed_dns
+    Array(new_resource.dns)
+  end
+
   # strip out invalid host arguments
   def parsed_host
     sockets = new_resource.host.split if new_resource.host.is_a?(String)
@@ -142,7 +146,7 @@ module DockerHelpers
     opts << "--bip=#{new_resource.bip}" if new_resource.bip
     opts << '--debug' if new_resource.debug
     opts << "--default-ulimit=#{new_resource.default_ulimit}" if new_resource.default_ulimit
-    opts << "--dns=#{new_resource.dns}" if new_resource.dns
+    parsed_dns.each { |dns| opts << "--dns=#{dns}" }
     new_resource.dns_search.each { |dns| opts << "--dns-search=#{dns}" } if new_resource.dns_search
     opts << "--exec-driver=#{new_resource.exec_driver}" if new_resource.exec_driver
     opts << "--fixed-cidr=#{new_resource.fixed_cidr}" if new_resource.fixed_cidr

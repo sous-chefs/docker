@@ -213,7 +213,7 @@ the options found in the
 - `bip` - Specify network bridge IP
 - `debug` - Enable debug mode
 - `daemon` - Enable daemon mode
-- `dns` - DNS server to use
+- `dns` - DNS server(s) to use
 - `dns_search` - DNS search domains to use
 - `exec_driver` - Exec driver to use
 - `fixed_cidr` - IPv4 subnet for fixed IPs
