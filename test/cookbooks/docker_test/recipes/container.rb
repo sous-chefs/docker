@@ -195,10 +195,19 @@ docker_container 'redeployer' do
   action :run
 end
 
-execute 'redeploy redeployer' do
+docker_container 'unstarted_redeployer' do
+  repo 'alpine'
+  tag '3.1'
+  command 'nc -ll -p 7777 -e /bin/cat'
+  port '7'
+  action :create
+end
+
+execute 'redeploy redeployers' do
   command 'touch /marker_container_redeployer'
   creates '/marker_container_redeployer'
   notifies :redeploy, 'docker_container[redeployer]', :immediately
+  notifies :redeploy, 'docker_container[unstarted_redeployer]', :immediately
   action :run
 end
 
