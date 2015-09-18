@@ -143,7 +143,7 @@ end
 
 describe command("docker inspect --format '{{ range $port, $_ := .HostConfig.PortBindings }}{{ $port }}{{ end }}' an_echo_server") do
   its(:exit_status) { should eq 0 }
-  its(:stdout) { should eq('7/tcp') }
+  its(:stdout) { should include('7/tcp') }
 end
 
 # docker_container[another_echo_server]
@@ -154,7 +154,7 @@ end
 
 describe command("docker inspect --format '{{ range $port, $_ := .HostConfig.PortBindings }}{{ $port }}{{ end }}' another_echo_server") do
   its(:exit_status) { should eq 0 }
-  its(:stdout) { should eq('7/tcp') }
+  its(:stdout) { should include('7/tcp') }
 end
 
 # docker_container[an_udp_echo_server]
@@ -165,7 +165,7 @@ end
 
 describe command("docker inspect --format '{{ range $port, $_ := .HostConfig.PortBindings }}{{ $port }}{{ end }}' an_udp_echo_server") do
   its(:exit_status) { should eq 0 }
-  its(:stdout) { should eq('7/udp') }
+  its(:stdout) { should include('7/udp') }
 end
 
 # docker_container[bill]
