@@ -1,3 +1,8 @@
+v1.0.29
+--------------------
+- #432 Fixing :redeploy so it returns the container the correct state
+   (create vs run)
+
 v1.0.28
 --------------------
 - Adding journald gelf and fluentd to logging driver whitelist
