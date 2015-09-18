@@ -25,7 +25,7 @@ class Chef
       attribute :bip, kind_of: String, regex: [IPV4_ADDR, IPV4_CIDR, IPV6_ADDR, IPV6_CIDR],  default: nil
       attribute :debug, kind_of: [TrueClass, FalseClass], default: nil
       attribute :daemon, kind_of: [TrueClass, FalseClass], default: true
-      attribute :dns, kind_of: String, default: nil
+      attribute :dns, kind_of: [String, Array], default: []
       attribute :dns_search, kind_of: Array, default: nil
       attribute :exec_driver, equal_to: %w(native lxc), default: nil
       attribute :fixed_cidr, kind_of: String, default: nil
