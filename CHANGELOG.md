@@ -2,6 +2,7 @@ v1.0.29
 --------------------
 - #432 Fixing :redeploy so it returns the container the correct state
    (create vs run)
+- Fixing blank variable interpolation in tmpfiles.d/docker.conf
 
 v1.0.28
 --------------------
