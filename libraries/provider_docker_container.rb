@@ -67,9 +67,9 @@ class Chef
         changes << :attach_stderr if current_resource.attach_stderr != parsed_attach_stderr
         changes << :attach_stdin if current_resource.attach_stdin != parsed_attach_stdin
         changes << :attach_stdout if current_resource.attach_stdout != parsed_attach_stdout
-        changes << :binds if  current_resource.binds != parsed_binds
+        changes << :binds if current_resource.binds != parsed_binds
         changes << :cap_add if current_resource.cap_add != parsed_cap_add
-        changes << :cap_drop if  current_resource.cap_drop != parsed_cap_drop
+        changes << :cap_drop if current_resource.cap_drop != parsed_cap_drop
         changes << :cgroup_parent if current_resource.cgroup_parent != new_resource.cgroup_parent
         changes << :command if update_command?
         changes << :cpu_shares if current_resource.cpu_shares != new_resource.cpu_shares
