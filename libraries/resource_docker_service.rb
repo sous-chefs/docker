@@ -44,7 +44,8 @@ class Chef
       attribute :ipv6, kind_of: [TrueClass, FalseClass], default: nil
       attribute :log_level, equal_to: [:debug, :info, :warn, :error, :fatal], default: nil
       attribute :label, kind_of: String, default: nil
-      attribute :log_driver, equal_to: %w( json-file syslog none ), default: nil
+      attribute :log_driver, equal_to: %w( json-file syslog journald gelf fluentd none ), default: nil
+      attribute :log_opts, kind_of: [String, Array], default: []
       attribute :mtu, kind_of: String, default: nil
       attribute :pidfile, kind_of: String, default: nil
       attribute :registry_mirror, kind_of: String, default: nil

@@ -123,6 +123,10 @@ module DockerHelpers
     r
   end
 
+  def parsed_log_opts
+    Array(new_resource.log_opts)
+  end
+
   def parsed_storage_driver
     Array(new_resource.storage_driver)
   end
@@ -156,6 +160,7 @@ module DockerHelpers
     opts << "--log-level=#{new_resource.log_level}" if new_resource.log_level
     opts << "--label=#{new_resource.label}" if new_resource.label
     opts << "--log-driver=#{new_resource.log_driver}" if new_resource.log_driver
+    parsed_log_opts.each { |log_opt| opts << "--log-opt=#{log_opt}" }
     opts << "--mtu=#{new_resource.mtu}" if new_resource.mtu
     opts << "--pidfile=#{new_resource.pidfile}" if new_resource.pidfile
     opts << "--registry-mirror=#{new_resource.registry_mirror}" if new_resource.registry_mirror
