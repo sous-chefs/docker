@@ -1,3 +1,8 @@
+v1.0.28
+--------------------
+- Adding journald gelf and fluentd to logging driver whitelist
+- Allow specifying multiple DNS servers for docker_service
+
 v1.0.27
 --------------------
 - Cleaning up code duplication across docker_service init templates
