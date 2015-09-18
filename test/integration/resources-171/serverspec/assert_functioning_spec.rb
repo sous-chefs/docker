@@ -227,6 +227,14 @@ describe command("docker ps -af 'name=redeployer$'") do
   its(:stdout) { should_not match(/Exited/) }
 end
 
+# docker_container[unstarted_redeployer]
+
+describe command("docker ps -af 'name=unstarted_redeployer$'") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should_not match(/Up/) }
+  its(:stdout) { should match(/Created/) } if docker_version.to_f >= 1.8
+end
+
 # docker_container[bind_mounter]
 
 describe command("docker ps -af 'name=bind_mounter$'") do

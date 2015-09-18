@@ -305,8 +305,14 @@ class Chef
       end
 
       action :redeploy do
+        c = Docker::Container.get(new_resource.container_name)
+        previously_running = c.info['State']['Running']
         action_delete
-        action_run
+        if previously_running
+          action_run
+        else
+          action_create
+        end
       end
 
       action :delete do
