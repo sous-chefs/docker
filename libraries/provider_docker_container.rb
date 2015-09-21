@@ -80,7 +80,7 @@ class Chef
         changes << :domainname if current_resource.domainname != new_resource.domainname
         changes << :entrypoint if update_entrypoint?
         changes << :env if update_env?
-        changes << :exposed_ports if current_resource.exposed_ports != exposed_ports
+        changes << :exposed_ports if update_exposed_ports?
         changes << :extra_hosts if current_resource.extra_hosts != parsed_extra_hosts
         changes << :hostname if update_hostname?
         changes << :image if current_resource.image != "#{parsed_repo}:#{new_resource.tag}"
@@ -173,6 +173,7 @@ class Chef
         Chef::Log.debug("DOCKER: command - current:#{current_resource.command}: parsed:#{parsed_command}:")
         Chef::Log.debug("DOCKER: entrypoint - current:#{current_resource.entrypoint}: parsed:#{parsed_entrypoint}:")
         Chef::Log.debug("DOCKER: env - current:#{current_resource.env}: parsed:#{parsed_env}:")
+        Chef::Log.debug("DOCKER: exposed_ports - current:#{current_resource.exposed_ports}: serialized:#{exposed_ports}:")
         Chef::Log.debug("DOCKER: volumes - current:#{current_resource.volumes}: parsed:#{parsed_volumes}:")
         Chef::Log.debug("DOCKER: network_mode - current:#{current_resource.network_mode}: parsed:#{parsed_network_mode}:")
         Chef::Log.debug("DOCKER: log_config - current:#{current_resource.log_config}: serialized:#{serialized_log_config}:")

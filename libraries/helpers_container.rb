@@ -261,5 +261,11 @@ module DockerHelpers
       return true if (!new_resource.hostname.nil?) && (current_resource.hostname != new_resource.hostname)
       false
     end
+
+    def update_exposed_ports?
+      return false if new_resource.exposed_ports.nil?
+      return true if current_resource.exposed_ports != new_resource.exposed_ports
+      false
+    end
   end
 end
