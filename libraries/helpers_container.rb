@@ -239,6 +239,7 @@ module DockerHelpers
 
     def update_volumes?
       return false if parsed_volumes.nil?
+      return true if current_resource.volumes.nil?
       return true unless parsed_volumes.each { |v| current_resource.volumes.include?(v) }
       false
     end
