@@ -149,23 +149,26 @@ module DockerHelpers
       ray
     end
 
-    # This one is a bit mysterious.. little to no docs, can't find
-    # much code. Assuming this will be revealed in The Future?
-    #
-    # method used to compare changes... Hard stubbing this for now
-    # effectivly means only the json-file is suppored.
-    #
+    def parsed_log_config
+      (new_resource.log_config || {}).tap do |log_config|
+        # some versions of docker api do not support config attributes, then
+        # nil is used. Unclear which version since 1.18 and 1.20 feature a
+        # Config hash in the documentation while 1.19 has ambiguous example.
+        log_config['Config'] ||= {}
+      end
+    end
+
+    def parsed_log_opts
+      Array(new_resource.log_opts).each_with_object({}) do |log_opt, memo|
+        key, value = log_opt.split('=', 2)
+        memo[key] = value
+      end
+    end
+
     def serialized_log_config
-      if @api_version.to_f < 1.19
-        {
-          'Type' => 'json-file',
-          'Config' => nil
-        }
-      else
-        {
-          'Type' => 'json-file',
-          'Config' => {}
-        }
+      parsed_log_config.tap do |log_config|
+        log_config['Type'] = new_resource.log_driver if new_resource.log_driver
+        log_config['Config'] = parsed_log_opts if new_resource.log_opts
       end
     end
 

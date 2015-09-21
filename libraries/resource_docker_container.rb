@@ -34,7 +34,9 @@ class Chef
       attribute :force, kind_of: [TrueClass, FalseClass], default: false
       attribute :host_name, kind_of: String, default: nil
       attribute :links, kind_of: [String, Array, NilClass], default: nil # FIXME: add validate proc
-      attribute :log_config, kind_of: [Hash, NilClass], default: nil # FIXME: add validate proc and tests
+      attribute :log_config, kind_of: [Hash, NilClass], default: nil # FIXME: add validate proc and tests; to configure the resource, prefer log_driver/log_opts below
+      attribute :log_driver, equal_to: %w( json-file syslog journald gelf fluentd none ), default: nil
+      attribute :log_opts, kind_of: [String, Array], default: []
       attribute :mac_address, kind_of: String, default: '' # FIXME: needs tests
       attribute :memory, kind_of: Fixnum, default: 0
       attribute :memory_swap, kind_of: Fixnum, default: 0
