@@ -154,6 +154,7 @@ module DockerHelpers
         # some versions of docker api do not support config attributes, then
         # nil is used. Unclear which version since 1.18 and 1.20 feature a
         # Config hash in the documentation while 1.19 has ambiguous example.
+        log_config['Type'] ||= 'json-file'
         log_config['Config'] ||= {}
       end
     end
