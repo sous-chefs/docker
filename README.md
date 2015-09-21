@@ -810,6 +810,18 @@ docker_container 'api_timeouts' do
 end
 ```
 
+Specify a custom logging driver and its options
+
+```ruby
+docker_container 'syslogger' do
+  repo 'alpine'
+  tag '3.1'
+  command 'nc -ll -p 780 -e /bin/cat'
+  log_driver 'syslog'
+  log_opts 'syslog-tag=container-syslogger'
+end
+```
+
 #### Properties
 
 Most `docker_container` properties are the `snake_case` version of the
@@ -853,6 +865,9 @@ Most `docker_container` properties are the `snake_case` version of the
 - `host_name` - The hostname for the container.
 - `links` - An array of source container/alias pairs to link the
   container to in the form `[container_a:www', container_b:db']`
+- `log_driver` - Sets a custom logging driver for the container
+  (json-file/syslog/journald/gelf/fluentd/none).
+- `log_opts` - Configures the above logging driver options (driver-specific).
 - `mac_address` - The mac address for the container to use.
 - `memory` - Memory limit in bytes.
 - `memory_swap` - Total memory limit (memory + swap); set `-1` to

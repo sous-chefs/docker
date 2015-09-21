@@ -142,7 +142,7 @@ class Chef
             'DnsSearch' => parsed_dns_search,
             'ExtraHosts' => parsed_extra_hosts,
             'Links' => parsed_links,
-            'LogConfig' => new_resource.log_config,
+            'LogConfig' => serialized_log_config,
             'Memory' => new_resource.memory,
             'MemorySwap' => new_resource.memory_swap,
             'NetworkMode' => parsed_network_mode,

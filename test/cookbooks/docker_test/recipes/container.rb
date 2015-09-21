@@ -868,3 +868,15 @@ docker_container 'overrides-2' do
   workdir '/tmp'
   action :run_if_missing
 end
+
+#################
+# logging drivers
+#################
+
+docker_container 'syslogger' do
+  command 'nc -ll -p 780 -e /bin/cat'
+  repo 'alpine'
+  tag '3.1'
+  log_driver 'syslog'
+  log_opts 'syslog-tag=container-syslogger'
+end

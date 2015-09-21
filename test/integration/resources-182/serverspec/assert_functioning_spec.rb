@@ -643,3 +643,20 @@ describe command('docker inspect -f "{{ .Config.WorkingDir }}" overrides-2') do
   its(:exit_status) { should eq 0 }
   its(:stdout) { should match(%r{/tmp}) }
 end
+
+# docker_container[syslogger]
+
+describe command("docker ps -af 'name=syslogger$'") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should_not match(/Exited/) }
+end
+
+describe command("docker inspect -f '{{ .HostConfig.LogConfig.Type }}' syslogger") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/syslog/) }
+end
+
+describe command("docker inspect -f '{{ .HostConfig.LogConfig.Config }}' syslogger") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/syslog-tag:container-syslogger/) }
+end
