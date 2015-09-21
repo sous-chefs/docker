@@ -274,7 +274,7 @@ the options found in the
 ## docker_image
 The `docker_image` is responsible for managing Docker image pulls,
 builds, and deletions. It speaks directly to the
-[Docker remote API](https://docs.docker.com/reference/api/docker_remote_api_v1.16/).
+[Docker remote API](https://docs.docker.com/reference/api/docker_remote_api_v1.20/).
 
 #### Examples
 
@@ -377,7 +377,7 @@ end
 
 #### Properties
 The `docker_image` resource properties mostly corresponds to the
-[Docker Remote API](https://docs.docker.com/reference/api/docker_remote_api_v1.16/#2-2-images)
+[Docker Remote API](https://docs.docker.com/reference/api/docker_remote_api_v1.20/#2-2-images)
 as driven by the
 [Swipley docker-api Ruby gem](https://github.com/swipely/docker-api)
 
@@ -451,7 +451,7 @@ end
 
 ## docker_container
 The `docker_container` is responsible for managing Docker container
-actions. It speaks directly to the [Docker remote API](https://docs.docker.com/reference/api/docker_remote_api_v1.16/).
+actions. It speaks directly to the [Docker remote API](https://docs.docker.com/reference/api/docker_remote_api_v1.20/).
 
 Containers are process oriented, and move through an event cycle.
 Thanks to [Glider Labs](http://gliderlabs.com/) for this excellent diagram.
@@ -814,7 +814,7 @@ end
 
 Most `docker_container` properties are the `snake_case` version of the
 `CamelCase` keys found in the
-[Docker Remote Api](https://docs.docker.com/reference/api/docker_remote_api_v1.16/)
+[Docker Remote Api](https://docs.docker.com/reference/api/docker_remote_api_v1.20/)
 
 - `container_name` - The name of the container. Defaults to the name
   of the `docker_container` resource.

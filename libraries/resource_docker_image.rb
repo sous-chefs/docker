@@ -9,7 +9,7 @@ class Chef
       actions :build, :build_if_missing, :import, :pull, :pull_if_missing, :push, :remove, :save
       default_action :pull
 
-      # https://docs.docker.com/reference/api/docker_remote_api_v1.16/
+      # https://docs.docker.com/reference/api/docker_remote_api_v1.20/
       attribute :api_retries, kind_of: Fixnum, default: 3
       attribute :destination, kind_of: String, default: nil
       attribute :force, kind_of: [TrueClass, FalseClass], default: false
