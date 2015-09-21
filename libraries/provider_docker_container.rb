@@ -67,9 +67,9 @@ class Chef
         changes << :attach_stderr if current_resource.attach_stderr != parsed_attach_stderr
         changes << :attach_stdin if current_resource.attach_stdin != parsed_attach_stdin
         changes << :attach_stdout if current_resource.attach_stdout != parsed_attach_stdout
-        changes << :binds if  current_resource.binds != parsed_binds
+        changes << :binds if current_resource.binds != parsed_binds
         changes << :cap_add if current_resource.cap_add != parsed_cap_add
-        changes << :cap_drop if  current_resource.cap_drop != parsed_cap_drop
+        changes << :cap_drop if current_resource.cap_drop != parsed_cap_drop
         changes << :cgroup_parent if current_resource.cgroup_parent != new_resource.cgroup_parent
         changes << :command if update_command?
         changes << :cpu_shares if current_resource.cpu_shares != new_resource.cpu_shares
@@ -306,12 +306,13 @@ class Chef
 
       action :redeploy do
         c = Docker::Container.get(new_resource.container_name)
-        previously_running = c.info['State']['Running']
         action_delete
-        if previously_running
-          action_run
-        else
+        # never start containers resulting from a previous action :create #432
+        if c.info['State']['Running'] == false &&
+           c.info['State']['StartedAt'] == '0001-01-01T00:00:00Z'
           action_create
+        else
+          action_run
         end
       end
 

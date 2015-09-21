@@ -34,7 +34,7 @@ namespace :integration do
 
     desc 'Run kitchen integration tests'
     Kitchen::RakeTasks.new
-  rescue LoadError
+  rescue LoadError, Kitchen::ClientError
     puts '>>>>> Kitchen gem not loaded, omitting tasks' unless ENV['CI']
   end
 end

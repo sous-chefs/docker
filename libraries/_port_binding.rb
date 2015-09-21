@@ -44,5 +44,7 @@ class PortBinding
     when 1
       @container_port = parts[0]
     end
+    # qualify the port-binding protocol even when it is implicitly tcp #427.
+    @container_port << '/tcp' unless @container_port.include?('/')
   end
 end
