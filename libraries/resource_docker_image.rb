@@ -15,7 +15,7 @@ class Chef
       attribute :force, kind_of: [TrueClass, FalseClass], default: false
       attribute :nocache, kind_of: [TrueClass, FalseClass], default: false
       attribute :noprune, kind_of: [TrueClass, FalseClass], default: false
-      attribute :read_timeout, kind_of: [Fixnum, NilClass], default: 60
+      attribute :read_timeout, kind_of: [Fixnum, NilClass], default: 120
       attribute :repo, kind_of: String, name_attribute: true
       attribute :rm, kind_of: [TrueClass, FalseClass], default: true
       attribute :source, kind_of: String
