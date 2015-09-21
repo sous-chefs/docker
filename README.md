@@ -232,7 +232,7 @@ the options found in the
 - `label` - Set key=value labels to the daemon
 - `log_driver` - Container's logging driver (json-file/syslog/journald/gelf/fluentd/none)
 - `log_opts` - Container's logging driver options (driver-specific)
-- `mtu` - Container's logging driver (json-file/none)
+- `mtu` - Set the containers network MTU
 - `pidfile` - Path to use for daemon PID file
 - `registry_mirror` - Preferred Docker registry mirror
 - `storage_driver` - Storage driver to use
