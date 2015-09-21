@@ -1,3 +1,10 @@
+v1.0.30
+--------------------
+- #427 - Qualify port bindings with protocol even when implicitly tcp.
+- #443 - Added docker_container log_driver and log_opts attributes. 
+- Changing docker_image read_timeout default to 60
+- Misc cleanup for README and Gemfile
+
 v1.0.29
 --------------------
 - #432 Fixing :redeploy so it returns the container the correct state
