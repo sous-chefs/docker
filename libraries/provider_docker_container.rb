@@ -100,7 +100,7 @@ class Chef
         changes << :tty if current_resource.tty != new_resource.tty
         changes << :ulimits if update_ulimits?
         changes << :user if current_resource.user != new_resource.user
-        changes << :volumes if current_resource.volumes != parsed_volumes
+        changes << :volumes if update_volumes?
         changes << :volumes_from if current_resource.volumes_from != parsed_volumes_from
         changes << :working_dir if update_working_dir?
         changes
