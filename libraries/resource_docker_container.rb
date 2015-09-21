@@ -46,7 +46,7 @@ class Chef
       attribute :port_bindings, kind_of: [String, Array, Hash], default: nil
       attribute :privileged, kind_of: [TrueClass, FalseClass], default: false
       attribute :publish_all_ports, kind_of: [TrueClass, FalseClass], default: false
-      attribute :read_timeout, kind_of: [Fixnum, NilClass], default: nil
+      attribute :read_timeout, kind_of: [Fixnum, NilClass], default: 60
       attribute :remove_volumes, kind_of: [TrueClass, FalseClass], default: false
       attribute :restart_maximum_retry_count, kind_of: Fixnum, default: 0
       attribute :restart_policy, kind_of: [String, Hash, NilClass], default: 'no' # FIXME: validation proc: equal_to: %w(no on-failure always)
