@@ -1,3 +1,9 @@
+v1.0.31
+--------------------
+- #447 - Fix for log-config driver type
+- #448 - Fix unwanted redeploys due to calculation of exposed_port changes.
+- #450 - Treat docker_container volumes attribute as unmanaged to prevent redeploys
+
 v1.0.30
 --------------------
 - #427 - Qualify port bindings with protocol even when implicitly tcp.

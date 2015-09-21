@@ -186,5 +186,8 @@ suites:
   includes: [
     'ubuntu-15.04'
   ]
+  attributes:
+    docker:
+      version: '1.8.2'
   run_list:
   - recipe[docker_test::notifications]
