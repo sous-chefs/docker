@@ -1,3 +1,7 @@
+v1.0.32
+--------------------
+- #451 Changed default docker_container memory_swap to prevent unwanted redeploys.
+
 v1.0.31
 --------------------
 - #447 - Fix for log-config driver type
