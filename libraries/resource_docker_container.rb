@@ -39,7 +39,7 @@ class Chef
       attribute :log_opts, kind_of: [String, Array], default: []
       attribute :mac_address, kind_of: String, default: '' # FIXME: needs tests
       attribute :memory, kind_of: Fixnum, default: 0
-      attribute :memory_swap, kind_of: Fixnum, default: 0
+      attribute :memory_swap, kind_of: Fixnum, default: -1
       attribute :network_disabled, kind_of: [TrueClass, FalseClass], default: false
       attribute :network_mode, kind_of: [String, NilClass], default: nil
       attribute :open_stdin, kind_of: [TrueClass, FalseClass], default: false
