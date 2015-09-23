@@ -1,5 +1,6 @@
 $LOAD_PATH.unshift *Dir[File.expand_path('../../files/default/vendor/gems/**/lib', __FILE__)]
 require 'docker'
+require_relative 'helpers_auth'
 
 class Chef
   class Provider
@@ -70,26 +71,20 @@ class Chef
 
       def pull_image
         begin
-          cred_stash ||= Docker.creds
           retries ||= new_resource.api_retries
           api_timeouts
-          o = Docker::Image.get(image_identifier) if Docker::Image.exist?(image_identifier)
-          i = Docker::Image.create(
-            'fromImage' => new_resource.repo,
-            'tag' => new_resource.tag
-          )
-        rescue Docker::Error::ArgumentError => e
-          # Dirty hack around what seems to be a bug (feature?) in
-          # docker-api authentication header handling when pulling
-          # from the public registry with invalid creds are set
-          Docker.creds = {}
+
+          registry_host = parse_registry_host(new_resource.repo)
+          creds = node.run_state['docker_auth'] && node.run_state['docker_auth'][registry_host]
+
+          original_image = Docker::Image.get(image_identifier) if Docker::Image.exist?(image_identifier)
+          new_image = Docker::Image.create({ 'fromImage' => image_identifier }, creds)
+        rescue Docker::Error => e
           retry unless (retries -= 1).zero?
           raise e.message
-        ensure
-          Docker.creds = cred_stash
         end
-        return false if o && o.id =~ /^#{i.id}/
-        true
+
+        !(original_image && original_image.id.start_with?(new_image.id))
       end
 
       def push_image
