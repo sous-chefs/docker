@@ -6,11 +6,11 @@ class Chef
         if Chef::Provider.respond_to?(:provides)
           provides :docker_service, platform: 'fedora'
 
-          provides :docker_service, platform: %w(redhat centos scientific) do |node|
+          provides :docker_service, platform: %w(redhat centos scientific) do |node| # ~FC005
             node['platform_version'].to_f >= 7.0
           end
 
-          provides :docker_service, platform: %w(debian) do |node|
+          provides :docker_service, platform: 'debian' do |node|
             node['platform_version'].to_f >= 8.0
           end
 
