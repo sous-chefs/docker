@@ -1,5 +1,6 @@
 $LOAD_PATH.unshift *Dir[File.expand_path('../../files/default/vendor/gems/**/lib', __FILE__)]
 require 'docker'
+require_relative 'helpers_auth'
 
 class Chef
   class Provider
@@ -73,17 +74,17 @@ class Chef
           retries ||= new_resource.api_retries
           api_timeouts
 
-          # https://github.com/docker/docker/blob/4fcb9ac40ce33c4d6e08d5669af6be5e076e2574/registry/auth.go#L231
-          registry_host = new_resource.repo.sub(%r{https?://}, '').split('/').first
+          registry_host = parse_registry_host(new_resource.repo)
+          creds = node.run_state['docker_auth'] && node.run_state['docker_auth'][registry_host]
 
-          Docker::Image.create({ 'fromImage' => image_identifier },
-                               node.run_state[:docker_auth] && node.run_state[:docker_auth][registry_host])
+          original_image = Docker::Image.get(image_identifier) if Docker::Image.exist?(image_identifier)
+          new_image = Docker::Image.create({ 'fromImage' => image_identifier }, creds)
         rescue Docker::Error => e
           retry unless (retries -= 1).zero?
           raise e.message
         end
 
-        true
+        !(original_image && original_image.id.start_with?(new_image.id))
       end
 
       def push_image

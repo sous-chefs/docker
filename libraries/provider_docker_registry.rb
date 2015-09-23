@@ -1,5 +1,6 @@
 $LOAD_PATH.unshift *Dir[File.expand_path('../../files/default/vendor/gems/**/lib', __FILE__)]
 require 'docker'
+require_relative 'helpers_auth'
 
 class Chef
   class Provider
@@ -9,10 +10,9 @@ class Chef
       action :login do
         tries = new_resource.api_retries
 
-        # https://github.com/docker/docker/blob/4fcb9ac40ce33c4d6e08d5669af6be5e076e2574/registry/auth.go#L231
-        registry_host = new_resource.serveraddress.sub(%r{https?://}, '').split('/').first
+        registry_host = parse_registry_host(new_resource.serveraddress)
 
-        (node.run_state[:docker_auth] ||= {})[registry_host] = {
+        (node.run_state['docker_auth'] ||= {})[registry_host] = {
           'serveraddress' => registry_host,
           'username' => new_resource.username,
           'password' => new_resource.password,
@@ -21,7 +21,7 @@ class Chef
 
         begin
           Docker.connection.post('/auth', {},
-                                 body: node.run_state[:docker_auth][registry_host].to_json)
+                                 body: node.run_state['docker_auth'][registry_host].to_json)
         rescue Docker::Error::ServerError, Docker::Error::UnauthorizedError
           if (tries -= 1).zero?
             raise Docker::Error::AuthenticationError, "#{new_resource.username} failed to authenticate with #{new_resource.serveraddress}"
