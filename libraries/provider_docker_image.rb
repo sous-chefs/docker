@@ -70,25 +70,19 @@ class Chef
 
       def pull_image
         begin
-          cred_stash ||= Docker.creds
           retries ||= new_resource.api_retries
           api_timeouts
-          o = Docker::Image.get(image_identifier) if Docker::Image.exist?(image_identifier)
-          i = Docker::Image.create(
-            'fromImage' => new_resource.repo,
-            'tag' => new_resource.tag
-          )
-        rescue Docker::Error::ArgumentError => e
-          # Dirty hack around what seems to be a bug (feature?) in
-          # docker-api authentication header handling when pulling
-          # from the public registry with invalid creds are set
-          Docker.creds = {}
+
+          # https://github.com/docker/docker/blob/4fcb9ac40ce33c4d6e08d5669af6be5e076e2574/registry/auth.go#L231
+          registry_host = new_resource.repo.sub(%r{https?://}, '').split('/').first
+
+          Docker::Image.create({ 'fromImage' => image_identifier },
+                               node.run_state[:docker_auth] && node.run_state[:docker_auth][registry_host])
+        rescue Docker::Error => e
           retry unless (retries -= 1).zero?
           raise e.message
-        ensure
-          Docker.creds = cred_stash
         end
-        return false if o && o.id =~ /^#{i.id}/
+
         true
       end
 
