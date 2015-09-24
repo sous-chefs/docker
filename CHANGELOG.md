@@ -1,3 +1,8 @@
+v1.0.35
+--------------------
+- Creating DockerHelpers::Service namespace and moving appropriate methods into it.
+- Start of load_current_resource implemenation for docker_service for #423
+
 v1.0.34
 --------------------
 - notifying new_resource to restart when updating docker_bin
