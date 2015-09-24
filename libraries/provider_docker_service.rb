@@ -26,6 +26,7 @@ class Chef
           group 'root'
           mode '0755'
           action :create
+          notifies :restart, new_resource
         end
       end
 
