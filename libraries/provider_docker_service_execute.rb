@@ -8,6 +8,8 @@ class Chef
 
         # Start the service
         action :start do
+          action_stop unless resource_changes.empty?
+
           # Go doesn't support detaching processes natively, so we have
           # to manually fork it from the shell with &
           # https://github.com/docker/docker/issues/2758

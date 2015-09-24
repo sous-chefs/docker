@@ -7,6 +7,8 @@ class Chef
         end
 
         action :start do
+          action_stop unless resource_changes.empty?
+
           template '/etc/default/docker' do
             source 'upstart/etc.default.docker.erb'
             mode '0644'

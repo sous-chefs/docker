@@ -11,6 +11,8 @@ class Chef
         end
 
         action :start do
+          action_stop unless resource_changes.empty?
+
           template '/etc/init.d/docker' do
             path '/etc/init.d/docker'
             source 'sysvinit/docker.erb'

@@ -96,6 +96,13 @@ end
 # action :pause
 ###############
 
+# clean up existed container after a service restart
+execute 'rm stale red_light' do
+  command 'docker rm -f red_light'
+  only_if 'docker ps -a | grep red_light | grep Exited'
+  action :run
+end
+
 # start a container to be paused
 execute 'red_light' do
   command 'docker run --name red_light -d busybox nc -ll -p 42 -e /bin/cat'

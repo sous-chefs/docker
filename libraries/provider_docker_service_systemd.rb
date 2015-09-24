@@ -20,6 +20,8 @@ class Chef
         end
 
         action :start do
+          action_stop unless resource_changes.empty?
+
           # this is the main systemd unit file
           template '/lib/systemd/system/docker.service' do
             path '/lib/systemd/system/docker.service'

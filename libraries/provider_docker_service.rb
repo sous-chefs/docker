@@ -14,7 +14,26 @@ class Chef
       end
 
       # Mix in helpers from libraries/helpers.rb
-      include DockerHelpers
+      include DockerHelpers::Service
+
+      def docker_running?
+        return true if ::File.exist?('/var/run/docker.sock')
+      end
+
+      def load_current_resource
+        @current_resource = Chef::Resource::DockerService.new(new_resource.name)
+        if docker_running?
+          @current_resource.storage_driver Docker.info['Driver']
+        else
+          return @current_resource
+        end
+      end
+
+      def resource_changes
+        changes = []
+        changes << :storage_driver if update_storage_driver?
+        changes
+      end
 
       # Put the appropriate bits on disk.
       action :create do
