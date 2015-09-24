@@ -1,3 +1,8 @@
+v1.0.33
+--------------------
+- Registry authentication fixes and slight docker_image refactor
+- Updates for foodcritic and travis
+
 v1.0.32
 --------------------
 - #451 Changed default docker_container memory_swap to prevent unwanted redeploys.
