@@ -583,7 +583,7 @@ docker_container 'link_source' do
   env ['FOO=bar', 'BIZ=baz']
   command 'nc -ll -p 321 -e /bin/cat'
   port '321'
-  action :run_if_missing
+  action :run
 end
 
 # docker inspect -f "{{ .HostConfig.Links }}" link_target_1
@@ -594,6 +594,7 @@ docker_container 'link_target_1' do
   env ['ASD=asd']
   command 'ping -c 1 hello'
   links 'link_source:hello'
+  subscribes :run, 'docker_container[link_source]', :immediately
   action :run_if_missing
 end
 
@@ -603,6 +604,7 @@ docker_container 'link_target_2' do
   tag '3.1'
   command 'env'
   links ['link_source:hello']
+  subscribes :run, 'docker_container[link_source]', :immediately
   action :run_if_missing
 end
 
