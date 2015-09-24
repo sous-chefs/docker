@@ -249,6 +249,7 @@ the options found in the
 - `no_proxy` - ENV variable set before for Docker daemon starts
 - `tmpdir` - ENV variable set before for Docker daemon starts
 - `logfile` - Location of Docker daemon log file
+- `userland_proxy`- Enables or disables docker-proxy
 
 #### Actions
 - `:create` - Lays the Docker bits out on disk
