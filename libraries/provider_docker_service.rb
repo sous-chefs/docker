@@ -16,10 +16,6 @@ class Chef
       # Mix in helpers from libraries/helpers.rb
       include DockerHelpers::Service
 
-      def docker_running?
-        return true if ::File.exist?('/var/run/docker.sock')
-      end
-
       def load_current_resource
         @current_resource = Chef::Resource::DockerService.new(new_resource.name)
         if docker_running?
