@@ -1,3 +1,7 @@
+v1.0.34
+--------------------
+- notifying new_resource to restart when updating docker_bin
+
 v1.0.33
 --------------------
 - Registry authentication fixes and slight docker_image refactor
