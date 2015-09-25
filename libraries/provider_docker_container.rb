@@ -150,7 +150,7 @@ class Chef
             'PortBindings' => port_bindings,
             'PublishAllPorts' => new_resource.publish_all_ports,
             'RestartPolicy' => parsed_restart_policy,
-            'Ulimits' => new_resource.ulimits,
+            'Ulimits' => serialized_ulimits,
             'VolumesFrom' => parsed_volumes_from
           }
         )
@@ -179,6 +179,7 @@ class Chef
         Chef::Log.debug("DOCKER: log_config - current:#{current_resource.log_config}: serialized:#{serialized_log_config}:")
         Chef::Log.debug("DOCKER: ulimits - current:#{current_resource.ulimits}:")
         Chef::Log.debug("DOCKER: ulimits -     new:#{new_resource.ulimits}:")
+        Chef::Log.debug("DOCKER: links - current:#{current_resource.links}: serialized:#{serialized_links}:")
 
         resource_changes.each do |change|
           Chef::Log.debug("DOCKER: change - :#{change}")

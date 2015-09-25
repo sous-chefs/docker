@@ -652,7 +652,7 @@ end
 execute 'redeploy_link_source' do
   command 'touch /marker_container_redeploy_link_source'
   creates '/marker_container_redeploy_link_source'
-  notifies :redeploy, 'docker_container[link_source]'
+  notifies :redeploy, 'docker_container[link_source_2]'
   notifies :redeploy, 'docker_container[link_target_1]'
   notifies :redeploy, 'docker_container[link_target_2]'
   notifies :redeploy, 'docker_container[link_target_3]'
@@ -853,9 +853,9 @@ docker_container 'uber_options' do
   command "-c 'nc -ll -p 1234 -e /bin/cat'"
   entrypoint '/bin/sh'
   ulimits [
-    { 'Name' => 'nofile', 'Soft' => 40_960, 'Hard' => 40_960 },
-    { 'Name' => 'core', 'Soft' => 100_000_000, 'Hard' => 100_000_000 },
-    { 'Name' => 'memlock', 'Soft' => 100_000_000, 'Hard' => 100_000_000 }
+    'nofile=40960:40960',
+    'core=100000000:100000000',
+    'memlock=100000000:100000000'
   ]
   action :run
 end

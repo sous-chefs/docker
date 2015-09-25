@@ -57,7 +57,7 @@ class Chef
       attribute :stdin_once, kind_of: [TrueClass, FalseClass, NilClass], default: false
       attribute :timeout, kind_of: Fixnum, default: nil
       attribute :tty, kind_of: [TrueClass, FalseClass], default: false
-      attribute :ulimits, kind_of: [Hash, Array, NilClass], default: nil
+      attribute :ulimits, kind_of: [Hash, Array, String, NilClass], default: nil
       attribute :user, kind_of: String, default: ''
       attribute :volumes, kind_of: [String, Array, Hash, NilClass], default: nil # FIXME: add validate proc
       attribute :volumes_from, kind_of: [String, Array, NilClass], default: nil # FIXME: add validate proc

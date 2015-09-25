@@ -175,8 +175,6 @@ module DockerHelpers
 
     def parsed_network_mode
       return new_resource.network_mode if new_resource.network_mode
-      # puts "SEANDEBUG: api_version :#{@api_version}:"
-      # puts "SEANDEBUG: current network_mode :#{current_resource.network_mode}:"
       case @api_version
       when '1.20'
         return 'default'
@@ -220,8 +218,23 @@ module DockerHelpers
     end
 
     def parsed_ulimits
-      return new_resource.ulimits if new_resource.ulimits
+      return Array(new_resource.ulimits) if new_resource.ulimits
       return nil if new_resource.ulimits.nil?
+    end
+
+    def serialized_ulimits
+      # If supplied in Hash format, use that
+      return nil if parsed_ulimits.nil?
+      return parsed_ulimits if parsed_ulimits[0].class == Hash
+      # Otherwise, parse Docker CLI formatted strings into Hashes
+      ray = []
+      parsed_ulimits.each do |u|
+        name = u.split('=')[0]
+        soft = u.split('=')[1].split(':')[0]
+        hard = u.split('=')[1].split(':')[1]
+        ray << { 'Name' => name, 'Soft' => soft.to_i, 'Hard' => hard.to_i }
+      end
+      ray
     end
 
     def update_env?
@@ -253,7 +266,7 @@ module DockerHelpers
 
     def update_ulimits?
       return false if parsed_ulimits.nil?
-      return true if current_resource.ulimits != parsed_ulimits
+      return true if current_resource.ulimits != serialized_ulimits
       false
     end
 
