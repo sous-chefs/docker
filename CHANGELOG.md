@@ -1,3 +1,7 @@
+v1.0.36
+--------------------
+- Replacing docker_log helper function with docker_service.logfile
+
 v1.0.35
 --------------------
 - Creating DockerHelpers::Service namespace and moving appropriate methods into it.
