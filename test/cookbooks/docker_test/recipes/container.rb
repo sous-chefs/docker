@@ -593,6 +593,15 @@ docker_container 'link_source' do
   action :run
 end
 
+docker_container 'link_source_2' do
+  repo 'alpine'
+  tag '3.1'
+  env ['FOO=few', 'BIZ=buzz']
+  command 'nc -ll -p 322 -e /bin/cat'
+  port '322'
+  action :run
+end
+
 # docker inspect -f "{{ .HostConfig.Links }}" link_target_1
 # docker inspect -f "{{ .Config.Env }}" link_target_1
 docker_container 'link_target_1' do
@@ -601,7 +610,7 @@ docker_container 'link_target_1' do
   env ['ASD=asd']
   command 'ping -c 1 hello'
   links 'link_source:hello'
-  subscribes :run, 'docker_container[link_source]', :immediately
+  subscribes :run, 'docker_container[link_source]'
   action :run_if_missing
 end
 
@@ -611,7 +620,30 @@ docker_container 'link_target_2' do
   tag '3.1'
   command 'env'
   links ['link_source:hello']
-  subscribes :run, 'docker_container[link_source]', :immediately
+  subscribes :run, 'docker_container[link_source]'
+  action :run_if_missing
+end
+
+# docker logs linker_target_3
+docker_container 'link_target_3' do
+  repo 'alpine'
+  tag '3.1'
+  env ['ASD=asd']
+  command 'ping -c 1 hello_again'
+  links [ 'link_source:hello', 'link_source_2:hello_again']
+  subscribes :run, 'docker_container[link_source]'
+  subscribes :run, 'docker_container[link_source_2]'
+  action :run_if_missing
+end
+
+# docker logs linker_target_4
+docker_container 'link_target_4' do
+  repo 'alpine'
+  tag '3.1'
+  command 'env'
+  links [ 'link_source:hello', 'link_source_2:hello_again']
+  subscribes :run, 'docker_container[link_source]'
+  subscribes :run, 'docker_container[link_source_2]'
   action :run_if_missing
 end
 
@@ -620,9 +652,11 @@ end
 execute 'redeploy_link_source' do
   command 'touch /marker_container_redeploy_link_source'
   creates '/marker_container_redeploy_link_source'
-  notifies :redeploy, 'docker_container[link_source]', :immediately
-  notifies :redeploy, 'docker_container[link_target_1]', :immediately
-  notifies :redeploy, 'docker_container[link_target_2]', :immediately
+  notifies :redeploy, 'docker_container[link_source]'
+  notifies :redeploy, 'docker_container[link_target_1]'
+  notifies :redeploy, 'docker_container[link_target_2]'
+  notifies :redeploy, 'docker_container[link_target_3]'
+  notifies :redeploy, 'docker_container[link_target_4]'
   action :run
 end
 

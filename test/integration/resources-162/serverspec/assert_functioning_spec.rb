@@ -497,6 +497,13 @@ describe command("docker ps -af 'name=link_source$'") do
   its(:stdout) { should_not match(/Exited/) }
 end
 
+# docker_container[link_source_2]
+
+describe command("docker ps -af 'name=link_source_2$'") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should_not match(/Exited/) }
+end
+
 # docker_container[link_target_1]
 
 describe command("docker ps -af 'name=link_target_1$'") do
@@ -507,6 +514,53 @@ end
 describe command('docker logs link_target_1') do
   its(:exit_status) { should eq 0 }
   its(:stdout) { should_not match(/ping: bad address 'hello'/) }
+end
+
+# docker_container[link_target_2]
+
+describe command("docker ps -af 'name=link_target_2$'") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/Exited/) }
+end
+
+describe command('docker logs link_target_2') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(%r{HELLO_NAME=/link_target_2/hello}) }
+end
+
+# docker_container[link_target_3]
+
+describe command("docker ps -af 'name=link_target_3$'") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/Exited/) }
+end
+
+describe command('docker logs link_target_3') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should_not match(/ping: bad address 'hello_again'/) }
+end
+
+describe command("docker inspect -f '{{ .HostConfig.Links }}' link_target_3") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(%r{[/link_source:/link_target_3/hello /link_source_2:/link_target_3/hello_again]}) }
+end
+
+# docker_container[link_target_4]
+
+describe command("docker ps -af 'name=link_target_4$'") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/Exited/) }
+end
+
+describe command('docker logs link_target_4') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(%r{HELLO_NAME=/link_target_4/hello}) }
+  its(:stdout) { should match(%r{HELLO_AGAIN_NAME=/link_target_4/hello_again}) }
+end
+
+describe command("docker inspect -f '{{ .HostConfig.Links }}' link_target_4") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(%r{[/link_source:/link_target_4/hello /link_source_2:/link_target_4/hello_again]}) }
 end
 
 # docker_container[dangler]
