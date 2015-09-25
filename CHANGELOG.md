@@ -1,3 +1,7 @@
+v1.0.37
+--------------------
+- Adding tests for #416
+
 v1.0.36
 --------------------
 - Replacing docker_log helper function with docker_service.logfile
