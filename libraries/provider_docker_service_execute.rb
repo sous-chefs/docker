@@ -14,7 +14,7 @@ class Chef
           # to manually fork it from the shell with &
           # https://github.com/docker/docker/issues/2758
           bash 'start docker' do
-            code "#{docker_daemon_cmd} &>> #{docker_log} &"
+            code "#{docker_daemon_cmd} &>> #{new_resource.logfile} &"
             environment 'HTTP_PROXY' => new_resource.http_proxy,
                         'HTTPS_PROXY' => new_resource.https_proxy,
                         'NO_PROXY' => new_resource.no_proxy,

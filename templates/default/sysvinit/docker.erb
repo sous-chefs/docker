@@ -34,8 +34,8 @@ pidfile="<%= @pidfile %>"
 pidfile="/var/run/$prog.pid"
 <% end -%>
 lockfile="/var/lock/subsys/$prog"
-<% if @config.docker_log -%>
-logfile="<%= @config.docker_log %>"
+<% if @config.logfile -%>
+logfile="<%= @config.logfile %>"
 <% else -%>
 logfile="/var/log/$prog"
 <% end -%>
