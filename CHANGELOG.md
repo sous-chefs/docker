@@ -1,3 +1,7 @@
+v1.0.38
+--------------------
+- docker_container - enabling Docker CLI syntax for ulimits
+
 v1.0.37
 --------------------
 - Adding tests for #416
