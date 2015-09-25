@@ -39,10 +39,6 @@ module DockerHelpers
       node['kernel']['name']
     end
 
-    def docker_log
-      '/var/log/docker.log'
-    end
-
     def docker_name
       'docker'
     end

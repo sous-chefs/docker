@@ -3,7 +3,7 @@
 # Customize location of Docker binary (especially for development testing).
 DOCKER="<%= @docker_bin %>"
 
-<% if @config.docker_log %>
+<% if @config.logfile %>
 DOCKER_LOGFILE=<%= @config.logfile %>
 <% end %>
 
