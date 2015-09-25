@@ -630,7 +630,7 @@ docker_container 'link_target_3' do
   tag '3.1'
   env ['ASD=asd']
   command 'ping -c 1 hello_again'
-  links [ 'link_source:hello', 'link_source_2:hello_again']
+  links ['link_source:hello', 'link_source_2:hello_again']
   subscribes :run, 'docker_container[link_source]'
   subscribes :run, 'docker_container[link_source_2]'
   action :run_if_missing
@@ -641,7 +641,7 @@ docker_container 'link_target_4' do
   repo 'alpine'
   tag '3.1'
   command 'env'
-  links [ 'link_source:hello', 'link_source_2:hello_again']
+  links ['link_source:hello', 'link_source_2:hello_again']
   subscribes :run, 'docker_container[link_source]'
   subscribes :run, 'docker_container[link_source_2]'
   action :run_if_missing

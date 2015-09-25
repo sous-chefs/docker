@@ -1,4 +1,4 @@
-2# service
+# service
 include_recipe 'docker_test::default'
 
 # container A
