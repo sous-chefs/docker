@@ -25,7 +25,7 @@
 . /etc/rc.d/init.d/functions
 <% end %>
 
-exec="<%= @config.docker_bin %>"
+exec="<%= @docker_bin %>"
 prog="docker"
 unshare=/usr/bin/unshare
 <% if @pidfile -%>
