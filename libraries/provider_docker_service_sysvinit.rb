@@ -22,6 +22,7 @@ class Chef
             cookbook 'docker'
             variables(
               config: new_resource,
+              docker_bin: docker_bin,
               docker_daemon_arg: docker_daemon_arg,
               docker_opts: docker_opts,
               pidfile: parsed_pidfile
