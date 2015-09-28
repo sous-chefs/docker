@@ -48,11 +48,8 @@ class Chef
         end
 
         action :restart do
-          service 'docker' do
-            provider Chef::Provider::Service::Init::Redhat if platform_family?('rhel')
-            provider Chef::Provider::Service::Init::Insserv if platform_family?('debian')
-            action :reload
-          end
+          action_stop
+          action_start
         end
       end
     end
