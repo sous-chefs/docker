@@ -53,15 +53,8 @@ class Chef
         end
 
         action :restart do
-          service 'docker' do
-            provider Chef::Provider::Service::Upstart
-            action :stop
-          end
-
-          service 'docker' do
-            provider Chef::Provider::Service::Upstart
-            action :start
-          end
+          action_stop
+          action_start
         end
       end
     end
