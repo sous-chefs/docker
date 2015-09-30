@@ -6,7 +6,6 @@ addons:
     packages:
       - chefdk
 
-# Don't `bundle install`
 install: echo "skip bundle install"
 
 # Ensure we make ChefDK's Ruby the default
@@ -14,10 +13,12 @@ before_script:
   - eval "$(/opt/chefdk/bin/chef shell-init bash)"
   # We have to install chef-sugar for ChefSpec
   - /opt/chefdk/embedded/bin/chef gem install chef-sugar
+
 script:
   - /opt/chefdk/embedded/bin/chef --version
   - /opt/chefdk/embedded/bin/rubocop --version
   - /opt/chefdk/embedded/bin/rubocop
   - /opt/chefdk/embedded/bin/foodcritic --version
   - /opt/chefdk/embedded/bin/foodcritic -f any . --exclude spec
-  - /opt/chefdk/embedded/bin/rspec spec
+  - /opt/chefdk/embedded/bin/bundle install
+  - /opt/chefdk/embedded/bin/bundle exec rspec spec
