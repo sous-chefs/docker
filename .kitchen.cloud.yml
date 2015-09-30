@@ -106,6 +106,28 @@ suites:
 #
 # Resource behavior testing cookbooks
 #
+- name: service-socket-execute
+  includes: [
+    'ubuntu-15.04'
+  ]
+  attributes:
+    docker:
+      version: '1.8.2'
+      service_manager: execute
+  run_list:
+  - recipe[docker_service_test::socket]
+
+- name: service-tls-execute
+  includes: [
+    'ubuntu-15.04'
+  ]
+  attributes:
+    docker:
+      version: '1.8.2'
+      service_manager: execute
+  run_list:
+  - recipe[docker_service_test::tls]
+
 - name: service-socket
   includes: [
     'amazon-2014.09',
