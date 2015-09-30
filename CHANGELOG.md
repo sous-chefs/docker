@@ -1,3 +1,7 @@
+v1.0.40
+--------------------
+- Fixing broken Chef::Provider::DockerService::Execute
+
 v1.0.39
 --------------------
 - Various fixes around sysvinit
