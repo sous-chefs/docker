@@ -1,3 +1,7 @@
+v1.0.44
+--------------------
+- Adding Label support for docker_container
+
 v1.0.43
 --------------------
 - Switching docker_service sysvinit provider from ::Insserv to ::Debian

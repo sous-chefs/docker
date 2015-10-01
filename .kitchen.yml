@@ -60,36 +60,69 @@ suites:
 #
 # Resource behavior testing cookbooks
 #
-# - name: service-socket
-#   includes: [
-#     'centos-6.5',
-#     'centos-7.0',
-#     'fedora-21',
-#     'debian-8.1',
-#     'ubuntu-14.04',
-#     'ubuntu-15.04'
-#   ]
-#   run_list:
-#   - recipe[docker_service_test::socket]
+- name: service-socket-execute
+  includes: [
+    'ubuntu-15.04'
+  ]
+  attributes:
+    docker:
+      version: '1.8.2'
+      service_manager: execute
+  run_list:
+  - recipe[docker_service_test::socket]
 
-# - name: service-tls
-#   includes: [
-#     'centos-6.5',
-#     'centos-7.0',
-#     'fedora-21',
-#     'debian-8.1',
-#     'ubuntu-14.04',
-#     'ubuntu-15.04',
-#   ]
-#   run_list:
-#   - recipe[docker_service_test::tls]
+- name: service-tls-execute
+  includes: [
+    'ubuntu-15.04'
+  ]
+  attributes:
+    docker:
+      version: '1.8.2'
+      service_manager: execute
+  run_list:
+  - recipe[docker_service_test::tls]
+
+- name: service-socket
+  includes: [
+    'amazon-2014.09',
+    'fedora-21',
+    'centos-6.5',
+    'centos-7.0',
+    'debian-7.0',
+    'debian-8',
+    'ubuntu-12.04',
+    'ubuntu-14.04',
+    'ubuntu-15.04'
+  ]
+  attributes:
+    docker:
+      service_manager: system
+  run_list:
+  - recipe[docker_service_test::socket]
+
+- name: service-tls
+  includes: [
+    'amazon-2014.09',
+    'fedora-21',
+    'centos-6.5',
+    'centos-7.0',
+    'debian-7.0',
+    'debian-8',
+    'ubuntu-12.04',
+    'ubuntu-14.04',
+    'ubuntu-15.04',
+  ]
+  attributes:
+    docker:
+      service_manager: system
+  run_list:
+  - recipe[docker_service_test::tls]
 
 - name: resources-162
   includes: [
-    'centos-7.0',
     'debian-8.1',
+    'centos-7.0',
     'fedora-21',
-    'ubuntu-12.04',
     'ubuntu-14.04',
     'ubuntu-15.04',
   ]
@@ -103,16 +136,15 @@ suites:
 
 - name: resources-171
   includes: [
-    'centos-7.0',
     'debian-8.1',
+    'centos-7.0',
     'fedora-21',
-    'ubuntu-12.04',
-    'ubuntu-14.04',
     'ubuntu-15.04',
   ]
   attributes:
     docker:
       version: '1.7.1'
+      service_manager: system
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::image]
@@ -120,11 +152,9 @@ suites:
 
 - name: resources-182
   includes: [
-    'centos-7.0',
     'debian-8.1',
+    'centos-7.0',
     'fedora-21',
-    'ubuntu-12.04',
-    'ubuntu-14.04',
     'ubuntu-15.04',
   ]
   attributes:
@@ -139,5 +169,8 @@ suites:
   includes: [
     'ubuntu-15.04'
   ]
+  attributes:
+    docker:
+      version: '1.8.2'
   run_list:
   - recipe[docker_test::notifications]
