@@ -1,3 +1,7 @@
+$LOAD_PATH.unshift *Dir[File.expand_path('../../files/default/vendor/gems/**/lib', __FILE__)]
+require 'docker'
+require_relative 'helpers_service'
+
 class Chef
   class Provider
     class DockerService < Chef::Provider::LWRPBase
@@ -33,6 +37,8 @@ class Chef
             scheme: 'https'
           }
         end
+
+        # require 'pry' ; binding.pry        
         
         if docker_running?
           @current_resource.storage_driver Docker.info['Driver']
