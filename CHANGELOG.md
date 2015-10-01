@@ -1,3 +1,9 @@
+v1.0.42
+--------------------
+- Fix for docker_service to allow setting icc to false
+- Get chefspec happy on latest nightly chefdk again
+- Accepting both String and Array for default_ulimit
+
 v1.0.41
 --------------------
 - Refactoring broken sysvinit scripts
