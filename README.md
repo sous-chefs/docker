@@ -125,7 +125,7 @@ docker_container 'my_nginx' do
   repo 'nginx'
   tag 'latest'
   port '80:80'
-  hostname 'www'
+  host_name 'www'
   domain_name 'computers.biz'
   env 'FOO=bar'
   binds [ '/some/local/files/:/etc/nginx/conf.d' ]
