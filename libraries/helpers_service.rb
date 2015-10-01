@@ -182,7 +182,7 @@ module DockerHelpers
       env_h['DOCKER_HOST'] = new_resource.host unless new_resource.host.nil?
       env_h['DOCKER_CERT_PATH'] = ::File.dirname(new_resource.tlscacert) unless new_resource.tlscacert.nil?
       env_h['DOCKER_TLS_VERIFY'] = '1' if new_resource.tlsverify == true
-      
+
       o = shell_out("#{docker_bin} ps | head -n 1 | grep ^CONTAINER", env: env_h)
       return true if o.stdout =~ /CONTAINER/
       false
