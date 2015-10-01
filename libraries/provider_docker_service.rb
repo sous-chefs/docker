@@ -16,15 +16,31 @@ class Chef
       # Mix in helpers from libraries/helpers.rb
       include DockerHelpers::Service
 
-      def load_current_resource
+      def load_current_resource        
         @current_resource = Chef::Resource::DockerService.new(new_resource.name)
+        
+        # FIXME: remove this line
+        Excon.defaults[:ssl_verify_peer] = false
+        
+        cert_path = ::File.dirname new_resource.tlscacert if new_resource.tlscacert
+        
+        unless new_resource.host.nil? || cert_path.nil?
+          Docker.url = new_resource.host
+          Docker.options = {
+            ssl_ca_file: ::File.join(cert_path, 'ca.pem'),
+            client_cert: ::File.join(cert_path, 'cert.pem'),
+            client_key: ::File.join(cert_path, 'key.pem'),
+            scheme: 'https'
+          }
+        end
+        
         if docker_running?
           @current_resource.storage_driver Docker.info['Driver']
         else
           return @current_resource
         end
       end
-
+     
       def resource_changes
         changes = []
         changes << :storage_driver if update_storage_driver?
