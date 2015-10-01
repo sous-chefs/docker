@@ -3,7 +3,7 @@ include_recipe 'docker_test::default'
 
 # Build an image that takes longer than two minutes
 # (the default read_timeout) to build
-# 
+#
 
 # Make sure that the image does not exist, to avoid a cache hit
 # while building the docker image. This can legitimately fail
@@ -23,11 +23,11 @@ cookbook_file '/usr/local/src/container4/Dockerfile' do
   action :create
 end
 
-docker_image "timeout test image" do
-  repo  "kkeane/image.4"
+docker_image 'timeout test image' do
+  repo 'kkeane/image.4'
   read_timeout 3600
   write_timeout 3600
-  tag    "chef"
+  tag 'chef'
   source '/usr/local/src/container4'
   action :build_if_missing
 end
