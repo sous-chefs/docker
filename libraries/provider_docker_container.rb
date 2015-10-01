@@ -38,6 +38,7 @@ class Chef
           @current_resource.extra_hosts c.info['HostConfig']['ExtraHosts']
           @current_resource.hostname c.info['Config']['Hostname']
           @current_resource.image c.info['Config']['Image']
+          @current_resource.labels c.info['Config']['Labels']
           @current_resource.links c.info['HostConfig']['Links']
           @current_resource.log_config c.info['HostConfig']['LogConfig']
           @current_resource.mac_address c.info['Config']['MacAddress']
@@ -84,6 +85,7 @@ class Chef
         changes << :extra_hosts if current_resource.extra_hosts != parsed_extra_hosts
         changes << :hostname if update_hostname?
         changes << :image if current_resource.image != "#{parsed_repo}:#{new_resource.tag}"
+        changes << :labels if current_resource.labels != parsed_labels
         changes << :links if current_resource.links != serialized_links
         changes << :log_config if current_resource.log_config != serialized_log_config
         changes << :mac_address if current_resource.mac_address != new_resource.mac_address
@@ -113,6 +115,7 @@ class Chef
         Docker::Container.create(
           'name' => new_resource.container_name,
           'Image' => "#{parsed_repo}:#{new_resource.tag}",
+          'Labels' => parsed_labels,
           'Cmd' => parsed_command,
           'AttachStderr' => parsed_attach_stderr,
           'AttachStdin' => parsed_attach_stdin,
@@ -180,6 +183,7 @@ class Chef
         Chef::Log.debug("DOCKER: ulimits - current:#{current_resource.ulimits}:")
         Chef::Log.debug("DOCKER: ulimits -     new:#{new_resource.ulimits}:")
         Chef::Log.debug("DOCKER: links - current:#{current_resource.links}: serialized:#{serialized_links}:")
+        Chef::Log.debug("DOCKER: labels - current:#{current_resource.labels}: parsed:#{parsed_labels}:")
 
         resource_changes.each do |change|
           Chef::Log.debug("DOCKER: change - :#{change}")

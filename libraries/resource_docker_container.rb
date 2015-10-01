@@ -33,6 +33,7 @@ class Chef
       attribute :exposed_ports, kind_of: Hash, default: nil
       attribute :force, kind_of: [TrueClass, FalseClass], default: false
       attribute :host_name, kind_of: String, default: nil
+      attribute :labels, kind_of: [String, Array, Hash], default: nil
       attribute :links, kind_of: [String, Array, NilClass], default: nil # FIXME: add validate proc
       attribute :log_config, kind_of: [Hash, NilClass], default: nil # FIXME: add validate proc and tests; to configure the resource, prefer log_driver/log_opts below
       attribute :log_driver, equal_to: %w( json-file syslog journald gelf fluentd none ), default: nil
