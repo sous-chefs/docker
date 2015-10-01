@@ -1,3 +1,7 @@
+v1.0.43
+--------------------
+- Switching docker_service sysvinit provider from ::Insserv to ::Debian
+
 v1.0.42
 --------------------
 - Fix for docker_service to allow setting icc to false
