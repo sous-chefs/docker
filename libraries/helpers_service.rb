@@ -136,13 +136,17 @@ module DockerHelpers
       Array(new_resource.storage_opts)
     end
 
+    def parsed_default_ulimit
+      Array(new_resource.default_ulimit)
+    end
+
     def docker_opts
       opts = []
       opts << "--api-cors-header=#{new_resource.api_cors_header}" if new_resource.api_cors_header
       opts << "--bridge=#{new_resource.bridge}" if new_resource.bridge
       opts << "--bip=#{new_resource.bip}" if new_resource.bip
       opts << '--debug' if new_resource.debug
-      opts << "--default-ulimit=#{new_resource.default_ulimit}" if new_resource.default_ulimit
+      parsed_default_ulimit.each { |u| opts << "--default-ulimit=#{u}" } if new_resource.default_ulimit
       parsed_dns.each { |dns| opts << "--dns=#{dns}" }
       new_resource.dns_search.each { |dns| opts << "--dns-search=#{dns}" } if new_resource.dns_search
       opts << "--exec-driver=#{new_resource.exec_driver}" if new_resource.exec_driver
