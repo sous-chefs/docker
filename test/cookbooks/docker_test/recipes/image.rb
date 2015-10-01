@@ -54,7 +54,7 @@ docker_image 'save hello-world' do
 end
 
 ###########################
-# :build, :build_if_missing
+# :build
 ###########################
 
 # Build from a Dockerfile
@@ -111,38 +111,6 @@ docker_image 'image_3' do
   source '/usr/local/src/image_3.tar'
   action :build_if_missing
 end
-
-# Build an image that takes longer than two minutes
-# (the default read_timeout) to build
-# 
-
-# Make sure that the image does not exist, to avoid a cache hit
-# while building the docker image. This can legitimately fail
-# if the image does not exist.
-execute 'rmi kkeane/image.4' do
-  command 'docker rmi kkeane/image.4:chef'
-  action :run
-  ignore_failure true
-end
-
-directory '/usr/local/src/container4' do
-  action :create
-end
-
-cookbook_file '/usr/local/src/container4/Dockerfile' do
-  source 'Dockerfile_4'
-  action :create
-end
-
-docker_image "timeout test image" do
-  repo  "kkeane/image.4"
-  action :build_if_missing
-  read_timeout 3600
-  write_timeout 3600
-  tag    "chef"
-  source '/usr/local/src/container4'
-end
-
 
 #########
 # :import
