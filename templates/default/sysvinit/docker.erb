@@ -35,13 +35,13 @@ STOPTIMEOUT=900
 PID_DELAY=60
 
 <% if @docker_host %>
-DOCKER_HOST=<%= @docker_host %>
+export DOCKER_HOST=<%= @docker_host %>
 <% end %>
 <% if @docker_tlscacert %>
-DOCKER_CERT_PATH=`dirname <%= @docker_tlscacert %>`
+export DOCKER_CERT_PATH=`dirname <%= @docker_tlscacert %>`
 <% end %>
 <% if @docker_tlsverify %>
-DOCKER_TLS_VERIFY=1
+export DOCKER_TLS_VERIFY=1
 <% end %>
 <% if @pidfile -%>
 pidfile="<%= @pidfile %>"

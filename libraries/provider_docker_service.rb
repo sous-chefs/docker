@@ -1,3 +1,7 @@
+$LOAD_PATH.unshift *Dir[File.expand_path('../../files/default/vendor/gems/**/lib', __FILE__)]
+require 'docker'
+require_relative 'helpers_service'
+
 class Chef
   class Provider
     class DockerService < Chef::Provider::LWRPBase
@@ -18,6 +22,24 @@ class Chef
 
       def load_current_resource
         @current_resource = Chef::Resource::DockerService.new(new_resource.name)
+
+        # FIXME: remove this line
+        # Excon.defaults[:ssl_verify_peer] = false
+        
+        cert_path = ::File.dirname new_resource.tlscacert if new_resource.tlscacert
+
+        unless new_resource.host.nil? || cert_path.nil?
+          Docker.url = new_resource.host
+          Docker.options = {
+            ssl_ca_file: ::File.join(cert_path, 'ca.pem'),
+            client_cert: ::File.join(cert_path, 'cert.pem'),
+            client_key: ::File.join(cert_path, 'key.pem'),
+            scheme: 'https'
+          }
+        end
+
+        # require 'pry' ; binding.pry        
+        
         if docker_running?
           @current_resource.storage_driver Docker.info['Driver']
         else
