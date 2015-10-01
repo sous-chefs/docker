@@ -1,3 +1,9 @@
+v1.0.41
+--------------------
+- Refactoring broken sysvinit scripts
+- #421 - Adding docker-wait-ready blocks
+- Discovered TLS verification is broken. Disabling for now.
+
 v1.0.40
 --------------------
 - Fixing broken Chef::Provider::DockerService::Execute
