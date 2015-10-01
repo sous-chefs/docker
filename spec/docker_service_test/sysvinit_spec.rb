@@ -9,6 +9,10 @@ describe 'Chef::Provider::DockerService::Sysvinit with Centos' do
     ).converge('docker_service_test::sysvinit')
   end
 
+  before do
+    stub_command('docker ps | head -n 1 | grep ^CONTAINER').and_return(true)
+  end
+
   it 'creates docker_service[default]' do
     expect(chef_run).to create_docker_service('default')
   end
