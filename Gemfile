@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+gem 'chef', github: 'chef/chef'
+
 group :lint do
   gem 'foodcritic', '~> 4.0'
   gem 'rake'
@@ -7,7 +9,7 @@ end
 
 group :unit do
   gem 'berkshelf', '~> 3.2'
-  gem 'chefspec', '~> 4.2'
+  gem 'chefspec', github: 'jkeiser/chefspec', branch: 'jk/chefspec-12.5'
 end
 
 group :kitchen_common do
