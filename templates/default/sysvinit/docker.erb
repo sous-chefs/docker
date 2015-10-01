@@ -1,23 +1,24 @@
 #!/bin/sh
 #
-#       /etc/rc.d/init.d/docker
-#
-#       Daemon for docker.com
-#
-# chkconfig:   2345 95 95
-# description: Daemon for docker.com
-
 ### BEGIN INIT INFO
-# Provides:       docker
-# Required-Start: $network cgconfig
-# Required-Stop:
-# Should-Start:
-# Should-Stop:
-# Default-Start: 2 3 4 5
-# Default-Stop:  0 1 6
-# Short-Description: start and stop docker
-# Description: Daemon for docker.com
+# Provides:          <%= @docker_name %>
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Should-Start:      $network $time
+# Should-Stop:       $network $time
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start and stop the mysql database server daemon
+# Description:       Controls the main MySQL database server daemon "mysqld"
+#                    and its wrapper script "mysqld_safe".
 ### END INIT INFO
+
+# set -e
+# set -u
+
+### Exit code reference
+# http://fedoraproject.org/wiki/Packaging:SysVInitScript
+# http://refspecs.linuxbase.org/LSB_3.1.0/LSB-Core-generic/LSB-Core-generic/iniscrptact.html
 
 # Source functions
 <% if node['platform_family'] == 'rhel' %>
@@ -25,34 +26,127 @@
 . /etc/rc.d/init.d/functions
 <% end %>
 
-exec="<%= @docker_bin %>"
-prog="docker"
-unshare=/usr/bin/unshare
+####
+# Variables
+####
+
+STARTTIMEOUT=900
+STOPTIMEOUT=900
+PID_DELAY=60
+
+<% if @docker_host %>
+DOCKER_HOST=<%= @docker_host %>
+<% end %>
+<% if @docker_tlscacert %>
+DOCKER_CERT_PATH=`dirname <%= @docker_tlscacert %>`
+<% end %>
+<% if @docker_tlsverify %>
+DOCKER_TLS_VERIFY=1
+<% end %>
 <% if @pidfile -%>
 pidfile="<%= @pidfile %>"
 <% else -%>
-pidfile="/var/run/$prog.pid"
+pidfile="/var/run/docker.pid"
 <% end -%>
-lockfile="/var/lock/subsys/$prog"
+lockfile="/var/lock/subsys/docker"
 <% if @config.logfile -%>
 logfile="<%= @config.logfile %>"
 <% else -%>
-logfile="/var/log/$prog"
+logfile="/var/log/docker"
 <% end -%>
 
-[ -e /etc/sysconfig/$prog ] && . /etc/sysconfig/$prog
+####
+# Helper functions
+###
+
+pid_exists() {
+    PID_EXISTS=1
+    if [ -f $pid_file ]; then
+        DOCKER_PID=`cat $pid_file 2>/dev/null`
+	      if [ -n "$DOCKER_PID" ] && [ -d "/proc/$DOCKER_PID" ] ; then
+	          PID_EXISTS=0
+	      fi
+    fi
+    return $PID_EXISTS
+}
+
+running() {
+    RUNNING=1
+    <%= @docker_bin %> ps | head -n 1 | grep ^CONTAINER 2>&1 >/dev/null
+    local mret=$?
+    if [ $mret -eq 0 ]; then
+        RUNNING=0
+    fi
+    return $RUNNING
+}
+
+print_start_success() {
+    <% if node['platform_family'] == 'rhel' %>
+    action $"Starting <%= @docker_name %>: " /bin/true
+    <% else %>
+    echo "Staring Docker instance <%= @docker_name %>"
+    <% end %>
+    return 0;
+}
+
+print_start_failure() {
+    <% if node['platform_family'] == 'rhel' %>
+    action $"Starting <%= @docker_name %>: " /bin/false
+    <% else %>
+    echo "Could not start Docker instance <%= @docker_name %>"
+    <% end %>
+    return 0;
+}
+
+print_reload_success() {
+    <% if node['platform_family'] == 'rhel' %>
+    action $"Reloading <%= @docker_name %>" /bin/true
+    <% else %>
+    echo "Reload success for <%= @docker_name %>"
+    <% end %>
+    return 0;
+}
+
+print_reload_failure() {
+    <% if node['platform_family'] == 'rhel' %>
+    action $"Reloading <%= @docker_name %>" /bin/false
+    <% else %>
+    echo "Reload failed for <%= @docker_name %>"
+    <% end %>
+    return 0;
+}
+
+print_stop_success() {
+    <% if node['platform_family'] == 'rhel' %>
+    action $"Stopping <%= @docker_name %>: " /bin/true
+    <% else %>
+    echo "Stopping Docker instance <%= @docker_name %>"
+    <% end %>
+    return 0;
+}
+
+print_stop_failure() {
+    <% if node['platform_family'] == 'rhel' %>
+    action $"Stopping <%= @docker_name %>: " /bin/false
+    <% else %>
+    echo "Could not stop Docker instance <%= @docker_name %>"
+    <% end %>
+    return 0;
+}
 
 prestart() {
-    service cgconfig status > /dev/null
-
-    if [[ $? != 0 ]]; then
-        service cgconfig start
-    fi
-
+    <% if @config.http_proxy %>
     export HTTP_PROXY=<%= @config.http_proxy %>
+    <% end %>
+    <% if @config.https_proxy %>
     export HTTPS_PROXY=<%= @config.https_proxy %>
+    <% end %>
+    <% if @config.no_proxy %>
     export NO_PROXY=<%= @config.no_proxy %>
+    <% end %>
+    <% if @config.tmpdir %>
     export TMPDIR=<%= @config.tmpdir %>
+    <% end %>
 
     [ -x /sbin/sysctl ] || exit 6
     <% if @config.ipv4_forward %>
@@ -63,16 +157,16 @@ prestart() {
     <% end %>
 }
 
-start() {
-    [ -x $exec ] || exit 5
+start_command() {
+    [ -x <%= @docker_bin %> ] || exit 5
 
     check_for_cleanup
 
     if ! [ -f $pidfile ]; then
         prestart
-        printf "Starting $prog:\t"
+        printf "Starting <%= @docker_bin %>"
         echo "\n$(date)\n" >> $logfile
-        "$unshare" -m -- $exec <%= @docker_daemon_arg %> <%= @docker_opts.join(' ') %> &>> $logfile &
+        <%= @docker_daemon_cmd %> >> $logfile 2>&1 &
         pid=$!
         touch $lockfile
         # wait up to 10 seconds for the pidfile to exist.  see
@@ -82,45 +176,101 @@ start() {
             sleep 1
             tries=$((tries + 1))
         done
-        success
-        echo
+        print_start_success
     else
-        <% if node['platform_family'] == 'rhel' %>
-        action $"$pidfile still exists...\n " /bin/false
-        <% else %>
-        printf "$pidfile still exists...\n"
-        <% end %>
+        print_start_failure
+    fi
+}
+
+####
+# Init script actions
+###
+
+# Start <%= @docker_name %>
+start() {
+    # exit 0 if already running.
+    if running; then
+        print_start_success
+        return 0;
+    fi
+
+    # run program
+    start_command;
+    start_pid=$?
+
+    # Timeout loop
+    local TIMEOUT=$STARTTIMEOUT
+    while [ $TIMEOUT -gt 0 ]; do
+        if running; then
+            break
+        fi
+
+        let CURRENT_DELAY=${STARTTIMEOUT}-${TIMEOUT}
+        if [ $CURRENT_DELAY -gt $PID_DELAY ] \
+          && ! pid_exists; then
+            break
+        fi
+
+        sleep 1
+	      let TIMEOUT=${TIMEOUT}-1
+    done
+
+    if running; then
+        # successbaby.gif
+        print_start_success
+        return 0
+    elif ! pid_exists; then
+        # Handle startup failure
+        print_start_failure
+        return 3
+	  elif [ $TIMEOUT -eq 0 ]; then
+        # Handle timeout
+        print_start_failure
+        # clean up
+        kill $start_pid 2>/dev/null
+	      return 1
+	  fi
+}
+
+# Status of <%= @mysql_name %>
+status() {
+    if running; then
+        echo "<%= @docker_name %> is running"
+        return 0
+    else
+        echo "<%= @docker_name %> is not running"
+        return 1
     fi
 }
 
 stop() {
-    echo -n $"Stopping $prog: "
-    killproc -p $pidfile -d 300 $prog
-    retval=$?
-    echo
-    [ $retval -eq 0 ] && rm -f $lockfile
-    return $retval
+    if running; then
+        echo "Stopping Docker instance <%= @docker_name %>"
+        if [ -f $pidfile ]; then
+            /bin/kill `cat $pidfile 2>/dev/null`
+            kstat=$?
+        fi
+
+        # Timeout loop
+        local TIMEOUT=$STARTTIMEOUT
+        while [ $TIMEOUT -gt 0 ]; do
+            if running; then
+            sleep 1
+            fi
+	          let TIMEOUT=${TIMEOUT}-1
+        done
+
+        return $kstat
+    else
+        echo "Docker instance <%= @docker_name %> Stopped."
+        return 0
+    fi
+
 }
 
 restart() {
     stop
     start
-}
-
-reload() {
-    restart
-}
-
-force_reload() {
-    restart
-}
-
-rh_status() {
-    status -p $pidfile $prog
-}
-
-rh_status_q() {
-    rh_status >/dev/null 2>&1
 }
 
 check_for_cleanup() {
@@ -129,34 +279,25 @@ check_for_cleanup() {
     fi
 }
 
+# main()
 case "$1" in
     start)
-        rh_status_q && exit 0
-        $1
+        start
         ;;
     stop)
-        rh_status_q || exit 0
-        $1
-        ;;
-    restart)
-        $1
-        ;;
-    reload)
-        rh_status_q || exit 7
-        $1
-        ;;
-    force-reload)
-        force_reload
+        stop
         ;;
     status)
-        rh_status
+        status
         ;;
-    condrestart|try-restart)
-        rh_status_q || exit 0
-        restart
+    restart)
+        stop ; start
+        ;;
+    reload)
+        reload
         ;;
     *)
-        echo $"Usage: $0 {start|stop|status|restart|condrestart|try-restart|reload|force-reload}"
+        echo $"Usage: $0 {start|stop|status|restart|reload}"
         exit 2
 esac
 

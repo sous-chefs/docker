@@ -31,11 +31,22 @@ class Chef
           end
 
           # loop until docker socker is available
-          ruby_block 'wait for docker' do
-            block do
-              true until ::File.exist?('/var/run/docker.sock')
-            end
-            not_if { ::File.exist? '/var/run/docker.sock' }
+          bash 'docker-wait-ready' do
+            env_h = {}
+            env_h['DOCKER_HOST'] = new_resource.host unless new_resource.host.nil?
+            env_h['DOCKER_CERT_PATH'] = ::File.dirname(new_resource.tlscacert) unless new_resource.tlscacert.nil?
+            env_h['DOCKER_TLS_VERIFY'] = '1' if new_resource.tlsverify == true
+            environment env_h
+            code <<-EOF
+            while /bin/true; do
+              docker ps | head -n 1 | grep ^CONTAINER
+              if [ $? -eq 0 ]; then
+                break
+              fi
+              sleep 1
+            done
+            EOF
+            not_if { docker_running? }
           end
         end
 
@@ -43,7 +54,6 @@ class Chef
           execute 'stop docker' do
             command 'kill `pidof docker`'
             only_if "ps -ef | awk '{ print $8 }' | grep ^#{docker_bin}$"
-            not_if { ::File.exist? '/var/run/docker.sock' }
           end
         end
 

@@ -140,6 +140,9 @@ suites:
     'ubuntu-14.04',
     'ubuntu-15.04'
   ]
+  attributes:
+    docker:
+      service_manager: system
   run_list:
   - recipe[docker_service_test::socket]
 
@@ -155,6 +158,9 @@ suites:
     'ubuntu-14.04',
     'ubuntu-15.04',
   ]
+  attributes:
+    docker:
+      service_manager: system
   run_list:
   - recipe[docker_service_test::tls]
 
@@ -184,6 +190,7 @@ suites:
   attributes:
     docker:
       version: '1.7.1'
+      service_manager: system
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::image]
