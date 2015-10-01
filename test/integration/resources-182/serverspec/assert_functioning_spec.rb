@@ -627,6 +627,11 @@ if docker_version.to_f > 1.6
     its(:exit_status) { should eq 0 }
     its(:stdout) { should match(/host/) }
   end
+
+  describe command("docker inspect -f '{{ .Config.Labels }}' uber_options") do
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match(/foo:bar hello:world/) }
+  end
 end
 
 # docker_container[overrides-1]

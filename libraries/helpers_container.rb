@@ -149,6 +149,16 @@ module DockerHelpers
       ray
     end
 
+    def parsed_labels
+      return new_resource.labels if new_resource.labels.is_a?(Hash)
+      h = {}
+      Array(new_resource.labels).each do |label|
+        parts = label.split(':')
+        h.merge!(parts[0] => parts[1])
+      end
+      h
+    end
+
     def parsed_log_config
       (new_resource.log_config || {}).tap do |log_config|
         # some versions of docker api do not support config attributes, then

@@ -857,6 +857,7 @@ docker_container 'uber_options' do
     'core=100000000:100000000',
     'memlock=100000000:100000000'
   ]
+  labels ['foo:bar', 'hello:world']
   action :run
 end
 
