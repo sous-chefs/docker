@@ -105,6 +105,27 @@ module DockerHelpers
       [docker_bin, docker_daemon_arg, docker_opts].join(' ')
     end
 
+    def docker_wait_ready
+      # loop until docker socker is available
+      bash 'docker-wait-ready' do
+        env_h = {}
+        env_h['DOCKER_HOST'] = new_resource.host unless new_resource.host.nil?
+        env_h['DOCKER_CERT_PATH'] = ::File.dirname(new_resource.tlscacert) unless new_resource.tlscacert.nil?
+        env_h['DOCKER_TLS_VERIFY'] = '1' if new_resource.tlsverify == true
+        environment env_h
+        code <<-EOF
+        while /bin/true; do
+          docker ps | head -n 1 | grep ^CONTAINER
+          if [ $? -eq 0 ]; then
+            break
+          fi
+          sleep 1
+        done
+        EOF
+        not_if 'docker ps | head -n 1 | grep ^CONTAINER', environment: env_h
+      end
+    end
+
     def parsed_dns
       Array(new_resource.dns)
     end
