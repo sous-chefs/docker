@@ -168,8 +168,8 @@ module DockerHelpers
       opts = []
       opts << "--host=#{parsed_connect_host}" if parsed_connect_host
       if parsed_connect_host =~ /^tcp:/
-        opts << "--tls=#{new_resource.tls}"
-        opts << "--tlsverify=#{new_resource.tls_verify}"
+        opts << "--tls=#{new_resource.tls}" unless new_resource.tls.nil?
+        opts << "--tlsverify=#{new_resource.tls_verify}" unless new_resource.tls_verify.nil?
         opts << "--tlscacert=#{new_resource.tls_ca_cert}" if new_resource.tls_ca_cert
         opts << "--tlscert=#{new_resource.tls_client_cert}" if new_resource.tls_client_cert
         opts << "--tlskey=#{new_resource.tls_client_key}" if new_resource.tls_client_key
@@ -209,8 +209,8 @@ module DockerHelpers
       parsed_storage_driver.each { |s| opts << "--storage-driver=#{s}" } if new_resource.storage_driver
       opts << '--selinux-enabled=true' if new_resource.selinux_enabled
       parsed_storage_opts.each { |storage_opt| opts << "--storage-opt=#{storage_opt}" }
-      opts << "--tls=#{new_resource.tls}"
-      opts << "--tlsverify=#{new_resource.tls_verify}"
+      opts << "--tls=#{new_resource.tls}" unless new_resource.tls.nil?
+      opts << "--tlsverify=#{new_resource.tls_verify}" unless new_resource.tls_verify.nil?
       opts << "--tlscacert=#{new_resource.tls_ca_cert}" if new_resource.tls_ca_cert
       opts << "--tlscert=#{new_resource.tls_server_cert}" if new_resource.tls_server_cert
       opts << "--tlskey=#{new_resource.tls_server_key}" if new_resource.tls_server_key
