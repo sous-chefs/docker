@@ -27,8 +27,8 @@ class Chef
               docker_host: new_resource.host,
               docker_name: docker_name,
               docker_daemon_opts: docker_daemon_opts,
-              docker_tlscacert: new_resource.tlscacert,
-              docker_tlsverify: new_resource.tlsverify,
+              docker_tls_ca_cert: new_resource.tls_ca_cert,
+              docker_tls_verify: new_resource.tls_verify,
               pidfile: parsed_pidfile
             )
             action :create
@@ -60,8 +60,8 @@ class Chef
               docker_host: new_resource.host,
               docker_name: docker_name,
               docker_daemon_opts: docker_daemon_opts,
-              docker_tlscacert: new_resource.tlscacert,
-              docker_tlsverify: new_resource.tlsverify,
+              docker_tls_ca_cert: new_resource.tls_ca_cert,
+              docker_tls_verify: new_resource.tls_verify,
               pidfile: parsed_pidfile
             )
             action :create

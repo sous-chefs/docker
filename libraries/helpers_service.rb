@@ -105,24 +105,23 @@ module DockerHelpers
       [docker_bin, docker_daemon_arg, docker_daemon_opts].join(' ')
     end
 
+    def docker_cmd
+      [docker_bin, docker_opts].join(' ')
+    end
+
+    # loop until docker socker is available
     def docker_wait_ready
-      # loop until docker socker is available
       bash 'docker-wait-ready' do
-        env_h = {}
-        env_h['DOCKER_HOST'] = new_resource.host unless new_resource.host.nil?
-        env_h['DOCKER_CERT_PATH'] = ::File.dirname(new_resource.tlscacert) unless new_resource.tlscacert.nil?
-        env_h['DOCKER_TLS_VERIFY'] = '1' if new_resource.tlsverify == true
-        environment env_h
         code <<-EOF
         while /bin/true; do
-          docker ps | head -n 1 | grep ^CONTAINER
+          #{docker_cmd} ps | head -n 1 | grep ^CONTAINER
           if [ $? -eq 0 ]; then
             break
           fi
           sleep 1
         done
         EOF
-        not_if 'docker ps | head -n 1 | grep ^CONTAINER', environment: env_h
+        not_if "#{docker_cmd} ps | head -n 1 | grep ^CONTAINER"
       end
     end
 
@@ -161,6 +160,23 @@ module DockerHelpers
       Array(new_resource.default_ulimit)
     end
 
+    def parsed_connect_host
+      parsed_host.first if new_resource.host
+    end
+
+    def docker_opts
+      opts = []
+      opts << "--host=#{parsed_connect_host}" if parsed_connect_host
+      if parsed_connect_host =~ /^tcp:/
+        opts << "--tls=#{new_resource.tls}"
+        opts << "--tlsverify=#{new_resource.tls_verify}"
+        opts << "--tlscacert=#{new_resource.tls_ca_cert}" if new_resource.tls_ca_cert
+        opts << "--tlscert=#{new_resource.tls_client_cert}" if new_resource.tls_client_cert
+        opts << "--tlskey=#{new_resource.tls_client_key}" if new_resource.tls_client_key
+      end
+      opts
+    end
+
     def docker_daemon_opts
       opts = []
       opts << "--api-cors-header=#{new_resource.api_cors_header}" if new_resource.api_cors_header
@@ -193,22 +209,17 @@ module DockerHelpers
       parsed_storage_driver.each { |s| opts << "--storage-driver=#{s}" } if new_resource.storage_driver
       opts << '--selinux-enabled=true' if new_resource.selinux_enabled
       parsed_storage_opts.each { |storage_opt| opts << "--storage-opt=#{storage_opt}" }
-      opts << '--tls=true' if new_resource.tls
-      opts << "--tlscacert=#{new_resource.tlscacert}" if new_resource.tlscacert
-      opts << "--tlscert=#{new_resource.tlscert}" if new_resource.tlscert
-      opts << "--tlskey=#{new_resource.tlskey}" if new_resource.tlskey
-      opts << '--tlsverify=true' if new_resource.tlsverify
+      opts << "--tls=#{new_resource.tls}"
+      opts << "--tlsverify=#{new_resource.tls_verify}"
+      opts << "--tlscacert=#{new_resource.tls_ca_cert}" if new_resource.tls_ca_cert
+      opts << "--tlscert=#{new_resource.tls_server_cert}" if new_resource.tls_server_cert
+      opts << "--tlskey=#{new_resource.tls_server_key}" if new_resource.tls_server_key
       opts << "--userland-proxy=#{new_resource.userland_proxy}" unless new_resource.userland_proxy.nil?
       opts
     end
 
     def docker_running?
-      env_h = {}
-      env_h['DOCKER_HOST'] = new_resource.host unless new_resource.host.nil?
-      env_h['DOCKER_CERT_PATH'] = ::File.dirname(new_resource.tlscacert) unless new_resource.tlscacert.nil?
-      env_h['DOCKER_TLS_VERIFY'] = '1' if new_resource.tlsverify == true
-
-      o = shell_out("#{docker_bin} ps | head -n 1 | grep ^CONTAINER", env: env_h)
+      o = shell_out("#{docker_cmd} ps | head -n 1 | grep ^CONTAINER")
       return true if o.stdout =~ /CONTAINER/
       false
     end

@@ -52,11 +52,13 @@ class Chef
       attribute :storage_driver, kind_of: [String, Array], default: nil
       attribute :selinux_enabled, kind_of: [TrueClass, FalseClass], default: nil
       attribute :storage_opts, kind_of: [String, Array], default: []
-      attribute :tls, kind_of: [TrueClass, FalseClass], default: nil
-      attribute :tlscacert, kind_of: String, default: nil
-      attribute :tlscert, kind_of: String, default: nil
-      attribute :tlskey, kind_of: String, default: nil
-      attribute :tlsverify, kind_of: [TrueClass, FalseClass], default: nil
+      attribute :tls, kind_of: [TrueClass, FalseClass], default: true
+      attribute :tls_verify, kind_of: [TrueClass, FalseClass], default: true
+      attribute :tls_ca_cert, kind_of: String, default: nil
+      attribute :tls_server_cert, kind_of: String, default: nil
+      attribute :tls_server_key, kind_of: String, default: nil
+      attribute :tls_client_cert, kind_of: String, default: nil
+      attribute :tls_client_key, kind_of: String, default: nil
       attribute :default_ulimit, kind_of: [String, Array], default: nil
       attribute :userland_proxy, kind_of: [TrueClass, FalseClass], default: nil
 
@@ -68,6 +70,11 @@ class Chef
 
       # logging
       attribute :logfile, kind_of: String, default: '/var/log/docker.log'
+
+      alias_method :tlscacert, :tls_ca_cert
+      alias_method :tlscert, :tls_server_cert
+      alias_method :tlskey, :tls_server_key
+      alias_method :tlsverify, :tls_verify
 
       include DockerHelpers
     end

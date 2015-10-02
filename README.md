@@ -178,10 +178,12 @@ section below for more information.
 ```ruby
 docker_service 'tls_test:2376' do
   host ["tcp://#{node['ipaddress']}:2376", 'unix:///var/run/docker.sock']
-  tlscacert '/path/to/ca.pem'
-  tlscert '/path/to/server.pem'
-  tlskey '/path/to/serverkey.pem'
-  tlsverify true
+  tls_verify true
+  tls_ca_cert '/path/to/ca.pem'
+  tls_server_cert '/path/to/server.pem'
+  tls_server_key '/path/to/serverkey.pem'
+  tls_client_cert '/path/to/client.pem'
+  tls_client_key '/path/to/clientkey.pem'
   provider Chef::Provider::DockerService::Systemd
   action [:create, :start]
 end
@@ -239,10 +241,12 @@ the options found in the
 - `selinux_enabled` - Enable selinux support
 - `storage_opt` - Set storage driver options
 - `tls` - Use TLS; implied by --tlsverify
-- `tlscacert` - Trust certs signed only by this CA
-- `tlscert` - Path to TLS certificate file
-- `tlskey` - Path to TLS key file
-- `tlsverify` - Use TLS and verify the remote
+- `tls_verify` - Use TLS and verify the remote
+- `tls_ca_cert` - Trust certs signed only by this CA
+- `tls_server_cert` - Path to TLS certificate file for docker service
+- `tls_server_key` - Path to TLS key file for docker service
+- `tls_client_cert` - Path to TLS certificate file for docker cli
+- `tls_client_key` - Path to TLS key file for docker cli
 - `default_ulimit` - Set default ulimit settings for containers
 - `http_proxy` - ENV variable set before for Docker daemon starts
 - `https_proxy` - ENV variable set before for Docker daemon starts
