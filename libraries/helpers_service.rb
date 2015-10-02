@@ -102,7 +102,7 @@ module DockerHelpers
     end
 
     def docker_daemon_cmd
-      [docker_bin, docker_daemon_arg, docker_opts].join(' ')
+      [docker_bin, docker_daemon_arg, docker_daemon_opts].join(' ')
     end
 
     def docker_wait_ready
@@ -161,7 +161,7 @@ module DockerHelpers
       Array(new_resource.default_ulimit)
     end
 
-    def docker_opts
+    def docker_daemon_opts
       opts = []
       opts << "--api-cors-header=#{new_resource.api_cors_header}" if new_resource.api_cors_header
       opts << "--bridge=#{new_resource.bridge}" if new_resource.bridge

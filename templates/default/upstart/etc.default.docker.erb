@@ -8,7 +8,7 @@ DOCKER_LOGFILE=<%= @config.logfile %>
 <% end %>
 
 # Use DOCKER_OPTS to modify the daemon startup options.
-DOCKER_OPTS="<%= @docker_opts.join(' ') %>"
+DOCKER_DAEMON_OPTS="<%= @docker_daemon_opts.join(' ') %>"
 # FIXME
 
 <% if @config.pidfile %>

@@ -17,7 +17,7 @@ class Chef
             variables(
               config: new_resource,
               docker_bin: docker_bin,
-              docker_opts: docker_opts
+              docker_daemon_opts: docker_daemon_opts
             )
             cookbook 'docker'
             action :create

@@ -26,7 +26,7 @@ class Chef
               docker_daemon_cmd: docker_daemon_cmd,
               docker_host: new_resource.host,
               docker_name: docker_name,
-              docker_opts: docker_opts,
+              docker_daemon_opts: docker_daemon_opts,
               docker_tlscacert: new_resource.tlscacert,
               docker_tlsverify: new_resource.tlsverify,
               pidfile: parsed_pidfile
@@ -59,7 +59,7 @@ class Chef
               docker_daemon_cmd: docker_daemon_cmd,
               docker_host: new_resource.host,
               docker_name: docker_name,
-              docker_opts: docker_opts,
+              docker_daemon_opts: docker_daemon_opts,
               docker_tlscacert: new_resource.tlscacert,
               docker_tlsverify: new_resource.tlsverify,
               pidfile: parsed_pidfile

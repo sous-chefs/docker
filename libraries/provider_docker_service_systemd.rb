@@ -33,7 +33,7 @@ class Chef
               config: new_resource,
               docker_bin: docker_bin,
               docker_daemon_arg: docker_daemon_arg,
-              docker_opts: docker_opts
+              docker_daemon_opts: docker_daemon_opts
             )
             cookbook 'docker'
             notifies :run, 'execute[systemctl daemon-reload]', :immediately
