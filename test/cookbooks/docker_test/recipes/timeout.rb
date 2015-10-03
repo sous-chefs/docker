@@ -5,6 +5,8 @@ include_recipe 'docker_test::default'
 # (the default read_timeout) to build
 #
 
+docker_image 'centos'
+
 # Make sure that the image does not exist, to avoid a cache hit
 # while building the docker image. This can legitimately fail
 # if the image does not exist.
@@ -25,8 +27,8 @@ end
 
 docker_image 'timeout test image' do
   repo 'kkeane/image.4'
-  read_timeout 3600
-  write_timeout 3600
+  read_timeout 3600 # 1 hour
+  write_timeout 3600 # 1 hour
   tag 'chef'
   source '/usr/local/src/container4'
   action :build_if_missing
