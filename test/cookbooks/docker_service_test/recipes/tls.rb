@@ -122,10 +122,12 @@ end
 # start docker service listening on TCP port
 docker_service 'tls_test:2376' do
   host 'tcp://127.0.0.1:2376'
-  tlscacert "#{caroot}/ca.pem"
-  tlscert "#{caroot}/server.pem"
-  tlskey "#{caroot}/serverkey.pem"
-  tlsverify true
+  tls_verify true
+  tls_ca_cert "#{caroot}/ca.pem"
+  tls_server_cert "#{caroot}/server.pem"
+  tls_server_key "#{caroot}/serverkey.pem"
+  tls_client_cert "#{caroot}/cert.pem"
+  tls_client_key "#{caroot}/key.pem"
   provider Chef::Provider::DockerService::Execute if execute_service_manager
   action [:create, :start]
 end

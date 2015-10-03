@@ -23,17 +23,13 @@ class Chef
       def load_current_resource
         @current_resource = Chef::Resource::DockerService.new(new_resource.name)
 
-        # FIXME: remove this line
-        Excon.defaults[:ssl_verify_peer] = false
+        Docker.url = parsed_connect_host if parsed_connect_host
 
-        cert_path = ::File.dirname new_resource.tlscacert if new_resource.tlscacert
-
-        unless new_resource.host.nil? || cert_path.nil?
-          Docker.url = new_resource.host
+        if parsed_connect_host =~ /^tcp:/ && new_resource.tls_ca_cert
           Docker.options = {
-            ssl_ca_file: ::File.join(cert_path, 'ca.pem'),
-            client_cert: ::File.join(cert_path, 'cert.pem'),
-            client_key: ::File.join(cert_path, 'key.pem'),
+            ssl_ca_file: new_resource.tls_ca_cert,
+            client_cert: new_resource.tls_client_cert,
+            client_key: new_resource.tls_client_key,
             scheme: 'https'
           }
         end

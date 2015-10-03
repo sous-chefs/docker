@@ -23,7 +23,7 @@ ExecStartPre=/sbin/sysctl -w net.ipv4.ip_forward=1
 <% if @config.ipv6_forward %>
 ExecStartPre=/sbin/sysctl -w net.ipv6.conf.all.forwarding=1
 <% end %>
-ExecStart=<%= @docker_bin %> <%= @docker_daemon_arg %> <%= @docker_opts.join(' ') %>
+ExecStart=<%= @docker_bin %> <%= @docker_daemon_arg %> <%= @docker_daemon_opts.join(' ') %>
 Restart=always
 MountFlags=slave
 LimitNOFILE=1048576

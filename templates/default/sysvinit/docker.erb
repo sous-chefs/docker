@@ -37,10 +37,10 @@ PID_DELAY=60
 <% if @docker_host %>
 export DOCKER_HOST=<%= @docker_host %>
 <% end %>
-<% if @docker_tlscacert %>
-export DOCKER_CERT_PATH=`dirname <%= @docker_tlscacert %>`
+<% if @docker_tls_ca_cert %>
+export DOCKER_CERT_PATH=`dirname <%= @docker_tls_ca_cert %>`
 <% end %>
-<% if @docker_tlsverify %>
+<% if @docker_tls_verify %>
 export DOCKER_TLS_VERIFY=1
 <% end %>
 <% if @pidfile -%>
@@ -63,9 +63,9 @@ pid_exists() {
     PID_EXISTS=1
     if [ -f $pid_file ]; then
         DOCKER_PID=`cat $pid_file 2>/dev/null`
-	      if [ -n "$DOCKER_PID" ] && [ -d "/proc/$DOCKER_PID" ] ; then
-	          PID_EXISTS=0
-	      fi
+        if [ -n "$DOCKER_PID" ] && [ -d "/proc/$DOCKER_PID" ] ; then
+            PID_EXISTS=0
+        fi
     fi
     return $PID_EXISTS
 }
@@ -212,7 +212,7 @@ start() {
         fi
 
         sleep 1
-	      let TIMEOUT=${TIMEOUT}-1
+        let TIMEOUT=${TIMEOUT}-1
     done
 
     if running; then
@@ -223,13 +223,13 @@ start() {
         # Handle startup failure
         print_start_failure
         return 3
-	  elif [ $TIMEOUT -eq 0 ]; then
+    elif [ $TIMEOUT -eq 0 ]; then
         # Handle timeout
         print_start_failure
         # clean up
         kill $start_pid 2>/dev/null
-	      return 1
-	  fi
+        return 1
+    fi
 }
 
 # Status of <%= @mysql_name %>
@@ -257,7 +257,7 @@ stop() {
             if running; then
             sleep 1
             fi
-	          let TIMEOUT=${TIMEOUT}-1
+            let TIMEOUT=${TIMEOUT}-1
         done
 
         return $kstat
