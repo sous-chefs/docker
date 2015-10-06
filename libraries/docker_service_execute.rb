@@ -20,11 +20,11 @@ class Chef
         # to manually fork it from the shell with &
         # https://github.com/docker/docker/issues/2758
         bash 'start docker' do
-          code "#{docker_daemon_cmd} &>> #{new_resource.logfile} &"
-          environment 'HTTP_PROXY' => new_resource.http_proxy,
-                      'HTTPS_PROXY' => new_resource.https_proxy,
-                      'NO_PROXY' => new_resource.no_proxy,
-                      'TMPDIR' => new_resource.tmpdir
+          code "#{docker_daemon_cmd} &>> #{logfile} &"
+          environment 'HTTP_PROXY' => http_proxy,
+                      'HTTPS_PROXY' => https_proxy,
+                      'NO_PROXY' => no_proxy,
+                      'TMPDIR' => tmpdir
           not_if "ps -ef | awk '{ print $8 }' | grep ^#{docker_bin}$"
           action :run
         end

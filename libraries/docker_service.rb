@@ -111,15 +111,15 @@ class Chef
 
       action_class.class_eval do
         def load_current_resource
-          @current_resource = Chef::Resource::DockerService.new(new_resource.name)
+          @current_resource = Chef::Resource::DockerService.new(name)
 
           Docker.url = parsed_connect_host if parsed_connect_host
 
-          if parsed_connect_host =~ /^tcp:/ && new_resource.tls_ca_cert
+          if parsed_connect_host =~ /^tcp:/ && tls_ca_cert
             Docker.options = {
-              ssl_ca_file: new_resource.tls_ca_cert,
-              client_cert: new_resource.tls_client_cert,
-              client_key: new_resource.tls_client_key,
+              ssl_ca_file: tls_ca_cert,
+              client_cert: tls_client_cert,
+              client_key: tls_client_key,
               scheme: 'https'
             }
           end

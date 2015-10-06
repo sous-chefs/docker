@@ -6,44 +6,44 @@ module DockerHelpers
 
     def build_from_directory
       i = Docker::Image.build_from_dir(
-        new_resource.source,
+        source,
         {
-          'nocache' => new_resource.nocache,
-          'rm' => new_resource.rm
+          'nocache' => nocache,
+          'rm' => rm
         },
         connection
       )
-      i.tag('repo' => new_resource.repo, 'tag' => new_resource.tag, 'force' => new_resource.force)
+      i.tag('repo' => repo, 'tag' => tag, 'force' => force)
     end
 
     def build_from_dockerfile
       i = Docker::Image.build(
-        IO.read(new_resource.source),
+        IO.read(source),
         {
-          'nocache' => new_resource.nocache,
-          'rm' => new_resource.rm
+          'nocache' => nocache,
+          'rm' => rm
         },
         connection
       )
-      i.tag('repo' => new_resource.repo, 'tag' => new_resource.tag, 'force' => new_resource.force)
+      i.tag('repo' => repo, 'tag' => tag, 'force' => force)
     end
 
     def build_from_tar
       i = Docker::Image.build_from_tar(
-        ::File.open(new_resource.source, 'r'),
+        ::File.open(source, 'r'),
         {
-          'nocache' => new_resource.nocache,
-          'rm' => new_resource.rm
+          'nocache' => nocache,
+          'rm' => rm
         },
         connection
       )
-      i.tag('repo' => new_resource.repo, 'tag' => new_resource.tag, 'force' => new_resource.force)
+      i.tag('repo' => repo, 'tag' => tag, 'force' => force)
     end
 
     def build_image
-      if ::File.directory?(new_resource.source)
+      if ::File.directory?(source)
         build_from_directory
-      elsif ::File.extname(new_resource.source) == '.tar'
+      elsif ::File.extname(source) == '.tar'
         build_from_tar
       else
         build_from_dockerfile
@@ -51,13 +51,13 @@ module DockerHelpers
     end
 
     def image_identifier
-      "#{new_resource.repo}:#{new_resource.tag}"
+      "#{repo}:#{tag}"
     end
 
     def import_image
-      retries ||= new_resource.api_retries
-      i = Docker::Image.import(new_resource.source, {}, connection)
-      i.tag('repo' => new_resource.repo, 'tag' => new_resource.tag, 'force' => new_resource.force)
+      retries ||= api_retries
+      i = Docker::Image.import(source, {}, connection)
+      i.tag('repo' => repo, 'tag' => tag, 'force' => force)
     rescue Docker::Error => e
       retry unless (retries -= 1).zero?
       raise e.message
@@ -65,7 +65,7 @@ module DockerHelpers
 
     def pull_image
       begin
-        retries ||= new_resource.api_retries
+        retries ||= api_retries
 
         registry_host = parse_registry_host(new_resource.repo)
         creds = node.run_state['docker_auth'] && node.run_state['docker_auth'][registry_host] || (node.run_state['docker_auth'] ||= {})['index.docker.io']
@@ -81,7 +81,7 @@ module DockerHelpers
     end
 
     def push_image
-      retries ||= new_resource.api_retries
+      retries ||= api_retries
       i = Docker::Image.get(image_identifier, {}, connection)
       i.push
     rescue Docker::Error => e
@@ -90,17 +90,17 @@ module DockerHelpers
     end
 
     def remove_image
-      retries ||= new_resource.api_retries
+      retries ||= api_retries
       i = Docker::Image.get(image_identifier, {}, connection)
-      i.remove(force: new_resource.force, noprune: new_resource.noprune)
+      i.remove(force: force, noprune: noprune)
     rescue Docker::Error => e
       retry unless (retries -= 1).zero?
       raise e.message
     end
 
     def save_image
-      retries ||= new_resource.api_retries
-      Docker::Image.save(new_resource.repo, new_resource.destination, connection)
+      retries ||= api_retries
+      Docker::Image.save(repo, destination, connection)
     rescue Docker::Error, Errno::ENOENT => e
       retry unless (retries -= 1).zero?
       raise e.message

@@ -13,15 +13,15 @@ class Chef
       property :username, String
 
       action :login do
-        tries = new_resource.api_retries
+        tries = api_retries
 
-        registry_host = parse_registry_host(new_resource.serveraddress)
+        registry_host = parse_registry_host(serveraddress)
 
         (node.run_state['docker_auth'] ||= {})[registry_host] = {
           'serveraddress' => registry_host,
-          'username' => new_resource.username,
-          'password' => new_resource.password,
-          'email' => new_resource.email
+          'username' => username,
+          'password' => password,
+          'email' => email
         }
 
         begin
@@ -31,7 +31,7 @@ class Chef
           )
         rescue Docker::Error::ServerError, Docker::Error::UnauthorizedError
           if (tries -= 1).zero?
-            raise Docker::Error::AuthenticationError, "#{new_resource.username} failed to authenticate with #{new_resource.serveraddress}"
+            raise Docker::Error::AuthenticationError, "#{username} failed to authenticate with #{serveraddress}"
           else
             retry
           end

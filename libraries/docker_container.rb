@@ -98,8 +98,8 @@ class Chef
 
       action :create do
         # Debug logging for things that have given trouble in the past
-        Chef::Log.debug("DOCKER: user - current:#{current_resource.user}: new:#{new_resource.user}:")
-        Chef::Log.debug("DOCKER: working_dir - current:#{current_resource.working_dir}: new:#{new_resource.working_dir}:")
+        Chef::Log.debug("DOCKER: user - current:#{current_resource.user}: new:#{user}:")
+        Chef::Log.debug("DOCKER: working_dir - current:#{current_resource.working_dir}: new:#{working_dir}:")
         Chef::Log.debug("DOCKER: command - current:#{current_resource.command}: parsed:#{parsed_command}:")
         Chef::Log.debug("DOCKER: entrypoint - current:#{current_resource.entrypoint}: parsed:#{parsed_entrypoint}:")
         Chef::Log.debug("DOCKER: env - current:#{current_resource.env}: parsed:#{parsed_env}:")
@@ -108,7 +108,7 @@ class Chef
         Chef::Log.debug("DOCKER: network_mode - current:#{current_resource.network_mode}: parsed:#{parsed_network_mode}:")
         Chef::Log.debug("DOCKER: log_config - current:#{current_resource.log_config}: serialized:#{serialized_log_config}:")
         Chef::Log.debug("DOCKER: ulimits - current:#{current_resource.ulimits}:")
-        Chef::Log.debug("DOCKER: ulimits -     new:#{new_resource.ulimits}:")
+        Chef::Log.debug("DOCKER: ulimits -     new:#{ulimits}:")
         Chef::Log.debug("DOCKER: links - current:#{current_resource.links}: serialized:#{serialized_links}:")
         Chef::Log.debug("DOCKER: labels - current:#{current_resource.labels}: parsed:#{parsed_labels}:")
 
@@ -119,29 +119,29 @@ class Chef
         action_delete unless resource_changes.empty? || !container_created?
 
         next if container_created?
-        converge_by "creating #{new_resource.container_name}" do
+        converge_by "creating #{container_name}" do
           create_container
         end
-        new_resource.updated_by_last_action(true)
+        updated_by_last_action(true)
       end
 
       action :start do
-        c = Docker::Container.get(new_resource.container_name, connection)
+        c = Docker::Container.get(container_name, connection)
         next if c.info['State']['Restarting']
         next if c.info['State']['Running']
-        converge_by "starting #{new_resource.container_name}" do
+        converge_by "starting #{container_name}" do
           begin
-            tries ||= new_resource.api_retries
+            tries ||= api_retries
 
-            if new_resource.detach
-              new_resource.attach_stdin false
-              new_resource.attach_stdout false
-              new_resource.attach_stderr false
-              new_resource.stdin_once false
+            if detach
+              attach_stdin false
+              attach_stdout false
+              attach_stderr false
+              stdin_once false
               c.start
             else
               c.start
-              new_resource.timeout ? c.wait(new_resource.timeout) : c.wait
+              timeout ? c.wait(timeout) : c.wait
             end
 
           rescue Docker::Error => e
@@ -149,45 +149,45 @@ class Chef
             raise e.message
           end
         end
-        new_resource.updated_by_last_action(true)
+        updated_by_last_action(true)
       end
 
       action :stop do
         next unless container_created?
-        c = Docker::Container.get(new_resource.container_name, connection)
+        c = Docker::Container.get(container_name, connection)
         next unless c.info['State']['Running']
-        converge_by "stopping #{new_resource.container_name}" do
+        converge_by "stopping #{container_name}" do
           begin
-            tries ||= new_resource.api_retries
+            tries ||= api_retries
             c.stop
           rescue Docker::Error => e
             retry unless (tries -= 1).zero?
             raise e.message
           end
         end
-        new_resource.updated_by_last_action(true)
+        updated_by_last_action(true)
       end
 
       action :kill do
         next unless container_created?
-        c = Docker::Container.get(new_resource.container_name, connection)
+        c = Docker::Container.get(container_name, connection)
         next unless c.info['State']['Running']
-        converge_by "killing #{new_resource.container_name}" do
+        converge_by "killing #{container_name}" do
           begin
-            tries ||= new_resource.api_retries
-            c.kill(signal: new_resource.signal)
+            tries ||= api_retries
+            c.kill(signal: signal)
           rescue Docker::Error => e
             retry unless (tries -= 1).zero?
             raise e.message
           end
         end
-        new_resource.updated_by_last_action(true)
+        updated_by_last_action(true)
       end
 
       action :run do
         action_create
         action_start
-        action_delete if new_resource.autoremove
+        action_delete if autoremove
       end
 
       action :run_if_missing do
@@ -197,34 +197,34 @@ class Chef
 
       action :pause do
         next unless container_created?
-        c = Docker::Container.get(new_resource.container_name, connection)
+        c = Docker::Container.get(container_name, connection)
         next if c.info['State']['Paused']
-        converge_by "pausing #{new_resource.container_name}" do
+        converge_by "pausing #{container_name}" do
           begin
-            tries ||= new_resource.api_retries
+            tries ||= api_retries
             c.pause
           rescue Docker::Error => e
             retry unless (tries -= 1).zero?
             raise e.message
           end
         end
-        new_resource.updated_by_last_action(true)
+        updated_by_last_action(true)
       end
 
       action :unpause do
         next unless container_created?
-        c = Docker::Container.get(new_resource.container_name, connection)
+        c = Docker::Container.get(container_name, connection)
         next unless c.info['State']['Paused']
-        converge_by "unpausing #{new_resource.container_name}" do
+        converge_by "unpausing #{container_name}" do
           begin
-            tries ||= new_resource.api_retries
+            tries ||= api_retries
             c.unpause
           rescue Docker::Error => e
             retry unless (tries -= 1).zero?
             raise e.message
           end
         end
-        new_resource.updated_by_last_action(true)
+        updated_by_last_action(true)
       end
 
       action :restart do
@@ -234,7 +234,7 @@ class Chef
 
       action :redeploy do
         begin
-          c = Docker::Container.get(new_resource.container_name, connection)
+          c = Docker::Container.get(container_name, connection)
           action_delete
           # never start containers resulting from a previous action :create #432
           if c.info['State']['Running'] == false &&
@@ -253,17 +253,17 @@ class Chef
         next unless container_created?
         action_unpause
         action_stop
-        c = Docker::Container.get(new_resource.container_name, connection)
-        converge_by "deleting #{new_resource.container_name}" do
+        c = Docker::Container.get(container_name, connection)
+        converge_by "deleting #{container_name}" do
           begin
-            tries ||= new_resource.api_retries
-            c.delete(force: new_resource.force, v: new_resource.remove_volumes)
+            tries ||= api_retries
+            c.delete(force: force, v: remove_volumes)
           rescue Docker::Error => e
             retry unless (tries -= 1).zero?
             raise e.message
           end
         end
-        new_resource.updated_by_last_action(true)
+        updated_by_last_action(true)
       end
 
       action :remove do
@@ -274,19 +274,19 @@ class Chef
         # Help! I couldn't get this working from the CLI in docker 1.6.2.
         # It's of dubious usefulness, and it looks like this stuff is
         # changing in 1.7.x anyway.
-        converge_by "removing links for #{new_resource.container_name}" do
+        converge_by "removing links for #{container_name}" do
           Chef::Log.info(':remove_link not currently implemented')
         end
-        new_resource.updated_by_last_action(true)
+        updated_by_last_action(true)
       end
 
       action :commit do
-        c = Docker::Container.get(new_resource.container_name, connection)
-        converge_by "committing #{new_resource.container_name}" do
+        c = Docker::Container.get(container_name, connection)
+        converge_by "committing #{container_name}" do
           begin
-            tries ||= new_resource.api_retries
+            tries ||= api_retries
             new_image = c.commit
-            new_image.tag('repo' => new_resource.repo, 'tag' => new_resource.tag, 'force' => new_resource.force)
+            new_image.tag('repo' => repo, 'tag' => tag, 'force' => force)
           rescue Docker::Error => e
             retry unless (tries -= 1).zero?
             raise e.message
@@ -295,12 +295,12 @@ class Chef
       end
 
       action :export do
-        fail "Please set outfile property on #{new_resource.container_name}" if new_resource.outfile.nil?
-        c = Docker::Container.get(new_resource.container_name, connection)
-        converge_by "exporting #{new_resource.container_name}" do
+        fail "Please set outfile property on #{container_name}" if outfile.nil?
+        c = Docker::Container.get(container_name, connection)
+        converge_by "exporting #{container_name}" do
           begin
-            tries ||= new_resource.api_retries
-            ::File.open(new_resource.outfile, 'w') { |f| c.export { |chunk| f.write(chunk) } }
+            tries ||= api_retries
+            ::File.open(outfile, 'w') { |f| c.export { |chunk| f.write(chunk) } }
           rescue Docker::Error => e
             retry unless (tries -= 1).zero?
             raise e.message
@@ -312,9 +312,9 @@ class Chef
         def load_current_resource
           @api_version = Docker.version['ApiVersion']
 
-          @current_resource = Chef::Resource::DockerContainer.new(new_resource.name)
+          @current_resource = Chef::Resource::DockerContainer.new(name)
           begin
-            c = Docker::Container.get(new_resource.container_name, connection)
+            c = Docker::Container.get(container_name, connection)
             @current_resource.attach_stderr c.info['Config']['AttachStderr']
             @current_resource.attach_stdin c.info['Config']['AttachStdin']
             @current_resource.attach_stdout c.info['Config']['AttachStdout']
@@ -368,37 +368,37 @@ class Chef
           changes << :binds if current_resource.binds != parsed_binds
           changes << :cap_add if current_resource.cap_add != parsed_cap_add
           changes << :cap_drop if current_resource.cap_drop != parsed_cap_drop
-          changes << :cgroup_parent if current_resource.cgroup_parent != new_resource.cgroup_parent
+          changes << :cgroup_parent if current_resource.cgroup_parent != cgroup_parent
           changes << :command if update_command?
-          changes << :cpu_shares if current_resource.cpu_shares != new_resource.cpu_shares
-          changes << :cpuset_cpus if current_resource.cpuset_cpus != new_resource.cpuset_cpus
+          changes << :cpu_shares if current_resource.cpu_shares != cpu_shares
+          changes << :cpuset_cpus if current_resource.cpuset_cpus != cpuset_cpus
           changes << :devices if current_resource.devices != parsed_devices
           changes << :dns if current_resource.dns != parsed_dns
           changes << :dns_search if current_resource.dns_search != parsed_dns_search
-          changes << :domainname if current_resource.domainname != new_resource.domainname
+          changes << :domainname if current_resource.domainname != domainname
           changes << :entrypoint if update_entrypoint?
           changes << :env if update_env?
           changes << :exposed_ports if update_exposed_ports?
           changes << :extra_hosts if current_resource.extra_hosts != parsed_extra_hosts
           changes << :hostname if update_hostname?
-          changes << :image if current_resource.image != "#{parsed_repo}:#{new_resource.tag}"
+          changes << :image if current_resource.image != "#{parsed_repo}:#{tag}"
           changes << :labels if current_resource.labels != parsed_labels
           changes << :links if current_resource.links != serialized_links
           changes << :log_config if current_resource.log_config != serialized_log_config
-          changes << :mac_address if current_resource.mac_address != new_resource.mac_address
-          changes << :memory if current_resource.memory != new_resource.memory
-          changes << :memory_swap if current_resource.memory_swap != new_resource.memory_swap
-          changes << :network_disabled if current_resource.network_disabled != new_resource.network_disabled
+          changes << :mac_address if current_resource.mac_address != mac_address
+          changes << :memory if current_resource.memory != memory
+          changes << :memory_swap if current_resource.memory_swap != memory_swap
+          changes << :network_disabled if current_resource.network_disabled != network_disabled
           changes << :network_mode if current_resource.network_mode != parsed_network_mode
-          changes << :open_stdin if current_resource.open_stdin != new_resource.open_stdin
+          changes << :open_stdin if current_resource.open_stdin != open_stdin
           changes << :port_bindings if current_resource.port_bindings != port_bindings
-          changes << :privileged if current_resource.privileged != new_resource.privileged
-          changes << :publish_all_ports if current_resource.publish_all_ports != new_resource.publish_all_ports
+          changes << :privileged if current_resource.privileged != privileged
+          changes << :publish_all_ports if current_resource.publish_all_ports != publish_all_ports
           changes << :restart_policy if current_resource.restart_policy != parsed_restart_policy
           changes << :stdin_once if current_resource.stdin_once != parsed_stdin_once
-          changes << :tty if current_resource.tty != new_resource.tty
+          changes << :tty if current_resource.tty != tty
           changes << :ulimits if update_ulimits?
-          changes << :user if current_resource.user != new_resource.user
+          changes << :user if current_resource.user != user
           changes << :volumes if update_volumes?
           changes << :volumes_from if current_resource.volumes_from != parsed_volumes_from
           changes << :working_dir if update_working_dir?
@@ -407,48 +407,48 @@ class Chef
 
         # Most important work is done here.
         def create_container
-          tries ||= new_resource.api_retries
+          tries ||= api_retries
           Docker::Container.create(
             {
-              'name' => new_resource.container_name,
-              'Image' => "#{parsed_repo}:#{new_resource.tag}",
+              'name' => container_name,
+              'Image' => "#{parsed_repo}:#{tag}",
               'Labels' => parsed_labels,
               'Cmd' => parsed_command,
               'AttachStderr' => parsed_attach_stderr,
               'AttachStdin' => parsed_attach_stdin,
               'AttachStdout' => parsed_attach_stdout,
-              'Domainname' => new_resource.domain_name,
+              'Domainname' => domain_name,
               'Entrypoint' => parsed_entrypoint,
               'Env' => parsed_env,
               'ExposedPorts' => exposed_ports,
-              'Hostname' => new_resource.host_name,
-              'MacAddress' => new_resource.mac_address,
-              'NetworkDisabled' => new_resource.network_disabled,
-              'OpenStdin' => new_resource.open_stdin,
+              'Hostname' => host_name,
+              'MacAddress' => mac_address,
+              'NetworkDisabled' => network_disabled,
+              'OpenStdin' => open_stdin,
               'StdinOnce' => parsed_stdin_once,
-              'Tty' => new_resource.tty,
-              'User' => new_resource.user,
+              'Tty' => tty,
+              'User' => user,
               'Volumes' => parsed_volumes,
-              'WorkingDir' => new_resource.working_dir,
+              'WorkingDir' => working_dir,
               'HostConfig' => {
                 'Binds' => parsed_binds,
                 'CapAdd' => parsed_cap_add,
                 'CapDrop' => parsed_cap_drop,
-                'CgroupParent' => new_resource.cgroup_parent,
-                'CpuShares' => new_resource.cpu_shares,
-                'CpusetCpus' => new_resource.cpuset_cpus,
+                'CgroupParent' => cgroup_parent,
+                'CpuShares' => cpu_shares,
+                'CpusetCpus' => cpuset_cpus,
                 'Devices' => parsed_devices,
                 'Dns' => parsed_dns,
                 'DnsSearch' => parsed_dns_search,
                 'ExtraHosts' => parsed_extra_hosts,
                 'Links' => parsed_links,
                 'LogConfig' => serialized_log_config,
-                'Memory' => new_resource.memory,
-                'MemorySwap' => new_resource.memory_swap,
+                'Memory' => memory,
+                'MemorySwap' => memory_swap,
                 'NetworkMode' => parsed_network_mode,
-                'Privileged' => new_resource.privileged,
+                'Privileged' => privileged,
                 'PortBindings' => port_bindings,
-                'PublishAllPorts' => new_resource.publish_all_ports,
+                'PublishAllPorts' => publish_all_ports,
                 'RestartPolicy' => parsed_restart_policy,
                 'Ulimits' => serialized_ulimits,
                 'VolumesFrom' => parsed_volumes_from

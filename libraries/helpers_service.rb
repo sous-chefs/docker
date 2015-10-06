@@ -44,7 +44,7 @@ module DockerHelpers
     end
 
     def parsed_checksum
-      return new_resource.checksum if new_resource.checksum
+      return checksum if checksum
       case docker_kernel
       when 'Darwin'
         case parsed_version
@@ -67,12 +67,12 @@ module DockerHelpers
     end
 
     def parsed_pidfile
-      return new_resource.pidfile if new_resource.pidfile
+      return pidfile if pidfile
       "/var/run/#{docker_name}.pid"
     end
 
     def parsed_version
-      return new_resource.version if new_resource.version
+      return version if version
       return '1.6.2' if node['platform'] == 'amazon'
       return '1.6.2' if node['platform'] == 'ubuntu' && node['platform_version'].to_f < 15.04
       return '1.6.2' if node['platform_family'] == 'rhel' && node['platform_version'].to_i < 7
@@ -89,7 +89,7 @@ module DockerHelpers
     # https://get.docker.com/builds/Linux/x86_64/docker-1.8.2
     # https://get.docker.com/builds/Darwin/x86_64/docker-1.8.2
     def parsed_source
-      return new_resource.source if new_resource.source
+      return source if source
       "https://get.docker.com/builds/#{docker_kernel}/#{docker_arch}/docker-#{parsed_version}"
     end
 
@@ -130,13 +130,13 @@ module DockerHelpers
     end
 
     def parsed_dns
-      Array(new_resource.dns)
+      Array(dns)
     end
 
     # strip out invalid host arguments
     def parsed_host
-      sockets = new_resource.host.split if new_resource.host.is_a?(String)
-      sockets = new_resource.host if new_resource.host.is_a?(Array)
+      sockets = host.split if host.is_a?(String)
+      sockets = host if host.is_a?(Array)
       r = []
       sockets.each do |s|
         if s.match(/^unix:/) || s.match(/^tcp:/) || s.match(/^fd:/)
@@ -149,76 +149,76 @@ module DockerHelpers
     end
 
     def parsed_log_opts
-      Array(new_resource.log_opts)
+      Array(log_opts)
     end
 
     def parsed_storage_driver
-      Array(new_resource.storage_driver)
+      Array(storage_driver)
     end
 
     def parsed_storage_opts
-      Array(new_resource.storage_opts)
+      Array(storage_opts)
     end
 
     def parsed_default_ulimit
-      Array(new_resource.default_ulimit)
+      Array(default_ulimit)
     end
 
     def parsed_connect_host
-      parsed_host.first if new_resource.host
+      parsed_host.first if host
     end
 
     def docker_opts
       opts = []
       opts << "--host=#{parsed_connect_host}" if parsed_connect_host
       if parsed_connect_host =~ /^tcp:/
-        opts << "--tls=#{new_resource.tls}" unless new_resource.tls.nil?
-        opts << "--tlsverify=#{new_resource.tls_verify}" unless new_resource.tls_verify.nil?
-        opts << "--tlscacert=#{new_resource.tls_ca_cert}" if new_resource.tls_ca_cert
-        opts << "--tlscert=#{new_resource.tls_client_cert}" if new_resource.tls_client_cert
-        opts << "--tlskey=#{new_resource.tls_client_key}" if new_resource.tls_client_key
+        opts << "--tls=#{tls}" unless tls.nil?
+        opts << "--tlsverify=#{tls_verify}" unless tls_verify.nil?
+        opts << "--tlscacert=#{tls_ca_cert}" if tls_ca_cert
+        opts << "--tlscert=#{tls_client_cert}" if tls_client_cert
+        opts << "--tlskey=#{tls_client_key}" if tls_client_key
       end
       opts
     end
 
     def docker_daemon_opts
       opts = []
-      opts << "--api-cors-header=#{new_resource.api_cors_header}" if new_resource.api_cors_header
-      opts << "--bridge=#{new_resource.bridge}" if new_resource.bridge
-      opts << "--bip=#{new_resource.bip}" if new_resource.bip
-      opts << '--debug' if new_resource.debug
-      parsed_default_ulimit.each { |u| opts << "--default-ulimit=#{u}" } if new_resource.default_ulimit
+      opts << "--api-cors-header=#{api_cors_header}" if api_cors_header
+      opts << "--bridge=#{bridge}" if bridge
+      opts << "--bip=#{bip}" if bip
+      opts << '--debug' if debug
+      parsed_default_ulimit.each { |u| opts << "--default-ulimit=#{u}" } if default_ulimit
       parsed_dns.each { |dns| opts << "--dns=#{dns}" }
-      new_resource.dns_search.each { |dns| opts << "--dns-search=#{dns}" } if new_resource.dns_search
-      opts << "--exec-driver=#{new_resource.exec_driver}" if new_resource.exec_driver
-      opts << "--fixed-cidr=#{new_resource.fixed_cidr}" if new_resource.fixed_cidr
-      opts << "--fixed-cidr-v6=#{new_resource.fixed_cidr_v6}" if new_resource.fixed_cidr_v6
-      opts << "--group=#{new_resource.group}" if new_resource.group
-      opts << "--graph=#{new_resource.graph}" if new_resource.graph
-      parsed_host.each { |h| opts << "-H #{h}" } if new_resource.host
-      opts << "--icc=#{new_resource.icc}" unless new_resource.icc.nil?
-      opts << "--insecure-registry=#{new_resource.insecure_registry}" if new_resource.insecure_registry
-      opts << "--ip=#{new_resource.ip}" if new_resource.ip
-      opts << "--ip-forward=#{new_resource.ip_forward}" unless new_resource.ip_forward.nil?
-      opts << '--ip-masq=true' if new_resource.ip_masq
-      opts << '--iptables=true' if new_resource.iptables
-      opts << '--ipv6=true' if new_resource.ipv6
-      opts << "--log-level=#{new_resource.log_level}" if new_resource.log_level
-      opts << "--label=#{new_resource.label}" if new_resource.label
-      opts << "--log-driver=#{new_resource.log_driver}" if new_resource.log_driver
+      dns_search.each { |dns| opts << "--dns-search=#{dns}" } if dns_search
+      opts << "--exec-driver=#{exec_driver}" if exec_driver
+      opts << "--fixed-cidr=#{fixed_cidr}" if fixed_cidr
+      opts << "--fixed-cidr-v6=#{fixed_cidr_v6}" if fixed_cidr_v6
+      opts << "--group=#{group}" if group
+      opts << "--graph=#{graph}" if graph
+      parsed_host.each { |h| opts << "-H #{h}" } if host
+      opts << "--icc=#{icc}" unless icc.nil?
+      opts << "--insecure-registry=#{insecure_registry}" if insecure_registry
+      opts << "--ip=#{ip}" if ip
+      opts << "--ip-forward=#{ip_forward}" unless ip_forward.nil?
+      opts << '--ip-masq=true' if ip_masq
+      opts << '--iptables=true' if iptables
+      opts << '--ipv6=true' if ipv6
+      opts << "--log-level=#{log_level}" if log_level
+      opts << "--label=#{label}" if label
+      opts << "--log-driver=#{log_driver}" if log_driver
       parsed_log_opts.each { |log_opt| opts << "--log-opt=#{log_opt}" }
-      opts << "--mtu=#{new_resource.mtu}" if new_resource.mtu
-      opts << "--pidfile=#{new_resource.pidfile}" if new_resource.pidfile
-      opts << "--registry-mirror=#{new_resource.registry_mirror}" if new_resource.registry_mirror
-      parsed_storage_driver.each { |s| opts << "--storage-driver=#{s}" } if new_resource.storage_driver
-      opts << '--selinux-enabled=true' if new_resource.selinux_enabled
+      opts << "--mtu=#{mtu}" if mtu
+      opts << "--pidfile=#{pidfile}" if pidfile
+      opts << "--registry-mirror=#{registry_mirror}" if registry_mirror
+      parsed_storage_driver.each { |s| opts << "--storage-driver=#{s}" } if storage_driver
+      opts << '--selinux-enabled=true' if selinux_enabled
       parsed_storage_opts.each { |storage_opt| opts << "--storage-opt=#{storage_opt}" }
-      opts << "--tls=#{new_resource.tls}" unless new_resource.tls.nil?
-      opts << "--tlsverify=#{new_resource.tls_verify}" unless new_resource.tls_verify.nil?
-      opts << "--tlscacert=#{new_resource.tls_ca_cert}" if new_resource.tls_ca_cert
-      opts << "--tlscert=#{new_resource.tls_server_cert}" if new_resource.tls_server_cert
-      opts << "--tlskey=#{new_resource.tls_server_key}" if new_resource.tls_server_key
-      opts << "--userland-proxy=#{new_resource.userland_proxy}" unless new_resource.userland_proxy.nil?
+      opts << "--tls=#{tls}" unless tls.nil?
+      opts << "--tlsverify=#{tls_verify}" unless tls_verify.nil?
+      opts << "--tlscacert=#{tls_ca_cert}" if tls_ca_cert
+      opts << "--tlscert=#{tls_server_cert}" if tls_server_cert
+      opts << "--tlskey=#{tls_server_key}" if tls_server_key
+      opts << "--userland-proxy=#{userland_proxy}" unless userland_proxy.nil?
       opts
     end
 
@@ -229,8 +229,8 @@ module DockerHelpers
     end
 
     def update_storage_driver?
-      return false if new_resource.storage_driver.nil?
-      return true if current_resource.storage_driver != new_resource.storage_driver
+      return false if storage_driver.nil?
+      return true if current_resource.storage_driver != storage_driver
       false
     end
   end

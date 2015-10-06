@@ -13,14 +13,14 @@ class Chef
       #########
 
       action :tag do
-        next if Docker::Image.exist?("#{new_resource.to_repo}:#{new_resource.to_tag}")
+        next if Docker::Image.exist?("#{to_repo}:#{to_tag}")
         begin
-          i = Docker::Image.get("#{new_resource.target_repo}:#{new_resource.target_tag}")
-          i.tag('repo' => new_resource.to_repo, 'tag' => new_resource.to_tag, 'force' => true)
+          i = Docker::Image.get("#{target_repo}:#{target_tag}")
+          i.tag('repo' => to_repo, 'tag' => to_tag, 'force' => true)
         rescue Docker::Error => e
           raise e.message
         end
-        new_resource.updated_by_last_action(true)
+        updated_by_last_action(true)
       end
     end
   end
