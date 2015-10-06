@@ -239,7 +239,7 @@ the options found in the
 - `registry_mirror` - Preferred Docker registry mirror
 - `storage_driver` - Storage driver to use
 - `selinux_enabled` - Enable selinux support
-- `storage_opt` - Set storage driver options
+- `storage_opts` - Set storage driver options
 - `tls` - Use TLS; implied by --tlsverify
 - `tls_verify` - Use TLS and verify the remote
 - `tls_ca_cert` - Trust certs signed only by this CA
