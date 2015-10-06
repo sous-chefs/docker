@@ -9,6 +9,8 @@ version '1.0.49'
 source_url 'https://github.com/bflad/chef-docker'
 issues_url 'https://github.com/bflad/chef-docker/issues'
 
+depends 'compat_resource'
+
 supports 'amazon'
 supports 'centos'
 supports 'debian'
