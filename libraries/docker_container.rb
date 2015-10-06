@@ -38,7 +38,7 @@ class Chef
       property :labels, [String, Array, Hash], default: nil
       property :links, [String, Array, nil], default: nil # FIXME: add validate proc
       property :log_config, [Hash, nil], default: nil # FIXME: add validate proc and tests; to configure the resource, prefer log_driver/log_opts below
-      property :log_driver, equal_to: %w( json-file syslog journald gelf fluentd none ), default: nil
+      property :log_driver, %w( json-file syslog journald gelf fluentd none ), default: nil
       property :log_opts, [String, Array], default: []
       property :mac_address, String, default: '' # FIXME: needs tests
       property :memory, Fixnum, default: 0

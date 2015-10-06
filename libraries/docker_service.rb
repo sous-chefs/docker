@@ -17,13 +17,13 @@ class Chef
       # daemon runtime arguments
       property :instance, String, name_property: true, required: true
       property :api_cors_header, String, default: nil
-      property :bridge, String, regex: [IPV4_ADDR, IPV6_ADDR], default: nil
-      property :bip, String, regex: [IPV4_ADDR, IPV4_CIDR, IPV6_ADDR, IPV6_CIDR], default: nil
+      property :bridge, [IPV4_ADDR, IPV6_ADDR], default: nil
+      property :bip, [IPV4_ADDR, IPV4_CIDR, IPV6_ADDR, IPV6_CIDR], default: nil
       property :debug, [true, false], default: nil
       property :daemon, [true, false], default: true
       property :dns, [String, Array], default: []
       property :dns_search, Array, default: nil
-      property :exec_driver, equal_to: %w(native lxc), default: nil
+      property :exec_driver, %w(native lxc), default: nil
       property :fixed_cidr, String, default: nil
       property :fixed_cidr_v6, String, default: nil
       property :group, String, default: nil
@@ -31,16 +31,16 @@ class Chef
       property :host, [String, Array], default: nil
       property :icc, [true, false], default: nil
       property :insecure_registry, String, default: nil
-      property :ip, String, regex: [IPV4_ADDR, IPV6_ADDR], default: nil
+      property :ip, [IPV4_ADDR, IPV6_ADDR], default: nil
       property :ip_forward, [true, false], default: nil
       property :ipv4_forward, [true, false], default: true
       property :ipv6_forward, [true, false], default: true
       property :ip_masq, [true, false], default: nil
       property :iptables, [true, false], default: nil
       property :ipv6, [true, false], default: nil
-      property :log_level, equal_to: [:debug, :info, :warn, :error, :fatal], default: nil
+      property :log_level, [:debug, :info, :warn, :error, :fatal], default: nil
       property :label, String, default: nil
-      property :log_driver, equal_to: %w( json-file syslog journald gelf fluentd none ), default: nil
+      property :log_driver, %w( json-file syslog journald gelf fluentd none ), default: nil
       property :log_opts, [String, Array], default: []
       property :mtu, String, default: nil
       property :pidfile, String, default: nil
