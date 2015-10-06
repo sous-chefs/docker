@@ -380,6 +380,15 @@ docker_image 'my.computers.biz:5043/someara/hello-again' do
 end
 ```
 
+Connect to an external docker daemon and pull an image
+
+```ruby
+docker_image 'alpine' do
+  host 'tcp://127.0.0.1:2376'
+  tag '2.7'
+end
+```
+
 #### Properties
 The `docker_image` resource properties mostly corresponds to the
 [Docker Remote API](https://docs.docker.com/reference/api/docker_remote_api_v1.20/#2-2-images)
@@ -415,6 +424,8 @@ registry vs a private one.
   (default behavior) - Defaults to `true`
 - `read_timeout` - May need to increase for long image builds/pulls
 - `write_timeout` - May need to increase for long image builds/pulls
+- `host` - A string containing the host the API should communicate with.
+  Defaults to local `docker_service`.
 
 #### Actions
 The following actions are available for a `docker_image` resource.
