@@ -1,3 +1,7 @@
+v1.0.47
+--------------------
+- #484 - Fall back to creds for index.docker.io on image pull
+
 v1.0.46
 --------------------
 - #438 - Adding per-resource host property to docker_image and
