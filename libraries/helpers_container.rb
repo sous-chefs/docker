@@ -14,17 +14,6 @@ module DockerHelpers
       return false
     end
 
-    def parsed_host
-      new_resource.host || Docker.url
-    end
-
-    def parsed_options
-      opts = {}
-      opts['read_timeout'] = new_resource.read_timeout unless new_resource.read_timeout.nil?
-      opts['write_timeout'] = new_resource.write_timeout unless new_resource.write_timeout.nil?
-      opts
-    end
-
     # Use this instead of new_resource.repo
     def parsed_repo
       return new_resource.repo if new_resource.repo

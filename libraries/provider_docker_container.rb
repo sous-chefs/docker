@@ -2,6 +2,7 @@ $LOAD_PATH.unshift *Dir[File.expand_path('../../files/default/vendor/gems/**/lib
 require 'docker'
 require 'shellwords'
 require_relative 'helpers_container'
+require_relative 'helpers_connection'
 
 class Chef
   class Provider
@@ -10,10 +11,15 @@ class Chef
       provides :docker_container if Chef::Provider.respond_to?(:provides)
 
       include DockerHelpers::Container
+      include DockerHelpers::Connection
       use_inline_resources
 
-      def load_current_resource
+      def initialize(*args)
+        super
         @conn = Docker::Connection.new(parsed_host, parsed_options)
+      end
+
+      def load_current_resource
         @api_version = Docker.version['ApiVersion']
 
         @current_resource = Chef::Resource::DockerContainer.new(new_resource.name)
