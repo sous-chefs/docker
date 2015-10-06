@@ -58,6 +58,11 @@ describe command('docker images') do
   its(:stdout) { should match(/^alpine\s.*3.1/) }
 end
 
+describe command('docker images') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/^alpine\s.*2.7/) }
+end
+
 # docker_image[vbatts/slackware]
 
 describe command('docker images') do

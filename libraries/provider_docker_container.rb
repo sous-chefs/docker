@@ -16,7 +16,7 @@ class Chef
 
       def initialize(*args)
         super
-        @conn = Docker::Connection.new(parsed_host, parsed_options)
+        @conn = Docker::Connection.new(parsed_connect_host, parsed_connect_options)
       end
 
       def load_current_resource
