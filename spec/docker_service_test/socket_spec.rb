@@ -12,7 +12,7 @@ describe 'docker_service_test::socket on centos-7.0' do
   end
 
   before do
-    stub_command('docker ps | head -n 1 | grep ^CONTAINER').and_return(true)
+    stub_command('/usr/bin/docker  ps | head -n 1 | grep ^CONTAINER').and_return(true)
   end
 
   # Resource in docker_service_test::socket
