@@ -3,6 +3,8 @@ class Chef
     class DockerService
       class Execute < Chef::Provider::DockerService
         if Chef::Provider.respond_to?(:provides)
+          provides :docker_service_execute
+
           provides :docker_service, os: ' linux'
         end
 

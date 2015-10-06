@@ -1,27 +1,24 @@
 class Chef
   class Resource
-    class DockerImage < Chef::Resource::LWRPBase
-      # Manually set the resource name because we're creating the classes
-      # manually instead of letting the resource/ and providers/
-      # directories auto-name things.
-      self.resource_name = :docker_image
+    class DockerImage < ChefCompat::Resource
+      use_automatic_resource_name
 
-      actions :build, :build_if_missing, :import, :pull, :pull_if_missing, :push, :remove, :save
+      allowed_actions :build, :build_if_missing, :import, :pull, :pull_if_missing, :push, :remove, :save
       default_action :pull
 
       # https://docs.docker.com/reference/api/docker_remote_api_v1.20/
-      attribute :api_retries, kind_of: Fixnum, default: 3
-      attribute :destination, kind_of: String, default: nil
-      attribute :force, kind_of: [TrueClass, FalseClass], default: false
-      attribute :host, kind_of: String, default: nil
-      attribute :nocache, kind_of: [TrueClass, FalseClass], default: false
-      attribute :noprune, kind_of: [TrueClass, FalseClass], default: false
-      attribute :read_timeout, kind_of: [Fixnum, NilClass], default: 120
-      attribute :repo, kind_of: String, name_attribute: true
-      attribute :rm, kind_of: [TrueClass, FalseClass], default: true
-      attribute :source, kind_of: String
-      attribute :tag, kind_of: String, default: 'latest'
-      attribute :write_timeout, kind_of: [Fixnum, NilClass], default: nil
+      property :api_retries, kind_of: Fixnum, default: 3
+      property :destination, kind_of: String, default: nil
+      property :force, kind_of: [TrueClass, FalseClass], default: false
+      property :host, kind_of: String, default: nil
+      property :nocache, kind_of: [TrueClass, FalseClass], default: false
+      property :noprune, kind_of: [TrueClass, FalseClass], default: false
+      property :read_timeout, kind_of: [Fixnum, NilClass], default: 120
+      property :repo, kind_of: String, name_attribute: true
+      property :rm, kind_of: [TrueClass, FalseClass], default: true
+      property :source, kind_of: String
+      property :tag, kind_of: String, default: 'latest'
+      property :write_timeout, kind_of: [Fixnum, NilClass], default: nil
 
       alias_method :image, :repo
       alias_method :image_name, :repo

@@ -3,6 +3,8 @@ class Chef
     class DockerService
       class Sysvinit < Chef::Provider::DockerService
         if Chef::Provider.respond_to?(:provides)
+          provides :docker_service_sysvinit
+
           provides :docker_service, platform: 'amazon'
           provides :docker_service, platform: 'centos'
           provides :docker_service, platform: 'redhat'

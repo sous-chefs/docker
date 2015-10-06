@@ -4,6 +4,8 @@ class Chef
       class Systemd < Chef::Provider::DockerService
         # Set provider mappings for Chef 12
         if Chef::Provider.respond_to?(:provides)
+          provides :docker_service_systemd
+
           provides :docker_service, platform: 'fedora'
 
           provides :docker_service, platform: %w(redhat centos scientific) do |node| # ~FC005

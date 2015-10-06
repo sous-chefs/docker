@@ -3,6 +3,8 @@ class Chef
     class DockerService
       class Upstart < Chef::Provider::DockerService
         if Chef::Provider.respond_to?(:provides)
+          provides :docker_service_upstart
+
           provides :docker_service, platform: 'ubuntu'
         end
 
