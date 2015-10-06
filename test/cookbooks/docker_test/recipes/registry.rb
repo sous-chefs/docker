@@ -2,63 +2,44 @@
 
 caroot = '/tmp/registry/tls'
 
-# CA skeleton
 directory "#{caroot}" do
-  recursive true
   action :create
 end
 
-bash 'creating PKI index file' do
-  code "/bin/touch #{caroot}/index.txt"
-  not_if "/usr/bin/test -f #{caroot}/index.txt"
-  action :run
-end
-
-bash 'starting PKI serial file' do
-  code "/bin/echo '01' > #{caroot}/serial"
-  not_if "/usr/bin/test -f #{caroot}/serial"
-  action :run
-end
-
-bash 'starting crlnumber' do
-  code "echo '01' > #{caroot}/ca.srl"
-  not_if "/usr/bin/test -f #{caroot}/ca.srl"
-  action :run
-end
-
-# Self sicned CA
-bash 'generating CA private key' do
+# Self signed CA
+bash 'generating CA private and public key' do
   cmd = 'openssl req'
   cmd += ' -x509'
   cmd += ' -nodes'
-  cmd += ' -days 3650'
-  cmd += " -subj '/O=computers.biz/'"
-  cmd += ' -newkey rsa:2048'
-  cmd += " -keyout #{caroot}/cakey.pem"
+  cmd += ' -days 365'
+  cmd += ' -sha256'
+  cmd += " -subj '/CN=kitchen2docker/'"
+  cmd += ' -newkey rsa:4096'
+  cmd += " -keyout #{caroot}/ca-key.pem"
   cmd += " -out #{caroot}/ca.pem"
   cmd += ' 2>&1>/dev/null'
   code cmd
-  not_if "/usr/bin/test -f #{caroot}/cakey.pem"
+  not_if "/usr/bin/test -f #{caroot}/ca-key.pem"
   not_if "/usr/bin/test -f #{caroot}/ca.pem"
   action :run
 end
 
 # server certs
-bash 'creating private key for docker regisry' do
-  code "openssl genrsa -out #{caroot}/serverkey.pem 2048"
-  not_if "/usr/bin/test -f #{caroot}/serverkey.pem"
+bash 'creating private key for docker server' do
+  code "openssl genrsa -out #{caroot}/server-key.pem 4096"
+  not_if "/usr/bin/test -f #{caroot}/server-key.pem"
   action :run
 end
 
 bash 'generating certificate request for server' do
   cmd = 'openssl req'
   cmd += ' -new'
-  cmd += ' -nodes'
-  cmd += " -subj '/O=computers.biz/'"
-  cmd += " -key #{caroot}/serverkey.pem"
+  cmd += ' -sha256'
+  cmd += " -subj '/CN=#{node['hostname']}/'"
+  cmd += " -key #{caroot}/server-key.pem"
   cmd += " -out #{caroot}/server.csr"
   code cmd
-  only_if "/usr/bin/test -f #{caroot}/serverkey.pem"
+  only_if "/usr/bin/test -f #{caroot}/server-key.pem"
   not_if "/usr/bin/test -f #{caroot}/server.csr"
   action :run
 end
@@ -71,8 +52,11 @@ end
 bash 'signing request for server' do
   cmd = 'openssl x509'
   cmd += ' -req'
+  cmd += ' -days 365'
+  cmd += ' -sha256'
   cmd += " -CA #{caroot}/ca.pem"
-  cmd += " -CAkey #{caroot}/cakey.pem"
+  cmd += " -CAkey #{caroot}/ca-key.pem"
+  cmd += ' -CAcreateserial'
   cmd += " -in #{caroot}/server.csr"
   cmd += " -out #{caroot}/server.pem"
   cmd += " -extfile #{caroot}/server-extfile.cnf"
@@ -83,7 +67,7 @@ end
 
 # client certs
 bash 'creating private key for docker client' do
-  code "openssl genrsa -out #{caroot}/key.pem 2048"
+  code "openssl genrsa -out #{caroot}/key.pem 4096"
   not_if "/usr/bin/test -f #{caroot}/key.pem"
   action :run
 end
@@ -91,13 +75,12 @@ end
 bash 'generating certificate request for client' do
   cmd = 'openssl req'
   cmd += ' -new'
-  cmd += ' -nodes'
-  cmd += " -subj '/O=computers.biz/'"
+  cmd += " -subj '/CN=client/'"
   cmd += " -key #{caroot}/key.pem"
-  cmd += " -out #{caroot}/cert.csr"
+  cmd += " -out #{caroot}/client.csr"
   code cmd
   only_if "/usr/bin/test -f #{caroot}/key.pem"
-  not_if "/usr/bin/test -f #{caroot}/cert.csr"
+  not_if "/usr/bin/test -f #{caroot}/client.csr"
   action :run
 end
 
@@ -109,9 +92,12 @@ end
 bash 'signing request for client' do
   cmd = 'openssl x509'
   cmd += ' -req'
+  cmd += ' -days 365'
+  cmd += ' -sha256'
   cmd += " -CA #{caroot}/ca.pem"
-  cmd += " -CAkey #{caroot}/cakey.pem"
-  cmd += " -in #{caroot}/cert.csr"
+  cmd += " -CAkey #{caroot}/ca-key.pem"
+  cmd += ' -CAcreateserial'
+  cmd += " -in #{caroot}/client.csr"
   cmd += " -out #{caroot}/cert.pem"
   cmd += " -extfile #{caroot}/client-extfile.cnf"
   code cmd
@@ -147,13 +133,13 @@ end
 
 # install certificates
 execute 'copy server cert for registry' do
-  command "cp #{caroot}/server.pem /tmp/registry/auth/server.crt"
+  command "cp #{caroot}/server-cert.pem /tmp/registry/auth/server.crt"
   creates '/tmp/registry/auth/server.crt'
   action :run
 end
 
 execute 'copy server key for registry' do
-  command "cp #{caroot}/serverkey.pem /tmp/registry/auth/server.key"
+  command "cp #{caroot}/server-key.pem /tmp/registry/auth/server.key"
   creates '/tmp/registry/auth/server.key'
   action :run
 end

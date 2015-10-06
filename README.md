@@ -181,9 +181,9 @@ docker_service 'tls_test:2376' do
   tls_verify true
   tls_ca_cert '/path/to/ca.pem'
   tls_server_cert '/path/to/server.pem'
-  tls_server_key '/path/to/serverkey.pem'
+  tls_server_key '/path/to/server-key.pem'
   tls_client_cert '/path/to/client.pem'
-  tls_client_key '/path/to/clientkey.pem'
+  tls_client_key '/path/to/client-key.pem'
   provider Chef::Provider::DockerService::Systemd
   action [:create, :start]
 end
