@@ -9,7 +9,7 @@ class Chef
       property :api_retries, Fixnum, default: 3
       property :email, String
       property :password, String
-      property :serveraddress, String, name_attribute: true
+      property :serveraddress, String, name_property: true
       property :username, String
 
       action :login do

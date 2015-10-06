@@ -7,7 +7,7 @@ class Chef
     class DockerContainer < DockerBase
       use_automatic_resource_name
 
-      property :container_name, String, name_attribute: true
+      property :container_name, String, name_property: true
       property :repo, String, default: nil
       property :tag, String, default: 'latest'
       property :command, [String, Array], default: ''

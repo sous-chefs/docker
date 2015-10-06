@@ -3,7 +3,7 @@ class Chef
     class DockerTag < ChefCompat::Resource
       use_automatic_resource_name
 
-      property :target_repo, String, name_attribute: true
+      property :target_repo, String, name_property: true
       property :target_tag, String
       property :to_repo, String
       property :to_tag, String

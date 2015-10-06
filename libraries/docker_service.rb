@@ -15,7 +15,7 @@ class Chef
       property :checksum, String, default: nil
 
       # daemon runtime arguments
-      property :instance, String, name_attribute: true, required: true
+      property :instance, String, name_property: true, required: true
       property :api_cors_header, String, default: nil
       property :bridge, String, regex: [IPV4_ADDR, IPV6_ADDR], default: nil
       property :bip, String, regex: [IPV4_ADDR, IPV4_CIDR, IPV6_ADDR, IPV6_CIDR], default: nil

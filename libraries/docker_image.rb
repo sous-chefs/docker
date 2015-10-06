@@ -14,7 +14,7 @@ class Chef
       property :nocache, [true, false], default: false
       property :noprune, [true, false], default: false
       property :read_timeout, [Fixnum, nil], default: 120
-      property :repo, String, name_attribute: true
+      property :repo, String, name_property: true
       property :rm, [true, false], default: true
       property :source, String
       property :tag, String, default: 'latest'
