@@ -3,6 +3,7 @@
 caroot = '/tmp/registry/tls'
 
 directory "#{caroot}" do
+  recursive true
   action :create
 end
 
@@ -58,9 +59,9 @@ bash 'signing request for server' do
   cmd += " -CAkey #{caroot}/ca-key.pem"
   cmd += ' -CAcreateserial'
   cmd += " -in #{caroot}/server.csr"
-  cmd += " -out #{caroot}/server.pem"
+  cmd += " -out #{caroot}/server-cert.pem"
   cmd += " -extfile #{caroot}/server-extfile.cnf"
-  not_if "/usr/bin/test -f #{caroot}/server.pem"
+  not_if "/usr/bin/test -f #{caroot}/server-cert.pem"
   code cmd
   action :run
 end
