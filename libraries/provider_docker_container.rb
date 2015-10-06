@@ -311,13 +311,18 @@ class Chef
       end
 
       action :redeploy do
-        c = Docker::Container.get(new_resource.container_name)
-        action_delete
-        # never start containers resulting from a previous action :create #432
-        if c.info['State']['Running'] == false &&
-           c.info['State']['StartedAt'] == '0001-01-01T00:00:00Z'
+        begin
+          c = Docker::Container.get(new_resource.container_name)
+          action_delete
+          # never start containers resulting from a previous action :create #432
+          if c.info['State']['Running'] == false &&
+             c.info['State']['StartedAt'] == '0001-01-01T00:00:00Z'
+            action_create
+          else
+            action_run
+          end
+        rescue Docker::Error::NotFoundError
           action_create
-        else
           action_run
         end
       end
