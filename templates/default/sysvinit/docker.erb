@@ -34,15 +34,6 @@ STARTTIMEOUT=900
 STOPTIMEOUT=900
 PID_DELAY=60
 
-<% if @docker_host %>
-export DOCKER_HOST=<%= @docker_host %>
-<% end %>
-<% if @docker_tls_ca_cert %>
-export DOCKER_CERT_PATH=`dirname <%= @docker_tls_ca_cert %>`
-<% end %>
-<% if @docker_tls_verify %>
-export DOCKER_TLS_VERIFY=1
-<% end %>
 <% if @pidfile -%>
 pidfile="<%= @pidfile %>"
 <% else -%>
@@ -72,7 +63,7 @@ pid_exists() {
 
 running() {
     RUNNING=1
-    <%= @docker_bin %> ps | head -n 1 | grep ^CONTAINER 2>&1 >/dev/null
+    <%= @docker_cmd %> ps | head -n 1 | grep ^CONTAINER 2>&1 >/dev/null
     local mret=$?
     if [ $mret -eq 0 ]; then
         RUNNING=0
@@ -232,7 +223,7 @@ start() {
     fi
 }
 
-# Status of <%= @mysql_name %>
+# Status of <%= @docker_name %>
 status() {
     if running; then
         echo "<%= @docker_name %> is running"
