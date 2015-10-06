@@ -1,3 +1,7 @@
+v1.0.48
+--------------------
+- Adding a 20 try timeout to the docker_wait_ready block
+
 v1.0.47
 --------------------
 - #484 - Fall back to creds for index.docker.io on image pull
