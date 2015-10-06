@@ -827,6 +827,16 @@ docker_container 'syslogger' do
 end
 ```
 
+Connect to an external docker daemon and create a container
+
+```ruby
+docker_container 'external_daemon' do
+  repo 'alpine'
+  host 'tcp://1.2.3.4:2376'
+  action :create
+end
+```
+
 #### Properties
 
 Most `docker_container` properties are the `snake_case` version of the
@@ -867,6 +877,8 @@ Most `docker_container` properties are the `snake_case` version of the
   `/etc/hosts` in the form `['host_a:10.9.8.7', 'host_b:10.9.8.6']`
 - `force` - A boolean to use in container operations that support a
   `force` option. Defaults to `false`
+- `host` - A string containing the host the API should communicate with.
+  Defaults to local `docker_service`.
 - `host_name` - The hostname for the container.
 - `links` - An array of source container/alias pairs to link the
   container to in the form `[container_a:www', container_b:db']`

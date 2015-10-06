@@ -714,3 +714,9 @@ describe command("docker inspect -f '{{ .HostConfig.LogConfig.Config }}' syslogg
   its(:exit_status) { should eq 0 }
   its(:stdout) { should match(/syslog-tag:container-syslogger/) }
 end
+
+# docker_container[host_override]
+
+describe command("docker ps -af 'name=host_override'") do
+  its(:exit_status) { should eq 0 }
+end

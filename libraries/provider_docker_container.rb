@@ -13,11 +13,12 @@ class Chef
       use_inline_resources
 
       def load_current_resource
+        @conn = Docker::Connection.new(parsed_host, parsed_options)
         @api_version = Docker.version['ApiVersion']
 
         @current_resource = Chef::Resource::DockerContainer.new(new_resource.name)
         begin
-          c = Docker::Container.get(new_resource.container_name)
+          c = Docker::Container.get(new_resource.container_name, @conn)
           @current_resource.attach_stderr c.info['Config']['AttachStderr']
           @current_resource.attach_stdin c.info['Config']['AttachStdin']
           @current_resource.attach_stdout c.info['Config']['AttachStdout']
@@ -110,53 +111,53 @@ class Chef
 
       # Most important work is done here.
       def create_container
-        api_timeouts
         tries ||= new_resource.api_retries
         Docker::Container.create(
-          'name' => new_resource.container_name,
-          'Image' => "#{parsed_repo}:#{new_resource.tag}",
-          'Labels' => parsed_labels,
-          'Cmd' => parsed_command,
-          'AttachStderr' => parsed_attach_stderr,
-          'AttachStdin' => parsed_attach_stdin,
-          'AttachStdout' => parsed_attach_stdout,
-          'Domainname' => new_resource.domain_name,
-          'Entrypoint' => parsed_entrypoint,
-          'Env' => parsed_env,
-          'ExposedPorts' => exposed_ports,
-          'Hostname' => new_resource.host_name,
-          'MacAddress' => new_resource.mac_address,
-          'NetworkDisabled' => new_resource.network_disabled,
-          'OpenStdin' => new_resource.open_stdin,
-          'StdinOnce' => parsed_stdin_once,
-          'Tty' => new_resource.tty,
-          'User' => new_resource.user,
-          'Volumes' => parsed_volumes,
-          'WorkingDir' => new_resource.working_dir,
-          'HostConfig' => {
-            'Binds' => parsed_binds,
-            'CapAdd' => parsed_cap_add,
-            'CapDrop' => parsed_cap_drop,
-            'CgroupParent' => new_resource.cgroup_parent,
-            'CpuShares' => new_resource.cpu_shares,
-            'CpusetCpus' => new_resource.cpuset_cpus,
-            'Devices' => parsed_devices,
-            'Dns' => parsed_dns,
-            'DnsSearch' => parsed_dns_search,
-            'ExtraHosts' => parsed_extra_hosts,
-            'Links' => parsed_links,
-            'LogConfig' => serialized_log_config,
-            'Memory' => new_resource.memory,
-            'MemorySwap' => new_resource.memory_swap,
-            'NetworkMode' => parsed_network_mode,
-            'Privileged' => new_resource.privileged,
-            'PortBindings' => port_bindings,
-            'PublishAllPorts' => new_resource.publish_all_ports,
-            'RestartPolicy' => parsed_restart_policy,
-            'Ulimits' => serialized_ulimits,
-            'VolumesFrom' => parsed_volumes_from
-          }
-        )
+          {
+            'name' => new_resource.container_name,
+            'Image' => "#{parsed_repo}:#{new_resource.tag}",
+            'Labels' => parsed_labels,
+            'Cmd' => parsed_command,
+            'AttachStderr' => parsed_attach_stderr,
+            'AttachStdin' => parsed_attach_stdin,
+            'AttachStdout' => parsed_attach_stdout,
+            'Domainname' => new_resource.domain_name,
+            'Entrypoint' => parsed_entrypoint,
+            'Env' => parsed_env,
+            'ExposedPorts' => exposed_ports,
+            'Hostname' => new_resource.host_name,
+            'MacAddress' => new_resource.mac_address,
+            'NetworkDisabled' => new_resource.network_disabled,
+            'OpenStdin' => new_resource.open_stdin,
+            'StdinOnce' => parsed_stdin_once,
+            'Tty' => new_resource.tty,
+            'User' => new_resource.user,
+            'Volumes' => parsed_volumes,
+            'WorkingDir' => new_resource.working_dir,
+            'HostConfig' => {
+              'Binds' => parsed_binds,
+              'CapAdd' => parsed_cap_add,
+              'CapDrop' => parsed_cap_drop,
+              'CgroupParent' => new_resource.cgroup_parent,
+              'CpuShares' => new_resource.cpu_shares,
+              'CpusetCpus' => new_resource.cpuset_cpus,
+              'Devices' => parsed_devices,
+              'Dns' => parsed_dns,
+              'DnsSearch' => parsed_dns_search,
+              'ExtraHosts' => parsed_extra_hosts,
+              'Links' => parsed_links,
+              'LogConfig' => serialized_log_config,
+              'Memory' => new_resource.memory,
+              'MemorySwap' => new_resource.memory_swap,
+              'NetworkMode' => parsed_network_mode,
+              'Privileged' => new_resource.privileged,
+              'PortBindings' => port_bindings,
+              'PublishAllPorts' => new_resource.publish_all_ports,
+              'RestartPolicy' => parsed_restart_policy,
+              'Ulimits' => serialized_ulimits,
+              'VolumesFrom' => parsed_volumes_from
+            }
+          }, @conn)
       rescue Docker::Error => e
         retry unless (tries -= 1).zero?
         raise e.message
@@ -199,8 +200,7 @@ class Chef
       end
 
       action :start do
-        api_timeouts
-        c = Docker::Container.get(new_resource.container_name)
+        c = Docker::Container.get(new_resource.container_name, @conn)
         next if c.info['State']['Restarting']
         next if c.info['State']['Running']
         converge_by "starting #{new_resource.container_name}" do
@@ -227,9 +227,8 @@ class Chef
       end
 
       action :stop do
-        api_timeouts
         next unless container_created?
-        c = Docker::Container.get(new_resource.container_name)
+        c = Docker::Container.get(new_resource.container_name, @conn)
         next unless c.info['State']['Running']
         converge_by "stopping #{new_resource.container_name}" do
           begin
@@ -244,9 +243,8 @@ class Chef
       end
 
       action :kill do
-        api_timeouts
         next unless container_created?
-        c = Docker::Container.get(new_resource.container_name)
+        c = Docker::Container.get(new_resource.container_name, @conn)
         next unless c.info['State']['Running']
         converge_by "killing #{new_resource.container_name}" do
           begin
@@ -272,9 +270,8 @@ class Chef
       end
 
       action :pause do
-        api_timeouts
         next unless container_created?
-        c = Docker::Container.get(new_resource.container_name)
+        c = Docker::Container.get(new_resource.container_name, @conn)
         next if c.info['State']['Paused']
         converge_by "pausing #{new_resource.container_name}" do
           begin
@@ -289,9 +286,8 @@ class Chef
       end
 
       action :unpause do
-        api_timeouts
         next unless container_created?
-        c = Docker::Container.get(new_resource.container_name)
+        c = Docker::Container.get(new_resource.container_name, @conn)
         next unless c.info['State']['Paused']
         converge_by "unpausing #{new_resource.container_name}" do
           begin
@@ -312,7 +308,7 @@ class Chef
 
       action :redeploy do
         begin
-          c = Docker::Container.get(new_resource.container_name)
+          c = Docker::Container.get(new_resource.container_name, @conn)
           action_delete
           # never start containers resulting from a previous action :create #432
           if c.info['State']['Running'] == false &&
@@ -331,7 +327,7 @@ class Chef
         next unless container_created?
         action_unpause
         action_stop
-        c = Docker::Container.get(new_resource.container_name)
+        c = Docker::Container.get(new_resource.container_name, @conn)
         converge_by "deleting #{new_resource.container_name}" do
           begin
             tries ||= new_resource.api_retries
@@ -359,8 +355,7 @@ class Chef
       end
 
       action :commit do
-        api_timeouts
-        c = Docker::Container.get(new_resource.container_name)
+        c = Docker::Container.get(new_resource.container_name, @conn)
         converge_by "committing #{new_resource.container_name}" do
           begin
             tries ||= new_resource.api_retries
@@ -374,9 +369,8 @@ class Chef
       end
 
       action :export do
-        api_timeouts
         fail "Please set outfile property on #{new_resource.container_name}" if new_resource.outfile.nil?
-        c = Docker::Container.get(new_resource.container_name)
+        c = Docker::Container.get(new_resource.container_name, @conn)
         converge_by "exporting #{new_resource.container_name}" do
           begin
             tries ||= new_resource.api_retries

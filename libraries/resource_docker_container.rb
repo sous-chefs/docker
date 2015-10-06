@@ -32,6 +32,7 @@ class Chef
       attribute :extra_hosts, kind_of: [String, Array, NilClass], default: nil
       attribute :exposed_ports, kind_of: Hash, default: nil
       attribute :force, kind_of: [TrueClass, FalseClass], default: false
+      attribute :host, kind_of: String, default: nil
       attribute :host_name, kind_of: String, default: nil
       attribute :labels, kind_of: [String, Array, Hash], default: nil
       attribute :links, kind_of: [String, Array, NilClass], default: nil # FIXME: add validate proc

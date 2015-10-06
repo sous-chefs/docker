@@ -914,6 +914,17 @@ docker_container 'overrides-2' do
 end
 
 #################
+# host override
+#################
+
+docker_container 'host_override' do
+  repo 'alpine'
+  host 'tcp://127.0.0.1:2376'
+  command 'ls -la /'
+  action :create
+end
+
+#################
 # logging drivers
 #################
 

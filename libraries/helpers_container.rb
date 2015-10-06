@@ -6,17 +6,23 @@ module DockerHelpers
     # Helper methods
     ################
 
-    def api_timeouts
-      Docker.options[:read_timeout] = new_resource.read_timeout unless new_resource.read_timeout.nil?
-      Docker.options[:write_timeout] = new_resource.write_timeout unless new_resource.write_timeout.nil?
-    end
-
     # This is called a lot.. maybe this should turn into an instance variable
     def container_created?
-      Docker::Container.get(new_resource.container_name)
+      Docker::Container.get(new_resource.container_name, @conn)
       return true
     rescue Docker::Error::NotFoundError
       return false
+    end
+
+    def parsed_host
+      new_resource.host || Docker.url
+    end
+
+    def parsed_options
+      opts = {}
+      opts['read_timeout'] = new_resource.read_timeout unless new_resource.read_timeout.nil?
+      opts['write_timeout'] = new_resource.write_timeout unless new_resource.write_timeout.nil?
+      opts
     end
 
     # Use this instead of new_resource.repo
