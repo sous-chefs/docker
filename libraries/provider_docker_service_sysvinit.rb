@@ -63,7 +63,6 @@ class Chef
             action [:enable, :start]
           end
         end
-
       end
     end
   end

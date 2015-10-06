@@ -1,3 +1,9 @@
+v1.0.45
+--------------------
+- Allow :redeploy on missing containers
+- TLS fixes
+- Updating sysvinit script to use docker_opts
+
 v1.0.44
 --------------------
 - Adding Label support for docker_container
