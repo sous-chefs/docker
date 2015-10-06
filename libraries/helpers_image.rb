@@ -11,7 +11,7 @@ module DockerHelpers
           'nocache' => new_resource.nocache,
           'rm' => new_resource.rm
         },
-        @conn
+        connection
       )
       i.tag('repo' => new_resource.repo, 'tag' => new_resource.tag, 'force' => new_resource.force)
     end
@@ -23,7 +23,7 @@ module DockerHelpers
           'nocache' => new_resource.nocache,
           'rm' => new_resource.rm
         },
-        @conn
+        connection
       )
       i.tag('repo' => new_resource.repo, 'tag' => new_resource.tag, 'force' => new_resource.force)
     end
@@ -35,7 +35,7 @@ module DockerHelpers
           'nocache' => new_resource.nocache,
           'rm' => new_resource.rm
         },
-        @conn
+        connection
       )
       i.tag('repo' => new_resource.repo, 'tag' => new_resource.tag, 'force' => new_resource.force)
     end
@@ -56,7 +56,7 @@ module DockerHelpers
 
     def import_image
       retries ||= new_resource.api_retries
-      i = Docker::Image.import(new_resource.source, {}, @conn)
+      i = Docker::Image.import(new_resource.source, {}, connection)
       i.tag('repo' => new_resource.repo, 'tag' => new_resource.tag, 'force' => new_resource.force)
     rescue Docker::Error => e
       retry unless (retries -= 1).zero?
@@ -70,8 +70,8 @@ module DockerHelpers
         registry_host = parse_registry_host(new_resource.repo)
         creds = node.run_state['docker_auth'] && node.run_state['docker_auth'][registry_host] || (node.run_state['docker_auth'] ||= {})['index.docker.io']
 
-        original_image = Docker::Image.get(image_identifier, {}, @conn) if Docker::Image.exist?(image_identifier, {}, @conn)
-        new_image = Docker::Image.create({ 'fromImage' => image_identifier }, creds, @conn)
+        original_image = Docker::Image.get(image_identifier, {}, connection) if Docker::Image.exist?(image_identifier, {}, connection)
+        new_image = Docker::Image.create({ 'fromImage' => image_identifier }, creds, connection)
       rescue Docker::Error => e
         retry unless (retries -= 1).zero?
         raise e.message
@@ -82,7 +82,7 @@ module DockerHelpers
 
     def push_image
       retries ||= new_resource.api_retries
-      i = Docker::Image.get(image_identifier, {}, @conn)
+      i = Docker::Image.get(image_identifier, {}, connection)
       i.push
     rescue Docker::Error => e
       retry unless (retries -= 1).zero?
@@ -91,7 +91,7 @@ module DockerHelpers
 
     def remove_image
       retries ||= new_resource.api_retries
-      i = Docker::Image.get(image_identifier, {}, @conn)
+      i = Docker::Image.get(image_identifier, {}, connection)
       i.remove(force: new_resource.force, noprune: new_resource.noprune)
     rescue Docker::Error => e
       retry unless (retries -= 1).zero?
@@ -100,7 +100,7 @@ module DockerHelpers
 
     def save_image
       retries ||= new_resource.api_retries
-      Docker::Image.save(new_resource.repo, new_resource.destination, @conn)
+      Docker::Image.save(new_resource.repo, new_resource.destination, connection)
     rescue Docker::Error, Errno::ENOENT => e
       retry unless (retries -= 1).zero?
       raise e.message

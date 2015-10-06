@@ -16,6 +16,74 @@ class Chef
       provides :docker_service, platform: 'ubuntu' do |node|
         node['platform_version'].to_f >= 15.04
       end
+
+      action :start do
+        action_stop unless resource_changes.empty?
+
+        # this is the main systemd unit file
+        template '/lib/systemd/system/docker.service' do
+          path '/lib/systemd/system/docker.service'
+          source 'systemd/docker.service.erb'
+          owner 'root'
+          group 'root'
+          mode '0644'
+          variables(
+            config: new_resource,
+            docker_bin: docker_bin,
+            docker_daemon_arg: docker_daemon_arg,
+            docker_daemon_opts: docker_daemon_opts
+          )
+          cookbook 'docker'
+          notifies :run, 'execute[systemctl daemon-reload]', :immediately
+          action :create
+        end
+
+        # avoid 'Unit file changed on disk' warning
+        execute 'systemctl daemon-reload' do
+          command '/bin/systemctl daemon-reload' if node['platform'] == 'ubuntu' || node['platform'] == 'debian'
+          command '/usr/bin/systemctl daemon-reload' unless node['platform'] == 'ubuntu' || node['platform'] == 'debian'
+          action :nothing
+        end
+
+        # tmpfiles.d config so the service survives reboot
+        template '/usr/lib/tmpfiles.d/docker.conf' do
+          path '/usr/lib/tmpfiles.d/docker.conf'
+          source 'systemd/tmpfiles.d.conf.erb'
+          owner 'root'
+          group 'root'
+          mode '0644'
+          variables(config: new_resource)
+          cookbook 'docker'
+          action :create
+        end
+
+        # service management resource
+        service 'docker' do
+          provider Chef::Provider::Service::Systemd
+          supports restart: true, status: true
+          action [:enable, :start]
+        end
+
+        # loop until docker socker is available
+        docker_wait_ready
+      end
+
+      action :stop do
+        # service management resource
+        service 'docker' do
+          provider Chef::Provider::Service::Systemd
+          supports status: true
+          action [:disable, :stop]
+          only_if { ::File.exist?('/lib/systemd/system/docker.service') }
+        end
+      end
+
+      action :restart do
+        action_stop
+        action_start
+      end
+
+      Chef::Provider::DockerService::Systemd = action_class if !defined?(Chef::Provider::DockerService::Systemd)
     end
   end
 end

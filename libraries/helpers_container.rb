@@ -6,7 +6,7 @@ module DockerHelpers
 
     # This is called a lot.. maybe this should turn into an instance variable
     def container_created?
-      Docker::Container.get(new_resource.container_name, @conn)
+      Docker::Container.get(new_resource.container_name, connection)
       return true
     rescue Docker::Error::NotFoundError
       return false

@@ -1,16 +1,13 @@
-require_relative 'helpers_service'
+require 'docker'
+require 'helpers_service'
 
 class Chef
   class Resource
-    class DockerService < ChefCompat::Resource
+    class DockerService < DockerBase
       use_automatic_resource_name
 
-      # service actions
-      allowed_actions :create, :delete, :start, :stop, :restart
-      default_action :create
-
       # register with the resource resolution system
-      provides :docker_service if Chef::Provider.respond_to?(:provides)
+      provides :docker_service
 
       # service installation
       property :source, kind_of: String, default: nil
@@ -75,7 +72,76 @@ class Chef
       alias_method :tlskey, :tls_server_key
       alias_method :tlsverify, :tls_verify
 
-      include DockerHelpers
+      default_action :create
+
+      declare_action_class.class_eval do
+        include DockerHelpers
+        include DockerHelpers::Service
+      end
+
+      # Put the appropriate bits on disk.
+      action :create do
+        # Pull a precompiled binary off the network
+        remote_file docker_bin do
+          source parsed_source
+          checksum parsed_checksum
+          owner 'root'
+          group 'root'
+          mode '0755'
+          action :create
+          notifies :restart, new_resource
+        end
+      end
+
+      action :delete do
+        file docker_bin do
+          action :delete
+        end
+      end
+
+      # These are implemented in subclasses.
+      action :start do
+      end
+
+      action :stop do
+      end
+
+      action :restart do
+      end
+
+      action_class.class_eval do
+        def load_current_resource
+          @current_resource = Chef::Resource::DockerService.new(new_resource.name)
+
+          Docker.url = parsed_connect_host if parsed_connect_host
+
+          if parsed_connect_host =~ /^tcp:/ && new_resource.tls_ca_cert
+            Docker.options = {
+              ssl_ca_file: new_resource.tls_ca_cert,
+              client_cert: new_resource.tls_client_cert,
+              client_key: new_resource.tls_client_key,
+              scheme: 'https'
+            }
+          end
+
+          # require 'pry' ; binding.pry
+
+          if docker_running?
+            @current_resource.storage_driver Docker.info['Driver']
+          else
+            return @current_resource
+          end
+        end
+
+        def resource_changes
+          changes = []
+          changes << :storage_driver if update_storage_driver?
+          changes
+        end
+      end
+
+      # Declare a module for subresoures' providers to sit in (backcompat)
+      module Chef::Provider::DockerService; end
     end
   end
 end
