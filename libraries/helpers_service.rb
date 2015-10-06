@@ -109,17 +109,21 @@ module DockerHelpers
       [docker_bin, docker_opts].join(' ')
     end
 
-    # loop until docker socker is available
+    # Try to connect to docker socket twenty times
     def docker_wait_ready
       bash 'docker-wait-ready' do
         code <<-EOF
-        while /bin/true; do
+        timeout=0
+        while [ $timeout -lt 20 ];  do
+          ((timeout++))
           #{docker_cmd} ps | head -n 1 | grep ^CONTAINER
           if [ $? -eq 0 ]; then
             break
           fi
           sleep 1
         done
+        [[ $timeout -eq 20 ]] && exit 1
+        exit 0
         EOF
         not_if "#{docker_cmd} ps | head -n 1 | grep ^CONTAINER"
       end
