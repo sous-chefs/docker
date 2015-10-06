@@ -1,3 +1,8 @@
+v1.0.46
+--------------------
+- #438 - Adding per-resource host property to docker_image and
+   docker_container
+
 v1.0.45
 --------------------
 - Allow :redeploy on missing containers
