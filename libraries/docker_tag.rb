@@ -15,12 +15,13 @@ class Chef
       action :tag do
         next if Docker::Image.exist?("#{to_repo}:#{to_tag}")
         begin
-          i = Docker::Image.get("#{target_repo}:#{target_tag}")
-          i.tag('repo' => to_repo, 'tag' => to_tag, 'force' => true)
+          converge_by "update #{target_repo}:#{target_tag} to #{to_repo}:#{to_tag}" do
+            i = Docker::Image.get("#{target_repo}:#{target_tag}")
+            i.tag('repo' => to_repo, 'tag' => to_tag, 'force' => true)
+          end
         rescue Docker::Error => e
           raise e.message
         end
-        updated_by_last_action(true)
       end
     end
   end

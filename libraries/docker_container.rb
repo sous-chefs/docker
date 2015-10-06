@@ -122,7 +122,6 @@ class Chef
         converge_by "creating #{container_name}" do
           create_container
         end
-        updated_by_last_action(true)
       end
 
       action :start do
@@ -149,7 +148,6 @@ class Chef
             raise e.message
           end
         end
-        updated_by_last_action(true)
       end
 
       action :stop do
@@ -165,7 +163,6 @@ class Chef
             raise e.message
           end
         end
-        updated_by_last_action(true)
       end
 
       action :kill do
@@ -181,7 +178,6 @@ class Chef
             raise e.message
           end
         end
-        updated_by_last_action(true)
       end
 
       action :run do
@@ -208,7 +204,6 @@ class Chef
             raise e.message
           end
         end
-        updated_by_last_action(true)
       end
 
       action :unpause do
@@ -224,7 +219,6 @@ class Chef
             raise e.message
           end
         end
-        updated_by_last_action(true)
       end
 
       action :restart do
@@ -263,7 +257,6 @@ class Chef
             raise e.message
           end
         end
-        updated_by_last_action(true)
       end
 
       action :remove do
@@ -277,7 +270,6 @@ class Chef
         converge_by "removing links for #{container_name}" do
           Chef::Log.info(':remove_link not currently implemented')
         end
-        updated_by_last_action(true)
       end
 
       action :commit do

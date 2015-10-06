@@ -36,25 +36,27 @@ class Chef
       end
 
       action :build do
-        build_image
-        updated_by_last_action(true)
+        converge_by "Build image #{image_identifier}" do
+          build_image
+        end
       end
 
       action :build_if_missing do
         next if Docker::Image.exist?(image_identifier, {}, connection)
         action_build
-        updated_by_last_action(true)
       end
 
       action :import do
         next if Docker::Image.exist?(image_identifier, {}, connection)
-        import_image
-        updated_by_last_action(true)
+        converge_by "Import image #{image_identifier}" do
+          import_image
+        end
       end
 
       action :pull do
-        r = pull_image
-        updated_by_last_action(r)
+        converge_by "Pull image #{image_identifier}" do
+          pull_image
+        end
       end
 
       action :pull_if_missing do
@@ -63,19 +65,22 @@ class Chef
       end
 
       action :push do
-        push_image
-        updated_by_last_action(true)
+        converge_by "Push image #{image_identifier}" do
+          push_image
+        end
       end
 
       action :remove do
         next unless Docker::Image.exist?(image_identifier, {}, connection)
-        remove_image
-        updated_by_last_action(true)
+        converge_by "Remove image #{image_identifier}" do
+          remove_image
+        end
       end
 
       action :save do
-        save_image
-        updated_by_last_action(true)
+        converge_by "Save image #{image_identifier}" do
+          save_image
+        end
       end
     end
   end
