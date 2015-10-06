@@ -27,6 +27,12 @@ docker_image 'alpine' do
   write_timeout 60
 end
 
+# host override
+docker_image 'alpine' do
+  host 'tcp://127.0.0.1:2376'
+  tag '2.7'
+end
+
 #########
 # :remove
 #########

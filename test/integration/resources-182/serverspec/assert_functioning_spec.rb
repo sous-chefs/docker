@@ -58,6 +58,11 @@ describe command('docker images') do
   its(:stdout) { should match(/^alpine\s.*3.1/) }
 end
 
+describe command('docker images') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/^alpine\s.*2.7/) }
+end
+
 # docker_image[vbatts/slackware]
 
 describe command('docker images') do
@@ -718,4 +723,10 @@ end
 describe command("docker inspect -f '{{ .HostConfig.LogConfig.Config }}' syslogger") do
   its(:exit_status) { should eq 0 }
   its(:stdout) { should match(/syslog-tag:container-syslogger/) }
+end
+
+# docker_container[host_override]
+
+describe command("docker ps -af 'name=host_override'") do
+  its(:exit_status) { should eq 0 }
 end

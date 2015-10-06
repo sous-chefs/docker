@@ -13,6 +13,7 @@ class Chef
       attribute :api_retries, kind_of: Fixnum, default: 3
       attribute :destination, kind_of: String, default: nil
       attribute :force, kind_of: [TrueClass, FalseClass], default: false
+      attribute :host, kind_of: String, default: nil
       attribute :nocache, kind_of: [TrueClass, FalseClass], default: false
       attribute :noprune, kind_of: [TrueClass, FalseClass], default: false
       attribute :read_timeout, kind_of: [Fixnum, NilClass], default: 120
