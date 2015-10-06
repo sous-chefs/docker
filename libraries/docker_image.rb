@@ -7,18 +7,18 @@ class Chef
       use_automatic_resource_name
 
       # https://docs.docker.com/reference/api/docker_remote_api_v1.20/
-      property :api_retries, kind_of: Fixnum, default: 3
-      property :destination, kind_of: String, default: nil
-      property :force, kind_of: [TrueClass, FalseClass], default: false
-      property :host, kind_of: String, default: nil
-      property :nocache, kind_of: [TrueClass, FalseClass], default: false
-      property :noprune, kind_of: [TrueClass, FalseClass], default: false
-      property :read_timeout, kind_of: [Fixnum, NilClass], default: 120
-      property :repo, kind_of: String, name_attribute: true
-      property :rm, kind_of: [TrueClass, FalseClass], default: true
-      property :source, kind_of: String
-      property :tag, kind_of: String, default: 'latest'
-      property :write_timeout, kind_of: [Fixnum, NilClass], default: nil
+      property :api_retries, Fixnum, default: 3
+      property :destination, String, default: nil
+      property :force, [true, false], default: false
+      property :host, String, default: nil
+      property :nocache, [true, false], default: false
+      property :noprune, [true, false], default: false
+      property :read_timeout, [Fixnum, nil], default: 120
+      property :repo, String, name_attribute: true
+      property :rm, [true, false], default: true
+      property :source, String
+      property :tag, String, default: 'latest'
+      property :write_timeout, [Fixnum, nil], default: nil
 
       alias_method :image, :repo
       alias_method :image_name, :repo
