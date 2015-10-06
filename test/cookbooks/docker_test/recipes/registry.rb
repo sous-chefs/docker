@@ -59,9 +59,9 @@ bash 'signing request for server' do
   cmd += " -CAkey #{caroot}/ca-key.pem"
   cmd += ' -CAcreateserial'
   cmd += " -in #{caroot}/server.csr"
-  cmd += " -out #{caroot}/server-cert.pem"
+  cmd += " -out #{caroot}/server.pem"
   cmd += " -extfile #{caroot}/server-extfile.cnf"
-  not_if "/usr/bin/test -f #{caroot}/server-cert.pem"
+  not_if "/usr/bin/test -f #{caroot}/server.pem"
   code cmd
   action :run
 end
@@ -134,7 +134,7 @@ end
 
 # install certificates
 execute 'copy server cert for registry' do
-  command "cp #{caroot}/server-cert.pem /tmp/registry/auth/server.crt"
+  command "cp #{caroot}/server.pem /tmp/registry/auth/server.crt"
   creates '/tmp/registry/auth/server.crt'
   action :run
 end
