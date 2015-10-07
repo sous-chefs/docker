@@ -8,62 +8,125 @@ class Chef
       use_automatic_resource_name
 
       property :container_name, String, name_property: true
-      property :repo, String, default: nil
+      property :repo, String, default: lazy { container_name }
       property :tag, String, default: 'latest'
-      property :command, [String, Array], default: ''
+      property :command, [Array, String], coerce: proc { ::Shellwords.shellwords(command) }
 
       property :api_retries, Fixnum, default: 3
-      property :attach_stderr, [true, false], default: true
-      property :attach_stdin, [true, false], default: false
-      property :attach_stdout, [true, false], default: true
+      property :attach_stderr, [true, false], default: lazy { !detach }
+      property :attach_stdin, [true, false], default: lazy { !detach }
+      property :attach_stdout, [true, false], default: lazy { !detach }
       property :autoremove, [true, false], default: false
-      property :binds, [String, Array, nil], default: nil # FIXME: add validate proc
-      property :cap_add, [String, Array, nil], default: nil # FIXME: add validate proc
-      property :cap_drop, [String, Array, nil], default: nil # FIXME: add validate proc
+      property :binds, Array, coerce: proc { |v| Array(v) }
+      property :cap_add, [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
+      property :cap_drop, [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
       property :cgroup_parent, String, default: '' # FIXME: add validate proc
       property :cpu_shares, [Fixnum, nil], default: 0 # FIXME: add validate proc
       property :cpuset_cpus, String, default: '' # FIXME: add validate proc
       property :detach, [true, false], default: true
-      property :devices, [Hash, Array, nil], default: nil # FIXME: add validate proc
-      property :dns, [String, Array, nil], default: nil
-      property :dns_search, [String, Array, nil], default: nil
+      property :devices, Array, coerce: proc { |v| Array(v) }
+      property :dns, [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
+      property :dns_search, [Array, nil], coerce: proc { |v| v.nil? ? nil : Array(v) }
       property :domain_name, String, default: ''
-      property :entrypoint, [String, Array, nil], default: nil
-      property :env, [String, Array], default: nil
-      property :extra_hosts, [String, Array, nil], default: nil
+      property :entrypoint, [String, Array, nil], default: lazy { ::Shellwords.shellwords(entrypoint) }
+      property :env, Array, coerce: proc { |v| Array(v) }
+      property :extra_hosts, [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
       property :exposed_ports, Hash, default: nil
       property :force, [true, false], default: false
       property :host, String, default: nil
       property :host_name, String, default: nil
-      property :labels, [String, Array, Hash], default: nil
-      property :links, [String, Array, nil], default: nil # FIXME: add validate proc
-      property :log_config, [Hash, nil], default: nil # FIXME: add validate proc and tests; to configure the resource, prefer log_driver/log_opts below
-      property :log_driver, %w( json-file syslog journald gelf fluentd none ), default: nil
-      property :log_opts, [String, Array], default: []
+      property :labels, Hash, coerce: proc { |v|
+        if v.is_a?(Hash)
+          v
+        else
+          h = {}
+          Array(labels).each do |label|
+            parts = label.split(':')
+            h.merge!(parts[0] => parts[1])
+          end
+          h
+        end
+      }
+      property :links, [Array, nil], coerce: proc { |v|
+        v = Array(v)
+        return nil if v.empty?
+        v.map do |link|
+          parts = link.split(':')
+          ray << "/#{parts[0]}:/#{name}/#{parts[1]}"
+        end
+      }
+      property :log_config, Hash, coerce: proc { |v|
+        v ||= {}
+        v['Type'] ||= log_driver
+        v['Config'] ||= log_opts
+        v
+      }
+      property :log_driver, %w( json-file syslog journald gelf fluentd none ), default: 'json-file'
+      property :log_opts, Array, default: nil, coerce: proc { |v|
+        Array(v).each_with_object({}) do |log_opt, memo|
+          key, value = log_opt.split('=', 2)
+          memo[key] = value
+        end
+      }
       property :mac_address, String, default: '' # FIXME: needs tests
       property :memory, Fixnum, default: 0
       property :memory_swap, Fixnum, default: -1
       property :network_disabled, [true, false], default: false
-      property :network_mode, [String, nil], default: nil
+      property :network_mode, [String, nil], default: lazy {
+        case api_version
+        when '1.20'
+          return 'default'
+        when '1.19'
+          return 'bridge'
+        else
+          return ''
+        end
+      }
       property :open_stdin, [true, false], default: false
       property :outfile, String, default: nil
-      property :port, [String, Array], default: nil
+      property :port, Array, coerce: proc { |v| Array(v) }, default: nil
       property :port_bindings, [String, Array, Hash], default: nil
       property :privileged, [true, false], default: false
       property :publish_all_ports, [true, false], default: false
       property :read_timeout, [Fixnum, nil], default: 60
       property :remove_volumes, [true, false], default: false
       property :restart_maximum_retry_count, Fixnum, default: 0
-      property :restart_policy, [String, Hash, nil], default: 'no' # FIXME: validation proc: equal_to: %w(no on-failure always)
+      property :restart_policy, Hash, coerce: proc { |v|
+        v = { 'Name' => v } unless v.is_a?(Hash)
+        v['MaximumRetryCount'] = restart_maximum_retry_count
+        v
+      }
       property :security_opts, [String, Array], default: ['']
       property :signal, String, default: 'SIGKILL'
-      property :stdin_once, [true, false, nil], default: false
+      property :stdin_once, [true, false, nil], default: lazy { !detach }
       property :timeout, Fixnum, default: nil
       property :tty, [true, false], default: false
-      property :ulimits, [Hash, Array, String, nil], default: nil
+      property :ulimits, [ Array, nil ], coerce: proc { |v|
+        if v.nil?
+          v
+        else
+          Array(v).map do |u|
+            if u.is_a?(Hash)
+              u
+            else
+              name = u.split('=')[0]
+              soft = u.split('=')[1].split(':')[0]
+              hard = u.split('=')[1].split(':')[1]
+              ray << { 'Name' => name, 'Soft' => soft.to_i, 'Hard' => hard.to_i }
+            end
+          end
+        end
+      }
       property :user, String, default: ''
-      property :volumes, [String, Array, Hash, nil], default: nil # FIXME: add validate proc
-      property :volumes_from, [String, Array, nil], default: nil # FIXME: add validate proc
+      property :volumes, [ Hash, nil ], default: nil, coerce: proc { |v|
+        case v
+        when nil, Hash
+          v
+        else
+          Array(v).inject({}) { |v,h| h[v] = {} }
+        end
+      }
+      property :volumes_from, Array, coerce: proc { |v| Array(v) }, default: nil
       property :working_dir, String, default: nil
       property :write_timeout, [Fixnum, nil], default: nil
 
@@ -100,17 +163,17 @@ class Chef
         # Debug logging for things that have given trouble in the past
         Chef::Log.debug("DOCKER: user - current:#{current_resource.user}: new:#{user}:")
         Chef::Log.debug("DOCKER: working_dir - current:#{current_resource.working_dir}: new:#{working_dir}:")
-        Chef::Log.debug("DOCKER: command - current:#{current_resource.command}: parsed:#{parsed_command}:")
-        Chef::Log.debug("DOCKER: entrypoint - current:#{current_resource.entrypoint}: parsed:#{parsed_entrypoint}:")
-        Chef::Log.debug("DOCKER: env - current:#{current_resource.env}: parsed:#{parsed_env}:")
+        Chef::Log.debug("DOCKER: command - current:#{current_resource.command}: parsed:#{command}:")
+        Chef::Log.debug("DOCKER: entrypoint - current:#{current_resource.entrypoint}: parsed:#{entrypoint}:")
+        Chef::Log.debug("DOCKER: env - current:#{current_resource.env}: parsed:#{env}:")
         Chef::Log.debug("DOCKER: exposed_ports - current:#{current_resource.exposed_ports}: serialized:#{exposed_ports}:")
-        Chef::Log.debug("DOCKER: volumes - current:#{current_resource.volumes}: parsed:#{parsed_volumes}:")
-        Chef::Log.debug("DOCKER: network_mode - current:#{current_resource.network_mode}: parsed:#{parsed_network_mode}:")
-        Chef::Log.debug("DOCKER: log_config - current:#{current_resource.log_config}: serialized:#{serialized_log_config}:")
+        Chef::Log.debug("DOCKER: volumes - current:#{current_resource.volumes}: parsed:#{volumes}:")
+        Chef::Log.debug("DOCKER: network_mode - current:#{current_resource.network_mode}: parsed:#{network_mode}:")
+        Chef::Log.debug("DOCKER: log_config - current:#{current_resource.log_config}: serialized:#{log_config}:")
         Chef::Log.debug("DOCKER: ulimits - current:#{current_resource.ulimits}:")
         Chef::Log.debug("DOCKER: ulimits -     new:#{ulimits}:")
-        Chef::Log.debug("DOCKER: links - current:#{current_resource.links}: serialized:#{serialized_links}:")
-        Chef::Log.debug("DOCKER: labels - current:#{current_resource.labels}: parsed:#{parsed_labels}:")
+        Chef::Log.debug("DOCKER: links - current:#{current_resource.links}: serialized:#{links}:")
+        Chef::Log.debug("DOCKER: labels - current:#{current_resource.labels}: parsed:#{labels}:")
 
         resource_changes.each do |change|
           Chef::Log.debug("DOCKER: change - :#{change}")
@@ -302,8 +365,6 @@ class Chef
 
       action_class.class_eval do
         def load_current_resource
-          @api_version = Docker.version['ApiVersion']
-
           @current_resource = Chef::Resource::DockerContainer.new(name)
           begin
             c = Docker::Container.get(container_name, connection)
@@ -354,45 +415,45 @@ class Chef
 
         def resource_changes
           changes = []
-          changes << :attach_stderr if current_resource.attach_stderr != parsed_attach_stderr
-          changes << :attach_stdin if current_resource.attach_stdin != parsed_attach_stdin
-          changes << :attach_stdout if current_resource.attach_stdout != parsed_attach_stdout
-          changes << :binds if current_resource.binds != parsed_binds
-          changes << :cap_add if current_resource.cap_add != parsed_cap_add
-          changes << :cap_drop if current_resource.cap_drop != parsed_cap_drop
+          changes << :attach_stderr if current_resource.attach_stderr != attach_stderr
+          changes << :attach_stdin if current_resource.attach_stdin != attach_stdin
+          changes << :attach_stdout if current_resource.attach_stdout != attach_stdout
+          changes << :binds if current_resource.binds != binds
+          changes << :cap_add if current_resource.cap_add != cap_add
+          changes << :cap_drop if current_resource.cap_drop != cap_drop
           changes << :cgroup_parent if current_resource.cgroup_parent != cgroup_parent
           changes << :command if update_command?
           changes << :cpu_shares if current_resource.cpu_shares != cpu_shares
           changes << :cpuset_cpus if current_resource.cpuset_cpus != cpuset_cpus
-          changes << :devices if current_resource.devices != parsed_devices
-          changes << :dns if current_resource.dns != parsed_dns
-          changes << :dns_search if current_resource.dns_search != parsed_dns_search
+          changes << :devices if current_resource.devices != devices
+          changes << :dns if current_resource.dns != dns
+          changes << :dns_search if current_resource.dns_search != dns_search
           changes << :domainname if current_resource.domainname != domainname
           changes << :entrypoint if update_entrypoint?
           changes << :env if update_env?
           changes << :exposed_ports if update_exposed_ports?
-          changes << :extra_hosts if current_resource.extra_hosts != parsed_extra_hosts
+          changes << :extra_hosts if current_resource.extra_hosts != extra_hosts
           changes << :hostname if update_hostname?
-          changes << :image if current_resource.image != "#{parsed_repo}:#{tag}"
-          changes << :labels if current_resource.labels != parsed_labels
-          changes << :links if current_resource.links != serialized_links
-          changes << :log_config if current_resource.log_config != serialized_log_config
+          changes << :image if current_resource.image != "#{repo}:#{tag}"
+          changes << :labels if current_resource.labels != labels
+          changes << :links if current_resource.links != links
+          changes << :log_config if current_resource.log_config != log_config
           changes << :mac_address if current_resource.mac_address != mac_address
           changes << :memory if current_resource.memory != memory
           changes << :memory_swap if current_resource.memory_swap != memory_swap
           changes << :network_disabled if current_resource.network_disabled != network_disabled
-          changes << :network_mode if current_resource.network_mode != parsed_network_mode
+          changes << :network_mode if current_resource.network_mode != network_mode
           changes << :open_stdin if current_resource.open_stdin != open_stdin
           changes << :port_bindings if current_resource.port_bindings != port_bindings
           changes << :privileged if current_resource.privileged != privileged
           changes << :publish_all_ports if current_resource.publish_all_ports != publish_all_ports
-          changes << :restart_policy if current_resource.restart_policy != parsed_restart_policy
-          changes << :stdin_once if current_resource.stdin_once != parsed_stdin_once
+          changes << :restart_policy if current_resource.restart_policy != restart_policy
+          changes << :stdin_once if current_resource.stdin_once != stdin_once
           changes << :tty if current_resource.tty != tty
           changes << :ulimits if update_ulimits?
           changes << :user if current_resource.user != user
           changes << :volumes if update_volumes?
-          changes << :volumes_from if current_resource.volumes_from != parsed_volumes_from
+          changes << :volumes_from if current_resource.volumes_from != volumes_from
           changes << :working_dir if update_working_dir?
           changes
         end
@@ -403,47 +464,47 @@ class Chef
           Docker::Container.create(
             {
               'name' => container_name,
-              'Image' => "#{parsed_repo}:#{tag}",
-              'Labels' => parsed_labels,
-              'Cmd' => parsed_command,
-              'AttachStderr' => parsed_attach_stderr,
-              'AttachStdin' => parsed_attach_stdin,
-              'AttachStdout' => parsed_attach_stdout,
+              'Image' => "#{repo}:#{tag}",
+              'Labels' => labels,
+              'Cmd' => command,
+              'AttachStderr' => attach_stderr,
+              'AttachStdin' => attach_stdin,
+              'AttachStdout' => attach_stdout,
               'Domainname' => domain_name,
-              'Entrypoint' => parsed_entrypoint,
-              'Env' => parsed_env,
+              'Entrypoint' => entrypoint,
+              'Env' => env,
               'ExposedPorts' => exposed_ports,
               'Hostname' => host_name,
               'MacAddress' => mac_address,
               'NetworkDisabled' => network_disabled,
               'OpenStdin' => open_stdin,
-              'StdinOnce' => parsed_stdin_once,
+              'StdinOnce' => stdin_once,
               'Tty' => tty,
               'User' => user,
-              'Volumes' => parsed_volumes,
+              'Volumes' => volumes,
               'WorkingDir' => working_dir,
               'HostConfig' => {
-                'Binds' => parsed_binds,
-                'CapAdd' => parsed_cap_add,
-                'CapDrop' => parsed_cap_drop,
+                'Binds' => binds,
+                'CapAdd' => cap_add,
+                'CapDrop' => cap_drop,
                 'CgroupParent' => cgroup_parent,
                 'CpuShares' => cpu_shares,
                 'CpusetCpus' => cpuset_cpus,
-                'Devices' => parsed_devices,
-                'Dns' => parsed_dns,
-                'DnsSearch' => parsed_dns_search,
-                'ExtraHosts' => parsed_extra_hosts,
-                'Links' => parsed_links,
-                'LogConfig' => serialized_log_config,
+                'Devices' => devices,
+                'Dns' => dns,
+                'DnsSearch' => dns_search,
+                'ExtraHosts' => extra_hosts,
+                'Links' => links,
+                'LogConfig' => log_config,
                 'Memory' => memory,
                 'MemorySwap' => memory_swap,
-                'NetworkMode' => parsed_network_mode,
+                'NetworkMode' => network_mode,
                 'Privileged' => privileged,
                 'PortBindings' => port_bindings,
                 'PublishAllPorts' => publish_all_ports,
-                'RestartPolicy' => parsed_restart_policy,
-                'Ulimits' => serialized_ulimits,
-                'VolumesFrom' => parsed_volumes_from
+                'RestartPolicy' => restart_policy,
+                'Ulimits' => ulimits,
+                'VolumesFrom' => volumes_from
               }
             }, connection)
         rescue Docker::Error => e

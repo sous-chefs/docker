@@ -3,6 +3,10 @@ require 'helpers_auth'
 class Chef
   class Resource
     class DockerBase < ChefCompat::Resource
+      def api_version
+        @api_version ||= Docker.version['ApiVersion']
+      end
+
       def connection
         @connection ||= begin
           opts = {}
