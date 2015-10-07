@@ -30,7 +30,7 @@ describe 'docker_test::image' do
         source: nil,
         tag: 'latest',
         write_timeout: nil
-        )
+      )
     end
 
     it 'includes the "docker_test::registry" recipe' do

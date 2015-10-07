@@ -8,7 +8,7 @@ describe 'docker_test::container' do
     stub_command("[ ! -z `docker ps -qaf 'name=busybox_ls$'` ]").and_return(true)
     stub_command("[ ! -z `docker ps -qaf 'name=bill$'` ]").and_return(true)
     stub_command("[ ! -z `docker ps -qaf 'name=hammer_time$'` ]").and_return(true)
-    stub_command("docker ps -a | grep red_light | grep Exited").and_return(true)
+    stub_command('docker ps -a | grep red_light | grep Exited').and_return(true)
     stub_command("[ ! -z `docker ps -qaf 'name=red_light$'` ]").and_return(true)
     stub_command("[ ! -z `docker ps -qaf 'name=green_light$'` ]").and_return(true)
     stub_command("[ ! -z `docker ps -qaf 'name=quitter$'` ]").and_return(true)
@@ -17,7 +17,6 @@ describe 'docker_test::container' do
   end
 
   context 'when compiling the recipe' do
-
     it 'create docker_container[hello-world]' do
       expect(chef_run).to create_docker_container('hello-world').with(
         container_name: 'hello-world',
@@ -78,8 +77,7 @@ describe 'docker_test::container' do
         volumes_from: nil,
         working_dir: nil,
         write_timeout: nil
-        )
+      )
     end
-
   end
 end
