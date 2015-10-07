@@ -1,3 +1,7 @@
+v1.0.49
+--------------------
+- Handling NilClass error on docker_image default creds handling
+
 v1.0.48
 --------------------
 - Adding a 20 try timeout to the docker_wait_ready block
