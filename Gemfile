@@ -8,7 +8,7 @@ group :lint do
 end
 
 group :unit do
-  gem 'berkshelf', '~> 3.2'
+  gem 'berkshelf', '~> 4.0'
   gem 'chefspec', github: 'jkeiser/chefspec', branch: 'jk/chefspec-12.5'
 end
 
