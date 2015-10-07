@@ -738,7 +738,8 @@ end
 #   action :run
 # end
 
-docker_container 'dangler' do
+docker_container 'dangler_volume_remover' do
+  container_name 'dangler'
   remove_volumes true
   action :delete
 end
