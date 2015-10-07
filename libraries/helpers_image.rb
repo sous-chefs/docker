@@ -68,7 +68,7 @@ module DockerHelpers
         retries ||= new_resource.api_retries
 
         registry_host = parse_registry_host(new_resource.repo)
-        creds = node.run_state['docker_auth'] && node.run_state['docker_auth'][registry_host] || node.run_state['docker_auth']['index.docker.io']
+        creds = node.run_state['docker_auth'] && node.run_state['docker_auth'][registry_host] || (node.run_state['docker_auth'] ||= {})['index.docker.io']
 
         original_image = Docker::Image.get(image_identifier, {}, @conn) if Docker::Image.exist?(image_identifier, {}, @conn)
         new_image = Docker::Image.create({ 'fromImage' => image_identifier }, creds, @conn)
