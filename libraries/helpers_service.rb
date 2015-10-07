@@ -212,7 +212,7 @@ module DockerHelpers
       opts << "--registry-mirror=#{new_resource.registry_mirror}" if new_resource.registry_mirror
       parsed_storage_driver.each { |s| opts << "--storage-driver=#{s}" } if new_resource.storage_driver
       opts << '--selinux-enabled=true' if new_resource.selinux_enabled
-      parsed_storage_opts.each { |storage_opt| opts << "--storage-opt=#{storage_opt}" }
+      parsed_storage_opts.each { |storage_opt| opts << "--storage-opt #{storage_opt}" }
       opts << "--tls=#{new_resource.tls}" unless new_resource.tls.nil?
       opts << "--tlsverify=#{new_resource.tls_verify}" unless new_resource.tls_verify.nil?
       opts << "--tlscacert=#{new_resource.tls_ca_cert}" if new_resource.tls_ca_cert
