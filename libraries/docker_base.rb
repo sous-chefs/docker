@@ -3,6 +3,12 @@ require 'helpers_auth'
 class Chef
   class Resource
     class DockerBase < ChefCompat::Resource
+      ShellCommand = property_type(is: Array, coerce: proc { |v| v.is_a?(String) ? ::Shellwords.shellwords(v) : v })
+      NonEmptyArray = property_type(is: [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) })
+      NullableArray = property_type(is: [Array, nil], coerce: proc { |v| v.nil? ? nil : Array(v) })
+      ArrayType = property_type(is: Array, coerce: proc { |v| Array(v) })
+      Boolean = property_type(is: [true, false], default: false)
+
       def api_version
         @api_version ||= Docker.version['ApiVersion']
       end

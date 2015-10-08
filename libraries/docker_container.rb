@@ -7,35 +7,35 @@ class Chef
     class DockerContainer < DockerBase
       use_automatic_resource_name
 
-      property :container_name, String, name_property: true
-      property :repo, String, default: lazy { container_name }
-      property :tag, String, default: 'latest'
-      property :command, [Array, String], coerce: proc { ::Shellwords.shellwords(command) }
+      property :container_name,    String,       name_property: true
+      property :repo,              String,       default: lazy { container_name }
+      property :tag,               String,       default: 'latest'
+      property :command,           ShellCommand
 
-      property :api_retries, Fixnum, default: 3
-      property :attach_stderr, [true, false], default: lazy { !detach }
-      property :attach_stdin, [true, false], default: lazy { !detach }
-      property :attach_stdout, [true, false], default: lazy { !detach }
-      property :autoremove, [true, false], default: false
-      property :binds, Array, coerce: proc { |v| Array(v) }
-      property :cap_add, [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
-      property :cap_drop, [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
-      property :cgroup_parent, String, default: '' # FIXME: add validate proc
-      property :cpu_shares, [Fixnum, nil], default: 0 # FIXME: add validate proc
-      property :cpuset_cpus, String, default: '' # FIXME: add validate proc
-      property :detach, [true, false], default: true
-      property :devices, Array, coerce: proc { |v| Array(v) }
-      property :dns, [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
-      property :dns_search, [Array, nil], coerce: proc { |v| v.nil? ? nil : Array(v) }
-      property :domain_name, String, default: ''
-      property :entrypoint, [String, Array, nil], default: lazy { ::Shellwords.shellwords(entrypoint) }
-      property :env, Array, coerce: proc { |v| Array(v) }
-      property :extra_hosts, [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
-      property :exposed_ports, Hash, default: nil
-      property :force, [true, false], default: false
-      property :host, String, default: nil
-      property :host_name, String, default: nil
-      property :labels, Hash, coerce: proc { |v|
+      property :api_retries,       Fixnum,       default: 3
+      property :attach_stderr,     Boolean,      default: lazy { !detach }
+      property :attach_stdin,      Boolean,      default: lazy { !detach }
+      property :attach_stdout,     Boolean,      default: lazy { !detach }
+      property :autoremove,        Boolean
+      property :binds,             ArrayType
+      property :cap_add,           NonEmptyArray
+      property :cap_drop,          NonEmptyArray
+      property :cgroup_parent,     String,        default: '' # FIXME: add validate proc
+      property :cpu_shares,        [Fixnum, nil], default: 0 # FIXME: add validate proc
+      property :cpuset_cpus,       String,        default: '' # FIXME: add validate proc
+      property :detach,            Boolean,       default: true
+      property :devices,           ArrayType
+      property :dns,               NonEmptyArray
+      property :dns_search,        NullableArray
+      property :domain_name,       String,        default: ''
+      property :entrypoint,        ShellCommand
+      property :env,               ArrayType
+      property :extra_hosts,       NonEmptyArray
+      property :exposed_ports,     [Hash, nil]
+      property :force,             Boolean,       default: false
+      property :host,              [String, nil]
+      property :host_name,         [String, nil]
+      property :labels,            Hash,          coerce: (proc do |v|
         if v.is_a?(Hash)
           v
         else
@@ -46,33 +46,35 @@ class Chef
           end
           h
         end
-      }
-      property :links, [Array, nil], coerce: proc { |v|
+      end)
+      property :links,             [Array, nil],  coerce: (proc do |v|
         v = Array(v)
         return nil if v.empty?
         v.map do |link|
           parts = link.split(':')
-          ray << "/#{parts[0]}:/#{name}/#{parts[1]}"
+          "/#{parts[0]}:/#{name}/#{parts[1]}"
         end
-      }
-      property :log_config, Hash, coerce: proc { |v|
+      end)
+      property :log_config,        Hash,          coerce: (proc do |v|
         v ||= {}
         v['Type'] ||= log_driver
         v['Config'] ||= log_opts
         v
-      }
+      end)
       property :log_driver, %w( json-file syslog journald gelf fluentd none ), default: 'json-file'
-      property :log_opts, Array, default: nil, coerce: proc { |v|
-        Array(v).each_with_object({}) do |log_opt, memo|
+      property :log_opts,          Array,          coerce: (proc do |v|
+        v = Array(v)
+        v.each_with_object({}) do |log_opt, memo|
           key, value = log_opt.split('=', 2)
           memo[key] = value
         end
-      }
-      property :mac_address, String, default: '' # FIXME: needs tests
-      property :memory, Fixnum, default: 0
-      property :memory_swap, Fixnum, default: -1
-      property :network_disabled, [true, false], default: false
-      property :network_mode, [String, nil], default: lazy {
+        v
+      end)
+      property :mac_address,       String,         default: '' # FIXME: needs tests
+      property :memory,            Fixnum,         default: 0
+      property :memory_swap,       Fixnum,         default: -1
+      property :network_disabled,  Boolean,        default: false
+      property :network_mode,      [String, nil],  default: (lazy do
         case api_version
         when '1.20'
           return 'default'
@@ -81,27 +83,27 @@ class Chef
         else
           return ''
         end
-      }
-      property :open_stdin, [true, false], default: false
-      property :outfile, String, default: nil
-      property :port, Array, coerce: proc { |v| Array(v) }, default: nil
-      property :port_bindings, [String, Array, Hash], default: nil
-      property :privileged, [true, false], default: false
-      property :publish_all_ports, [true, false], default: false
-      property :read_timeout, [Fixnum, nil], default: 60
-      property :remove_volumes, [true, false], default: false
+      end)
+      property :open_stdin,        Boolean,        default: false
+      property :outfile,           String,         default: nil
+      property :port,              ArrayType,      default: nil
+      property :port_bindings,     [String, Array, Hash, nil]
+      property :privileged,        Boolean
+      property :publish_all_ports, Boolean
+      property :read_timeout,      [Fixnum, nil],  default: 60
+      property :remove_volumes,    Boolean
       property :restart_maximum_retry_count, Fixnum, default: 0
-      property :restart_policy, Hash, coerce: proc { |v|
+      property :restart_policy,    Hash,           coerce: (proc do |v|
         v = { 'Name' => v } unless v.is_a?(Hash)
         v['MaximumRetryCount'] = restart_maximum_retry_count
         v
-      }
-      property :security_opts, [String, Array], default: ['']
-      property :signal, String, default: 'SIGKILL'
-      property :stdin_once, [true, false, nil], default: lazy { !detach }
-      property :timeout, Fixnum, default: nil
-      property :tty, [true, false], default: false
-      property :ulimits, [ Array, nil ], coerce: proc { |v|
+      end)
+      property :security_opts,     [String, Array], default: lazy { [''] }
+      property :signal,            String,         default: 'SIGKILL'
+      property :stdin_once,        [true, false, nil], default: lazy { !detach }
+      property :timeout,           [Fixnum, nil]
+      property :tty,               Boolean
+      property :ulimits,           [Array, nil],   coerce: (proc do |v|
         if v.nil?
           v
         else
@@ -112,23 +114,23 @@ class Chef
               name = u.split('=')[0]
               soft = u.split('=')[1].split(':')[0]
               hard = u.split('=')[1].split(':')[1]
-              ray << { 'Name' => name, 'Soft' => soft.to_i, 'Hard' => hard.to_i }
+              { 'Name' => name, 'Soft' => soft.to_i, 'Hard' => hard.to_i }
             end
           end
         end
-      }
-      property :user, String, default: ''
-      property :volumes, [ Hash, nil ], default: nil, coerce: proc { |v|
+      end)
+      property :user,              String,         default: ''
+      property :volumes,           [ Hash, nil ],  coerce: (proc do |v|
         case v
         when nil, Hash
           v
         else
-          Array(v).inject({}) { |v,h| h[v] = {} }
+          Array(v).inject({}) { |h,volume| h[volume] = {}; h }
         end
-      }
-      property :volumes_from, Array, coerce: proc { |v| Array(v) }, default: nil
-      property :working_dir, String, default: nil
-      property :write_timeout, [Fixnum, nil], default: nil
+      end)
+      property :volumes_from,      NullableArray
+      property :working_dir,       [String, nil]
+      property :write_timeout,     [Fixnum, nil]
 
       alias_method :cmd, :command
       alias_method :image, :repo
@@ -161,19 +163,19 @@ class Chef
 
       action :create do
         # Debug logging for things that have given trouble in the past
-        Chef::Log.debug("DOCKER: user - current:#{current_resource.user}: new:#{user}:")
-        Chef::Log.debug("DOCKER: working_dir - current:#{current_resource.working_dir}: new:#{working_dir}:")
-        Chef::Log.debug("DOCKER: command - current:#{current_resource.command}: parsed:#{command}:")
-        Chef::Log.debug("DOCKER: entrypoint - current:#{current_resource.entrypoint}: parsed:#{entrypoint}:")
-        Chef::Log.debug("DOCKER: env - current:#{current_resource.env}: parsed:#{env}:")
-        Chef::Log.debug("DOCKER: exposed_ports - current:#{current_resource.exposed_ports}: serialized:#{exposed_ports}:")
-        Chef::Log.debug("DOCKER: volumes - current:#{current_resource.volumes}: parsed:#{volumes}:")
-        Chef::Log.debug("DOCKER: network_mode - current:#{current_resource.network_mode}: parsed:#{network_mode}:")
-        Chef::Log.debug("DOCKER: log_config - current:#{current_resource.log_config}: serialized:#{log_config}:")
+        Chef::Log.debug("DOCKER: user - current:#{current_resource.user}: desired:#{user}:")
+        Chef::Log.debug("DOCKER: working_dir - current:#{current_resource.working_dir}: desired:#{working_dir}:")
+        Chef::Log.debug("DOCKER: command - current:#{current_resource.command}: desired:#{command}:")
+        Chef::Log.debug("DOCKER: entrypoint - current:#{current_resource.entrypoint}: desired:#{entrypoint}:")
+        Chef::Log.debug("DOCKER: env - current:#{current_resource.env}: desired:#{env}:")
+        Chef::Log.debug("DOCKER: exposed_ports - current:#{current_resource.exposed_ports}: desired:#{exposed_ports}")
+        Chef::Log.debug("DOCKER: volumes - current:#{current_resource.volumes}: desired:#{volumes}:")
+        Chef::Log.debug("DOCKER: network_mode - current:#{current_resource.network_mode}: desired:#{network_mode}:")
+        Chef::Log.debug("DOCKER: log_config - current:#{current_resource.log_config}: desired:#{log_config}:")
         Chef::Log.debug("DOCKER: ulimits - current:#{current_resource.ulimits}:")
-        Chef::Log.debug("DOCKER: ulimits -     new:#{ulimits}:")
-        Chef::Log.debug("DOCKER: links - current:#{current_resource.links}: serialized:#{links}:")
-        Chef::Log.debug("DOCKER: labels - current:#{current_resource.labels}: parsed:#{labels}:")
+        Chef::Log.debug("DOCKER: ulimits - desired:#{ulimits}:")
+        Chef::Log.debug("DOCKER: links - current:#{current_resource.links}: desired:#{links}:")
+        Chef::Log.debug("DOCKER: labels - current:#{current_resource.labels}: desired:#{labels}:")
 
         resource_changes.each do |change|
           Chef::Log.debug("DOCKER: change - :#{change}")
