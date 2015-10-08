@@ -32,7 +32,7 @@ class Chef
       property :env,               ArrayType
       property :extra_hosts,       NonEmptyArray
       property :exposed_ports,     [Hash, nil]
-      property :force,             Boolean,       default: false
+      property :force,             Boolean
       property :host,              [String, nil]
       property :host_name,         [String, nil]
       property :labels,            Hash,          coerce: (proc do |v|
@@ -50,9 +50,12 @@ class Chef
       property :links,             [Array, nil],  coerce: (proc do |v|
         v = Array(v)
         return nil if v.empty?
+        # Parse docker input of /source:/container_name/dest into source:dest
         v.map do |link|
-          parts = link.split(':')
-          "/#{parts[0]}:/#{name}/#{parts[1]}"
+          if link =~ /^\/(.+):\/#{name}\/(.+)/
+            link = "#{$1}:#{$2}"
+          end
+          link
         end
       end)
       property :log_config,        Hash,          coerce: (proc do |v|
@@ -62,13 +65,16 @@ class Chef
         v
       end)
       property :log_driver, %w( json-file syslog journald gelf fluentd none ), default: 'json-file'
-      property :log_opts,          Array,          coerce: (proc do |v|
-        v = Array(v)
-        v.each_with_object({}) do |log_opt, memo|
-          key, value = log_opt.split('=', 2)
-          memo[key] = value
+      property :log_opts,          [Hash, nil],          coerce: (proc do |v|
+        case v
+        when Hash, nil
+          v
+        else
+          Array(v).each_with_object({}) do |log_opt, memo|
+            key, value = log_opt.split('=', 2)
+            memo[key] = value
+          end
         end
-        v
       end)
       property :mac_address,       String,         default: '' # FIXME: needs tests
       property :memory,            Fixnum,         default: 0
@@ -109,13 +115,9 @@ class Chef
         else
           Array(v).map do |u|
             if u.is_a?(Hash)
-              u
-            else
-              name = u.split('=')[0]
-              soft = u.split('=')[1].split(':')[0]
-              hard = u.split('=')[1].split(':')[1]
-              { 'Name' => name, 'Soft' => soft.to_i, 'Hard' => hard.to_i }
+              u = "#{u['Name']}=#{u['Soft']}:#{u['Hard']}"
             end
+            u
           end
         end
       end)
@@ -468,12 +470,12 @@ class Chef
               'name' => container_name,
               'Image' => "#{repo}:#{tag}",
               'Labels' => labels,
-              'Cmd' => command,
+              'Cmd' => Shellwords.shellwords(command),
               'AttachStderr' => attach_stderr,
               'AttachStdin' => attach_stdin,
               'AttachStdout' => attach_stdout,
               'Domainname' => domain_name,
-              'Entrypoint' => entrypoint,
+              'Entrypoint' => Shellwords.shellwords(entrypoint),
               'Env' => env,
               'ExposedPorts' => exposed_ports,
               'Hostname' => host_name,
@@ -505,13 +507,23 @@ class Chef
                 'PortBindings' => port_bindings,
                 'PublishAllPorts' => publish_all_ports,
                 'RestartPolicy' => restart_policy,
-                'Ulimits' => ulimits,
+                'Ulimits' => ulimits_to_hash,
                 'VolumesFrom' => volumes_from
               }
             }, connection)
         rescue Docker::Error => e
           retry unless (tries -= 1).zero?
           raise e.message
+        end
+      end
+
+      def ulimits_to_hash
+        return nil if ulimits.nil?
+        ulimits.map do |u|
+          name = u.split('=')[0]
+          soft = u.split('=')[1].split(':')[0]
+          hard = u.split('=')[1].split(':')[1]
+          { 'Name' => name, 'Soft' => soft.to_i, 'Hard' => hard.to_i }
         end
       end
     end

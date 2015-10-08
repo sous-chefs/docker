@@ -1,9 +1,10 @@
 require 'helpers_auth'
+require 'shellwords'
 
 class Chef
   class Resource
     class DockerBase < ChefCompat::Resource
-      ShellCommand = property_type(is: Array, coerce: proc { |v| v.is_a?(String) ? ::Shellwords.shellwords(v) : v })
+      ShellCommand = property_type(is: String, coerce: proc { |v| v.is_a?(Array) ? ::Shellwords.join(v) : v })
       NonEmptyArray = property_type(is: [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) })
       NullableArray = property_type(is: [Array, nil], coerce: proc { |v| v.nil? ? nil : Array(v) })
       ArrayType = property_type(is: Array, coerce: proc { |v| Array(v) })
