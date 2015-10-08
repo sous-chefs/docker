@@ -216,6 +216,14 @@ describe 'docker_test::image' do
       expect(chef_run).to push_docker_image('localhost:5043/someara/name.w.dots')
     end
 
+    it 'login docker_registry[localhost:5043]' do
+      expect(chef_run).to login_docker_registry('localhost:5043').with(
+        username: 'testuser',
+        password: 'testpassword',
+        email: 'alice@computers.biz'
+      )
+    end
+
     it 'creates file[/marker_image_private_name.w.dots]' do
       expect(chef_run).to create_file('/marker_image_private_name.w.dots')
     end

@@ -40,7 +40,6 @@ bash 'generating certificate request for server' do
   cmd += " -key #{caroot}/server-key.pem"
   cmd += " -out #{caroot}/server.csr"
   code cmd
-  only_if "/usr/bin/test -f #{caroot}/server-key.pem"
   not_if "/usr/bin/test -f #{caroot}/server.csr"
   action :run
 end
@@ -80,7 +79,6 @@ bash 'generating certificate request for client' do
   cmd += " -key #{caroot}/key.pem"
   cmd += " -out #{caroot}/client.csr"
   code cmd
-  only_if "/usr/bin/test -f #{caroot}/key.pem"
   not_if "/usr/bin/test -f #{caroot}/client.csr"
   action :run
 end
