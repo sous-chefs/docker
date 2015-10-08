@@ -456,67 +456,6 @@ docker_container 'extra_hosts' do
   action :run_if_missing
 end
 
-# #########
-# # devices sans CAP_SYS_ADMIN
-# #########
-
-# # create file on disk
-# execute 'create disk1 file' do
-#   command 'dd if=/dev/zero of=/root/disk1 bs=1024 count=1'
-#   creates '/root/disk1'
-#   action :run
-# end
-
-# # create loop device
-# execute 'create loop10 device' do
-#   command 'losetup /dev/loop10 /root/disk1'
-#   not_if 'losetup -l | grep ^/dev/loop10'
-#   action :run
-# end
-
-# # host's /root/disk1 md5sum should match 0f343b0931126a20f133d67c2b018a3b
-# docker_container 'devices_sans_cap_sys_admin' do
-#   repo 'debian'
-#   command 'sh -c "lsblk ; dd if=/dev/urandom of=/dev/loop10 bs=1024 count=1"'
-#   devices [{
-#     'PathOnHost' => '/dev/loop10',
-#     'PathInContainer' => '/dev/loop10',
-#     'CgroupPermissions' => 'rwm'
-#   }]
-#   action :run_if_missing
-# end
-
-# #########
-# # devices with CAP_SYS_ADMIN
-# #########
-
-# # create file on disk
-# execute 'create disk2 file' do
-#   command 'dd if=/dev/zero of=/root/disk2 bs=1024 count=1'
-#   creates '/root/disk2'
-#   action :run
-# end
-
-# # create loop device
-# execute 'create loop11 device' do
-#   command 'losetup /dev/loop11 /root/disk2'
-#   not_if 'losetup -l | grep ^/dev/loop11'
-#   action :run
-# end
-
-# # host's /root/disk1 md5sum should NOT match 0f343b0931126a20f133d67c2b018a3b
-# docker_container 'devices_with_cap_sys_admin' do
-#   repo 'debian'
-#   command 'sh -c "lsblk ; dd if=/dev/urandom of=/dev/loop11 bs=1024 count=1"'
-#   devices [{
-#     'PathOnHost' => '/dev/loop11',
-#     'PathInContainer' => '/dev/loop11',
-#     'CgroupPermissions' => 'rwm'
-#   }]
-#   cap_add 'SYS_ADMIN'
-#   action :run_if_missing
-# end
-
 ############
 # cpu_shares
 ############
@@ -723,19 +662,6 @@ file '/marker_container_dangler' do
   action :create
 end
 
-# FIXME: this changed with 1.8.x. Find a way to sanely test across various platforms
-#
-# read this with a test-kitchen busser and make sure its gone.
-# ruby_block 'stash dangler volpath on filesystem' do
-#   block do
-#     result = shell_out!('docker inspect -f "{{ .Volumes }}" dangler')
-#     volpath = result.stdout.scan(/\[(.*?)\]/)[0][0].split(':')[1]
-#     shell_out!("echo #{volpath} > /dangler_volpath")
-#   end
-#   not_if { ::File.exist?('/dangler_volpath') }
-#   action :run
-# end
-
 docker_container 'dangler_volume_remover' do
   container_name 'dangler'
   remove_volumes true
@@ -750,7 +676,7 @@ docker_tag 'mutator_from_busybox' do
   target_repo 'busybox'
   target_tag 'latest'
   to_repo 'someara/mutator'
-  target_tag 'latest'
+  to_tag 'latest'
 end
 
 docker_container 'mutator' do
