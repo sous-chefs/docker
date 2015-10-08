@@ -458,6 +458,11 @@ class Chef
           changes
         end
 
+        def to_shellwords(command)
+          return nil if command.nil?
+          Shellwords.shellwords(command)
+        end
+
         # Most important work is done here.
         def create_container
           tries ||= api_retries
@@ -466,12 +471,12 @@ class Chef
               'name' => container_name,
               'Image' => "#{repo}:#{tag}",
               'Labels' => labels,
-              'Cmd' => Shellwords.shellwords(command),
+              'Cmd' => to_shellwords(command),
               'AttachStderr' => attach_stderr,
               'AttachStdin' => attach_stdin,
               'AttachStdout' => attach_stdout,
               'Domainname' => domain_name,
-              'Entrypoint' => Shellwords.shellwords(entrypoint),
+              'Entrypoint' => to_shellwords(entrypoint),
               'Env' => env,
               'ExposedPorts' => exposed_ports,
               'Hostname' => host_name,
