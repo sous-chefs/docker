@@ -39,12 +39,10 @@ class Chef
         if v.is_a?(Hash)
           v
         else
-          h = {}
-          Array(labels).each do |label|
+          Array(v).each_with_object({}) do |label,h|
             parts = label.split(':')
-            h.merge!(parts[0] => parts[1])
+            h[parts[0]] = parts[1]
           end
-          h
         end
       end)
       property :links,             [Array, nil],  coerce: (proc do |v|
@@ -90,26 +88,22 @@ class Chef
           return ''
         end
       end)
-      property :open_stdin,        Boolean,        default: false
-      property :outfile,           String,         default: nil
-      property :port,              ArrayType,      default: nil
+      property :open_stdin,        Boolean,         default: false
+      property :outfile,           String,          default: nil
+      property :port,              ArrayType,       default: nil
       property :port_bindings,     [String, Array, Hash, nil]
       property :privileged,        Boolean
       property :publish_all_ports, Boolean
       property :read_timeout,      [Fixnum, nil],  default: 60
       property :remove_volumes,    Boolean
       property :restart_maximum_retry_count, Fixnum, default: 0
-      property :restart_policy,    Hash,           coerce: (proc do |v|
-        v = { 'Name' => v } unless v.is_a?(Hash)
-        v['MaximumRetryCount'] = restart_maximum_retry_count
-        v
-      end)
+      property :restart_policy,    String,          default: "no"
       property :security_opts,     [String, Array], default: lazy { [''] }
-      property :signal,            String,         default: 'SIGKILL'
+      property :signal,            String,          default: 'SIGKILL'
       property :stdin_once,        [true, false, nil], default: lazy { !detach }
       property :timeout,           [Fixnum, nil]
       property :tty,               Boolean
-      property :ulimits,           [Array, nil],   coerce: (proc do |v|
+      property :ulimits,           [Array, nil],    coerce: (proc do |v|
         if v.nil?
           v
         else
@@ -404,7 +398,8 @@ class Chef
             @current_resource.port_bindings c.info['HostConfig']['PortBindings']
             @current_resource.privileged c.info['HostConfig']['Privileged']
             @current_resource.publish_all_ports c.info['HostConfig']['PublishAllPorts']
-            @current_resource.restart_policy c.info['HostConfig']['RestartPolicy']
+            @current_resource.restart_policy c.info['HostConfig']['RestartPolicy']['Name']
+            @current_resource.restart_maximum_retry_count c.info['HostConfig']['RestartPolicy']['MaximumRetryCount']
             @current_resource.stdin_once c.info['Config']['StdinOnce']
             @current_resource.tty c.info['Config']['Tty']
             @current_resource.ulimits c.info['HostConfig']['Ulimits']
@@ -452,6 +447,7 @@ class Chef
           changes << :privileged if current_resource.privileged != privileged
           changes << :publish_all_ports if current_resource.publish_all_ports != publish_all_ports
           changes << :restart_policy if current_resource.restart_policy != restart_policy
+          changes << :restart_maximum_retry_count if current_resource.restart_maximum_retry_count != restart_maximum_retry_count
           changes << :stdin_once if current_resource.stdin_once != stdin_once
           changes << :tty if current_resource.tty != tty
           changes << :ulimits if update_ulimits?
@@ -506,7 +502,10 @@ class Chef
                 'Privileged' => privileged,
                 'PortBindings' => port_bindings,
                 'PublishAllPorts' => publish_all_ports,
-                'RestartPolicy' => restart_policy,
+                'RestartPolicy' => {
+                  "Name" => restart_policy,
+                  "MaximumRetryCount" => restart_maximum_retry_count
+                },
                 'Ulimits' => ulimits_to_hash,
                 'VolumesFrom' => volumes_from
               }

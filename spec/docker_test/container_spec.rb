@@ -749,7 +749,7 @@ describe 'docker_test::container' do
           'core=100000000:100000000',
           'memlock=100000000:100000000'
         ],
-        labels: ['foo:bar', 'hello:world']
+        labels: { 'foo' => 'bar', 'hello' => 'world' }
       )
     end
   end
