@@ -13,9 +13,9 @@ class Chef
       property :command,           ShellCommand
 
       property :api_retries,       Fixnum,       default: 3
-      property :attach_stderr,     Boolean,      default: lazy { !detach }
-      property :attach_stdin,      Boolean,      default: lazy { !detach }
-      property :attach_stdout,     Boolean,      default: lazy { !detach }
+      property :attach_stderr,     Boolean,      default: lazy { detach }
+      property :attach_stdin,      Boolean,      default: false
+      property :attach_stdout,     Boolean,      default: lazy { detach }
       property :autoremove,        Boolean
       property :binds,             ArrayType
       property :cap_add,           NonEmptyArray
@@ -81,11 +81,11 @@ class Chef
       property :network_mode,      [String, nil],  default: (lazy do
         case api_version
         when '1.20'
-          return 'default'
+          'default'
         when '1.19'
-          return 'bridge'
+          'bridge'
         else
-          return ''
+          ''
         end
       end)
       property :open_stdin,        Boolean,         default: false

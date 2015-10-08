@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'docker_test::container' do
-  cached(:chef_run) { ChefSpec::SoloRunner.converge('docker_test::container') }
+  cached(:chef_run) { ChefSpec::SoloRunner.converge('rspec_helper', 'docker_test::container') }
 
   before do
     stub_command("[ ! -z `docker ps -qaf 'name=busybox_ls$'` ]").and_return(false)
@@ -19,7 +19,7 @@ describe 'docker_test::container' do
     it 'create docker_container[hello-world]' do
       expect(chef_run).to create_docker_container('hello-world').with(
         container_name: 'hello-world',
-        repo: nil,
+        repo: 'hello-world',
         tag: 'latest',
         command: '/hello',
         api_retries: 0, # expecting 3
@@ -48,16 +48,16 @@ describe 'docker_test::container' do
         labels: nil,
         links: nil,
         log_config: nil,
-        log_driver: nil,
-        log_opts: [],
+        log_driver: 'json-file',
+        log_opts: nil,
         mac_address: '',
         memory: 0,
         memory_swap: -1,
         network_disabled: false,
-        network_mode: nil,
+        network_mode: "",
         open_stdin: false,
         outfile: nil,
-        port: nil,
+        port: [],
         port_bindings: nil,
         privileged: false,
         publish_all_ports: false,
