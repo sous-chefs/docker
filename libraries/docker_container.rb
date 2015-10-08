@@ -100,7 +100,7 @@ class Chef
       property :restart_policy,    String,          default: "no"
       property :security_opts,     [String, Array], default: lazy { [''] }
       property :signal,            String,          default: 'SIGKILL'
-      property :stdin_once,        [true, false, nil], default: lazy { !detach }
+      property :stdin_once,        [Boolean, nil], default: lazy { !detach }
       property :timeout,           [Fixnum, nil]
       property :tty,               Boolean
       property :ulimits,           [Array, nil],    coerce: (proc do |v|

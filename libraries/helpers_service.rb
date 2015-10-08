@@ -73,10 +73,6 @@ module DockerHelpers
       end
     end
 
-    def parsed_connect_host
-      host.first if host
-    end
-
     def docker_opts
       opts = []
       opts << "--host=#{connect_host}" if connect_host
@@ -97,7 +93,7 @@ module DockerHelpers
       opts << "--bip=#{bip}" if bip
       opts << '--debug' if debug
       default_ulimit.each { |u| opts << "--default-ulimit=#{u}" } if default_ulimit
-      dns.each { |dns| opts << "--dns=#{dns}" }
+      dns.each { |dns| opts << "--dns=#{dns}" } if dns
       dns_search.each { |dns| opts << "--dns-search=#{dns}" } if dns_search
       opts << "--exec-driver=#{exec_driver}" if exec_driver
       opts << "--fixed-cidr=#{fixed_cidr}" if fixed_cidr
@@ -115,13 +111,13 @@ module DockerHelpers
       opts << "--log-level=#{log_level}" if log_level
       opts << "--label=#{label}" if label
       opts << "--log-driver=#{log_driver}" if log_driver
-      log_opts.each { |log_opt| opts << "--log-opt=#{log_opt}" }
+      log_opts.each { |log_opt| opts << "--log-opt=#{log_opt}" } if log_opts
       opts << "--mtu=#{mtu}" if mtu
       opts << "--pidfile=#{pidfile}" if pidfile
       opts << "--registry-mirror=#{registry_mirror}" if registry_mirror
       storage_driver.each { |s| opts << "--storage-driver=#{s}" } if storage_driver
       opts << '--selinux-enabled=true' if selinux_enabled
-      storage_opts.each { |storage_opt| opts << "--storage-opt=#{storage_opt}" }
+      storage_opts.each { |storage_opt| opts << "--storage-opt=#{storage_opt}" } if storage_opts
       opts << "--tls=#{tls}" unless tls.nil?
       opts << "--tlsverify=#{tls_verify}" unless tls_verify.nil?
       opts << "--tlscacert=#{tls_ca_cert}" if tls_ca_cert

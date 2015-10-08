@@ -45,20 +45,20 @@ class Chef
         end
       }
       # daemon runtime arguments
-      property :instance, String, name_property: true, required: true
-      property :api_cors_header, String, default: nil
-      property :bridge, [IPV4_ADDR, IPV6_ADDR], default: nil
-      property :bip, [IPV4_ADDR, IPV4_CIDR, IPV6_ADDR, IPV6_CIDR], default: nil
-      property :debug, [true, false], default: nil
-      property :daemon, [true, false], default: true
-      property :dns, Array, coerce: proc { |v| Array(v) }
-      property :dns_search, Array, default: nil
-      property :exec_driver, %w(native lxc), default: nil
-      property :fixed_cidr, String, default: nil
-      property :fixed_cidr_v6, String, default: nil
-      property :group, String, default: nil
-      property :graph, String, default: nil
-      property :host, [String, Array], coerce: proc { |v|
+      property :instance,        String, name_property: true, required: true
+      property :api_cors_header, [String, nil]
+      property :bridge,          [IPV4_ADDR, IPV6_ADDR, nil]
+      property :bip,             [IPV4_ADDR, IPV4_CIDR, IPV6_ADDR, IPV6_CIDR, nil]
+      property :debug,           [Boolean, nil]
+      property :daemon,          Boolean, default: true
+      property :dns,             ArrayType
+      property :dns_search,      [Array, nil]
+      property :exec_driver,     ['native', 'lxc', nil]
+      property :fixed_cidr,      [String, nil]
+      property :fixed_cidr_v6,   [String, nil]
+      property :group,           [String, nil]
+      property :graph,           [String, nil]
+      property :host,            [String, Array], coerce: proc { |v|
         v = v.split if v.is_a?(String)
         r = []
         Array(v).each do |s|
@@ -70,43 +70,43 @@ class Chef
         end
         r
       }
-      property :icc, [true, false], default: nil
-      property :insecure_registry, String, default: nil
-      property :ip, [IPV4_ADDR, IPV6_ADDR], default: nil
-      property :ip_forward, [true, false], default: nil
-      property :ipv4_forward, [true, false], default: true
-      property :ipv6_forward, [true, false], default: true
-      property :ip_masq, [true, false], default: nil
-      property :iptables, [true, false], default: nil
-      property :ipv6, [true, false], default: nil
-      property :log_level, [:debug, :info, :warn, :error, :fatal], default: nil
-      property :label, String, default: nil
-      property :log_driver, %w( json-file syslog journald gelf fluentd none ), default: nil
-      property :log_opts, Array, coerce: proc { |v| Array(v) }
-      property :mtu, String, default: nil
-      property :pidfile, String, default: lazy { "/var/run/#{docker_name}.pid" }
-      property :registry_mirror, String, default: nil
-      property :storage_driver, Array, coerce: proc { |v| Array(v) }
-      property :selinux_enabled, [true, false], default: nil
-      property :storage_opts, Array, coerce: proc { |v| Array(v) }
-      property :tls, [true, false], default: nil
-      property :tls_verify, [true, false], default: nil
-      property :tls_ca_cert, String, default: nil
-      property :tls_server_cert, String, default: nil
-      property :tls_server_key, String, default: nil
-      property :tls_client_cert, String, default: nil
-      property :tls_client_key, String, default: nil
-      property :default_ulimit, Array, coerce: proc { |v| Array(v) }
-      property :userland_proxy, [true, false], default: nil
+      property :icc,             [Boolean, nil]
+      property :insecure_registry, [String, nil]
+      property :ip,              [IPV4_ADDR, IPV6_ADDR, nil]
+      property :ip_forward,      [Boolean, nil]
+      property :ipv4_forward,    Boolean, default: true
+      property :ipv6_forward,    Boolean, default: true
+      property :ip_masq,         [Boolean, nil]
+      property :iptables,        [Boolean, nil]
+      property :ipv6,            [Boolean, nil]
+      property :log_level,       [:debug, :info, :warn, :error, :fatal, nil]
+      property :label,           [String, nil]
+      property :log_driver,      [ 'json-file', 'syslog', 'journald', 'gelf', 'fluentd', 'none', nil ]
+      property :log_opts,        ArrayType
+      property :mtu,             [String, nil]
+      property :pidfile,         String, default: lazy { "/var/run/#{docker_name}.pid" }
+      property :registry_mirror, [String, nil]
+      property :storage_driver,  ArrayType
+      property :selinux_enabled, [Boolean, nil]
+      property :storage_opts,    ArrayType
+      property :tls,             [Boolean, nil]
+      property :tls_verify,      [Boolean, nil]
+      property :tls_ca_cert,     [String, nil]
+      property :tls_server_cert, [String, nil]
+      property :tls_server_key,  [String, nil]
+      property :tls_client_cert, [String, nil]
+      property :tls_client_key,  [String, nil]
+      property :default_ulimit,  ArrayType
+      property :userland_proxy,  [Boolean, nil]
 
       # environment variables to set before running daemon
-      property :http_proxy, String, default: nil
-      property :https_proxy, String, default: nil
-      property :no_proxy, String, default: nil
-      property :tmpdir, String, default: nil
+      property :http_proxy,      [String, nil]
+      property :https_proxy,     [String, nil]
+      property :no_proxy,        [String, nil]
+      property :tmpdir,          [String, nil]
 
       # logging
-      property :logfile, String, default: '/var/log/docker.log'
+      property :logfile,         String, default: '/var/log/docker.log'
 
       alias_method :tlscacert, :tls_ca_cert
       alias_method :tlscert, :tls_server_cert
@@ -165,6 +165,10 @@ class Chef
       end
 
       action_class.class_eval do
+        def connect_host
+          host.first if host
+        end
+
         def load_current_resource
           @current_resource = Chef::Resource::DockerService.new(name)
 
