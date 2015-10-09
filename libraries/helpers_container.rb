@@ -4,24 +4,14 @@ module DockerHelpers
     # Helper methods
     ################
 
-    # 22/tcp, 53/udp, etc
-    def exposed_ports
-      return nil if ports.empty?
-      ports.inject({}) { |a, e| expand_port_exposure(a, e) }
+    def to_port_exposures(ports)
+      return nil if ports.nil?
+      Array(ports).inject({}) { |h, port| h.merge(PortBinding.new(port).exposure) }
     end
 
-    def expand_port_exposure(exposings, value)
-      exposings.merge(PortBinding.new(value).exposure)
-    end
-
-    # Map container exposed port to the host
-    def port_bindings
-      return nil if ports.empty?
-      ports.inject({}) { |a, e| expand_port_binding(a, e) }
-    end
-
-    def expand_port_binding(binds, value)
-      binds.merge(PortBinding.new(value).binding)
+    def to_port_bindings(ports)
+      return nil if ports.nil?
+      Array(ports).inject({}) { |h, port| h.merge(PortBinding.new(port).binding) }
     end
 
     def coerce_labels(v)

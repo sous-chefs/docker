@@ -32,7 +32,7 @@ class Chef
       property :extra_hosts,       NonEmptyArray
       property :exposed_ports,     [Hash, nil]
       property :force,             Boolean
-      property :host,              [String, nil]
+      property :host,              [String, nil], desired_state: false
       property :host_name,         [String, nil]
       property :labels,            [Hash, nil],   coerce: proc { |v| coerce_labels(v) }
       property :links,             [Array, nil],  coerce: (proc do |v|
@@ -82,8 +82,7 @@ class Chef
         end
       end)
       property :open_stdin,        Boolean,         default: false
-      property :outfile,           String,          default: nil
-      property :port,              ArrayType,       default: nil
+      property :outfile,           [String, nil],   default: nil
       property :port_bindings,     [String, Array, Hash, nil]
       property :privileged,        Boolean
       property :publish_all_ports, Boolean
@@ -123,6 +122,19 @@ class Chef
       # -1 (the default) means never kill the container.
       property :kill_after,        Numeric, default: -1, desired_state: false
       property :state, Docker::Container, default: lazy { container ? container.info['State'] : {} }
+
+      # port_bindings and exposed_ports really handle this
+      # TODO infer `port` from `port_bindings` and `exposed_ports`
+      def port(ports=NOT_PASSED)
+        if ports != NOT_PASSED
+          ports = Array(ports)
+          ports = nil if ports.empty?
+          @port = ports
+          port_bindings to_port_bindings(ports)
+          exposed_ports to_port_exposures(ports)
+        end
+        @port
+      end
 
       #
       # TODO: test image property in serverspec and kitchen
