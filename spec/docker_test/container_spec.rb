@@ -22,7 +22,7 @@ describe 'docker_test::container' do
         repo: 'hello-world',
         tag: 'latest',
         command: '/hello',
-        api_retries: 0, # expecting 3
+        api_retries: 3,
         attach_stderr: true,
         attach_stdin: false,
         attach_stdout: true,

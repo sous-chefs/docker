@@ -4,14 +4,6 @@ module DockerHelpers
     # Helper methods
     ################
 
-    # This is called a lot.. maybe this should turn into an instance variable
-    def container_created?
-      Docker::Container.get(container_name, connection)
-      return true
-    rescue Docker::Error::NotFoundError
-      return false
-    end
-
     # 22/tcp, 53/udp, etc
     def exposed_ports
       return nil if ports.empty?

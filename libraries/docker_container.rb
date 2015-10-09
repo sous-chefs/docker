@@ -156,30 +156,60 @@ class Chef
       end
 
       action :create do
-        # Debug logging for things that have given trouble in the past
-        Chef::Log.debug("DOCKER: user - current:#{current_resource.user}: desired:#{user}:")
-        Chef::Log.debug("DOCKER: working_dir - current:#{current_resource.working_dir}: desired:#{working_dir}:")
-        Chef::Log.debug("DOCKER: command - current:#{current_resource.command}: desired:#{command}:")
-        Chef::Log.debug("DOCKER: entrypoint - current:#{current_resource.entrypoint}: desired:#{entrypoint}:")
-        Chef::Log.debug("DOCKER: env - current:#{current_resource.env}: desired:#{env}:")
-        Chef::Log.debug("DOCKER: exposed_ports - current:#{current_resource.exposed_ports}: desired:#{exposed_ports}")
-        Chef::Log.debug("DOCKER: volumes - current:#{current_resource.volumes}: desired:#{volumes}:")
-        Chef::Log.debug("DOCKER: network_mode - current:#{current_resource.network_mode}: desired:#{network_mode}:")
-        Chef::Log.debug("DOCKER: log_config - current:#{current_resource.log_config}: desired:#{log_config}:")
-        Chef::Log.debug("DOCKER: ulimits - current:#{current_resource.ulimits}:")
-        Chef::Log.debug("DOCKER: ulimits - desired:#{ulimits}:")
-        Chef::Log.debug("DOCKER: links - current:#{current_resource.links}: desired:#{links}:")
-        Chef::Log.debug("DOCKER: labels - current:#{current_resource.labels}: desired:#{labels}:")
+        converge_if_changed do
+          action_delete
 
-        resource_changes.each do |change|
-          Chef::Log.debug("DOCKER: change - :#{change}")
-        end
-
-        action_delete unless resource_changes.empty? || !container_created?
-
-        next if container_created?
-        converge_by "creating #{container_name}" do
-          create_container
+          with_retries do
+            Docker::Container.create(
+              {
+                'name'            => container_name,
+                'Image'           => "#{repo}:#{tag}",
+                'Labels'          => labels,
+                'Cmd'             => to_shellwords(command),
+                'AttachStderr'    => attach_stderr,
+                'AttachStdin'     => attach_stdin,
+                'AttachStdout'    => attach_stdout,
+                'Domainname'      => domain_name,
+                'Entrypoint'      => to_shellwords(entrypoint),
+                'Env'             => env,
+                'ExposedPorts'    => exposed_ports,
+                'Hostname'        => host_name,
+                'MacAddress'      => mac_address,
+                'NetworkDisabled' => network_disabled,
+                'OpenStdin'       => open_stdin,
+                'StdinOnce'       => stdin_once,
+                'Tty'             => tty,
+                'User'            => user,
+                'Volumes'         => volumes,
+                'WorkingDir'      => working_dir,
+                'HostConfig'      => {
+                  'Binds'           => binds,
+                  'CapAdd'          => cap_add,
+                  'CapDrop'         => cap_drop,
+                  'CgroupParent'    => cgroup_parent,
+                  'CpuShares'       => cpu_shares,
+                  'CpusetCpus'      => cpuset_cpus,
+                  'Devices'         => devices,
+                  'Dns'             => dns,
+                  'DnsSearch'       => dns_search,
+                  'ExtraHosts'      => extra_hosts,
+                  'Links'           => links,
+                  'LogConfig'       => log_config,
+                  'Memory'          => memory,
+                  'MemorySwap'      => memory_swap,
+                  'NetworkMode'     => network_mode,
+                  'Privileged'      => privileged,
+                  'PortBindings'    => port_bindings,
+                  'PublishAllPorts' => publish_all_ports,
+                  'RestartPolicy'   => {
+                    'Name'              => restart_policy,
+                    'MaximumRetryCount' => restart_maximum_retry_count
+                  },
+                  'Ulimits'         => ulimits_to_hash,
+                  'VolumesFrom'     => volumes_from
+                }
+              }, connection)
+          end
         end
       end
 
@@ -188,9 +218,7 @@ class Chef
         next if c.info['State']['Restarting']
         next if c.info['State']['Running']
         converge_by "starting #{container_name}" do
-          begin
-            tries ||= api_retries
-
+          with_retries do
             if detach
               attach_stdin false
               attach_stdout false
@@ -201,41 +229,25 @@ class Chef
               c.start
               timeout ? c.wait(timeout) : c.wait
             end
-
-          rescue Docker::Error => e
-            retry unless (tries -= 1).zero?
-            raise e.message
           end
         end
       end
 
       action :stop do
-        next unless container_created?
+        next unless current_resource
         c = Docker::Container.get(container_name, connection)
         next unless c.info['State']['Running']
         converge_by "stopping #{container_name}" do
-          begin
-            tries ||= api_retries
-            c.stop
-          rescue Docker::Error => e
-            retry unless (tries -= 1).zero?
-            raise e.message
-          end
+          with_retries { c.stop }
         end
       end
 
       action :kill do
-        next unless container_created?
+        next unless current_resource
         c = Docker::Container.get(container_name, connection)
         next unless c.info['State']['Running']
         converge_by "killing #{container_name}" do
-          begin
-            tries ||= api_retries
-            c.kill(signal: signal)
-          rescue Docker::Error => e
-            retry unless (tries -= 1).zero?
-            raise e.message
-          end
+          with_retries { c.kill(signal: signal) }
         end
       end
 
@@ -246,37 +258,25 @@ class Chef
       end
 
       action :run_if_missing do
-        next if container_created?
+        next if current_resource
         action_run
       end
 
       action :pause do
-        next unless container_created?
+        next unless current_resource
         c = Docker::Container.get(container_name, connection)
         next if c.info['State']['Paused']
         converge_by "pausing #{container_name}" do
-          begin
-            tries ||= api_retries
-            c.pause
-          rescue Docker::Error => e
-            retry unless (tries -= 1).zero?
-            raise e.message
-          end
+          with_retries { c.pause }
         end
       end
 
       action :unpause do
-        next unless container_created?
+        next unless current_resource
         c = Docker::Container.get(container_name, connection)
         next unless c.info['State']['Paused']
         converge_by "unpausing #{container_name}" do
-          begin
-            tries ||= api_retries
-            c.unpause
-          rescue Docker::Error => e
-            retry unless (tries -= 1).zero?
-            raise e.message
-          end
+          with_retries { c.unpause }
         end
       end
 
@@ -303,18 +303,12 @@ class Chef
       end
 
       action :delete do
-        next unless container_created?
+        next unless current_resource
         action_unpause
         action_stop
         c = Docker::Container.get(container_name, connection)
         converge_by "deleting #{container_name}" do
-          begin
-            tries ||= api_retries
-            c.delete(force: force, v: remove_volumes)
-          rescue Docker::Error => e
-            retry unless (tries -= 1).zero?
-            raise e.message
-          end
+          with_retries { c.delete(force: force, v: remove_volumes) }
         end
       end
 
@@ -334,13 +328,9 @@ class Chef
       action :commit do
         c = Docker::Container.get(container_name, connection)
         converge_by "committing #{container_name}" do
-          begin
-            tries ||= api_retries
+          with_retries do
             new_image = c.commit
             new_image.tag('repo' => repo, 'tag' => tag, 'force' => force)
-          rescue Docker::Error => e
-            retry unless (tries -= 1).zero?
-            raise e.message
           end
         end
       end
@@ -349,174 +339,69 @@ class Chef
         fail "Please set outfile property on #{container_name}" if outfile.nil?
         c = Docker::Container.get(container_name, connection)
         converge_by "exporting #{container_name}" do
-          begin
-            tries ||= api_retries
+          with_retries do
             ::File.open(outfile, 'w') { |f| c.export { |chunk| f.write(chunk) } }
-          rescue Docker::Error => e
-            retry unless (tries -= 1).zero?
-            raise e.message
           end
         end
       end
 
-      action_class.class_eval do
-        def load_current_resource
-          @current_resource = Chef::Resource::DockerContainer.new(name)
+      load_current_value do
+        with_retries do
           begin
             c = Docker::Container.get(container_name, connection)
-            @current_resource.attach_stderr c.info['Config']['AttachStderr']
-            @current_resource.attach_stdin c.info['Config']['AttachStdin']
-            @current_resource.attach_stdout c.info['Config']['AttachStdout']
-            @current_resource.binds c.info['HostConfig']['Binds']
-            @current_resource.cap_add c.info['HostConfig']['CapAdd']
-            @current_resource.cap_drop c.info['HostConfig']['CapDrop']
-            @current_resource.cgroup_parent c.info['HostConfig']['CgroupParent']
-            @current_resource.command c.info['Config']['Cmd']
-            @current_resource.cpu_shares c.info['HostConfig']['CpuShares']
-            @current_resource.cpuset_cpus c.info['HostConfig']['CpusetCpus']
-            @current_resource.devices c.info['HostConfig']['Devices']
-            @current_resource.dns c.info['HostConfig']['Dns']
-            @current_resource.dns_search c.info['HostConfig']['DnsSearch']
-            @current_resource.domainname c.info['Config']['Domainname']
-            @current_resource.entrypoint c.info['Config']['Entrypoint']
-            @current_resource.env c.info['Config']['Env']
-            @current_resource.exposed_ports c.info['Config']['ExposedPorts']
-            @current_resource.extra_hosts c.info['HostConfig']['ExtraHosts']
-            @current_resource.hostname c.info['Config']['Hostname']
-            @current_resource.image c.info['Config']['Image']
-            @current_resource.labels c.info['Config']['Labels']
-            @current_resource.links c.info['HostConfig']['Links']
-            @current_resource.log_config c.info['HostConfig']['LogConfig']
-            @current_resource.mac_address c.info['Config']['MacAddress']
-            @current_resource.memory c.info['HostConfig']['Memory']
-            @current_resource.memory_swap c.info['HostConfig']['MemorySwap']
-            @current_resource.network_disabled c.info['Config']['NetworkDisabled']
-            @current_resource.network_mode c.info['HostConfig']['NetworkMode']
-            @current_resource.open_stdin c.info['Config']['OpenStdin']
-            @current_resource.port_bindings c.info['HostConfig']['PortBindings']
-            @current_resource.privileged c.info['HostConfig']['Privileged']
-            @current_resource.publish_all_ports c.info['HostConfig']['PublishAllPorts']
-            @current_resource.restart_policy c.info['HostConfig']['RestartPolicy']['Name']
-            @current_resource.restart_maximum_retry_count c.info['HostConfig']['RestartPolicy']['MaximumRetryCount']
-            @current_resource.stdin_once c.info['Config']['StdinOnce']
-            @current_resource.tty c.info['Config']['Tty']
-            @current_resource.ulimits c.info['HostConfig']['Ulimits']
-            @current_resource.user c.info['Config']['User']
-            @current_resource.volumes c.info['Config']['Volumes']
-            @current_resource.volumes_from c.info['HostConfig']['VolumesFrom']
-            @current_resource.working_dir c.info['Config']['WorkingDir']
+            config = c.info['Config']
+            attach_stderr    config['AttachStderr']
+            attach_stdin     config['AttachStdin']
+            attach_stdout    config['AttachStdout']
+            command          config['Cmd']
+            domainname       config['Domainname']
+            entrypoint       config['Entrypoint']
+            env              config['Env']
+            exposed_ports    config['ExposedPorts']
+            hostname         config['Hostname']
+            image            config['Image']
+            labels           config['Labels']
+            mac_address      config['MacAddress']
+            network_disabled config['NetworkDisabled']
+            open_stdin       config['OpenStdin']
+            stdin_once       config['StdinOnce']
+            tty              config['Tty']
+            user             config['User']
+            volumes          config['Volumes']
+            working_dir      config['WorkingDir']
+
+            host_config = c.info['HostConfig']
+            binds             host_config['Binds']
+            cap_add           host_config['CapAdd']
+            cap_drop          host_config['CapDrop']
+            cgroup_parent     host_config['CgroupParent']
+            cpu_shares        host_config['CpuShares']
+            cpuset_cpus       host_config['CpusetCpus']
+            devices           host_config['Devices']
+            dns               host_config['Dns']
+            dns_search        host_config['DnsSearch']
+            extra_hosts       host_config['ExtraHosts']
+            links             host_config['Links']
+            log_config        host_config['LogConfig']
+            memory            host_config['Memory']
+            memory_swap       host_config['MemorySwap']
+            network_mode      host_config['NetworkMode']
+            port_bindings     host_config['PortBindings']
+            privileged        host_config['Privileged']
+            publish_all_ports host_config['PublishAllPorts']
+            restart_policy    host_config['RestartPolicy']['Name']
+            restart_maximum_retry_count host_config['RestartPolicy']['MaximumRetryCount']
+            ulimits           host_config['Ulimits']
+            volumes_from      host_config['VolumesFrom']
           rescue Docker::Error::NotFoundError
-            return @current_resource
+            current_value_does_not_exist!
           end
         end
+      end
 
-        def resource_changes
-          changes = []
-          changes << :attach_stderr if current_resource.attach_stderr != attach_stderr
-          changes << :attach_stdin if current_resource.attach_stdin != attach_stdin
-          changes << :attach_stdout if current_resource.attach_stdout != attach_stdout
-          changes << :binds if current_resource.binds != binds
-          changes << :cap_add if current_resource.cap_add != cap_add
-          changes << :cap_drop if current_resource.cap_drop != cap_drop
-          changes << :cgroup_parent if current_resource.cgroup_parent != cgroup_parent
-          changes << :command if update_command?
-          changes << :cpu_shares if current_resource.cpu_shares != cpu_shares
-          changes << :cpuset_cpus if current_resource.cpuset_cpus != cpuset_cpus
-          changes << :devices if current_resource.devices != devices
-          changes << :dns if current_resource.dns != dns
-          changes << :dns_search if current_resource.dns_search != dns_search
-          changes << :domainname if current_resource.domainname != domainname
-          changes << :entrypoint if update_entrypoint?
-          changes << :env if update_env?
-          changes << :exposed_ports if update_exposed_ports?
-          changes << :extra_hosts if current_resource.extra_hosts != extra_hosts
-          changes << :hostname if update_hostname?
-          changes << :image if current_resource.image != "#{repo}:#{tag}"
-          changes << :labels if current_resource.labels != labels
-          changes << :links if current_resource.links != links
-          changes << :log_config if current_resource.log_config != log_config
-          changes << :mac_address if current_resource.mac_address != mac_address
-          changes << :memory if current_resource.memory != memory
-          changes << :memory_swap if current_resource.memory_swap != memory_swap
-          changes << :network_disabled if current_resource.network_disabled != network_disabled
-          changes << :network_mode if current_resource.network_mode != network_mode
-          changes << :open_stdin if current_resource.open_stdin != open_stdin
-          changes << :port_bindings if current_resource.port_bindings != port_bindings
-          changes << :privileged if current_resource.privileged != privileged
-          changes << :publish_all_ports if current_resource.publish_all_ports != publish_all_ports
-          changes << :restart_policy if current_resource.restart_policy != restart_policy
-          changes << :restart_maximum_retry_count if current_resource.restart_maximum_retry_count != restart_maximum_retry_count
-          changes << :stdin_once if current_resource.stdin_once != stdin_once
-          changes << :tty if current_resource.tty != tty
-          changes << :ulimits if update_ulimits?
-          changes << :user if current_resource.user != user
-          changes << :volumes if update_volumes?
-          changes << :volumes_from if current_resource.volumes_from != volumes_from
-          changes << :working_dir if update_working_dir?
-          changes
-        end
-
-        def to_shellwords(command)
-          return nil if command.nil?
-          Shellwords.shellwords(command)
-        end
-
-        # Most important work is done here.
-        def create_container
-          tries ||= api_retries
-          Docker::Container.create(
-            {
-              'name' => container_name,
-              'Image' => "#{repo}:#{tag}",
-              'Labels' => labels,
-              'Cmd' => to_shellwords(command),
-              'AttachStderr' => attach_stderr,
-              'AttachStdin' => attach_stdin,
-              'AttachStdout' => attach_stdout,
-              'Domainname' => domain_name,
-              'Entrypoint' => to_shellwords(entrypoint),
-              'Env' => env,
-              'ExposedPorts' => exposed_ports,
-              'Hostname' => host_name,
-              'MacAddress' => mac_address,
-              'NetworkDisabled' => network_disabled,
-              'OpenStdin' => open_stdin,
-              'StdinOnce' => stdin_once,
-              'Tty' => tty,
-              'User' => user,
-              'Volumes' => volumes,
-              'WorkingDir' => working_dir,
-              'HostConfig' => {
-                'Binds' => binds,
-                'CapAdd' => cap_add,
-                'CapDrop' => cap_drop,
-                'CgroupParent' => cgroup_parent,
-                'CpuShares' => cpu_shares,
-                'CpusetCpus' => cpuset_cpus,
-                'Devices' => devices,
-                'Dns' => dns,
-                'DnsSearch' => dns_search,
-                'ExtraHosts' => extra_hosts,
-                'Links' => links,
-                'LogConfig' => log_config,
-                'Memory' => memory,
-                'MemorySwap' => memory_swap,
-                'NetworkMode' => network_mode,
-                'Privileged' => privileged,
-                'PortBindings' => port_bindings,
-                'PublishAllPorts' => publish_all_ports,
-                'RestartPolicy' => {
-                  'Name' => restart_policy,
-                  'MaximumRetryCount' => restart_maximum_retry_count
-                },
-                'Ulimits' => ulimits_to_hash,
-                'VolumesFrom' => volumes_from
-              }
-            }, connection)
-        rescue Docker::Error => e
-          retry unless (tries -= 1).zero?
-          raise e.message
-        end
+      def to_shellwords(command)
+        return nil if command.nil?
+        Shellwords.shellwords(command)
       end
 
       def ulimits_to_hash

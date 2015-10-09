@@ -26,6 +26,17 @@ class Chef
         end
       end
 
+      def with_retries(&block)
+        retries = api_retries
+        begin
+          block.call
+        rescue Docker::Error
+          tries -= 1
+          retry if tries > 0
+          raise
+        end
+      end
+
       declare_action_class.class_eval do
         include DockerHelpers::Authentication
       end

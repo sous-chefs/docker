@@ -55,55 +55,41 @@ module DockerHelpers
     end
 
     def import_image
-      retries ||= api_retries
-      i = Docker::Image.import(source, {}, connection)
-      i.tag('repo' => repo, 'tag' => tag, 'force' => force)
-    rescue Docker::Error => e
-      retry unless (retries -= 1).zero?
-      raise e.message
+      with_retries do
+        i = Docker::Image.import(source, {}, connection)
+        i.tag('repo' => repo, 'tag' => tag, 'force' => force)
+      end
     end
 
     def pull_image
-      begin
-        retries ||= api_retries
-
+      with_retries do
         registry_host = parse_registry_host(repo)
         creds = node.run_state['docker_auth'] && node.run_state['docker_auth'][registry_host] || (node.run_state['docker_auth'] ||= {})['index.docker.io']
 
         original_image = Docker::Image.get(image_identifier, {}, connection) if Docker::Image.exist?(image_identifier, {}, connection)
         new_image = Docker::Image.create({ 'fromImage' => image_identifier }, creds, connection)
-      rescue Docker::Error => e
-        retry unless (retries -= 1).zero?
-        raise e.message
+        !(original_image && original_image.id.start_with?(new_image.id))
       end
-
-      !(original_image && original_image.id.start_with?(new_image.id))
     end
 
     def push_image
-      retries ||= api_retries
-      i = Docker::Image.get(image_identifier, {}, connection)
-      i.push
-    rescue Docker::Error => e
-      retry unless (retries -= 1).zero?
-      raise e.message
+      with_retries do
+        i = Docker::Image.get(image_identifier, {}, connection)
+        i.push
+      end
     end
 
     def remove_image
-      retries ||= api_retries
-      i = Docker::Image.get(image_identifier, {}, connection)
-      i.remove(force: force, noprune: noprune)
-    rescue Docker::Error => e
-      retry unless (retries -= 1).zero?
-      raise e.message
+      with_retries do
+        i = Docker::Image.get(image_identifier, {}, connection)
+        i.remove(force: force, noprune: noprune)
+      end
     end
 
     def save_image
-      retries ||= api_retries
-      Docker::Image.save(repo, destination, connection)
-    rescue Docker::Error, Errno::ENOENT => e
-      retry unless (retries -= 1).zero?
-      raise e.message
+      with_retries do
+        Docker::Image.save(repo, destination, connection)
+      end
     end
   end
 end
