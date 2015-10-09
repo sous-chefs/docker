@@ -102,7 +102,7 @@ class Chef
       property :restart_policy,    String,          default: 'no'
       property :security_opts,     [String, Array], default: lazy { [''] }
       property :signal,            String,          default: 'SIGKILL'
-      property :stdin_once,        [Boolean, nil], default: lazy { !detach }
+      property :stdin_once,        [Boolean, nil],  default: lazy { !detach }
       property :timeout,           [Fixnum, nil]
       property :tty,               Boolean
       property :ulimits,           [Array, nil],    coerce: (proc do |v|
@@ -126,6 +126,10 @@ class Chef
       end)
       property :volumes_from,      ArrayType
       property :working_dir,       [String, nil]
+
+      # Used to store the state of the Docker container
+      property :container,         Docker::Container
+      property :state,             Hash,            default: lazy { container.info['State'] }
 
       alias_method :cmd, :command
       alias_method :image, :repo
@@ -153,11 +157,16 @@ class Chef
 
       declare_action_class.class_eval do
         include DockerHelpers::Container
+
+        def call_action(action)
+          send("action_#{action}")
+          load_current_resource
+        end
       end
 
       action :create do
         converge_if_changed do
-          action_delete
+          call_action(:delete)
 
           with_retries do
             Docker::Container.create(
@@ -214,9 +223,8 @@ class Chef
       end
 
       action :start do
-        c = Docker::Container.get(container_name, connection)
-        next if c.info['State']['Restarting']
-        next if c.info['State']['Running']
+        return if state['Restarting']
+        return if state['Running']
         converge_by "starting #{container_name}" do
           with_retries do
             if detach
@@ -224,96 +232,86 @@ class Chef
               attach_stdout false
               attach_stderr false
               stdin_once false
-              c.start
+              container.start
             else
-              c.start
-              timeout ? c.wait(timeout) : c.wait
+              container.start
+              timeout ? container.wait(timeout) : container.wait
             end
           end
         end
       end
 
       action :stop do
-        next unless current_resource
-        c = Docker::Container.get(container_name, connection)
-        next unless c.info['State']['Running']
+        return unless state['Running']
         converge_by "stopping #{container_name}" do
-          with_retries { c.stop }
+          with_retries { container.stop }
         end
       end
 
       action :kill do
-        next unless current_resource
-        c = Docker::Container.get(container_name, connection)
-        next unless c.info['State']['Running']
+        return unless state['Running']
         converge_by "killing #{container_name}" do
-          with_retries { c.kill(signal: signal) }
+          with_retries { container.kill(signal: signal) }
         end
       end
 
       action :run do
-        action_create
-        action_start
-        action_delete if autoremove
+        call_action(:create)
+        call_action(:start)
+        call_action(:delete) if autoremove
       end
 
       action :run_if_missing do
-        next if current_resource
-        action_run
+        return if current_resource
+        call_action(:run)
       end
 
       action :pause do
-        next unless current_resource
-        c = Docker::Container.get(container_name, connection)
-        next if c.info['State']['Paused']
+        return if state['Paused']
         converge_by "pausing #{container_name}" do
-          with_retries { c.pause }
+          with_retries { container.pause }
         end
       end
 
       action :unpause do
-        next unless current_resource
-        c = Docker::Container.get(container_name, connection)
-        next unless c.info['State']['Paused']
+        return if current_resource && !state['Paused']
         converge_by "unpausing #{container_name}" do
-          with_retries { c.unpause }
+          with_retries { container.unpause }
         end
       end
 
       action :restart do
-        action_stop
-        action_start
+        call_action(:stop)
+        call_action(:start)
       end
 
       action :redeploy do
-        begin
-          c = Docker::Container.get(container_name, connection)
-          action_delete
+        if current_resource
+          call_action(:delete)
           # never start containers resulting from a previous action :create #432
-          if c.info['State']['Running'] == false &&
-             c.info['State']['StartedAt'] == '0001-01-01T00:00:00Z'
-            action_create
+          if state['Running'] == false &&
+             state['StartedAt'] == '0001-01-01T00:00:00Z'
+            call_action(:create)
           else
-            action_run
+            call_action(:run)
           end
-        rescue Docker::Error::NotFoundError
-          action_create
-          action_run
+        else
+          call_action(:create)
+          call_action(:run)
         end
       end
 
       action :delete do
-        next unless current_resource
-        action_unpause
-        action_stop
-        c = Docker::Container.get(container_name, connection)
+        return unless current_resource
+        call_action(:unpause)
+        call_action(:stop)
         converge_by "deleting #{container_name}" do
-          with_retries { c.delete(force: force, v: remove_volumes) }
+          with_retries { container.delete(force: force, v: remove_volumes) }
         end
       end
 
       action :remove do
-        action_delete
+        call_action(:delete)
       end
 
       action :remove_link do
@@ -326,10 +324,9 @@ class Chef
       end
 
       action :commit do
-        c = Docker::Container.get(container_name, connection)
         converge_by "committing #{container_name}" do
           with_retries do
-            new_image = c.commit
+            new_image = container.commit
             new_image.tag('repo' => repo, 'tag' => tag, 'force' => force)
           end
         end
@@ -337,12 +334,32 @@ class Chef
 
       action :export do
         fail "Please set outfile property on #{container_name}" if outfile.nil?
-        c = Docker::Container.get(container_name, connection)
         converge_by "exporting #{container_name}" do
           with_retries do
-            ::File.open(outfile, 'w') { |f| c.export { |chunk| f.write(chunk) } }
+            ::File.open(outfile, 'w') { |f| container.export { |chunk| f.write(chunk) } }
           end
         end
+      end
+
+      load_current_value do
+        begin
+          with_retries { container Docker::Container.get(container_name, connection) }
+        rescue Docker::Error::NotFoundError
+          current_value_does_not_exist!
+        end
+
+        # Go through everything in the container and set corresponding properties:
+        # c.info['Config']['ExposedPorts'] -> exposed_ports
+        (container.info['Config'].to_a + container.info['HostConfig'].to_a).each do |key, value|
+          next if value.nil? || key == 'RestartPolicy'
+          # Set exposed_ports = ExposedPorts
+          property_name = to_snake_case(key)
+          public_send(property_name, value) if respond_to?(property_name)
+        end
+
+        # RestartPolicy is a special case for us because our names differ from theirs
+        restart_policy container.info['HostConfig']['RestartPolicy']['Name']
+        restart_maximum_retry_count container.info['HostConfig']['RestartPolicy']['MaximumRetryCount']
       end
 
       def to_snake_case(name)
@@ -351,29 +368,6 @@ class Chef
         # _exposed_ports -> exposed_ports
         name = name[1..-1] if name.start_with?('_')
         name
-      end
-
-      load_current_value do
-        with_retries do
-          begin
-            c = Docker::Container.get(container_name, connection)
-            # Go through everything in the container and set corresponding properties:
-            # c.info['Config']['ExposedPorts'] -> exposed_ports
-            (c.info['Config'].to_a + c.info['HostConfig'].to_a).each do |key, value|
-              next if value.nil? || key == 'RestartPolicy'
-              # Set exposed_ports = ExposedPorts
-              property_name = to_snake_case(key)
-              public_send(property_name, value) if respond_to?(property_name)
-            end
-
-            # RestartPolicy is a special case for us because our names differ from theirs
-            restart_policy c.info['HostConfig']['RestartPolicy']['Name']
-            restart_maximum_retry_count c.info['HostConfig']['RestartPolicy']['MaximumRetryCount']
-
-          rescue Docker::Error::NotFoundError
-            current_value_does_not_exist!
-          end
-        end
       end
 
       def to_shellwords(command)

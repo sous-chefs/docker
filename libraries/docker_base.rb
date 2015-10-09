@@ -31,7 +31,11 @@ class Chef
         tries = api_retries
         begin
           block.call
-        rescue Docker::Error
+        # Only catch errors that can be fixed with retries.
+        rescue Docker::Error::ServerError, # 404
+               Docker::Error::UnexpectedResponseError, # 400
+               Docker::Error::TimeoutError,
+               Docker::Error::IOError
           tries -= 1
           retry if tries > 0
           raise
