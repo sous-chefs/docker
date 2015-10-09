@@ -23,5 +23,17 @@ module DockerHelpers
     def expand_port_binding(binds, value)
       binds.merge(PortBinding.new(value).binding)
     end
+
+    def default_labels
+      case v
+      when Hash, nil
+        v
+      else
+        Array(v).each_with_object({}) do |label, h|
+          parts = label.split(':')
+          h[parts[0]] = parts[1]
+        end
+      end
+    end
   end
 end

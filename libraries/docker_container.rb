@@ -34,17 +34,7 @@ class Chef
       property :force,             Boolean
       property :host,              [String, nil]
       property :host_name,         [String, nil]
-      property :labels,            [Hash, nil],   coerce: (proc do |v|
-        case v
-        when Hash, nil
-          v
-        else
-          Array(v).each_with_object({}) do |label, h|
-            parts = label.split(':')
-            h[parts[0]] = parts[1]
-          end
-        end
-      end)
+      property :labels,            [Hash, nil],   coerce: proc { |v| coerce_labels(v) }
       property :links,             [Array, nil],  coerce: (proc do |v|
         v = Array(v)
         if v.empty?
