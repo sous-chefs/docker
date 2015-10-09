@@ -24,7 +24,7 @@ module DockerHelpers
       binds.merge(PortBinding.new(value).binding)
     end
 
-    def default_labels
+    def coerce_labels(v)
       case v
       when Hash, nil
         v

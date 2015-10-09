@@ -118,8 +118,11 @@ class Chef
       property :working_dir,       [String, nil]
 
       # Used to store the state of the Docker container
-      property :container,         Docker::Container
-      property :state,             Hash,            default: lazy { container ? container.info['State'] : {} }
+      property :container,         Docker::Container, desired_state: false
+      # If the container takes longer than this many seconds to stop, kill it instead.
+      # -1 (the default) means never kill the container.
+      property :kill_after,        Numeric, default: -1, desired_state: false
+      property :state, Docker::Container, default: lazy { container ? container.info['State'] : {} }
 
       alias_method :cmd, :command
       alias_method :image, :repo
@@ -145,9 +148,9 @@ class Chef
 
       default_action :run_if_missing
 
-      declare_action_class.class_eval do
-        include DockerHelpers::Container
+      include DockerHelpers::Container
 
+      declare_action_class.class_eval do
         def call_action(action)
           send("action_#{action}")
           load_current_resource
@@ -156,7 +159,7 @@ class Chef
 
       action :create do
         converge_if_changed do
-          call_action(:delete)
+          action_delete
 
           with_retries do
             Docker::Container.create(
@@ -233,8 +236,9 @@ class Chef
 
       action :stop do
         return unless state['Running']
-        converge_by "stopping #{container_name}" do
-          with_retries { container.stop }
+        kill_after_str = " (will kill after #{kill_after}s)" if kill_after != -1
+        converge_by "stopping #{container_name}#{kill_after_str}" do
+          with_retries { container.stop!('t' => kill_after) }
         end
       end
 
@@ -271,6 +275,7 @@ class Chef
       end
 
       action :restart do
+        # TODO there is a restart endpoint
         call_action(:stop)
         call_action(:start)
       end
