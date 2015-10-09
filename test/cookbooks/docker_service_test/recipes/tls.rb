@@ -1,5 +1,3 @@
-execute_service_manager = true if node['docker']['service_manager'] == 'execute'
-
 caroot = '/tmp/kitchen/tls'
 
 directory "#{caroot}" do

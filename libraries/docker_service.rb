@@ -10,10 +10,10 @@ class Chef
       provides :docker_service
 
       # service installation
-      property :source, String, default: lazy {
+      property :source, String, default: (lazy do
         "https://get.docker.com/builds/#{docker_kernel}/#{docker_arch}/docker-#{version}"
-      }
-      property :version, String, default: lazy {
+      end)
+      property :version, String, default: (lazy do
         if node['platform'] == 'amazon' ||
            node['platform'] == 'ubuntu' && node['platform_version'].to_f < 15.04 ||
            node['platform_family'] == 'rhel' && node['platform_version'].to_i < 7 ||
@@ -22,8 +22,8 @@ class Chef
         else
           '1.8.2'
         end
-      }
-      property :checksum, String, default: lazy {
+      end)
+      property :checksum, String, default: (lazy do
         case docker_kernel
         when 'Darwin'
           case version
@@ -43,7 +43,7 @@ class Chef
           when '1.8.2' then '97a3f5924b0b831a310efa8bf0a4c91956cd6387c4a8667d27e2b2dd3da67e4d'
           end
         end
-      }
+      end)
       # daemon runtime arguments
       property :instance,        String, name_property: true, required: true
       property :api_cors_header, [String, nil]
@@ -58,7 +58,7 @@ class Chef
       property :fixed_cidr_v6,   [String, nil]
       property :group,           [String, nil]
       property :graph,           [String, nil]
-      property :host,            [String, Array], coerce: proc { |v|
+      property :host,            [String, Array], coerce: (proc do |v|
         v = v.split if v.is_a?(String)
         r = []
         Array(v).each do |s|
@@ -69,7 +69,7 @@ class Chef
           end
         end
         r
-      }
+      end)
       property :icc,             [Boolean, nil]
       property :insecure_registry, [String, nil]
       property :ip,              [IPV4_ADDR, IPV6_ADDR, nil]
@@ -81,7 +81,7 @@ class Chef
       property :ipv6,            [Boolean, nil]
       property :log_level,       [:debug, :info, :warn, :error, :fatal, nil]
       property :label,           [String, nil]
-      property :log_driver,      [ 'json-file', 'syslog', 'journald', 'gelf', 'fluentd', 'none', nil ]
+      property :log_driver,      ['json-file', 'syslog', 'journald', 'gelf', 'fluentd', 'none', nil]
       property :log_opts,        ArrayType
       property :mtu,             [String, nil]
       property :pidfile,         String, default: lazy { "/var/run/#{docker_name}.pid" }
@@ -113,19 +113,19 @@ class Chef
       alias_method :tlskey, :tls_server_key
       alias_method :tlsverify, :tls_verify
 
-      # Helpers
       protected
 
       def docker_name
         'docker'
       end
+
       def docker_kernel
         node['kernel']['name']
       end
+
       def docker_arch
         node['kernel']['machine']
       end
-
 
       default_action :create
 
@@ -200,7 +200,12 @@ class Chef
       end
 
       # Declare a module for subresoures' providers to sit in (backcompat)
-      module Chef::Provider::DockerService; end
+      class ::Chef
+        class Provider
+          module DockerService
+          end
+        end
+      end
     end
   end
 end

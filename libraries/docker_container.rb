@@ -40,7 +40,7 @@ class Chef
         when Hash, nil
           v
         else
-          Array(v).each_with_object({}) do |label,h|
+          Array(v).each_with_object({}) do |label, h|
             parts = label.split(':')
             h[parts[0]] = parts[1]
           end
@@ -53,8 +53,8 @@ class Chef
         else
           # Parse docker input of /source:/container_name/dest into source:dest
           v.map do |link|
-            if link =~ /^\/(.+):\/#{name}\/(.+)/
-              link = "#{$1}:#{$2}"
+            if link =~ %r{^/(?<source>.+):/#{name}/(?<dest>.+)}
+              link = "#{Regexp.last_match[:source]}:#{Regexp.last_match[:dest]}"
             end
             link
           end
@@ -101,7 +101,7 @@ class Chef
       property :read_timeout,      [Fixnum, nil],  default: 60
       property :remove_volumes,    Boolean
       property :restart_maximum_retry_count, Fixnum, default: 0
-      property :restart_policy,    String,          default: "no"
+      property :restart_policy,    String,          default: 'no'
       property :security_opts,     [String, Array], default: lazy { [''] }
       property :signal,            String,          default: 'SIGKILL'
       property :stdin_once,        [Boolean, nil], default: lazy { !detach }
@@ -112,20 +112,18 @@ class Chef
           v
         else
           Array(v).map do |u|
-            if u.is_a?(Hash)
-              u = "#{u['Name']}=#{u['Soft']}:#{u['Hard']}"
-            end
+            u = "#{u['Name']}=#{u['Soft']}:#{u['Hard']}" if u.is_a?(Hash)
             u
           end
         end
       end)
       property :user,              String,         default: ''
-      property :volumes,           [ Hash, nil ],  coerce: (proc do |v|
+      property :volumes,           [Hash, nil],  coerce: (proc do |v|
         case v
         when nil, Hash
           v
         else
-          Array(v).inject({}) { |h,volume| h[volume] = {}; h }
+          Array(v).each_with_object({}) { |volume, h| h[volume] = {} }
         end
       end)
       property :volumes_from,      ArrayType
@@ -470,9 +468,6 @@ class Chef
         # Most important work is done here.
         def create_container
           tries ||= api_retries
-          puts "New: repo=#{new_resource.repo}, tag=#{new_resource.tag}"
-          puts  "Current: repo=#{current_resource.repo}, tag=#{current_resource.tag}"
-
           Docker::Container.create(
             {
               'name' => container_name,
@@ -515,8 +510,8 @@ class Chef
                 'PortBindings' => port_bindings,
                 'PublishAllPorts' => publish_all_ports,
                 'RestartPolicy' => {
-                  "Name" => restart_policy,
-                  "MaximumRetryCount" => restart_maximum_retry_count
+                  'Name' => restart_policy,
+                  'MaximumRetryCount' => restart_maximum_retry_count
                 },
                 'Ulimits' => ulimits_to_hash,
                 'VolumesFrom' => volumes_from

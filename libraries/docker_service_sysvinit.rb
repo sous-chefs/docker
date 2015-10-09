@@ -65,7 +65,7 @@ class Chef
         end
       end
 
-      Chef::Provider::DockerService::Sysvinit = action_class if !defined?(Chef::Provider::DockerService::Sysvinit)
+      Chef::Provider::DockerService::Sysvinit = action_class unless defined?(Chef::Provider::DockerService::Sysvinit)
     end
   end
 end

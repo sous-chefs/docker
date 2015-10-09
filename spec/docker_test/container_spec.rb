@@ -54,7 +54,7 @@ describe 'docker_test::container' do
         memory: 0,
         memory_swap: -1,
         network_disabled: false,
-        network_mode: "",
+        network_mode: '',
         open_stdin: false,
         outfile: nil,
         port: nil,
@@ -319,7 +319,7 @@ describe 'docker_test::container' do
     it 'create docker_container[chef_container]' do
       expect(chef_run).to create_docker_container('chef_container').with(
         command: 'true',
-        volumes: { "/opt/chef" => {} }
+        volumes: { '/opt/chef' => {} }
       )
     end
 
@@ -690,9 +690,9 @@ describe 'docker_test::container' do
         port: ['778:778'],
         cap_add: ['SYS_RESOURCE'],
         ulimits: [
-          "nofile=40960:40960",
-          "core=100000000:100000000",
-          "memlock=100000000:100000000"
+          'nofile=40960:40960',
+          'core=100000000:100000000',
+          'memlock=100000000:100000000'
         ]
       )
     end
@@ -727,7 +727,7 @@ describe 'docker_test::container' do
         mac_address: '00:00:DE:AD:BE:EF',
         network_disabled: false,
         tty: true,
-        volumes: { "/root" => {} },
+        volumes: { '/root' => {} },
         working_dir: '/',
         binds: ['/hostbits:/bits', '/more-hostbits:/more-bits'],
         cap_add: %w(NET_ADMIN SYS_RESOURCE),
@@ -787,7 +787,7 @@ describe 'docker_test::container' do
         entrypoint: '/bin/sh -c',
         command: 'ls -laR /',
         env: ['FOO=biz'],
-        volume: {"/var/log"=>{}},
+        volume: { '/var/log' => {} },
         workdir: '/tmp'
       )
     end
@@ -810,7 +810,7 @@ describe 'docker_test::container' do
         repo: 'alpine',
         tag: '3.1',
         log_driver: 'syslog',
-        log_opts: {"syslog-tag"=>"container-syslogger"}
+        log_opts: { 'syslog-tag' => 'container-syslogger' }
       )
     end
   end

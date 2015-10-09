@@ -59,7 +59,7 @@ class Chef
         action_start
       end
 
-      Chef::Provider::DockerService::Upstart = action_class if !defined?(Chef::Provider::DockerService::Execute)
+      Chef::Provider::DockerService::Upstart = action_class unless defined?(Chef::Provider::DockerService::Execute)
     end
   end
 end

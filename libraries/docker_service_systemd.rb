@@ -83,7 +83,7 @@ class Chef
         action_start
       end
 
-      Chef::Provider::DockerService::Systemd = action_class if !defined?(Chef::Provider::DockerService::Systemd)
+      Chef::Provider::DockerService::Systemd = action_class unless defined?(Chef::Provider::DockerService::Systemd)
     end
   end
 end
