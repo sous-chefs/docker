@@ -54,8 +54,10 @@ class Chef
       end
 
       action :pull do
-        converge_by "Pull image #{image_identifier}" do
-          pull_image
+        if pull_image
+          # We already did the work, but we need to report what we did!
+          converge_by "Pull image #{image_identifier}" do
+          end
         end
       end
 
