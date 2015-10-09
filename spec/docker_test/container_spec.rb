@@ -336,7 +336,7 @@ describe 'docker_test::container' do
     it 'run_if_missing docker_container[env]' do
       expect(chef_run).to run_if_missing_docker_container('env').with(
         repo: 'debian',
-        env: ['FOO=bar', 'PATH=/usr/bin'],
+        env: ['PATH=/usr/bin', 'FOO=bar'],
         command: 'env'
       )
     end
@@ -523,7 +523,7 @@ describe 'docker_test::container' do
       expect(chef_run).to run_docker_container('link_source').with(
         repo: 'alpine',
         tag: '3.1',
-        env: ['BIZ=baz', 'FOO=bar'],
+        env: ['FOO=bar', 'BIZ=baz'],
         command: 'nc -ll -p 321 -e /bin/cat',
         port: ['321']
       )
@@ -533,7 +533,7 @@ describe 'docker_test::container' do
       expect(chef_run).to run_docker_container('link_source_2').with(
         repo: 'alpine',
         tag: '3.1',
-        env: ['BIZ=buzz', 'FOO=few'],
+        env: ['FOO=few', 'BIZ=buzz'],
         command: 'nc -ll -p 322 -e /bin/cat',
         port: ['322']
       )
@@ -723,7 +723,7 @@ describe 'docker_test::container' do
         tag: '3.1',
         hostname: 'www',
         domainname: 'computers.biz',
-        env: ['BAR=bar', 'FOO=foo'],
+        env: ['FOO=foo', 'BAR=bar'],
         mac_address: '00:00:DE:AD:BE:EF',
         network_disabled: false,
         tty: true,

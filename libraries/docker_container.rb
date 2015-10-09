@@ -28,7 +28,7 @@ class Chef
       property :dns_search,        ArrayType
       property :domain_name,       String,        default: ''
       property :entrypoint,        ShellCommand
-      property :env,               SortedArray
+      property :env,               UnorderedArrayType
       property :extra_hosts,       NonEmptyArray
       property :exposed_ports,     [Hash, nil]
       property :force,             Boolean

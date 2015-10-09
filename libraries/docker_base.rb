@@ -7,8 +7,18 @@ class Chef
       ShellCommand = property_type(is: [String, nil], coerce: proc { |v| v.is_a?(Array) ? ::Shellwords.join(v) : v }) unless defined?(ShellCommand)
       NonEmptyArray = property_type(is: [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }) unless defined?(NonEmptyArray)
       ArrayType = property_type(is: [Array, nil], coerce: proc { |v| v.nil? ? nil : Array(v) }) unless defined?(ArrayType)
-      SortedArray = property_type(is: [Array, nil], coerce: proc { |v| v.nil? ? nil : Array(v).sort }) unless defined?(SortedArray)
+      UnorderedArrayType = property_type(is: [Array, nil], coerce: proc { |v| v.nil? ? nil : UnorderedArray.new(v) }) unless defined?(UnorderedArray)
       Boolean = property_type(is: [true, false], default: false) unless defined?(Boolean)
+
+      class UnorderedArray < Array
+        def initialize(value)
+          super(Array(value))
+        end
+        def ==(other)
+          # If I (desired env) am a subset of the current env, let == return true
+          self <= other
+        end
+      end
 
       property :api_retries,       Fixnum,        default: 3, desired_state: false
       property :read_timeout,      [Fixnum, nil], default: 60, desired_state: false
