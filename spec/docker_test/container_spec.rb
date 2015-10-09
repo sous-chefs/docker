@@ -57,7 +57,7 @@ describe 'docker_test::container' do
         network_mode: "",
         open_stdin: false,
         outfile: nil,
-        port: [],
+        port: nil,
         port_bindings: nil,
         privileged: false,
         publish_all_ports: false,

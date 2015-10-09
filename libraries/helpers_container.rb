@@ -43,7 +43,7 @@ module DockerHelpers
     # specified on the resource.
 
     def update_command?
-      return true unless command.empty? || (current_resource.command == command)
+      return true unless command.nil? || command == '' || (current_resource.command == command)
       false
     end
 

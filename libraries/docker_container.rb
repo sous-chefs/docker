@@ -26,7 +26,7 @@ class Chef
       property :detach,            Boolean,       default: true
       property :devices,           ArrayType
       property :dns,               NonEmptyArray
-      property :dns_search,        NullableArray
+      property :dns_search,        ArrayType
       property :domain_name,       String,        default: ''
       property :entrypoint,        ShellCommand
       property :env,               ArrayType
@@ -35,8 +35,9 @@ class Chef
       property :force,             Boolean
       property :host,              [String, nil]
       property :host_name,         [String, nil]
-      property :labels,            Hash,          coerce: (proc do |v|
-        if v.is_a?(Hash)
+      property :labels,            [Hash, nil],   coerce: (proc do |v|
+        case v
+        when Hash, nil
           v
         else
           Array(v).each_with_object({}) do |label,h|
@@ -47,13 +48,16 @@ class Chef
       end)
       property :links,             [Array, nil],  coerce: (proc do |v|
         v = Array(v)
-        return nil if v.empty?
-        # Parse docker input of /source:/container_name/dest into source:dest
-        v.map do |link|
-          if link =~ /^\/(.+):\/#{name}\/(.+)/
-            link = "#{$1}:#{$2}"
+        if v.empty?
+          nil
+        else
+          # Parse docker input of /source:/container_name/dest into source:dest
+          v.map do |link|
+            if link =~ /^\/(.+):\/#{name}\/(.+)/
+              link = "#{$1}:#{$2}"
+            end
+            link
           end
-          link
         end
       end)
       property :log_config,        Hash,          coerce: (proc do |v|
@@ -124,7 +128,7 @@ class Chef
           Array(v).inject({}) { |h,volume| h[volume] = {}; h }
         end
       end)
-      property :volumes_from,      NullableArray
+      property :volumes_from,      ArrayType
       property :working_dir,       [String, nil]
       property :write_timeout,     [Fixnum, nil]
 
@@ -466,6 +470,9 @@ class Chef
         # Most important work is done here.
         def create_container
           tries ||= api_retries
+          puts "New: repo=#{new_resource.repo}, tag=#{new_resource.tag}"
+          puts  "Current: repo=#{current_resource.repo}, tag=#{current_resource.tag}"
+
           Docker::Container.create(
             {
               'name' => container_name,
