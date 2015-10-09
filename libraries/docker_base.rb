@@ -7,6 +7,7 @@ class Chef
       ShellCommand = property_type(is: [String, nil], coerce: proc { |v| v.is_a?(Array) ? ::Shellwords.join(v) : v })
       NonEmptyArray = property_type(is: [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) })
       ArrayType = property_type(is: [Array, nil], coerce: proc { |v| v.nil? ? nil : Array(v) })
+      SortedArray = property_type(is: [Array, nil], coerce: proc { |v| v.nil? ? nil : Array(v).sort })
       Boolean = property_type(is: [true, false], default: false)
 
       property :api_retries,       Fixnum,        default: 3, desired_state: false
@@ -27,7 +28,7 @@ class Chef
       end
 
       def with_retries(&block)
-        retries = api_retries
+        tries = api_retries
         begin
           block.call
         rescue Docker::Error

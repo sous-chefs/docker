@@ -28,7 +28,7 @@ class Chef
       property :dns_search,        ArrayType
       property :domain_name,       String,        default: ''
       property :entrypoint,        ShellCommand
-      property :env,               ArrayType
+      property :env,               SortedArray
       property :extra_hosts,       NonEmptyArray
       property :exposed_ports,     [Hash, nil]
       property :force,             Boolean
@@ -116,12 +116,12 @@ class Chef
         end
       end)
       property :user,              String,         default: ''
-      property :volumes,           [Hash, nil],  coerce: (proc do |v|
+      property :volumes,           [Hash, nil],    coerce: (proc do |v|
         case v
         when nil, Hash
           v
         else
-          Array(v).each_with_object({}) { |volume, h| h[volume] = {} }
+          Array(v).sort.each_with_object({}) { |volume, h| h[volume] = {} }
         end
       end)
       property :volumes_from,      ArrayType
@@ -345,54 +345,31 @@ class Chef
         end
       end
 
+      def to_snake_case(name)
+        # ExposedPorts -> _exposed_ports
+        name = name.gsub(/[A-Z]/) { |x| "_#{x.downcase}" }
+        # _exposed_ports -> exposed_ports
+        name = name[1..-1] if name.start_with?('_')
+        name
+      end
+
       load_current_value do
         with_retries do
           begin
             c = Docker::Container.get(container_name, connection)
-            config = c.info['Config']
-            attach_stderr    config['AttachStderr']
-            attach_stdin     config['AttachStdin']
-            attach_stdout    config['AttachStdout']
-            command          config['Cmd']
-            domainname       config['Domainname']
-            entrypoint       config['Entrypoint']
-            env              config['Env']
-            exposed_ports    config['ExposedPorts']
-            hostname         config['Hostname']
-            image            config['Image']
-            labels           config['Labels']
-            mac_address      config['MacAddress']
-            network_disabled config['NetworkDisabled']
-            open_stdin       config['OpenStdin']
-            stdin_once       config['StdinOnce']
-            tty              config['Tty']
-            user             config['User']
-            volumes          config['Volumes']
-            working_dir      config['WorkingDir']
+            # Go through everything in the container and set corresponding properties:
+            # c.info['Config']['ExposedPorts'] -> exposed_ports
+            (c.info['Config'].to_a + c.info['HostConfig'].to_a).each do |key, value|
+              next if value.nil? || key == 'RestartPolicy'
+              # Set exposed_ports = ExposedPorts
+              property_name = to_snake_case(key)
+              public_send(property_name, value) if respond_to?(property_name)
+            end
 
-            host_config = c.info['HostConfig']
-            binds             host_config['Binds']
-            cap_add           host_config['CapAdd']
-            cap_drop          host_config['CapDrop']
-            cgroup_parent     host_config['CgroupParent']
-            cpu_shares        host_config['CpuShares']
-            cpuset_cpus       host_config['CpusetCpus']
-            devices           host_config['Devices']
-            dns               host_config['Dns']
-            dns_search        host_config['DnsSearch']
-            extra_hosts       host_config['ExtraHosts']
-            links             host_config['Links']
-            log_config        host_config['LogConfig']
-            memory            host_config['Memory']
-            memory_swap       host_config['MemorySwap']
-            network_mode      host_config['NetworkMode']
-            port_bindings     host_config['PortBindings']
-            privileged        host_config['Privileged']
-            publish_all_ports host_config['PublishAllPorts']
-            restart_policy    host_config['RestartPolicy']['Name']
-            restart_maximum_retry_count host_config['RestartPolicy']['MaximumRetryCount']
-            ulimits           host_config['Ulimits']
-            volumes_from      host_config['VolumesFrom']
+            # RestartPolicy is a special case for us because our names differ from theirs
+            restart_policy c.info['HostConfig']['RestartPolicy']['Name']
+            restart_maximum_retry_count c.info['HostConfig']['RestartPolicy']['MaximumRetryCount']
+
           rescue Docker::Error::NotFoundError
             current_value_does_not_exist!
           end
