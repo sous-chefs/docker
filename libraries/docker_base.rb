@@ -4,11 +4,11 @@ require 'shellwords'
 class Chef
   class Resource
     class DockerBase < ChefCompat::Resource
-      ShellCommand = property_type(is: [String, nil], coerce: proc { |v| v.is_a?(Array) ? ::Shellwords.join(v) : v })
-      NonEmptyArray = property_type(is: [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) })
-      ArrayType = property_type(is: [Array, nil], coerce: proc { |v| v.nil? ? nil : Array(v) })
-      SortedArray = property_type(is: [Array, nil], coerce: proc { |v| v.nil? ? nil : Array(v).sort })
-      Boolean = property_type(is: [true, false], default: false)
+      ShellCommand = property_type(is: [String, nil], coerce: proc { |v| v.is_a?(Array) ? ::Shellwords.join(v) : v }) unless defined?(ShellCommand)
+      NonEmptyArray = property_type(is: [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }) unless defined?(NonEmptyArray)
+      ArrayType = property_type(is: [Array, nil], coerce: proc { |v| v.nil? ? nil : Array(v) }) unless defined?(ArrayType)
+      SortedArray = property_type(is: [Array, nil], coerce: proc { |v| v.nil? ? nil : Array(v).sort }) unless defined?(SortedArray)
+      Boolean = property_type(is: [true, false], default: false) unless defined?(Boolean)
 
       property :api_retries,       Fixnum,        default: 3, desired_state: false
       property :read_timeout,      [Fixnum, nil], default: 60, desired_state: false
@@ -40,6 +40,10 @@ class Chef
           retry if tries > 0
           raise
         end
+      end
+
+      def call_action(action)
+        new_resource.run_action()
       end
 
       declare_action_class.class_eval do

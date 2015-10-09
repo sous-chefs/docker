@@ -129,7 +129,7 @@ class Chef
 
       # Used to store the state of the Docker container
       property :container,         Docker::Container
-      property :state,             Hash,            default: lazy { container.info['State'] }
+      property :state,             Hash,            default: lazy { container ? container.info['State'] : {} }
 
       alias_method :cmd, :command
       alias_method :image, :repo
