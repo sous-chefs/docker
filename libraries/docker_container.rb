@@ -12,7 +12,6 @@ class Chef
       property :tag,               String,       default: 'latest'
       property :command,           ShellCommand
 
-      property :api_retries,       Fixnum,       default: 3
       property :attach_stderr,     Boolean,      default: lazy { detach }
       property :attach_stdin,      Boolean,      default: false
       property :attach_stdout,     Boolean,      default: lazy { detach }
@@ -98,7 +97,6 @@ class Chef
       property :port_bindings,     [String, Array, Hash, nil]
       property :privileged,        Boolean
       property :publish_all_ports, Boolean
-      property :read_timeout,      [Fixnum, nil],  default: 60
       property :remove_volumes,    Boolean
       property :restart_maximum_retry_count, Fixnum, default: 0
       property :restart_policy,    String,          default: 'no'
@@ -128,7 +126,6 @@ class Chef
       end)
       property :volumes_from,      ArrayType
       property :working_dir,       [String, nil]
-      property :write_timeout,     [Fixnum, nil]
 
       alias_method :cmd, :command
       alias_method :image, :repo
@@ -140,7 +137,6 @@ class Chef
       alias_method :domainname, :domain_name
       alias_method :dnssearch, :dns_search
       alias_method :restart_maximum_retries, :restart_maximum_retry_count
-      alias_method :api_retries, :restart_maximum_retry_count
       alias_method :volume, :volumes
       alias_method :volume_from, :volumes_from
       alias_method :destination, :outfile

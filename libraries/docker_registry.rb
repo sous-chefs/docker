@@ -6,7 +6,6 @@ class Chef
     class DockerRegistry < DockerBase
       use_automatic_resource_name
 
-      property :api_retries, Fixnum, default: 3
       property :email, String
       property :password, String
       property :serveraddress, String, name_property: true

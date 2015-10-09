@@ -9,6 +9,10 @@ class Chef
       ArrayType = property_type(is: [Array, nil], coerce: proc { |v| v.nil? ? nil : Array(v) })
       Boolean = property_type(is: [true, false], default: false)
 
+      property :api_retries,       Fixnum,        default: 3, desired_state: false
+      property :read_timeout,      [Fixnum, nil], default: 60, desired_state: false
+      property :write_timeout,     [Fixnum, nil], desired_state: false
+
       def api_version
         @api_version ||= Docker.version['ApiVersion']
       end
