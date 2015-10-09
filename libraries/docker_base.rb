@@ -16,7 +16,7 @@ class Chef
         end
         def ==(other)
           # If I (desired env) am a subset of the current env, let == return true
-          self <= other
+          self.all? { |v| other.include?(v) }
         end
       end
 
