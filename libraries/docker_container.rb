@@ -124,9 +124,34 @@ class Chef
       property :kill_after,        Numeric, default: -1, desired_state: false
       property :state, Docker::Container, default: lazy { container ? container.info['State'] : {} }
 
+      #
+      # TODO: test image property in serverspec and kitchen
+      #
+      # If you say:    `repo 'blah'`
+      # Image will be: `blah:latest`
+      #
+      # If you say:    `repo 'blah'; tag '3.1'`
+      # Image will be: `blah:3.1`
+      #
+      # If you say:    `image 'blah'`
+      # Repo will be:  `blah`
+      # Tag will be:   `latest`
+      #
+      # If you say:    `image 'blah:3.1'`
+      # Repo will be:  `blah`
+      # Tag will be:   `3.1`
+      #
+      def image(image=nil)
+        if image
+          r, t = image.split(':', 2)
+          repo r
+          tag t if t
+        end
+        "#{repo}:#{tag}"
+      end
+
       alias_method :cmd, :command
-      alias_method :image, :repo
-      alias_method :image_name, :repo
+      alias_method :image_name, :image
       alias_method :additional_host, :extra_hosts
       alias_method :rm, :autoremove
       alias_method :remove_automatically, :autoremove
@@ -337,6 +362,7 @@ class Chef
       end
 
       load_current_value do
+        # Grab the container and assign the container property
         begin
           with_retries { container Docker::Container.get(container_name, connection) }
         rescue Docker::Error::NotFoundError
@@ -347,7 +373,8 @@ class Chef
         # c.info['Config']['ExposedPorts'] -> exposed_ports
         (container.info['Config'].to_a + container.info['HostConfig'].to_a).each do |key, value|
           next if value.nil? || key == 'RestartPolicy'
-          # Set exposed_ports = ExposedPorts
+          # Image => image
+          # Set exposed_ports = ExposedPorts (etc.)
           property_name = to_snake_case(key)
           public_send(property_name, value) if respond_to?(property_name)
         end
