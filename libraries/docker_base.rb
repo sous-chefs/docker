@@ -4,19 +4,21 @@ require 'shellwords'
 class Chef
   class Resource
     class DockerBase < ChefCompat::Resource
-      ShellCommand = property_type(is: [String, nil], coerce: proc { |v| v.is_a?(Array) ? ::Shellwords.join(v) : v }) unless defined?(ShellCommand)
+      ShellCommand = property_type(is: [String, nil], coerce: proc { |v| v.nil? ? v : ShellCommandString.new(v.is_a?(Array) ? ::Shellwords.join(v) : v) }) unless defined?(ShellCommand)
       NonEmptyArray = property_type(is: [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }) unless defined?(NonEmptyArray)
       ArrayType = property_type(is: [Array, nil], coerce: proc { |v| v.nil? ? nil : Array(v) }) unless defined?(ArrayType)
-      UnorderedArrayType = property_type(is: [Array, nil], coerce: proc { |v| v.nil? ? nil : UnorderedArray.new(v) }) unless defined?(UnorderedArray)
+      UnorderedArrayType = property_type(is: [Array, nil], coerce: proc { |v| v.nil? ? nil : UnorderedArray.new(Array(v)) }) unless defined?(UnorderedArray)
       Boolean = property_type(is: [true, false], default: false) unless defined?(Boolean)
 
       class UnorderedArray < Array
-        def initialize(value)
-          super(Array(value))
-        end
         def ==(other)
           # If I (desired env) am a subset of the current env, let == return true
           self.all? { |v| other.include?(v) }
+        end
+      end
+      class ShellCommandString < String
+        def ==(other)
+          other.is_a?(String) && Shellwords.shellwords(self) == Shellwords.shellwords(other)
         end
       end
 

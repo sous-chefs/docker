@@ -33,7 +33,7 @@ class Chef
       property :exposed_ports,     [Hash, nil]
       property :force,             Boolean
       property :host,              [String, nil], desired_state: false
-      property :host_name,         [String, nil]
+      property :hostname,          [String, nil]
       property :labels,            [Hash, nil],   coerce: proc { |v| coerce_labels(v) }
       property :links,             [Array, nil],  coerce: (proc do |v|
         v = Array(v)
@@ -167,7 +167,7 @@ class Chef
       alias_method :additional_host, :extra_hosts
       alias_method :rm, :autoremove
       alias_method :remove_automatically, :autoremove
-      alias_method :hostname, :host_name
+      alias_method :host_name, :hostname
       alias_method :domainname, :domain_name
       alias_method :dnssearch, :dns_search
       alias_method :restart_maximum_retries, :restart_maximum_retry_count
@@ -212,7 +212,7 @@ class Chef
                 'Entrypoint'      => to_shellwords(entrypoint),
                 'Env'             => env,
                 'ExposedPorts'    => exposed_ports,
-                'Hostname'        => host_name,
+                'Hostname'        => hostname,
                 'MacAddress'      => mac_address,
                 'NetworkDisabled' => network_disabled,
                 'OpenStdin'       => open_stdin,
