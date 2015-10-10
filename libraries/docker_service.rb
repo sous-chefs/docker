@@ -70,7 +70,7 @@ class Chef
         end
         r
       end)
-      property :icc,             [Boolean, nil]
+      property :icc, [Boolean, nil]
       property :insecure_registry, [String, nil]
       property :ip,              [IPV4_ADDR, IPV6_ADDR, nil]
       property :ip_forward,      [Boolean, nil]

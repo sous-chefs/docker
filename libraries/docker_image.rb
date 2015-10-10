@@ -11,14 +11,14 @@ class Chef
 
       # https://docs.docker.com/reference/api/docker_remote_api_v1.20/
       property :destination,   [String, nil]
-      property :force,         Boolean,       default: false
+      property :force,         Boolean, default: false
       property :host,          [String, nil]
       property :nocache,       Boolean,       default: false
       property :noprune,       Boolean,       default: false
       property :repo,          String,        name_property: true
       property :rm,            Boolean,       default: true
       property :source,        String
-      property :tag,           String,        default: 'latest'
+      property :tag,           String, default: 'latest'
 
       alias_method :image, :repo
       alias_method :image_name, :repo

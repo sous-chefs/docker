@@ -19,14 +19,14 @@ class Chef
       property :binds,             ArrayType
       property :cap_add,           NonEmptyArray
       property :cap_drop,          NonEmptyArray
-      property :cgroup_parent,     String,        default: '' # FIXME: add validate proc
-      property :cpu_shares,        [Fixnum, nil], default: 0 # FIXME: add validate proc
-      property :cpuset_cpus,       String,        default: '' # FIXME: add validate proc
+      property :cgroup_parent,     String,        default: ''
+      property :cpu_shares,        [Fixnum, nil], default: 0
+      property :cpuset_cpus,       String,        default: ''
       property :detach,            Boolean,       default: true
       property :devices,           ArrayType
       property :dns,               NonEmptyArray
       property :dns_search,        ArrayType
-      property :domain_name,       String,        default: ''
+      property :domain_name,       String, default: ''
       property :entrypoint,        ShellCommand
       property :env,               UnorderedArrayType
       property :extra_hosts,       NonEmptyArray
@@ -50,7 +50,7 @@ class Chef
         end
       end)
       property :log_driver, %w( json-file syslog journald gelf fluentd none ), default: 'json-file'
-      property :log_opts,          [Hash, nil],          coerce: (proc do |v|
+      property :log_opts, [Hash, nil], coerce: (proc do |v|
         case v
         when Hash, nil
           v
@@ -88,7 +88,7 @@ class Chef
       property :stdin_once,        [Boolean, nil],  default: lazy { !detach }
       property :timeout,           [Fixnum, nil]
       property :tty,               Boolean
-      property :ulimits,           [Array, nil],    coerce: (proc do |v|
+      property :ulimits,           [Array, nil], coerce: (proc do |v|
         if v.nil?
           v
         else
@@ -122,7 +122,7 @@ class Chef
 
       # port_bindings and exposed_ports really handle this
       # TODO infer `port` from `port_bindings` and `exposed_ports`
-      def port(ports=NOT_PASSED)
+      def port(ports = NOT_PASSED)
         if ports != NOT_PASSED
           ports = Array(ports)
           ports = nil if ports.empty?
@@ -134,7 +134,7 @@ class Chef
       end
 
       # log_driver and log_opts really handle this
-      def log_config(value=NOT_PASSED)
+      def log_config(value = NOT_PASSED)
         if value != NOT_PASSED
           @log_config = value
           log_driver value['Type']
@@ -165,7 +165,7 @@ class Chef
       # Repo will be:  `blah`
       # Tag will be:   `3.1`
       #
-      def image(image=nil)
+      def image(image = nil)
         if image
           r, t = image.split(':', 2)
           repo r
@@ -204,6 +204,7 @@ class Chef
           send("action_#{action}")
           load_current_resource
         end
+
         def state
           current_resource ? current_resource.state : {}
         end
@@ -211,7 +212,7 @@ class Chef
 
       def validate_container_create
         if network_mode == 'host' && property_is_set?(:hostname)
-          raise Chef::Exceptions::ValidationFailed, "Cannot specify hostname on #{container_name}, because network_mode is host."
+          fail Chef::Exceptions::ValidationFailed, "Cannot specify hostname on #{container_name}, because network_mode is host."
         end
       end
 
@@ -336,7 +337,7 @@ class Chef
       end
 
       action :restart do
-        # TODO there is a restart endpoint
+        # TODO: there is a restart endpoint
         call_action(:stop)
         call_action(:start)
       end
