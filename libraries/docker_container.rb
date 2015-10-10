@@ -49,12 +49,6 @@ class Chef
           end
         end
       end)
-      property :log_config,        Hash,          coerce: (proc do |v|
-        v ||= {}
-        v['Type'] ||= log_driver
-        v['Config'] ||= log_opts
-        v
-      end)
       property :log_driver, %w( json-file syslog journald gelf fluentd none ), default: 'json-file'
       property :log_opts,          [Hash, nil],          coerce: (proc do |v|
         case v
@@ -121,7 +115,10 @@ class Chef
       # If the container takes longer than this many seconds to stop, kill it instead.
       # -1 (the default) means never kill the container.
       property :kill_after,        Numeric, default: -1, desired_state: false
-      property :state, Docker::Container, default: lazy { container ? container.info['State'] : {} }
+
+      def state
+        container ? container.info['State'] : {}
+      end
 
       # port_bindings and exposed_ports really handle this
       # TODO infer `port` from `port_bindings` and `exposed_ports`
@@ -134,6 +131,21 @@ class Chef
           exposed_ports to_port_exposures(ports)
         end
         @port
+      end
+
+      # log_driver and log_opts really handle this
+      def log_config(value=NOT_PASSED)
+        if value != NOT_PASSED
+          @log_config = value
+          log_driver value['Type']
+          log_opts value['Config']
+        end
+        return @log_config if defined?(@log_config)
+        default = {}
+        default['Type'] = log_driver if property_is_set?(:log_driver)
+        default['Config'] = log_opts if property_is_set?(:log_opts)
+        default = nil if default.empty?
+        default
       end
 
       #
@@ -191,6 +203,9 @@ class Chef
         def call_action(action)
           send("action_#{action}")
           load_current_resource
+        end
+        def state
+          current_resource ? current_resource.state : {}
         end
       end
 
