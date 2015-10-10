@@ -84,7 +84,7 @@ class Chef
       property :log_driver,      ['json-file', 'syslog', 'journald', 'gelf', 'fluentd', 'none', nil]
       property :log_opts,        ArrayType
       property :mtu,             [String, nil]
-      property :pidfile,         String, default: lazy { "/var/run/#{docker_name}.pid" }
+      property :pidfile,         String, default: '/var/run/docker.pid'
       property :registry_mirror, [String, nil]
       property :storage_driver,  ArrayType
       property :selinux_enabled, [Boolean, nil]
@@ -114,10 +114,6 @@ class Chef
       alias_method :tlsverify, :tls_verify
 
       protected
-
-      def docker_name
-        'docker'
-      end
 
       def docker_kernel
         node['kernel']['name']

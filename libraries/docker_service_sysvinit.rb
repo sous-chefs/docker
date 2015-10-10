@@ -44,12 +44,11 @@ class Chef
               config: new_resource,
               docker_bin: docker_bin,
               docker_daemon_cmd: docker_daemon_cmd,
-              docker_name: docker_name,
               docker_cmd: docker_cmd,
               docker_daemon_opts: docker_daemon_opts,
               docker_tls_ca_cert: tls_ca_cert,
               docker_tls_verify: tls_verify,
-              pidfile: parsed_pidfile
+              pidfile: pidfile
             )
             action :create
           end

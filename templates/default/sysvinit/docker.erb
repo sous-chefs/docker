@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 ### BEGIN INIT INFO
-# Provides:          <%= @docker_name %>
+# Provides:          docker
 # Required-Start:    $remote_fs $syslog
 # Required-Stop:     $remote_fs $syslog
 # Should-Start:      $network $time
@@ -73,54 +73,54 @@ running() {
 
 print_start_success() {
     <% if node['platform_family'] == 'rhel' %>
-    action $"Starting <%= @docker_name %>: " /bin/true
+    action $"Starting docker: " /bin/true
     <% else %>
-    echo "Staring Docker instance <%= @docker_name %>"
+    echo "Staring Docker daemon"
     <% end %>
     return 0;
 }
 
 print_start_failure() {
     <% if node['platform_family'] == 'rhel' %>
-    action $"Starting <%= @docker_name %>: " /bin/false
+    action $"Starting Docker: " /bin/false
     <% else %>
-    echo "Could not start Docker instance <%= @docker_name %>"
+    echo "Could not start Docker daemon"
     <% end %>
     return 0;
 }
 
 print_reload_success() {
     <% if node['platform_family'] == 'rhel' %>
-    action $"Reloading <%= @docker_name %>" /bin/true
+    action $"Reloading Docker: " /bin/true
     <% else %>
-    echo "Reload success for <%= @docker_name %>"
+    echo "Reload success for Docker daemon"
     <% end %>
     return 0;
 }
 
 print_reload_failure() {
     <% if node['platform_family'] == 'rhel' %>
-    action $"Reloading <%= @docker_name %>" /bin/false
+    action $"Reloading Docker: " /bin/false
     <% else %>
-    echo "Reload failed for <%= @docker_name %>"
+    echo "Reload failed for Docker daemon"
     <% end %>
     return 0;
 }
 
 print_stop_success() {
     <% if node['platform_family'] == 'rhel' %>
-    action $"Stopping <%= @docker_name %>: " /bin/true
+    action $"Stopping Docker: " /bin/true
     <% else %>
-    echo "Stopping Docker instance <%= @docker_name %>"
+    echo "Stopping Docker daemon"
     <% end %>
     return 0;
 }
 
 print_stop_failure() {
     <% if node['platform_family'] == 'rhel' %>
-    action $"Stopping <%= @docker_name %>: " /bin/false
+    action $"Stopping Docker: " /bin/false
     <% else %>
-    echo "Could not stop Docker instance <%= @docker_name %>"
+    echo "Could not stop Docker daemon"
     <% end %>
     return 0;
 }
@@ -177,7 +177,7 @@ start_command() {
 # Init script actions
 ###
 
-# Start <%= @docker_name %>
+# Start Docker
 start() {
     # exit 0 if already running.
     if running; then
@@ -223,20 +223,20 @@ start() {
     fi
 }
 
-# Status of <%= @docker_name %>
+# Status of Docker daemon
 status() {
     if running; then
-        echo "<%= @docker_name %> is running"
+        echo "Docker is running"
         return 0
     else
-        echo "<%= @docker_name %> is not running"
+        echo "Docker is not running"
         return 1
     fi
 }
 
 stop() {
     if running; then
-        echo "Stopping Docker instance <%= @docker_name %>"
+        echo "Stopping Docker daemon"
         if [ -f $pidfile ]; then
             /bin/kill `cat $pidfile 2>/dev/null`
             kstat=$?
@@ -253,7 +253,7 @@ stop() {
 
         return $kstat
     else
-        echo "Docker instance <%= @docker_name %> Stopped."
+        echo "Docker daemon stopped."
         return 0
     fi
 

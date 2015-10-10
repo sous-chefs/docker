@@ -83,11 +83,11 @@ module DockerHelpers
         log_opts value['Config']
       end
       return @log_config if defined?(@log_config)
-      default = {}
-      default['Type'] = log_driver if property_is_set?(:log_driver)
-      default['Config'] = log_opts if property_is_set?(:log_opts)
-      default = nil if default.empty?
-      default
+      def_logcfg = {}
+      def_logcfg['Type'] = log_driver if property_is_set?(:log_driver)
+      def_logcfg['Config'] = log_opts if property_is_set?(:log_opts)
+      def_logcfg = nil if def_logcfg.empty?
+      def_logcfg
     end
 
     # TODO: test image property in serverspec and kitchen
