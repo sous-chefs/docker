@@ -1,9 +1,12 @@
 # comments!
 
-execute_service_manager = true if node['docker']['service_manager'] == 'execute'
-
-docker_service 'default' do
+service_def = proc do
   tls false
-  provider Chef::Provider::DockerService::Execute if execute_service_manager
   action [:create, :start]
+end
+
+if node['docker']['service_manager'] == 'execute'
+  docker_service_execute('default', &service_def)
+else
+  docker_service('default', &service_def)
 end

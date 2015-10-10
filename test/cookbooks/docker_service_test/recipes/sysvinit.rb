@@ -1,4 +1,3 @@
-docker_service 'default' do
-  provider Chef::Provider::DockerService::Sysvinit
+docker_service_sysvinit 'default' do
   action [:create, :start]
 end

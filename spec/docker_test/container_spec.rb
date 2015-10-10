@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'docker_test::container' do
-  cached(:chef_run) { ChefSpec::SoloRunner.converge('docker_test::container') }
+  cached(:chef_run) { ChefSpec::SoloRunner.converge('rspec_helper', 'docker_test::container') }
 
   before do
     stub_command("[ ! -z `docker ps -qaf 'name=busybox_ls$'` ]").and_return(false)
@@ -19,10 +19,10 @@ describe 'docker_test::container' do
     it 'create docker_container[hello-world]' do
       expect(chef_run).to create_docker_container('hello-world').with(
         container_name: 'hello-world',
-        repo: nil,
+        repo: 'hello-world',
         tag: 'latest',
         command: '/hello',
-        api_retries: 0, # expecting 3
+        api_retries: 3,
         attach_stderr: true,
         attach_stdin: false,
         attach_stdout: true,
@@ -48,13 +48,13 @@ describe 'docker_test::container' do
         labels: nil,
         links: nil,
         log_config: nil,
-        log_driver: nil,
-        log_opts: [],
+        log_driver: 'json-file',
+        log_opts: nil,
         mac_address: '',
         memory: 0,
         memory_swap: -1,
         network_disabled: false,
-        network_mode: nil,
+        network_mode: '',
         open_stdin: false,
         outfile: nil,
         port: nil,
@@ -103,7 +103,7 @@ describe 'docker_test::container' do
         repo: 'alpine',
         tag: '3.1',
         command: 'nc -ll -p 7 -e /bin/cat',
-        port: '7:7'
+        port: ['7:7']
       )
     end
 
@@ -112,7 +112,7 @@ describe 'docker_test::container' do
         repo: 'alpine',
         tag: '3.1',
         command: 'nc -ll -p 7 -e /bin/cat',
-        port: '7'
+        port: ['7']
       )
     end
 
@@ -121,7 +121,7 @@ describe 'docker_test::container' do
         repo: 'alpine',
         tag: '3.1',
         command: 'nc -ul -p 7 -e /bin/cat',
-        port: '5007:7/udp'
+        port: ['5007:7/udp']
       )
     end
   end
@@ -228,7 +228,7 @@ describe 'docker_test::container' do
         repo: 'alpine',
         tag: '3.1',
         command: 'nc -ll -p 7777 -e /bin/cat',
-        port: '7'
+        port: ['7']
       )
     end
 
@@ -237,7 +237,7 @@ describe 'docker_test::container' do
         repo: 'alpine',
         tag: '3.1',
         command: 'nc -ll -p 7777 -e /bin/cat',
-        port: '7'
+        port: ['7']
       )
     end
 
@@ -319,7 +319,7 @@ describe 'docker_test::container' do
     it 'create docker_container[chef_container]' do
       expect(chef_run).to create_docker_container('chef_container').with(
         command: 'true',
-        volumes: '/opt/chef'
+        volumes: { '/opt/chef' => {} }
       )
     end
 
@@ -327,7 +327,7 @@ describe 'docker_test::container' do
       expect(chef_run).to run_if_missing_docker_container('ohai_debian').with(
         command: '/opt/chef/embedded/bin/ohai platform',
         repo: 'debian',
-        volumes_from: 'chef_container'
+        volumes_from: ['chef_container']
       )
     end
   end
@@ -346,7 +346,7 @@ describe 'docker_test::container' do
     it 'run_if_missing docker_container[ohai_again]' do
       expect(chef_run).to run_if_missing_docker_container('ohai_again').with(
         repo: 'debian',
-        volumes_from: 'chef_container',
+        volumes_from: ['chef_container'],
         entrypoint: '/opt/chef/embedded/bin/ohai'
       )
     end
@@ -354,7 +354,7 @@ describe 'docker_test::container' do
     it 'run_if_missing docker_container[ohai_again_debian]' do
       expect(chef_run).to run_if_missing_docker_container('ohai_again_debian').with(
         repo: 'debian',
-        volumes_from: 'chef_container',
+        volumes_from: ['chef_container'],
         entrypoint: '/opt/chef/embedded/bin/ohai',
         command: 'platform'
       )
@@ -386,7 +386,7 @@ describe 'docker_test::container' do
     it 'runs docker_container[sean_was_here]' do
       expect(chef_run).to run_docker_container('sean_was_here').with(
         repo: 'debian',
-        volumes_from: 'chef_container',
+        volumes_from: ['chef_container'],
         autoremove: true
       )
     end
@@ -401,7 +401,7 @@ describe 'docker_test::container' do
       expect(chef_run).to run_if_missing_docker_container('cap_add_net_admin').with(
         repo: 'debian',
         command: 'bash -c "ip addr add 10.9.8.7/24 brd + dev eth0 label eth0:0 ; ip addr list"',
-        cap_add: 'NET_ADMIN'
+        cap_add: ['NET_ADMIN']
       )
     end
 
@@ -418,7 +418,7 @@ describe 'docker_test::container' do
       expect(chef_run).to run_if_missing_docker_container('cap_drop_mknod').with(
         repo: 'debian',
         command: 'bash -c "mknod -m 444 /dev/urandom2 c 1 9 ; ls -la /dev/urandom2"',
-        cap_drop: 'MKNOD'
+        cap_drop: ['MKNOD']
       )
     end
 
@@ -501,7 +501,7 @@ describe 'docker_test::container' do
         repo: 'alpine',
         tag: '3.1',
         command: 'nc -ll -p 123 -e /bin/cat',
-        port: '123',
+        port: ['123'],
         restart_policy: 'always'
       )
     end
@@ -511,7 +511,7 @@ describe 'docker_test::container' do
         repo: 'alpine',
         tag: '3.1',
         command: 'nc -ll -p 123 -e /bin/cat',
-        port: '123',
+        port: ['123'],
         restart_policy: 'always',
         restart_maximum_retry_count: 2
       )
@@ -525,7 +525,7 @@ describe 'docker_test::container' do
         tag: '3.1',
         env: ['FOO=bar', 'BIZ=baz'],
         command: 'nc -ll -p 321 -e /bin/cat',
-        port: '321'
+        port: ['321']
       )
     end
 
@@ -535,7 +535,7 @@ describe 'docker_test::container' do
         tag: '3.1',
         env: ['FOO=few', 'BIZ=buzz'],
         command: 'nc -ll -p 322 -e /bin/cat',
-        port: '322'
+        port: ['322']
       )
     end
 
@@ -545,7 +545,7 @@ describe 'docker_test::container' do
         tag: '3.1',
         env: ['ASD=asd'],
         command: 'ping -c 1 hello',
-        links: 'link_source:hello'
+        links: ['link_source:hello']
       )
     end
 
@@ -588,7 +588,7 @@ describe 'docker_test::container' do
         repo: 'alpine',
         tag: '3.1',
         command: 'nc -ll -p 456 -e /bin/cat',
-        port: '456'
+        port: ['456']
       )
     end
 
@@ -675,7 +675,7 @@ describe 'docker_test::container' do
         repo: 'alpine',
         tag: '3.1',
         command: 'nc -ll -p 777 -e /bin/cat',
-        port: '777:777',
+        port: ['777:777'],
         network_mode: 'host'
       )
     end
@@ -687,12 +687,12 @@ describe 'docker_test::container' do
         repo: 'alpine',
         tag: '3.1',
         command: 'nc -ll -p 778 -e /bin/cat',
-        port: '778:778',
-        cap_add: 'SYS_RESOURCE',
+        port: ['778:778'],
+        cap_add: ['SYS_RESOURCE'],
         ulimits: [
-          { 'Name' => 'nofile', 'Soft' => 40_960, 'Hard' => 40_960 },
-          { 'Name' => 'core', 'Soft' => 100_000_000, 'Hard' => 100_000_000 },
-          { 'Name' => 'memlock', 'Soft' => 100_000_000, 'Hard' => 100_000_000 }
+          'nofile=40960:40960',
+          'core=100000000:100000000',
+          'memlock=100000000:100000000'
         ]
       )
     end
@@ -727,20 +727,19 @@ describe 'docker_test::container' do
         mac_address: '00:00:DE:AD:BE:EF',
         network_disabled: false,
         tty: true,
-        volumes: ['/root'],
+        volumes: { '/root' => {} },
         working_dir: '/',
         binds: ['/hostbits:/bits', '/more-hostbits:/more-bits'],
         cap_add: %w(NET_ADMIN SYS_RESOURCE),
-        cap_drop: 'MKNOD',
+        cap_drop: ['MKNOD'],
         cpu_shares: 512,
         cpuset_cpus: '0,1',
         dns: ['8.8.8.8', '8.8.4.4'],
         dns_search: ['computers.biz'],
         extra_hosts: ['east:4.3.2.1', 'west:1.2.3.4'],
         links: ['link_source:hello'],
-        network_mode: 'host',
-        port: '1234:1234',
-        volumes_from: 'chef_container',
+        port: ['1234:1234'],
+        volumes_from: ['chef_container'],
         user: 'operator',
         command: "-c 'nc -ll -p 1234 -e /bin/cat'",
         entrypoint: '/bin/sh',
@@ -749,7 +748,7 @@ describe 'docker_test::container' do
           'core=100000000:100000000',
           'memlock=100000000:100000000'
         ],
-        labels: ['foo:bar', 'hello:world']
+        labels: { 'foo' => 'bar', 'hello' => 'world' }
       )
     end
   end
@@ -787,7 +786,7 @@ describe 'docker_test::container' do
         entrypoint: '/bin/sh -c',
         command: 'ls -laR /',
         env: ['FOO=biz'],
-        volume: '/var/log',
+        volume: { '/var/log' => {} },
         workdir: '/tmp'
       )
     end
@@ -810,7 +809,7 @@ describe 'docker_test::container' do
         repo: 'alpine',
         tag: '3.1',
         log_driver: 'syslog',
-        log_opts: 'syslog-tag=container-syslogger'
+        log_opts: { 'syslog-tag' => 'container-syslogger' }
       )
     end
   end

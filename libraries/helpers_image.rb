@@ -6,44 +6,44 @@ module DockerHelpers
 
     def build_from_directory
       i = Docker::Image.build_from_dir(
-        new_resource.source,
+        source,
         {
-          'nocache' => new_resource.nocache,
-          'rm' => new_resource.rm
+          'nocache' => nocache,
+          'rm' => rm
         },
-        @conn
+        connection
       )
-      i.tag('repo' => new_resource.repo, 'tag' => new_resource.tag, 'force' => new_resource.force)
+      i.tag('repo' => repo, 'tag' => tag, 'force' => force)
     end
 
     def build_from_dockerfile
       i = Docker::Image.build(
-        IO.read(new_resource.source),
+        IO.read(source),
         {
-          'nocache' => new_resource.nocache,
-          'rm' => new_resource.rm
+          'nocache' => nocache,
+          'rm' => rm
         },
-        @conn
+        connection
       )
-      i.tag('repo' => new_resource.repo, 'tag' => new_resource.tag, 'force' => new_resource.force)
+      i.tag('repo' => repo, 'tag' => tag, 'force' => force)
     end
 
     def build_from_tar
       i = Docker::Image.build_from_tar(
-        ::File.open(new_resource.source, 'r'),
+        ::File.open(source, 'r'),
         {
-          'nocache' => new_resource.nocache,
-          'rm' => new_resource.rm
+          'nocache' => nocache,
+          'rm' => rm
         },
-        @conn
+        connection
       )
-      i.tag('repo' => new_resource.repo, 'tag' => new_resource.tag, 'force' => new_resource.force)
+      i.tag('repo' => repo, 'tag' => tag, 'force' => force)
     end
 
     def build_image
-      if ::File.directory?(new_resource.source)
+      if ::File.directory?(source)
         build_from_directory
-      elsif ::File.extname(new_resource.source) == '.tar'
+      elsif ::File.extname(source) == '.tar'
         build_from_tar
       else
         build_from_dockerfile
@@ -51,59 +51,45 @@ module DockerHelpers
     end
 
     def image_identifier
-      "#{new_resource.repo}:#{new_resource.tag}"
+      "#{repo}:#{tag}"
     end
 
     def import_image
-      retries ||= new_resource.api_retries
-      i = Docker::Image.import(new_resource.source, {}, @conn)
-      i.tag('repo' => new_resource.repo, 'tag' => new_resource.tag, 'force' => new_resource.force)
-    rescue Docker::Error => e
-      retry unless (retries -= 1).zero?
-      raise e.message
+      with_retries do
+        i = Docker::Image.import(source, {}, connection)
+        i.tag('repo' => repo, 'tag' => tag, 'force' => force)
+      end
     end
 
     def pull_image
-      begin
-        retries ||= new_resource.api_retries
-
-        registry_host = parse_registry_host(new_resource.repo)
+      with_retries do
+        registry_host = parse_registry_host(repo)
         creds = node.run_state['docker_auth'] && node.run_state['docker_auth'][registry_host] || (node.run_state['docker_auth'] ||= {})['index.docker.io']
 
-        original_image = Docker::Image.get(image_identifier, {}, @conn) if Docker::Image.exist?(image_identifier, {}, @conn)
-        new_image = Docker::Image.create({ 'fromImage' => image_identifier }, creds, @conn)
-      rescue Docker::Error => e
-        retry unless (retries -= 1).zero?
-        raise e.message
+        original_image = Docker::Image.get(image_identifier, {}, connection) if Docker::Image.exist?(image_identifier, {}, connection)
+        new_image = Docker::Image.create({ 'fromImage' => image_identifier }, creds, connection)
+        !(original_image && original_image.id.start_with?(new_image.id))
       end
-
-      !(original_image && original_image.id.start_with?(new_image.id))
     end
 
     def push_image
-      retries ||= new_resource.api_retries
-      i = Docker::Image.get(image_identifier, {}, @conn)
-      i.push
-    rescue Docker::Error => e
-      retry unless (retries -= 1).zero?
-      raise e.message
+      with_retries do
+        i = Docker::Image.get(image_identifier, {}, connection)
+        i.push
+      end
     end
 
     def remove_image
-      retries ||= new_resource.api_retries
-      i = Docker::Image.get(image_identifier, {}, @conn)
-      i.remove(force: new_resource.force, noprune: new_resource.noprune)
-    rescue Docker::Error => e
-      retry unless (retries -= 1).zero?
-      raise e.message
+      with_retries do
+        i = Docker::Image.get(image_identifier, {}, connection)
+        i.remove(force: force, noprune: noprune)
+      end
     end
 
     def save_image
-      retries ||= new_resource.api_retries
-      Docker::Image.save(new_resource.repo, new_resource.destination, @conn)
-    rescue Docker::Error, Errno::ENOENT => e
-      retry unless (retries -= 1).zero?
-      raise e.message
+      with_retries do
+        Docker::Image.save(repo, destination, connection)
+      end
     end
   end
 end

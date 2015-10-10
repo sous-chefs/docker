@@ -1,5 +1,3 @@
-execute_service_manager = true if node['docker']['service_manager'] == 'execute'
-
 caroot = '/tmp/kitchen/tls'
 
 directory "#{caroot}" do
@@ -106,7 +104,7 @@ bash 'signing request for client' do
 end
 
 # start docker service listening on TCP port
-docker_service 'tls_test:2376' do
+service_def = proc do
   host 'tcp://127.0.0.1:2376'
   tls_verify true
   tls_ca_cert "#{caroot}/ca.pem"
@@ -114,6 +112,11 @@ docker_service 'tls_test:2376' do
   tls_server_key "#{caroot}/server-key.pem"
   tls_client_cert "#{caroot}/cert.pem"
   tls_client_key "#{caroot}/key.pem"
-  provider Chef::Provider::DockerService::Execute if execute_service_manager
   action [:create, :start]
+end
+
+if node['docker']['service_manager'] == 'execute'
+  docker_service_execute('default', &service_def)
+else
+  docker_service('default', &service_def)
 end

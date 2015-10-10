@@ -176,7 +176,7 @@ section below for more information.
 
 #### Example
 ```ruby
-docker_service 'tls_test:2376' do
+docker_service_systemd 'tls_test:2376' do
   host ["tcp://#{node['ipaddress']}:2376", 'unix:///var/run/docker.sock']
   tls_verify true
   tls_ca_cert '/path/to/ca.pem'
@@ -184,7 +184,6 @@ docker_service 'tls_test:2376' do
   tls_server_key '/path/to/server-key.pem'
   tls_client_cert '/path/to/client.pem'
   tls_client_key '/path/to/client-key.pem'
-  provider Chef::Provider::DockerService::Systemd
   action [:create, :start]
 end
 ```
@@ -262,19 +261,16 @@ the options found in the
 - `:stop` - Stops the service
 - `:restart` - Restarts the service
 
-#### Providers
-- `Chef::Provider::DockerService::Execute` - The simplest provider. Just
-  starts a process. Fire and forget.
+#### `docker_service` implementations
+- `docker_service_execute` - The simplest docker_service. Just starts a process.
+  Fire and forget.
 
-- `Chef::Provider::DockerService::Sysvinit` - Uses a SystemV init script
-  to manage the service state.
+- `docker_service_sysvinit` - Uses a SystemV init script to manage the service state.
 
-- `Chef::Provider::DockerService::Upstart` - Uses an Upstart script to
-  manage the service state.
+- `docker_service_upstart` - Uses an Upstart script to manage the service state.
 
-- `Chef::Provider::DockerService::Systemd` - Uses an Systemd unit file to
-  manage the service state. NOTE: This does NOT enable systemd socket
-  activation.
+- `docker_service_systemd` - Uses an Systemd unit file to manage the service
+  state. NOTE: This does NOT enable systemd socket activation.
 
 ## docker_image
 The `docker_image` is responsible for managing Docker image pulls,

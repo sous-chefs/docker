@@ -630,7 +630,7 @@ if docker_version.to_f > 1.6
 
   describe command("docker inspect -f '{{ .HostConfig.NetworkMode }}' uber_options") do
     its(:exit_status) { should eq 0 }
-    its(:stdout) { should match(/host/) }
+    its(:stdout) { should match(/default/) }
   end
 end
 

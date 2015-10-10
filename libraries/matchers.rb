@@ -2,7 +2,7 @@ if defined?(ChefSpec)
   libraries = File.expand_path('..', __FILE__)
   Dir["#{libraries}/resource_*.rb"].each { |f| require File.expand_path(f) }
 
-  %w(DockerContainer DockerImage DockerRegistry DockerService DockerTag).each do |const|
+  %w(DockerContainer DockerImage DockerRegistry DockerService DockerServiceExecute DockerServiceSystemd DockerServiceSysvinit DockerServiceUpstart DockerTag).each do |const|
     resource = Chef::Resource.const_get(const)
     name = resource.resource_name
 

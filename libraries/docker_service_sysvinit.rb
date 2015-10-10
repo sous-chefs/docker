@@ -1,37 +1,37 @@
 class Chef
-  class Provider
-    class DockerService
-      class Sysvinit < Chef::Provider::DockerService
-        if Chef::Provider.respond_to?(:provides)
-          provides :docker_service, platform: 'amazon'
-          provides :docker_service, platform: 'centos'
-          provides :docker_service, platform: 'redhat'
-          provides :docker_service, platform: 'suse'
-          provides :docker_service, platform: 'debian'
-        end
+  class Resource
+    class DockerServiceSysvinit < DockerService
+      use_automatic_resource_name
 
-        action :start do
-          action_stop unless resource_changes.empty?
+      provides :docker_service, platform: 'amazon'
+      provides :docker_service, platform: 'centos'
+      provides :docker_service, platform: 'redhat'
+      provides :docker_service, platform: 'suse'
+      provides :docker_service, platform: 'debian'
 
-          create_init
-          create_service
+      action :start do
+        action_stop unless resource_changes.empty?
 
-          # loop until docker socker is available
-          docker_wait_ready
-        end
+        create_init
+        create_service
 
-        action :stop do
-          create_init
+        # loop until docker socker is available
+        docker_wait_ready
+      end
 
-          s = create_service
-          s.action :stop
-        end
+      action :stop do
+        create_init
 
-        action :restart do
-          action_stop
-          action_start
-        end
+        s = create_service
+        s.action :stop
+      end
 
+      action :restart do
+        action_stop
+        action_start
+      end
+
+      action_class.class_eval do
         def create_init
           template '/etc/init.d/docker' do
             path '/etc/init.d/docker'
@@ -47,8 +47,8 @@ class Chef
               docker_name: docker_name,
               docker_cmd: docker_cmd,
               docker_daemon_opts: docker_daemon_opts,
-              docker_tls_ca_cert: new_resource.tls_ca_cert,
-              docker_tls_verify: new_resource.tls_verify,
+              docker_tls_ca_cert: tls_ca_cert,
+              docker_tls_verify: tls_verify,
               pidfile: parsed_pidfile
             )
             action :create
@@ -64,6 +64,8 @@ class Chef
           end
         end
       end
+
+      Chef::Provider::DockerService::Sysvinit = action_class unless defined?(Chef::Provider::DockerService::Sysvinit)
     end
   end
 end
