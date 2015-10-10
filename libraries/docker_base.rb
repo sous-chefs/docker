@@ -13,7 +13,7 @@ class Chef
       class UnorderedArray < Array
         def ==(other)
           # If I (desired env) am a subset of the current env, let == return true
-          self.all? { |v| other.include?(v) }
+          other.is_a?(Array) && self.all? { |v| other.include?(v) }
         end
       end
       class ShellCommandString < String
