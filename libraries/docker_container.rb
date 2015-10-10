@@ -194,7 +194,15 @@ class Chef
         end
       end
 
+      def validate_container_create
+        if network_mode == 'host' && property_is_set?(:hostname)
+          raise Chef::Exceptions::ValidationFailed, "Cannot specify hostname on #{container_name}, because network_mode is host."
+        end
+      end
+
       action :create do
+        validate_container_create
+
         converge_if_changed do
           action_delete
 
@@ -287,6 +295,7 @@ class Chef
       end
 
       action :run do
+        validate_container_create
         call_action(:create)
         call_action(:start)
         call_action(:delete) if autoremove
@@ -318,6 +327,8 @@ class Chef
       end
 
       action :redeploy do
+        validate_container_create
+
         if current_resource
           call_action(:delete)
           # never start containers resulting from a previous action :create #432
