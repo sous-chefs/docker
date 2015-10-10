@@ -344,19 +344,10 @@ class Chef
       action :redeploy do
         validate_container_create
 
-        if current_resource
-          call_action(:delete)
-          # never start containers resulting from a previous action :create #432
-          if state['Running'] == false &&
-             state['StartedAt'] == '0001-01-01T00:00:00Z'
-            call_action(:create)
-          else
-            call_action(:run)
-          end
-        else
-          call_action(:create)
-          call_action(:run)
-        end
+        # never start containers resulting from a previous action :create #432
+        should_create = state['Running'] == false && state['StartedAt'] == '0001-01-01T00:00:00Z'
+        call_action(:delete)
+        call_action(should_create ? :create : :run)
       end
 
       action :delete do
