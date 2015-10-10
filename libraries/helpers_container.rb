@@ -63,7 +63,7 @@ module DockerHelpers
     end
 
     # port_bindings and exposed_ports really handle this
-    # TODO infer `port` from `port_bindings` and `exposed_ports`
+    # TODO: infer `port` from `port_bindings` and `exposed_ports`
     def port(ports = Chef::NOT_PASSED)
       if ports != Chef::NOT_PASSED
         ports = Array(ports)
