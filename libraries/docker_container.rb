@@ -7,172 +7,89 @@ class Chef
     class DockerContainer < DockerBase
       use_automatic_resource_name
 
-      property :container_name,    String,       name_property: true
-      property :repo,              String,       default: lazy { container_name }
-      property :tag,               String,       default: 'latest'
-      property :command,           ShellCommand
+      include DockerHelpers::Container
 
-      property :attach_stderr,     Boolean,      default: lazy { detach }
-      property :attach_stdin,      Boolean,      default: false
-      property :attach_stdout,     Boolean,      default: lazy { detach }
-      property :autoremove,        Boolean
-      property :binds,             ArrayType
-      property :cap_add,           NonEmptyArray
-      property :cap_drop,          NonEmptyArray
-      property :cgroup_parent,     String,        default: ''
-      property :cpu_shares,        [Fixnum, nil], default: 0
-      property :cpuset_cpus,       String,        default: ''
-      property :detach,            Boolean,       default: true
-      property :devices,           ArrayType
-      property :dns,               NonEmptyArray
-      property :dns_search,        ArrayType
-      property :domain_name,       String, default: ''
-      property :entrypoint,        ShellCommand
-      property :env,               UnorderedArrayType
-      property :extra_hosts,       NonEmptyArray
-      property :exposed_ports,     [Hash, nil]
-      property :force,             Boolean
-      property :host,              [String, nil], desired_state: false
-      property :hostname,          [String, nil]
-      property :labels,            [Hash, nil],   coerce: proc { |v| coerce_labels(v) }
-      property :links,             [Array, nil],  coerce: (proc do |v|
-        v = Array(v)
-        if v.empty?
-          nil
-        else
-          # Parse docker input of /source:/container_name/dest into source:dest
-          v.map do |link|
-            if link =~ %r{^/(?<source>.+):/#{name}/(?<dest>.+)}
-              link = "#{Regexp.last_match[:source]}:#{Regexp.last_match[:dest]}"
-            end
-            link
-          end
-        end
-      end)
+      ###########################################################
+      # In Chef 12.5 and later, we no longer have to use separate
+      # classes for resource and providers. Instead, we have
+      # everything in a single class.
+      #
+      # For the purposes of my own sanity, I'm going to place all the
+      # "resource" related bits at the top of the files, and the
+      # providerish bits at the bottom.
+      #
+      #
+      # Methods for default values and coersion are found in
+      # helpers_container.rb
+      ###########################################################
+
+      # ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
+      # Begin classic Chef "resource" section
+      # ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
+
+      # The non-standard types Boolean, ArrayType, ShellCommand, etc
+      # are found in the DockerBase class.
+      property :container_name, String, name_property: true
+      property :repo, String, default: lazy { container_name }
+      property :tag, String, default: 'latest'
+      property :command, ShellCommand
+      property :attach_stderr, Boolean, default: lazy { detach }
+      property :attach_stdin, Boolean, default: false
+      property :attach_stdout, Boolean, default: lazy { detach }
+      property :autoremove, Boolean
+      property :binds, ArrayType
+      property :cap_add, NonEmptyArray
+      property :cap_drop, NonEmptyArray
+      property :cgroup_parent, String, default: ''
+      property :cpu_shares, [Fixnum, nil], default: 0
+      property :cpuset_cpus, String, default: ''
+      property :detach, Boolean, default: true
+      property :devices, ArrayType
+      property :dns, NonEmptyArray
+      property :dns_search, ArrayType
+      property :domain_name, String, default: ''
+      property :entrypoint, ShellCommand
+      property :env, UnorderedArrayType
+      property :extra_hosts, NonEmptyArray
+      property :exposed_ports, [Hash, nil]
+      property :force, Boolean
+      property :host, [String, nil], desired_state: false
+      property :hostname, [String, nil]
+      property :labels, [Hash, nil], coerce: proc { |v| coerce_labels(v) }
+      property :links, [Array, nil], coerce: proc { |v| coerce_links(v) }
       property :log_driver, %w( json-file syslog journald gelf fluentd none ), default: 'json-file'
-      property :log_opts, [Hash, nil], coerce: (proc do |v|
-        case v
-        when Hash, nil
-          v
-        else
-          Array(v).each_with_object({}) do |log_opt, memo|
-            key, value = log_opt.split('=', 2)
-            memo[key] = value
-          end
-        end
-      end)
-      property :mac_address,       String,         default: '' # FIXME: needs tests
-      property :memory,            Fixnum,         default: 0
-      property :memory_swap,       Fixnum,         default: -1
-      property :network_disabled,  Boolean,        default: false
-      property :network_mode,      [String, nil],  default: (lazy do
-        case api_version
-        when '1.20'
-          'default'
-        when '1.19'
-          'bridge'
-        else
-          ''
-        end
-      end)
-      property :open_stdin,        Boolean,         default: false
-      property :outfile,           [String, nil],   default: nil
-      property :port_bindings,     [String, Array, Hash, nil]
-      property :privileged,        Boolean
+      property :log_opts, [Hash, nil], coerce: proc { |v| coerce_log_opts(v) }
+      property :mac_address, String, default: ''
+      property :memory, Fixnum, default: 0
+      property :memory_swap, Fixnum, default: -1
+      property :network_disabled, Boolean, default: false
+      property :network_mode, [String, nil], default: lazy { default_network_mode }
+      property :open_stdin, Boolean, default: false
+      property :outfile, [String, nil], default: nil
+      property :port_bindings, [String, Array, Hash, nil]
+      property :privileged, Boolean
       property :publish_all_ports, Boolean
-      property :remove_volumes,    Boolean
+      property :remove_volumes, Boolean
       property :restart_maximum_retry_count, Fixnum, default: 0
-      property :restart_policy,    String,          default: 'no'
-      property :security_opts,     [String, Array], default: lazy { [''] }
-      property :signal,            String,          default: 'SIGKILL'
-      property :stdin_once,        [Boolean, nil],  default: lazy { !detach }
-      property :timeout,           [Fixnum, nil]
-      property :tty,               Boolean
-      property :ulimits,           [Array, nil], coerce: (proc do |v|
-        if v.nil?
-          v
-        else
-          Array(v).map do |u|
-            u = "#{u['Name']}=#{u['Soft']}:#{u['Hard']}" if u.is_a?(Hash)
-            u
-          end
-        end
-      end)
-      property :user,              String,         default: ''
-      property :volumes,           [Hash, nil],    coerce: (proc do |v|
-        case v
-        when nil, Hash
-          v
-        else
-          Array(v).sort.each_with_object({}) { |volume, h| h[volume] = {} }
-        end
-      end)
-      property :volumes_from,      ArrayType
-      property :working_dir,       [String, nil]
+      property :restart_policy, String, default: 'no'
+      property :security_opts, [String, Array], default: lazy { [''] }
+      property :signal, String, default: 'SIGKILL'
+      property :stdin_once, [Boolean, nil], default: lazy { !detach }
+      property :timeout, [Fixnum, nil]
+      property :tty, Boolean
+      property :ulimits, [Array, nil], coerce: proc { |v| coerce_ulimits(v) }
+      property :user, String, default: ''
+      property :volumes, [Hash, nil], coerce: proc { |v| coerce_volumes(v) }
+      property :volumes_from, ArrayType
+      property :working_dir, [String, nil]
 
       # Used to store the state of the Docker container
-      property :container,         Docker::Container, desired_state: false
-      # If the container takes longer than this many seconds to stop, kill it instead.
-      # -1 (the default) means never kill the container.
-      property :kill_after,        Numeric, default: -1, desired_state: false
+      property :container, Docker::Container, desired_state: false
 
-      def state
-        container ? container.info['State'] : {}
-      end
-
-      # port_bindings and exposed_ports really handle this
-      # TODO infer `port` from `port_bindings` and `exposed_ports`
-      def port(ports = NOT_PASSED)
-        if ports != NOT_PASSED
-          ports = Array(ports)
-          ports = nil if ports.empty?
-          @port = ports
-          port_bindings to_port_bindings(ports)
-          exposed_ports to_port_exposures(ports)
-        end
-        @port
-      end
-
-      # log_driver and log_opts really handle this
-      def log_config(value = NOT_PASSED)
-        if value != NOT_PASSED
-          @log_config = value
-          log_driver value['Type']
-          log_opts value['Config']
-        end
-        return @log_config if defined?(@log_config)
-        default = {}
-        default['Type'] = log_driver if property_is_set?(:log_driver)
-        default['Config'] = log_opts if property_is_set?(:log_opts)
-        default = nil if default.empty?
-        default
-      end
-
-      #
-      # TODO: test image property in serverspec and kitchen
-      #
-      # If you say:    `repo 'blah'`
-      # Image will be: `blah:latest`
-      #
-      # If you say:    `repo 'blah'; tag '3.1'`
-      # Image will be: `blah:3.1`
-      #
-      # If you say:    `image 'blah'`
-      # Repo will be:  `blah`
-      # Tag will be:   `latest`
-      #
-      # If you say:    `image 'blah:3.1'`
-      # Repo will be:  `blah`
-      # Tag will be:   `3.1`
-      #
-      def image(image = nil)
-        if image
-          r, t = image.split(':', 2)
-          repo r
-          tag t if t
-        end
-        "#{repo}:#{tag}"
-      end
+      # Used by :stop action. If the container takes longer than this
+      # many seconds to stop, kill itinstead. -1 (the default) means
+      # never kill the container.
+      property :kill_after, Numeric, default: -1, desired_state: false
 
       alias_method :cmd, :command
       alias_method :image_name, :image
@@ -188,6 +105,10 @@ class Chef
       alias_method :destination, :outfile
       alias_method :workdir, :working_dir
 
+      # ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
+      # Begin classic Chef "provider" section
+      # ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
+
       #########
       # Actions
       #########
@@ -196,8 +117,6 @@ class Chef
       # http://gliderlabs.com/images/docker_events.png
 
       default_action :run_if_missing
-
-      include DockerHelpers::Container
 
       declare_action_class.class_eval do
         def call_action(action)
@@ -391,6 +310,10 @@ class Chef
         end
       end
 
+      ####################
+      # Load Current Value
+      ####################
+
       load_current_value do
         # Grab the container and assign the container property
         begin
@@ -412,29 +335,6 @@ class Chef
         # RestartPolicy is a special case for us because our names differ from theirs
         restart_policy container.info['HostConfig']['RestartPolicy']['Name']
         restart_maximum_retry_count container.info['HostConfig']['RestartPolicy']['MaximumRetryCount']
-      end
-
-      def to_snake_case(name)
-        # ExposedPorts -> _exposed_ports
-        name = name.gsub(/[A-Z]/) { |x| "_#{x.downcase}" }
-        # _exposed_ports -> exposed_ports
-        name = name[1..-1] if name.start_with?('_')
-        name
-      end
-
-      def to_shellwords(command)
-        return nil if command.nil?
-        Shellwords.shellwords(command)
-      end
-
-      def ulimits_to_hash
-        return nil if ulimits.nil?
-        ulimits.map do |u|
-          name = u.split('=')[0]
-          soft = u.split('=')[1].split(':')[0]
-          hard = u.split('=')[1].split(':')[1]
-          { 'Name' => name, 'Soft' => soft.to_i, 'Hard' => hard.to_i }
-        end
       end
     end
   end
