@@ -109,6 +109,36 @@ class Chef
       # Begin classic Chef "provider" section
       # ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
 
+      ########################################################
+      # Load Current Value
+      #
+      # FIXME: put words here about how this is different that
+      # load_current_resource in the classic provider system.
+      ########################################################
+
+      load_current_value do
+        # Grab the container and assign the container property
+        begin
+          with_retries { container Docker::Container.get(container_name, connection) }
+        rescue Docker::Error::NotFoundError
+          current_value_does_not_exist!
+        end
+
+        # Go through everything in the container and set corresponding properties:
+        # c.info['Config']['ExposedPorts'] -> exposed_ports
+        (container.info['Config'].to_a + container.info['HostConfig'].to_a).each do |key, value|
+          next if value.nil? || key == 'RestartPolicy'
+          # Image => image
+          # Set exposed_ports = ExposedPorts (etc.)
+          property_name = to_snake_case(key)
+          public_send(property_name, value) if respond_to?(property_name)
+        end
+
+        # RestartPolicy is a special case for us because our names differ from theirs
+        restart_policy container.info['HostConfig']['RestartPolicy']['Name']
+        restart_maximum_retry_count container.info['HostConfig']['RestartPolicy']['MaximumRetryCount']
+      end
+
       #########
       # Actions
       #########
@@ -308,33 +338,6 @@ class Chef
             ::File.open(outfile, 'w') { |f| container.export { |chunk| f.write(chunk) } }
           end
         end
-      end
-
-      ####################
-      # Load Current Value
-      ####################
-
-      load_current_value do
-        # Grab the container and assign the container property
-        begin
-          with_retries { container Docker::Container.get(container_name, connection) }
-        rescue Docker::Error::NotFoundError
-          current_value_does_not_exist!
-        end
-
-        # Go through everything in the container and set corresponding properties:
-        # c.info['Config']['ExposedPorts'] -> exposed_ports
-        (container.info['Config'].to_a + container.info['HostConfig'].to_a).each do |key, value|
-          next if value.nil? || key == 'RestartPolicy'
-          # Image => image
-          # Set exposed_ports = ExposedPorts (etc.)
-          property_name = to_snake_case(key)
-          public_send(property_name, value) if respond_to?(property_name)
-        end
-
-        # RestartPolicy is a special case for us because our names differ from theirs
-        restart_policy container.info['HostConfig']['RestartPolicy']['Name']
-        restart_maximum_retry_count container.info['HostConfig']['RestartPolicy']['MaximumRetryCount']
       end
     end
   end

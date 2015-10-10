@@ -20,6 +20,10 @@ mounts_filter = '{{ .Volumes }}' if docker_version =~ /1.6/
 mounts_filter = '{{ .Volumes }}' if docker_version =~ /1.7/
 mounts_filter = '{{ .Mounts }}' if docker_version =~ /1.8/
 
+uber_options_network_mode = 'default' if docker_version =~ /1.8/
+uber_options_network_mode = 'bridge' if docker_version =~ /1.7/
+uber_options_network_mode = 'default' if docker_version =~ /1.6/
+
 nil_string = '<no value>' if docker_version =~ /1.6/
 nil_string = '<nil>' if docker_version =~ /1.7/
 nil_string = '<nil>' if docker_version =~ /1.8/
@@ -630,7 +634,12 @@ if docker_version.to_f > 1.6
 
   describe command("docker inspect -f '{{ .HostConfig.NetworkMode }}' uber_options") do
     its(:exit_status) { should eq 0 }
-    its(:stdout) { should match(/default/) }
+    its(:stdout) { should match(/#{uber_options_network_mode}/) }
+  end
+
+  describe command("docker inspect -f '{{ .Config.Labels }}' uber_options") do
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match(/foo:bar hello:world/) }
   end
 end
 
