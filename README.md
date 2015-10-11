@@ -15,7 +15,7 @@ aufs.
 
 Requirements
 ------------
-- Chef 12.4 or higher. Chef 11 is NOT SUPPORTED, please do not open issues about it.
+- Chef 12.0.0 or higher. Chef 11 is NOT SUPPORTED, please do not open issues about it.
 - Ruby 2.1 or higher (preferably, the Chef full-stack installer)
 - Network accessible web server hosting the docker binary.
 - SELinux permissive/disabled if CentOS [Docker Issue #15498](https://github.com/docker/docker/issues/15498)
