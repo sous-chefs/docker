@@ -30,16 +30,15 @@
 # Variables
 ####
 
-STARTTIMEOUT=900
-STOPTIMEOUT=900
+STARTTIMEOUT=10
+STOPTIMEOUT=10
 PID_DELAY=60
 
 <% if @pidfile -%>
-pidfile="<%= @pidfile %>"
+pidfile="<%= @config.pidfile %>"
 <% else -%>
 pidfile="/var/run/docker.pid"
 <% end -%>
-lockfile="/var/lock/subsys/docker"
 <% if @config.logfile -%>
 logfile="<%= @config.logfile %>"
 <% else -%>
@@ -52,8 +51,8 @@ logfile="/var/log/docker"
 
 pid_exists() {
     PID_EXISTS=1
-    if [ -f $pid_file ]; then
-        DOCKER_PID=`cat $pid_file 2>/dev/null`
+    if [ -f $pidfile ]; then
+        DOCKER_PID=`cat $pidfile 2>/dev/null`
         if [ -n "$DOCKER_PID" ] && [ -d "/proc/$DOCKER_PID" ] ; then
             PID_EXISTS=0
         fi
@@ -63,9 +62,11 @@ pid_exists() {
 
 running() {
     RUNNING=1
-    <%= @docker_cmd %> ps | head -n 1 | grep ^CONTAINER 2>&1 >/dev/null
+    RESPONSE=`<%= @docker_cmd %> ps 2>&1 | head -n 1`
     local mret=$?
-    if [ $mret -eq 0 ]; then
+    if pid_exists \
+        && [ $mret -eq 0 ] \
+        || [ `echo $RESPONSE | grep -q "level=fatal"` ]; then
         RUNNING=0
     fi
     return $RUNNING
@@ -75,7 +76,7 @@ print_start_success() {
     <% if node['platform_family'] == 'rhel' %>
     action $"Starting docker: " /bin/true
     <% else %>
-    echo "Staring Docker daemon"
+    echo "Starting Docker daemon"
     <% end %>
     return 0;
 }
@@ -138,7 +139,6 @@ prestart() {
     <% if @config.tmpdir %>
     export TMPDIR=<%= @config.tmpdir %>
     <% end %>
-
     [ -x /sbin/sysctl ] || exit 6
     <% if @config.ipv4_forward %>
     /sbin/sysctl -w net.ipv4.ip_forward=1 > /dev/null 2>&1
@@ -159,7 +159,6 @@ start_command() {
         echo "\n$(date)\n" >> $logfile
         <%= @docker_daemon_cmd %> >> $logfile 2>&1 &
         pid=$!
-        touch $lockfile
         # wait up to 10 seconds for the pidfile to exist.  see
         # https://github.com/dotcloud/docker/issues/5359
         tries=0
@@ -196,14 +195,14 @@ start() {
             break
         fi
 
-        let CURRENT_DELAY=${STARTTIMEOUT}-${TIMEOUT}
+        CURRENT_DELAY=`expr ${STARTTIMEOUT} - ${TIMEOUT}`
         if [ $CURRENT_DELAY -gt $PID_DELAY ] \
           && ! pid_exists; then
             break
         fi
 
         sleep 1
-        let TIMEOUT=${TIMEOUT}-1
+        TIMEOUT=`expr ${TIMEOUT} - 1`
     done
 
     if running; then
@@ -243,12 +242,12 @@ stop() {
         fi
 
         # Timeout loop
-        local TIMEOUT=$STARTTIMEOUT
+        local TIMEOUT=$STOPTIMEOUT
         while [ $TIMEOUT -gt 0 ]; do
             if running; then
             sleep 1
             fi
-            let TIMEOUT=${TIMEOUT}-1
+            TIMEOUT=`expr ${TIMEOUT} - 1`
         done
 
         return $kstat

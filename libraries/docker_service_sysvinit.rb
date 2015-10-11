@@ -46,8 +46,7 @@ class Chef
               docker_cmd: docker_cmd,
               docker_daemon_opts: docker_daemon_opts,
               docker_tls_ca_cert: tls_ca_cert,
-              docker_tls_verify: tls_verify,
-              pidfile: pidfile
+              docker_tls_verify: tls_verify
             )
             action :create
           end
