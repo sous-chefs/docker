@@ -59,6 +59,29 @@ class Chef
         action_start
       end
 
+      # FIXME: dedupe
+      action_class.class_eval do
+        # Try to connect to docker socket twenty times
+        def docker_wait_ready
+          bash 'docker-wait-ready' do
+            code <<-EOF
+            timeout=0
+            while [ $timeout -lt 20 ];  do
+              ((timeout++))
+              #{docker_cmd} ps | head -n 1 | grep ^CONTAINER
+                if [ $? -eq 0 ]; then
+                  break
+                fi
+               sleep 1
+            done
+            [[ $timeout -eq 20 ]] && exit 1
+            exit 0
+            EOF
+            not_if "#{docker_cmd} ps | head -n 1 | grep ^CONTAINER"
+          end
+        end
+      end
+
       Chef::Provider::DockerService::Upstart = action_class unless defined?(Chef::Provider::DockerService::Execute)
     end
   end

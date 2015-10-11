@@ -12,7 +12,7 @@ DOCKER_DAEMON_OPTS="<%= @docker_daemon_opts.join(' ') %>"
 # FIXME
 
 <% if @config.pidfile %>
-DOCKER_PIDFILE=@config.pidfile %>
+DOCKER_PIDFILE=<%= @config.pidfile %>
 <% end %>
 
 # If you need Docker to use an HTTP proxy, it can also be specified here.
