@@ -1,3 +1,10 @@
+v2.0.0
+--------------------
+- Converted resources from LWRP to Chef 12.5 Custom Resources
+- Added dependency on compat_resource cookbook, works back to 12.0.0
+- Various fixes around sysvinit scripts in docker_service
+- Total backwards compatibility with recipes written for chef-docker 1.x
+
 v1.0.49
 --------------------
 - Handling NilClass error on docker_image default creds handling
@@ -88,7 +95,7 @@ v1.0.31
 v1.0.30
 --------------------
 - #427 - Qualify port bindings with protocol even when implicitly tcp.
-- #443 - Added docker_container log_driver and log_opts attributes. 
+- #443 - Added docker_container log_driver and log_opts attributes.
 - Changing docker_image read_timeout default to 60
 - Misc cleanup for README and Gemfile
 
@@ -283,7 +290,7 @@ v0.40.0  (2015-06-29)
 Important changes with this release:
 
 * MAJOR INTERFACE CHANGE
-* Recipes replaced with docker_service resource* 
+* Recipes replaced with docker_service resource*
 * Removing a ton of dependencies
 * Storage backends, kernel module loading, etc should now be handled externally
 * Updating for Docker 1.6.2
