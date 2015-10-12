@@ -112,19 +112,17 @@ class Chef
         def load_current_resource
           @current_resource = Chef::Resource::DockerService.new(name)
 
-          Docker.url = connect_host if connect_host
-
-          if connect_host =~ /^tcp:/ && tls_ca_cert
-            Docker.options = {
-              ssl_ca_file: tls_ca_cert,
-              client_cert: tls_client_cert,
-              client_key: tls_client_key,
-              scheme: 'https'
-            }
+          connect_opts = {}
+          if connect_host =~ /^tcp:/
+            connect_opts[:scheme] = 'https'
+            connect_opts[:ssl_ca_file] = tls_ca_cert if tls_ca_cert
+            connect_opts[:client_cert] = tls_client_cert if tls_client_cert
+            connect_opts[:client_key] = tls_client_key if tls_client_key
           end
+          connection = Docker::Connection.new(connect_host || Docker.url, connect_opts)
 
           if docker_running?
-            @current_resource.storage_driver Docker.info['Driver']
+            @current_resource.storage_driver Docker.info(connection)['Driver']
           else
             return @current_resource
           end

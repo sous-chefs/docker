@@ -27,7 +27,27 @@ IPV4_CIDR ||= %r{(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[
 module DockerHelpers
   module Service
     def connect_host
-      host.first if host
+      return nil unless host
+      sorted = coerce_host(host).sort do |a, b|
+        c_a = 1 if a =~ /^unix:/
+        c_a = 2 if a =~ /^fd:/
+        c_a = 3 if a =~ %r{^tcp://127.0.0.1:}
+        c_a = 4 if a =~ %r{^tcp://(192\.168|10\.|172\.1[6789]\.|172\.2[0-9]\.|172\.3[01]\.).*:}
+        c_a = 5 if a =~ %r{^tcp://0.0.0.0:}
+        c_a = 6 unless c_a
+        c_b = 1 if b =~ /^unix:/
+        c_b = 2 if b =~ /^fd:/
+        c_b = 3 if b =~ %r{^tcp://127.0.0.1:}
+        c_b = 4 if b =~ %r{^tcp://(192\.168|10\.|172\.1[6789]\.|172\.2[0-9]\.|172\.3[01]\.).*:}
+        c_b = 5 if b =~ %r{^tcp://0.0.0.0:}
+        c_b = 6 unless c_b
+        c_a <=> c_b
+      end
+      if sorted.first =~ %r{^tcp://0.0.0.0:}
+        r = sorted.first.match(%r{(?<proto>.*)://(?<socket>[^:]+):?(?<port>\d+)?})
+        return "tcp://127.0.0.1:#{r['port']}"
+      end
+      sorted.first
     end
 
     def docker_kernel
