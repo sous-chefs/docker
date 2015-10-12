@@ -10,77 +10,82 @@ class Chef
       property :read_timeout, default: 120
 
       # https://docs.docker.com/reference/api/docker_remote_api_v1.20/
-      property :destination, [String, nil]
-      property :force, Boolean, default: false
       property :host, [String, nil]
-      property :nocache, Boolean, default: false
-      property :noprune, Boolean, default: false
-      property :repo, String, name_property: true
-      property :rm, Boolean, default: true
+      property :repo, String, name_property: true, identity: true
+      property :tag, String, default: 'latest', identity: true
+      property :docker_image, Docker::Image, desired_state: false
+      property :force, Boolean, desired_state: false
+      # For remove
+      property :noprune, Boolean, desired_state: false
+      property :nocache, Boolean, desired_state: false
+      # For build
+      property :rm, Boolean, default: true, desired_state: false
       property :source, String
-      property :tag, String, default: 'latest'
+      # For save
+      property :destination, [String, nil]
 
-      alias_method :image, :repo
-      alias_method :image_name, :repo
-      alias_method :no_cache, :nocache
-      alias_method :no_prune, :noprune
-
-      #########
-      # Actions
-      #########
+      include DockerHelpers::Image
 
       default_action :pull
 
-      declare_action_class.class_eval do
-        include DockerHelpers::Image
-      end
-
       action :build do
-        converge_by "Build image #{image_identifier}" do
-          build_image
-        end
+        build_image
+        created_image = build_image
+        update_tag(created_image)
       end
 
       action :build_if_missing do
-        return if Docker::Image.exist?(image_identifier, {}, connection)
+        return if current_resource
         action_build
       end
 
       action :import do
-        return if Docker::Image.exist?(image_identifier, {}, connection)
-        converge_by "Import image #{image_identifier}" do
-          import_image
+        return if current_resource
+        converge_by "Import image #{image}" do
+          imported_image = with_retries { Docker::Image.import(source, {}, connection) }
         end
+        update_tag(imported_image)
       end
 
       action :pull do
-        # We already did the work, but we need to report what we did!
-        converge_by "Pull image #{image_identifier}" do
-        end if pull_image
+        pull_image
       end
 
       action :pull_if_missing do
-        return if Docker::Image.exist?(image_identifier, {}, connection)
+        return if current_resource
         action_pull
       end
 
       action :push do
-        converge_by "Push image #{image_identifier}" do
-          push_image
+        converge_by "Push image #{image}" do
+          with_retries { current_image.push }
         end
       end
 
       action :remove do
-        return unless Docker::Image.exist?(image_identifier, {}, connection)
-        converge_by "Remove image #{image_identifier}" do
-          remove_image
+        if current_resource
+          converge_by "Remove image #{image}" do
+            with_retries { current_image.remove(force: force, noprune: noprune) }
+          end
         end
       end
 
       action :save do
-        converge_by "Save image #{image_identifier}" do
-          save_image
+        converge_by "Save image #{image}" do
+          with_retries { Docker::Image.save(repo, destination, connection) }
         end
+      end
+
+      load_current_value do
+        begin
+          with_retries { docker_image Docker::Image.get(image, connection) }
+        rescue Docker::Error::NotFoundError
+          current_value_does_not_exist!
+        end
+      end
+
+      action_class.class_eval do
+        include DockerHelpers::Image::Actions
       end
     end
   end
