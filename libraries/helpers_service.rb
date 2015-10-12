@@ -148,7 +148,7 @@ module DockerHelpers
       opts << "--ip=#{ip}" if ip
       opts << "--ip-forward=#{ip_forward}" unless ip_forward.nil?
       opts << '--ip-masq=true' if ip_masq
-      opts << '--iptables=true' if iptables
+      opts << "--iptables=#{iptables}" unless iptables.nil?
       opts << '--ipv6=true' if ipv6
       opts << "--log-level=#{log_level}" if log_level
       opts << "--label=#{label}" if label
