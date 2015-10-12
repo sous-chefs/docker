@@ -117,7 +117,6 @@ container with exposed ports.
 docker_image 'nginx' do
   tag 'latest'
   action :pull
-  notifies :redeploy, 'docker_container[my_nginx]'
 end
 
 # Run container exposing ports
@@ -129,6 +128,7 @@ docker_container 'my_nginx' do
   domain_name 'computers.biz'
   env 'FOO=bar'
   binds [ '/some/local/files/:/etc/nginx/conf.d' ]
+  subscribes :redeploy, 'docker_image[nginx]'
 end
 ```
 
