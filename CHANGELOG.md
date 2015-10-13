@@ -1,3 +1,9 @@
+v2.0.1
+--------------------
+- #491 - Return best host for docker to connect
+- #495 - iptables opts shouldn't be forced to true/false
+- #497 - Removing property_is_set so timeout pick up defaults
+
 v2.0.0
 --------------------
 - Converted resources from LWRP to Chef 12.5 Custom Resources
