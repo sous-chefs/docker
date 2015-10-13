@@ -62,6 +62,16 @@ module DockerHelpers
       container ? container.info['State'] : {}
     end
 
+    def wait_running_state(v)
+      i = 0
+      tries = 20
+      until state['Running'] == v
+        i += 1
+        break if i == tries
+        sleep 1
+      end
+    end
+
     # port_bindings and exposed_ports really handle this
     # TODO: infer `port` from `port_bindings` and `exposed_ports`
     def port(ports = Chef::NOT_PASSED)

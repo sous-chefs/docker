@@ -241,14 +241,16 @@ class Chef
               timeout ? container.wait(timeout) : container.wait
             end
           end
+          wait_running_state(true)
         end
       end
 
       action :stop do
         return unless state['Running']
         kill_after_str = " (will kill after #{kill_after}s)" if kill_after != -1
-        converge_by "stopping #{container_name}#{kill_after_str}" do
+        converge_by "stopping #{container_name} #{kill_after_str}" do
           with_retries { container.stop!('t' => kill_after) }
+          wait_running_state(false)
         end
       end
 
