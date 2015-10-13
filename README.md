@@ -939,8 +939,9 @@ Most `docker_container` properties are the `snake_case` version of the
   Volume containers.
 - `:start` - Starts the container. Useful for containers that run
   jobs.. command that exit.
-- `:run` - Both `:create` and `:start` the container in one action.
-- `:run_if_missing` - The default action. Runs a container only once.
+- `:run` - The default action. Both `:create` and `:start` the container in one action.
+  Redeploys the container on resource change.
+- `:run_if_missing` - Runs a container only once.
 - `:stop` - Stops the container.
 - `:restart` - Stops the starts the container.
 - `:kill` - Send a signal to the container process. Defaults to `SIGKILL`.
