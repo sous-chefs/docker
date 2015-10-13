@@ -6,10 +6,10 @@ class Chef
     class DockerRegistry < DockerBase
       use_automatic_resource_name
 
-      property :email, String
-      property :password, String
-      property :serveraddress, String, name_property: true
-      property :username, String
+      property :email, [String, nil]
+      property :password, [String, nil]
+      property :serveraddress, [String, nil], name_property: true
+      property :username, [String, nil]
 
       action :login do
         tries = api_retries
