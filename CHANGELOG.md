@@ -1,3 +1,8 @@
+v2.1.0
+--------------------
+- Changing docker_container default action to :run from
+  :run_if_missing.
+  
 v2.0.4
 --------------------
 #504 - stop and start should wait for the container to complete
