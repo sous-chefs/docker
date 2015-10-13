@@ -1,3 +1,7 @@
+v2.0.2
+--------------------
+- Fixing LocalJumpError caused by next instead of return helper methods
+
 v2.0.1
 --------------------
 - #491 - Return best host for docker to connect
