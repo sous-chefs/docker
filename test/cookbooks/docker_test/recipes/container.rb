@@ -303,6 +303,7 @@ docker_container 'ohai_debian' do
   command '/opt/chef/embedded/bin/ohai platform'
   repo 'debian'
   volumes_from 'chef_container'
+  action :run_if_missing
 end
 
 #####
@@ -738,6 +739,7 @@ docker_container 'api_timeouts' do
   tag '3.1'
   read_timeout 60
   write_timeout 60
+  action :run_if_missing
 end
 
 ##############
@@ -858,4 +860,5 @@ docker_container 'syslogger' do
   tag '3.1'
   log_driver 'syslog'
   log_opts 'syslog-tag=container-syslogger'
+  action :run_if_missing
 end
