@@ -167,9 +167,9 @@ module DockerHelpers
       opts << "--insecure-registry=#{insecure_registry}" if insecure_registry
       opts << "--ip=#{ip}" if ip
       opts << "--ip-forward=#{ip_forward}" unless ip_forward.nil?
-      opts << '--ip-masq=true' if ip_masq
-      opts << '--iptables=true' if iptables
-      opts << '--ipv6=true' if ipv6
+      opts << "--ip-masq=#{ip_masq}" unless ip_masq.nil?
+      opts << "--iptables=#{iptables}" unless iptables.nil?
+      opts << "--ipv6=#{ipv6}" unless ipv6.nil?
       opts << "--log-level=#{log_level}" if log_level
       opts << "--label=#{label}" if label
       opts << "--log-driver=#{log_driver}" if log_driver
@@ -178,7 +178,7 @@ module DockerHelpers
       opts << "--pidfile=#{pidfile}" if pidfile
       opts << "--registry-mirror=#{registry_mirror}" if registry_mirror
       storage_driver.each { |s| opts << "--storage-driver=#{s}" } if storage_driver
-      opts << '--selinux-enabled=true' if selinux_enabled
+      opts << "--selinux-enabled=#{selinux_enabled}" unless selinux_enabled.nil?
       storage_opts.each { |storage_opt| opts << "--storage-opt=#{storage_opt}" } if storage_opts
       opts << "--tls=#{tls}" unless tls.nil?
       opts << "--tlsverify=#{tls_verify}" unless tls_verify.nil?
