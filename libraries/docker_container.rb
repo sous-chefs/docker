@@ -286,9 +286,10 @@ class Chef
       end
 
       action :restart do
-        # TODO: there is a restart endpoint
-        call_action(:stop)
-        call_action(:start)
+        kill_after_str = " (will kill after #{kill_after}s)" if kill_after != -1
+        converge_by "restarting #{container_name} #{kill_after_str}" do
+          with_retries { container.restart!('t' => kill_after) }
+        end
       end
 
       action :redeploy do
