@@ -226,8 +226,8 @@ class Chef
       end
 
       action :start do
-        return if state['Restarting']
-        return if state['Running']
+        next if state['Restarting']
+        next if state['Running']
         converge_by "starting #{container_name}" do
           with_retries do
             if detach
@@ -245,7 +245,7 @@ class Chef
       end
 
       action :stop do
-        return unless state['Running']
+        next unless state['Running']
         kill_after_str = " (will kill after #{kill_after}s)" if kill_after != -1
         converge_by "stopping #{container_name}#{kill_after_str}" do
           with_retries { container.stop!('t' => kill_after) }
@@ -253,7 +253,7 @@ class Chef
       end
 
       action :kill do
-        return unless state['Running']
+        next unless state['Running']
         converge_by "killing #{container_name}" do
           with_retries { container.kill(signal: signal) }
         end
@@ -267,19 +267,19 @@ class Chef
       end
 
       action :run_if_missing do
-        return if current_resource
+        next if current_resource
         call_action(:run)
       end
 
       action :pause do
-        return if state['Paused']
+        next if state['Paused']
         converge_by "pausing #{container_name}" do
           with_retries { container.pause }
         end
       end
 
       action :unpause do
-        return if current_resource && !state['Paused']
+        next if current_resource && !state['Paused']
         converge_by "unpausing #{container_name}" do
           with_retries { container.unpause }
         end
@@ -301,7 +301,7 @@ class Chef
       end
 
       action :delete do
-        return unless current_resource
+        next unless current_resource
         call_action(:unpause)
         call_action(:stop)
         converge_by "deleting #{container_name}" do
