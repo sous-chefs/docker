@@ -47,8 +47,8 @@ module DockerHelpers
     def connection
       @connection ||= begin
           opts = {}
-          opts['read_timeout'] = read_timeout if property_is_set?(:read_timeout)
-          opts['write_timeout'] = write_timeout if property_is_set?(:write_timeout)
+          opts['read_timeout'] = read_timeout if read_timeout
+          opts['write_timeout'] = write_timeout if write_timeout
           Docker::Connection.new(host || Docker.url, opts)
         end
     end
