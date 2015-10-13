@@ -1,3 +1,7 @@
+v2.0.3
+--------------------
+- Allowing nil for docker_registry properties
+
 v2.0.2
 --------------------
 - Fixing LocalJumpError caused by next instead of return helper methods
