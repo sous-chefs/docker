@@ -1,3 +1,8 @@
+v2.0.4
+--------------------
+#504 - stop and start should wait for the container to complete
+#506 - restart to use the api endpoint
+
 v2.0.3
 --------------------
 - Allowing nil for docker_registry properties
