@@ -13,7 +13,7 @@ class Chef
       #########
 
       action :tag do
-        return if Docker::Image.exist?("#{to_repo}:#{to_tag}")
+        next if Docker::Image.exist?("#{to_repo}:#{to_tag}")
         begin
           converge_by "update #{target_repo}:#{target_tag} to #{to_repo}:#{to_tag}" do
             i = Docker::Image.get("#{target_repo}:#{target_tag}")
