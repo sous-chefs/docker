@@ -146,7 +146,7 @@ class Chef
       # Super handy visual reference!
       # http://gliderlabs.com/images/docker_events.png
 
-      default_action :run_if_missing
+      default_action :run
 
       declare_action_class.class_eval do
         def call_action(action)
