@@ -175,3 +175,17 @@ bash 'start docker registry proxy' do
   EOF
   not_if "[ ! -z `docker ps -qaf 'name=registry_proxy$'` ]"
 end
+
+bash 'wait for docker registry and proxy' do
+  code <<-EOF
+  i=0
+  tries=20
+  while true; do
+    ((i++))
+    nc -z -w5 localhost 5000 && nc -z -w5 localhost 5043
+    [ $? -eq 0 ] && break
+    [ $i -eq $tries ] && break
+    sleep 1
+  done
+  EOF
+end
