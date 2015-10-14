@@ -1,3 +1,9 @@
+v2.1.1
+--------------------
+#511 - fix container wait state checking
+#512 - wait for registry ports to be open in test recipe
+#519 - updating README to include labels#511 - fix container
+
 v2.1.0
 --------------------
 - Changing docker_container default action to :run from
