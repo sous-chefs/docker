@@ -887,6 +887,8 @@ Most `docker_container` properties are the `snake_case` version of the
 - `host` - A string containing the host the API should communicate with.
   Defaults to local `docker_service`.
 - `host_name` - The hostname for the container.
+- `labels` A hash or array to set metadata on the container in the form
+  ['foo=bar', 'hello=world']`
 - `links` - An array of source container/alias pairs to link the
   container to in the form `[container_a:www', container_b:db']`
 - `log_driver` - Sets a custom logging driver for the container
