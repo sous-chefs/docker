@@ -65,7 +65,7 @@ module DockerHelpers
     def wait_running_state(v)
       i = 0
       tries = 20
-      until state['Running'] == v
+      until state['Running'] == v || state['FinishedAt'] != '0001-01-01T00:00:00Z'
         i += 1
         break if i == tries
         sleep 1
