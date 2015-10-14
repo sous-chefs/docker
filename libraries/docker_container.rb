@@ -92,7 +92,6 @@ class Chef
       property :kill_after, Numeric, default: -1, desired_state: false
 
       alias_method :cmd, :command
-      alias_method :image_name, :image
       alias_method :additional_host, :extra_hosts
       alias_method :rm, :autoremove
       alias_method :remove_automatically, :autoremove
