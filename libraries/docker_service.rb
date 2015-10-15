@@ -39,7 +39,7 @@ class Chef
       property :iptables, [Boolean, nil]
       property :ipv6, [Boolean, nil]
       property :log_level, [:debug, :info, :warn, :error, :fatal, nil]
-      property :label, [String, nil]
+      property :labels, [String, Array], coerce: proc { |v| coerce_daemon_labels(v) }
       property :log_driver, ['json-file', 'syslog', 'journald', 'gelf', 'fluentd', 'none', nil]
       property :log_opts, ArrayType
       property :mtu, [String, nil]
@@ -67,6 +67,7 @@ class Chef
       # logging
       property :logfile, String, default: '/var/log/docker.log'
 
+      alias_method :label, :labels
       alias_method :tlscacert, :tls_ca_cert
       alias_method :tlscert, :tls_server_cert
       alias_method :tlskey, :tls_server_key

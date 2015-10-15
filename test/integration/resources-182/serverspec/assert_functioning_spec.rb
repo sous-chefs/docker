@@ -28,6 +28,18 @@ nil_string = '<no value>' if docker_version =~ /1.6/
 nil_string = '<nil>' if docker_version =~ /1.7/
 nil_string = '<nil>' if docker_version =~ /1.8/
 
+##################################################
+#  test/cookbooks/docker_test/recipes/default.rb
+##################################################
+
+# docker_service[default]
+
+describe command('docker info') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/environment="test"/) }
+  its(:stdout) { should match(/foo="bar"/) }
+end
+
 ##############################################
 #  test/cookbooks/docker_test/recipes/image.rb
 ##############################################
@@ -637,9 +649,11 @@ if docker_version.to_f > 1.6
     its(:stdout) { should match(/#{uber_options_network_mode}/) }
   end
 
+  # docker inspect returns the labels unsorted
   describe command("docker inspect -f '{{ .Config.Labels }}' uber_options") do
     its(:exit_status) { should eq 0 }
-    its(:stdout) { should match(/foo:bar hello:world/) }
+    its(:stdout) { should match(/foo:bar/) }
+    its(:stdout) { should match(/hello:world/) }
   end
 end
 
