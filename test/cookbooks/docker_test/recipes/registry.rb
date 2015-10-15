@@ -188,4 +188,5 @@ bash 'wait for docker registry and proxy' do
     sleep 1
   done
   EOF
+  not_if 'nc -z -w5 localhost 5000 && nc -z -w5 localhost 5043'
 end
