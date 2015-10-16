@@ -33,6 +33,9 @@ class Chef
 
       declare_action_class.class_eval do
         include DockerHelpers::Image
+        def whyrun_supported?
+          true
+        end
       end
 
       action :build do
