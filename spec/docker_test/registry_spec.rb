@@ -6,18 +6,15 @@ describe 'docker_test::registry' do
   before do
     stub_command('/usr/bin/test -f /tmp/registry/tls/ca.pem').and_return(false)
     stub_command('/usr/bin/test -f /tmp/registry/tls/ca-key.pem').and_return(false)
-
     stub_command('/usr/bin/test -f /tmp/registry/tls/key.pem').and_return(false)
     stub_command('/usr/bin/test -f /tmp/registry/tls/cert.pem').and_return(false)
-
     stub_command('/usr/bin/test -f /tmp/registry/tls/server-key.pem').and_return(false)
     stub_command('/usr/bin/test -f /tmp/registry/tls/server.pem').and_return(false)
-
     stub_command('/usr/bin/test -f /tmp/registry/tls/client.csr').and_return(false)
     stub_command('/usr/bin/test -f /tmp/registry/tls/server.csr').and_return(false)
-
     stub_command("[ ! -z `docker ps -qaf 'name=registry_service$'` ]").and_return(false)
     stub_command("[ ! -z `docker ps -qaf 'name=registry_proxy$'` ]").and_return(false)
+    stub_command("nc -z -w5 localhost 5000 && nc -z -w5 localhost 5043").and_return(true)
   end
 
   context 'when compiling the recipe' do

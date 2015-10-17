@@ -13,6 +13,7 @@ describe 'docker_test::image' do
     stub_command('/usr/bin/test -f /tmp/registry/tls/cert.pem').and_return(true)
     stub_command("[ ! -z `docker ps -qaf 'name=registry_service$'` ]").and_return(true)
     stub_command("[ ! -z `docker ps -qaf 'name=registry_proxy$'` ]").and_return(true)
+    stub_command("nc -z -w5 localhost 5000 && nc -z -w5 localhost 5043").and_return(true)
   end
 
   context 'testing default action, default properties' do
