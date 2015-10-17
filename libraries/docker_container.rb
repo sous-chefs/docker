@@ -148,6 +148,10 @@ class Chef
       default_action :run
 
       declare_action_class.class_eval do
+        def whyrun_supported?
+          true
+        end
+
         def call_action(action)
           send("action_#{action}")
           load_current_resource
