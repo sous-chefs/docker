@@ -60,15 +60,20 @@ module DockerHelpers
 
     def coerce_host(v)
       v = v.split if v.is_a?(String)
-      r = []
-      Array(v).each do |s|
+      Array(v).each_with_object([]) do |s, r|
         if s.match(/^unix:/) || s.match(/^tcp:/) || s.match(/^fd:/)
           r << s
         else
           Chef::Log.info("WARNING: docker_service host property #{s} not valid")
         end
       end
-      r
+    end
+
+    def coerce_daemon_labels(v)
+      Array(v).each_with_object([]) do |label, a|
+        parts = label.split(':')
+        a << "#{parts[0]}=\"#{parts[1]}\""
+      end
     end
 
     def default_checksum
@@ -171,7 +176,7 @@ module DockerHelpers
       opts << "--iptables=#{iptables}" unless iptables.nil?
       opts << "--ipv6=#{ipv6}" unless ipv6.nil?
       opts << "--log-level=#{log_level}" if log_level
-      opts << "--label=#{label}" if label
+      labels.each { |l| opts << "--label=#{l}" } if labels
       opts << "--log-driver=#{log_driver}" if log_driver
       log_opts.each { |log_opt| opts << "--log-opt=#{log_opt}" } if log_opts
       opts << "--mtu=#{mtu}" if mtu

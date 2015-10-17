@@ -28,6 +28,18 @@ nil_string = '<no value>' if docker_version =~ /1.6/
 nil_string = '<nil>' if docker_version =~ /1.7/
 nil_string = '<nil>' if docker_version =~ /1.8/
 
+##################################################
+#  test/cookbooks/docker_test/recipes/default.rb
+##################################################
+
+# docker_service[default]
+
+describe command('docker info') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/environment="test"/) }
+  its(:stdout) { should match(/foo="bar"/) }
+end
+
 ##############################################
 #  test/cookbooks/docker_test/recipes/image.rb
 ##############################################

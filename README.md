@@ -230,7 +230,8 @@ the options found in the
 - `iptables` - Enable addition of iptables rules
 - `ipv6` - Enable IPv6 networking
 - `log_level` - Set the logging level
-- `label` - Set key=value labels to the daemon
+- `labels` A string or array to set metadata on the daemon in the form
+  ['foo:bar', 'hello:world']`
 - `log_driver` - Container's logging driver (json-file/syslog/journald/gelf/fluentd/none)
 - `log_opts` - Container's logging driver options (driver-specific)
 - `mtu` - Set the containers network MTU
@@ -887,8 +888,8 @@ Most `docker_container` properties are the `snake_case` version of the
 - `host` - A string containing the host the API should communicate with.
   Defaults to local `docker_service`.
 - `host_name` - The hostname for the container.
-- `labels` A hash or array to set metadata on the container in the form
-  ['foo=bar', 'hello=world']`
+- `labels` A string, array, or hash to set metadata on the container in the form
+  ['foo:bar', 'hello:world']`
 - `links` - An array of source container/alias pairs to link the
   container to in the form `[container_a:www', container_b:db']`
 - `log_driver` - Sets a custom logging driver for the container
