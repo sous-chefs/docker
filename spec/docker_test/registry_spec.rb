@@ -14,7 +14,7 @@ describe 'docker_test::registry' do
     stub_command('/usr/bin/test -f /tmp/registry/tls/server.csr').and_return(false)
     stub_command("[ ! -z `docker ps -qaf 'name=registry_service$'` ]").and_return(false)
     stub_command("[ ! -z `docker ps -qaf 'name=registry_proxy$'` ]").and_return(false)
-    stub_command("nc -z -w5 localhost 5000 && nc -z -w5 localhost 5043").and_return(true)
+    stub_command('nc -z -w5 localhost 5000 && nc -z -w5 localhost 5043').and_return(true)
   end
 
   context 'when compiling the recipe' do
