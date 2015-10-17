@@ -809,6 +809,7 @@ file '/overrides/Dockerfile' do
   ENV BIZ=biz BAZ=baz
   VOLUME /home
   WORKDIR /var
+  EXPOSE 4321
   EOF
   notifies :build, 'docker_image[overrides]'
   action :create
@@ -836,6 +837,7 @@ docker_container 'overrides-2' do
   env ['FOO=biz']
   volume '/var/log'
   workdir '/tmp'
+  port ['9988:9988', '8877:8877']
   action :run_if_missing
 end
 
