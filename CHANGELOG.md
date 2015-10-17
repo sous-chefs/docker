@@ -1,3 +1,7 @@
+v2.1.2
+--------------------
+- Adding why_run support
+
 v2.1.1
 --------------------
 #511 - fix container wait state checking
