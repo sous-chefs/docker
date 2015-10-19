@@ -826,7 +826,7 @@ end
 
 docker_container 'overrides-1' do
   repo 'overrides'
-  action :run_if_missing
+  action :run
 end
 
 docker_container 'overrides-2' do
@@ -838,7 +838,7 @@ docker_container 'overrides-2' do
   volume '/var/log'
   workdir '/tmp'
   port ['9988:9988', '8877:8877']
-  action :run_if_missing
+  action :run
 end
 
 #################
