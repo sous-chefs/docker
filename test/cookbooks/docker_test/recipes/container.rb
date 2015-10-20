@@ -835,7 +835,7 @@ docker_container 'overrides-2' do
   entrypoint '/bin/sh -c'
   command 'ls -laR /'
   env ['FOO=biz']
-  volume '/var/log'
+  volumes '/var/log'
   workdir '/tmp'
   port ['9988:9988', '8877:8877']
   action :run

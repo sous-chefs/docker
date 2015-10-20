@@ -79,7 +79,7 @@ class Chef
       property :tty, Boolean
       property :ulimits, [Array, nil], coerce: proc { |v| coerce_ulimits(v) }
       property :user, String, default: ''
-      property :volumes, [Hash, nil], coerce: proc { |v| coerce_volumes(v) }
+      property :volumes, VolumesType, coerce: proc { |v| coerce_volumes(v) }
       property :volumes_from, ArrayType
       property :working_dir, [String, nil]
 
@@ -127,8 +127,12 @@ class Chef
         # c.info['Config']['ExposedPorts'] -> exposed_ports
         (container.info['Config'].to_a + container.info['HostConfig'].to_a).each do |key, value|
           next if value.nil? || key == 'RestartPolicy'
+
           # Image => image
           # Set exposed_ports = ExposedPorts (etc.)
+          #
+          # TODO: ^ Explain in more detail (or remove) metprogramming magic.
+          # We don't like magic in operations.
           property_name = to_snake_case(key)
           public_send(property_name, value) if respond_to?(property_name)
         end

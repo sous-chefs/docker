@@ -6,8 +6,31 @@ class Chef
     class DockerBase < ChefCompat::Resource
       include DockerHelpers::Base
 
+      #########
+      # Classes
+      #########
+
+      class UnorderedArray < Array
+        def ==(other)
+          # If I (desired env) am a subset of the current env, let == return true
+          other.is_a?(Array) && self.all? { |val| other.include?(val) }
+        end
+      end
+
+      class ShellCommandString < String
+        def ==(other)
+          other.is_a?(String) && Shellwords.shellwords(self) == Shellwords.shellwords(other)
+        end
+      end
+
+      class Volumes < Hash
+        def ==(other)
+          other.is_a?(Hash) && self.all? { |key, val| other.key?(key) && other[key] == val }
+        end
+      end
+
       ################
-      # Constants
+      # Type Constants
       #
       # These will be used when declaring resource property types in the
       # docker_service, docker_container, and docker_image resource.
@@ -35,26 +58,14 @@ class Chef
       ) unless defined?(ShellCommand)
 
       UnorderedArrayType = property_type(
-        is: [Array, nil],
+        is: [UnorderedArray, nil],
         coerce: proc { |v| v.nil? ? nil : UnorderedArray.new(Array(v)) }
-      ) unless defined?(UnorderedArray)
+      ) unless defined?(UnorderedArrayType)
 
-      #########
-      # Classes
-      #########
-
-      class UnorderedArray < Array
-        def ==(other)
-          # If I (desired env) am a subset of the current env, let == return true
-          other.is_a?(Array) && self.all? { |val| other.include?(val) }
-        end
-      end
-
-      class ShellCommandString < String
-        def ==(other)
-          other.is_a?(String) && Shellwords.shellwords(self) == Shellwords.shellwords(other)
-        end
-      end
+      VolumesType = property_type(
+        is: [Volumes, nil],
+        coerce: proc { |v| v.nil? ? nil : Volumes.new(Hash(v)) }
+      ) unless defined?(VolumesType)
 
       #####################
       # Resource properties
