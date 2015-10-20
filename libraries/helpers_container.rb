@@ -40,15 +40,15 @@ module DockerHelpers
 
     def coerce_volumes(v)
       case v
-      when nil, Chef::Resource::DockerBase::Volumes
+      when nil, Chef::Resource::DockerBase::PartialHash
         # TODO: ^ Make this shorter.... also stop putting classes in
         # the Chef::Resource namespace. DockerContainer::Volumes
         # perhaps?
         v
       when Hash
-        Chef::Resource::DockerBase::Volumes[v]
+        Chef::Resource::DockerBase::PartialHash[v]
       else
-        Array(v).each_with_object(Chef::Resource::DockerBase::Volumes.new) { |volume, h| h[volume] = {} }
+        Array(v).each_with_object(Chef::Resource::DockerBase::PartialHash.new) { |volume, h| h[volume] = {} }
       end
     end
 

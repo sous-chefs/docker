@@ -79,7 +79,7 @@ class Chef
       property :tty, Boolean
       property :ulimits, [Array, nil], coerce: proc { |v| coerce_ulimits(v) }
       property :user, String, default: ''
-      property :volumes, VolumesType, coerce: proc { |v| coerce_volumes(v) }
+      property :volumes, PartialHashType, coerce: proc { |v| coerce_volumes(v) }
       property :volumes_from, ArrayType
       property :working_dir, [String, nil]
 

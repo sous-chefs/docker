@@ -23,7 +23,7 @@ class Chef
         end
       end
 
-      class Volumes < Hash
+      class PartialHash < Hash
         def ==(other)
           other.is_a?(Hash) && self.all? { |key, val| other.key?(key) && other[key] == val }
         end
@@ -62,10 +62,10 @@ class Chef
         coerce: proc { |v| v.nil? ? nil : UnorderedArray.new(Array(v)) }
       ) unless defined?(UnorderedArrayType)
 
-      VolumesType = property_type(
-        is: [Volumes, nil],
-        coerce: proc { |v| v.nil? ? nil : Volumes.new(Hash(v)) }
-      ) unless defined?(VolumesType)
+      PartialHashType = property_type(
+        is: [PartialHash, nil],
+        coerce: proc { |v| v.nil? ? nil : PartialHash.new(Hash(v)) }
+      ) unless defined?(PartialHashType)
 
       #####################
       # Resource properties
