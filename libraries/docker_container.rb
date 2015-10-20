@@ -51,7 +51,7 @@ class Chef
       property :entrypoint, ShellCommand
       property :env, UnorderedArrayType
       property :extra_hosts, NonEmptyArray
-      property :exposed_ports, [Hash, nil]
+      property :exposed_ports, PartialHashType
       property :force, Boolean
       property :host, [String, nil], desired_state: false
       property :hostname, [String, nil]
@@ -233,8 +233,8 @@ class Chef
       end
 
       action :start do
-        next if state['Restarting']
-        next if state['Running']
+        return if state['Restarting']
+        return if state['Running']
         converge_by "starting #{container_name}" do
           with_retries do
             if detach
@@ -276,19 +276,19 @@ class Chef
       end
 
       action :run_if_missing do
-        next if current_resource
+        return if current_resource
         call_action(:run)
       end
 
       action :pause do
-        next if state['Paused']
+        return if state['Paused']
         converge_by "pausing #{container_name}" do
           with_retries { container.pause }
         end
       end
 
       action :unpause do
-        next if current_resource && !state['Paused']
+        return if current_resource && !state['Paused']
         converge_by "unpausing #{container_name}" do
           with_retries { container.unpause }
         end
@@ -311,7 +311,7 @@ class Chef
       end
 
       action :delete do
-        next unless current_resource
+        return unless current_resource
         call_action(:unpause)
         call_action(:stop)
         converge_by "deleting #{container_name}" do

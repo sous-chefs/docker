@@ -45,12 +45,12 @@ class Chef
       end
 
       action :build_if_missing do
-        next if Docker::Image.exist?(image_identifier, {}, connection)
+        return if Docker::Image.exist?(image_identifier, {}, connection)
         action_build
       end
 
       action :import do
-        next if Docker::Image.exist?(image_identifier, {}, connection)
+        return if Docker::Image.exist?(image_identifier, {}, connection)
         converge_by "Import image #{image_identifier}" do
           import_image
         end
@@ -63,7 +63,7 @@ class Chef
       end
 
       action :pull_if_missing do
-        next if Docker::Image.exist?(image_identifier, {}, connection)
+        return if Docker::Image.exist?(image_identifier, {}, connection)
         action_pull
       end
 
@@ -74,7 +74,7 @@ class Chef
       end
 
       action :remove do
-        next unless Docker::Image.exist?(image_identifier, {}, connection)
+        return unless Docker::Image.exist?(image_identifier, {}, connection)
         converge_by "Remove image #{image_identifier}" do
           remove_image
         end
