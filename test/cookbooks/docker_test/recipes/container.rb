@@ -802,7 +802,7 @@ file '/overrides/Dockerfile' do
   content <<-EOF
   FROM busybox
   RUN adduser -D bob
-  CMD [ "ls", "-la", "/" ]
+  CMD [ "nc", "-ll", "-p", "679", "-e", "/bin/cat" ]
   USER bob
   ENV FOO foo
   ENV BAR bar
@@ -833,7 +833,7 @@ docker_container 'overrides-2' do
   repo 'overrides'
   user 'operator'
   entrypoint '/bin/sh -c'
-  command 'ls -laR /'
+  command 'nc -ll -p 680 -e /bin/cat'
   env ['FOO=biz']
   volumes '/var/log'
   workdir '/tmp'
