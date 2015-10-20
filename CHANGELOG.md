@@ -1,3 +1,8 @@
+v2.1.3
+--------------------
+- #514 - Fixing coerce and comparison logic in exposed_ports and
+   volumes to prevent unwanted restarts   
+
 v2.1.2
 --------------------
 - Adding why_run support
