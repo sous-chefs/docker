@@ -64,7 +64,7 @@ class Chef
 
       PartialHashType = property_type(
         is: [PartialHash, nil],
-        coerce: proc { |v| v.nil? ? nil : PartialHash.new(Hash(v)) }
+        coerce: proc { |v| v.nil? ? nil : PartialHash[v] }
       ) unless defined?(PartialHashType)
 
       #####################
