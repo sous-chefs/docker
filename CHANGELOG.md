@@ -1,3 +1,7 @@
+v2.1.4
+--------------------
+- #517 - Disallowing nil value for Docker command
+
 v2.1.3
 --------------------
 - #514 - Fixing coerce and comparison logic in exposed_ports and
