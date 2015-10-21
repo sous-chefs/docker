@@ -1,3 +1,7 @@
+v2.1.5
+--------------------
+- #528 - Don't enable https connection scheme if not using TLS
+
 v2.1.4
 --------------------
 - #517 - Disallowing nil value for Docker command
