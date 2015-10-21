@@ -791,15 +791,15 @@ describe 'docker_test::container' do
     end
   end
 
-  context 'testing host overrides' do
-    it 'creates docker_container[host_override]' do
-      expect(chef_run).to create_docker_container('host_override').with(
-        repo: 'alpine',
-        host: 'tcp://127.0.0.1:2376',
-        command: 'ls -la /'
-      )
-    end
-  end
+  # context 'testing host overrides' do
+  #   it 'creates docker_container[host_override]' do
+  #     expect(chef_run).to create_docker_container('host_override').with(
+  #       repo: 'alpine',
+  #       host: 'tcp://127.0.0.1:2376',
+  #       command: 'ls -la /'
+  #     )
+  #   end
+  # end
 
   context 'testing logging drivers' do
     it 'run_if_missing docker_container[syslogger]' do

@@ -1,11 +1,16 @@
-caroot = '/tmp/kitchen/tls'
+################
+# Setting up TLS
+################
+
+caname = 'docker_service_default'
+caroot = "/tmp/kitchen/#{caname}"
 
 directory "#{caroot}" do
   action :create
 end
 
 # Self signed CA
-bash 'generating CA private and public key' do
+bash "#{caname} - generating CA private and public key" do
   cmd = 'openssl req'
   cmd += ' -x509'
   cmd += ' -nodes'
@@ -23,13 +28,13 @@ bash 'generating CA private and public key' do
 end
 
 # server certs
-bash 'creating private key for docker server' do
+bash "#{caname} - creating private key for docker server" do
   code "openssl genrsa -out #{caroot}/server-key.pem 4096"
   not_if "/usr/bin/test -f #{caroot}/server-key.pem"
   action :run
 end
 
-bash 'generating certificate request for server' do
+bash "#{caname} - generating certificate request for server" do
   cmd = 'openssl req'
   cmd += ' -new'
   cmd += ' -sha256'
@@ -47,7 +52,7 @@ file "#{caroot}/server-extfile.cnf" do
   action :create
 end
 
-bash 'signing request for server' do
+bash "#{caname} - signing request for server" do
   cmd = 'openssl x509'
   cmd += ' -req'
   cmd += ' -days 365'
@@ -64,13 +69,13 @@ bash 'signing request for server' do
 end
 
 # client certs
-bash 'creating private key for docker client' do
+bash "#{caname} - creating private key for docker client" do
   code "openssl genrsa -out #{caroot}/key.pem 4096"
   not_if "/usr/bin/test -f #{caroot}/key.pem"
   action :run
 end
 
-bash 'generating certificate request for client' do
+bash "#{caname} - generating certificate request for client" do
   cmd = 'openssl req'
   cmd += ' -new'
   cmd += " -subj '/CN=client/'"
@@ -87,7 +92,7 @@ file "#{caroot}/client-extfile.cnf" do
   action :create
 end
 
-bash 'signing request for client' do
+bash "#{caname} - signing request for client" do
   cmd = 'openssl x509'
   cmd += ' -req'
   cmd += ' -days 365'
@@ -102,6 +107,10 @@ bash 'signing request for client' do
   not_if "/usr/bin/test -f #{caroot}/cert.pem"
   action :run
 end
+
+################
+# Docker service
+################
 
 # start docker service listening on TCP port
 service_def = proc do

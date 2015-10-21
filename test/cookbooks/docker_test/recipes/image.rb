@@ -28,11 +28,11 @@ docker_image 'alpine' do
 end
 
 # host override
-docker_image 'alpine-localhost' do
-  repo 'alpine'
-  tag '2.7'
-  host 'tcp://127.0.0.1:2376'
-end
+# docker_image 'alpine-localhost' do
+#   repo 'alpine'
+#   tag '2.7'
+#   host 'tcp://127.0.0.1:2376'
+# end
 
 #########
 # :remove
