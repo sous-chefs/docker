@@ -774,13 +774,13 @@ describe 'docker_test::container' do
     end
 
     it 'run_if_missing docker_container[overrides-1]' do
-      expect(chef_run).to run_if_missing_docker_container('overrides-1').with(
+      expect(chef_run).to run_docker_container('overrides-1').with(
         repo: 'overrides'
       )
     end
 
     it 'run_if_missing docker_container[overrides-2]' do
-      expect(chef_run).to run_if_missing_docker_container('overrides-2').with(
+      expect(chef_run).to run_docker_container('overrides-2').with(
         repo: 'overrides',
         user: 'operator',
         entrypoint: '/bin/sh -c',
