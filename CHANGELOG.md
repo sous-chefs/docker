@@ -1,3 +1,8 @@
+v2.1.6
+--------------------
+- Enabling TLS options for docker_container and docker_image
+- Various test fixes
+
 v2.1.5
 --------------------
 - #528 - Don't enable https connection scheme if not using TLS
