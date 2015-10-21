@@ -53,7 +53,7 @@ class Chef
       ) unless defined?(NonEmptyArray)
 
       ShellCommand = property_type(
-        is: [String, nil],
+        is: [String],
         coerce: proc { |v| coerce_shell_command(v) }
       ) unless defined?(ShellCommand)
 
