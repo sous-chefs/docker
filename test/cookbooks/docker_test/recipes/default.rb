@@ -118,6 +118,7 @@ end
 docker_service 'default' do
   host ['unix:///var/run/docker.sock', 'tcp://127.0.0.1:2376']
   version node['docker']['version']
+  labels ['environment:test', 'foo:bar']
   tls_verify true
   tls_ca_cert "#{caroot}/ca.pem"
   tls_server_cert "#{caroot}/server.pem"
