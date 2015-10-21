@@ -49,12 +49,6 @@ class Chef
       property :selinux_enabled, [Boolean, nil]
       property :storage_opts, ArrayType
       property :tls, [Boolean, nil]
-      property :tls_verify, [Boolean, nil]
-      property :tls_ca_cert, [String, nil]
-      property :tls_server_cert, [String, nil]
-      property :tls_server_key, [String, nil]
-      property :tls_client_cert, [String, nil]
-      property :tls_client_key, [String, nil]
       property :default_ulimit, ArrayType
       property :userland_proxy, [Boolean, nil]
 

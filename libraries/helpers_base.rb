@@ -46,11 +46,18 @@ module DockerHelpers
 
     def connection
       @connection ||= begin
-          opts = {}
-          opts['read_timeout'] = read_timeout if read_timeout
-          opts['write_timeout'] = write_timeout if write_timeout
-          Docker::Connection.new(host || Docker.url, opts)
-        end
+         opts = {}
+         opts['read_timeout'] = read_timeout if read_timeout
+         opts['write_timeout'] = write_timeout if write_timeout
+
+         if host =~ /^tcp:/
+           opts[:scheme] = 'https' if tls || !tls_verify.nil?
+           opts[:ssl_ca_file] = tls_ca_cert if tls_ca_cert
+           opts[:client_cert] = tls_client_cert if tls_client_cert
+           opts[:client_key] = tls_client_key if tls_client_key
+         end
+         Docker::Connection.new(host || Docker.url, opts)
+       end
     end
 
     def with_retries(&block)

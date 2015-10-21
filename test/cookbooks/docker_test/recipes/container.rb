@@ -1,3 +1,7 @@
+# Two variables, one recipe.
+caname = 'docker_service_default'
+caroot = "/tmp/kitchen/#{caname}"
+
 ################
 # action :create
 ################
@@ -845,12 +849,16 @@ end
 # host override
 #################
 
-# docker_container 'host_override' do
-#   repo 'alpine'
-#   host 'tcp://127.0.0.1:2376'
-#   command 'ls -la /'
-#   action :create
-# end
+docker_container 'host_override' do
+  repo 'alpine'
+  host 'tcp://127.0.0.1:2376'
+  command 'ls -la /'
+  tls_verify true
+  tls_ca_cert "#{caroot}/ca.pem"
+  tls_client_cert "#{caroot}/cert.pem"
+  tls_client_key "#{caroot}/key.pem"
+  action :create
+end
 
 #################
 # logging drivers

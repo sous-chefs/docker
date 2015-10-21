@@ -65,15 +65,15 @@ describe 'docker_test::image' do
     end
   end
 
-  # context 'testing the host property' do
-  #   it 'pulls docker_image[alpine-localhost]' do
-  #     expect(chef_run).to pull_docker_image('alpine-localhost').with(
-  #       repo: 'alpine',
-  #       tag: '2.7',
-  #       host: 'tcp://127.0.0.1:2376'
-  #     )
-  #   end
-  # end
+  context 'testing the host property' do
+    it 'pulls docker_image[alpine-localhost]' do
+      expect(chef_run).to pull_docker_image('alpine-localhost').with(
+        repo: 'alpine',
+        tag: '2.7',
+        host: 'tcp://127.0.0.1:2376'
+      )
+    end
+  end
 
   context 'testing :remove action' do
     it 'runs execute[pull vbatts/slackware]' do

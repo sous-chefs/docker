@@ -75,6 +75,14 @@ class Chef
       property :read_timeout,      [Fixnum, nil], default: 60, desired_state: false
       property :write_timeout,     [Fixnum, nil], desired_state: false
 
+      property :tls, [Boolean, nil], desired_state: false
+      property :tls_verify, [Boolean, nil], desired_state: false
+      property :tls_ca_cert, [String, nil], desired_state: false
+      property :tls_server_cert, [String, nil], desired_state: false
+      property :tls_server_key, [String, nil], desired_state: false
+      property :tls_client_cert, [String, nil], desired_state: false
+      property :tls_client_key, [String, nil], desired_state: false
+
       declare_action_class.class_eval do
         include DockerHelpers::Authentication
       end

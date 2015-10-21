@@ -661,7 +661,7 @@ end
 
 describe command("docker ps -af 'name=overrides-1$'") do
   its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/Exited/) }
+  its(:stdout) { should_not match(/Exited/) }
 end
 
 describe command('docker inspect -f "{{ .Config.User }}" overrides-1') do
@@ -698,7 +698,7 @@ end
 
 describe command("docker ps -af 'name=overrides-2$'") do
   its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/Exited/) }
+  its(:stdout) { should_not match(/Exited/) }
 end
 
 describe command('docker inspect -f "{{ .Config.User }}" overrides-2') do

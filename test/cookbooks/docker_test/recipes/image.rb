@@ -1,3 +1,7 @@
+# Two variables, one recipe.
+caname = 'docker_service_default'
+caroot = "/tmp/kitchen/#{caname}"
+
 #########################
 # :pull_if_missing, :pull
 #########################
@@ -28,11 +32,15 @@ docker_image 'alpine' do
 end
 
 # host override
-# docker_image 'alpine-localhost' do
-#   repo 'alpine'
-#   tag '2.7'
-#   host 'tcp://127.0.0.1:2376'
-# end
+docker_image 'alpine-localhost' do
+  repo 'alpine'
+  tag '2.7'
+  host 'tcp://127.0.0.1:2376'
+  tls_verify true
+  tls_ca_cert "#{caroot}/ca.pem"
+  tls_client_cert "#{caroot}/cert.pem"
+  tls_client_key "#{caroot}/key.pem"
+end
 
 #########
 # :remove
