@@ -783,8 +783,7 @@ describe 'docker_test::container' do
       expect(chef_run).to run_docker_container('overrides-2').with(
         repo: 'overrides',
         user: 'operator',
-        entrypoint: '/bin/sh -c',
-        command: 'ls -laR /',
+        command: 'nc -ll -p 4322 -e /bin/cat',
         env: ['FOO=biz'],
         volume: { '/var/log' => {} },
         workdir: '/tmp'
