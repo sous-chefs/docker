@@ -115,7 +115,7 @@ class Chef
 
           connect_opts = {}
           if connect_host =~ /^tcp:/
-            connect_opts[:scheme] = 'https'
+            connect_opts[:scheme] = 'https' if tls || !tls_verify.nil?
             connect_opts[:ssl_ca_file] = tls_ca_cert if tls_ca_cert
             connect_opts[:client_cert] = tls_client_cert if tls_client_cert
             connect_opts[:client_key] = tls_client_key if tls_client_key
