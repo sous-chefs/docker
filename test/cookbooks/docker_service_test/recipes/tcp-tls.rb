@@ -1,8 +1,10 @@
+# connects to docker daemon over tcp with tls
+
 ################
 # Setting up TLS
 ################
 
-caname = 'docker_service_default'
+caname = 'docker_service_tcp_tls'
 caroot = "/tmp/kitchen/#{caname}"
 
 directory "#{caroot}" do
@@ -112,9 +114,8 @@ end
 # Docker service
 ################
 
-# start docker service listening on TCP port
-service_def = proc do
-  host 'tcp://127.0.0.1:2376'
+docker_service 'default' do
+  host 'tcp://0.0.0.0:2376'
   tls_verify true
   tls_ca_cert "#{caroot}/ca.pem"
   tls_server_cert "#{caroot}/server.pem"
@@ -124,8 +125,21 @@ service_def = proc do
   action [:create, :start]
 end
 
-if node['docker']['service_manager'] == 'execute'
-  docker_service_execute('default', &service_def)
-else
-  docker_service('default', &service_def)
+docker_image 'alpine' do
+  host 'tcp://127.0.0.1:2376'
+  tls_verify true
+  tls_ca_cert "#{caroot}/ca.pem"
+  tls_client_cert "#{caroot}/cert.pem"
+  tls_client_key "#{caroot}/key.pem"
+  tag 'latest'
+end
+
+docker_container 'tcp-tls' do
+  host 'tcp://127.0.0.1:2376'
+  tls_verify true
+  tls_ca_cert "#{caroot}/ca.pem"
+  tls_client_cert "#{caroot}/cert.pem"
+  tls_client_key "#{caroot}/key.pem"
+  repo 'alpine'
+  command 'ls -la /'
 end

@@ -41,7 +41,7 @@ module DockerHelpers
     end
 
     def api_version
-      @api_version ||= Docker.version['ApiVersion']
+      @api_version ||= Docker.version(connection)['ApiVersion']
     end
 
     def connection

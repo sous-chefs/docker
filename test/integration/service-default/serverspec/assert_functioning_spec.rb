@@ -3,8 +3,6 @@ require 'serverspec'
 set :backend, :exec
 puts "os: #{os}"
 
-ENV['DOCKER_HOST'] = 'unix:///var/run/docker.sock'
-
 describe process('docker') do
   it { should be_running }
 end

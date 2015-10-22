@@ -118,7 +118,7 @@ class Chef
       load_current_value do
         # Grab the container and assign the container property
         begin
-          with_retries { container Docker::Container.get(container_name, connection) }
+          with_retries { container Docker::Container.get(container_name, {}, connection) }
         rescue Docker::Error::NotFoundError
           current_value_does_not_exist!
         end

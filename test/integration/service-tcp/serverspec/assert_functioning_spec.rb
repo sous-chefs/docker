@@ -3,9 +3,7 @@ require 'serverspec'
 set :backend, :exec
 puts "os: #{os}"
 
-ENV['DOCKER_CERT_PATH'] = '/tmp/kitchen/tls/'
 ENV['DOCKER_HOST'] = 'tcp://127.0.0.1:2376'
-ENV['DOCKER_TLS_VERIFY'] = '1'
 
 describe process('docker') do
   it { should be_running }
@@ -18,8 +16,9 @@ end
 
 # Test for /var/log/docker.log for all non-systemd platforms
 systemd = true
-systemd = false if os[:family] == 'redhat' && os[:release].to_i < 7
 systemd = false if os[:family] == 'redhat' && os[:release].nil? # amazon?
+systemd = false if os[:family] == 'redhat' && os[:release].to_i < 7
+systemd = false if os[:family] == 'ubuntu' && os[:release].to_f < 15.04
 
 unless systemd
   describe file('/var/log/docker.log') do

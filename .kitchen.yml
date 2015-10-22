@@ -107,86 +107,122 @@ platforms:
 
 
 suites:
-#
-# Resource behavior testing cookbooks
-#
-- name: service-socket-execute
-  includes: [
-    'ubuntu-15.04-chef-12.4.3',
-    'ubuntu-15.04-chef-latest'
-  ]
-  attributes:
-    docker:
-      version: '1.8.2'
-      service_manager: execute
-  run_list:
-  - recipe[docker_service_test::socket]
 
-- name: service-tls-execute
+###########
+# services
+###########
+
+- name: service-default
   includes: [
-    'ubuntu-15.04-chef-12.4.3',
+    # 'amazon-2014.09-chef-12.4.3',
+    # 'amazon-2014.09-chef-latest',
+    # 'fedora-21-chef-12.4.3',
+    # 'fedora-21-chef-latest',
+    # 'centos-6.5-chef-12.4.3',
+    # 'centos-6.5-chef-latest',
+    # 'centos-7.0-chef-12.4.3',
+    # 'centos-7.0-chef-latest',
+    # 'debian-7.0-chef-12.4.3',
+    # 'debian-7.0-chef-latest',
+    # 'debian-8-chef-12.4.3',
+    # 'debian-8-chef-latest',
+    # 'ubuntu-12.04-chef-12.4.3',
+    # 'ubuntu-12.04-chef-latest',
+    # 'ubuntu-14.04-chef-12.4.3',
+    # 'ubuntu-14.04-chef-latest',
+    # 'ubuntu-15.04-chef-12.4.3',
     'ubuntu-15.04-chef-latest'
   ]
   attributes:
     docker:
       version: '1.8.2'
-      service_manager: execute
   run_list:
-  - recipe[docker_service_test::tls]
+  - recipe[docker_service_test::default]
 
 - name: service-socket
   includes: [
-    'amazon-2014.09-chef-12.4.3',
-    'amazon-2014.09-chef-latest',
-    'fedora-21-chef-12.4.3',
-    'fedora-21-chef-latest',
-    'centos-6.5-chef-12.4.3',
-    'centos-6.5-chef-latest',
-    'centos-7.0-chef-12.4.3',
-    'centos-7.0-chef-latest',
-    'debian-7.0-chef-12.4.3',
-    'debian-7.0-chef-latest',
-    'debian-8-chef-12.4.3',
-    'debian-8-chef-latest',
-    'ubuntu-12.04-chef-12.4.3',
-    'ubuntu-12.04-chef-latest',
-    'ubuntu-14.04-chef-12.4.3',
-    'ubuntu-14.04-chef-latest',
-    'ubuntu-15.04-chef-12.4.3',
+    # 'amazon-2014.09-chef-12.4.3',
+    # 'amazon-2014.09-chef-latest',
+    # 'fedora-21-chef-12.4.3',
+    # 'fedora-21-chef-latest',
+    # 'centos-6.5-chef-12.4.3',
+    # 'centos-6.5-chef-latest',
+    # 'centos-7.0-chef-12.4.3',
+    # 'centos-7.0-chef-latest',
+    # 'debian-7.0-chef-12.4.3',
+    # 'debian-7.0-chef-latest',
+    # 'debian-8-chef-12.4.3',
+    # 'debian-8-chef-latest',
+    # 'ubuntu-12.04-chef-12.4.3',
+    # 'ubuntu-12.04-chef-latest',
+    # 'ubuntu-14.04-chef-12.4.3',
+    # 'ubuntu-14.04-chef-latest',
+    # 'ubuntu-15.04-chef-12.4.3',
     'ubuntu-15.04-chef-latest'
   ]
   attributes:
     docker:
-      service_manager: system
+      version: '1.8.2'
   run_list:
   - recipe[docker_service_test::socket]
 
-- name: service-tls
+- name: service-tcp
   includes: [
-    'amazon-2014.09-chef-12.4.3',
-    'amazon-2014.09-chef-latest',
-    'fedora-21-chef-12.4.3',
-    'fedora-21-chef-latest',
-    'centos-6.5-chef-12.4.3',
-    'centos-6.5-chef-latest',
-    'centos-7.0-chef-12.4.3',
-    'centos-7.0-chef-latest',
-    'debian-7.0-chef-12.4.3',
-    'debian-7.0-chef-latest',
-    'debian-8-chef-12.4.3',
-    'debian-8-chef-latest',
-    'ubuntu-12.04-chef-12.4.3',
-    'ubuntu-12.04-chef-latest',
-    'ubuntu-14.04-chef-12.4.3',
-    'ubuntu-14.04-chef-latest',
-    'ubuntu-15.04-chef-12.4.3',
+    # 'amazon-2014.09-chef-12.4.3',
+    # 'amazon-2014.09-chef-latest',
+    # 'fedora-21-chef-12.4.3',
+    # 'fedora-21-chef-latest',
+    # 'centos-6.5-chef-12.4.3',
+    # 'centos-6.5-chef-latest',
+    # 'centos-7.0-chef-12.4.3',
+    # 'centos-7.0-chef-latest',
+    # 'debian-7.0-chef-12.4.3',
+    # 'debian-7.0-chef-latest',
+    # 'debian-8-chef-12.4.3',
+    # 'debian-8-chef-latest',
+    # 'ubuntu-12.04-chef-12.4.3',
+    # 'ubuntu-12.04-chef-latest',
+    # 'ubuntu-14.04-chef-12.4.3',
+    # 'ubuntu-14.04-chef-latest',
+    # 'ubuntu-15.04-chef-12.4.3',
     'ubuntu-15.04-chef-latest'
   ]
   attributes:
     docker:
-      service_manager: system
+      version: '1.8.2'
   run_list:
-  - recipe[docker_service_test::tls]
+  - recipe[docker_service_test::tcp]
+
+- name: service-tcp-tls
+  includes: [
+    # 'amazon-2014.09-chef-12.4.3',
+    # 'amazon-2014.09-chef-latest',
+    # 'fedora-21-chef-12.4.3',
+    # 'fedora-21-chef-latest',
+    # 'centos-6.5-chef-12.4.3',
+    # 'centos-6.5-chef-latest',
+    # 'centos-7.0-chef-12.4.3',
+    # 'centos-7.0-chef-latest',
+    # 'debian-7.0-chef-12.4.3',
+    # 'debian-7.0-chef-latest',
+    # 'debian-8-chef-12.4.3',
+    # 'debian-8-chef-latest',
+    # 'ubuntu-12.04-chef-12.4.3',
+    # 'ubuntu-12.04-chef-latest',
+    # 'ubuntu-14.04-chef-12.4.3',
+    # 'ubuntu-14.04-chef-latest',
+    # 'ubuntu-15.04-chef-12.4.3',
+    'ubuntu-15.04-chef-latest'
+  ]
+  attributes:
+    docker:
+      version: '1.8.2'
+  run_list:
+  - recipe[docker_service_test::tcp-tls]
+
+#######################
+# bulk resource testing
+#######################
 
 - name: resources-162
   includes: [
@@ -247,6 +283,10 @@ suites:
   - recipe[docker_test::default]
   - recipe[docker_test::image]
   - recipe[docker_test::container]
+
+#################
+# misc test cases
+#################
 
 - name: notifications
   includes: [
