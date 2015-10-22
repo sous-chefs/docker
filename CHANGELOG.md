@@ -1,3 +1,7 @@
+v2.1.8
+--------------------
+- Removing classes from the Chef::Resource namespace
+
 v2.1.7
 --------------------
 - Fixing connection information in docker_container and helpers_base
