@@ -1,3 +1,8 @@
+v2.1.12
+--------------------
+- #531 - Bugfix for invalid parameters in docker_container :stop
+   action
+   
 v2.1.11
 --------------------
 - Fixing LocalJumpError in docker_container
