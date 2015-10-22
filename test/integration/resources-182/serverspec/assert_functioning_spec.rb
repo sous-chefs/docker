@@ -748,3 +748,26 @@ end
 describe command("docker ps -af 'name=host_override'") do
   its(:exit_status) { should eq 0 }
 end
+
+# docker_container[kill_after]
+
+describe command("docker ps -af 'name=kill_after'") do
+  its(:exit_status) { should eq 0 }
+end
+
+describe command("docker inspect -f '{{.State.ExitCode}}' kill_after") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/137/) }
+end
+
+kill_after_start = `docker inspect -f '{{.State.StartedAt}}' kill_after`
+kill_after_start = DateTime.parse(kill_after_start).to_time.to_i
+
+kill_after_finish = `docker inspect -f '{{.State.FinishedAt}}' kill_after`
+kill_after_finish = DateTime.parse(kill_after_finish).to_time.to_i
+
+kill_after_run_time = kill_after_finish - kill_after_start
+
+describe kill_after_run_time do
+  it { should be_within(5).of(30) }
+end
