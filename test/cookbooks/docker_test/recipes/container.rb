@@ -87,7 +87,7 @@ end
 
 # start a container to be stopped
 execute 'hammer_time' do
-  command 'docker run --name hammer_time -d busybox nc -ll -p 187 -e /bin/cat'
+  command 'docker run --name hammer_time -d busybox sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   not_if "[ ! -z `docker ps -qaf 'name=hammer_time$'` ]"
   action :run
 end
@@ -373,7 +373,7 @@ end
 
 # Inspect volume container with test-kitchen bussers
 docker_container 'sean_was_here' do
-  command "touch /opt/chef/sean_was_here-#{Time.new.strftime('%Y%m%d%H%M')}"
+  command "touch /opt/chef/sean_was_here-#{Time.new.strftime('%Y%m%d%H%M')}" #
   repo 'debian'
   volumes_from 'chef_container'
   autoremove true
