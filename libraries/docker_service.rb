@@ -9,11 +9,14 @@ module DockerCookbook
     # register with the resource resolution system
     provides :docker_service
 
-    # service installation
-    property :source, String, default: lazy { default_source }
-    property :version, String, default: lazy { default_version }
-    property :checksum, String, default: lazy { default_checksum }
-    property :instance, String, name_property: true, required: true
+    # docker_installation_binary
+    property :source, [String, nil], desired_state: false
+    property :version, [String, nil], desired_state: false
+    property :checksum, [String, nil], desired_state: false
+    property :docker_bin, String, default: '/usr/bin/docker', desired_state: false
+
+    # daemon management
+    property :instance, String, name_property: true, required: true, desired_state: false
     property :api_cors_header, [String, nil]
     property :bridge, [IPV4_ADDR, IPV6_ADDR, nil]
     property :bip, [IPV4_ADDR, IPV4_CIDR, IPV6_ADDR, IPV6_CIDR, nil]

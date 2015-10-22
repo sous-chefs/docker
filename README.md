@@ -51,7 +51,7 @@ Cookbook Dependencies
 
 Usage
 -----
-- Add ```depends 'docker', '~> 1.0'``` to your cookbook's metadata.rb
+- Add ```depends 'docker', '~> 2.0'``` to your cookbook's metadata.rb
 - Use resources shipped in cookbook in a recipe, the same way you'd
   use core Chef resources (file, template, directory, package, etc).
 
@@ -566,6 +566,15 @@ docker_container 'hammer_time' do
 end
 ```
 
+Force-stop a container after 30 seconds
+
+```ruby
+docker_container 'hammer_time' do
+  kill_after 30
+  action :stop
+end
+```
+
 Pause a container
 
 ```ruby
@@ -935,6 +944,8 @@ Most `docker_container` properties are the `snake_case` version of the
   commands to run in.
 - `read_timeout` - May need to increase for commits or exports that are slow
 - `write_timeout` - May need to increase for commits or exports that are slow
+- `kill_after` - Number of seconds to wait before killing the container. Defaults
+  to wait indefinitely; eventually will hit read_timeout limit.
 
 #### Actions
 

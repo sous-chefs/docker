@@ -1,3 +1,22 @@
+v2.1.15
+--------------------
+- Updates to README around kill_after property on :stop action
+- Updates to various test containers to handle SIGKILL properly
+
+v2.1.14
+--------------------
+- Fixing missing property regression in docker_service
+
+v2.1.13
+--------------------
+- Fixing up independent of docker_installation_binary resource, adding
+  kitchen suites and serverspec tests
+
+v2.1.12
+--------------------
+- #531 - Bugfix for invalid parameters in docker_container :stop
+   action
+   
 v2.1.11
 --------------------
 - Fixing LocalJumpError in docker_container
