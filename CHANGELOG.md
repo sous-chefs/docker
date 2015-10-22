@@ -1,3 +1,7 @@
+v2.1.10
+--------------------
+- Adding 'desired_state: false' to various timeouts
+
 v2.1.9
 --------------------
 - Refactoring: Moving remote file installation method into
