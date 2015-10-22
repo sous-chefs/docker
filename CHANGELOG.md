@@ -1,6 +1,11 @@
+v2.1.9
+--------------------
+- Refactoring: Moving remote file installation method into
+  docker_installation_binary resource
+
 v2.1.8
 --------------------
-- Removing classes from the Chef::Resource namespace
+- Refactoring: Removing classes from the Chef::Resource namespace
 
 v2.1.7
 --------------------
