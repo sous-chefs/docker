@@ -181,7 +181,7 @@ end
 
 # create a container to be deleted
 execute 'deleteme' do
-  command 'docker run --name deleteme -d busybox nc -ll -p 187 -e /bin/cat'
+  command 'docker run --name deleteme -d busybox sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   not_if { ::File.exist?('/marker_container_deleteme') }
   action :run
 end
@@ -201,7 +201,7 @@ end
 docker_container 'redeployer' do
   repo 'alpine'
   tag '3.1'
-  command 'nc -ll -p 7777 -e /bin/cat'
+  command 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   port '7'
   action :run
 end
@@ -209,7 +209,7 @@ end
 docker_container 'unstarted_redeployer' do
   repo 'alpine'
   tag '3.1'
-  command 'nc -ll -p 7777 -e /bin/cat'
+  command 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   port '7'
   action :create
 end
@@ -530,7 +530,7 @@ docker_container 'link_source' do
   repo 'alpine'
   tag '3.1'
   env ['FOO=bar', 'BIZ=baz']
-  command 'nc -ll -p 321 -e /bin/cat'
+  command 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   port '321'
   action :run
 end
@@ -539,8 +539,9 @@ docker_container 'link_source_2' do
   repo 'alpine'
   tag '3.1'
   env ['FOO=few', 'BIZ=buzz']
-  command 'nc -ll -p 322 -e /bin/cat'
+  command 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   port '322'
+  kill_after 1
   action :run
 end
 
@@ -752,7 +753,7 @@ end
 
 # start a container to be modified
 execute 'uber_options' do
-  command 'docker run --name uber_options -d busybox nc -ll -p 187 -e /bin/cat'
+  command 'docker run --name uber_options -d busybox sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   not_if "[ ! -z `docker ps -qaf 'name=uber_options$'` ]"
   action :run
 end
@@ -780,8 +781,8 @@ docker_container 'uber_options' do
   port '1234:1234'
   volumes_from 'chef_container'
   user 'operator'
-  command "-c 'nc -ll -p 1234 -e /bin/cat'"
-  entrypoint '/bin/sh'
+  command '"trap exit 0 SIGTERM; while :; do sleep 5; done"'
+  entrypoint '/bin/sh -c'
   ulimits [
     'nofile=40960:40960',
     'core=100000000:100000000',
@@ -806,7 +807,7 @@ file '/overrides/Dockerfile' do
   content <<-EOF
   FROM busybox
   RUN adduser -D bob
-  CMD [ "nc", "-ll", "-p", "4321", "-e", "/bin/cat" ]
+  CMD trap exit 0 SIGTERM; while :; do sleep 1; done
   USER bob
   ENV FOO foo
   ENV BAR bar
@@ -837,7 +838,7 @@ end
 docker_container 'overrides-2' do
   repo 'overrides'
   user 'operator'
-  command 'nc -ll -p 4322 -e /bin/cat'
+  command 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   env ['FOO=biz']
   volumes '/var/log'
   workdir '/tmp'
