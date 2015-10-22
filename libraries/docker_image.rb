@@ -6,7 +6,7 @@ module DockerCookbook
     use_automatic_resource_name
 
     # Modify the default of read_timeout from 60 to 120
-    property :read_timeout, default: 120
+    property :read_timeout, default: 120, desired_state: false
 
     # https://docs.docker.com/reference/api/docker_remote_api_v1.20/
     property :destination, [String, nil]

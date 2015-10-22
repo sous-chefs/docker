@@ -74,7 +74,7 @@ module DockerCookbook
     property :security_opts, [String, Array], default: lazy { [''] }
     property :signal, String, default: 'SIGKILL'
     property :stdin_once, [Boolean, nil], default: lazy { !detach }
-    property :timeout, [Fixnum, nil]
+    property :timeout, [Fixnum, nil], desired_state: false
     property :tty, Boolean
     property :ulimits, [Array, nil], coerce: proc { |v| coerce_ulimits(v) }
     property :user, String, default: ''
