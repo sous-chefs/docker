@@ -51,7 +51,7 @@ Cookbook Dependencies
 
 Usage
 -----
-- Add ```depends 'docker', '~> 1.0'``` to your cookbook's metadata.rb
+- Add ```depends 'docker', '~> 2.0'``` to your cookbook's metadata.rb
 - Use resources shipped in cookbook in a recipe, the same way you'd
   use core Chef resources (file, template, directory, package, etc).
 
