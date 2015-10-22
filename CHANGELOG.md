@@ -1,3 +1,8 @@
+v2.1.15
+--------------------
+- Updates to README around kill_after property on :stop action
+- Updates to various test containers to handle SIGKILL properly
+
 v2.1.14
 --------------------
 - Fixing missing property regression in docker_service
