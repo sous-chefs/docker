@@ -1,3 +1,7 @@
+v2.1.14
+--------------------
+- Fixing missing property regression in docker_service
+
 v2.1.13
 --------------------
 - Fixing up independent of docker_installation_binary resource, adding
