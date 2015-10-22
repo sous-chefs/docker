@@ -103,6 +103,54 @@ platforms:
   - recipe[apt]
 
 suites:
+#####################################
+# docker_installation_binary resource
+#####################################
+
+- name: installation_binary-162
+  includes: [
+    'ubuntu-15.04'
+  ]
+  attributes:
+    docker:
+      version: '1.6.2'
+  run_list:
+  - recipe[docker_test::installation_binary]
+
+- name: installation_binary-171
+  includes: [
+    'ubuntu-15.04'
+  ]
+  attributes:
+    docker:
+      version: '1.7.1'
+  run_list:
+  - recipe[docker_test::installation_binary]
+
+- name: installation_binary-182
+  includes: [
+    'ubuntu-15.04'
+  ]
+  attributes:
+    docker:
+      version: '1.8.2'
+  run_list:
+  - recipe[docker_test::installation_binary]
+
+
+#####################################
+# docker_installation_script resource
+#####################################
+
+# - name: installation_script
+#   includes: [
+#     'ubuntu-15.04'
+#   ]
+#   attributes:
+#     docker:
+#       version: '1.8.2'
+#   run_list:
+#   - recipe[docker_test::installation_script]
 
 ###########
 # services
@@ -110,23 +158,14 @@ suites:
 
 - name: service-default
   includes: [
-    # 'amazon-2014.09-chef-12.4.3',
     # 'amazon-2014.09',
-    # 'fedora-21-chef-12.4.3',
     # 'fedora-21',
-    # 'centos-6.5-chef-12.4.3',
     # 'centos-6.5',
-    # 'centos-7.0-chef-12.4.3',
     # 'centos-7.0',
-    # 'debian-7.0-chef-12.4.3',
     # 'debian-7.0',
-    # 'debian-8-chef-12.4.3',
     # 'debian-8',
-    # 'ubuntu-12.04-chef-12.4.3',
     # 'ubuntu-12.04',
-    # 'ubuntu-14.04-chef-12.4.3',
     # 'ubuntu-14.04',
-    # 'ubuntu-15.04-chef-12.4.3',
     'ubuntu-15.04'
   ]
   attributes:
@@ -137,23 +176,14 @@ suites:
 
 - name: service-socket
   includes: [
-    # 'amazon-2014.09-chef-12.4.3',
     # 'amazon-2014.09',
-    # 'fedora-21-chef-12.4.3',
     # 'fedora-21',
-    # 'centos-6.5-chef-12.4.3',
     # 'centos-6.5',
-    # 'centos-7.0-chef-12.4.3',
     # 'centos-7.0',
-    # 'debian-7.0-chef-12.4.3',
     # 'debian-7.0',
-    # 'debian-8-chef-12.4.3',
     # 'debian-8',
-    # 'ubuntu-12.04-chef-12.4.3',
     # 'ubuntu-12.04',
-    # 'ubuntu-14.04-chef-12.4.3',
     # 'ubuntu-14.04',
-    # 'ubuntu-15.04-chef-12.4.3',
     'ubuntu-15.04'
   ]
   attributes:
@@ -164,23 +194,14 @@ suites:
 
 - name: service-tcp
   includes: [
-    # 'amazon-2014.09-chef-12.4.3',
     # 'amazon-2014.09',
-    # 'fedora-21-chef-12.4.3',
     # 'fedora-21',
-    # 'centos-6.5-chef-12.4.3',
     # 'centos-6.5',
-    # 'centos-7.0-chef-12.4.3',
     # 'centos-7.0',
-    # 'debian-7.0-chef-12.4.3',
     # 'debian-7.0',
-    # 'debian-8-chef-12.4.3',
     # 'debian-8',
-    # 'ubuntu-12.04-chef-12.4.3',
     # 'ubuntu-12.04',
-    # 'ubuntu-14.04-chef-12.4.3',
     # 'ubuntu-14.04',
-    # 'ubuntu-15.04-chef-12.4.3',
     'ubuntu-15.04'
   ]
   attributes:
@@ -191,23 +212,14 @@ suites:
 
 - name: service-tcp-tls
   includes: [
-    # 'amazon-2014.09-chef-12.4.3',
     # 'amazon-2014.09',
-    # 'fedora-21-chef-12.4.3',
     # 'fedora-21',
-    # 'centos-6.5-chef-12.4.3',
     # 'centos-6.5',
-    # 'centos-7.0-chef-12.4.3',
     # 'centos-7.0',
-    # 'debian-7.0-chef-12.4.3',
     # 'debian-7.0',
-    # 'debian-8-chef-12.4.3',
     # 'debian-8',
-    # 'ubuntu-12.04-chef-12.4.3',
     # 'ubuntu-12.04',
-    # 'ubuntu-14.04-chef-12.4.3',
     # 'ubuntu-14.04',
-    # 'ubuntu-15.04-chef-12.4.3',
     'ubuntu-15.04'
   ]
   attributes:
@@ -272,26 +284,6 @@ suites:
       version: '1.8.2'
   run_list:
   - recipe[docker_test::notifications]
-
-- name: installation_binary
-  includes: [
-    'ubuntu-15.04'
-  ]
-  attributes:
-    docker:
-      version: '1.8.2'
-  run_list:
-  - recipe[docker_test::installation_binary]
-
-- name: installation_script
-  includes: [
-    'ubuntu-15.04'
-  ]
-  attributes:
-    docker:
-      version: '1.8.2'
-  run_list:
-  - recipe[docker_test::installation_script]
 
 # - name: timeout
 #   includes: [
