@@ -252,7 +252,7 @@ module DockerCookbook
     end
 
     action :stop do
-      next unless state['Running']
+      return unless state['Running']
       kill_after_str = " (will kill after #{kill_after}s)" if kill_after != -1
       converge_by "stopping #{container_name} #{kill_after_str}" do
         with_retries { container.stop!('t' => kill_after) }
@@ -261,7 +261,7 @@ module DockerCookbook
     end
 
     action :kill do
-      next unless state['Running']
+      return unless state['Running']
       converge_by "killing #{container_name}" do
         with_retries { container.kill(signal: signal) }
       end
