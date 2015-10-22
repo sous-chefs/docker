@@ -1,3 +1,8 @@
+v2.1.7
+--------------------
+- Fixing connection information in docker_container and helpers_base
+- Refactoring .kitchen.yml tests
+
 v2.1.6
 --------------------
 - Enabling TLS options for docker_container and docker_image
