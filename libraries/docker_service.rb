@@ -2,8 +2,8 @@ module DockerCookbook
   class DockerService < DockerBase
     require 'docker'
     require 'helpers_service'
-
     include DockerHelpers::Service
+
     use_automatic_resource_name
 
     # register with the resource resolution system
@@ -71,34 +71,19 @@ module DockerCookbook
     # Actions
     #########
 
-    # Put the appropriate bits on disk.
     action :create do
-      # Pull a precompiled binary off the network
-      remote_file docker_bin do
+      docker_installation 'default' do
         source new_resource.source
         checksum new_resource.checksum
-        owner 'root'
-        group 'root'
-        mode '0755'
         action :create
         notifies :restart, new_resource
       end
     end
 
     action :delete do
-      file docker_bin do
+      docker_installation 'default' do
         action :delete
       end
-    end
-
-    # These are implemented in subclasses.
-    action :start do
-    end
-
-    action :stop do
-    end
-
-    action :restart do
     end
 
     action_class.class_eval do
