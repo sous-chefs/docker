@@ -944,7 +944,8 @@ Most `docker_container` properties are the `snake_case` version of the
   commands to run in.
 - `read_timeout` - May need to increase for commits or exports that are slow
 - `write_timeout` - May need to increase for commits or exports that are slow
-- `kill_after` - Number of seconds to wait before killing the container
+- `kill_after` - Number of seconds to wait before killing the container. Defaults
+  to wait indefinitely; eventually will hit read_timeout limit.
 
 #### Actions
 
