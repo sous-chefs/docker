@@ -1,5 +1,8 @@
 module DockerCookbook
   class DockerInstallationBinary < DockerBase
+    require 'helpers_installation_binary'
+    include DockerHelpers::InstallationBinary
+
     #####################
     # Resource properties
     #####################
@@ -7,9 +10,10 @@ module DockerCookbook
 
     provides :docker_installation
 
-    property :source, String, default: lazy { default_source }
     property :checksum, String, default: lazy { default_checksum }
     property :docker_bin, String, default: '/usr/bin/docker'
+    property :source, String, default: lazy { default_source }
+    property :version, String, default: lazy { default_version }
 
     default_action :create
 
