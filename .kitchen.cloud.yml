@@ -103,66 +103,130 @@ platforms:
   - recipe[apt]
 
 suites:
-#
-# Resource behavior testing cookbooks
-#
-- name: service-socket-execute
-  includes: [
-    'ubuntu-15.04'
-  ]
-  attributes:
-    docker:
-      version: '1.8.2'
-      service_manager: execute
-  run_list:
-  - recipe[docker_service_test::socket]
+#####################################
+# docker_installation_binary resource
+#####################################
 
-- name: service-tls-execute
+- name: installation_binary-162
+  includes: [
+    'ubuntu-15.04'
+  ]
+  attributes:
+    docker:
+      version: '1.6.2'
+  run_list:
+  - recipe[docker_test::installation_binary]
+
+- name: installation_binary-171
+  includes: [
+    'ubuntu-15.04'
+  ]
+  attributes:
+    docker:
+      version: '1.7.1'
+  run_list:
+  - recipe[docker_test::installation_binary]
+
+- name: installation_binary-182
   includes: [
     'ubuntu-15.04'
   ]
   attributes:
     docker:
       version: '1.8.2'
-      service_manager: execute
   run_list:
-  - recipe[docker_service_test::tls]
+  - recipe[docker_test::installation_binary]
+
+
+#####################################
+# docker_installation_script resource
+#####################################
+
+# - name: installation_script
+#   includes: [
+#     'ubuntu-15.04'
+#   ]
+#   attributes:
+#     docker:
+#       version: '1.8.2'
+#   run_list:
+#   - recipe[docker_test::installation_script]
+
+###########
+# services
+###########
+
+- name: service-default
+  includes: [
+    # 'amazon-2014.09',
+    # 'fedora-21',
+    # 'centos-6.5',
+    # 'centos-7.0',
+    # 'debian-7.0',
+    # 'debian-8',
+    # 'ubuntu-12.04',
+    # 'ubuntu-14.04',
+    'ubuntu-15.04'
+  ]
+  attributes:
+    docker:
+      version: '1.8.2'
+  run_list:
+  - recipe[docker_service_test::default]
 
 - name: service-socket
   includes: [
-    'amazon-2014.09',
-    'fedora-21',
-    'centos-6.5',
-    'centos-7.0',
-    'debian-7.0',
-    'debian-8',
-    'ubuntu-12.04',
-    'ubuntu-14.04',
+    # 'amazon-2014.09',
+    # 'fedora-21',
+    # 'centos-6.5',
+    # 'centos-7.0',
+    # 'debian-7.0',
+    # 'debian-8',
+    # 'ubuntu-12.04',
+    # 'ubuntu-14.04',
     'ubuntu-15.04'
   ]
   attributes:
     docker:
-      service_manager: system
+      version: '1.8.2'
   run_list:
   - recipe[docker_service_test::socket]
 
-- name: service-tls
+- name: service-tcp
   includes: [
-    'amazon-2014.09',
-    'fedora-21',
-    'centos-6.5',
-    'centos-7.0',
-    'debian-7.0',
-    'debian-8',
-    'ubuntu-12.04',
-    'ubuntu-14.04',
-    'ubuntu-15.04',
+    # 'amazon-2014.09',
+    # 'fedora-21',
+    # 'centos-6.5',
+    # 'centos-7.0',
+    # 'debian-7.0',
+    # 'debian-8',
+    # 'ubuntu-12.04',
+    # 'ubuntu-14.04',
+    'ubuntu-15.04'
   ]
   attributes:
     docker:
-      service_manager: system
+      version: '1.8.2'
   run_list:
-  - recipe[docker_service_test::tls]
+  - recipe[docker_service_test::tcp]
+
+- name: service-tcp-tls
+  includes: [
+    # 'amazon-2014.09',
+    # 'fedora-21',
+    # 'centos-6.5',
+    # 'centos-7.0',
+    # 'debian-7.0',
+    # 'debian-8',
+    # 'ubuntu-12.04',
+    # 'ubuntu-14.04',
+    'ubuntu-15.04'
+  ]
+  attributes:
+    docker:
+      version: '1.8.2'
+  run_list:
+  - recipe[docker_service_test::tcp-tls]
 
 - name: resources-162
   includes: [
