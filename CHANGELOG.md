@@ -1,3 +1,8 @@
+v2.1.13
+--------------------
+- Fixing up independent of docker_installation_binary resource, adding
+  kitchen suites and serverspec tests
+
 v2.1.12
 --------------------
 - #531 - Bugfix for invalid parameters in docker_container :stop
