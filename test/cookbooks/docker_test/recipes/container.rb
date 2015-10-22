@@ -872,3 +872,55 @@ docker_container 'syslogger' do
   log_opts 'syslog-tag=container-syslogger'
   action :run_if_missing
 end
+
+############
+# kill_after
+############
+
+# start a container that can't be stopped and relies on kill_after
+
+directory '/kill_after' do
+  owner 'root'
+  group 'root'
+  action :create
+end
+
+file '/kill_after/loop.sh' do
+  content <<-EOF
+  #!/bin/sh
+  trap 'exit 0' SIGTERM
+  while true; do :; done
+  EOF
+  notifies :build, 'docker_image[kill_after]'
+  action :create
+end
+
+file '/kill_after/Dockerfile' do
+  content <<-EOF
+  FROM busybox
+  ADD loop.sh /
+  RUN chmod +x /loop.sh
+  CMD "/loop.sh"
+  EOF
+  notifies :build, 'docker_image[kill_after]'
+  action :create
+end
+
+docker_image 'kill_after' do
+  tag 'latest'
+  source '/kill_after'
+  force true
+  action :build_if_missing
+end
+
+execute 'kill_after' do
+  command 'docker run --name kill_after -d kill_after'
+  not_if "[ ! -z `docker ps -qaf 'name=kill_after$'` ]"
+  action :run
+end
+
+docker_container 'kill_after' do
+  repo 'kill_after'
+  kill_after 30
+  action :stop
+end
