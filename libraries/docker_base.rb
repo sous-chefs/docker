@@ -1,91 +1,89 @@
-require 'helpers_auth'
-require 'helpers_base'
+module DockerCookbook
+  class DockerBase < ChefCompat::Resource
+    require 'helpers_auth'
+    require 'helpers_base'
 
-class Chef
-  class Resource
-    class DockerBase < ChefCompat::Resource
-      include DockerHelpers::Base
+    include DockerHelpers::Base
 
-      #########
-      # Classes
-      #########
+    #########
+    # Classes
+    #########
 
-      class UnorderedArray < Array
-        def ==(other)
-          # If I (desired env) am a subset of the current env, let == return true
-          other.is_a?(Array) && self.all? { |val| other.include?(val) }
-        end
+    class UnorderedArray < Array
+      def ==(other)
+        # If I (desired env) am a subset of the current env, let == return true
+        other.is_a?(Array) && self.all? { |val| other.include?(val) }
       end
+    end
 
-      class ShellCommandString < String
-        def ==(other)
-          other.is_a?(String) && Shellwords.shellwords(self) == Shellwords.shellwords(other)
-        end
+    class ShellCommandString < String
+      def ==(other)
+        other.is_a?(String) && Shellwords.shellwords(self) == Shellwords.shellwords(other)
       end
+    end
 
-      class PartialHash < Hash
-        def ==(other)
-          other.is_a?(Hash) && self.all? { |key, val| other.key?(key) && other[key] == val }
-        end
+    class PartialHash < Hash
+      def ==(other)
+        other.is_a?(Hash) && self.all? { |key, val| other.key?(key) && other[key] == val }
       end
+    end
 
-      ################
-      # Type Constants
-      #
-      # These will be used when declaring resource property types in the
-      # docker_service, docker_container, and docker_image resource.
-      #
-      ################
+    ################
+    # Type Constants
+    #
+    # These will be used when declaring resource property types in the
+    # docker_service, docker_container, and docker_image resource.
+    #
+    ################
 
-      ArrayType = property_type(
-        is: [Array, nil],
-        coerce: proc { |v| v.nil? ? nil : Array(v) }
-      ) unless defined?(ArrayType)
+    ArrayType = property_type(
+      is: [Array, nil],
+      coerce: proc { |v| v.nil? ? nil : Array(v) }
+    ) unless defined?(ArrayType)
 
-      Boolean = property_type(
-        is: [true, false],
-        default: false
-      ) unless defined?(Boolean)
+    Boolean = property_type(
+      is: [true, false],
+      default: false
+    ) unless defined?(Boolean)
 
-      NonEmptyArray = property_type(
-        is: [Array, nil],
-        coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
-      ) unless defined?(NonEmptyArray)
+    NonEmptyArray = property_type(
+      is: [Array, nil],
+      coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
+    ) unless defined?(NonEmptyArray)
 
-      ShellCommand = property_type(
-        is: [String],
-        coerce: proc { |v| coerce_shell_command(v) }
-      ) unless defined?(ShellCommand)
+    ShellCommand = property_type(
+      is: [String],
+      coerce: proc { |v| coerce_shell_command(v) }
+    ) unless defined?(ShellCommand)
 
-      UnorderedArrayType = property_type(
-        is: [UnorderedArray, nil],
-        coerce: proc { |v| v.nil? ? nil : UnorderedArray.new(Array(v)) }
-      ) unless defined?(UnorderedArrayType)
+    UnorderedArrayType = property_type(
+      is: [UnorderedArray, nil],
+      coerce: proc { |v| v.nil? ? nil : UnorderedArray.new(Array(v)) }
+    ) unless defined?(UnorderedArrayType)
 
-      PartialHashType = property_type(
-        is: [PartialHash, nil],
-        coerce: proc { |v| v.nil? ? nil : PartialHash[v] }
-      ) unless defined?(PartialHashType)
+    PartialHashType = property_type(
+      is: [PartialHash, nil],
+      coerce: proc { |v| v.nil? ? nil : PartialHash[v] }
+    ) unless defined?(PartialHashType)
 
-      #####################
-      # Resource properties
-      #####################
+    #####################
+    # Resource properties
+    #####################
 
-      property :api_retries,       Fixnum,        default: 3, desired_state: false
-      property :read_timeout,      [Fixnum, nil], default: 60, desired_state: false
-      property :write_timeout,     [Fixnum, nil], desired_state: false
+    property :api_retries,       Fixnum,        default: 3, desired_state: false
+    property :read_timeout,      [Fixnum, nil], default: 60, desired_state: false
+    property :write_timeout,     [Fixnum, nil], desired_state: false
 
-      property :tls, [Boolean, nil], desired_state: false
-      property :tls_verify, [Boolean, nil], desired_state: false
-      property :tls_ca_cert, [String, nil], desired_state: false
-      property :tls_server_cert, [String, nil], desired_state: false
-      property :tls_server_key, [String, nil], desired_state: false
-      property :tls_client_cert, [String, nil], desired_state: false
-      property :tls_client_key, [String, nil], desired_state: false
+    property :tls, [Boolean, nil], desired_state: false
+    property :tls_verify, [Boolean, nil], desired_state: false
+    property :tls_ca_cert, [String, nil], desired_state: false
+    property :tls_server_cert, [String, nil], desired_state: false
+    property :tls_server_key, [String, nil], desired_state: false
+    property :tls_client_cert, [String, nil], desired_state: false
+    property :tls_client_key, [String, nil], desired_state: false
 
-      declare_action_class.class_eval do
-        include DockerHelpers::Authentication
-      end
+    declare_action_class.class_eval do
+      include DockerHelpers::Authentication
     end
   end
 end
