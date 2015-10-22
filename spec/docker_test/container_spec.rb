@@ -142,7 +142,7 @@ describe 'docker_test::container' do
   context 'testing action :stop' do
     it 'run execute[hammer_time]' do
       expect(chef_run).to run_execute('hammer_time').with(
-        command:  'docker run --name hammer_time -d busybox nc -ll -p 187 -e /bin/cat'
+        command:  'docker run --name hammer_time -d busybox sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
       )
     end
 
@@ -210,7 +210,7 @@ describe 'docker_test::container' do
   context 'testing action :delete' do
     it 'run execute[deleteme]' do
       expect(chef_run).to run_execute('deleteme').with(
-        command: 'docker run --name deleteme -d busybox nc -ll -p 187 -e /bin/cat'
+        command: 'docker run --name deleteme -d busybox sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
       )
     end
 
@@ -228,7 +228,7 @@ describe 'docker_test::container' do
       expect(chef_run).to run_docker_container('redeployer').with(
         repo: 'alpine',
         tag: '3.1',
-        command: 'nc -ll -p 7777 -e /bin/cat',
+        command: 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"',
         port: ['7']
       )
     end
@@ -237,7 +237,7 @@ describe 'docker_test::container' do
       expect(chef_run).to create_docker_container('unstarted_redeployer').with(
         repo: 'alpine',
         tag: '3.1',
-        command: 'nc -ll -p 7777 -e /bin/cat',
+        command: 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"',
         port: ['7']
       )
     end
@@ -525,7 +525,7 @@ describe 'docker_test::container' do
         repo: 'alpine',
         tag: '3.1',
         env: ['FOO=bar', 'BIZ=baz'],
-        command: 'nc -ll -p 321 -e /bin/cat',
+        command: 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"',
         port: ['321']
       )
     end
@@ -535,7 +535,7 @@ describe 'docker_test::container' do
         repo: 'alpine',
         tag: '3.1',
         env: ['FOO=few', 'BIZ=buzz'],
-        command: 'nc -ll -p 322 -e /bin/cat',
+        command: 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"',
         port: ['322']
       )
     end
@@ -714,7 +714,7 @@ describe 'docker_test::container' do
   context 'testing uber_options' do
     it 'runs execute[uber_options]' do
       expect(chef_run).to run_execute('uber_options').with(
-        command: 'docker run --name uber_options -d busybox nc -ll -p 187 -e /bin/cat'
+        command: 'docker run --name uber_options -d busybox sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
       )
     end
 
@@ -742,8 +742,8 @@ describe 'docker_test::container' do
         port: ['1234:1234'],
         volumes_from: ['chef_container'],
         user: 'operator',
-        command: "-c 'nc -ll -p 1234 -e /bin/cat'",
-        entrypoint: '/bin/sh',
+        entrypoint: '/bin/sh -c',
+        command: '"trap exit 0 SIGTERM; while :; do sleep 5; done"',
         ulimits: [
           'nofile=40960:40960',
           'core=100000000:100000000',
@@ -784,7 +784,7 @@ describe 'docker_test::container' do
       expect(chef_run).to run_docker_container('overrides-2').with(
         repo: 'overrides',
         user: 'operator',
-        command: 'nc -ll -p 4322 -e /bin/cat',
+        command: 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"',
         env: ['FOO=biz'],
         volume: { '/var/log' => {} },
         workdir: '/tmp'
