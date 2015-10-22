@@ -1,3 +1,7 @@
+v2.1.11
+--------------------
+- Fixing LocalJumpError in docker_container
+
 v2.1.10
 --------------------
 - Adding 'desired_state: false' to various timeouts
