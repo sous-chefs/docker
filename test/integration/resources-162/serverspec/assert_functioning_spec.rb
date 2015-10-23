@@ -34,10 +34,12 @@ nil_string = '<nil>' if docker_version =~ /1.8/
 
 # docker_service[default]
 
-describe command('docker info') do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/environment="test"/) }
-  its(:stdout) { should match(/foo="bar"/) }
+unless docker_version =~ /1.6/
+  describe command('docker info') do
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match(/environment="test"/) }
+    its(:stdout) { should match(/foo="bar"/) }
+  end
 end
 
 ##############################################

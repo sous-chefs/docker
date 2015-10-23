@@ -82,7 +82,6 @@ module DockerCookbook
     #########
 
     action :create do
-
       property_def = proc do
         # used by binary install
         source new_resource.source if new_resource.source
