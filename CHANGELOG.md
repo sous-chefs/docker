@@ -1,3 +1,7 @@
+v2.1.17
+--------------------
+- Fixing merge meant for v2.1.16
+
 v2.1.16
 --------------------
 - Adding install_method property to select docker_installation resource
