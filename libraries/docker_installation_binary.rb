@@ -8,7 +8,7 @@ module DockerCookbook
     #####################
     use_automatic_resource_name
 
-    provides :docker_installation
+    provides :docker_installation, os: 'linux'
 
     property :checksum, String, default: lazy { default_checksum }
     property :docker_bin, String, default: '/usr/bin/docker'

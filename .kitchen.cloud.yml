@@ -232,6 +232,7 @@ suites:
 - name: resources-162
   includes: [
     'debian-8.1',
+    # 'centos-6.5',
     'centos-7.0',
     'fedora-21',
     'ubuntu-14.04',

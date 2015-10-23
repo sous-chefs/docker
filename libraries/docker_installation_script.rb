@@ -5,8 +5,6 @@ module DockerCookbook
     #####################
     use_automatic_resource_name
 
-    provides :docker_installation
-
     property :repo, %w(main testing experimental), default: 'main'
     property :script_url, String, default: lazy { default_script_url }
 

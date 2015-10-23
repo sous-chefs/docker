@@ -27,6 +27,20 @@ IPV4_CIDR ||= %r{(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[
 module DockerCookbook
   module DockerHelpers
     module Service
+      # FIXME: Dupe with docker_installation
+      # Needed by service resources
+      # Needed by docker_daemon_arg helper method
+      def default_version
+        if node['platform'] == 'amazon' ||
+            node['platform'] == 'ubuntu' && node['platform_version'].to_f < 15.04 ||
+            node['platform_family'] == 'rhel' && node['platform_version'].to_i < 7 ||
+            node['platform_family'] == 'debian' && node['platform_version'].to_i <= 7
+          '1.6.2'
+        else
+          '1.8.2'
+        end
+      end
+
       def connect_host
         return nil unless host
         sorted = coerce_host(host).sort do |a, b|
