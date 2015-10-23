@@ -813,4 +813,39 @@ describe 'docker_test::container' do
       )
     end
   end
+
+  context 'testing kill_after' do
+    it 'creates directory[/kill_after]' do
+      expect(chef_run).to create_directory('/kill_after').with(
+        owner: 'root',
+        group: 'root'
+      )
+    end
+
+    it 'creates file[/kill_after/loop.sh]' do
+      expect(chef_run).to create_file('/kill_after/loop.sh')
+    end
+
+    it 'creates file[/kill_after/Dockerfile]' do
+      expect(chef_run).to create_file('/kill_after/Dockerfile')
+    end
+
+    it 'build_if_missing docker_image[kill_after]' do
+      expect(chef_run).to build_if_missing_docker_image('kill_after').with(
+        tag: 'latest',
+        source: '/kill_after',
+        force: true
+      )
+    end
+
+    it 'run execute[kill_after]' do
+      expect(chef_run).to run_execute('kill_after').with(
+        command: 'docker run --name kill_after -d kill_after'
+      )
+    end
+
+    it 'stop docker_container[kill_after]' do
+      expect(chef_run).to stop_docker_container('kill_after')
+    end
+  end
 end
