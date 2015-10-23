@@ -9,11 +9,18 @@ module DockerCookbook
     # register with the resource resolution system
     provides :docker_service
 
-    # docker_installation_binary
+    # installation type
+    property :install_method, %w(binary script none auto), default: 'binary', desired_state: false
+
+    # docker_installation_binary, passed through
     property :source, [String, nil], desired_state: false
-    property :version, [String, nil], desired_state: false
     property :checksum, [String, nil], desired_state: false
     property :docker_bin, String, default: '/usr/bin/docker', desired_state: false
+    property :version, String, default: lazy { default_version }, desired_state: false
+
+    # docker_installation_script, through
+    property :repo, [String, nil]
+    property :script_url, [String, nil]
 
     # daemon management
     property :instance, String, name_property: true, required: true, desired_state: false
@@ -75,11 +82,28 @@ module DockerCookbook
     #########
 
     action :create do
-      docker_installation 'default' do
+
+      property_def = proc do
+        # used by binary install
         source new_resource.source if new_resource.source
         checksum new_resource.checksum if new_resource.checksum
+        version new_resource.version if new_resource.version
+        # used by script install
+        repo new_resource.repo if new_resource.repo
+        script_url new_resource.script_url if new_resource.script_url
         action :create
         notifies :restart, new_resource
+      end
+
+      case install_method
+      when 'auto'
+        docker_installation(new_resource.instance, &property_def)
+      when 'binary'
+        docker_installation_binary(new_resource.instance, &property_def)
+      when 'script'
+        docker_installation_script(new_resource.instance, &property_def)
+      when 'none'
+        Chef::Log.info('Skipping Docker installation. Assuming it was handled previously.')
       end
     end
 

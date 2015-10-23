@@ -203,7 +203,7 @@ end
 
 describe command("docker ps -af 'name=hammer_time$'") do
   its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/Exited \(137\)/) }
+  its(:stdout) { should match(/Exited/) }
 end
 
 # docker_container[red_light]
@@ -649,9 +649,11 @@ if docker_version.to_f > 1.6
     its(:stdout) { should match(/#{uber_options_network_mode}/) }
   end
 
+  # docker inspect returns the labels unsorted
   describe command("docker inspect -f '{{ .Config.Labels }}' uber_options") do
     its(:exit_status) { should eq 0 }
-    its(:stdout) { should match(/foo:bar hello:world/) }
+    its(:stdout) { should match(/foo:bar/) }
+    its(:stdout) { should match(/hello:world/) }
   end
 end
 
@@ -659,7 +661,7 @@ end
 
 describe command("docker ps -af 'name=overrides-1$'") do
   its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/Exited/) }
+  its(:stdout) { should_not match(/Exited/) }
 end
 
 describe command('docker inspect -f "{{ .Config.User }}" overrides-1') do
@@ -696,7 +698,7 @@ end
 
 describe command("docker ps -af 'name=overrides-2$'") do
   its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/Exited/) }
+  its(:stdout) { should_not match(/Exited/) }
 end
 
 describe command('docker inspect -f "{{ .Config.User }}" overrides-2') do
@@ -743,19 +745,15 @@ end
 
 # docker_container[host_override]
 
-describe command("docker ps -af 'name=host_override'") do
+describe command("docker ps -af 'name=host_override$'") do
   its(:exit_status) { should eq 0 }
 end
 
 # docker_container[kill_after]
 
-describe command("docker ps -af 'name=kill_after'") do
+describe command("docker ps -af 'name=kill_after$'") do
   its(:exit_status) { should eq 0 }
-end
-
-describe command("docker inspect -f '{{.State.ExitCode}}' kill_after") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/137/) }
+  its(:stdout) { should match(/Exited \(137\)/) }
 end
 
 kill_after_start = `docker inspect -f '{{.State.StartedAt}}' kill_after`
@@ -768,4 +766,17 @@ kill_after_run_time = kill_after_finish - kill_after_start
 
 describe kill_after_run_time do
   it { should be_within(5).of(30) }
+end
+
+# except for a few, containers shouldnt be killed
+
+describe command("docker ps -qaf 'exited=137' | wc -l") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/2/) }
+end
+
+describe command("docker ps -af 'exited=137'") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/kill_after/) }
+  its(:stdout) { should match(/bill/) }
 end

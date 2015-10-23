@@ -1,3 +1,9 @@
+v2.1.16
+--------------------
+- Adding install_method property to select docker_installation resource
+- Using docker_installation_binary by default
+- Fixing up serverspec for pre-182 resource test recipes
+              
 v2.1.15
 --------------------
 - Updates to README around kill_after property on :stop action
