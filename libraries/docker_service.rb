@@ -76,8 +76,8 @@ module DockerCookbook
 
     action :create do
       docker_installation 'default' do
-        source new_resource.source
-        checksum new_resource.checksum
+        source new_resource.source if new_resource.source
+        checksum new_resource.checksum if new_resource.checksum
         action :create
         notifies :restart, new_resource
       end

@@ -1,3 +1,3 @@
-# docker_installation_script 'default' do
-#   action :create
-# end
+docker_installation_script 'default' do
+  action :create
+end
