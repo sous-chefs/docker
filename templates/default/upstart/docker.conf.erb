@@ -46,22 +46,29 @@ script
   if [ -f /etc/default/$UPSTART_JOB ]; then
     . /etc/default/$UPSTART_JOB
   fi
-  exec "$DOCKER" <%= @docker_daemon_arg %> $DOCKER_DAEMON_OPTS >> <%= @config.logfile %>
+  exec <%= @docker_daemon_cmd %> >> <%= @config.logfile %>
 end script
 
 # Don't emit "started" event until docker.sock is ready.
 # See https://github.com/docker/docker/issues/6647
 post-start script
-  DOCKER_DAEMON_OPTS=
-  if [ -f /etc/default/$UPSTART_JOB ]; then
-    . /etc/default/$UPSTART_JOB
-  fi
-  if ! printf "%s" "$DOCKER_DAEMON_OPTS" | grep -qE -e '-H|--host'; then
-    while ! [ -e /var/run/docker.sock ]; do
+    running() {
+        RUNNING=1
+        RESPONSE=`<%= @docker_cmd %> ps 2>&1 | head -n 1`
+        local mret=$?
+        if [ $mret -eq 0 ] \
+        || [ `echo $RESPONSE | grep -q "Is your docker"` ]; then
+            RUNNING=0
+        fi
+        return $RUNNING
+    }
+
+    while ! running ; do
       initctl status $UPSTART_JOB | grep -q "stop/" && exit 1
-      echo "Waiting for /var/run/docker.sock"
+      echo "Waiting for Docker"
       sleep 0.1
     done
-    echo "/var/run/docker.sock is up"
+
+    echo "Docker is up"
   fi
 end script

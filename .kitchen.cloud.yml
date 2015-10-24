@@ -202,77 +202,87 @@ suites:
   run_list:
   - recipe[docker_test::service_sysvinit]
 
-################
-# (old) services
-################
-
-- name: service-default
+#################################
+# docker_service_upstart resource
+#################################
+- name: service-upstart
   includes: [
-    # 'amazon-2014.09',
-    # 'centos-6.5',
-    # 'centos-7.0',
-    # 'fedora-21',
-    # 'debian-8.1',
-    # 'ubuntu-12.04',
-    # 'ubuntu-14.04',
-    'ubuntu-15.10'
+    'ubuntu-14.04'
   ]
-  attributes:
-    docker:
-      version: '1.8.3'
   run_list:
-  - recipe[docker_service_test::default]
+  - recipe[docker_test::service_upstart]
 
-- name: service-socket
-  includes: [
-    # 'amazon-2014.09',
-    # 'centos-6.5',
-    # 'centos-7.0',
-    # 'fedora-21',
-    # 'debian-8.1',
-    # 'ubuntu-12.04',
-    # 'ubuntu-14.04',
-    'ubuntu-15.10'
-  ]
-  attributes:
-    docker:
-      version: '1.8.3'
-  run_list:
-  - recipe[docker_service_test::socket]
+# ################
+# # (old) services
+# ################
 
-- name: service-tcp
-  includes: [
-    # 'amazon-2014.09',
-    # 'centos-6.5',
-    # 'centos-7.0',
-    # 'fedora-21',
-    # 'debian-8.1',
-    # 'ubuntu-12.04',
-    # 'ubuntu-14.04',
-    'ubuntu-15.10'
-  ]
-  attributes:
-    docker:
-      version: '1.8.3'
-  run_list:
-  - recipe[docker_service_test::tcp]
+# - name: service-default
+#   includes: [
+#     # 'amazon-2014.09',
+#     # 'centos-6.5',
+#     # 'centos-7.0',
+#     # 'fedora-21',
+#     # 'debian-8.1',
+#     # 'ubuntu-12.04',
+#     # 'ubuntu-14.04',
+#     'ubuntu-15.10'
+#   ]
+#   attributes:
+#     docker:
+#       version: '1.8.3'
+#   run_list:
+#   - recipe[docker_service_test::default]
 
-- name: service-tcp-tls
-  includes: [
-    # 'amazon-2014.09',
-    # 'centos-6.5',
-    # 'centos-7.0',
-    # 'fedora-21',
-    # 'debian-8.1',
-    # 'ubuntu-12.04',
-    # 'ubuntu-14.04',
-    'ubuntu-15.10'
-  ]
-  attributes:
-    docker:
-      version: '1.8.3'
-  run_list:
-  - recipe[docker_service_test::tcp-tls]
+# - name: service-socket
+#   includes: [
+#     # 'amazon-2014.09',
+#     # 'centos-6.5',
+#     # 'centos-7.0',
+#     # 'fedora-21',
+#     # 'debian-8.1',
+#     # 'ubuntu-12.04',
+#     # 'ubuntu-14.04',
+#     'ubuntu-15.10'
+#   ]
+#   attributes:
+#     docker:
+#       version: '1.8.3'
+#   run_list:
+#   - recipe[docker_service_test::socket]
+
+# - name: service-tcp
+#   includes: [
+#     # 'amazon-2014.09',
+#     # 'centos-6.5',
+#     # 'centos-7.0',
+#     # 'fedora-21',
+#     # 'debian-8.1',
+#     # 'ubuntu-12.04',
+#     # 'ubuntu-14.04',
+#     'ubuntu-15.10'
+#   ]
+#   attributes:
+#     docker:
+#       version: '1.8.3'
+#   run_list:
+#   - recipe[docker_service_test::tcp]
+
+# - name: service-tcp-tls
+#   includes: [
+#     # 'amazon-2014.09',
+#     # 'centos-6.5',
+#     # 'centos-7.0',
+#     # 'fedora-21',
+#     # 'debian-8.1',
+#     # 'ubuntu-12.04',
+#     # 'ubuntu-14.04',
+#     'ubuntu-15.10'
+#   ]
+#   attributes:
+#     docker:
+#       version: '1.8.3'
+#   run_list:
+#   - recipe[docker_service_test::tcp-tls]
 
 - name: resources-171
   includes: [

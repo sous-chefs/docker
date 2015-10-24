@@ -9,8 +9,6 @@ module DockerCookbook
     provides :docker_service, platform: 'debian'
 
     action :start do
-      action_stop unless resource_changes.empty?
-      # TODO: ^ convert this to the 12.5 way
       create_init
       create_service
     end
@@ -47,6 +45,7 @@ module DockerCookbook
             docker_tls_verify: tls_verify
           )
           action :create
+          notifies :restart, new_resource
         end
       end
 
