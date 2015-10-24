@@ -191,6 +191,17 @@ suites:
   run_list:
   - recipe[docker_test::service_execute]
 
+##################################
+# docker_service_sysvinit resource
+##################################
+- name: service-sysvinit
+  includes: [
+    'centos-6.5',
+    'ubuntu-12.04'
+  ]
+  run_list:
+  - recipe[docker_test::service_sysvinit]
+
 ################
 # (old) services
 ################
