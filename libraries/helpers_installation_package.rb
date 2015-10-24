@@ -20,7 +20,7 @@ module DockerCookbook
         return true if node['platform'] == 'debian' && node['platform_version'].to_i == 8
         false
       end
-      
+
       def precise?
         return true if node['platform'] == 'ubuntu' && node['platform_version'] == '12.04'
         false
