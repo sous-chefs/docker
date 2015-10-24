@@ -14,99 +14,147 @@ provisioner:
       container_cmd_timeout: 30
 
 platforms:
-- name: centos-6.5-chef-12.4.3
-  driver_config:
-    require_chef_omnibus: 12.4.3
-    box: opscode-centos-6.5
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-6.5_chef-provisionerless.box
-
-- name: centos-7.0-chef-12.4.3
-  driver_config:
-    require_chef_omnibus: 12.4.3
-    box: opscode-centos-7.0
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-7.0_chef-provisionerless.box
-
-# *shakes fist at systemd*
-- name: debian-8.1-chef-12.4.3
-  driver_config:
-    require_chef_omnibus: 12.4.3
-    box: opscode-debian-8.1
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_debian-8.1_chef-provisionerless.box
-
-- name: fedora-21-chef-12.4.3
-  driver_config:
-    require_chef_omnibus: 12.4.3
-    box: opscode-fedora-21
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_fedora-21_chef-provisionerless.box
-
-- name: ubuntu-12.04-chef-12.4.3
-  run_list:
-    - recipe[apt]
-  driver_config:
-    require_chef_omnibus: 12.4.3
-    box: opscode-ubuntu-12.04
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-12.04_chef-provisionerless.box
-
-- name: ubuntu-14.04-chef-12.4.3
-  run_list:
-    - recipe[apt]
-  driver_config:
-    require_chef_omnibus: 12.4.3
-    box: opscode-ubuntu-14.04
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-14.04_chef-provisionerless.box
-
-- name: ubuntu-15.04-chef-12.4.3
-  run_list:
-    - recipe[apt]
-  driver_config:
-    require_chef_omnibus: 12.4.3
-    box: opscode-ubuntu-15.04
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-15.04_chef-provisionerless.box
-
-- name: centos-6.5-chef-latest
+- name: centos-6.5
   driver_config:
     box: opscode-centos-6.5
     box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-6.5_chef-provisionerless.box
+  run_list:
+  - recipe[yum-docker]
 
-- name: centos-7.0-chef-latest
+- name: centos-7.0
   driver_config:
     box: opscode-centos-7.0
     box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-7.0_chef-provisionerless.box
+  run_list:
+  - recipe[yum-docker]
 
-# *shakes fist at systemd*
-- name: debian-8.1-chef-latest
-  driver_config:
-    box: opscode-debian-8.1
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_debian-8.1_chef-provisionerless.box
-
-- name: fedora-21-chef-latest
+- name: fedora-21
   driver_config:
     box: opscode-fedora-21
     box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_fedora-21_chef-provisionerless.box
+  run_list:
+  - recipe[yum-docker]
 
-- name: ubuntu-12.04-chef-latest
+- name: debian-8.1
+  driver_config:
+    box: opscode-debian-8.1
+    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_debian-8.1_chef-provisionerless.box
+  run_list:
+  - recipe[apt]
+  - recipe[apt-docker]
+
+- name: ubuntu-12.04
   run_list:
     - recipe[apt]
   driver_config:
     box: opscode-ubuntu-12.04
     box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-12.04_chef-provisionerless.box
+  run_list:
+  - recipe[apt]
+  - recipe[apt-docker]
 
-- name: ubuntu-14.04-chef-latest
+- name: ubuntu-14.04
   run_list:
     - recipe[apt]
   driver_config:
     box: opscode-ubuntu-14.04
     box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-14.04_chef-provisionerless.box
+  run_list:
+  - recipe[apt]
+  - recipe[apt-docker]
 
-- name: ubuntu-15.04-chef-latest
+- name: ubuntu-15.04
   run_list:
     - recipe[apt]
   driver_config:
     box: opscode-ubuntu-15.04
     box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-15.04_chef-provisionerless.box
-
+  run_list:
+  - recipe[apt]
+  - recipe[apt-docker]
 
 suites:
+#####################################
+# docker_installation_binary resource
+#####################################
+
+- name: installation_binary-162
+  includes: [
+    'ubuntu-15.04'
+  ]
+  attributes:
+    docker:
+      version: '1.6.2'
+  run_list:
+  - recipe[docker_test::installation_binary]
+
+- name: installation_binary-171
+  includes: [
+    'ubuntu-15.04'
+  ]
+  attributes:
+    docker:
+      version: '1.7.1'
+  run_list:
+  - recipe[docker_test::installation_binary]
+
+- name: installation_binary-182
+  includes: [
+    'ubuntu-15.04'
+  ]
+  attributes:
+    docker:
+      version: '1.8.3'
+  run_list:
+  - recipe[docker_test::installation_binary]
+
+
+#####################################
+# docker_installation_script resource
+#####################################
+
+- name: installation_script
+  includes: [
+    'ubuntu-15.04',
+    'centos-7.0'
+  ]
+  # attributes:
+  #   docker:
+  #     version: '1.8.3'
+  run_list:
+  - recipe[docker_test::installation_script]
+
+######################################
+# docker_installation_package resource
+######################################
+
+- name: installation_package-171
+  includes: [
+    'centos-6.5',
+    'ubuntu-12.04',
+    'ubuntu-14.04',
+    'ubuntu-15.04'
+  ]
+  attributes:
+    docker:
+      version: '1.7.1'
+  run_list:
+  - recipe[docker_test::installation_package]
+
+- name: installation_package-183
+  includes: [
+    'centos-6.5',
+    'debian-8.1',
+    'fedora-21',
+    'ubuntu-12.04',
+    'ubuntu-14.04',
+    'ubuntu-15.04'
+  ]
+  attributes:
+    docker:
+      version: '1.8.3'
+  run_list:
+  - recipe[docker_test::installation_package]
 
 ###########
 # services
@@ -114,109 +162,73 @@ suites:
 
 - name: service-default
   includes: [
-    # 'amazon-2014.09-chef-12.4.3',
-    # 'amazon-2014.09-chef-latest',
-    # 'fedora-21-chef-12.4.3',
-    # 'fedora-21-chef-latest',
-    # 'centos-6.5-chef-12.4.3',
-    # 'centos-6.5-chef-latest',
-    # 'centos-7.0-chef-12.4.3',
-    # 'centos-7.0-chef-latest',
-    # 'debian-7.0-chef-12.4.3',
-    # 'debian-7.0-chef-latest',
-    # 'debian-8-chef-12.4.3',
-    # 'debian-8-chef-latest',
-    # 'ubuntu-12.04-chef-12.4.3',
-    # 'ubuntu-12.04-chef-latest',
-    # 'ubuntu-14.04-chef-12.4.3',
-    # 'ubuntu-14.04-chef-latest',
-    # 'ubuntu-15.04-chef-12.4.3',
-    'ubuntu-15.04-chef-latest'
+    # 'amazon-2014.09',
+    # 'fedora-21',
+    # 'centos-6.5',
+    # 'centos-7.0',
+    # 'debian-7.0',
+    # 'debian-8',
+    # 'ubuntu-12.04',
+    # 'ubuntu-14.04',
+    'ubuntu-15.04'
   ]
   attributes:
     docker:
-      version: '1.8.2'
+      version: '1.8.3'
   run_list:
   - recipe[docker_service_test::default]
 
 - name: service-socket
   includes: [
-    # 'amazon-2014.09-chef-12.4.3',
-    # 'amazon-2014.09-chef-latest',
-    # 'fedora-21-chef-12.4.3',
-    # 'fedora-21-chef-latest',
-    # 'centos-6.5-chef-12.4.3',
-    # 'centos-6.5-chef-latest',
-    # 'centos-7.0-chef-12.4.3',
-    # 'centos-7.0-chef-latest',
-    # 'debian-7.0-chef-12.4.3',
-    # 'debian-7.0-chef-latest',
-    # 'debian-8-chef-12.4.3',
-    # 'debian-8-chef-latest',
-    # 'ubuntu-12.04-chef-12.4.3',
-    # 'ubuntu-12.04-chef-latest',
-    # 'ubuntu-14.04-chef-12.4.3',
-    # 'ubuntu-14.04-chef-latest',
-    # 'ubuntu-15.04-chef-12.4.3',
-    'ubuntu-15.04-chef-latest'
+    # 'amazon-2014.09',
+    # 'fedora-21',
+    # 'centos-6.5',
+    # 'centos-7.0',
+    # 'debian-7.0',
+    # 'debian-8',
+    # 'ubuntu-12.04',
+    # 'ubuntu-14.04',
+    'ubuntu-15.04'
   ]
   attributes:
     docker:
-      version: '1.8.2'
+      version: '1.8.3'
   run_list:
   - recipe[docker_service_test::socket]
 
 - name: service-tcp
   includes: [
-    # 'amazon-2014.09-chef-12.4.3',
-    # 'amazon-2014.09-chef-latest',
-    # 'fedora-21-chef-12.4.3',
-    # 'fedora-21-chef-latest',
-    # 'centos-6.5-chef-12.4.3',
-    # 'centos-6.5-chef-latest',
-    # 'centos-7.0-chef-12.4.3',
-    # 'centos-7.0-chef-latest',
-    # 'debian-7.0-chef-12.4.3',
-    # 'debian-7.0-chef-latest',
-    # 'debian-8-chef-12.4.3',
-    # 'debian-8-chef-latest',
-    # 'ubuntu-12.04-chef-12.4.3',
-    # 'ubuntu-12.04-chef-latest',
-    # 'ubuntu-14.04-chef-12.4.3',
-    # 'ubuntu-14.04-chef-latest',
-    # 'ubuntu-15.04-chef-12.4.3',
-    'ubuntu-15.04-chef-latest'
+    # 'amazon-2014.09',
+    # 'fedora-21',
+    # 'centos-6.5',
+    # 'centos-7.0',
+    # 'debian-7.0',
+    # 'debian-8',
+    # 'ubuntu-12.04',
+    # 'ubuntu-14.04',
+    'ubuntu-15.04'
   ]
   attributes:
     docker:
-      version: '1.8.2'
+      version: '1.8.3'
   run_list:
   - recipe[docker_service_test::tcp]
 
 - name: service-tcp-tls
   includes: [
-    # 'amazon-2014.09-chef-12.4.3',
-    # 'amazon-2014.09-chef-latest',
-    # 'fedora-21-chef-12.4.3',
-    # 'fedora-21-chef-latest',
-    # 'centos-6.5-chef-12.4.3',
-    # 'centos-6.5-chef-latest',
-    # 'centos-7.0-chef-12.4.3',
-    # 'centos-7.0-chef-latest',
-    # 'debian-7.0-chef-12.4.3',
-    # 'debian-7.0-chef-latest',
-    # 'debian-8-chef-12.4.3',
-    # 'debian-8-chef-latest',
-    # 'ubuntu-12.04-chef-12.4.3',
-    # 'ubuntu-12.04-chef-latest',
-    # 'ubuntu-14.04-chef-12.4.3',
-    # 'ubuntu-14.04-chef-latest',
-    # 'ubuntu-15.04-chef-12.4.3',
-    'ubuntu-15.04-chef-latest'
+    # 'amazon-2014.09',
+    # 'fedora-21',
+    # 'centos-6.5',
+    # 'centos-7.0',
+    # 'debian-7.0',
+    # 'debian-8',
+    # 'ubuntu-12.04',
+    # 'ubuntu-14.04',
+    'ubuntu-15.04'
   ]
   attributes:
     docker:
-      version: '1.8.2'
+      version: '1.8.3'
   run_list:
   - recipe[docker_service_test::tcp-tls]
 
@@ -226,16 +238,11 @@ suites:
 
 - name: resources-162
   includes: [
-    'debian-8.1-chef-12.4.3',
-    'debian-8.1-chef-latest',
-    'centos-7.0-chef-12.4.3',
-    'centos-7.0-chef-latest',
-    'fedora-21-chef-12.4.3',
-    'fedora-21-chef-latest',
-    'ubuntu-14.04-chef-12.4.3',
-    'ubuntu-14.04-chef-latest',
-    'ubuntu-15.04-chef-12.4.3',
-    'ubuntu-15.04-chef-latest'
+    'debian-8.1',
+    'centos-7.0',
+    'fedora-21',
+    'ubuntu-14.04',
+    'ubuntu-15.04'
   ]
   attributes:
     docker:
@@ -247,14 +254,10 @@ suites:
 
 - name: resources-171
   includes: [
-    'debian-8.1-chef-12.4.3',
-    'debian-8.1-chef-latest',
-    'centos-7.0-chef-12.4.3',
-    'centos-7.0-chef-latest',
-    'fedora-21-chef-12.4.3',
-    'fedora-21-chef-latest',
-    'ubuntu-15.04-chef-12.4.3',
-    'ubuntu-15.04-chef-latest'
+    'debian-8.1',
+    'centos-7.0',
+    'fedora-21',
+    'ubuntu-15.04'
   ]
   attributes:
     docker:
@@ -267,18 +270,14 @@ suites:
 
 - name: resources-182
   includes: [
-    'debian-8.1-chef-12.4.3',
-    'debian-8.1-chef-latest',
-    'centos-7.0-chef-12.4.3',
-    'centos-7.0-chef-latest',
-    'fedora-21-chef-12.4.3',
-    'fedora-21-chef-latest',
-    'ubuntu-15.04-chef-12.4.3',
-    'ubuntu-15.04-chef-latest'
+    'debian-8.1',
+    'centos-7.0',
+    'fedora-21',
+    'ubuntu-15.04'
   ]
   attributes:
     docker:
-      version: '1.8.2'
+      version: '1.8.3'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::image]
@@ -290,22 +289,20 @@ suites:
 
 - name: notifications
   includes: [
-    'ubuntu-15.04-chef-12.4.3',
-    'ubuntu-15.04-chef-latest'
+    'ubuntu-15.04'
   ]
   attributes:
     docker:
-      version: '1.8.2'
+      version: '1.8.3'
   run_list:
   - recipe[docker_test::notifications]
 
-- name: timeout
-  includes: [
-    'ubuntu-15.04-chef-12.4.3',
-    'ubuntu-15.04-chef-latest'
-  ]
-  attributes:
-    docker:
-      version: '1.8.2'
-  run_list:
-  - recipe[docker_test::timeout]
+# - name: timeout
+#   includes: [
+#     'ubuntu-15.04'
+#   ]
+#   attributes:
+#     docker:
+#       version: '1.8.3'
+#   run_list:
+#   - recipe[docker_test::timeout]

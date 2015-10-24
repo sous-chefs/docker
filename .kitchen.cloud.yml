@@ -21,6 +21,8 @@ platforms:
     region: <%= ENV['DIGITALOCEAN_REGION'] %>
     ssh_key_ids: <%= ENV['DIGITALOCEAN_SSH_KEYS'] %>
     ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
+  run_list:
+  - recipe[yum-docker]
 
 - name: centos-7.0
   driver_plugin: digital_ocean
@@ -30,6 +32,8 @@ platforms:
     region: <%= ENV['DIGITALOCEAN_REGION'] %>
     ssh_key_ids: <%= ENV['DIGITALOCEAN_SSH_KEYS'] %>
     ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
+  run_list:
+  - recipe[yum-docker]
 
 # - name: amazon-2014.09
 #   driver_plugin: ec2
@@ -37,6 +41,8 @@ platforms:
 #     image_id: ami-9a6ed3f2
 #     username: ec2-user
 #     ssh_key: <%= ENV['EC2_SSH_KEY_PATH'] %>
+#  run_list:
+#  - recipe[yum-docker]
 
 - name: fedora-21
   driver_plugin: digital_ocean
@@ -46,21 +52,13 @@ platforms:
     region: <%= ENV['DIGITALOCEAN_REGION'] %>
     ssh_key_ids: <%= ENV['DIGITALOCEAN_SSH_KEYS'] %>
     ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
-
-- name: debian-7.0
-  driver_plugin: digital_ocean
-  driver_config:
-    size: 2gb
-    image: debian-7-0-x64
-    region: <%= ENV['DIGITALOCEAN_REGION'] %>
-    ssh_key_ids: <%= ENV['DIGITALOCEAN_SSH_KEYS'] %>
-    ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
   run_list:
-  - recipe[apt]
+  - recipe[yum-docker]
 
 # - name: debian-8.1
 #   driver_plugin: digital_ocean
 #   driver_config:
+#     use_sudo: false
 #     size: 2gb
 #     image: debian-8-x64
 #     region: <%= ENV['DIGITALOCEAN_REGION'] %>
@@ -68,6 +66,7 @@ platforms:
 #     ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
 #   run_list:
 #   - recipe[apt]
+#   - recipe[apt-docker]
 
 - name: ubuntu-12.04
   driver_plugin: digital_ocean
@@ -79,6 +78,7 @@ platforms:
     ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
   run_list:
   - recipe[apt]
+  - recipe[apt-docker]
 
 - name: ubuntu-14.04
   driver_plugin: digital_ocean
@@ -90,17 +90,19 @@ platforms:
     ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
   run_list:
   - recipe[apt]
+  - recipe[apt-docker]
 
 - name: ubuntu-15.10
   driver_plugin: digital_ocean
   driver_config:
     size: 2gb
-    image: ubuntu-15-04-x64
+    image: ubuntu-15-10-x64
     region: <%= ENV['DIGITALOCEAN_REGION'] %>
     ssh_key_ids: <%= ENV['DIGITALOCEAN_SSH_KEYS'] %>
     ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
   run_list:
   - recipe[apt]
+  - recipe[apt-docker]
 
 suites:
 #####################################
@@ -133,7 +135,7 @@ suites:
   ]
   attributes:
     docker:
-      version: '1.8.2'
+      version: '1.8.3'
   run_list:
   - recipe[docker_test::installation_binary]
 
@@ -149,9 +151,41 @@ suites:
   ]
   attributes:
     docker:
-      version: '1.8.2'
+      repo: 'main'
   run_list:
   - recipe[docker_test::installation_script]
+
+######################################
+# docker_installation_package resource
+######################################
+
+- name: installation_package-171
+  includes: [
+    'centos-6.5',
+    'ubuntu-12.04',
+    'ubuntu-14.04',
+    'ubuntu-15.10'
+  ]
+  attributes:
+    docker:
+      version: '1.7.1'
+  run_list:
+  - recipe[docker_test::installation_package]
+
+- name: installation_package-183
+  includes: [
+    'centos-7.0',
+    'debian-8.1',
+    'fedora-21',
+    'ubuntu-12.04',
+    'ubuntu-14.04',
+    'ubuntu-15.10'
+  ]
+  attributes:
+    docker:
+      version: '1.8.3'
+  run_list:
+  - recipe[docker_test::installation_package]
 
 ###########
 # services
@@ -171,7 +205,7 @@ suites:
   ]
   attributes:
     docker:
-      version: '1.8.2'
+      version: '1.8.3'
   run_list:
   - recipe[docker_service_test::default]
 
@@ -189,7 +223,7 @@ suites:
   ]
   attributes:
     docker:
-      version: '1.8.2'
+      version: '1.8.3'
   run_list:
   - recipe[docker_service_test::socket]
 
@@ -207,7 +241,7 @@ suites:
   ]
   attributes:
     docker:
-      version: '1.8.2'
+      version: '1.8.3'
   run_list:
   - recipe[docker_service_test::tcp]
 
@@ -225,7 +259,7 @@ suites:
   ]
   attributes:
     docker:
-      version: '1.8.2'
+      version: '1.8.3'
   run_list:
   - recipe[docker_service_test::tcp-tls]
 
@@ -271,11 +305,15 @@ suites:
   ]
   attributes:
     docker:
-      version: '1.8.2'
+      version: '1.8.3'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::image]
   - recipe[docker_test::container]
+
+#################
+# misc test cases
+#################
 
 - name: notifications
   includes: [
@@ -283,7 +321,7 @@ suites:
   ]
   attributes:
     docker:
-      version: '1.8.2'
+      version: '1.8.3'
   run_list:
   - recipe[docker_test::notifications]
 
@@ -293,6 +331,6 @@ suites:
 #   ]
 #   attributes:
 #     docker:
-#       version: '1.8.2'
+#       version: '1.8.3'
 #   run_list:
 #   - recipe[docker_test::timeout]
