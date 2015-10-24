@@ -19,7 +19,9 @@ module DockerCookbook
       # to manually fork it from the shell with &
       # https://github.com/docker/docker/issues/2758
       bash 'start docker' do
-        code "#{docker_daemon_cmd} &>> #{logfile} &"
+        Chef::Log.debug("Starting docker with #{docker_daemon_cmd} >> #{logfile} 2>&1 &")
+        puts "#{docker_daemon_cmd} >> #{logfile} 2>&1 &"
+        code "#{docker_daemon_cmd} >> #{logfile} 2>&1 &"
         environment 'HTTP_PROXY' => http_proxy,
                     'HTTPS_PROXY' => https_proxy,
                     'NO_PROXY' => no_proxy,
@@ -29,27 +31,8 @@ module DockerCookbook
       end
 
       # loop until docker socker is available
-      docker_wait_ready
-    end
-
-    action :stop do
-      execute 'stop docker' do
-        command 'kill `pidof docker`'
-        only_if "ps -ef | awk '{ print $8 }' | grep ^#{docker_bin}$"
-      end
-    end
-
-    action :restart do
-      action_stop
-      action_start
-    end
-
-    # TODO: figure out how to dedupe this form from other classes.
-    action_class.class_eval do
-      # Try to connect to docker socket twenty times
-      def docker_wait_ready
-        bash 'docker-wait-ready' do
-          code <<-EOF
+      bash 'docker-wait-ready' do
+        code <<-EOF
             timeout=0
             while [ $timeout -lt 20 ];  do
               ((timeout++))
@@ -62,9 +45,20 @@ module DockerCookbook
             [[ $timeout -eq 20 ]] && exit 1
             exit 0
             EOF
-          not_if "#{docker_cmd} ps | head -n 1 | grep ^CONTAINER"
-        end
+        not_if "#{docker_cmd} ps | head -n 1 | grep ^CONTAINER"
       end
+    end
+
+    action :stop do
+      execute 'stop docker' do
+        command 'kill `pidof docker`'
+        only_if "ps -ef | awk '{ print $8 }' | grep ^#{docker_bin}$"
+      end
+    end
+
+    action :restart do
+      action_stop
+      action_start
     end
 
     Chef::Provider::DockerService::Execute = action_class unless defined?(Chef::Provider::DockerService::Execute)

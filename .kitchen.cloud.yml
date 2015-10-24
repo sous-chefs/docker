@@ -176,18 +176,32 @@ suites:
   run_list:
   - recipe[docker_test::installation_package]
 
-###########
-# services
-###########
+#################################
+# docker_service_execute resource
+#################################
+- name: service-execute
+  includes: [
+    'centos-7.0',
+    'fedora-21',
+    'debian-8.1',
+    'ubuntu-12.04',
+    'ubuntu-14.04',
+    'ubuntu-15.10',
+  ]
+  run_list:
+  - recipe[docker_test::service_execute]
+
+################
+# (old) services
+################
 
 - name: service-default
   includes: [
     # 'amazon-2014.09',
-    # 'fedora-21',
     # 'centos-6.5',
     # 'centos-7.0',
-    # 'debian-7.0',
-    # 'debian-8',
+    # 'fedora-21',
+    # 'debian-8.1',
     # 'ubuntu-12.04',
     # 'ubuntu-14.04',
     'ubuntu-15.10'
@@ -201,11 +215,10 @@ suites:
 - name: service-socket
   includes: [
     # 'amazon-2014.09',
-    # 'fedora-21',
     # 'centos-6.5',
     # 'centos-7.0',
-    # 'debian-7.0',
-    # 'debian-8',
+    # 'fedora-21',
+    # 'debian-8.1',
     # 'ubuntu-12.04',
     # 'ubuntu-14.04',
     'ubuntu-15.10'
@@ -219,11 +232,10 @@ suites:
 - name: service-tcp
   includes: [
     # 'amazon-2014.09',
-    # 'fedora-21',
     # 'centos-6.5',
     # 'centos-7.0',
-    # 'debian-7.0',
-    # 'debian-8',
+    # 'fedora-21',
+    # 'debian-8.1',
     # 'ubuntu-12.04',
     # 'ubuntu-14.04',
     'ubuntu-15.10'
@@ -237,11 +249,10 @@ suites:
 - name: service-tcp-tls
   includes: [
     # 'amazon-2014.09',
-    # 'fedora-21',
     # 'centos-6.5',
     # 'centos-7.0',
-    # 'debian-7.0',
-    # 'debian-8',
+    # 'fedora-21',
+    # 'debian-8.1',
     # 'ubuntu-12.04',
     # 'ubuntu-14.04',
     'ubuntu-15.10'
