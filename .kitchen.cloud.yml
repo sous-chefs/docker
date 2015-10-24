@@ -176,9 +176,21 @@ suites:
   run_list:
   - recipe[docker_test::installation_package]
 
-###########
-# services
-###########
+
+#################################
+# docker_service_execute resource
+#################################
+- name: service-execute
+  includes: [
+    'ubuntu-15.10'
+  ]
+  run_list:
+  - recipe[docker_test::service_execute]
+
+
+################
+# (old) services
+################
 
 - name: service-default
   includes: [
