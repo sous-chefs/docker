@@ -1,3 +1,8 @@
+v2.1.18
+--------------------
+- Kitchen refactoring
+- docker_service_execute bug fixes
+
 v2.1.17
 --------------------
 - Fixing merge meant for v2.1.16

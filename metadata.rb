@@ -1,13 +1,12 @@
 name 'docker'
-maintainer 'Brian Flad'
-maintainer_email 'bflad417@gmail.com'
+maintainer 'Sean OMeara'
+maintainer_email 'sean@chef.io'
 license 'Apache 2.0'
-description 'Installs/Configures Docker'
-long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version '2.1.17'
+description 'Provides docker_service, docker_image, and docker_container resources'
+version '2.1.18'
 
-source_url 'https://github.com/bflad/chef-docker'
-issues_url 'https://github.com/bflad/chef-docker/issues'
+source_url 'https://github.com/someara/chef-docker'
+issues_url 'https://github.com/someara/chef-docker/issues'
 
 depends 'compat_resource'
 
