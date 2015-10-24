@@ -19,8 +19,6 @@ module DockerCookbook
       # to manually fork it from the shell with &
       # https://github.com/docker/docker/issues/2758
       bash 'start docker' do
-        Chef::Log.debug("Starting docker with #{docker_daemon_cmd} >> #{logfile} 2>&1 &")
-        puts "#{docker_daemon_cmd} >> #{logfile} 2>&1 &"
         code "#{docker_daemon_cmd} >> #{logfile} 2>&1 &"
         environment 'HTTP_PROXY' => http_proxy,
                     'HTTPS_PROXY' => https_proxy,
