@@ -78,16 +78,6 @@ suites:
 # docker_installation_binary resource
 #####################################
 
-- name: installation_binary-162
-  includes: [
-    'ubuntu-15.04'
-  ]
-  attributes:
-    docker:
-      version: '1.6.2'
-  run_list:
-  - recipe[docker_test::installation_binary]
-
 - name: installation_binary-171
   includes: [
     'ubuntu-15.04'
@@ -98,7 +88,7 @@ suites:
   run_list:
   - recipe[docker_test::installation_binary]
 
-- name: installation_binary-182
+- name: installation_binary-183
   includes: [
     'ubuntu-15.04'
   ]
@@ -107,7 +97,6 @@ suites:
       version: '1.8.3'
   run_list:
   - recipe[docker_test::installation_binary]
-
 
 #####################################
 # docker_installation_script resource
@@ -143,7 +132,7 @@ suites:
 
 - name: installation_package-183
   includes: [
-    'centos-6.5',
+    'centos-7.0',
     'debian-8.1',
     'fedora-21',
     'ubuntu-12.04',
@@ -162,7 +151,6 @@ suites:
 
 - name: service-default
   includes: [
-    # 'amazon-2014.09',
     # 'fedora-21',
     # 'centos-6.5',
     # 'centos-7.0',
@@ -180,7 +168,6 @@ suites:
 
 - name: service-socket
   includes: [
-    # 'amazon-2014.09',
     # 'fedora-21',
     # 'centos-6.5',
     # 'centos-7.0',
@@ -198,7 +185,6 @@ suites:
 
 - name: service-tcp
   includes: [
-    # 'amazon-2014.09',
     # 'fedora-21',
     # 'centos-6.5',
     # 'centos-7.0',
@@ -216,7 +202,6 @@ suites:
 
 - name: service-tcp-tls
   includes: [
-    # 'amazon-2014.09',
     # 'fedora-21',
     # 'centos-6.5',
     # 'centos-7.0',
@@ -236,22 +221,6 @@ suites:
 # bulk resource testing
 #######################
 
-- name: resources-162
-  includes: [
-    'debian-8.1',
-    'centos-7.0',
-    'fedora-21',
-    'ubuntu-14.04',
-    'ubuntu-15.04'
-  ]
-  attributes:
-    docker:
-      version: '1.6.2'
-  run_list:
-  - recipe[docker_test::default]
-  - recipe[docker_test::image]
-  - recipe[docker_test::container]
-
 - name: resources-171
   includes: [
     'debian-8.1',
@@ -268,7 +237,7 @@ suites:
   - recipe[docker_test::image]
   - recipe[docker_test::container]
 
-- name: resources-182
+- name: resources-183
   includes: [
     'debian-8.1',
     'centos-7.0',

@@ -16,6 +16,11 @@ module DockerCookbook
         false
       end
 
+      def jesse?
+        return true if node['platform'] == 'debian' && node['platform_version'].to_i == 8
+        false
+      end
+      
       def precise?
         return true if node['platform'] == 'ubuntu' && node['platform_version'] == '12.04'
         false
@@ -41,6 +46,7 @@ module DockerCookbook
         return "#{v}-1.el6" if el6?
         return "#{v}-1.el7.centos" if el7?
         return "#{v}-1.fc21" if fc21?
+        return "#{v}-0~jessie" if jesse?
         return "#{v}-0~precise" if precise?
         return "#{v}-0~trusty" if trusty?
         return "#{v}-0~wily" if wily?
