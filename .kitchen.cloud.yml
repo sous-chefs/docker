@@ -191,77 +191,43 @@ suites:
   run_list:
   - recipe[docker_test::service_execute]
 
-################
-# (old) services
-################
-
-- name: service-default
+##################################
+# docker_service_sysvinit resource
+##################################
+- name: service-sysvinit
   includes: [
-    # 'amazon-2014.09',
-    # 'centos-6.5',
-    # 'centos-7.0',
-    # 'fedora-21',
-    # 'debian-8.1',
-    # 'ubuntu-12.04',
-    # 'ubuntu-14.04',
+    'centos-6.5',
+    'ubuntu-12.04'
+  ]
+  run_list:
+  - recipe[docker_test::service_sysvinit]
+
+#################################
+# docker_service_upstart resource
+#################################
+- name: service-upstart
+  includes: [
+    'ubuntu-14.04'
+  ]
+  run_list:
+  - recipe[docker_test::service_upstart]
+
+#################################
+# docker_service_systemd resource
+#################################
+- name: service-systemd
+  includes: [
+    'centos-7.0',
+    'fedora-21',
+    'debian-8.1',
     'ubuntu-15.10'
   ]
-  attributes:
-    docker:
-      version: '1.8.3'
   run_list:
-  - recipe[docker_service_test::default]
+  - recipe[docker_test::service_systemd]
 
-- name: service-socket
-  includes: [
-    # 'amazon-2014.09',
-    # 'centos-6.5',
-    # 'centos-7.0',
-    # 'fedora-21',
-    # 'debian-8.1',
-    # 'ubuntu-12.04',
-    # 'ubuntu-14.04',
-    'ubuntu-15.10'
-  ]
-  attributes:
-    docker:
-      version: '1.8.3'
-  run_list:
-  - recipe[docker_service_test::socket]
-
-- name: service-tcp
-  includes: [
-    # 'amazon-2014.09',
-    # 'centos-6.5',
-    # 'centos-7.0',
-    # 'fedora-21',
-    # 'debian-8.1',
-    # 'ubuntu-12.04',
-    # 'ubuntu-14.04',
-    'ubuntu-15.10'
-  ]
-  attributes:
-    docker:
-      version: '1.8.3'
-  run_list:
-  - recipe[docker_service_test::tcp]
-
-- name: service-tcp-tls
-  includes: [
-    # 'amazon-2014.09',
-    # 'centos-6.5',
-    # 'centos-7.0',
-    # 'fedora-21',
-    # 'debian-8.1',
-    # 'ubuntu-12.04',
-    # 'ubuntu-14.04',
-    'ubuntu-15.10'
-  ]
-  attributes:
-    docker:
-      version: '1.8.3'
-  run_list:
-  - recipe[docker_service_test::tcp-tls]
+#######################
+# bulk resource testing
+#######################
 
 - name: resources-171
   includes: [
@@ -284,7 +250,7 @@ suites:
     'debian-8.1',
     'centos-7.0',
     'fedora-21',
-    'ubuntu-15.10',
+    'ubuntu-15.10'
   ]
   attributes:
     docker:

@@ -8,6 +8,13 @@ module DockerCookbook
     action :start do
       action_stop unless resource_changes.empty?
 
+      # enable ipv4 forwarding
+      execute 'enable net.ipv4.conf.all.forwarding' do
+        command '/sbin/sysctl net.ipv4.conf.all.forwarding=1'
+        not_if '/sbin/sysctl -q -n net.ipv4.conf.all.forwarding | grep ^1$'
+        action :run
+      end
+
       # enable ipv6 forwarding
       execute 'enable net.ipv6.conf.all.forwarding' do
         command '/sbin/sysctl net.ipv6.conf.all.forwarding=1'
@@ -19,8 +26,6 @@ module DockerCookbook
       # to manually fork it from the shell with &
       # https://github.com/docker/docker/issues/2758
       bash 'start docker' do
-        Chef::Log.debug("Starting docker with #{docker_daemon_cmd} >> #{logfile} 2>&1 &")
-        puts "#{docker_daemon_cmd} >> #{logfile} 2>&1 &"
         code "#{docker_daemon_cmd} >> #{logfile} 2>&1 &"
         environment 'HTTP_PROXY' => http_proxy,
                     'HTTPS_PROXY' => https_proxy,
