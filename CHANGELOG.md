@@ -1,3 +1,7 @@
+v2.1.20
+--------------------
+- Fixing docker_installation_script resource
+
 v2.1.19
 --------------------
 - Various cruft cleanup in service templates.
