@@ -1,3 +1,11 @@
+v2.1.19
+--------------------
+- Various cruft cleanup in service templates.
+- Explicitly enabling ipv4 forwarding in execute provider
+- docker_service_sysvinit test suite
+- docker_service_upstart test suite
+- docker_service_systemd test suite
+
 v2.1.18
 --------------------
 - Kitchen refactoring
