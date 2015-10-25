@@ -80,7 +80,7 @@ suites:
 
 - name: installation_binary-171
   includes: [
-    'ubuntu-15.10'
+    'ubuntu-15.04'
   ]
   attributes:
     docker:
@@ -90,26 +90,44 @@ suites:
 
 - name: installation_binary-183
   includes: [
-    'ubuntu-15.10'
+    'ubuntu-15.04'
   ]
   attributes:
     docker:
       version: '1.8.3'
   run_list:
   - recipe[docker_test::installation_binary]
-
 #####################################
 # docker_installation_script resource
 #####################################
 
-- name: installation_script
+- name: installation_script_main
   includes: [
-    'ubuntu-15.10',
-    'centos-7.0'
+    'ubuntu-15.04',
   ]
   attributes:
     docker:
       repo: 'main'
+  run_list:
+  - recipe[docker_test::installation_script]
+
+- name: installation_script_test
+  includes: [
+    'ubuntu-15.04',
+  ]
+  attributes:
+    docker:
+      repo: 'test'
+  run_list:
+  - recipe[docker_test::installation_script]
+
+- name: installation_script_experimental
+  includes: [
+    'ubuntu-15.04',
+  ]
+  attributes:
+    docker:
+      repo: 'experimental'
   run_list:
   - recipe[docker_test::installation_script]
 
@@ -122,7 +140,7 @@ suites:
     'centos-6.5',
     'ubuntu-12.04',
     'ubuntu-14.04',
-    'ubuntu-15.10'
+    'ubuntu-15.04'
   ]
   attributes:
     docker:
@@ -137,7 +155,7 @@ suites:
     'fedora-21',
     'ubuntu-12.04',
     'ubuntu-14.04',
-    'ubuntu-15.10'
+    'ubuntu-15.04'
   ]
   attributes:
     docker:
@@ -155,7 +173,7 @@ suites:
     'debian-8.1',
     'ubuntu-12.04',
     'ubuntu-14.04',
-    'ubuntu-15.10',
+    'ubuntu-15.04',
   ]
   run_list:
   - recipe[docker_test::service_execute]
@@ -189,7 +207,7 @@ suites:
     'centos-7.0',
     'fedora-21',
     'debian-8.1',
-    'ubuntu-15.10'
+    'ubuntu-15.04'
   ]
   run_list:
   - recipe[docker_test::service_systemd]

@@ -133,14 +133,33 @@ suites:
 # docker_installation_script resource
 #####################################
 
-- name: installation_script
+- name: installation_script_main
   includes: [
     'ubuntu-15.10',
-    'centos-7.0'
   ]
   attributes:
     docker:
       repo: 'main'
+  run_list:
+  - recipe[docker_test::installation_script]
+
+- name: installation_script_test
+  includes: [
+    'ubuntu-15.10',
+  ]
+  attributes:
+    docker:
+      repo: 'test'
+  run_list:
+  - recipe[docker_test::installation_script]
+
+- name: installation_script_experimental
+  includes: [
+    'ubuntu-15.10',
+  ]
+  attributes:
+    docker:
+      repo: 'experimental'
   run_list:
   - recipe[docker_test::installation_script]
 

@@ -5,7 +5,7 @@ module DockerCookbook
     #####################
     use_automatic_resource_name
 
-    property :repo, %w(main testing experimental), default: 'main'
+    property :repo, %w(main test experimental), default: 'main'
     property :script_url, String, default: lazy { default_script_url }
 
     default_action :create
@@ -18,10 +18,10 @@ module DockerCookbook
       case repo
       when 'main'
         'https://get.docker.com/'
-      when 'testing'
-        'https://testing.docker.com/'
+      when 'test'
+        'https://test.docker.com/'
       when 'experimental'
-        'https://testing.docker.com/'
+        'https://experimental.docker.com/'
       end
     end
 
