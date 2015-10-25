@@ -27,8 +27,8 @@ module DockerCookbook
 
       # this script is called by the main systemd unit file, and
       # spins around until the service is actually up and running.
-      template "/usr/libexec/docker-wait-ready" do
-        path "/usr/libexec/docker-wait-ready"
+      template '/usr/libexec/docker-wait-ready' do
+        path '/usr/libexec/docker-wait-ready'
         source 'systemd/docker-wait-ready.erb'
         owner 'root'
         group 'root'
@@ -47,8 +47,8 @@ module DockerCookbook
         mode '0644'
         variables(
           config: new_resource,
-          docker_daemon_cmd: docker_daemon_cmd,
-          )
+          docker_daemon_cmd: docker_daemon_cmd
+        )
         cookbook 'docker'
         notifies :run, 'execute[systemctl daemon-reload]', :immediately
         notifies :restart, new_resource

@@ -14,7 +14,7 @@ module DockerCookbook
         variables(
           config: new_resource,
           docker_cmd: docker_cmd,
-          docker_daemon_cmd: docker_daemon_cmd,
+          docker_daemon_cmd: docker_daemon_cmd
         )
         cookbook 'docker'
         notifies :restart, new_resource
