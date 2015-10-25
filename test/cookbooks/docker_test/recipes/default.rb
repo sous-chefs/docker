@@ -125,6 +125,6 @@ docker_service 'default' do
   tls_server_key "#{caroot}/server-key.pem"
   tls_client_cert "#{caroot}/cert.pem"
   tls_client_key "#{caroot}/key.pem"
-  # install_method 'script'
+  install_method 'package'
   action [:create, :start]
 end

@@ -182,11 +182,11 @@ bash 'wait for docker registry and proxy' do
   tries=20
   while true; do
     ((i++))
-    nc -z -w5 localhost 5000 && nc -z -w5 localhost 5043
+    netstat -plnt | grep ":5000" && netstat -plnt | grep ":5043"
     [ $? -eq 0 ] && break
     [ $i -eq $tries ] && break
     sleep 1
   done
   EOF
-  not_if 'nc -z -w5 localhost 5000 && nc -z -w5 localhost 5043'
+  not_if 'netstat -plnt | grep ":5000" && netstat -plnt | grep ":5043"'
 end

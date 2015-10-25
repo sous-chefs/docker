@@ -10,7 +10,7 @@ module DockerCookbook
     provides :docker_service
 
     # installation type
-    property :install_method, %w(binary script none auto), default: 'binary', desired_state: false
+    property :install_method, %w(binary script package none auto), default: 'binary', desired_state: false
 
     # docker_installation_binary, passed through
     property :source, [String, nil], desired_state: false
@@ -101,6 +101,8 @@ module DockerCookbook
         docker_installation_binary(new_resource.instance, &property_def)
       when 'script'
         docker_installation_script(new_resource.instance, &property_def)
+      when 'package'
+        docker_installation_package(new_resource.instance, &property_def)
       when 'none'
         Chef::Log.info('Skipping Docker installation. Assuming it was handled previously.')
       end
@@ -109,39 +111,6 @@ module DockerCookbook
     action :delete do
       docker_installation 'default' do
         action :delete
-      end
-    end
-
-    action_class.class_eval do
-      def load_current_resource
-        @current_resource = DockerService.new(name)
-
-        connect_opts = {}
-        if connect_host =~ /^tcp:/
-          connect_opts[:scheme] = 'https' if tls || !tls_verify.nil?
-          connect_opts[:ssl_ca_file] = tls_ca_cert if tls_ca_cert
-          connect_opts[:client_cert] = tls_client_cert if tls_client_cert
-          connect_opts[:client_key] = tls_client_key if tls_client_key
-        end
-        connection = Docker::Connection.new(connect_host || Docker.url, connect_opts)
-
-        if docker_running?
-          @current_resource.storage_driver Docker.info(connection)['Driver']
-        else
-          return @current_resource
-        end
-      end
-
-      def resource_changes
-        changes = []
-        changes << :storage_driver if update_storage_driver?
-        changes
-      end
-
-      def update_storage_driver?
-        return false if storage_driver.nil?
-        return true if current_resource.storage_driver != storage_driver
-        false
       end
     end
   end

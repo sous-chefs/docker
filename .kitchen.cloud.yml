@@ -231,9 +231,6 @@ suites:
 
 - name: resources-171
   includes: [
-    'debian-8.1',
-    'centos-7.0',
-    'fedora-21',
     'ubuntu-15.10',
   ]
   attributes:
@@ -247,9 +244,6 @@ suites:
 
 - name: resources-183
   includes: [
-    'debian-8.1',
-    'centos-7.0',
-    'fedora-21',
     'ubuntu-15.10'
   ]
   attributes:

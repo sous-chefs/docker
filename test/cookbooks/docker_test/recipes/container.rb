@@ -922,6 +922,6 @@ end
 
 docker_container 'kill_after' do
   repo 'kill_after'
-  kill_after 30
+  kill_after 1
   action :stop
 end
