@@ -17,7 +17,26 @@ module DockerCookbook
     end
 
     action :start do
-      action_stop unless resource_changes.empty?
+      # Needed for Debian / Ubuntu
+      directory '/usr/libexec' do
+        owner 'root'
+        group 'root'
+        mode '0755'
+        action :create
+      end
+
+      # this script is called by the main systemd unit file, and
+      # spins around until the service is actually up and running.
+      template "/usr/libexec/docker-wait-ready" do
+        path "/usr/libexec/docker-wait-ready"
+        source 'systemd/docker-wait-ready.erb'
+        owner 'root'
+        group 'root'
+        mode '0755'
+        variables(docker_cmd: docker_cmd)
+        cookbook 'docker'
+        action :create
+      end
 
       # this is the main systemd unit file
       template '/lib/systemd/system/docker.service' do
@@ -28,12 +47,11 @@ module DockerCookbook
         mode '0644'
         variables(
           config: new_resource,
-          docker_bin: docker_bin,
-          docker_daemon_arg: docker_daemon_arg,
-          docker_daemon_opts: docker_daemon_opts
-        )
+          docker_daemon_cmd: docker_daemon_cmd,
+          )
         cookbook 'docker'
         notifies :run, 'execute[systemctl daemon-reload]', :immediately
+        notifies :restart, new_resource
         action :create
       end
 
@@ -59,12 +77,9 @@ module DockerCookbook
       # service management resource
       service 'docker' do
         provider Chef::Provider::Service::Systemd
-        supports restart: true, status: true
+        supports status: true
         action [:enable, :start]
       end
-
-      # loop until docker socker is available
-      docker_wait_ready
     end
 
     action :stop do
@@ -80,29 +95,6 @@ module DockerCookbook
     action :restart do
       action_stop
       action_start
-    end
-
-    # FIXME: dedupe
-    action_class.class_eval do
-      # Try to connect to docker socket twenty times
-      def docker_wait_ready
-        bash 'docker-wait-ready' do
-          code <<-EOF
-            timeout=0
-            while [ $timeout -lt 20 ];  do
-              ((timeout++))
-              #{docker_cmd} ps | head -n 1 | grep ^CONTAINER
-                if [ $? -eq 0 ]; then
-                  break
-                fi
-               sleep 1
-            done
-            [[ $timeout -eq 20 ]] && exit 1
-            exit 0
-            EOF
-          not_if "#{docker_cmd} ps | head -n 1 | grep ^CONTAINER"
-        end
-      end
     end
 
     Chef::Provider::DockerService::Systemd = action_class unless defined?(Chef::Provider::DockerService::Systemd)

@@ -1,0 +1,12 @@
+#!/bin/sh
+
+while /bin/true; do
+    RESPONSE=`<%= @docker_cmd %> ps 2>&1 | head -n 1`
+    if  [ `echo $RESPONSE | grep -q "Is your docker"` ]; then
+        sleep 0.1
+    else
+        break
+    fi
+done
+
+exit 0

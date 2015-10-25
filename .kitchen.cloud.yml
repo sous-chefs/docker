@@ -212,6 +212,18 @@ suites:
   run_list:
   - recipe[docker_test::service_upstart]
 
+#################################
+# docker_service_systemd resource
+#################################
+- name: service-systemd
+  includes: [
+    'centos-7.0',
+    'fedora-21',
+    'ubuntu-15.10'
+  ]
+  run_list:
+  - recipe[docker_test::service_systemd]
+
 # ################
 # # (old) services
 # ################
