@@ -120,8 +120,7 @@ suites:
 
 - name: installation_binary-183
   includes: [
-    'ubuntu-15.10',
-    'amazon-2015.09'
+    'ubuntu-15.10'
   ]
   attributes:
     docker:
@@ -135,8 +134,7 @@ suites:
 
 - name: installation_script_main
   includes: [
-    'ubuntu-15.10',
-    'amazon-2015.09'
+    'ubuntu-15.10'
   ]
   attributes:
     docker:
@@ -173,7 +171,8 @@ suites:
     'centos-6.5',
     'ubuntu-12.04',
     'ubuntu-14.04',
-    'ubuntu-15.10'
+    'ubuntu-15.10',
+    'amazon-2015.09'
   ]
   attributes:
     docker:
@@ -189,7 +188,6 @@ suites:
     'ubuntu-12.04',
     'ubuntu-14.04',
     'ubuntu-15.10',
-    'amazon-2015.09'
   ]
   attributes:
     docker:
@@ -253,7 +251,7 @@ suites:
 
 - name: resources-171
   includes: [
-    'ubuntu-15.10',
+    'ubuntu-15.10'
   ]
   attributes:
     docker:
