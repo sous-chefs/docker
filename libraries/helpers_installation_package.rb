@@ -41,10 +41,15 @@ module DockerCookbook
         false
       end
 
+      def amazon?
+        return true if node['platform'] == 'amazon'
+      end
+
       # https://github.com/chef/chef/issues/4103
       def version_string(v)
         return "#{v}-1.el6" if el6?
         return "#{v}-1.el7.centos" if el7?
+        return "#{v}-1.el6" if amazon?
         return "#{v}-1.fc21" if fc21?
         return "#{v}-0~jessie" if jesse?
         return "#{v}-0~precise" if precise?
@@ -55,6 +60,7 @@ module DockerCookbook
 
       def default_docker_version
         return '1.7.1' if el6?
+        return '1.7.1' if amazon?
         '1.8.3'
       end
     end

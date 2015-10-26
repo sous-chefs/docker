@@ -155,8 +155,8 @@ start_command() {
 
     if ! [ -f $pidfile ]; then
         prestart
-        printf "Starting <%= @docker_bin %>"
         echo "\n$(date)\n" >> $logfile
+        echo "<%= @docker_daemon_cmd %> >> $logfile 2>&1 &"
         <%= @docker_daemon_cmd %> >> $logfile 2>&1 &
         pid=$!
         # wait up to 10 seconds for the pidfile to exist.  see
