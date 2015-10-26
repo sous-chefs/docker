@@ -49,6 +49,7 @@ module DockerCookbook
         return "#{v}-0~jessie" if jesse?
         return "#{v}-0~precise" if precise?
         return "#{v}-0~trusty" if trusty?
+        return "#{v}-0~vivid" if vivid?
         return "#{v}-0~wily" if wily?
         v
       end
