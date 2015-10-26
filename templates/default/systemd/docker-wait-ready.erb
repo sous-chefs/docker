@@ -1,12 +1,10 @@
-#!/bin/sh
-
-while /bin/true; do
-    RESPONSE=`<%= @docker_cmd %> ps 2>&1 | head -n 1`
-    if  [ `echo $RESPONSE | grep -q "Is your docker"` ]; then
-        sleep 0.1
-    else
-        break
-    fi
+#!/usr/bin/env bash
+i=0
+while [ $i -lt 40 ]; do
+  ((i++))
+  <%= @docker_cmd %> ps | head -n 1 | grep ^CONTAINER > /dev/null 2>&1
+  [ $? -eq 0 ] && break
+  sleep 0.5
 done
-
+[ $i -eq 20 ] && exit 1
 exit 0

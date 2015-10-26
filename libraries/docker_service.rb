@@ -16,7 +16,7 @@ module DockerCookbook
     property :source, [String, nil], desired_state: false
     property :checksum, [String, nil], desired_state: false
     property :docker_bin, String, default: '/usr/bin/docker', desired_state: false
-    property :version, String, default: lazy { default_version }, desired_state: false
+    property :version, String, default: lazy { docker_version }, desired_state: false
 
     # docker_installation_script, through
     property :repo, [String, nil]
