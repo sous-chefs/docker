@@ -239,8 +239,6 @@ This is the recommended production installation method.
 ```ruby
 docker_installation_package 'default' do
   version '1.8.3'
-  package_version '1.8.3-1.el7.centos'
-  package_name 'my-docker-engine'
   action :create
 end
 ```
