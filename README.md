@@ -267,7 +267,7 @@ end
 #### Example
 ```ruby
 docker_service_manager_execute 'default' do
-  action [:create, :start]
+  action :start
 end
 ```
 
@@ -276,7 +276,7 @@ end
 ```ruby
 docker_service_manager_sysvinit 'default' do
   host 'unix:///var/run/docker.sock'
-  action [:create, :start]
+  action :stop
 end
 ```
 
@@ -285,7 +285,7 @@ end
 ```ruby
 docker_service_manager_upstart 'default' do
   host ['unix:///var/run/docker.sock', 'tcp://127.0.0.1:2376']
-  action [:create, :start]
+  action :start
 end
 ```
 
@@ -300,7 +300,7 @@ docker_service_manager_systemd 'default' do
   tls_server_key "/path/to/server-key.pem"
   tls_client_cert "/path/to/cert.pem"
   tls_client_key "/path/to/key.pem"
-  action [:create, :start]
+  action :start
 end
 ```
 
