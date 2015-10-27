@@ -101,9 +101,9 @@ v2.1.2
 
 v2.1.1
 --------------------
-#511 - fix container wait state checking
-#512 - wait for registry ports to be open in test recipe
-#519 - updating README to include labels#511 - fix container
+- #511 - fix container wait state checking
+- #512 - wait for registry ports to be open in test recipe
+- #519 - updating README to include labels#511 - fix container
 
 v2.1.0
 --------------------
@@ -112,8 +112,8 @@ v2.1.0
   
 v2.0.4
 --------------------
-#504 - stop and start should wait for the container to complete
-#506 - restart to use the api endpoint
+- #504 - stop and start should wait for the container to complete
+- #506 - restart to use the api endpoint
 
 v2.0.3
 --------------------
