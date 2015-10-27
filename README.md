@@ -102,10 +102,19 @@ loading, is out of scope for this cookbook.
 
 Resources Overview
 ------------------
-* `docker_service`: docker daemon installation and configuration
+* `docker_installation_binary`: copies a pre-compiled docker binary onto disk
+* `docker_installation_script`: curl | bash
+* `docker_installation_package`: package 'docker-engine'
+* `docker_installation`: automatically select a resource
+* `docker_service_manager_execute`: manage docker daemon with Chef
+* `docker_service_manager_sysvinit`: manage docker daemon with a sysvinit script
+* `docker_service_manager_upstart`: manage docker daemon with upstart script
+* `docker_service_manager_systemd`: manage docker daemon with systemd unit files
+* `docker_service_manager`: automatically select a resource
+* `docker_service`: composite resource that uses docker_installation and docker_service_manager
 * `docker_image`: image/repository operations
-* `docker_tag`: image tagging operations
 * `docker_container`: container operations
+* `docker_tag`: image tagging operations
 * `docker_registry`: registry operations
 
 ## Getting Started
@@ -117,6 +126,7 @@ container with exposed ports.
 docker_image 'nginx' do
   tag 'latest'
   action :pull
+  notifies :redeploy, 'docker_container[my_nginx]'
 end
 
 # Run container exposing ports
@@ -128,11 +138,10 @@ docker_container 'my_nginx' do
   domain_name 'computers.biz'
   env 'FOO=bar'
   binds [ '/some/local/files/:/etc/nginx/conf.d' ]
-  subscribes :redeploy, 'docker_image[nginx]'
 end
 ```
 
-You might run a private registry
+You might run a private registry and multiple Docker hosts.
 
 ```ruby
 # Login to private registry
@@ -146,6 +155,7 @@ end
 docker_image 'registry.computers.biz:443/my_project/my_container' do
   tag 'latest'
   action :pull
+  host 'tcp://host-1.computers.biz:2376'
 end
 
 # Run container
@@ -153,6 +163,11 @@ docker_container 'crowsnest' do
   repo 'registry.computers.biz:443/my_project/my_container'
   tag 'latest'
   action :run
+  host 'tcp://host-2.computers.biz:2376'
+  tls_verify true
+  tls_ca_cert "/path/to/ca.pem"
+  tls_client_cert "/path/to/cert.pem"
+  tls_client_key "/path/to/key.pem"
 end
 ```
 
@@ -161,23 +176,152 @@ information.
 
 Resources Details
 ------------------
-The ```docker_service```, ```docker_image```, ```docker_container```,
-and ```docker_registry``` resources are documented in full below.
 
-## docker_service
-The `docker_service` manages a Docker daemon.
-
-The `:create` action manages software installation.
-The `:start` action manages the running docker service on the machine.
-
-The service management strategy for the host platform is dynamically
-chosen based on platform, but can be overridden. See the "providers"
-section below for more information.
+## docker_installation
+The `docker_installation` resource auto-selects one of the below
+resources with the provider resolution system.
 
 #### Example
 ```ruby
-docker_service_systemd 'tls_test:2376' do
-  host ["tcp://#{node['ipaddress']}:2376", 'unix:///var/run/docker.sock']
+docker_installation 'default' do
+  repo 'test'
+  action :create
+end
+```
+
+## docker_installation_binary
+The `docker_installation_binary` resource copies the precompiled Go binary onto
+the disk. It exists to help run older Docker versions. It should not
+be used in production, especially with devicemapper.
+
+#### Example
+```ruby
+docker_installation_binary 'default' do
+  version '1.8.2'
+  source 'https://my.computers.biz/dist/docker'
+  checksum '97a3f5924b0b831a310efa8bf0a4c91956cd6387c4a8667d27e2b2dd3da67e4d'
+  action :create
+end
+```
+
+#### Properties
+- `version` - The desired version of docker. Unused when specifying source.
+- `source` - Path to network accessible Docker binary.
+- `checksum` - SHA-256
+
+## docker_installation_script
+The `docker_installation_script` resource runs the script hosted by
+Docker, Inc at http://get.docker.com. It configures package
+repositories and installs a dynamically compiled binary.
+
+#### Example
+```ruby
+docker_installation_script 'default' do
+  repo 'main'
+  script_url 'https://my.computers.biz/dist/scripts/docker.sh'
+  action :create
+end
+```
+
+#### Properties
+- `repo` - One of 'main', 'test', or 'experimental'. Used to calculate
+  script_url in its absense. Defaults to 'main'
+- `script_url` - 'URL of script to pipe into /bin/sh as root.
+
+## docker_installation_package
+The `docker_installation_package` resource uses the system package
+manager to install Docker. It relies on the pre-configuration of the
+system's package repositories. The excellent `yum-docker` and
+`apt-docker` Supermarket cookbooks are used to do this in test-kitchen.
+
+This is the recommended production installation method.
+
+#### Example
+```ruby
+docker_installation_package 'default' do
+  version '1.8.3'
+  package_version '1.8.3-1.el7.centos'
+  package_name 'my-docker-engine'
+  action :create
+end
+```
+#### Properties
+- `version` - Used to calculate package_version string
+- `package_version` - Manually specify the package version string
+- `package_name` - Name of package to install. Defaults to 'docker-engine'
+
+## docker_service_manager
+The `docker_service_manager` resource auto-selects one of the below
+resources with the provider resolution system. The
+`docker_service` family all share a common set of properties, which
+are listed under the `docker_service` composite resource.
+
+#### Example
+```ruby
+docker_service_manager 'default' do
+  host 'unix:///var/run/docker.sock'
+  action [:create, :start]
+end
+```
+
+## docker_service_manager_execute
+#### Example
+```ruby
+docker_service_manager_execute 'default' do
+  host 'unix:///var/run/docker.sock'
+  action [:create, :start]
+end
+```
+
+## docker_service_manager_sysvinit
+#### Example
+```ruby
+docker_service_manager_sysvinit 'default' do
+  host 'unix:///var/run/docker.sock'
+  action [:create, :start]
+end
+```
+
+## docker_service_manager_upstart
+#### Example
+```ruby
+docker_service_manager_upstart 'default' do
+  host ['unix:///var/run/docker.sock', 'tcp://127.0.0.1:2376']
+  action [:create, :start]
+end
+```
+
+## docker_service_manager_systemd
+#### Example
+```ruby
+docker_service_manager_systemd 'default' do
+  host ['unix:///var/run/docker.sock', 'tcp://127.0.0.1:2376']
+  tls_verify true
+  tls_ca_cert "/path/to/ca.pem"
+  tls_server_cert "/path/to/server.pem"
+  tls_server_key "/path/to/server-key.pem"
+  tls_client_cert "/path/to/cert.pem"
+  tls_client_key "/path/to/key.pem"
+  action [:create, :start]
+end
+```
+
+## docker_service
+The `docker_service`: resource is a composite resource, that uses
+`docker_installation` and `docker_service_manager` resources.
+
+The `:create` action uses a `docker_installation`
+The `:delete` action uses a `docker_installation`
+The `:start` action uses a `docker_service_manager`
+The `:stop` action uses a `docker_service_manager`
+
+The service management strategy for the host platform is dynamically
+chosen based on platform, but can be overridden.
+
+#### Example
+```ruby
+docker_service 'tls_test:2376' do
+  host [ "tcp://#{node['ipaddress']}:2376", 'unix:///var/run/docker.sock' ]
   tls_verify true
   tls_ca_cert '/path/to/ca.pem'
   tls_server_cert '/path/to/server.pem'
@@ -1002,10 +1146,10 @@ Please see contributing information in: [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## Maintainers
 
-* Tom Duffield (http://tomduffield.com)
-* Brian Flad (<bflad417@gmail.com>)
-* Fletcher Nichol (<fnichol@nichol.ca>)
 * Sean OMeara (<sean@chef.io>)
+* Brian Flad (<bflad417@gmail.com>)
+* Tom Duffield (http://tomduffield.com)
+* Fletcher Nichol (<fnichol@nichol.ca>)
 
 ## License
 Licensed under the Apache License, Version 2.0 (the "License");

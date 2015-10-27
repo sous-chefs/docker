@@ -8,9 +8,9 @@ module DockerCookbook
     #####################
     use_automatic_resource_name
 
-    property :checksum, String, default: lazy { default_checksum }
-    property :source, String, default: lazy { default_source }
-    property :version, String, default: lazy { default_version }
+    property :checksum, String, default: lazy { default_checksum }, desired_state: false
+    property :source, String, default: lazy { default_source }, desired_state: false
+    property :version, String, default: lazy { default_version }, desired_state: false
 
     default_action :create
 

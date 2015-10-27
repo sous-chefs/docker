@@ -7,8 +7,8 @@ module DockerCookbook
 
     provides :docker_installation, os: 'linux'
 
-    property :repo, %w(main test experimental), default: 'main'
-    property :script_url, String, default: lazy { default_script_url }
+    property :repo, %w(main test experimental), default: 'main', desired_state: false
+    property :script_url, String, default: lazy { default_script_url }, desired_state: false
 
     default_action :create
 
