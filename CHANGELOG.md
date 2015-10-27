@@ -1,3 +1,8 @@
+v2.2.0
+--------------------
+- Switching docker_installation method to auto
+- Cleaning up some old Chef::Provider namespace cruft
+
 v2.1.23
 --------------------
 - Adding docker_service auto_restart property. Defaulting to false.
