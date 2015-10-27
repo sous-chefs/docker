@@ -1,18 +1,18 @@
 module DockerCookbook
-  class DockerServiceSystemd < DockerService
+  class DockerServiceManagerSystemd < DockerServiceBase
     use_automatic_resource_name
 
-    provides :docker_service, platform: 'fedora'
+    provides :docker_service_manager, platform: 'fedora'
 
-    provides :docker_service, platform: %w(redhat centos scientific) do |node| # ~FC005
+    provides :docker_service_manager, platform: %w(redhat centos scientific) do |node| # ~FC005
       node['platform_version'].to_f >= 7.0
     end
 
-    provides :docker_service, platform: 'debian' do |node|
+    provides :docker_service_manager, platform: 'debian' do |node|
       node['platform_version'].to_f >= 8.0
     end
 
-    provides :docker_service, platform: 'ubuntu' do |node|
+    provides :docker_service_manager, platform: 'ubuntu' do |node|
       node['platform_version'].to_f >= 15.04
     end
 
@@ -78,6 +78,7 @@ module DockerCookbook
         provider Chef::Provider::Service::Systemd
         supports status: true
         action [:enable, :start]
+        only_if { ::File.exist?('/lib/systemd/system/docker.service') }
       end
     end
 

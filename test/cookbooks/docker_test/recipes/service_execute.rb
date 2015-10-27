@@ -4,7 +4,7 @@ docker_installation_binary 'default' do
   action :create
 end
 
-docker_service_execute 'default' do
+docker_service_manager_execute 'default' do
   host 'unix:///var/run/docker.sock'
   action :start
 end

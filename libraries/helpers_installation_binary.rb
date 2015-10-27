@@ -1,6 +1,10 @@
 module DockerCookbook
   module DockerHelpers
     module InstallationBinary
+      def docker_bin
+        '/usr/bin/docker'
+      end
+
       def docker_kernel
         node['kernel']['name']
       end

@@ -1,8 +1,8 @@
 module DockerCookbook
-  class DockerServiceUpstart < DockerService
+  class DockerServiceManagerUpstart < DockerServiceBase
     use_automatic_resource_name
 
-    provides :docker_service, platform: 'ubuntu'
+    provides :docker_service_manager, platform: 'ubuntu'
 
     action :start do
       template '/etc/init/docker.conf' do

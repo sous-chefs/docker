@@ -2,9 +2,6 @@
 # Setting up TLS
 ################
 
-# Much (most?) of this is copied from docker_service_test::tls
-# Refactoring opportunity!
-
 caname = 'docker_service_default'
 caroot = "/tmp/kitchen/#{caname}"
 

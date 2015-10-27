@@ -2,8 +2,10 @@
 ---
 driver_config:
    digitalocean_api_token: <%= ENV['DIGITALOCEAN_API_TOKEN'] %>
+   aws_access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] %>
+   aws_secret_access_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
    aws_ssh_key_id: <%= ENV['AWS_KEYPAIR_NAME'] %>
-   instance_type: <%= ENV['EC2_INSTANCE_TYPE'] %>
+   flavor_id: <%= ENV['EC2_FLAVOR_ID'] %>
    availability_zone: <%= ENV['AWS_AVAILABILITY_ZONE'] %>
 
 provisioner:
@@ -18,7 +20,7 @@ platforms:
     image: centos-6-5-x64
     region: <%= ENV['DIGITALOCEAN_REGION'] %>
     ssh_key_ids: <%= ENV['DIGITALOCEAN_SSH_KEYS'] %>
-    transport.ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
+    ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
   run_list:
   - recipe[yum-docker]
 
@@ -29,19 +31,18 @@ platforms:
     image: centos-7-0-x64
     region: <%= ENV['DIGITALOCEAN_REGION'] %>
     ssh_key_ids: <%= ENV['DIGITALOCEAN_SSH_KEYS'] %>
-    transport.ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
+    ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
   run_list:
   - recipe[yum-docker]
 
-- name: amazon-2015.09
-  driver_plugin: ec2
-  driver_config:
-    image_id: ami-e3106686
-  transport:
-    username: ec2-user
-    ssh_key: <%= ENV['EC2_SSH_KEY_PATH'] %>
-  run_list:
-  - recipe[yum-docker]
+# - name: amazon-2014.09
+#   driver_plugin: ec2
+#   driver_config:
+#     image_id: ami-9a6ed3f2
+#     username: ec2-user
+#     ssh_key: <%= ENV['EC2_SSH_KEY_PATH'] %>
+#  run_list:
+#  - recipe[yum-docker]
 
 - name: fedora-21
   driver_plugin: digital_ocean
@@ -50,7 +51,7 @@ platforms:
     image: fedora-21-x64
     region: <%= ENV['DIGITALOCEAN_REGION'] %>
     ssh_key_ids: <%= ENV['DIGITALOCEAN_SSH_KEYS'] %>
-    transport.ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
+    ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
   run_list:
   - recipe[yum-docker]
 
@@ -62,7 +63,7 @@ platforms:
 #     image: debian-8-x64
 #     region: <%= ENV['DIGITALOCEAN_REGION'] %>
 #     ssh_key_ids: <%= ENV['DIGITALOCEAN_SSH_KEYS'] %>
-#     transport.ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
+#     ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
 #   run_list:
 #   - recipe[apt]
 #   - recipe[apt-docker]
@@ -74,7 +75,7 @@ platforms:
     image: ubuntu-12-04-x64
     region: <%= ENV['DIGITALOCEAN_REGION'] %>
     ssh_key_ids: <%= ENV['DIGITALOCEAN_SSH_KEYS'] %>
-    transport.ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
+    ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
   run_list:
   - recipe[apt]
   - recipe[apt-docker]
@@ -86,7 +87,7 @@ platforms:
     image: ubuntu-14-04-x64
     region: <%= ENV['DIGITALOCEAN_REGION'] %>
     ssh_key_ids: <%= ENV['DIGITALOCEAN_SSH_KEYS'] %>
-    transport.ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
+    ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
   run_list:
   - recipe[apt]
   - recipe[apt-docker]
@@ -98,7 +99,7 @@ platforms:
     image: ubuntu-15-10-x64
     region: <%= ENV['DIGITALOCEAN_REGION'] %>
     ssh_key_ids: <%= ENV['DIGITALOCEAN_SSH_KEYS'] %>
-    transport.ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
+    ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
   run_list:
   - recipe[apt]
   - recipe[apt-docker]
@@ -134,7 +135,7 @@ suites:
 
 - name: installation_script_main
   includes: [
-    'ubuntu-15.10'
+    'ubuntu-15.10',
   ]
   attributes:
     docker:
@@ -171,8 +172,7 @@ suites:
     'centos-6.5',
     'ubuntu-12.04',
     'ubuntu-14.04',
-    'ubuntu-15.10',
-    'amazon-2015.09'
+    'ubuntu-15.10'
   ]
   attributes:
     docker:
@@ -187,7 +187,7 @@ suites:
     'fedora-21',
     'ubuntu-12.04',
     'ubuntu-14.04',
-    'ubuntu-15.10',
+    'ubuntu-15.10'
   ]
   attributes:
     docker:
@@ -216,8 +216,7 @@ suites:
 - name: service-sysvinit
   includes: [
     'centos-6.5',
-    'ubuntu-12.04',
-    'amazon-2015.09'
+    'ubuntu-12.04'
   ]
   run_list:
   - recipe[docker_test::service_sysvinit]
@@ -251,7 +250,7 @@ suites:
 
 - name: resources-171
   includes: [
-    'ubuntu-15.10'
+    'ubuntu-15.10',
   ]
   attributes:
     docker:

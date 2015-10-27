@@ -1,13 +1,11 @@
 module DockerCookbook
-  class DockerServiceExecute < DockerService
+  class DockerServiceManagerExecute < DockerServiceBase
     use_automatic_resource_name
 
-    provides :docker_service, os: 'linux'
+    provides :docker_service_manager, os: 'linux'
 
     # Start the service
     action :start do
-      action_stop unless resource_changes.empty?
-
       # enable ipv4 forwarding
       execute 'enable net.ipv4.conf.all.forwarding' do
         command '/sbin/sysctl net.ipv4.conf.all.forwarding=1'

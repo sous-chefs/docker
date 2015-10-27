@@ -4,7 +4,7 @@ docker_installation_package 'default' do
   action :create
 end
 
-docker_service_upstart 'default' do
+docker_service_manager_upstart 'default' do
   host 'unix:///var/run/docker.sock'
   action :start
 end

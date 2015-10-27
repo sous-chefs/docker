@@ -11,7 +11,6 @@ module DockerCookbook
     provides :docker_installation, os: 'linux'
 
     property :checksum, String, default: lazy { default_checksum }
-    property :docker_bin, String, default: '/usr/bin/docker'
     property :source, String, default: lazy { default_source }
     property :version, String, default: lazy { default_version }
 

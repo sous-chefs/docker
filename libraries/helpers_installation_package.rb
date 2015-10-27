@@ -64,6 +64,10 @@ module DockerCookbook
         return '1.7.1' if amazon?
         '1.8.3'
       end
+
+      def docker_bin
+        '/usr/bin/docker'
+      end
     end
   end
 end

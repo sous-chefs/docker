@@ -27,6 +27,10 @@ IPV4_CIDR ||= %r{(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[
 module DockerCookbook
   module DockerHelpers
     module Service
+      def docker_bin
+        '/usr/bin/docker'
+      end
+
       def docker_version
         o = shell_out("#{docker_bin} --version")
         o.stdout.split[2].chomp(',')
@@ -69,8 +73,15 @@ module DockerCookbook
 
       def coerce_daemon_labels(v)
         Array(v).each_with_object([]) do |label, a|
-          parts = label.split(':')
-          a << "#{parts[0]}=\"#{parts[1]}\""
+          if label =~ /:/
+            parts = label.split(':')
+            a << "#{parts[0]}=\"#{parts[1]}\""
+          elsif label =~ /=/
+            parts = label.split('=')
+            a << "#{parts[0]}=#{parts[1]}"
+          else
+            Chef::Log.info("WARNING: docker_service label #{label} not valid")
+          end
         end
       end
 

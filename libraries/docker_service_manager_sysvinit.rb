@@ -1,12 +1,12 @@
 module DockerCookbook
-  class DockerServiceSysvinit < DockerService
+  class DockerServiceManagerSysvinit < DockerServiceBase
     use_automatic_resource_name
 
-    provides :docker_service, platform: 'amazon'
-    provides :docker_service, platform: 'centos'
-    provides :docker_service, platform: 'redhat'
-    provides :docker_service, platform: 'suse'
-    provides :docker_service, platform: 'debian'
+    provides :docker_service_manager, platform: 'amazon'
+    provides :docker_service_manager, platform: 'centos'
+    provides :docker_service_manager, platform: 'redhat'
+    provides :docker_service_manager, platform: 'suse'
+    provides :docker_service_manager, platform: 'debian'
 
     action :start do
       create_init

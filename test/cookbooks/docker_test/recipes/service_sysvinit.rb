@@ -4,7 +4,7 @@ docker_installation_binary 'default' do
   action :create
 end
 
-docker_service_sysvinit 'default' do
+docker_service_manager_sysvinit 'default' do
   host 'unix:///var/run/docker.sock'
   action :start
 end

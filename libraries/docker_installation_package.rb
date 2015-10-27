@@ -6,6 +6,7 @@ module DockerCookbook
 
     # Resource properties
     use_automatic_resource_name
+
     property :package_version, String, default: lazy { version_string(version) }
     property :version, String, default: lazy { default_docker_version }
 
