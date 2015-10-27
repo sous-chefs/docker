@@ -211,7 +211,7 @@ end
 ## docker_installation_script
 The `docker_installation_script` resource runs the script hosted by
 Docker, Inc at http://get.docker.com. It configures package
-repositories and installs a statically compiled binary.
+repositories and installs a dynamically compiled binary.
 
 #### Example
 ```ruby
