@@ -1,4 +1,39 @@
 if defined?(ChefSpec)
+  #####################
+  # docker_installation
+  #####################
+  def create_docker_installation(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_installation, :create, resource_name)
+  end
+
+  def delete_docker_installation(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_installation, :delete, resource_name)
+  end
+
+  def create_docker_installation_binary(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_installation_binary, :create, resource_name)
+  end
+
+  def delete_docker_installation_binary(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_installation_binary, :delete, resource_name)
+  end
+
+  def create_docker_installation_script(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_installation_script, :create, resource_name)
+  end
+
+  def delete_docker_installation_script(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_installation_script, :delete, resource_name)
+  end
+
+  def create_docker_installation_package(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_installation_package, :create, resource_name)
+  end
+
+  def delete_docker_installation_package(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_installation_package, :delete, resource_name)
+  end
+
   ################
   # docker_service
   ################
@@ -20,6 +55,110 @@ if defined?(ChefSpec)
 
   def restart_docker_service(resource_name)
     ChefSpec::Matchers::ResourceMatcher.new(:docker_service, :restart, resource_name)
+  end
+
+  ########################
+  # docker_service_manager
+  ########################
+
+  def create_docker_service_manager(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_service_manager, :create, resource_name)
+  end
+
+  def delete_docker_service_manager(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_service_manager, :delete, resource_name)
+  end
+
+  def start_docker_service_manager(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_service_manager, :start, resource_name)
+  end
+
+  def stop_docker_service_manager(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_service_manager, :stop, resource_name)
+  end
+
+  def restart_docker_service_manager(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_service_manager, :restart, resource_name)
+  end
+
+  def create_docker_service_manager_execute(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_service_manager_execute, :create, resource_name)
+  end
+
+  def delete_docker_service_manager_execute(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_service_manager_execute, :delete, resource_name)
+  end
+
+  def start_docker_service_manager_execute(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_service_manager_execute, :start, resource_name)
+  end
+
+  def stop_docker_service_manager_execute(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_service_manager_execute, :stop, resource_name)
+  end
+
+  def restart_docker_service_manager_execute(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_service_manager_execute, :restart, resource_name)
+  end
+
+  def create_docker_service_manager_sysvinit(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_service_manager_sysvinit, :create, resource_name)
+  end
+
+  def delete_docker_service_manager_sysvinit(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_service_manager_sysvinit, :delete, resource_name)
+  end
+
+  def start_docker_service_manager_sysvinit(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_service_manager_sysvinit, :start, resource_name)
+  end
+
+  def stop_docker_service_manager_sysvinit(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_service_manager_sysvinit, :stop, resource_name)
+  end
+
+  def restart_docker_service_manager_sysvinit(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_service_manager_sysvinit, :restart, resource_name)
+  end
+
+  def create_docker_service_manager_upstart(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_service_manager_upstart, :create, resource_name)
+  end
+
+  def delete_docker_service_manager_upstart(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_service_manager_upstart, :delete, resource_name)
+  end
+
+  def start_docker_service_manager_upstart(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_service_manager_upstart, :start, resource_name)
+  end
+
+  def stop_docker_service_manager_upstart(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_service_manager_upstart, :stop, resource_name)
+  end
+
+  def restart_docker_service_manager_upstart(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_service_manager_upstart, :restart, resource_name)
+  end
+
+  def create_docker_service_manager_systemd(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_service_manager_systemd, :create, resource_name)
+  end
+
+  def delete_docker_service_manager_systemd(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_service_manager_systemd, :delete, resource_name)
+  end
+
+  def start_docker_service_manager_systemd(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_service_manager_systemd, :start, resource_name)
+  end
+
+  def stop_docker_service_manager_systemd(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_service_manager_systemd, :stop, resource_name)
+  end
+
+  def restart_docker_service_manager_systemd(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_service_manager_systemd, :restart, resource_name)
   end
 
   ##############

@@ -101,7 +101,5 @@ module DockerCookbook
       action_stop
       action_start
     end
-
-    Chef::Provider::DockerService::Systemd = action_class unless defined?(Chef::Provider::DockerService::Systemd)
   end
 end

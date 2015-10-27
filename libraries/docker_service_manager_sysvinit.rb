@@ -58,7 +58,5 @@ module DockerCookbook
         end
       end
     end
-
-    Chef::Provider::DockerService::Sysvinit = action_class unless defined?(Chef::Provider::DockerService::Sysvinit)
   end
 end

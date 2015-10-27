@@ -112,11 +112,3 @@ module DockerCookbook
     end
   end
 end
-
-# Declare a module for subresoures' providers to sit in (backcompat)
-class Chef
-  class Provider
-    module DockerService
-    end
-  end
-end

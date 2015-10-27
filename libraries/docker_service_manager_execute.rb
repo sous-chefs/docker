@@ -63,7 +63,5 @@ module DockerCookbook
       action_stop
       action_start
     end
-
-    Chef::Provider::DockerService::Execute = action_class unless defined?(Chef::Provider::DockerService::Execute)
   end
 end

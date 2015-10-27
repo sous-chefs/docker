@@ -273,6 +273,22 @@ suites:
   - recipe[docker_test::image]
   - recipe[docker_test::container]
 
+#####################
+# docker_service auto
+#####################
+
+- name: auto
+  includes: [
+    'centos-7.0',
+    'fedora-21',
+    'debian-8.1',
+    'ubuntu-12.04',
+    'ubuntu-14.04',
+    'ubuntu-15.10'
+  ]
+  run_list:
+  - recipe[docker_test::auto]
+
 #################
 # misc test cases
 #################
