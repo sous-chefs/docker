@@ -259,7 +259,7 @@ are listed under the `docker_service` composite resource.
 #### Example
 ```ruby
 docker_service_manager 'default' do
-  action [:create, :start]
+  action :start
 end
 ```
 
