@@ -305,7 +305,7 @@ end
 ```
 
 ## docker_service
-The `docker_service`: resource is a composite resource, that uses
+The `docker_service`: resource is a composite resource that uses
 `docker_installation` and `docker_service_manager` resources.
 
 The `:create` action uses a `docker_installation`
