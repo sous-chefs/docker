@@ -308,10 +308,10 @@ end
 The `docker_service`: resource is a composite resource that uses
 `docker_installation` and `docker_service_manager` resources.
 
-The `:create` action uses a `docker_installation`
-The `:delete` action uses a `docker_installation`
-The `:start` action uses a `docker_service_manager`
-The `:stop` action uses a `docker_service_manager`
+- The `:create` action uses a `docker_installation`
+- The `:delete` action uses a `docker_installation`
+- The `:start` action uses a `docker_service_manager`
+- The `:stop` action uses a `docker_service_manager`
 
 The service management strategy for the host platform is dynamically
 chosen based on platform, but can be overridden.
