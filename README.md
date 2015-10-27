@@ -422,12 +422,12 @@ builds, and deletions. It speaks directly to the
 
 #### Examples
 
-default action, default properties
+- default action, default properties
 ```ruby
 docker_image 'hello-world'
 ```
 
-non-default name attribute
+- non-default name attribute
 ```ruby
 docker_image "Tom's container" do
   repo 'tduffield/testcontainerd'
@@ -435,21 +435,21 @@ docker_image "Tom's container" do
 end
 ```
 
-pull every time
+- pull every time
 ```ruby
 docker_image 'busybox' do
   action :pull
 end
 ```
 
-specify a tag
+- specify a tag
 ```ruby
 docker_image 'alpine' do
   tag '3.1'
 end
 ```
 
-specify read/write timeouts
+- specify read/write timeouts
 ```ruby
 docker_image 'alpine' do
   read_timeout 60
@@ -463,7 +463,7 @@ docker_image 'vbatts/slackware' do
 end
 ```
 
-save
+- save
 ```ruby
 docker_image 'save hello-world' do
   repo 'hello-world'
@@ -473,7 +473,7 @@ docker_image 'save hello-world' do
 end
 ```
 
-build from a Dockerfile on every chef-client run
+- build from a Dockerfile on every chef-client run
 ```ruby
 docker_image 'image_1' do
   tag 'v0.1.0'
@@ -482,7 +482,7 @@ docker_image 'image_1' do
 end
 ```
 
-build from a directory, only if image is missing
+- build from a directory, only if image is missing
 ```ruby
 docker_image 'image_2' do
   tag 'v0.1.0'
@@ -491,7 +491,7 @@ docker_image 'image_2' do
 end
 ```
 
-build from a tarball
+- build from a tarball
 NOTE: this is not an "export" tarball generated from an an image save.
 The contents should be a Dockerfile, and anything it references to
 COPY or ADD
@@ -512,14 +512,14 @@ docker_image 'hello-again' do
 end
 ```
 
-push
+- push
 ```ruby
 docker_image 'my.computers.biz:5043/someara/hello-again' do
   action :push
 end
 ```
 
-Connect to an external docker daemon and pull an image
+- Connect to an external docker daemon and pull an image
 
 ```ruby
 docker_image 'alpine' do
@@ -614,7 +614,7 @@ Thanks to [Glider Labs](http://gliderlabs.com/) for this excellent diagram.
 
 #### Examples
 
-Create a container without starting it.
+- Create a container without starting it.
 
 ```ruby
 docker_container 'hello-world' do
@@ -623,7 +623,7 @@ docker_container 'hello-world' do
 end
 ```
 
-This command will exit succesfully. This will happen on every
+- This command will exit succesfully. This will happen on every
 chef-client run.
 
 ```ruby
@@ -634,7 +634,7 @@ docker_container 'busybox_ls' do
 end
 ```
 
-The :run_if_missing action will only run once. It is the default action.
+- The :run_if_missing action will only run once. It is the default action.
 
 ```ruby
 docker_container 'alpine_ls' do
@@ -645,7 +645,7 @@ docker_container 'alpine_ls' do
 end
 ```
 
-Set environment variables in a container
+- Set environment variables in a container
 
 ```ruby
 docker_container 'env' do
@@ -656,7 +656,7 @@ docker_container 'env' do
 end
 ```
 
-This process remains running between chef-client runs, :run will do nothing on subsequent converges.
+- This process remains running between chef-client runs, :run will do nothing on subsequent converges.
 
 ```ruby
 docker_container 'an_echo_server' do
@@ -668,7 +668,7 @@ docker_container 'an_echo_server' do
 end
 ```
 
-Let docker pick the host port
+- Let docker pick the host port
 
 ```ruby
 docker_container 'another_echo_server' do
@@ -680,7 +680,7 @@ docker_container 'another_echo_server' do
 end
 ```
 
-Specify the udp protocol
+- Specify the udp protocol
 
 ```ruby
 docker_container 'an_udp_echo_server' do
@@ -692,7 +692,7 @@ docker_container 'an_udp_echo_server' do
 end
 ```
 
-Kill a container
+- Kill a container
 
 ```ruby
 docker_container 'bill' do
@@ -700,7 +700,7 @@ docker_container 'bill' do
 end
 ```
 
-Stop a container
+- Stop a container
 
 ```ruby
 docker_container 'hammer_time' do
@@ -708,7 +708,7 @@ docker_container 'hammer_time' do
 end
 ```
 
-Force-stop a container after 30 seconds
+- Force-stop a container after 30 seconds
 
 ```ruby
 docker_container 'hammer_time' do
@@ -717,7 +717,7 @@ docker_container 'hammer_time' do
 end
 ```
 
-Pause a container
+- Pause a container
 
 ```ruby
 docker_container 'red_light' do
@@ -725,7 +725,7 @@ docker_container 'red_light' do
 end
 ```
 
-Unpause a container
+- Unpause a container
 
 ```ruby
 docker_container 'green_light' do
@@ -733,7 +733,7 @@ docker_container 'green_light' do
 end
 ```
 
-Restart a container
+- Restart a container
 
 ```ruby
 docker_container 'restarter' do
@@ -741,7 +741,7 @@ docker_container 'restarter' do
 end
 ```
 
-Delete a container
+- Delete a container
 
 ```ruby
 docker_container 'deleteme' do
@@ -750,7 +750,7 @@ docker_container 'deleteme' do
 end
 ```
 
-Redeploy a container
+- Redeploy a container
 
 ```ruby
 docker_container 'redeployer' do
@@ -767,7 +767,7 @@ execute 'redeploy redeployer' do
 end
 ```
 
-Bind mount local directories
+- Bind mount local directories
 
 ```ruby
 docker_container 'bind_mounter' do
@@ -778,7 +778,7 @@ docker_container 'bind_mounter' do
 end
 ```
 
-Mount volumes from another container
+- Mount volumes from another container
 
 ```ruby
 docker_container 'chef_container' do
@@ -794,7 +794,7 @@ docker_container 'ohai_debian' do
 end
 ```
 
-Set a container's entrypoint
+- Set a container's entrypoint
 
 ```ruby
 docker_container 'ohai_again_debian' do
@@ -806,7 +806,7 @@ docker_container 'ohai_again_debian' do
 end
 ```
 
-Automatically remove a container after it exits
+- Automatically remove a container after it exits
 
 ```ruby
 docker_container 'sean_was_here' do
@@ -818,7 +818,7 @@ docker_container 'sean_was_here' do
 end
 ```
 
-Grant NET_ADMIN rights to a container
+- Grant NET_ADMIN rights to a container
 
 ```ruby
 docker_container 'cap_add_net_admin' do
@@ -829,7 +829,7 @@ docker_container 'cap_add_net_admin' do
 end
 ```
 
-Revoke MKNOD rights to a container
+- Revoke MKNOD rights to a container
 ```ruby
 docker_container 'cap_drop_mknod' do
   repo 'debian'
@@ -839,7 +839,7 @@ docker_container 'cap_drop_mknod' do
 end
 ```
 
-Set a container's hostname and domainname
+- Set a container's hostname and domainname
 
 ```ruby
 docker_container 'fqdn' do
@@ -851,7 +851,7 @@ docker_container 'fqdn' do
 end
 ```
 
-Set a container's DNS resolution
+- Set a container's DNS resolution
 
 ```ruby
 docker_container 'dns' do
@@ -864,7 +864,7 @@ docker_container 'dns' do
 end
 ```
 
-Add extra hosts to a container's `/etc/hosts`
+- Add extra hosts to a container's `/etc/hosts`
 
 ```ruby
 docker_container 'extra_hosts' do
@@ -875,7 +875,7 @@ docker_container 'extra_hosts' do
 end
 ```
 
-Manage container's restart_policy
+- Manage container's restart_policy
 
 ```ruby
 docker_container 'try_try_again' do
@@ -897,7 +897,7 @@ docker_container 'reboot_survivor' do
 end
 ```
 
-Manage container links
+- Manage container links
 
 ```ruby
 docker_container 'link_source' do
@@ -936,7 +936,7 @@ execute 'redeploy_link_source' do
 end
 ```
 
-Mutate a container between chef-client runs
+- Mutate a container between chef-client runs
 
 ```ruby
 docker_tag 'mutator_from_busybox' do
@@ -964,7 +964,7 @@ execute 'commit mutator' do
 end
 ```
 
-Specify read/write timeouts
+- Specify read/write timeouts
 
 ```ruby
 docker_container 'api_timeouts' do
@@ -974,7 +974,7 @@ docker_container 'api_timeouts' do
 end
 ```
 
-Specify a custom logging driver and its options
+- Specify a custom logging driver and its options
 
 ```ruby
 docker_container 'syslogger' do
@@ -986,7 +986,7 @@ docker_container 'syslogger' do
 end
 ```
 
-Connect to an external docker daemon and create a container
+- Connect to an external docker daemon and create a container
 
 ```ruby
 docker_container 'external_daemon' do
@@ -1113,7 +1113,7 @@ connection auth information to a Docker registry.
 
 #### docker_registry action :login
 
-Log into or register with public registry:
+- Log into or register with public registry:
 
 ```ruby
 docker_registry 'https://index.docker.io/v1/' do
