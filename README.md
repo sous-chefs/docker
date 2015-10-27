@@ -78,7 +78,6 @@ The cookbooks ran under test-kitchen make excellent usage examples.
 The test recipes are found at:
 ```ruby
 test/cookbooks/docker_test/
-test/cookbooks/docker_service_test/
 ```
 
 Cgroups, Execution and Storage drivers
