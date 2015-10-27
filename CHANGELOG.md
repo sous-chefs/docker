@@ -1,3 +1,9 @@
+v2.1.21
+--------------------
+- Refactoring docker_service into docker_service_manager_whatever
+- Fixing bug in coerce_daemon_labels
+- Fixes to resources-171 suite serverspec
+
 v2.1.20
 --------------------
 - Fixing docker_installation_script resource
