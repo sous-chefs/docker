@@ -1,3 +1,7 @@
+v2.1.23
+--------------------
+- Adding docker_service auto_restart property. Defaulting to false.
+
 v2.1.22
 --------------------
 - Updating README with docker_installation and docker_service_manager resources
