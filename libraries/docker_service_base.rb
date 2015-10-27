@@ -11,6 +11,7 @@ module DockerCookbook
 
     # daemon management
     property :instance, String, name_property: true, required: true, desired_state: false
+    property :auto_restart, Boolean, default: false
     property :api_cors_header, [String, nil]
     property :bridge, [IPV4_ADDR, IPV6_ADDR, nil]
     property :bip, [IPV4_ADDR, IPV4_CIDR, IPV6_ADDR, IPV6_CIDR, nil]

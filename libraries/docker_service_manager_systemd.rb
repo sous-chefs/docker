@@ -51,7 +51,12 @@ module DockerCookbook
         )
         cookbook 'docker'
         notifies :run, 'execute[systemctl daemon-reload]', :immediately
-        notifies :restart, new_resource
+        notifies :restart, new_resource unless ::File.exist? '/etc/docker-firstconverge'
+        notifies :restart, new_resource if auto_restart
+        action :create
+      end
+
+      file '/etc/docker-firstconverge' do
         action :create
       end
 

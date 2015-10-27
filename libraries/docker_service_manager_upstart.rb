@@ -17,7 +17,12 @@ module DockerCookbook
           docker_daemon_cmd: docker_daemon_cmd
         )
         cookbook 'docker'
-        notifies :restart, new_resource
+        notifies :restart, new_resource unless ::File.exist? '/etc/docker-firstconverge'
+        notifies :restart, new_resource if auto_restart
+        action :create
+      end
+
+      file '/etc/docker-firstconverge' do
         action :create
       end
 
