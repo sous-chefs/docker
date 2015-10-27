@@ -162,12 +162,12 @@ end
 docker_container 'crowsnest' do
   repo 'registry.computers.biz:443/my_project/my_container'
   tag 'latest'
-  action :run
   host 'tcp://host-2.computers.biz:2376'
   tls_verify true
   tls_ca_cert "/path/to/ca.pem"
   tls_client_cert "/path/to/cert.pem"
   tls_client_key "/path/to/key.pem"
+  action :run
 end
 ```
 
