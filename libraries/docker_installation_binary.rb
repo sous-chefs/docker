@@ -8,8 +8,6 @@ module DockerCookbook
     #####################
     use_automatic_resource_name
 
-    provides :docker_installation, os: 'linux'
-
     property :checksum, String, default: lazy { default_checksum }
     property :source, String, default: lazy { default_source }
     property :version, String, default: lazy { default_version }
