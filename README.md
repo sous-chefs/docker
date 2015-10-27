@@ -204,8 +204,8 @@ end
 ```
 
 #### Properties
-- `version` - The desired version of docker. Unused when specifying source.
-- `source` - Path to network accessible Docker binary.
+- `version` - The desired version of docker. Used to calculate source.
+- `source` - Path to network accessible Docker binary. Ignores version
 - `checksum` - SHA-256
 
 ## docker_installation_script
