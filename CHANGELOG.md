@@ -1,3 +1,8 @@
+v2.1.22
+--------------------
+- Updating README with docker_installation and docker_service_manager resources
+- Adding "desired_state: false" to docker_installation properties
+          
 v2.1.21
 --------------------
 - Refactoring docker_service into docker_service_manager_whatever
