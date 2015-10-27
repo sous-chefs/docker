@@ -259,7 +259,6 @@ are listed under the `docker_service` composite resource.
 #### Example
 ```ruby
 docker_service_manager 'default' do
-  host 'unix:///var/run/docker.sock'
   action [:create, :start]
 end
 ```
@@ -268,7 +267,6 @@ end
 #### Example
 ```ruby
 docker_service_manager_execute 'default' do
-  host 'unix:///var/run/docker.sock'
   action [:create, :start]
 end
 ```
