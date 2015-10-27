@@ -7,7 +7,7 @@ module DockerCookbook
     provides :docker_service
 
     # installation type and service_manager
-    property :install_method, %w(binary script package none auto), default: 'binary', desired_state: false
+    property :install_method, %w(binary script package none auto), default: 'auto', desired_state: false
     property :service_manager, %w(execute sysvinit upstart systemd auto), default: 'auto', desired_state: false
 
     # docker_installation_binary
