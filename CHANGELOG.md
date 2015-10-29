@@ -1,3 +1,7 @@
+v2.2.1
+--------------------
+-  marking attach_ properties desired_state: false
+
 v2.2.0
 --------------------
 - Switching docker_installation method to auto
