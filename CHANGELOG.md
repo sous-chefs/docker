@@ -1,3 +1,7 @@
+v2.2.2
+--------------------
+- Upstart script now waits for all filesystems instead of just local-filesystems
+
 v2.2.1
 --------------------
 -  marking attach_ properties desired_state: false
