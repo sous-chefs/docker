@@ -1,3 +1,7 @@
+v2.2.3
+--------------------
+- Minor fix to Upstart script template
+
 v2.2.2
 --------------------
 - Upstart script now waits for all filesystems instead of just local-filesystems

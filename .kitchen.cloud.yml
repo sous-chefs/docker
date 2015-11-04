@@ -12,6 +12,9 @@ provisioner:
   name: chef_zero
   require_chef_omnibus: true
 
+verifier:
+  name: inspec
+
 platforms:
 - name: centos-6.5
   driver_plugin: digital_ocean
