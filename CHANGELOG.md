@@ -1,3 +1,7 @@
+v2.2.4
+--------------------
+- More minor fixes to Upstart script template
+
 v2.2.3
 --------------------
 - Minor fix to Upstart script template
