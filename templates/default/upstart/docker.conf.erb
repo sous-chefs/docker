@@ -57,7 +57,7 @@ post-start script
         RESPONSE=`<%= @docker_cmd %> ps 2>&1 | head -n 1`
         local mret=$?
         if [ $mret -eq 0 ] \
-        || [ `echo $RESPONSE | grep -q "Is your docker"` ]; then
+        || [ `echo $RESPONSE | grep -qi "docker daemon"` ]; then
             RUNNING=0
         fi
         return $RUNNING
