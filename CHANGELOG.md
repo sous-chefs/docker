@@ -1,3 +1,7 @@
+v2.2.5
+--------------------
+- Updating metadata to depend on compat_resource >= 12.5.14
+
 v2.2.4
 --------------------
 - More minor fixes to Upstart script template
