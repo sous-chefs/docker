@@ -97,6 +97,17 @@ suites:
       version: '1.8.3'
   run_list:
   - recipe[docker_test::installation_binary]
+
+- name: installation_binary-190
+  includes: [
+    'ubuntu-15.04'
+  ]
+  attributes:
+    docker:
+      version: '1.9.0'
+  run_list:
+  - recipe[docker_test::installation_binary]
+
 #####################################
 # docker_installation_script resource
 #####################################
@@ -160,6 +171,21 @@ suites:
   attributes:
     docker:
       version: '1.8.3'
+  run_list:
+  - recipe[docker_test::installation_package]
+
+- name: installation_package-190
+  includes: [
+    'centos-7.0',
+    'debian-8.1',
+    'fedora-21',
+    'ubuntu-12.04',
+    'ubuntu-14.04',
+    'ubuntu-15.04'
+  ]
+  attributes:
+    docker:
+      version: '1.9.0'
   run_list:
   - recipe[docker_test::installation_package]
 
@@ -242,6 +268,18 @@ suites:
   attributes:
     docker:
       version: '1.8.3'
+  run_list:
+  - recipe[docker_test::default]
+  - recipe[docker_test::image]
+  - recipe[docker_test::container]
+
+- name: resources-190
+  includes: [
+    'ubuntu-15.04'
+  ]
+  attributes:
+    docker:
+      version: '1.9.0'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::image]
