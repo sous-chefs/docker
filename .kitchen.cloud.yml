@@ -12,8 +12,8 @@ provisioner:
   name: chef_zero
   require_chef_omnibus: true
 
-verifier:
-  name: inspec
+# verifier:
+#   name: inspec
 
 platforms:
 - name: centos-6.5
@@ -132,6 +132,16 @@ suites:
   run_list:
   - recipe[docker_test::installation_binary]
 
+- name: installation_binary-190
+  includes: [
+    'ubuntu-15.10'
+  ]
+  attributes:
+    docker:
+      version: '1.9.0'
+  run_list:
+  - recipe[docker_test::installation_binary]
+
 #####################################
 # docker_installation_script resource
 #####################################
@@ -195,6 +205,21 @@ suites:
   attributes:
     docker:
       version: '1.8.3'
+  run_list:
+  - recipe[docker_test::installation_package]
+
+- name: installation_package-190
+  includes: [
+    'centos-7.0',
+    'debian-8.1',
+    'fedora-21',
+    'ubuntu-12.04',
+    'ubuntu-14.04',
+    'ubuntu-15.10'
+  ]
+  attributes:
+    docker:
+      version: '1.9.0'
   run_list:
   - recipe[docker_test::installation_package]
 
