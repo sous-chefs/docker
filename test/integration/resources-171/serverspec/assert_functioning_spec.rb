@@ -3,7 +3,7 @@ require 'serverspec'
 set :backend, :exec
 puts "os: #{os}"
 
-docker_version_string = `docker -v`
+docker_version_string = command('docker -v').stdout
 docker_version = docker_version_string.split(/\s/)[2].split(',')[0]
 
 puts "docker_version: #{docker_version}"
@@ -11,15 +11,19 @@ puts "docker_version: #{docker_version}"
 volumes_filter = '{{ .Volumes }}' if docker_version =~ /1.6/
 volumes_filter = '{{ .Volumes }}' if docker_version =~ /1.7/
 volumes_filter = '{{ .Config.Volumes }}' if docker_version =~ /1.8/
+volumes_filter = '{{ .Config.Volumes }}' if docker_version =~ /1.9/
 
 overrides_volumes_value = %r{map\[\/home:map\[\]\]} if docker_version =~ /1.6/
 overrides_volumes_value = %r{map\[/home:{}\]} if docker_version =~ /1.7/
 overrides_volumes_value = %r{map\[/home:{}\]} if docker_version =~ /1.8/
+overrides_volumes_value = %r{map\[/home:{}\]} if docker_version =~ /1.9/
 
 mounts_filter = '{{ .Volumes }}' if docker_version =~ /1.6/
 mounts_filter = '{{ .Volumes }}' if docker_version =~ /1.7/
 mounts_filter = '{{ .Mounts }}' if docker_version =~ /1.8/
+mounts_filter = '{{ .Mounts }}' if docker_version =~ /1.9/
 
+uber_options_network_mode = 'default' if docker_version =~ /1.9/
 uber_options_network_mode = 'default' if docker_version =~ /1.8/
 uber_options_network_mode = 'bridge' if docker_version =~ /1.7/
 uber_options_network_mode = 'default' if docker_version =~ /1.6/
