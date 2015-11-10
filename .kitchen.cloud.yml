@@ -1,7 +1,7 @@
 #<% require 'kitchen-sync' %>
 ---
 driver_config:
-   digitalocean_api_token: <%= ENV['DIGITALOCEAN_API_TOKEN'] %>
+   digitalocean_access_token: <%= ENV['DIGITALOCEAN_API_TOKEN'] %>
    aws_access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] %>
    aws_secret_access_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
    aws_ssh_key_id: <%= ENV['AWS_KEYPAIR_NAME'] %>
@@ -17,7 +17,7 @@ provisioner:
 
 platforms:
 - name: centos-6.5
-  driver_plugin: digital_ocean
+  driver_plugin: digitalocean
   driver_config:
     size: 2gb
     image: centos-6-5-x64
@@ -28,7 +28,7 @@ platforms:
   - recipe[yum-docker]
 
 - name: centos-7.0
-  driver_plugin: digital_ocean
+  driver_plugin: digitalocean
   driver_config:
     size: 2gb
     image: centos-7-0-x64
@@ -48,7 +48,7 @@ platforms:
 #  - recipe[yum-docker]
 
 - name: fedora-21
-  driver_plugin: digital_ocean
+  driver_plugin: digitalocean
   driver_config:
     size: 2gb
     image: fedora-21-x64
@@ -59,7 +59,7 @@ platforms:
   - recipe[yum-docker]
 
 # - name: debian-8.1
-#   driver_plugin: digital_ocean
+#   driver_plugin: digitalocean
 #   driver_config:
 #     use_sudo: false
 #     size: 2gb
@@ -72,7 +72,7 @@ platforms:
 #   - recipe[apt-docker]
 
 - name: ubuntu-12.04
-  driver_plugin: digital_ocean
+  driver_plugin: digitalocean
   driver_config:
     size: 2gb
     image: ubuntu-12-04-x64
@@ -84,7 +84,7 @@ platforms:
   - recipe[apt-docker]
 
 - name: ubuntu-14.04
-  driver_plugin: digital_ocean
+  driver_plugin: digitalocean
   driver_config:
     size: 2gb
     image: ubuntu-14-04-x64
@@ -96,7 +96,7 @@ platforms:
   - recipe[apt-docker]
 
 - name: ubuntu-15.10
-  driver_plugin: digital_ocean
+  driver_plugin: digitalocean
   driver_config:
     size: 2gb
     image: ubuntu-15-10-x64
