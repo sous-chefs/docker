@@ -1,7 +1,4 @@
-require 'serverspec'
-
-set :backend, :exec
-puts "os: #{os}"
+#
 
 docker_version_string = command('docker -v').stdout
 docker_version = docker_version_string.split(/\s/)[2].split(',')[0]
@@ -96,7 +93,7 @@ end
 
 describe file('/hello-world.tar') do
   it { should be_file }
-  it { should be_mode 644 }
+  it { should be_mode 0644 }
 end
 
 # docker_image[image-1]
@@ -762,10 +759,10 @@ describe command("docker ps -af 'name=kill_after$'") do
   its(:stdout) { should match(/Exited \(137\)/) }
 end
 
-kill_after_start = `docker inspect -f '{{.State.StartedAt}}' kill_after`
+kill_after_start = command("docker inspect -f '{{.State.StartedAt}}' kill_after").stdout
 kill_after_start = DateTime.parse(kill_after_start).to_time.to_i
 
-kill_after_finish = `docker inspect -f '{{.State.FinishedAt}}' kill_after`
+kill_after_finish = command("docker inspect -f '{{.State.FinishedAt}}' kill_after").stdout
 kill_after_finish = DateTime.parse(kill_after_finish).to_time.to_i
 
 kill_after_run_time = kill_after_finish - kill_after_start

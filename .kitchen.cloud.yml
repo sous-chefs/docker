@@ -12,8 +12,8 @@ provisioner:
   name: chef_zero
   require_chef_omnibus: true
 
-# verifier:
-#   name: inspec
+verifier:
+  name: inspec
 
 platforms:
 - name: centos-6.5
@@ -23,6 +23,7 @@ platforms:
     image: centos-6-5-x64
     region: <%= ENV['DIGITALOCEAN_REGION'] %>
     ssh_key_ids: <%= ENV['DIGITALOCEAN_SSH_KEYS'] %>
+  transport:
     ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
   run_list:
   - recipe[yum-docker]
@@ -34,6 +35,7 @@ platforms:
     image: centos-7-0-x64
     region: <%= ENV['DIGITALOCEAN_REGION'] %>
     ssh_key_ids: <%= ENV['DIGITALOCEAN_SSH_KEYS'] %>
+  transport:
     ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
   run_list:
   - recipe[yum-docker]
@@ -43,6 +45,7 @@ platforms:
 #   driver_config:
 #     image_id: ami-9a6ed3f2
 #     username: ec2-user
+#   transport:
 #     ssh_key: <%= ENV['EC2_SSH_KEY_PATH'] %>
 #  run_list:
 #  - recipe[yum-docker]
@@ -54,6 +57,7 @@ platforms:
     image: fedora-21-x64
     region: <%= ENV['DIGITALOCEAN_REGION'] %>
     ssh_key_ids: <%= ENV['DIGITALOCEAN_SSH_KEYS'] %>
+  transport:
     ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
   run_list:
   - recipe[yum-docker]
@@ -78,6 +82,7 @@ platforms:
     image: ubuntu-12-04-x64
     region: <%= ENV['DIGITALOCEAN_REGION'] %>
     ssh_key_ids: <%= ENV['DIGITALOCEAN_SSH_KEYS'] %>
+  transport:
     ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
   run_list:
   - recipe[apt]
@@ -90,6 +95,7 @@ platforms:
     image: ubuntu-14-04-x64
     region: <%= ENV['DIGITALOCEAN_REGION'] %>
     ssh_key_ids: <%= ENV['DIGITALOCEAN_SSH_KEYS'] %>
+  transport:
     ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
   run_list:
   - recipe[apt]
@@ -102,6 +108,8 @@ platforms:
     image: ubuntu-15-10-x64
     region: <%= ENV['DIGITALOCEAN_REGION'] %>
     ssh_key_ids: <%= ENV['DIGITALOCEAN_SSH_KEYS'] %>
+    ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
+  transport:
     ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
   run_list:
   - recipe[apt]
