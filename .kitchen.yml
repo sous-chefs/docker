@@ -13,6 +13,9 @@ provisioner:
     docker:
       container_cmd_timeout: 30
 
+verifier:
+  name: inspec
+
 platforms:
 - name: centos-6.5
   driver_config:
