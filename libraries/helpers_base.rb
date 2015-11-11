@@ -79,6 +79,33 @@ module DockerCookbook
       def call_action(_action)
         new_resource.run_action
       end
+
+      def default_host
+        return false unless ENV['DOCKER_HOST']
+        ENV['DOCKER_HOST']
+      end
+
+      def default_tls
+        return false unless ENV['DOCKER_TLS']
+        ENV['DOCKER_TLS']
+      end
+
+      def default_tls_verify
+        return false unless ENV['DOCKER_TLS_VERIFY']
+        ENV['DOCKER_TLS_VERIFY']
+      end
+
+      def default_tls_cert_path(v)
+        return false unless ENV['DOCKER_CERT_PATH']
+        case v
+        when 'ca'
+          "#{ENV['DOCKER_CERT_PATH']}/ca.pem"
+        when 'cert'
+          "#{ENV['DOCKER_CERT_PATH']}/cert.pem"
+        when 'key'
+          "#{ENV['DOCKER_CERT_PATH']}/key.pem"
+        end
+      end
     end
   end
 end
