@@ -52,12 +52,12 @@ module DockerCookbook
 
       def default_network_mode
         case api_version
-        when '1.20'
-          'default'
         when '1.19'
           'bridge'
-        else
+        when proc { |n| n.to_f < 1.19 }
           ''
+        else
+          'default'
         end
       end
 
