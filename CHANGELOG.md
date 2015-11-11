@@ -1,3 +1,9 @@
+v2.2.6
+--------------------
+- Docker 1.9 support
+- Updates to pull_image id checking
+- Updates default_network_mode calculation
+
 v2.2.5
 --------------------
 - Updating metadata to depend on compat_resource >= 12.5.14
