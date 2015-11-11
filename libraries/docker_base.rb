@@ -70,17 +70,17 @@ module DockerCookbook
     # Resource properties
     #####################
 
-    property :api_retries,       Fixnum,        default: 3, desired_state: false
-    property :read_timeout,      [Fixnum, nil], default: 60, desired_state: false
-    property :write_timeout,     [Fixnum, nil], desired_state: false
+    property :api_retries, Fixnum, default: 3, desired_state: false
+    property :read_timeout, [Fixnum, nil], default: 60, desired_state: false
+    property :write_timeout, [Fixnum, nil], desired_state: false
 
-    property :tls, [Boolean, nil], desired_state: false
-    property :tls_verify, [Boolean, nil], desired_state: false
-    property :tls_ca_cert, [String, nil], desired_state: false
+    property :tls, [Boolean, nil], default: lazy { default_tls }
+    property :tls_verify, [Boolean, nil], default: lazy { default_tls_verify }
+    property :tls_ca_cert, [String, nil], default: lazy { default_tls_cert_path('ca') }
     property :tls_server_cert, [String, nil], desired_state: false
     property :tls_server_key, [String, nil], desired_state: false
-    property :tls_client_cert, [String, nil], desired_state: false
-    property :tls_client_key, [String, nil], desired_state: false
+    property :tls_client_cert, [String, nil], default: lazy { default_tls_cert_path('cert') }
+    property :tls_client_key, [String, nil], default: lazy { default_tls_cert_path('key') }
 
     declare_action_class.class_eval do
       include DockerHelpers::Authentication
