@@ -1,3 +1,9 @@
+v2.2.7
+--------------------
+- Supporting Docker ENV variables without explicitly setting
+  per-resource host TLS information
+- Serverspec -> inspec fixes
+
 v2.2.6
 --------------------
 - Docker 1.9 support
