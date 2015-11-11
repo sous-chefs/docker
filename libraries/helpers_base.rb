@@ -81,7 +81,7 @@ module DockerCookbook
       end
 
       def default_host
-        return false unless ENV['DOCKER_HOST']
+        return nil unless ENV['DOCKER_HOST']
         ENV['DOCKER_HOST']
       end
 
