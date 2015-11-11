@@ -143,26 +143,30 @@ end
 
 # docker_container[hello-world]
 
-describe command("docker ps -af 'name=hello-world'") do
+describe command("docker ps -qaf 'name=hello-world'") do
   its(:exit_status) { should eq 0 }
+  its(:stdout) { should_not be_empty }
 end
 
 # docker_container[busybox_ls]
 
-describe command("[ ! -z `docker ps -qaf 'name=busybox_ls$'` ]") do
+describe command("docker ps -qaf 'name=busybox_ls$'") do
   its(:exit_status) { should eq 0 }
+  its(:stdout) { should_not be_empty }
 end
 
 # docker_container[alpine_ls]
 
-describe command("[ ! -z `docker ps -qaf 'name=alpine_ls$'` ]") do
+describe command("docker ps -qaf 'name=alpine_ls$'") do
   its(:exit_status) { should eq 0 }
+  its(:stdout) { should_not be_empty }
 end
 
 # docker_container[an_echo_server]
 
-describe command("[ ! -z `docker ps -qaf 'name=an_echo_server$'` ]") do
+describe command("docker ps -qaf 'name=an_echo_server$'") do
   its(:exit_status) { should eq 0 }
+  its(:stdout) { should_not be_empty }
 end
 
 describe command("docker inspect --format '{{ range $port, $_ := .HostConfig.PortBindings }}{{ $port }}{{ end }}' an_echo_server") do
@@ -172,8 +176,9 @@ end
 
 # docker_container[another_echo_server]
 
-describe command("[ ! -z `docker ps -qaf 'name=another_echo_server$'` ]") do
+describe command("docker ps -qaf 'name=another_echo_server$'") do
   its(:exit_status) { should eq 0 }
+  its(:stdout) { should_not be_empty }
 end
 
 describe command("docker inspect --format '{{ range $port, $_ := .HostConfig.PortBindings }}{{ $port }}{{ end }}' another_echo_server") do
@@ -183,7 +188,7 @@ end
 
 # docker_container[an_udp_echo_server]
 
-describe command("[ ! -z `docker ps -qaf 'name=an_udp_echo_server$'` ]") do
+describe command("docker ps -qaf 'name=an_udp_echo_server$'") do
   its(:exit_status) { should eq 0 }
 end
 
@@ -194,25 +199,29 @@ end
 
 # docker_container[bill]
 
-describe command("[ ! -z `docker ps -qaf 'name=bil$'` ]") do
-  its(:exit_status) { should eq 1 }
+describe command("docker ps -qaf 'name=bil$'") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should be_empty }
 end
 
 # docker_container[hammer_time]
 
-describe command("[ ! -z `docker ps -qaf 'name=hammer_time$'` ]") do
+describe command("docker ps -qaf 'name=hammer_time$'") do
   its(:exit_status) { should eq 0 }
+  its(:stdout) { should_not be_empty }
 end
 
 describe command("docker ps -af 'name=hammer_time$'") do
   its(:exit_status) { should eq 0 }
   its(:stdout) { should match(/Exited/) }
+  its(:stdout) { should_not be_empty }
 end
 
 # docker_container[red_light]
 
-describe command("[ ! -z `docker ps -qaf 'name=red_light$'` ]") do
+describe command("docker ps -qaf 'name=red_light$'") do
   its(:exit_status) { should eq 0 }
+  its(:stdout) { should_not be_empty }
 end
 
 describe command("docker ps -af 'name=red_light$'") do
@@ -222,8 +231,9 @@ end
 
 # docker_container[green_light]
 
-describe command("[ ! -z `docker ps -qaf 'name=green_light$'` ]") do
+describe command("docker ps -qaf 'name=green_light$'") do
   its(:exit_status) { should eq 0 }
+  its(:stdout) { should_not be_empty }
 end
 
 describe command("docker ps -af 'name=green_light$'") do
@@ -233,8 +243,9 @@ end
 
 # docker_container[quitter]
 
-describe command("[ ! -z `docker ps -qaf 'name=quitter$'` ]") do
+describe command("docker ps -qaf 'name=quitter$'") do
   its(:exit_status) { should eq 0 }
+  its(:stdout) { should_not be_empty }
 end
 
 describe command("docker ps -af 'name=quitter$'") do
@@ -244,8 +255,9 @@ end
 
 # docker_container[restarter]
 
-describe command("[ ! -z `docker ps -qaf 'name=restarter$'` ]") do
+describe command("docker ps -qaf 'name=restarter$'") do
   its(:exit_status) { should eq 0 }
+  its(:stdout) { should_not be_empty }
 end
 
 describe command("docker ps -af 'name=restarter$'") do
@@ -255,8 +267,9 @@ end
 
 # docker_container[deleteme]
 
-describe command("[ ! -z `docker ps -qaf 'name=deleteme$'` ]") do
-  its(:exit_status) { should eq 1 }
+describe command("docker ps -qaf 'name=deleteme$'") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should be_empty }
 end
 
 # docker_container[redeployer]
@@ -351,8 +364,9 @@ describe command('docker logs cmd_test') do
 end
 
 # docker_container[sean_was_here]
-describe command("[ ! -z `docker ps -aqf 'name=sean_was_here$'` ]") do
-  its(:exit_status) { should eq 1 }
+describe command("docker ps -aqf 'name=sean_was_here$'") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should be_empty }
 end
 
 describe command('docker run --rm --volumes-from chef_container debian ls -la /opt/chef/') do
@@ -750,6 +764,7 @@ end
 
 describe command("docker ps -af 'name=host_override$'") do
   its(:exit_status) { should eq 0 }
+  its(:stdout) { should_not be_empty }
 end
 
 # docker_container[kill_after]
