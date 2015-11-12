@@ -86,12 +86,12 @@ module DockerCookbook
       end
 
       def default_tls
-        return false unless ENV['DOCKER_TLS']
+        return nil unless ENV['DOCKER_TLS']
         ENV['DOCKER_TLS']
       end
 
       def default_tls_verify
-        return false unless ENV['DOCKER_TLS_VERIFY']
+        return nil unless ENV['DOCKER_TLS_VERIFY']
         ENV['DOCKER_TLS_VERIFY']
       end
 
