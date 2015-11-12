@@ -1,3 +1,7 @@
+v2.2.8
+--------------------
+- #559 - setting tls and tls_verify should to nil by default
+
 v2.2.7
 --------------------
 - Supporting Docker ENV variables without explicitly setting
