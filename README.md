@@ -1,6 +1,7 @@
 Docker Cookbook
 ===============
-[![Build Status](https://secure.travis-ci.org/someara/chef-docker.png?branch=master)](http://travis-ci.org/someara/chef-docker)
+[![Build Status](https://travis-ci.org/chef-cookbooks/docker.svg?branch=master)](https://travis-ci.org/chef-cookbooks/docker) 
+[![Cookbook Version](https://img.shields.io/cookbook/v/docker.svg)](https://supermarket.chef.io/cookbooks/docker)
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/someara/chef-docker?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 The Docker Cookbook is a library cookbook that provides resources
