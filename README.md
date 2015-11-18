@@ -350,6 +350,9 @@ the options found in the
 - `bridge` - Attach containers to a network bridge
 - `bip` - Specify network bridge IP
 - `debug` - Enable debug mode
+- `cluster_store` - Cluster store to use
+- `cluster_advertise` - Ip and port that this daemon should advertise to the cluster
+- `cluster_store_opts` - Cluster store options
 - `daemon` - Enable daemon mode
 - `dns` - DNS server(s) to use
 - `dns_search` - DNS search domains to use

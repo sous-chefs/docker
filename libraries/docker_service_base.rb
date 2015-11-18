@@ -15,6 +15,9 @@ module DockerCookbook
     property :api_cors_header, [String, nil]
     property :bridge, [IPV4_ADDR, IPV6_ADDR, nil]
     property :bip, [IPV4_ADDR, IPV4_CIDR, IPV6_ADDR, IPV6_CIDR, nil]
+    property :cluster_store, [String, nil]
+    property :cluster_advertise, [String, nil]
+    property :cluster_store_opts, ArrayType
     property :debug, [Boolean, nil]
     property :daemon, Boolean, default: true
     property :dns, ArrayType
