@@ -75,17 +75,64 @@ module DockerCookbook
         end
       end
 
-      # port_bindings and exposed_ports really handle this
-      # TODO: infer `port` from `port_bindings` and `exposed_ports`
-      def port(ports = Chef::NOT_PASSED)
-        if ports != Chef::NOT_PASSED
-          ports = Array(ports)
-          ports = nil if ports.empty?
-          @port = ports
-          port_bindings to_port_bindings(ports)
-          exposed_ports to_port_exposures(ports)
+      def coerce_port(v)
+        return v if v.nil?
+        exposed_ports coerce_exposed_ports(v)
+        port_bindings coerce_port_bindings(v)
+        nil
+      end
+
+      def parse_port(v)
+        parts = v.split(':')
+        case parts.length
+        when 3
+          host_ip = parts[0]
+          host_port = parts[1]
+          container_port = parts[2]
+        when 2
+          host_ip = '0.0.0.0'
+          host_port = parts[0]
+          container_port = parts[1]
+        when 1
+          host_ip = ''
+          host_port = ''
+          container_port = parts[0]
         end
-        @port
+        # qualify the port-binding protocol even when it is implicitly tcp #427.
+        container_port << '/tcp' unless container_port.include?('/')
+        {
+          'host_ip' => host_ip,
+          'host_port' => host_port,
+          'container_port' => container_port
+        }
+      end
+
+      def coerce_exposed_ports(v)
+        case v
+        when Hash, nil
+          v
+        else
+          x = Array(v).map { |a| parse_port(a) }
+          Array(x).each_with_object({}) do |y, h|
+            h[y['container_port']] = {}
+          end
+        end
+      end
+
+      def coerce_port_bindings(v)
+        case v
+        when Hash, nil
+          v
+        else
+          x = Array(v).map { |a| parse_port(a) }
+          x.each_with_object({}) do |y, h|
+            h[y['container_port']] = [] unless h[y['container_port']]
+            h[y['container_port']] << {
+              'HostIp' => y['host_ip'],
+              'HostPort' => y['host_port']
+            }
+          end
+        end
       end
 
       # log_driver and log_opts really handle this

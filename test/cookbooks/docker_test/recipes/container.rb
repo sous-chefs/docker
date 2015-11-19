@@ -66,6 +66,15 @@ docker_container 'an_udp_echo_server' do
   action :run
 end
 
+# multiple ips
+docker_container 'multi_ip_port' do
+  repo 'alpine'
+  tag '3.1'
+  command 'nc -ul -p 7 -e /bin/cat'
+  port ['8301', '8301:8301/udp', '127.0.0.1:8500:8500', '127.0.1.1:8500:8500']
+  action :run
+end
+
 ##############
 # action :kill
 ##############

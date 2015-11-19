@@ -31,16 +31,6 @@ module DockerCookbook
       # Helper methods
       ################
 
-      def to_port_exposures(ports)
-        return nil if ports.nil?
-        Array(ports).inject({}) { |a, e| a.merge(PortBinding.new(e).exposure) }
-      end
-
-      def to_port_bindings(ports)
-        return nil if ports.nil?
-        Array(ports).inject({}) { |a, e| a.merge(PortBinding.new(e).binding) }
-      end
-
       def api_version
         @api_version ||= Docker.version(connection)['ApiVersion']
       end
