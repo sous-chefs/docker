@@ -79,7 +79,7 @@ module DockerCookbook
         return v if v.nil?
         exposed_ports coerce_exposed_ports(v)
         port_bindings coerce_port_bindings(v)
-        nil
+        v
       end
 
       def parse_port(v)
@@ -113,7 +113,7 @@ module DockerCookbook
           v
         else
           x = Array(v).map { |a| parse_port(a) }
-          Array(x).each_with_object({}) do |y, h|
+          x.each_with_object({}) do |y, h|
             h[y['container_port']] = {}
           end
         end
