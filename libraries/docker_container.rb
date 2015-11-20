@@ -66,7 +66,6 @@ module DockerCookbook
     property :open_stdin, Boolean, default: false
     property :outfile, [String, nil], default: nil
     property :port_bindings, [String, Array, Hash, nil], coerce: proc { |v| coerce_port_bindings(v) }
-    property :port, [String, Array, nil], coerce: proc { |v| coerce_port(v) }
     property :privileged, Boolean
     property :publish_all_ports, Boolean
     property :remove_volumes, Boolean

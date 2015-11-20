@@ -75,7 +75,7 @@ module DockerCookbook
         end
       end
 
-      def coerce_port(v)
+      def port(v)
         return v if v.nil?
         exposed_ports coerce_exposed_ports(v)
         port_bindings coerce_port_bindings(v)
