@@ -133,6 +133,7 @@ module DockerCookbook
         dns.each { |dns| opts << "--dns=#{dns}" } if dns
         dns_search.each { |dns| opts << "--dns-search=#{dns}" } if dns_search
         opts << "--exec-driver=#{exec_driver}" if exec_driver
+        exec_opts.each { |exec_opt| opts << "--exec-opt=#{exec_opt}" } if exec_opts
         opts << "--fixed-cidr=#{fixed_cidr}" if fixed_cidr
         opts << "--fixed-cidr-v6=#{fixed_cidr_v6}" if fixed_cidr_v6
         opts << "--group=#{group}" if group
