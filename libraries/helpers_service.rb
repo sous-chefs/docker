@@ -128,7 +128,7 @@ module DockerCookbook
         opts << '--debug' if debug
         opts << "--cluster-advertise=#{cluster_advertise}" if cluster_advertise
         opts << "--cluster-store=#{cluster_store}" if cluster_store
-        cluster_store_opts.each { |store_opt| opts << "--cluster-store-opts=#{store_opt}" } if cluster_store_opts
+        cluster_store_opts.each { |store_opt| opts << "--cluster-store-opt #{store_opt}" } if cluster_store_opts
         default_ulimit.each { |u| opts << "--default-ulimit=#{u}" } if default_ulimit
         dns.each { |dns| opts << "--dns=#{dns}" } if dns
         dns_search.each { |dns| opts << "--dns-search=#{dns}" } if dns_search
