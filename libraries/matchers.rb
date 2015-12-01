@@ -276,4 +276,24 @@ if defined?(ChefSpec)
     ChefSpec::Matchers::ResourceMatcher.new(:docker_registry, :login, resource_name)
   end
 
+  ################
+  # docker_network
+  ################
+
+  def create_docker_network(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_network, :create, resource_name)
+  end
+
+  def delete_docker_network(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_network, :delete, resource_name)
+  end
+
+  def connect_docker_network(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_network, :connect, resource_name)
+  end
+
+  def disconnect_docker_network(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_network, :disconnect, resource_name)
+  end
+
 end
