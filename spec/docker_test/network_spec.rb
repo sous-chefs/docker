@@ -40,7 +40,7 @@ describe 'docker_test::network' do
     it 'connects a container to a network' do
       expect(chef_run).to connect_docker_network('test-network-aux-connect').with(
         network_name: 'test-network-aux',
-        container: 'busybox-network'
+        container: 'network-container'
       )
     end
   end
@@ -49,14 +49,16 @@ describe 'docker_test::network' do
     it 'disconnect a container from a network' do
       expect(chef_run).to disconnect_docker_network('test-network-aux-disconnect').with(
         network_name: 'test-network-aux',
-        container: 'busybox-network'
+        container: 'network-container'
       )
     end
   end
 
   context 'testing to delete a network' do
     it 'deletes a network' do
-      expect(chef_run).to delete_docker_network('test-network-ip')
+      expect(chef_run).to delete_docker_network('delete-test-network-ip').with(
+        network_name: 'test-network-ip'
+      )
     end
   end
 end

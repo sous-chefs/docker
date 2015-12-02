@@ -48,7 +48,8 @@ docker_network 'test-network-aux-disconnect' do
   action :disconnect
 end
 
-# Remove a network
-docker_network 'test-network-ip' do
-  action :remove
+# Delete a network
+docker_network 'delete-test-network-ip' do
+  network_name 'test-network-ip'
+  action :delete
 end
