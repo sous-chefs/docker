@@ -1,3 +1,8 @@
+v2.2.10
+--------------------
+- #565 - Add support for --exec-opt to docker daemon
+- #566 - Rename cluster-opts to cluster-opt
+
 v2.2.9
 --------------------
 - #560 - Add cluster-store options to docker daemon
