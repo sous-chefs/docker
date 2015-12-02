@@ -21,6 +21,7 @@ tmp/
 *.sublime-workspace
 *.un~
 .idea/
+*.iml
 
 # OS files
 .DS_Store
