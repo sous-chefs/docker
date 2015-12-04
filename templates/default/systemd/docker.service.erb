@@ -24,7 +24,7 @@ ExecStartPre=/sbin/sysctl -w net.ipv4.ip_forward=1
 ExecStartPre=/sbin/sysctl -w net.ipv6.conf.all.forwarding=1
 <% end %>
 ExecStart=<%= @docker_daemon_cmd %>
-ExecStartPost=/usr/libexec/docker-wait-ready
+ExecStartPost=/usr/libexec/<%= @docker_name %>-wait-ready
 Restart=always
 MountFlags=slave
 LimitNOFILE=1048576

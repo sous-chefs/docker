@@ -307,6 +307,16 @@ suites:
   run_list:
   - recipe[docker_test::service_systemd]
 
+- name: service-systemd-multi
+  includes: [
+    'centos-7.0',
+    'fedora-21',
+    'debian-8.1',
+    'ubuntu-15.10'
+  ]
+  run_list:
+  - recipe[docker_test::service_systemd_multi]
+
 #######################
 # bulk resource testing
 #######################

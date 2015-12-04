@@ -27,8 +27,7 @@ module DockerCookbook
 
       # this script is called by the main systemd unit file, and
       # spins around until the service is actually up and running.
-      template '/usr/libexec/docker-wait-ready' do
-        path '/usr/libexec/docker-wait-ready'
+      template "/usr/libexec/#{docker_name}-wait-ready" do
         source 'systemd/docker-wait-ready.erb'
         owner 'root'
         group 'root'
@@ -39,24 +38,24 @@ module DockerCookbook
       end
 
       # this is the main systemd unit file
-      template '/lib/systemd/system/docker.service' do
-        path '/lib/systemd/system/docker.service'
+      template "/lib/systemd/system/#{docker_name}.service" do
         source 'systemd/docker.service.erb'
         owner 'root'
         group 'root'
         mode '0644'
         variables(
           config: new_resource,
+          docker_name: docker_name,
           docker_daemon_cmd: docker_daemon_cmd
         )
         cookbook 'docker'
         notifies :run, 'execute[systemctl daemon-reload]', :immediately
-        notifies :restart, new_resource unless ::File.exist? '/etc/docker-firstconverge'
+        notifies :restart, new_resource unless ::File.exist? "/etc/#{docker_name}-firstconverge"
         notifies :restart, new_resource if auto_restart
         action :create
       end
 
-      file '/etc/docker-firstconverge' do
+      file "/etc/#{docker_name}-firstconverge" do
         action :create
       end
 
@@ -67,8 +66,7 @@ module DockerCookbook
       end
 
       # tmpfiles.d config so the service survives reboot
-      template '/usr/lib/tmpfiles.d/docker.conf' do
-        path '/usr/lib/tmpfiles.d/docker.conf'
+      template "/usr/lib/tmpfiles.d/#{docker_name}.conf" do
         source 'systemd/tmpfiles.d.conf.erb'
         owner 'root'
         group 'root'
@@ -79,21 +77,21 @@ module DockerCookbook
       end
 
       # service management resource
-      service 'docker' do
+      service docker_name do
         provider Chef::Provider::Service::Systemd
         supports status: true
         action [:enable, :start]
-        only_if { ::File.exist?('/lib/systemd/system/docker.service') }
+        only_if { ::File.exist?("/lib/systemd/system/#{docker_name}.service") }
       end
     end
 
     action :stop do
       # service management resource
-      service 'docker' do
+      service docker_name do
         provider Chef::Provider::Service::Systemd
         supports status: true
         action [:disable, :stop]
-        only_if { ::File.exist?('/lib/systemd/system/docker.service') }
+        only_if { ::File.exist?("/lib/systemd/system/#{docker_name}.service") }
       end
     end
 
