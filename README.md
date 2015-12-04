@@ -328,10 +328,9 @@ docker_service 'tls_test:2376' do
 end
 ```
 
-WARNING - As of the 1.0 version of this cookbook, `docker_service`
-is a singleton resource. This means that if you create multiple
-`docker_service` resources on the same machine, you will only
-create one actual service and things may not work as expected.
+WARNING - When creating multiple `docker_service` resources on the
+same machine, you will need to specify unique graph properties to
+avoid unexpected behavior and possible data corruption.
 
 #### Properties
 The `docker_service` resource property list mostly corresponds to
