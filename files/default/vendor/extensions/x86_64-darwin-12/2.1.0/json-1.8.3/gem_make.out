@@ -1,4 +1,4 @@
-/opt/chefdk/embedded/bin/ruby -r ./siteconf20150812-79468-1btq144.rb extconf.rb
+/opt/chefdk/embedded/bin/ruby -r ./siteconf20151204-14925-ka330a.rb extconf.rb
 creating Makefile
 
 make "DESTDIR=" clean
