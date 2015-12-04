@@ -4,7 +4,7 @@ docker_installation_binary 'default' do
 end
 
 # service named 'default'
-docker_service_manager_execute 'default' do
+docker_service_manager_sysvinit 'default' do
   graph '/var/lib/docker'
   host 'unix:///var/run/docker.sock'
   action :start
@@ -23,7 +23,7 @@ docker_container 'service default echo server' do
 end
 
 # service A
-docker_service_manager_execute 'one' do
+docker_service_manager_sysvinit 'one' do
   graph '/var/lib/docker-one'
   host 'unix:///var/run/docker-one.sock'
   action :start
@@ -41,7 +41,7 @@ docker_container 'hello-world' do
 end
 
 # service B
-docker_service_manager_execute 'two' do
+docker_service_manager_sysvinit 'two' do
   graph '/var/lib/docker-two'
   host 'unix:///var/run/docker-two.sock'
   action :start

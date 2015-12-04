@@ -28,8 +28,7 @@ module DockerCookbook
     # it does here in the cookbook.
     action_class.class_eval do
       def create_init
-        template '/etc/init.d/docker' do
-          path '/etc/init.d/docker'
+        template "/etc/init.d/#{docker_name}" do
           source 'sysvinit/docker.erb'
           owner 'root'
           group 'root'
@@ -38,9 +37,10 @@ module DockerCookbook
           variables(
             config: new_resource,
             docker_bin: docker_bin,
-            docker_daemon_cmd: docker_daemon_cmd,
             docker_cmd: docker_cmd,
+            docker_daemon_cmd: docker_daemon_cmd,
             docker_daemon_opts: docker_daemon_opts,
+            docker_name: docker_name,
             docker_tls_ca_cert: tls_ca_cert,
             docker_tls_verify: tls_verify
           )
@@ -50,7 +50,7 @@ module DockerCookbook
       end
 
       def create_service
-        service 'docker' do
+        service docker_name do
           provider Chef::Provider::Service::Init::Redhat if platform_family?('rhel')
           provider Chef::Provider::Service::Init::Debian if platform_family?('debian')
           supports restart: true, status: true

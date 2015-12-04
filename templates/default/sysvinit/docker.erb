@@ -37,12 +37,12 @@ PID_DELAY=60
 <% if @pidfile -%>
 pidfile="<%= @config.pidfile %>"
 <% else -%>
-pidfile="/var/run/docker.pid"
+pidfile="/var/run/<%= @docker_name %>.pid"
 <% end -%>
 <% if @config.logfile -%>
 logfile="<%= @config.logfile %>"
 <% else -%>
-logfile="/var/log/docker"
+logfile="/var/log/<%= @docker_name %>"
 <% end -%>
 
 ####
@@ -74,54 +74,54 @@ running() {
 
 print_start_success() {
     <% if node['platform_family'] == 'rhel' %>
-    action $"Starting docker: " /bin/true
+    action $"Starting <%= @docker_name %>: " /bin/true
     <% else %>
-    echo "Starting Docker daemon"
+    echo "Starting <%= @docker_name %>"
     <% end %>
     return 0;
 }
 
 print_start_failure() {
     <% if node['platform_family'] == 'rhel' %>
-    action $"Starting Docker: " /bin/false
+    action $"Starting <%= @docker_name %>: " /bin/false
     <% else %>
-    echo "Could not start Docker daemon"
+    echo "Could not start <%= @docker_name %>"
     <% end %>
     return 0;
 }
 
 print_reload_success() {
     <% if node['platform_family'] == 'rhel' %>
-    action $"Reloading Docker: " /bin/true
+    action $"Reloading <%= @docker_name %>: " /bin/true
     <% else %>
-    echo "Reload success for Docker daemon"
+    echo "Reload success for <%= @docker_name %>"
     <% end %>
     return 0;
 }
 
 print_reload_failure() {
     <% if node['platform_family'] == 'rhel' %>
-    action $"Reloading Docker: " /bin/false
+    action $"Reloading <%= @docker_name %>: " /bin/false
     <% else %>
-    echo "Reload failed for Docker daemon"
+    echo "Reload failed for <%= @docker_name %>"
     <% end %>
     return 0;
 }
 
 print_stop_success() {
     <% if node['platform_family'] == 'rhel' %>
-    action $"Stopping Docker: " /bin/true
+    action $"Stopping <%= @docker_name %>: " /bin/true
     <% else %>
-    echo "Stopping Docker daemon"
+    echo "Stopping <%= @docker_name %>"
     <% end %>
     return 0;
 }
 
 print_stop_failure() {
     <% if node['platform_family'] == 'rhel' %>
-    action $"Stopping Docker: " /bin/false
+    action $"Stopping <%= @docker_name %>: " /bin/false
     <% else %>
-    echo "Could not stop Docker daemon"
+    echo "Could not stop <%= @docker_name %>"
     <% end %>
     return 0;
 }
@@ -225,17 +225,17 @@ start() {
 # Status of Docker daemon
 status() {
     if running; then
-        echo "Docker is running"
+        echo "<%= @docker_name %> is running"
         return 0
     else
-        echo "Docker is not running"
+        echo "<%= @docker_name %> is not running"
         return 1
     fi
 }
 
 stop() {
     if running; then
-        echo "Stopping Docker daemon"
+        echo "Stopping <%= @docker_name %>"
         if [ -f $pidfile ]; then
             /bin/kill `cat $pidfile 2>/dev/null`
             kstat=$?
@@ -252,7 +252,7 @@ stop() {
 
         return $kstat
     else
-        echo "Docker daemon stopped."
+        echo "<%= @docker_name %> stopped."
         return 0
     fi
 

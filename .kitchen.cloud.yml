@@ -269,6 +269,14 @@ suites:
   run_list:
   - recipe[docker_test::service_sysvinit]
 
+- name: service-sysvinit-multi
+  includes: [
+    'centos-6.5',
+    'ubuntu-12.04'
+  ]
+  run_list:
+  - recipe[docker_test::service_sysvinit_multi]
+
 #################################
 # docker_service_upstart resource
 #################################
