@@ -52,7 +52,7 @@ module DockerCookbook
     property :extra_hosts, NonEmptyArray
     property :exposed_ports, PartialHashType
     property :force, Boolean
-    property :host, [String, nil], default: lazy { default_host }
+    property :host, [String], default: lazy { default_host }, desired_state: false
     property :hostname, [String, nil]
     property :labels, [String, Array, Hash], coerce: proc { |v| coerce_labels(v) }
     property :links, [Array, nil], coerce: proc { |v| coerce_links(v) }

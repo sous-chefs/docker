@@ -11,7 +11,7 @@ module DockerCookbook
     # https://docs.docker.com/reference/api/docker_remote_api_v1.20/
     property :destination, [String, nil]
     property :force, Boolean, default: false
-    property :host, [String, nil], default: lazy { default_host }
+    property :host, [String], default: lazy { default_host }, desired_state: false
     property :nocache, Boolean, default: false
     property :noprune, Boolean, default: false
     property :repo, String, name_property: true

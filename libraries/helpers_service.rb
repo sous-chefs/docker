@@ -31,6 +31,11 @@ module DockerCookbook
         '/usr/bin/docker'
       end
 
+      def docker_name
+        return 'docker' if name == 'default'
+        "docker-#{name}"
+      end
+
       def docker_version
         o = shell_out("#{docker_bin} --version")
         o.stdout.split[2].chomp(',')

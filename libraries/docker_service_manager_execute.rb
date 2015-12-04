@@ -23,18 +23,18 @@ module DockerCookbook
       # Go doesn't support detaching processes natively, so we have
       # to manually fork it from the shell with &
       # https://github.com/docker/docker/issues/2758
-      bash 'start docker' do
+      bash "start docker #{name}" do
         code "#{docker_daemon_cmd} >> #{logfile} 2>&1 &"
         environment 'HTTP_PROXY' => http_proxy,
                     'HTTPS_PROXY' => https_proxy,
                     'NO_PROXY' => no_proxy,
                     'TMPDIR' => tmpdir
-        not_if "ps -ef | awk '{ print $8 }' | grep ^#{docker_bin}$"
+        not_if "ps -ef | grep -v grep | grep #{Shellwords.escape(docker_daemon_cmd)}"
         action :run
       end
 
-      # loop until docker socker is available
-      bash 'docker-wait-ready' do
+      # loop until docker docker is available
+      bash "docker-wait-ready #{name}" do
         code <<-EOF
             timeout=0
             while [ $timeout -lt 20 ];  do
@@ -53,9 +53,9 @@ module DockerCookbook
     end
 
     action :stop do
-      execute 'stop docker' do
-        command 'kill `pidof docker`'
-        only_if "ps -ef | awk '{ print $8 }' | grep ^#{docker_bin}$"
+      execute "stop docker #{name}" do
+        command "kill `cat #{pid_file}`"
+        only_if "#{docker_cmd} ps | head -n 1 | grep ^CONTAINER"
       end
     end
 

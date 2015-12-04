@@ -246,6 +246,18 @@ suites:
   run_list:
   - recipe[docker_test::service_execute]
 
+- name: service-execute-multi
+  includes: [
+    'centos-7.0',
+    'fedora-21',
+    'debian-8.1',
+    'ubuntu-12.04',
+    'ubuntu-14.04',
+    'ubuntu-15.10',
+  ]
+  run_list:
+  - recipe[docker_test::service_execute_multi]
+
 ##################################
 # docker_service_sysvinit resource
 ##################################
