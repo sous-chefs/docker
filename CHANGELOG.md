@@ -1,3 +1,7 @@
+v2.3.0
+--------------------
+- Support for multiple docker_service instances with docker_service_manager_sysvinit
+
 v2.2.11
 --------------------
 - Support for multiple docker_service instances with docker_service_manager_execute
