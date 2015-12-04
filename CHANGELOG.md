@@ -1,3 +1,7 @@
+v2.2.11
+--------------------
+- Support for multiple docker_service instances with docker_service_manager_execute
+
 v2.2.10
 --------------------
 - #565 - Add support for --exec-opt to docker daemon
