@@ -287,6 +287,13 @@ suites:
   run_list:
   - recipe[docker_test::service_upstart]
 
+- name: service-upstart-multi
+  includes: [
+    'ubuntu-14.04'
+  ]
+  run_list:
+  - recipe[docker_test::service_upstart_multi]
+
 #################################
 # docker_service_systemd resource
 #################################
