@@ -1,3 +1,8 @@
+v2.3.2
+--------------------
+- vendoring docker-api-1.24.0
+- setting desired_state:false for tls properties
+
 v2.3.1
 --------------------
 - Support for multiple docker_service instances with docker_service_manager_upstart
