@@ -1,3 +1,7 @@
+v2.3.3
+--------------------
+- vendoring docker-api-1.24.1
+
 v2.3.2
 --------------------
 - vendoring docker-api-1.24.0
