@@ -116,7 +116,7 @@ class Docker::Image
       completions = json.compact.select { |j| j['status'] && j['status'].include?('complete') }
       if image = completions.reverse_each.find { |j| j['id'] }
         get(image['id'], {}, conn)
-      elsif image = opts['fromImage']
+      elsif image = opts['fromImage'] || opts[:fromImage]
         get(image, {}, conn)
       end
     end
