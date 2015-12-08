@@ -50,7 +50,7 @@ module DockerCookbook
     property :entrypoint, ShellCommand
     property :env, UnorderedArrayType
     property :extra_hosts, NonEmptyArray
-    property :exposed_ports, [String, Array, Hash, nil], coerce: proc { |v| coerce_exposed_ports(v) }
+    property :exposed_ports, PartialHashType
     property :force, Boolean
     property :host, [String], default: lazy { default_host }, desired_state: false
     property :hostname, [String, nil]
@@ -65,7 +65,7 @@ module DockerCookbook
     property :network_mode, [String, nil], default: lazy { default_network_mode }
     property :open_stdin, Boolean, default: false
     property :outfile, [String, nil], default: nil
-    property :port_bindings, [String, Array, Hash, nil], coerce: proc { |v| coerce_port_bindings(v) }
+    property :port_bindings, PartialHashType
     property :privileged, Boolean
     property :publish_all_ports, Boolean
     property :remove_volumes, Boolean
