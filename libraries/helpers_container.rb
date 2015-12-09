@@ -99,13 +99,22 @@ module DockerCookbook
           host_port = ''
           container_port = parts[0]
         end
+        port_range, protocol = container_port.split('/')
+        if port_range.include?('-')
+          port_range = container_port.split('-')
+          port_range.map!(&:to_i)
+          Chef::Log.fatal("FATAL: Invalid port range! #{container_port}") if port_range[0] > port_range[1]
+          port_range = (port_range[0]..port_range[1]).to_a
+        end
         # qualify the port-binding protocol even when it is implicitly tcp #427.
-        container_port << '/tcp' unless container_port.include?('/')
-        {
-          'host_ip' => host_ip,
-          'host_port' => host_port,
-          'container_port' => container_port
-        }
+        protocol = 'tcp' if protocol.nil?
+        Array(port_range).map do |port|
+          {
+            'host_ip' => host_ip,
+            'host_port' => host_port,
+            'container_port' => "#{port}/#{protocol}"
+          }
+        end
       end
 
       def coerce_exposed_ports(v)
@@ -114,6 +123,7 @@ module DockerCookbook
           v
         else
           x = Array(v).map { |a| parse_port(a) }
+          x.flatten!
           x.each_with_object({}) do |y, h|
             h[y['container_port']] = {}
           end
@@ -126,6 +136,7 @@ module DockerCookbook
           v
         else
           x = Array(v).map { |a| parse_port(a) }
+          x.flatten!
           x.each_with_object({}) do |y, h|
             h[y['container_port']] = [] unless h[y['container_port']]
             h[y['container_port']] << {

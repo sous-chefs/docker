@@ -75,6 +75,15 @@ docker_container 'multi_ip_port' do
   action :run
 end
 
+# port range
+docker_container 'port_range' do
+  repo 'alpine'
+  tag '3.1'
+  command 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
+  port ['2000-2001', '2000-2001/udp', '3000-3001/tcp']
+  action :run
+end
+
 ##############
 # action :kill
 ##############
