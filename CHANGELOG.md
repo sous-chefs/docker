@@ -1,3 +1,8 @@
+v2.3.4
+--------------------
+- Fixing up ports logic
+- Supporting multiple ip/ports
+
 v2.3.3
 --------------------
 - vendoring docker-api-1.24.1
