@@ -1,3 +1,7 @@
+v2.3.5
+--------------------
+- fixing desired_state on docker_container force property
+
 v2.3.4
 --------------------
 - Fixing up ports logic
