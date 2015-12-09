@@ -104,7 +104,7 @@ describe 'docker_test::container' do
         repo: 'alpine',
         tag: '3.1',
         command: 'nc -ll -p 7 -e /bin/cat',
-        port: ['7:7']
+        port: '7:7'
       )
     end
 
@@ -113,7 +113,7 @@ describe 'docker_test::container' do
         repo: 'alpine',
         tag: '3.1',
         command: 'nc -ll -p 7 -e /bin/cat',
-        port: ['7']
+        port: '7'
       )
     end
 
@@ -122,7 +122,16 @@ describe 'docker_test::container' do
         repo: 'alpine',
         tag: '3.1',
         command: 'nc -ul -p 7 -e /bin/cat',
-        port: ['5007:7/udp']
+        port: '5007:7/udp'
+      )
+    end
+
+    it 'run docker_container[multi_ip_port]' do
+      expect(chef_run).to run_docker_container('multi_ip_port').with(
+        repo: 'alpine',
+        tag: '3.1',
+        command: 'nc -ul -p 7 -e /bin/cat',
+        port: ['8301', '8301:8301/udp', '127.0.0.1:8500:8500', '127.0.1.1:8500:8500']
       )
     end
   end
@@ -229,7 +238,7 @@ describe 'docker_test::container' do
         repo: 'alpine',
         tag: '3.1',
         command: 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"',
-        port: ['7']
+        port: '7'
       )
     end
 
@@ -238,7 +247,7 @@ describe 'docker_test::container' do
         repo: 'alpine',
         tag: '3.1',
         command: 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"',
-        port: ['7']
+        port: '7'
       )
     end
 
@@ -502,7 +511,7 @@ describe 'docker_test::container' do
         repo: 'alpine',
         tag: '3.1',
         command: 'nc -ll -p 123 -e /bin/cat',
-        port: ['123'],
+        port: '123',
         restart_policy: 'always'
       )
     end
@@ -512,7 +521,7 @@ describe 'docker_test::container' do
         repo: 'alpine',
         tag: '3.1',
         command: 'nc -ll -p 123 -e /bin/cat',
-        port: ['123'],
+        port: '123',
         restart_policy: 'always',
         restart_maximum_retry_count: 2
       )
@@ -526,7 +535,7 @@ describe 'docker_test::container' do
         tag: '3.1',
         env: ['FOO=bar', 'BIZ=baz'],
         command: 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"',
-        port: ['321']
+        port: '321'
       )
     end
 
@@ -536,7 +545,7 @@ describe 'docker_test::container' do
         tag: '3.1',
         env: ['FOO=few', 'BIZ=buzz'],
         command: 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"',
-        port: ['322']
+        port: '322'
       )
     end
 
@@ -589,7 +598,7 @@ describe 'docker_test::container' do
         repo: 'alpine',
         tag: '3.1',
         command: 'nc -ll -p 456 -e /bin/cat',
-        port: ['456']
+        port: '456'
       )
     end
 
@@ -676,7 +685,7 @@ describe 'docker_test::container' do
         repo: 'alpine',
         tag: '3.1',
         command: 'nc -ll -p 777 -e /bin/cat',
-        port: ['777:777'],
+        port: '777:777',
         network_mode: 'host'
       )
     end
@@ -688,7 +697,7 @@ describe 'docker_test::container' do
         repo: 'alpine',
         tag: '3.1',
         command: 'nc -ll -p 778 -e /bin/cat',
-        port: ['778:778'],
+        port: '778:778',
         cap_add: ['SYS_RESOURCE'],
         ulimits: [
           'nofile=40960:40960',
@@ -739,7 +748,7 @@ describe 'docker_test::container' do
         dns_search: ['computers.biz'],
         extra_hosts: ['east:4.3.2.1', 'west:1.2.3.4'],
         links: ['link_source:hello'],
-        port: ['1234:1234'],
+        port: '1234:1234',
         volumes_from: ['chef_container'],
         user: 'operator',
         entrypoint: '/bin/sh -c',

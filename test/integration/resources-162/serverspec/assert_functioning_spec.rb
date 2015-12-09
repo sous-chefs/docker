@@ -190,11 +190,24 @@ end
 
 describe command("docker ps -qaf 'name=an_udp_echo_server$'") do
   its(:exit_status) { should eq 0 }
+  its(:stdout) { should_not be_empty }
 end
 
 describe command("docker inspect --format '{{ range $port, $_ := .HostConfig.PortBindings }}{{ $port }}{{ end }}' an_udp_echo_server") do
   its(:exit_status) { should eq 0 }
   its(:stdout) { should include('7/udp') }
+end
+
+# docker_container[multi_ip_port]
+
+describe command("docker ps -qaf 'name=multi_ip_port$'") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should_not be_empty }
+end
+
+describe command("docker inspect -f '{{ .HostConfig.PortBindings }}' multi_ip_port") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should include('8301/tcp:[{ }] 8301/udp:[{0.0.0.0 8301}] 8500/tcp:[{127.0.0.1 8500} {127.0.1.1 8500}]') }
 end
 
 # docker_container[bill]

@@ -65,7 +65,7 @@ module DockerCookbook
     property :network_mode, [String, nil], default: lazy { default_network_mode }
     property :open_stdin, Boolean, default: false
     property :outfile, [String, nil], default: nil
-    property :port_bindings, [String, Array, Hash, nil]
+    property :port_bindings, PartialHashType
     property :privileged, Boolean
     property :publish_all_ports, Boolean
     property :remove_volumes, Boolean
