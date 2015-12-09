@@ -75,11 +75,12 @@ module DockerCookbook
         end
       end
 
-      def port(v)
-        return v if v.nil?
+      def port(v = nil)
+        return @port if v.nil?
         exposed_ports coerce_exposed_ports(v)
         port_bindings coerce_port_bindings(v)
-        v
+        @port = v
+        @port
       end
 
       def parse_port(v)
