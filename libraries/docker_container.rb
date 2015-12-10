@@ -178,55 +178,56 @@ module DockerCookbook
         action_delete
 
         with_retries do
-          Docker::Container.create(
-            {
-              'name'            => container_name,
-              'Image'           => "#{repo}:#{tag}",
-              'Labels'          => labels,
-              'Cmd'             => to_shellwords(command),
-              'AttachStderr'    => attach_stderr,
-              'AttachStdin'     => attach_stdin,
-              'AttachStdout'    => attach_stdout,
-              'Domainname'      => domain_name,
-              'Entrypoint'      => to_shellwords(entrypoint),
-              'Env'             => env,
-              'ExposedPorts'    => exposed_ports,
-              'Hostname'        => hostname,
-              'MacAddress'      => mac_address,
-              'NetworkDisabled' => network_disabled,
-              'OpenStdin'       => open_stdin,
-              'StdinOnce'       => stdin_once,
-              'Tty'             => tty,
-              'User'            => user,
-              'Volumes'         => volumes,
-              'WorkingDir'      => working_dir,
-              'HostConfig'      => {
-                'Binds'           => binds,
-                'CapAdd'          => cap_add,
-                'CapDrop'         => cap_drop,
-                'CgroupParent'    => cgroup_parent,
-                'CpuShares'       => cpu_shares,
-                'CpusetCpus'      => cpuset_cpus,
-                'Devices'         => devices,
-                'Dns'             => dns,
-                'DnsSearch'       => dns_search,
-                'ExtraHosts'      => extra_hosts,
-                'Links'           => links,
-                'LogConfig'       => log_config,
-                'Memory'          => memory,
-                'MemorySwap'      => memory_swap,
-                'NetworkMode'     => network_mode,
-                'Privileged'      => privileged,
-                'PortBindings'    => port_bindings,
-                'PublishAllPorts' => publish_all_ports,
-                'RestartPolicy'   => {
-                  'Name'              => restart_policy,
-                  'MaximumRetryCount' => restart_maximum_retry_count
-                },
-                'Ulimits'         => ulimits_to_hash,
-                'VolumesFrom'     => volumes_from
-              }
-            }, connection)
+          config = {
+            'name'            => container_name,
+            'Image'           => "#{repo}:#{tag}",
+            'Labels'          => labels,
+            'Cmd'             => to_shellwords(command),
+            'AttachStderr'    => attach_stderr,
+            'AttachStdin'     => attach_stdin,
+            'AttachStdout'    => attach_stdout,
+            'Domainname'      => domain_name,
+            'Entrypoint'      => to_shellwords(entrypoint),
+            'Env'             => env,
+            'ExposedPorts'    => exposed_ports,
+            'Hostname'        => hostname,
+            'MacAddress'      => mac_address,
+            'NetworkDisabled' => network_disabled,
+            'OpenStdin'       => open_stdin,
+            'StdinOnce'       => stdin_once,
+            'Tty'             => tty,
+            'User'            => user,
+            'Volumes'         => volumes,
+            'WorkingDir'      => working_dir,
+            'HostConfig'      => {
+              'Binds'           => binds,
+              'CapAdd'          => cap_add,
+              'CapDrop'         => cap_drop,
+              'CgroupParent'    => cgroup_parent,
+              'CpuShares'       => cpu_shares,
+              'CpusetCpus'      => cpuset_cpus,
+              'Devices'         => devices,
+              'Dns'             => dns,
+              'DnsSearch'       => dns_search,
+              'ExtraHosts'      => extra_hosts,
+              'Links'           => links,
+              'LogConfig'       => log_config,
+              'Memory'          => memory,
+              'MemorySwap'      => memory_swap,
+              'NetworkMode'     => network_mode,
+              'Privileged'      => privileged,
+              'PortBindings'    => port_bindings,
+              'PublishAllPorts' => publish_all_ports,
+              'RestartPolicy'   => {
+                'Name'              => restart_policy,
+                'MaximumRetryCount' => restart_maximum_retry_count
+              },
+              'Ulimits'         => ulimits_to_hash,
+              'VolumesFrom'     => volumes_from
+            }
+          }
+          compact!(config)
+          Docker::Container.create(config, connection)
         end
       end
     end
