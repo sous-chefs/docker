@@ -24,10 +24,10 @@ platforms:
   run_list:
   - recipe[yum-docker]
 
-- name: centos-7.0
+- name: centos-7.1
   driver_config:
-    box: opscode-centos-7.0
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-7.0_chef-provisionerless.box
+    box: opscode-centos-7.1
+    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-7.1_chef-provisionerless.box
   run_list:
   - recipe[yum-docker]
 
@@ -164,7 +164,7 @@ suites:
 
 - name: installation_package-183
   includes: [
-    'centos-7.0',
+    'centos-7.1',
     'debian-8.1',
     'fedora-21',
     'ubuntu-12.04',
@@ -179,7 +179,7 @@ suites:
 
 - name: installation_package-190
   includes: [
-    'centos-7.0',
+    'centos-7.1',
     'debian-8.1',
     'fedora-21',
     'ubuntu-12.04',
@@ -197,7 +197,7 @@ suites:
 #################################
 - name: service-execute
   includes: [
-    'centos-7.0',
+    'centos-7.1',
     'fedora-21',
     'debian-8.1',
     'ubuntu-12.04',
@@ -233,7 +233,7 @@ suites:
 #################################
 - name: service-systemd
   includes: [
-    'centos-7.0',
+    'centos-7.1',
     'fedora-21',
     'debian-8.1',
     'ubuntu-15.04'
@@ -248,7 +248,7 @@ suites:
 - name: resources-171
   includes: [
     'debian-8.1',
-    'centos-7.0',
+    'centos-7.1',
     'fedora-21',
     'ubuntu-15.04'
   ]
@@ -264,7 +264,7 @@ suites:
 - name: resources-183
   includes: [
     'debian-8.1',
-    'centos-7.0',
+    'centos-7.1',
     'fedora-21',
     'ubuntu-15.04'
   ]
@@ -278,6 +278,7 @@ suites:
 
 - name: resources-190
   includes: [
+    'centos-7.1',
     'ubuntu-15.04'
   ]
   attributes:
@@ -294,7 +295,7 @@ suites:
 
 - name: auto
   includes: [
-    'centos-7.0',
+    'centos-7.1',
     'fedora-21',
     'debian-8.1',
     'ubuntu-12.04',

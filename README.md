@@ -1,6 +1,6 @@
 Docker Cookbook
 ===============
-[![Build Status](https://travis-ci.org/chef-cookbooks/docker.svg?branch=master)](https://travis-ci.org/chef-cookbooks/docker) 
+[![Build Status](https://travis-ci.org/chef-cookbooks/docker.svg?branch=master)](https://travis-ci.org/chef-cookbooks/docker)
 [![Cookbook Version](https://img.shields.io/cookbook/v/docker.svg)](https://supermarket.chef.io/cookbooks/docker)
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/someara/chef-docker?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -34,7 +34,7 @@ configuration of cgroups and storage back ends.
 |--------------+-------+-------+-------|
 | debian-8     | X     | X     | X     |
 |--------------+-------+-------+-------|
-| centos-7     | X     | X     | X     |
+| centos-71    | X     | X     | X     |
 |--------------+-------+-------+-------|
 | fedora-21    | X     | X     | X     |
 |--------------+-------+-------+-------|
