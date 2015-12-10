@@ -101,13 +101,13 @@ suites:
   run_list:
   - recipe[docker_test::installation_binary]
 
-- name: installation_binary-190
+- name: installation_binary-191
   includes: [
     'ubuntu-15.04'
   ]
   attributes:
     docker:
-      version: '1.9.0'
+      version: '1.9.1'
   run_list:
   - recipe[docker_test::installation_binary]
 
@@ -177,7 +177,7 @@ suites:
   run_list:
   - recipe[docker_test::installation_package]
 
-- name: installation_package-190
+- name: installation_package-191
   includes: [
     'centos-7.0',
     'debian-8.1',
@@ -188,7 +188,7 @@ suites:
   ]
   attributes:
     docker:
-      version: '1.9.0'
+      version: '1.9.1'
   run_list:
   - recipe[docker_test::installation_package]
 
@@ -276,13 +276,13 @@ suites:
   - recipe[docker_test::image]
   - recipe[docker_test::container]
 
-- name: resources-190
+- name: resources-191
   includes: [
     'ubuntu-15.04'
   ]
   attributes:
     docker:
-      version: '1.9.0'
+      version: '1.9.1'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::image]
