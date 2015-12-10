@@ -1,3 +1,7 @@
+v2.3.6
+--------------------
+- #573 adding support for port range
+
 v2.3.5
 --------------------
 - fixing desired_state on docker_container force property
