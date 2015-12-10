@@ -166,8 +166,56 @@ module DockerCookbook
     end
 
     def validate_container_create
-      if network_mode == 'host' && property_is_set?(:hostname)
-        fail Chef::Exceptions::ValidationFailed, "Cannot specify hostname on #{container_name}, because network_mode is host."
+      if property_is_set?(:restart_policy) &&
+         restart_policy != 'no' &&
+         restart_policy != 'always' &&
+         restart_policy != 'unless-stopped' &&
+         restart_policy != 'on-failure'
+        fail Chef::Exceptions::ValidationFailed, 'restart_policy must be either no, always, unless-stopped, or on-failure.'
+      end
+
+      if property_is_set?(:restart_policy) && property_is_set?(:autoremove)
+        fail Chef::Exceptions::ValidationFailed, 'Conflicting options restart_policy and autoremove.'
+      end
+
+      if property_is_set?(:autoremove) && property_is_set?(:detach)
+        fail Chef::Exceptions::ValidationFailed, 'Conflicting options autoremove and detach.'
+      end
+
+      if property_is_set?(:detach) &&
+         (
+          property_is_set?(:attach_stderr) ||
+          property_is_set?(:attach_stdin) ||
+          property_is_set?(:attach_stdout) ||
+          property_is_set?(:stdin_once)
+         )
+        fail Chef::Exceptions::ValidationFailed, 'Conflicting options detach, attach_stderr, attach_stdin, attach_stdout, stdin_once.'
+      end
+
+      if network_mode == 'host' &&
+         (
+          property_is_set?(:hostname) ||
+          property_is_set?(:dns) ||
+          property_is_set?(:dns_search) ||
+          property_is_set?(:mac_address) ||
+          property_is_set?(:extra_hosts)
+         )
+        fail Chef::Exceptions::ValidationFailed, 'Cannot specify hostname, dns, dns_search, mac_address, or extra_hosts when network_mode is host.'
+      end
+
+      if network_mode == 'container' &&
+         (
+          property_is_set?(:hostname) ||
+          property_is_set?(:dns) ||
+          property_is_set?(:dns_search) ||
+          property_is_set?(:mac_address) ||
+          property_is_set?(:extra_hosts) ||
+          property_is_set?(:exposed_ports) ||
+          property_is_set?(:port_bindings) ||
+          property_is_set?(:publish_all_ports) ||
+          !port.nil?
+         )
+        fail Chef::Exceptions::ValidationFailed, 'Cannot specify hostname, dns, dns_search, mac_address, extra_hosts, exposed_ports, port_bindings, publish_all_ports, port when network_mode is container.'
       end
     end
 
