@@ -32,9 +32,9 @@ module DockerCookbook
     property :repo, String, default: lazy { container_name }
     property :tag, String, default: 'latest'
     property :command, ShellCommand
-    property :attach_stderr, Boolean, default: lazy { detach }, desired_state: false
-    property :attach_stdin, Boolean, default: false, desired_state: false
-    property :attach_stdout, Boolean, default: lazy { detach }, desired_state: false
+    property :attach_stderr, Boolean, desired_state: false
+    property :attach_stdin, Boolean, desired_state: false
+    property :attach_stdout, Boolean, desired_state: false
     property :autoremove, Boolean, desired_state: false
     property :binds, ArrayType
     property :cap_add, NonEmptyArray
@@ -42,7 +42,7 @@ module DockerCookbook
     property :cgroup_parent, String, default: ''
     property :cpu_shares, [Fixnum, nil], default: 0
     property :cpuset_cpus, String, default: ''
-    property :detach, Boolean, default: true
+    property :detach, Boolean, default: true, desired_state: false
     property :devices, ArrayType
     property :dns, NonEmptyArray
     property :dns_search, ArrayType
@@ -58,12 +58,12 @@ module DockerCookbook
     property :links, [Array, nil], coerce: proc { |v| coerce_links(v) }
     property :log_driver, %w( json-file syslog journald gelf fluentd none ), default: 'json-file'
     property :log_opts, [Hash, nil], coerce: proc { |v| coerce_log_opts(v) }
-    property :mac_address, String, default: ''
+    property :mac_address, String
     property :memory, Fixnum, default: 0
     property :memory_swap, Fixnum, default: -1
     property :network_disabled, Boolean, default: false
     property :network_mode, [String, nil], default: lazy { default_network_mode }
-    property :open_stdin, Boolean, default: false
+    property :open_stdin, Boolean, desired_state: false
     property :outfile, [String, nil], default: nil
     property :port_bindings, PartialHashType
     property :privileged, Boolean
@@ -73,7 +73,7 @@ module DockerCookbook
     property :restart_policy, String, default: 'no'
     property :security_opts, [String, Array], default: lazy { [''] }
     property :signal, String, default: 'SIGKILL'
-    property :stdin_once, [Boolean, nil], default: lazy { !detach }
+    property :stdin_once, Boolean, desired_state: false
     property :timeout, [Fixnum, nil], desired_state: false
     property :tty, Boolean
     property :ulimits, [Array, nil], coerce: proc { |v| coerce_ulimits(v) }
@@ -284,16 +284,8 @@ module DockerCookbook
       return if state['Running']
       converge_by "starting #{container_name}" do
         with_retries do
-          if detach
-            attach_stdin false
-            attach_stdout false
-            attach_stderr false
-            stdin_once false
-            container.start
-          else
-            container.start
-            timeout ? container.wait(timeout) : container.wait
-          end
+          container.start
+          timeout ? container.wait(timeout) : container.wait unless detach
         end
         wait_running_state(true)
       end
