@@ -210,6 +210,23 @@ describe command("docker inspect -f '{{ .HostConfig.PortBindings }}' multi_ip_po
   its(:stdout) { should include('8301/tcp:[{ }] 8301/udp:[{0.0.0.0 8301}] 8500/tcp:[{127.0.0.1 8500} {127.0.1.1 8500}]') }
 end
 
+# docker_container[port_range]
+
+describe command("docker ps -qaf 'name=port_range$'") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should_not be_empty }
+end
+
+describe command("docker inspect -f '{{ .HostConfig.PortBindings }}' port_range") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should include('2000/tcp:[{ }]') }
+  its(:stdout) { should include('2001/tcp:[{ }]') }
+  its(:stdout) { should include('2000/udp:[{ }]') }
+  its(:stdout) { should include('2001/udp:[{ }]') }
+  its(:stdout) { should include('3000/tcp:[{ }]') }
+  its(:stdout) { should include('3001/tcp:[{ }]') }
+end
+
 # docker_container[bill]
 
 describe command("docker ps -qaf 'name=bil$'") do

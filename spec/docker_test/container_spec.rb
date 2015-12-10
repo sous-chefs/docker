@@ -134,6 +134,15 @@ describe 'docker_test::container' do
         port: ['8301', '8301:8301/udp', '127.0.0.1:8500:8500', '127.0.1.1:8500:8500']
       )
     end
+
+    it 'run docker_container[port_range]' do
+      expect(chef_run).to run_docker_container('port_range').with(
+        repo: 'alpine',
+        tag: '3.1',
+        command: 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"',
+        port: ['2000-2001', '2000-2001/udp', '3000-3001/tcp']
+      )
+    end
   end
 
   context 'testing action :kill' do
