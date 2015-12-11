@@ -1,3 +1,8 @@
+v2.3.8
+--------------------
+- #582 using symbols in excon opts
+- Resolves 458
+
 v2.3.7
 --------------------
 - #574 - updating docker to 1.9.1
