@@ -255,7 +255,11 @@ module DockerCookbook
       return unless state['Running']
       kill_after_str = " (will kill after #{kill_after}s)" if kill_after != -1
       converge_by "stopping #{container_name} #{kill_after_str}" do
-        with_retries { container.stop!('timeout' => kill_after) }
+        begin
+          with_retries { container.stop!('timeout' => kill_after) }
+        rescue Docker::Error::TimeoutError
+          raise Docker::Error::TimeoutError, "Container failed to stop, consider adding kill_after to the container #{container_name}"
+        end
         wait_running_state(false)
       end
     end
