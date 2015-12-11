@@ -1093,6 +1093,7 @@ Most `docker_container` properties are the `snake_case` version of the
 - `write_timeout` - May need to increase for commits or exports that are slow
 - `kill_after` - Number of seconds to wait before killing the container. Defaults
   to wait indefinitely; eventually will hit read_timeout limit.
+- `timeout` - Seconds to wait for an attached container to return
 - `tls` - Use TLS; implied by --tlsverify. Defaults to ENV['DOCKER_TLS'] if set
 - `tls_verify` - Use TLS and verify the remote. Defaults to ENV['DOCKER_TLS_VERIFY'] if set
 - `tls_ca_cert` - Trust certs signed only by this CA. Defaults to ENV['DOCKER_CERT_PATH'] if set
