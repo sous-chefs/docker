@@ -38,8 +38,8 @@ module DockerCookbook
       def connection
         @connection ||= begin
                           opts = {}
-                          opts['read_timeout'] = read_timeout if read_timeout
-                          opts['write_timeout'] = write_timeout if write_timeout
+                          opts[:read_timeout] = read_timeout if read_timeout
+                          opts[:write_timeout] = write_timeout if write_timeout
 
                           if host =~ /^tcp:/
                             opts[:scheme] = 'https' if tls || !tls_verify.nil?
