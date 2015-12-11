@@ -207,7 +207,9 @@ end
 
 describe command("docker inspect -f '{{ .HostConfig.PortBindings }}' multi_ip_port") do
   its(:exit_status) { should eq 0 }
-  its(:stdout) { should include('8301/tcp:[{ }] 8301/udp:[{0.0.0.0 8301}] 8500/tcp:[{127.0.0.1 8500} {127.0.1.1 8500}]') }
+  its(:stdout) { should include('8301/tcp:[{ }]') }
+  its(:stdout) { should include('8301/udp:[{0.0.0.0 8301}]') }
+  its(:stdout) { should match(%r(8500/tcp:\[{127.0.[0-1].1 8500} {127.0.[0-1].1 8500}\])) }
 end
 
 # docker_container[port_range]
