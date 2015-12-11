@@ -1,3 +1,12 @@
+v2.3.7
+--------------------
+- #574 - updating docker to 1.9.1
+- #575 - remove nil values from container create hash
+- #576 - updating centos to 7.1
+- #577 - check for conflicting properties
+- #578 - Update docker_container library documentation on timeouts
+- #579 - suggest adding kill_after on a failed action stop
+
 v2.3.6
 --------------------
 - #573 adding support for port range
