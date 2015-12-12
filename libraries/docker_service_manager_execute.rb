@@ -54,7 +54,7 @@ module DockerCookbook
 
     action :stop do
       execute "stop docker #{name}" do
-        command "kill `cat #{pid_file}`"
+        command "kill `cat #{pidfile}`"
         only_if "#{docker_cmd} ps | head -n 1 | grep ^CONTAINER"
       end
     end
