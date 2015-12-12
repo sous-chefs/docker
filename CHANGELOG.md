@@ -1,3 +1,7 @@
+v2.3.10
+--------------------
+- Fix method name for pidfile in docker_service_manager_execute
+
 v2.3.9
 --------------------
 - Adding Linux Mint to helpers_installation_package
