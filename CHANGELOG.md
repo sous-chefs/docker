@@ -1,3 +1,7 @@
+v2.3.9
+--------------------
+- Adding Linux Mint to helpers_installation_package
+
 v2.3.8
 --------------------
 - #582 using symbols in excon opts

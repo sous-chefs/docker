@@ -1,8 +1,15 @@
 module DockerCookbook
   class DockerServiceBase < DockerBase
+    ################
+    # Helper Methods
+    ################
     require 'docker'
     require 'helpers_service'
     include DockerHelpers::Service
+
+    #####################
+    # resource properties
+    #####################
 
     use_automatic_resource_name
 
