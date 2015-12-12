@@ -1,6 +1,5 @@
 module DockerCookbook
   class DockerContainer < DockerBase
-    require 'docker'
     require 'shellwords'
     require 'helpers_container'
 
@@ -83,7 +82,7 @@ module DockerCookbook
     property :working_dir, [String, nil]
 
     # Used to store the state of the Docker container
-    property :container, Docker::Container, desired_state: false
+    property :container, desired_state: false
 
     # Used by :stop action. If the container takes longer than this
     # many seconds to stop, kill itinstead. -1 (the default) means

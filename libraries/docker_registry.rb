@@ -1,6 +1,5 @@
 module DockerCookbook
   class DockerRegistry < DockerBase
-    require 'docker'
     require 'helpers_auth'
 
     use_automatic_resource_name
