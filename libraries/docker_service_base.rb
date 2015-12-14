@@ -3,7 +3,6 @@ module DockerCookbook
     ################
     # Helper Methods
     ################
-    require 'docker'
     require 'helpers_service'
     include DockerHelpers::Service
 

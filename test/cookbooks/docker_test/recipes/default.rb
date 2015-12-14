@@ -1,3 +1,5 @@
+include_recipe 'docker::default'
+
 ################
 # Setting up TLS
 ################

@@ -1,6 +1,5 @@
 module DockerCookbook
   class DockerImage < DockerBase
-    require 'docker'
     require 'helpers_image'
 
     use_automatic_resource_name
