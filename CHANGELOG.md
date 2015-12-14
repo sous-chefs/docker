@@ -1,3 +1,7 @@
+v2.3.12
+--------------------
+- Pinning compat_resource version to 12.5.14 to avoid warning
+
 v2.3.11
 --------------------
 - Using LOAD_PATH.push instead of LOAD_PATH.unshift for vendored gems
