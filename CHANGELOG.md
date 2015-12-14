@@ -1,3 +1,7 @@
+v2.3.11
+--------------------
+- Using LOAD_PATH.push instead of LOAD_PATH.unshift for vendored gems
+
 v2.3.10
 --------------------
 - Fix method name for pidfile in docker_service_manager_execute
