@@ -1,3 +1,7 @@
+v2.3.13
+--------------------
+- Updating compat_resource dep to >=12.5.23
+
 v2.3.12
 --------------------
 - Pinning compat_resource version to 12.5.14 to avoid warning
