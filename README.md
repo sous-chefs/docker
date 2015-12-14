@@ -4,8 +4,8 @@ Docker Cookbook
 [![Cookbook Version](https://img.shields.io/cookbook/v/docker.svg)](https://supermarket.chef.io/cookbooks/docker)
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/someara/chef-docker?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-The Docker Cookbook is a library cookbook that provides resources
-(LWRPs) for use in recipes.
+The Docker Cookbook is a library cookbook that provides custom resources
+for use in recipes.
 
 Scope
 -----
@@ -34,7 +34,7 @@ configuration of cgroups and storage back ends.
 |--------------+-------+-------+-------|
 | debian-8     | X     | X     | X     |
 |--------------+-------+-------+-------|
-| centos-71    | X     | X     | X     |
+| centos-7     | X     | X     | X     |
 |--------------+-------+-------+-------|
 | fedora-21    | X     | X     | X     |
 |--------------+-------+-------+-------|
@@ -53,7 +53,7 @@ Cookbook Dependencies
 Usage
 -----
 - Add ```depends 'docker', '~> 2.0'``` to your cookbook's metadata.rb
-- Use resources shipped in cookbook in a recipe, the same way you'd
+- Use the resources shipped in cookbook in a recipe, the same way you'd
   use core Chef resources (file, template, directory, package, etc).
 
 ```ruby
@@ -102,16 +102,19 @@ loading, is out of scope for this cookbook.
 
 Resources Overview
 ------------------
+* `docker_service`: composite resource that uses docker_installation and docker_service_manager
+* `docker_installation`: automatically select an installation method
+* `docker_service_manager`: automatically selects a service manager
+
 * `docker_installation_binary`: copies a pre-compiled docker binary onto disk
 * `docker_installation_script`: curl | bash
 * `docker_installation_package`: package 'docker-engine'
-* `docker_installation`: automatically select a resource
+
 * `docker_service_manager_execute`: manage docker daemon with Chef
 * `docker_service_manager_sysvinit`: manage docker daemon with a sysvinit script
 * `docker_service_manager_upstart`: manage docker daemon with upstart script
 * `docker_service_manager_systemd`: manage docker daemon with systemd unit files
-* `docker_service_manager`: automatically select a resource
-* `docker_service`: composite resource that uses docker_installation and docker_service_manager
+
 * `docker_image`: image/repository operations
 * `docker_container`: container operations
 * `docker_tag`: image tagging operations
