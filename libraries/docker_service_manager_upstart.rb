@@ -3,6 +3,7 @@ module DockerCookbook
     use_automatic_resource_name
 
     provides :docker_service_manager, platform: 'ubuntu'
+    provides :docker_service_manager, platform: 'linuxmint'
 
     action :start do
       template "/etc/init/#{docker_name}.conf" do
