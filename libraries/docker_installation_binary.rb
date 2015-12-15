@@ -6,7 +6,7 @@ module DockerCookbook
     #####################
     # Resource properties
     #####################
-    use_automatic_resource_name
+    resource_name :docker_installation_binary
 
     property :checksum, String, default: lazy { default_checksum }, desired_state: false
     property :source, String, default: lazy { default_source }, desired_state: false
