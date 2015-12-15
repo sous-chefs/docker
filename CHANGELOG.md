@@ -1,3 +1,7 @@
+v2.3.14
+--------------------
+- Supporting Upstart for Linux Mint
+
 v2.3.13
 --------------------
 - Updating compat_resource dep to >=12.5.23
