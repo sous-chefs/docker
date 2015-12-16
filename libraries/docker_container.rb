@@ -174,20 +174,20 @@ module DockerCookbook
         fail Chef::Exceptions::ValidationFailed, 'restart_policy must be either no, always, unless-stopped, or on-failure.'
       end
 
-      if property_is_set?(:restart_policy) && property_is_set?(:autoremove)
+      if autoremove == true && (property_is_set?(:restart_policy) && restart_policy != 'no')
         fail Chef::Exceptions::ValidationFailed, 'Conflicting options restart_policy and autoremove.'
       end
 
-      if property_is_set?(:autoremove) && property_is_set?(:detach)
-        fail Chef::Exceptions::ValidationFailed, 'Conflicting options autoremove and detach.'
+      if detach == true && autoremove == true
+        fail Chef::Exceptions::ValidationFailed, 'Conflicting options detach and autoremove.'
       end
 
-      if property_is_set?(:detach) &&
+      if detach == true &&
          (
-          property_is_set?(:attach_stderr) ||
-          property_is_set?(:attach_stdin) ||
-          property_is_set?(:attach_stdout) ||
-          property_is_set?(:stdin_once)
+          attach_stderr == true ||
+          attach_stdin == true ||
+          attach_stdout == true ||
+          stdin_once == true
          )
         fail Chef::Exceptions::ValidationFailed, 'Conflicting options detach, attach_stderr, attach_stdin, attach_stdout, stdin_once.'
       end
