@@ -1060,7 +1060,8 @@ Most `docker_container` properties are the `snake_case` version of the
   disable swap. You must use this with memory and make the swap value
   larger than memory.
 - `network_disabled` - Boolean to disable networking. Defaults to `false`.
-- `network_mode` - Sets the networking mode for the container.
+- `network_mode` - Sets the networking mode for the container. One of `bridge`,
+  `host`, `container`.
 - `open_stdin` - Boolean value, opens stdin. Defaults to `false`.
 - `outfile` - The path to write the file when using `:export` action.
 - `port` - The port configuration to use in the container. Matches the
@@ -1072,7 +1073,7 @@ Most `docker_container` properties are the `snake_case` version of the
 - `remove_volumes` - A boolean to clean up "dangling" volumes when
   removing the last container with a reference to it. Default to
   `false` to match the Docker CLI behavior.
-- `restart_policy` - One of `no`, `on-failure`, or `always`. Use
+- `restart_policy` - One of `no`, `on-failure`, `unless-stopped`, or `always`. Use
   `always` if you want a service container to survive a Dockerhost
   reboot. Defaults to `no`.
 - `restart_maximum_retry_count` - Maximum number of restarts to try
@@ -1162,6 +1163,7 @@ Please see contributing information in: [CONTRIBUTING.md](CONTRIBUTING.md)
 * Brian Flad (<bflad417@gmail.com>)
 * Tom Duffield (http://tomduffield.com)
 * Fletcher Nichol (<fnichol@nichol.ca>)
+* Chase Bolt (<chase.bolt@gmail.com>)
 
 ## License
 Licensed under the Apache License, Version 2.0 (the "License");
