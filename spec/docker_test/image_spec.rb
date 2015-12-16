@@ -22,7 +22,6 @@ describe 'docker_test::image' do
         api_retries:  3,
         destination: nil,
         force: false,
-        host: nil,
         nocache: false,
         noprune:  false,
         read_timeout: 120,

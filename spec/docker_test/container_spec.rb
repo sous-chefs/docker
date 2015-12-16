@@ -30,7 +30,6 @@ describe 'docker_test::container' do
         cpuset_cpus: '',
         detach: true,
         domain_name: '',
-        host: nil,
         log_driver: 'json-file',
         memory: 0,
         memory_swap: -1,
