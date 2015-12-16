@@ -1,5 +1,5 @@
 # Set up rubygems to activate any gems we find herein.
-ENV['GEM_PATH'] = ([ File.expand_path('../../files/default/vendor', __FILE__) ] + Gem.path).join(Gem.path_separator)
+ENV['GEM_PATH'] = ([File.expand_path('../../files/default/vendor', __FILE__)] + Gem.path).join(Gem.path_separator)
 Gem.paths = ENV
 gem 'docker-api', '~> 1.24'
 
