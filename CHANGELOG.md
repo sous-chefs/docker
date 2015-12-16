@@ -1,3 +1,8 @@
+v2.3.16
+--------------------
+- Adding validation checking for detach / autoremove property
+  conflicts 
+
 v2.3.15
 --------------------
 - Loading vendored gems the same way chef_gem would.
