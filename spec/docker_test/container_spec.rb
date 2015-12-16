@@ -34,7 +34,6 @@ describe 'docker_test::container' do
         memory: 0,
         memory_swap: -1,
         network_disabled: false,
-        network_mode: '',
         outfile: nil,
         restart_maximum_retry_count: 0,
         restart_policy: 'no',
