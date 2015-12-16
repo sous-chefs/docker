@@ -1,3 +1,8 @@
+v2.3.15
+--------------------
+- Loading vendored gems the same way chef_gem would.
+- Resolving Chef provisioning conflicts
+
 v2.3.14
 --------------------
 - Supporting Upstart for Linux Mint
