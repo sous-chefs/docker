@@ -278,7 +278,7 @@ end
 docker_container 'bind_mounter' do
   repo 'busybox'
   command 'ls -la /bits /more-bits'
-  binds ['/hostbits:/bits', '/more-hostbits:/more-bits']
+  binds ['/hostbits:/bits', '/more-hostbits:/more-bits', '/snow']
   action :run_if_missing
 end
 
@@ -395,6 +395,7 @@ docker_container 'sean_was_here' do
   repo 'debian'
   volumes_from 'chef_container'
   autoremove true
+  detach false
   not_if { ::File.exist? '/marker_container_sean_was_here' }
   action :run
 end

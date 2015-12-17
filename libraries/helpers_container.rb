@@ -39,6 +39,20 @@ module DockerCookbook
         end
       end
 
+      def coerce_binds(v)
+        return v if v.nil?
+        Array(v).delete_if do |x|
+          parts = x.split(':')
+          if parts.length == 1
+            container_path = parts[0]
+            volumes container_path
+            true
+          else
+            false
+          end
+        end
+      end
+
       def coerce_volumes(v)
         case v
         when nil, DockerBase::PartialHash
