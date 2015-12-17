@@ -278,6 +278,7 @@ end
 docker_container 'bind_mounter' do
   repo 'busybox'
   command 'ls -la /bits /more-bits'
+  volumes ['/winter']
   binds ['/hostbits:/bits', '/more-hostbits:/more-bits', '/snow']
   action :run_if_missing
 end

@@ -45,11 +45,14 @@ module DockerCookbook
           parts = x.split(':')
           if parts.length == 1
             container_path = parts[0]
-            volumes container_path
-            true
-          else
-            false
+            if property_is_set?(:volumes)
+              volumes.merge!(coerce_volumes(container_path))
+            else
+              volumes container_path
+            end
+            next true
           end
+          false
         end
       end
 

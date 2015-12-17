@@ -268,7 +268,7 @@ describe 'docker_test::container' do
         repo: 'busybox',
         command: 'ls -la /bits /more-bits',
         binds: ['/hostbits:/bits', '/more-hostbits:/more-bits'],
-        volumes: { '/snow' => {} }
+        volumes: { '/snow' => {}, '/winter' => {} }
       )
     end
   end
