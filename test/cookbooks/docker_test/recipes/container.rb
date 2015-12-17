@@ -278,8 +278,7 @@ end
 docker_container 'bind_mounter' do
   repo 'busybox'
   command 'ls -la /bits /more-bits'
-  volumes ['/winter']
-  binds ['/hostbits:/bits', '/more-hostbits:/more-bits', '/snow']
+  binds ['/hostbits:/bits', '/more-hostbits:/more-bits', '/snow', '/winter']
   action :run_if_missing
 end
 
@@ -317,7 +316,7 @@ end
 # create a volume container
 docker_container 'chef_container' do
   command 'true'
-  volumes '/opt/chef'
+  binds '/opt/chef'
   action :create
 end
 
@@ -787,9 +786,8 @@ docker_container 'uber_options' do
   mac_address '00:00:DE:AD:BE:EF'
   network_disabled false
   tty true
-  volumes ['/root']
   working_dir '/'
-  binds ['/hostbits:/bits', '/more-hostbits:/more-bits']
+  binds ['/root', '/hostbits:/bits', '/more-hostbits:/more-bits']
   cap_add %w(NET_ADMIN SYS_RESOURCE)
   cap_drop 'MKNOD'
   cpu_shares 512
@@ -860,7 +858,7 @@ docker_container 'overrides-2' do
   user 'operator'
   command 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   env ['FOO=biz']
-  volumes '/var/log'
+  binds '/var/log'
   workdir '/tmp'
   port ['9988:9988', '8877:8877']
   action :run
