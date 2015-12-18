@@ -1,3 +1,7 @@
+v2.3.18
+--------------------
+- removing detach/autoremove conflict check
+
 v2.3.17
 --------------------
 - Reverting gem loading trickery. Reverting to LOAD_PATH.push
