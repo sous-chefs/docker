@@ -1,3 +1,7 @@
+v2.3.17
+--------------------
+- Reverting gem loading trickery. Reverting to LOAD_PATH.push
+
 v2.3.16
 --------------------
 - Adding validation checking for detach / autoremove property
