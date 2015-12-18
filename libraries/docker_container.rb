@@ -178,10 +178,6 @@ module DockerCookbook
         fail Chef::Exceptions::ValidationFailed, 'Conflicting options restart_policy and autoremove.'
       end
 
-      if detach == true && autoremove == true
-        fail Chef::Exceptions::ValidationFailed, 'Conflicting options detach and autoremove.'
-      end
-
       if detach == true &&
          (
           attach_stderr == true ||
