@@ -538,7 +538,7 @@ as driven by the
 [Swipley docker-api Ruby gem](https://github.com/swipely/docker-api)
 
 A `docker_image`'s full identifier is a string in the form
-"\<repo\>:\<tag\>". There is some nuance around the naming when the public
+"\<repo\>:\<tag\>". There is some nuance around naming using the public
 registry vs a private one.
 
 - `repo` - aka `image_name` - The first half of a Docker image's
