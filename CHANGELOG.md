@@ -1,3 +1,7 @@
+v2.3.19
+--------------------
+switching systemd unit MountFlags from slave to private
+
 v2.3.18
 --------------------
 - removing detach/autoremove conflict check
