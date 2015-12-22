@@ -126,9 +126,6 @@ module DockerCookbook
 
         # Image => image
         # Set exposed_ports = ExposedPorts (etc.)
-        #
-        # TODO: ^ Explain in more detail (or remove) metprogramming magic.
-        # We don't like magic in operations.
         property_name = to_snake_case(key)
         public_send(property_name, value) if respond_to?(property_name)
       end
