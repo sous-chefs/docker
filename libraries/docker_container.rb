@@ -109,9 +109,6 @@ module DockerCookbook
 
     ########################################################
     # Load Current Value
-    #
-    # FIXME: put words here about how this is different that
-    # load_current_resource in the classic provider system.
     ########################################################
 
     load_current_value do
