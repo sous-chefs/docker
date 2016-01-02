@@ -1,11 +1,6 @@
 module DockerCookbook
   module DockerHelpers
     module Container
-      def coerce_hostname(v)
-        return v if property_is_set?(:hostname)
-        nil
-      end
-
       def coerce_links(v)
         v = Array(v)
         if v.empty?
