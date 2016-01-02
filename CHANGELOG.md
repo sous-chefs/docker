@@ -1,3 +1,8 @@
+v2.3.22
+--------------------
+- using parsed_hostname to force nil value to Docker API when
+  network_mode is host
+
 v2.3.21
 --------------------
 - reverting hostname coerce
