@@ -441,14 +441,14 @@ docker_container 'cap_drop_mknod_error' do
 end
 
 ###########################
-# host_name and domain_name
+# hostname and domain_name
 ###########################
 
 # Inspect container logs with test-kitchen bussers
 docker_container 'fqdn' do
   repo 'debian'
   command 'hostname -f'
-  host_name 'computers'
+  hostname 'computers'
   domain_name 'biz'
   action :run_if_missing
 end
@@ -461,7 +461,7 @@ end
 docker_container 'dns' do
   repo 'debian'
   command 'cat /etc/resolv.conf'
-  host_name 'computers'
+  hostname 'computers'
   dns ['4.3.2.1', '1.2.3.4']
   dns_search ['computers.biz', 'chef.io']
   action :run_if_missing

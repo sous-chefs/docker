@@ -14,6 +14,7 @@ describe 'docker_test::container' do
     stub_command("[ ! -z `docker ps -qaf 'name=restarter$'` ]").and_return(false)
     stub_command("[ ! -z `docker ps -qaf 'name=uber_options$'` ]").and_return(false)
     stub_command("[ ! -z `docker ps -qaf 'name=kill_after$'` ]").and_return(false)
+    stub_command("[ ! -z `docker ps -qaf 'name=change_network_mode$'` ]").and_return(false)
   end
 
   context 'testing create action' do
@@ -412,12 +413,12 @@ describe 'docker_test::container' do
     end
   end
 
-  context 'testing host_name and domain_name' do
+  context 'testing hostname and domain_name' do
     it 'run_if_missing docker_container[fqdn]' do
       expect(chef_run).to run_if_missing_docker_container('fqdn').with(
         repo: 'debian',
         command: 'hostname -f',
-        host_name: 'computers',
+        hostname: 'computers',
         domain_name: 'biz'
       )
     end
@@ -428,7 +429,7 @@ describe 'docker_test::container' do
       expect(chef_run).to run_if_missing_docker_container('dns').with(
         repo: 'debian',
         command: 'cat /etc/resolv.conf',
-        host_name: 'computers',
+        hostname: 'computers',
         dns: ['4.3.2.1', '1.2.3.4'],
         dns_search: ['computers.biz', 'chef.io']
       )
