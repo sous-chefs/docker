@@ -1,3 +1,7 @@
+v2.3.21
+--------------------
+- reverting hostname coerce
+
 v2.3.20
 --------------------
 - adding coerce_hostname
