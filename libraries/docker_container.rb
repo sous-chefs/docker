@@ -53,7 +53,7 @@ module DockerCookbook
     property :exposed_ports, PartialHashType
     property :force, Boolean, desired_state: false
     property :host, [String], default: lazy { default_host }, desired_state: false
-    property :hostname, [String, nil]
+    property :hostname, [String, nil], coerce: proc { |v| coerce_hostname(v) }
     property :labels, [String, Array, Hash], coerce: proc { |v| coerce_labels(v) }
     property :links, [Array, nil], coerce: proc { |v| coerce_links(v) }
     property :log_driver, %w( json-file syslog journald gelf fluentd none ), default: 'json-file'

@@ -728,8 +728,26 @@ end
 docker_container 'network_mode' do
   repo 'alpine'
   tag '3.1'
+  command 'nc -ll -p 776 -e /bin/cat'
+  port '776:776'
+  network_mode 'host'
+  action :run
+end
+
+#####################
+# change_network_mode
+#####################
+
+execute 'change_network_mode' do
+  command 'docker run --name change_network_mode -d alpine:3.1 nc -ll -p 777 -e /bin/cat'
+  not_if "[ ! -z `docker ps -qaf 'name=change_network_mode$'` ]"
+  action :run
+end
+
+docker_container 'change_network_mode' do
+  repo 'alpine'
+  tag '3.1'
   command 'nc -ll -p 777 -e /bin/cat'
-  port '777:777'
   network_mode 'host'
   action :run
 end
