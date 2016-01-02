@@ -657,8 +657,8 @@ describe 'docker_test::container' do
       expect(chef_run).to run_docker_container('network_mode').with(
         repo: 'alpine',
         tag: '3.1',
-        command: 'nc -ll -p 777 -e /bin/cat',
-        port: '777:777',
+        command: 'nc -ll -p 776 -e /bin/cat',
+        port: '776:776',
         network_mode: 'host'
       )
     end
