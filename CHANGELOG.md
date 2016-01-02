@@ -1,3 +1,8 @@
+v2.3.20
+--------------------
+- adding coerce_hostname
+- Fixing github issues #542 and #572
+
 v2.3.19
 --------------------
 switching systemd unit MountFlags from slave to private
