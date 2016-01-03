@@ -260,6 +260,7 @@ module DockerCookbook
               'MemorySwap'      => memory_swap,
               'NetworkMode'     => network_mode,
               'Privileged'      => privileged,
+              'PidMode'         => pid_mode,
               'PortBindings'    => port_bindings,
               'PublishAllPorts' => publish_all_ports,
               'RestartPolicy'   => {
