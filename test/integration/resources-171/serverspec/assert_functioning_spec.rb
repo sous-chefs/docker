@@ -331,12 +331,6 @@ describe command("docker inspect -f \"{{ .HostConfig.Binds }}\" bind_mounter") d
   its(:stdout) { should match(%r{\[\/hostbits\:\/bits \/more-hostbits\:\/more-bits\]}) }
 end
 
-describe command("docker inspect -f \"{{ .Config.Volumes }}\" bind_mounter") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(%r{\/snow:\{\}}) }
-  its(:stdout) { should match(%r{\/winter:\{\}}) }
-end
-
 # docker_container[chef_container]
 
 describe command("docker ps -af 'name=chef_container$'") do
