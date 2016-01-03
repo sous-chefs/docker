@@ -1,3 +1,7 @@
+v2.3.23
+--------------------
+- Changing bridge property validation to String
+
 v2.3.22
 --------------------
 - using parsed_hostname to force nil value to Docker API when
