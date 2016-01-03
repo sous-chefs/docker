@@ -268,8 +268,7 @@ describe 'docker_test::container' do
       expect(chef_run).to run_if_missing_docker_container('bind_mounter').with(
         repo: 'busybox',
         command: 'ls -la /bits /more-bits',
-        binds: ['/hostbits:/bits', '/more-hostbits:/more-bits'],
-        volumes: { '/snow' => {}, '/winter' => {} }
+        binds: ['/hostbits:/bits', '/more-hostbits:/more-bits']
       )
     end
   end

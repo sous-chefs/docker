@@ -36,7 +36,7 @@ module DockerCookbook
     property :attach_stdin, Boolean, desired_state: false
     property :attach_stdout, Boolean, desired_state: false
     property :autoremove, Boolean, desired_state: false
-    property :binds, ArrayType, coerce: proc { |v| coerce_binds(v) }
+    property :binds, ArrayType
     property :cap_add, NonEmptyArray
     property :cap_drop, NonEmptyArray
     property :cgroup_parent, String, default: ''
