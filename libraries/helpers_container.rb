@@ -39,6 +39,23 @@ module DockerCookbook
         end
       end
 
+      def coerce_binds(v)
+        return v if v.nil?
+        Array(v).delete_if do |x|
+          parts = x.split(':')
+          if parts.length == 1
+            container_path = parts[0]
+            if property_is_set?(:volumes)
+              volumes.merge!(coerce_volumes(container_path))
+            else
+              volumes container_path
+            end
+            next true
+          end
+          false
+        end
+      end
+
       def coerce_volumes(v)
         case v
         when nil, DockerBase::PartialHash
@@ -103,7 +120,7 @@ module DockerCookbook
         if port_range.include?('-')
           port_range = container_port.split('-')
           port_range.map!(&:to_i)
-          Chef::Log.fatal("FATAL: Invalid port range! #{container_port}") if port_range[0] > port_range[1]
+          fail Chef::Exceptions::ValidationFailed, "Invalid port range! #{container_port}" if port_range[0] > port_range[1]
           port_range = (port_range[0]..port_range[1]).to_a
         end
         # qualify the port-binding protocol even when it is implicitly tcp #427.
