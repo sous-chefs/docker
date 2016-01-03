@@ -66,6 +66,7 @@ module DockerCookbook
     property :open_stdin, Boolean, desired_state: false
     property :outfile, [String, nil], default: nil
     property :port_bindings, PartialHashType
+    property :pid_mode, String
     property :privileged, Boolean
     property :publish_all_ports, Boolean
     property :remove_volumes, Boolean
