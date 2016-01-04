@@ -1,3 +1,7 @@
+v2.4.0
+--------------------
+- Adding support for pid_mode and ipc_mode to docker_container
+
 v2.3.23
 --------------------
 - Changing bridge property validation to String
