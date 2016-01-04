@@ -971,4 +971,17 @@ docker_container 'pid_mode' do
   tag '3.1'
   command 'ps -ef'
   pid_mode 'host'
+  action :run_if_missing
+end
+
+##########
+# ipc_mode
+##########
+
+docker_container 'ipc_mode' do
+  repo 'alpine'
+  tag '3.1'
+  command 'ps -ef'
+  ipc_mode 'host'
+  action :run_if_missing
 end

@@ -54,6 +54,7 @@ module DockerCookbook
     property :force, Boolean, desired_state: false
     property :host, [String], default: lazy { default_host }, desired_state: false
     property :hostname, String
+    property :ipc_mode, String
     property :labels, [String, Array, Hash], coerce: proc { |v| coerce_labels(v) }
     property :links, [Array, nil], coerce: proc { |v| coerce_links(v) }
     property :log_driver, %w( json-file syslog journald gelf fluentd none ), default: 'json-file'
@@ -254,6 +255,7 @@ module DockerCookbook
               'Dns'             => dns,
               'DnsSearch'       => dns_search,
               'ExtraHosts'      => extra_hosts,
+              'IpcMode'         => ipc_mode,
               'Links'           => links,
               'LogConfig'       => log_config,
               'Memory'          => memory,

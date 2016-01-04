@@ -833,5 +833,9 @@ describe 'docker_test::container' do
     it 'runs docker_container[pid_mode]' do
       expect(chef_run).to run_docker_container('pid_mode')
     end
+
+    it 'runs docker_container[ipc_mode]' do
+      expect(chef_run).to run_docker_container('ipc_mode')
+    end
   end
 end
