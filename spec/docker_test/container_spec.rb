@@ -664,6 +664,14 @@ describe 'docker_test::container' do
     end
   end
 
+  it 'runs execute[change_network_mode]' do
+    expect(chef_run).to run_execute('change_network_mode')
+  end
+
+  it 'runs docker_container[change_network_mode]' do
+    expect(chef_run).to run_docker_container('change_network_mode')
+  end
+
   context 'testing ulimits' do
     it 'runs docker_container[ulimits]' do
       expect(chef_run).to run_docker_container('ulimits').with(
@@ -830,12 +838,12 @@ describe 'docker_test::container' do
       expect(chef_run).to stop_docker_container('kill_after')
     end
 
-    it 'runs docker_container[pid_mode]' do
-      expect(chef_run).to run_docker_container('pid_mode')
+    it 'run_if_missing docker_container[pid_mode]' do
+      expect(chef_run).to run_if_missing_docker_container('pid_mode')
     end
 
-    it 'runs docker_container[ipc_mode]' do
-      expect(chef_run).to run_docker_container('ipc_mode')
+    it 'run_if_missing docker_container[ipc_mode]' do
+      expect(chef_run).to run_if_missing_docker_container('ipc_mode')
     end
   end
 end
