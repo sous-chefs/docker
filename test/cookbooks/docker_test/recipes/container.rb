@@ -961,3 +961,14 @@ docker_container 'kill_after' do
   kill_after 1
   action :stop
 end
+
+##########
+# pid_mode
+##########
+
+docker_container 'pid_mode' do
+  repo 'alpine'
+  tag '3.1'
+  command 'ps -ef'
+  pid_mode 'host'
+end

@@ -818,6 +818,18 @@ describe kill_after_run_time do
   it { should be_within(5).of(1) }
 end
 
+# docker_container[pid_mode]
+
+describe command("docker ps -af 'name=pid_mode$'") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/Exited \(0\)/) }
+end
+
+describe command("docker inspect --format '{{ .HostConfig.PidMode }}' pid_mode") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { eq 'host' }
+end
+
 # except for a few, containers shouldnt be killed
 
 describe command("docker ps -qaf 'exited=137' | wc -l") do
