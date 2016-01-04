@@ -829,5 +829,9 @@ describe 'docker_test::container' do
     it 'stop docker_container[kill_after]' do
       expect(chef_run).to stop_docker_container('kill_after')
     end
+
+    it 'runs docker_container[pid_mode]' do
+      expect(chef_run).to run_docker_container('pid_mode')
+    end
   end
 end
