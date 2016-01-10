@@ -38,11 +38,11 @@ module DockerCookbook
         code <<-EOF
             timeout=0
             while [ $timeout -lt 20 ];  do
-              ((timeout++))
               #{docker_cmd} ps | head -n 1 | grep ^CONTAINER
                 if [ $? -eq 0 ]; then
                   break
                 fi
+              ((timeout++))
                sleep 1
             done
             [[ $timeout -eq 20 ]] && exit 1
