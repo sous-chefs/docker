@@ -16,6 +16,8 @@ module DockerCookbook
       node['platform_version'].to_f >= 15.04
     end
 
+    property :service_timeout, Integer, default: 20
+
     action :start do
       # Needed for Debian / Ubuntu
       directory '/usr/libexec' do
@@ -32,7 +34,10 @@ module DockerCookbook
         owner 'root'
         group 'root'
         mode '0755'
-        variables(docker_cmd: docker_cmd)
+        variables(
+          docker_cmd: docker_cmd,
+          service_timeout: service_timeout
+        )
         cookbook 'docker'
         action :create
       end
