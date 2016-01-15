@@ -58,6 +58,7 @@ module DockerCookbook
     property :tls, [Boolean, nil]
     property :default_ulimit, ArrayType
     property :userland_proxy, [Boolean, nil]
+    property :disable_legacy_registry, [Boolean, nil]
 
     # environment variables to set before running daemon
     property :http_proxy, [String, nil]

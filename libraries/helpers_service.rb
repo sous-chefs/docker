@@ -167,6 +167,7 @@ module DockerCookbook
         opts << "--tlscert=#{tls_server_cert}" if tls_server_cert
         opts << "--tlskey=#{tls_server_key}" if tls_server_key
         opts << "--userland-proxy=#{userland_proxy}" unless userland_proxy.nil?
+        opts << "--disable-legacy-registry=#{disable_legacy_registry}" unless disable_legacy_registry.nil?
         opts
       end
 
