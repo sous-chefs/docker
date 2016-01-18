@@ -23,6 +23,7 @@ module Docker
   require 'docker/connection'
   require 'docker/base'
   require 'docker/container'
+  require 'docker/network'
   require 'docker/event'
   require 'docker/exec'
   require 'docker/image'

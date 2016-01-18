@@ -1,0 +1,18 @@
+sudo: required
+dist: trusty
+cache: bundler
+language: ruby
+rvm:
+  - 1.9.3
+  - 2.0
+  - 2.1
+  - 2.2
+env:
+  - DOCKER_VERSION=1.6.2
+  - DOCKER_VERSION=1.7.1
+  - DOCKER_VERSION=1.8.3
+  - DOCKER_VERSION=1.9.1
+before_install: ./script/install_dependencies.sh
+before_script:
+ - export PATH=/opt/docker:$PATH
+ - docker version
