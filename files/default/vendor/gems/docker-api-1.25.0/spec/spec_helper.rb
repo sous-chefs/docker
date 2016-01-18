@@ -22,4 +22,15 @@ RSpec.configure do |config|
   config.color = true
   config.formatter = :documentation
   config.tty = true
+
+  case ENV['DOCKER_VERSION']
+  when /1\.6/
+    config.filter_run_excluding :docker_1_8 => true
+    config.filter_run_excluding :docker_1_9 => true
+  when /1\.7/
+    config.filter_run_excluding :docker_1_8 => true
+    config.filter_run_excluding :docker_1_9 => true
+  when /1\.8/
+    config.filter_run_excluding :docker_1_9 => true
+  end
 end

@@ -238,6 +238,37 @@ class Docker::Container
     self
   end
 
+  def archive_out(path, &block)
+    connection.get(
+      path_for(:archive),
+      { 'path' => path },
+      :response_block => block
+    )
+    self
+  end
+
+  def archive_in(inputs, output_path, opts = {})
+    file_hash = Docker::Util.file_hash_from_paths([*inputs])
+    tar = StringIO.new(Docker::Util.create_tar(file_hash))
+    archive_in_stream(output_path, opts) do
+      tar.read(Excon.defaults[:chunk_size]).to_s
+    end
+  end
+
+  def archive_in_stream(output_path, opts = {}, &block)
+    overwrite = opts[:overwrite] || opts['overwrite'] || false
+
+    connection.put(
+      path_for(:archive),
+      { 'path' => output_path, 'noOverwriteDirNonDir' => !overwrite },
+      :headers => {
+        'Content-Type' => 'application/x-tar'
+      },
+      &block
+    )
+    self
+  end
+
   # Create a new Container.
   def self.create(opts = {}, conn = Docker.connection)
     name = opts.delete('name')

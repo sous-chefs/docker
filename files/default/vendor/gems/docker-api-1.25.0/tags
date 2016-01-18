@@ -1,0 +1,165 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+ArgumentError	lib/docker/error.rb	/^  class ArgumentError < DockerError; end$/;"	c	class:Docker
+AuthenticationError	lib/docker/error.rb	/^  class AuthenticationError < DockerError; end$/;"	c	class:Docker
+ClientError	lib/docker/error.rb	/^  class ClientError < DockerError; end$/;"	c	class:Docker
+ConflictError	lib/docker/error.rb	/^  class ConflictError < DockerError; end$/;"	c	class:Docker
+Docker	lib/docker.rb	/^module Docker$/;"	m
+Docker	lib/docker/base.rb	/^module Docker::Base$/;"	m
+Docker	lib/docker/connection.rb	/^class Docker::Connection$/;"	c
+Docker	lib/docker/container.rb	/^class Docker::Container$/;"	c
+Docker	lib/docker/error.rb	/^module Docker::Error$/;"	m
+Docker	lib/docker/event.rb	/^class Docker::Event$/;"	c
+Docker	lib/docker/exec.rb	/^class Docker::Exec$/;"	c
+Docker	lib/docker/image.rb	/^class Docker::Image$/;"	c
+Docker	lib/docker/messages.rb	/^class Docker::Messages$/;"	c
+Docker	lib/docker/messages_stack.rb	/^class Docker::MessagesStack$/;"	c
+Docker	lib/docker/network.rb	/^class Docker::Network$/;"	c
+Docker	lib/docker/rake_task.rb	/^class Docker::ImageTask < Rake::Task$/;"	c
+Docker	lib/docker/util.rb	/^module Docker::Util$/;"	m
+Docker	lib/docker/version.rb	/^module Docker$/;"	m
+DockerError	lib/docker/error.rb	/^  class DockerError < StandardError; end$/;"	c	class:Docker
+Excon	lib/excon/middlewares/hijack.rb	/^module Excon$/;"	m
+Hijack	lib/excon/middlewares/hijack.rb	/^    class Hijack < Base$/;"	c	class:Excon.Middleware
+IOError	lib/docker/error.rb	/^  class IOError < DockerError; end$/;"	c	class:Docker
+Middleware	lib/excon/middlewares/hijack.rb	/^  module Middleware$/;"	m	class:Excon
+NotFoundError	lib/docker/error.rb	/^  class NotFoundError < DockerError; end$/;"	c	class:Docker
+Rake	lib/docker/rake_task.rb	/^module Rake::DSL$/;"	m
+ServerError	lib/docker/error.rb	/^  class ServerError < DockerError; end$/;"	c	class:Docker
+TimeoutError	lib/docker/error.rb	/^  class TimeoutError < DockerError; end$/;"	c	class:Docker
+UnauthorizedError	lib/docker/error.rb	/^  class UnauthorizedError < DockerError; end$/;"	c	class:Docker
+UnexpectedResponseError	lib/docker/error.rb	/^  class UnexpectedResponseError < DockerError; end$/;"	c	class:Docker
+VersionError	lib/docker/error.rb	/^  class VersionError < DockerError; end$/;"	c	class:Docker
+add_file_to_tar	lib/docker/util.rb	/^  def add_file_to_tar(tar, name, mode, size, mtime)$/;"	f	class:Docker
+add_message	lib/docker/messages.rb	/^  def add_message(source, message)$/;"	f	class:Docker
+all	lib/docker/container.rb	/^  def self.all(opts = {}, conn = Docker.connection)$/;"	F
+all	lib/docker/image.rb	/^    def all(opts = {}, conn = Docker.connection)$/;"	f	class:Docker
+all	lib/docker/network.rb	/^    def all(opts = {}, conn = Docker.connection)$/;"	f	class:Docker
+append	lib/docker/messages.rb	/^  def append(messages)$/;"	f	class:Docker
+append	lib/docker/messages_stack.rb	/^  def append(messages)$/;"	f	class:Docker
+archive_in	lib/docker/container.rb	/^  def archive_in(inputs, output_path, opts = {})$/;"	f
+archive_in_stream	lib/docker/container.rb	/^  def archive_in_stream(output_path, opts = {}, &block)$/;"	f
+archive_out	lib/docker/container.rb	/^  def archive_out(path, &block)$/;"	f
+attach	lib/docker/container.rb	/^  def attach(options = {}, &block)$/;"	f	class:Docker
+attach_for	lib/docker/util.rb	/^  def attach_for(block, msg_stack, tty = false)$/;"	f	class:Docker
+attach_for_multiplex	lib/docker/util.rb	/^  def attach_for_multiplex(block, msg_stack)$/;"	f	class:Docker
+attach_for_tty	lib/docker/util.rb	/^  def attach_for_tty(block, msg_stack)$/;"	f	class:Docker
+authenticate!	lib/docker.rb	/^  def authenticate!(options = {}, connection = self.connection)$/;"	f	class:Docker
+build	lib/docker/image.rb	/^    def build(commands, opts = {}, connection = Docker.connection, &block)$/;"	f	class:Docker
+build_auth_header	lib/docker/util.rb	/^  def build_auth_header(credentials)$/;"	f	class:Docker
+build_config_header	lib/docker/util.rb	/^  def build_config_header(credentials)$/;"	f	class:Docker
+build_from_dir	lib/docker/image.rb	/^    def build_from_dir(dir, opts = {}, connection = Docker.connection,$/;"	f	class:Docker
+build_from_tar	lib/docker/image.rb	/^    def build_from_tar(tar, opts = {}, connection = Docker.connection,$/;"	f	class:Docker
+build_headers	lib/docker/image.rb	/^  def self.build_headers(creds=nil)$/;"	F
+build_response	lib/excon/middlewares/hijack.rb	/^      def build_response(status, socket)$/;"	f	class:Excon.Middleware.Hijack
+clear	lib/docker/messages.rb	/^  def clear$/;"	f	class:Docker
+close_write	lib/docker/util.rb	/^  def close_write(socket)$/;"	f	class:Docker
+commit	lib/docker/container.rb	/^  def commit(options = {})$/;"	f	class:Docker
+compile_request_params	lib/docker/connection.rb	/^  def compile_request_params(http_method, path, query = nil, opts = nil, &block)$/;"	f	class:Docker
+connect	lib/docker/network.rb	/^  def connect(container, opts = {})$/;"	f	class:Docker
+connection	lib/docker.rb	/^  def connection$/;"	f	class:Docker
+copy	lib/docker/container.rb	/^  def copy(path, &block)$/;"	f
+create	lib/docker/container.rb	/^  def self.create(opts = {}, conn = Docker.connection)$/;"	F
+create	lib/docker/exec.rb	/^  def self.create(options = {}, conn = Docker.connection)$/;"	F	class:Docker
+create	lib/docker/image.rb	/^    def create(opts = {}, creds = nil, conn = Docker.connection, &block)$/;"	f	class:Docker
+create	lib/docker/network.rb	/^    def create(name, opts = {}, conn = Docker.connection)$/;"	f	class:Docker
+create_dir_tar	lib/docker/util.rb	/^  def create_dir_tar(directory)$/;"	f	class:Docker
+create_relative_dir_tar	lib/docker/util.rb	/^  def create_relative_dir_tar(directory, output)$/;"	f	class:Docker
+create_tar	lib/docker/util.rb	/^  def create_tar(hash = {})$/;"	f	class:Docker
+create_temp_file	lib/docker/util.rb	/^  def create_temp_file$/;"	f	class:Docker
+debug	lib/docker/util.rb	/^  def debug(msg)$/;"	f	class:Docker
+decipher_messages	lib/docker/messages.rb	/^  def decipher_messages(body)$/;"	f	class:Docker
+default_socket_url	lib/docker.rb	/^  def default_socket_url$/;"	f	class:Docker
+disconnect	lib/docker/network.rb	/^  def disconnect(container, opts = {})$/;"	f	class:Docker
+dockerfile_for	lib/docker/image.rb	/^  def dockerfile_for(file_hash, output_path)$/;"	f
+ensure_repo_tags	lib/docker/image.rb	/^  def ensure_repo_tags$/;"	f
+env_options	lib/docker.rb	/^  def env_options$/;"	f	class:Docker
+env_url	lib/docker.rb	/^  def env_url$/;"	f	class:Docker
+exec	lib/docker/container.rb	/^  def exec(command, opts = {}, &block)$/;"	f	class:Docker
+exist?	lib/docker/image.rb	/^    def exist?(id, opts = {}, conn = Docker.connection)$/;"	f	class:Docker
+export	lib/docker/container.rb	/^  def export(&block)$/;"	f	class:Docker
+extract_id	lib/docker/util.rb	/^  def extract_id(body)$/;"	f	class:Docker
+file_hash_from_paths	lib/docker/util.rb	/^  def file_hash_from_paths(local_paths)$/;"	f	class:Docker
+fix_json	lib/docker/util.rb	/^  def fix_json(body)$/;"	f	class:Docker
+get	lib/docker/container.rb	/^  def self.get(id, opts = {}, conn = Docker.connection)$/;"	F
+get	lib/docker/image.rb	/^    def get(id, opts = {}, conn = Docker.connection)$/;"	f	class:Docker
+get	lib/docker/network.rb	/^    def get(id, opts = {}, conn = Docker.connection)$/;"	f	class:Docker
+get_message	lib/docker/messages.rb	/^  def get_message(raw_text)$/;"	f	class:Docker
+has_repo_tag?	lib/docker/rake_task.rb	/^  def has_repo_tag?$/;"	f	class:Docker
+hijack_for	lib/docker/util.rb	/^  def hijack_for(stdin, block, msg_stack, tty)$/;"	f	class:Docker
+image	lib/docker/rake_task.rb	/^  def image(*args, &block)$/;"	f	class:Rake
+images	lib/docker/rake_task.rb	/^  def images$/;"	f	class:Docker
+import	lib/docker/image.rb	/^    def import(imp, opts = {}, conn = Docker.connection)$/;"	f	class:Docker
+import_stream	lib/docker/image.rb	/^    def import_stream(options = {}, connection = Docker.connection, &block)$/;"	f	class:Docker
+info	lib/docker.rb	/^  def info(connection = self.connection)$/;"	f	class:Docker
+initialize	lib/docker/base.rb	/^  def initialize(connection, hash={})$/;"	f	class:Docker
+initialize	lib/docker/connection.rb	/^  def initialize(url, opts)$/;"	f	class:Docker
+initialize	lib/docker/event.rb	/^  def initialize(status, id, from, time)$/;"	f	class:Docker
+initialize	lib/docker/messages.rb	/^  def initialize(stdout_messages=[],$/;"	f	class:Docker
+initialize	lib/docker/messages_stack.rb	/^  def initialize(size = -1)$/;"	f	class:Docker
+insert_local	lib/docker/image.rb	/^  def insert_local(opts = {})$/;"	f	class:Docker
+json	lib/docker/exec.rb	/^  def json$/;"	f	class:Docker
+json	lib/docker/network.rb	/^  def json(opts = {})$/;"	f	class:Docker
+kill!	lib/docker/container.rb	/^  def kill!(opts = {})$/;"	f	class:Docker
+log_request	lib/docker/connection.rb	/^  def log_request(request)$/;"	f	class:Docker
+logs	lib/docker/container.rb	/^  def logs(opts = {})$/;"	f	class:Docker
+needed?	lib/docker/rake_task.rb	/^  def needed?$/;"	f	class:Docker
+new_event	lib/docker/event.rb	/^    def new_event(body, remaining, total)$/;"	f	class:Docker
+normalize_hash	lib/docker/base.rb	/^  def normalize_hash(hash)$/;"	f	class:Docker
+options	lib/docker.rb	/^  def options$/;"	f	class:Docker
+options=	lib/docker.rb	/^  def options=(new_options)$/;"	f	class:Docker
+parse_json	lib/docker/util.rb	/^  def parse_json(body)$/;"	f	class:Docker
+parse_repo_tag	lib/docker/util.rb	/^  def parse_repo_tag(str)$/;"	f	class:Docker
+path_for	lib/docker/container.rb	/^  def path_for(resource)$/;"	f
+path_for	lib/docker/exec.rb	/^  def path_for(endpoint)$/;"	f	class:Docker
+path_for	lib/docker/image.rb	/^  def path_for(resource)$/;"	f
+path_for	lib/docker/network.rb	/^  def path_for(resource = nil)$/;"	f
+push	lib/docker/image.rb	/^  def push(creds = nil, options = {}, &block)$/;"	f	class:Docker
+refresh!	lib/docker/container.rb	/^  def refresh!$/;"	f	class:Docker
+refresh!	lib/docker/image.rb	/^  def refresh!$/;"	f	class:Docker
+reload	lib/docker/network.rb	/^  def reload$/;"	f	class:Docker
+remove	lib/docker/container.rb	/^  def remove(options = {})$/;"	f
+remove	lib/docker/image.rb	/^  def remove(opts = {})$/;"	f	class:Docker
+remove	lib/docker/network.rb	/^    def remove(id, opts = {}, conn = Docker.connection)$/;"	f	class:Docker
+remove	lib/docker/network.rb	/^  def remove(opts = {})$/;"	f	class:Docker
+rename	lib/docker/container.rb	/^  def rename(new_name)$/;"	f	class:Docker
+repo	lib/docker/rake_task.rb	/^  def repo$/;"	f	class:Docker
+repo_tag	lib/docker/rake_task.rb	/^  def repo_tag$/;"	f	class:Docker
+request	lib/docker/connection.rb	/^  def request(*args, &block)$/;"	f	class:Docker
+reset!	lib/docker.rb	/^  def reset!$/;"	f	class:Docker
+reset_connection!	lib/docker.rb	/^  def reset_connection!$/;"	f	class:Docker
+resize	lib/docker/exec.rb	/^  def resize(query = {})$/;"	f	class:Docker
+resource	lib/docker/connection.rb	/^  def resource$/;"	f	class:Docker
+response_block	lib/docker/image.rb	/^  def self.response_block(body)$/;"	F
+response_block_for_save	lib/docker/image.rb	/^  def self.response_block_for_save(file)$/;"	F
+response_call	lib/excon/middlewares/hijack.rb	/^      def response_call(datum)$/;"	f	class:Excon.Middleware.Hijack
+run	lib/docker/container.rb	/^  def run(cmd, time = 1000)$/;"	f	class:Docker
+run	lib/docker/image.rb	/^  def run(cmd=nil)$/;"	f	class:Docker
+save	lib/docker/image.rb	/^    def save(names, filename = nil, conn = Docker.connection)$/;"	f	class:Docker
+save	lib/docker/image.rb	/^  def save(filename = nil)$/;"	f	class:Docker
+scope_name	lib/docker/rake_task.rb	/^  def self.scope_name(_scope, task_name)$/;"	F	class:Docker
+search	lib/docker/image.rb	/^    def search(query = {}, connection = Docker.connection)$/;"	f	class:Docker
+since	lib/docker/event.rb	/^    def since(since, opts = {}, conn = Docker.connection, &block)$/;"	f	class:Docker
+ssl_options	lib/docker.rb	/^  def ssl_options$/;"	f	class:Docker
+start!	lib/docker/container.rb	/^  def start!(opts = {})$/;"	f	class:Docker
+start!	lib/docker/exec.rb	/^  def start!(options = {}, &block)$/;"	f	class:Docker
+stream	lib/docker/event.rb	/^    def stream(opts = {}, conn = Docker.connection, &block)$/;"	f	class:Docker
+streaming_logs	lib/docker/container.rb	/^  def streaming_logs(opts = {}, &block)$/;"	f	class:Docker
+tag	lib/docker/image.rb	/^  def tag(opts = {})$/;"	f	class:Docker
+tag	lib/docker/rake_task.rb	/^  def tag$/;"	f	class:Docker
+to_s	lib/docker/connection.rb	/^  def to_s$/;"	f	class:Docker
+to_s	lib/docker/container.rb	/^  def to_s$/;"	f	class:Docker
+to_s	lib/docker/event.rb	/^  def to_s$/;"	f	class:Docker
+to_s	lib/docker/exec.rb	/^  def to_s$/;"	f	class:Docker
+to_s	lib/docker/image.rb	/^  def to_s$/;"	f	class:Docker
+to_s	lib/docker/network.rb	/^  def to_s$/;"	f	class:Docker
+top	lib/docker/container.rb	/^  def top(opts = {})$/;"	f	class:Docker
+url	lib/docker.rb	/^  def url$/;"	f	class:Docker
+url=	lib/docker.rb	/^  def url=(new_url)$/;"	f	class:Docker
+validate_version!	lib/docker.rb	/^  def validate_version!$/;"	f	class:Docker
+version	lib/docker.rb	/^  def version(connection = self.connection)$/;"	f	class:Docker
+wait	lib/docker/container.rb	/^  def wait(time = nil)$/;"	f	class:Docker
