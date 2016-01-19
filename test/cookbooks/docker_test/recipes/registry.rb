@@ -2,7 +2,7 @@
 
 caroot = '/tmp/registry/tls'
 
-directory "#{caroot}" do
+directory caroot.to_s do
   recursive true
   action :create
 end

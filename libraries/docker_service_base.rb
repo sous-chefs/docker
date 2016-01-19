@@ -68,11 +68,11 @@ module DockerCookbook
     # logging
     property :logfile, String, default: '/var/log/docker.log'
 
-    alias_method :label, :labels
-    alias_method :tlscacert, :tls_ca_cert
-    alias_method :tlscert, :tls_server_cert
-    alias_method :tlskey, :tls_server_key
-    alias_method :tlsverify, :tls_verify
+    alias label labels
+    alias tlscacert tls_ca_cert
+    alias tlscert tls_server_cert
+    alias tlskey tls_server_key
+    alias tlsverify tls_verify
   end
 end
 

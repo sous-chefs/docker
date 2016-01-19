@@ -326,7 +326,7 @@ describe command("docker ps -af 'name=bind_mounter$'") do
   its(:stdout) { should match(/Exited/) }
 end
 
-describe command("docker inspect -f \"{{ .HostConfig.Binds }}\" bind_mounter") do
+describe command('docker inspect -f "{{ .HostConfig.Binds }}" bind_mounter') do
   its(:exit_status) { should eq 0 }
   its(:stdout) { should match(%r{\/hostbits\:\/bits}) }
   its(:stdout) { should match(%r{\/more-hostbits\:\/more-bits}) }
@@ -369,7 +369,7 @@ describe command("docker ps -af 'name=env$'") do
   its(:stdout) { should match(/Exited/) }
 end
 
-describe command("docker inspect -f \"{{ .Config.Env }}\" env") do
+describe command('docker inspect -f "{{ .Config.Env }}" env') do
   its(:exit_status) { should eq 0 }
   its(:stdout) { should match(%r{\[PATH=\/usr\/bin FOO=bar\]}) }
 end
@@ -475,7 +475,7 @@ describe command("docker ps -af 'name=dns$'") do
   its(:stdout) { should match(/Exited/) }
 end
 
-describe command("docker inspect -f \"{{ .HostConfig.Dns }}\" dns") do
+describe command('docker inspect -f "{{ .HostConfig.Dns }}" dns') do
   its(:stdout) { should match(/\[4.3.2.1 1.2.3.4\]/) }
 end
 
@@ -486,7 +486,7 @@ describe command("docker ps -af 'name=extra_hosts$'") do
   its(:stdout) { should match(/Exited/) }
 end
 
-describe command("docker inspect -f \"{{ .HostConfig.ExtraHosts }}\" extra_hosts") do
+describe command('docker inspect -f "{{ .HostConfig.ExtraHosts }}" extra_hosts') do
   its(:stdout) { should match(/\[east:4.3.2.1 west:1.2.3.4\]/) }
 end
 

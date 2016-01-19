@@ -51,10 +51,10 @@ module DockerCookbook
                         end
       end
 
-      def with_retries(&block)
+      def with_retries(&_block)
         tries = api_retries
         begin
-          block.call
+          yield
           # Only catch errors that can be fixed with retries.
         rescue Docker::Error::ServerError, # 404
                Docker::Error::UnexpectedResponseError, # 400

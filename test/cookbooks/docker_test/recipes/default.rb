@@ -5,7 +5,7 @@
 caname = 'docker_service_default'
 caroot = "/tmp/kitchen/#{caname}"
 
-directory "#{caroot}" do
+directory caroot.to_s do
   action :create
 end
 
