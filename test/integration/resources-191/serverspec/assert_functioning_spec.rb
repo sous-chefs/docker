@@ -328,7 +328,9 @@ end
 
 describe command("docker inspect -f \"{{ .HostConfig.Binds }}\" bind_mounter") do
   its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(%r{\[\/hostbits\:\/bits \/more-hostbits\:\/more-bits\]}) }
+  its(:stdout) { should match(%r{\/hostbits\:\/bits}) }
+  its(:stdout) { should match(%r{\/more-hostbits\:\/more-bits}) }
+  its(:stdout) { should match(%r{\/winter\:\/spring\:ro}) }
 end
 
 # docker_container[chef_container]
@@ -853,56 +855,4 @@ describe command("docker ps -af 'exited=137'") do
   its(:exit_status) { should eq 0 }
   its(:stdout) { should match(/kill_after/) }
   its(:stdout) { should match(/bill/) }
-end
-
-# docker_container[combo_breaker_1]
-
-describe command("docker ps -af 'name=combo_breaker_1$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/Created/) }
-end
-
-describe command("docker inspect -f \"{{ .HostConfig.Binds }}\" combo_breaker_1") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(%r{/bar:/bar:ro}) }
-end
-
-describe command("docker inspect -f \"{{ .Config.Volumes }}\" combo_breaker_1") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(%r{/tmp:\{\}}) }
-end
-
-# docker_container[combo_breaker_2]
-
-describe command("docker ps -af 'name=combo_breaker_2$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/Created/) }
-end
-
-describe command("docker inspect -f \"{{ .HostConfig.Binds }}\" combo_breaker_2") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(%r{/bar:/bar:ro}) }
-end
-
-describe command("docker inspect -f \"{{ .Config.Volumes }}\" combo_breaker_2") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(%r{/foo:\{\}}) }
-end
-
-# docker_container[combo_breaker_3]
-
-describe command("docker ps -af 'name=combo_breaker_3$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/Created/) }
-end
-
-describe command("docker inspect -f \"{{ .HostConfig.Binds }}\" combo_breaker_3") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(%r{/bar:/bar:ro}) }
-end
-
-describe command("docker inspect -f \"{{ .Config.Volumes }}\" combo_breaker_3") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(%r{/foo:\{\}}) }
-  its(:stdout) { should match(%r{/home:\{\}}) }
 end
