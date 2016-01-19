@@ -268,7 +268,8 @@ describe 'docker_test::container' do
       expect(chef_run).to run_if_missing_docker_container('bind_mounter').with(
         repo: 'busybox',
         command: 'ls -la /bits /more-bits',
-        binds: ['/hostbits:/bits', '/more-hostbits:/more-bits']
+        volumes_binds: ['/hostbits:/bits', '/more-hostbits:/more-bits'],
+        volumes: { '/snow' => {}, '/winter' => {} }
       )
     end
   end
@@ -720,7 +721,7 @@ describe 'docker_test::container' do
         tty: true,
         volumes: { '/root' => {} },
         working_dir: '/',
-        binds: ['/hostbits:/bits', '/more-hostbits:/more-bits'],
+        volumes_binds: ['/hostbits:/bits', '/more-hostbits:/more-bits'],
         cap_add: %w(NET_ADMIN SYS_RESOURCE),
         cap_drop: ['MKNOD'],
         cpu_shares: 512,
@@ -844,6 +845,36 @@ describe 'docker_test::container' do
 
     it 'run_if_missing docker_container[ipc_mode]' do
       expect(chef_run).to run_if_missing_docker_container('ipc_mode')
+    end
+  end
+
+  context 'testing combo_breaker' do
+    it 'runs docker_container[combo_breaker_1]' do
+      expect(chef_run).to run_docker_container('combo_breaker_1').with(
+        repo: 'alpine',
+        command: 'ls /',
+        volumes_binds: ['/bar:/bar:ro'],
+        volumes: { '/tmp' => {} }
+      )
+    end
+
+    it 'runs docker_container[combo_breaker_2]' do
+      expect(chef_run).to run_docker_container('combo_breaker_2').with(
+        repo: 'alpine',
+        command: 'ls /',
+        volumes_binds: ['/bar:/bar:ro'],
+        volumes: { '/foo' => {} }
+      )
+    end
+
+    it 'runs docker_container[combo_breaker_3]' do
+      expect(chef_run).to run_docker_container('combo_breaker_3').with(
+        repo: 'someara/image.2',
+        tag: 'v0.1.0',
+        command: 'ls /',
+        volumes_binds: ['/bar:/bar:ro'],
+        volumes: { '/foo' => {} }
+      )
     end
   end
 end

@@ -984,4 +984,33 @@ docker_container 'ipc_mode' do
   command 'ps -ef'
   ipc_mode 'host'
   action :run_if_missing
+
+##############################
+# volumes binds combo breakers
+##############################
+
+docker_container 'combo_breaker_1' do
+  repo 'alpine'
+  command 'ls /'
+  binds ['/foo', '/bar:/bar:ro']
+  volumes '/tmp'
+  action :create
+end
+
+docker_container 'combo_breaker_2' do
+  repo 'alpine'
+  command 'ls /'
+  binds '/tmp'
+  volumes ['/foo', '/bar:/bar:ro']
+  action :create
+end
+
+# this image has VOLUME /home in its Dockerfile
+docker_container 'combo_breaker_3' do
+  repo 'someara/image.2'
+  tag 'v0.1.0'
+  command 'ls /'
+  binds '/tmp'
+  volumes ['/foo', '/bar:/bar:ro']
+  action :create
 end
