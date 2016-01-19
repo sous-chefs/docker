@@ -34,6 +34,9 @@ Style/FileName:
 Metrics/AbcSize:
   Enabled: false
 
+Style/MutableConstant:
+  Enabled: false
+  
 AllCops:
   Exclude:
     - 'Guardfile'
