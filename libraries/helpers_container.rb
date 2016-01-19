@@ -49,8 +49,9 @@ module DockerCookbook
             parts = x.split(':')
             b << x if parts.length > 1
           end
-          volumes_binds b unless b.empty?
-          return nil if v.empty?
+          b = nil if b.empty?
+          volumes_binds b
+          return DockerBase::PartialHash.new if v.empty?
           v.each_with_object(DockerBase::PartialHash.new) { |volume, h| h[volume] = {} }
         end
       end
