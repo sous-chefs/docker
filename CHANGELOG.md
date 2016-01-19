@@ -1,3 +1,8 @@
+v2.4.2
+--------------------
+- Unifying volumes and binds properties on docker_container resource
+- Should use "volumes" everywhere now. Aliased method for backward compatibility.
+
 v2.4.1
 --------------------
 - Various fixes in wait-ready loops:
