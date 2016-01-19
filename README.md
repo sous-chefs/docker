@@ -140,7 +140,7 @@ docker_container 'my_nginx' do
   host_name 'www'
   domain_name 'computers.biz'
   env 'FOO=bar'
-  binds [ '/some/local/files/:/etc/nginx/conf.d' ]
+  volumes [ '/some/local/files/:/etc/nginx/conf.d' ]
 end
 ```
 
@@ -781,7 +781,7 @@ end
 docker_container 'bind_mounter' do
   repo 'busybox'
   command 'ls -la /bits /more-bits'
-  binds ['/hostbits:/bits', '/more-hostbits:/more-bits']
+  volumes ['/hostbits:/bits', '/more-hostbits:/more-bits']
   action :run_if_missing
 end
 ```
@@ -1019,10 +1019,11 @@ Most `docker_container` properties are the `snake_case` version of the
 - `command` - The command to run when starting the container.
 - `autoremove` - Boolean - Automatically delete a container when it's
   command exits. Defaults to `false`.
-- `binds` - An array of `:` separated paths to bind mount from the
-  host into the container in the form
-  `['/host-bits:/container-bits', '/more-host-bits:/more-container-bits']`.
-  Defaults to `nil`.
+- `volumes` - An array of volume bindings for this container. Each volume binding
+   is a string in one of these forms:
+    `container_path` to create a new volume for the container.
+    `host_path:container_path` to bind-mount a host path into the container.
+    `host_path:container_path:ro` to make the bind-mount read-only inside the container.
 - `cap_add` - An array Linux Capabilities (`man 7 capabilities`) to
   add to grant the container beyond what it normally gets.
 - `cap_drop` - An array Linux Capabilities (`man 7 capabilities`) to
