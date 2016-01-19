@@ -328,7 +328,9 @@ end
 
 describe command("docker inspect -f \"{{ .HostConfig.Binds }}\" bind_mounter") do
   its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(%r{\[\/hostbits\:\/bits \/more-hostbits\:\/more-bits\]}) }
+  its(:stdout) { should match(%r{\/hostbits\:\/bits}) }
+  its(:stdout) { should match(%r{\/more-hostbits\:\/more-bits}) }
+  its(:stdout) { should match(%r{\/winter\:\/spring\:ro}) }
 end
 
 # docker_container[chef_container]

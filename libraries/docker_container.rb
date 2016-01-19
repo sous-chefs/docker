@@ -36,7 +36,6 @@ module DockerCookbook
     property :attach_stdin, Boolean, desired_state: false
     property :attach_stdout, Boolean, desired_state: false
     property :autoremove, Boolean, desired_state: false
-    property :binds, ArrayType
     property :cap_add, NonEmptyArray
     property :cap_drop, NonEmptyArray
     property :cgroup_parent, String, default: ''
@@ -84,6 +83,9 @@ module DockerCookbook
     property :volumes_from, ArrayType
     property :working_dir, [String, nil]
 
+    # Used to store the bind property since binds is an alias to volumes
+    property :volumes_binds, Array, desired_state: false
+
     # Used to store the state of the Docker container
     property :container, Docker::Container, desired_state: false
 
@@ -101,6 +103,7 @@ module DockerCookbook
     alias_method :dnssearch, :dns_search
     alias_method :restart_maximum_retries, :restart_maximum_retry_count
     alias_method :volume, :volumes
+    alias_method :binds, :volumes
     alias_method :volume_from, :volumes_from
     alias_method :destination, :outfile
     alias_method :workdir, :working_dir
@@ -124,7 +127,7 @@ module DockerCookbook
       # Go through everything in the container and set corresponding properties:
       # c.info['Config']['ExposedPorts'] -> exposed_ports
       (container.info['Config'].to_a + container.info['HostConfig'].to_a).each do |key, value|
-        next if value.nil? || key == 'RestartPolicy'
+        next if value.nil? || key == 'RestartPolicy' || key == 'Binds'
 
         # Image => image
         # Set exposed_ports = ExposedPorts (etc.)
@@ -245,7 +248,7 @@ module DockerCookbook
             'Volumes'         => volumes,
             'WorkingDir'      => working_dir,
             'HostConfig'      => {
-              'Binds'           => binds,
+              'Binds'           => volumes_binds,
               'CapAdd'          => cap_add,
               'CapDrop'         => cap_drop,
               'CgroupParent'    => cgroup_parent,

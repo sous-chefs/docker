@@ -229,7 +229,7 @@ describe 'docker_test::container' do
     end
   end
 
-  context 'testing bind_mounts' do
+  context 'testing bind_mounter' do
     it 'creates directory[/hostbits]' do
       expect(chef_run).to create_directory('/hostbits').with(
         owner: 'root',
@@ -268,7 +268,8 @@ describe 'docker_test::container' do
       expect(chef_run).to run_if_missing_docker_container('bind_mounter').with(
         repo: 'busybox',
         command: 'ls -la /bits /more-bits',
-        binds: ['/hostbits:/bits', '/more-hostbits:/more-bits']
+        volumes_binds: ['/hostbits:/bits', '/more-hostbits:/more-bits', '/winter:/spring:ro'],
+        volumes: { '/snow' => {}, '/summer' => {} }
       )
     end
   end
@@ -718,9 +719,9 @@ describe 'docker_test::container' do
         mac_address: '00:00:DE:AD:BE:EF',
         network_disabled: false,
         tty: true,
+        volumes_binds: ['/hostbits:/bits', '/more-hostbits:/more-bits'],
         volumes: { '/root' => {} },
         working_dir: '/',
-        binds: ['/hostbits:/bits', '/more-hostbits:/more-bits'],
         cap_add: %w(NET_ADMIN SYS_RESOURCE),
         cap_drop: ['MKNOD'],
         cpu_shares: 512,

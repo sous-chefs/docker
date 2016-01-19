@@ -278,7 +278,7 @@ end
 docker_container 'bind_mounter' do
   repo 'busybox'
   command 'ls -la /bits /more-bits'
-  binds ['/hostbits:/bits', '/more-hostbits:/more-bits']
+  volumes ['/hostbits:/bits', '/more-hostbits:/more-bits', '/snow', '/winter:/spring:ro', '/summer']
   action :run_if_missing
 end
 
@@ -803,9 +803,8 @@ docker_container 'uber_options' do
   mac_address '00:00:DE:AD:BE:EF'
   network_disabled false
   tty true
-  volumes ['/root']
+  volumes ['/root', '/hostbits:/bits', '/more-hostbits:/more-bits']
   working_dir '/'
-  binds ['/hostbits:/bits', '/more-hostbits:/more-bits']
   cap_add %w(NET_ADMIN SYS_RESOURCE)
   cap_drop 'MKNOD'
   cpu_shares 512
