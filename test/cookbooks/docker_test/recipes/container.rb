@@ -282,6 +282,13 @@ docker_container 'bind_mounter' do
   action :run_if_missing
 end
 
+docker_container 'binds_alias' do
+  repo 'busybox'
+  command 'ls -la /bits /more-bits'
+  binds ['/fall:/sun', '/snow', '/winter:/spring:ro', '/summer']
+  action :run_if_missing
+end
+
 ##############
 # volumes_from
 ##############

@@ -328,7 +328,28 @@ end
 
 describe command('docker inspect -f "{{ .HostConfig.Binds }}" bind_mounter') do
   its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(%r{\[\/hostbits\:\/bits \/more-hostbits\:\/more-bits\]}) }
+  its(:stdout) { should match(%r{\/hostbits\:\/bits}) }
+  its(:stdout) { should match(%r{\/more-hostbits\:\/more-bits}) }
+  its(:stdout) { should match(%r{\/winter\:\/spring\:ro}) }
+end
+
+# docker_container[binds_alias]
+
+describe command("docker ps -af 'name=binds_alias$'") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/Exited/) }
+end
+
+describe command('docker inspect -f "{{ .HostConfig.Binds }}" binds_alias') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(%r{\/fall\:\/sun}) }
+  its(:stdout) { should match(%r{\/winter\:\/spring\:ro}) }
+end
+
+describe command('docker inspect -f "{{ .Config.Volumes }}" binds_alias') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(%r{\/snow\:\{\}}) }
+  its(:stdout) { should match(%r{\/summer\:\{\}}) }
 end
 
 # docker_container[chef_container]
@@ -818,67 +839,38 @@ describe kill_after_run_time do
   it { should be_within(5).of(1) }
 end
 
-# except for a few, containers shouldnt be killed
+# docker_container[pid_mode]
+
+describe command("docker ps -af 'name=pid_mode$'") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/Exited \(0\)/) }
+end
+
+describe command("docker inspect --format '{{ .HostConfig.PidMode }}' pid_mode") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { eq 'host' }
+end
+
+# docker_container[ipc_mode]
+
+describe command("docker ps -af 'name=ipc_mode$'") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/Exited \(0\)/) }
+end
+
+describe command("docker inspect --format '{{ .HostConfig.IpcMode }}' ipc_mode") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { eq 'host' }
+end
+
+# containers shouldnt be killed, validating only one was force killed
 
 describe command("docker ps -qaf 'exited=137' | wc -l") do
   its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/2/) }
+  its(:stdout) { should match(/1/) }
 end
 
 describe command("docker ps -af 'exited=137'") do
   its(:exit_status) { should eq 0 }
   its(:stdout) { should match(/kill_after/) }
-  its(:stdout) { should match(/bill/) }
-end
-
-# docker_container[combo_breaker_1]
-
-describe command("docker ps -af 'name=combo_breaker_1$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/Created/) }
-end
-
-describe command('docker inspect -f "{{ .HostConfig.Binds }}" combo_breaker_1') do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(%r{/bar:/bar:ro}) }
-end
-
-describe command('docker inspect -f "{{ .Config.Volumes }}" combo_breaker_1') do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(%r{/tmp:\{\}}) }
-end
-
-# docker_container[combo_breaker_2]
-
-describe command("docker ps -af 'name=combo_breaker_2$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/Created/) }
-end
-
-describe command('docker inspect -f "{{ .HostConfig.Binds }}" combo_breaker_2') do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(%r{/bar:/bar:ro}) }
-end
-
-describe command('docker inspect -f "{{ .Config.Volumes }}" combo_breaker_2') do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(%r{/foo:\{\}}) }
-end
-
-# docker_container[combo_breaker_3]
-
-describe command("docker ps -af 'name=combo_breaker_3$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/Created/) }
-end
-
-describe command('docker inspect -f "{{ .HostConfig.Binds }}" combo_breaker_3') do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(%r{/bar:/bar:ro}) }
-end
-
-describe command('docker inspect -f "{{ .Config.Volumes }}" combo_breaker_3') do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(%r{/foo:\{\}}) }
-  its(:stdout) { should match(%r{/home:\{\}}) }
 end
