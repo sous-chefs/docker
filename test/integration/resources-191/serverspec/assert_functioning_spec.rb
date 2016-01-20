@@ -844,15 +844,14 @@ describe command("docker inspect --format '{{ .HostConfig.IpcMode }}' ipc_mode")
   its(:stdout) { eq 'host' }
 end
 
-# except for a few, containers shouldnt be killed
+# containers shouldnt be killed, validating only one was force killed
 
 describe command("docker ps -qaf 'exited=137' | wc -l") do
   its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/2/) }
+  its(:stdout) { should match(/1/) }
 end
 
 describe command("docker ps -af 'exited=137'") do
   its(:exit_status) { should eq 0 }
   its(:stdout) { should match(/kill_after/) }
-  its(:stdout) { should match(/bill/) }
 end

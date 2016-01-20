@@ -90,7 +90,7 @@ end
 
 # start a container to be killed
 execute 'bill' do
-  command 'docker run --name bill -d busybox nc -ll -p 187 -e /bin/cat'
+  command 'docker run --name bill -d busybox sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   not_if "[ ! -z `docker ps -qaf 'name=bill$'` ]"
   action :run
 end

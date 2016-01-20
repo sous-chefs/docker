@@ -96,14 +96,6 @@ module DockerCookbook
           "#{ENV['DOCKER_CERT_PATH']}/key.pem"
         end
       end
-
-      # recursively remove nil values from a hash
-      def compact!(v)
-        v.reject! do |_, value|
-          compact!(value) if value.is_a?(Hash)
-          value.nil?
-        end
-      end
     end
   end
 end

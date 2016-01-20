@@ -32,56 +32,56 @@ module DockerCookbook
     property :repo, String, default: lazy { container_name }
     property :tag, String, default: 'latest'
     property :command, ShellCommand
-    property :attach_stderr, Boolean, desired_state: false
-    property :attach_stdin, Boolean, desired_state: false
-    property :attach_stdout, Boolean, desired_state: false
+    property :attach_stderr, Boolean, default: false, desired_state: false
+    property :attach_stdin, Boolean, default: false, desired_state: false
+    property :attach_stdout, Boolean, default: false, desired_state: false
     property :autoremove, Boolean, desired_state: false
-    property :cap_add, NonEmptyArray
-    property :cap_drop, NonEmptyArray
+    property :cap_add, NonEmptyArray, default: nil
+    property :cap_drop, NonEmptyArray, default: nil
     property :cgroup_parent, String, default: ''
     property :cpu_shares, [Fixnum, nil], default: 0
     property :cpuset_cpus, String, default: ''
     property :detach, Boolean, default: true, desired_state: false
-    property :devices, ArrayType
-    property :dns, NonEmptyArray
-    property :dns_search, ArrayType
+    property :devices, Array, default: []
+    property :dns, Array, default: []
+    property :dns_search, Array, default: []
     property :domain_name, String, default: ''
-    property :entrypoint, ShellCommand
-    property :env, UnorderedArrayType
-    property :extra_hosts, NonEmptyArray
+    property :entrypoint, ShellCommand, default: nil
+    property :env, UnorderedArrayType, default: []
+    property :extra_hosts, NonEmptyArray, default: nil
     property :exposed_ports, PartialHashType
     property :force, Boolean, desired_state: false
     property :host, [String], default: lazy { default_host }, desired_state: false
     property :hostname, String
-    property :ipc_mode, String
-    property :labels, [String, Array, Hash], coerce: proc { |v| coerce_labels(v) }
-    property :links, [Array, nil], coerce: proc { |v| coerce_links(v) }
+    property :ipc_mode, String, default: ''
+    property :labels, [String, Array, Hash], default: {}, coerce: proc { |v| coerce_labels(v) }
+    property :links, [Array, nil], default: nil, coerce: proc { |v| coerce_links(v) }
     property :log_driver, %w( json-file syslog journald gelf fluentd none ), default: 'json-file'
     property :log_opts, [Hash, nil], coerce: proc { |v| coerce_log_opts(v) }
     property :mac_address, String
     property :memory, Fixnum, default: 0
-    property :memory_swap, Fixnum, default: -1
+    property :memory_swap, Fixnum, default: 0
     property :network_disabled, Boolean, default: false
     property :network_mode, [String, nil], default: lazy { default_network_mode }
-    property :open_stdin, Boolean, desired_state: false
+    property :open_stdin, Boolean, default: false, desired_state: false
     property :outfile, [String, nil], default: nil
-    property :port_bindings, PartialHashType
-    property :pid_mode, String
-    property :privileged, Boolean
-    property :publish_all_ports, Boolean
+    property :port_bindings, PartialHashType, default: {}
+    property :pid_mode, String, default: ''
+    property :privileged, Boolean, default: false
+    property :publish_all_ports, Boolean, default: false
     property :remove_volumes, Boolean
     property :restart_maximum_retry_count, Fixnum, default: 0
     property :restart_policy, String, default: 'no'
-    property :security_opts, [String, Array], default: lazy { [''] }
-    property :signal, String, default: 'SIGKILL'
-    property :stdin_once, Boolean, desired_state: false
+    property :security_opts, [String, ArrayType], default: nil
+    property :signal, String, default: 'SIGTERM'
+    property :stdin_once, Boolean, default: false, desired_state: false
     property :timeout, [Fixnum, nil], desired_state: false
-    property :tty, Boolean
-    property :ulimits, [Array, nil], coerce: proc { |v| coerce_ulimits(v) }
+    property :tty, Boolean, default: false
+    property :ulimits, [Array, nil], default: nil, coerce: proc { |v| coerce_ulimits(v) }
     property :user, String, default: ''
-    property :volumes, PartialHashType, coerce: proc { |v| coerce_volumes(v) }
-    property :volumes_from, ArrayType
-    property :working_dir, [String, nil]
+    property :volumes, PartialHashType, default: {}, coerce: proc { |v| coerce_volumes(v) }
+    property :volumes_from, ArrayType, default: nil
+    property :working_dir, [String, nil], default: ''
 
     # Used to store the bind property since binds is an alias to volumes
     property :volumes_binds, Array, desired_state: false
@@ -276,7 +276,6 @@ module DockerCookbook
               'VolumesFrom'     => volumes_from
             }
           }
-          compact!(config)
           Docker::Container.create(config, connection)
         end
       end

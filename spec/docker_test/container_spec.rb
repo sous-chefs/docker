@@ -33,13 +33,13 @@ describe 'docker_test::container' do
         domain_name: '',
         log_driver: 'json-file',
         memory: 0,
-        memory_swap: -1,
+        memory_swap: 0,
         network_disabled: false,
         outfile: nil,
         restart_maximum_retry_count: 0,
         restart_policy: 'no',
-        security_opts: [''],
-        signal: 'SIGKILL',
+        security_opts: nil,
+        signal: 'SIGTERM',
         user: ''
       )
     end
@@ -112,7 +112,7 @@ describe 'docker_test::container' do
   context 'testing action :kill' do
     it 'run execute[bill]' do
       expect(chef_run).to run_execute('bill').with(
-        command: 'docker run --name bill -d busybox nc -ll -p 187 -e /bin/cat'
+        command: 'docker run --name bill -d busybox sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
       )
     end
 
