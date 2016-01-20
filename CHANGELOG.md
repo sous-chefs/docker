@@ -1,3 +1,9 @@
+v2.4.3
+--------------------
+- Setting docker_container property defaults to match Docker CLI
+- Reverting image-id hack
+- Adding disable-legacy-registry
+
 v2.4.2
 --------------------
 - Unifying volumes and binds properties on docker_container resource
