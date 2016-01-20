@@ -44,7 +44,7 @@ module DockerCookbook
           DockerBase::PartialHash[v]
         else
           b = []
-          v = Array(v)
+          v = Array(v).to_a # in case v.is_A?(Chef::Node::ImmutableArray)
           v.delete_if do |x|
             parts = x.split(':')
             b << x if parts.length > 1
