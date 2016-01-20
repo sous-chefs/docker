@@ -274,6 +274,17 @@ describe 'docker_test::container' do
     end
   end
 
+  context 'testing binds_alias' do
+    it 'run_if_missing docker_container[binds_alias]' do
+      expect(chef_run).to run_if_missing_docker_container('binds_alias').with(
+        repo: 'busybox',
+        command: 'ls -la /bits /more-bits',
+        volumes_binds: ['/fall:/sun', '/winter:/spring:ro'],
+        volumes: { '/snow' => {}, '/summer' => {} }
+      )
+    end
+  end
+
   context 'testing volumes_from' do
     it 'creates directory[/chefbuilder]' do
       expect(chef_run).to create_directory('/chefbuilder').with(

@@ -333,6 +333,25 @@ describe command('docker inspect -f "{{ .HostConfig.Binds }}" bind_mounter') do
   its(:stdout) { should match(%r{\/winter\:\/spring\:ro}) }
 end
 
+# docker_container[binds_alias]
+
+describe command("docker ps -af 'name=binds_alias$'") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/Exited/) }
+end
+
+describe command('docker inspect -f "{{ .HostConfig.Binds }}" binds_alias') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(%r{\/fall\:\/sun}) }
+  its(:stdout) { should match(%r{\/winter\:\/spring\:ro}) }
+end
+
+describe command('docker inspect -f "{{ .Config.Volumes }}" binds_alias') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(%r{\/snow\:\{\}}) }
+  its(:stdout) { should match(%r{\/summer\:\{\}}) }
+end
+
 # docker_container[chef_container]
 
 describe command("docker ps -af 'name=chef_container$'") do
