@@ -299,7 +299,7 @@ suites:
         server: true
         bootstrap_expect: 1
     docker:
-      version: '1.9.0'
+      version: '1.9.1'
   run_list:
   - recipe[consul::default]
   - recipe[docker_test::default]
