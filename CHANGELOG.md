@@ -1,3 +1,8 @@
+v2.4.4
+--------------------
+- Updating vendored docker-api to 1.25.0
+- Adding experimental docker_network resource
+
 v2.4.3
 --------------------
 - Setting docker_container property defaults to match Docker CLI
