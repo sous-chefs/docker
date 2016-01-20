@@ -400,6 +400,7 @@ the options found in the
 - `tmpdir` - ENV variable set before for Docker daemon starts
 - `logfile` - Location of Docker daemon log file
 - `userland_proxy`- Enables or disables docker-proxy
+- `disable_legacy_registry` - Do not contact legacy registries
 
 #### Actions
 - `:create` - Lays the Docker bits out on disk
