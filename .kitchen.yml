@@ -289,6 +289,22 @@ suites:
   - recipe[docker_test::image]
   - recipe[docker_test::container]
 
+- name: network
+  includes: [
+    'ubuntu-15.04'
+  ]
+  attributes:
+    consul:
+      config:
+        server: true
+        bootstrap_expect: 1
+    docker:
+      version: '1.9.0'
+  run_list:
+  - recipe[consul::default]
+  - recipe[docker_test::default]
+  - recipe[docker_test::network]
+
 #####################
 # docker_service auto
 #####################

@@ -119,7 +119,7 @@ Docker.authenticate!('username' => 'docker-fan-boi', 'password' => 'i<3docker', 
 
 ## Images
 
-Just about every method here has a one-to-one mapping with the [Images](https://docs.docker.com/reference/api/docker_remote_api_v1.12/#22-images) section of the API. If an API call accepts query parameters, these can be passed as an Hash to it's corresponding method. Also, note that `Docker::Image.new` is a private method, so you must use `.create`, `.build`, `.build_from_dir`, `build_from_tar`, or `.import` to make an instance.
+Just about every method here has a one-to-one mapping with the [Images](https://docs.docker.com/engine/reference/api/docker_remote_api_v1.14/#2-2-images) section of the API. If an API call accepts query parameters, these can be passed as an Hash to it's corresponding method. Also, note that `Docker::Image.new` is a private method, so you must use `.create`, `.build`, `.build_from_dir`, `build_from_tar`, or `.import` to make an instance.
 
 ```ruby
 require 'docker'
@@ -255,7 +255,7 @@ Docker::Image.search('term' => 'sshd')
 
 ## Containers
 
-Much like the Images, this object also has a one-to-one mapping with the [Containers](https://docs.docker.com/reference/api/docker_remote_api_v1.12/#21-containers) section of the API. Also like Images, `.new` is a private method, so you must use `.create` to make an instance.
+Much like the Images, this object also has a one-to-one mapping with the [Containers](https://docs.docker.com/engine/reference/api/docker_remote_api_v1.14/#2-1-containers) section of the API. Also like Images, `.new` is a private method, so you must use `.create` to make an instance.
 
 ```ruby
 require 'docker'
@@ -488,8 +488,8 @@ end
 
 ## Not supported (yet)
 
-*   Generating a tarball of images and metadata for a repository specified by a name: https://docs.docker.com/reference/api/docker_remote_api_v1.12/#get-a-tarball-containing-all-images-and-tags-in-a-repository
-*   Load a tarball generated from docker that contains all the images and metadata of a repository: https://docs.docker.com/reference/api/docker_remote_api_v1.12/#load-a-tarball-with-a-set-of-images-and-tags-into-docker
+*   Generating a tarball of images and metadata for a repository specified by a name: https://docs.docker.com/engine/reference/api/docker_remote_api_v1.14/#get-a-tarball-containing-all-images-and-tags-in-a-repository
+*   Load a tarball generated from docker that contains all the images and metadata of a repository: https://docs.docker.com/engine/reference/api/docker_remote_api_v1.14/#load-a-tarball-with-a-set-of-images-and-tags-into-docker
 
 License
 -----

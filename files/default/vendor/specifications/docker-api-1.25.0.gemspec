@@ -1,22 +1,22 @@
 # -*- encoding: utf-8 -*-
-# stub: docker-api 1.24.1 ruby lib
+# stub: docker-api 1.25.0 ruby lib
 
 Gem::Specification.new do |s|
   s.name = "docker-api"
-  s.version = "1.24.1"
+  s.version = "1.25.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["Swipely, Inc."]
-  s.date = "2015-12-07"
+  s.date = "2016-01-15"
   s.description = "A simple REST client for the Docker Remote API"
   s.email = ["tomhulihan@swipely.com", "bright@swipely.com", "toddlunter@swipely.com"]
   s.homepage = "https://github.com/swipely/docker-api"
   s.licenses = ["MIT"]
-  s.rubygems_version = "2.4.8"
+  s.rubygems_version = "2.4.5.1"
   s.summary = "A simple REST client for the Docker Remote API"
 
-  s.installed_by_version = "2.4.8" if s.respond_to? :installed_by_version
+  s.installed_by_version = "2.4.5.1" if s.respond_to? :installed_by_version
 
   if s.respond_to? :specification_version then
     s.specification_version = 4

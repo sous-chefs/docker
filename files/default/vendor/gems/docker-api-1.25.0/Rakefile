@@ -1,4 +1,5 @@
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), 'lib'))
+ENV['PATH'] = "/opt/docker/:#{ENV['PATH']}" if ENV['CI'] == 'true'
 
 require 'rake'
 require 'docker'
