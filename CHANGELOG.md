@@ -1,3 +1,8 @@
+v2.4.5
+--------------------
+- Fix coerce_volumes in case current value is a Chef::Node::ImmutableArray
+- Adding tests for binds alias to volumes
+
 v2.4.4
 --------------------
 - Updating vendored docker-api to 1.25.0
