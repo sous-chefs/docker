@@ -1,4 +1,8 @@
-v2.4.6
+v2.4.7
+--------------------
+- Using Gem::Version to handle semantic verisoning and be compatible for ≥ 1.10
+
+- v2.4.6
 --------------------
 - #613 - Fix docker_container redeploys with bad link array ordering
 
