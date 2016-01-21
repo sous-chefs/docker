@@ -2,12 +2,13 @@ module DockerCookbook
   module DockerHelpers
     module Container
       def coerce_links(v)
-        v = Array(v)
-        if v.empty?
-          nil
+        case v
+        when DockerBase::UnorderedArray, nil
+          v
         else
+          return nil if v.empty?
           # Parse docker input of /source:/container_name/dest into source:dest
-          v.map do |link|
+          DockerBase::UnorderedArray.new(Array(v)).map! do |link|
             if link =~ %r{^/(?<source>.+):/#{name}/(?<dest>.+)}
               link = "#{Regexp.last_match[:source]}:#{Regexp.last_match[:dest]}"
             end

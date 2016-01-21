@@ -55,7 +55,7 @@ module DockerCookbook
     property :hostname, String
     property :ipc_mode, String, default: ''
     property :labels, [String, Array, Hash], default: {}, coerce: proc { |v| coerce_labels(v) }
-    property :links, [Array, nil], default: nil, coerce: proc { |v| coerce_links(v) }
+    property :links, UnorderedArrayType, default: nil, coerce: proc { |v| coerce_links(v) }
     property :log_driver, %w( json-file syslog journald gelf fluentd none ), default: 'json-file'
     property :log_opts, [Hash, nil], coerce: proc { |v| coerce_log_opts(v) }
     property :mac_address, String
