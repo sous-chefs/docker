@@ -1,3 +1,7 @@
+v2.4.6
+--------------------
+- #613 - Fix docker_container redeploys with bad link array ordering
+
 v2.4.5
 --------------------
 - Fix coerce_volumes in case current value is a Chef::Node::ImmutableArray
