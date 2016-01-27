@@ -140,7 +140,7 @@ docker_container 'my_nginx' do
   host_name 'www'
   domain_name 'computers.biz'
   env 'FOO=bar'
-  volumes [ '/some/local/files/:/etc/nginx/conf.d' ]
+  binds [ '/some/local/files/:/etc/nginx/conf.d' ]
 end
 ```
 
@@ -783,7 +783,7 @@ end
 docker_container 'bind_mounter' do
   repo 'busybox'
   command 'ls -la /bits /more-bits'
-  volumes ['/hostbits:/bits', '/more-hostbits:/more-bits']
+  binds ['/hostbits:/bits', '/more-hostbits:/more-bits']
   action :run_if_missing
 end
 ```
@@ -1021,7 +1021,7 @@ Most `docker_container` properties are the `snake_case` version of the
 - `command` - The command to run when starting the container.
 - `autoremove` - Boolean - Automatically delete a container when it's
   command exits. Defaults to `false`.
-- `volumes` - An array of volume bindings for this container. Each volume binding
+- `binds` - An array of volume bindings for this container. Each volume binding
    is a string in one of these forms:
     `container_path` to create a new volume for the container.
     `host_path:container_path` to bind-mount a host path into the container.
