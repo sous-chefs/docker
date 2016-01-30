@@ -1,10 +1,10 @@
 module DockerCookbook
   module DockerHelpers
     module Container
-	  def self.included(klass)
-	    klass.extend self
-	  end
-	
+      def self.included(klass)
+        klass.extend self
+      end
+
       def coerce_links(v)
         case v
         when DockerBase::UnorderedArray, nil
