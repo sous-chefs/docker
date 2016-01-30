@@ -2,11 +2,11 @@ module DockerCookbook
   class DockerContainer < DockerBase
     require 'docker'
     require 'shellwords'
-    require 'helpers_container'
+    require_relative 'helpers_container'
 
     include DockerHelpers::Container
 
-    use_automatic_resource_name
+    resource_name :docker_container
 
     ###########################################################
     # In Chef 12.5 and later, we no longer have to use separate

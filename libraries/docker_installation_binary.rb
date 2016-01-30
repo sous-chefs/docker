@@ -1,6 +1,7 @@
 module DockerCookbook
   class DockerInstallationBinary < DockerBase
-    require 'helpers_installation_binary'
+    require_relative 'helpers_installation_binary'
+
     include DockerHelpers::InstallationBinary
 
     #####################

@@ -1,7 +1,8 @@
 module DockerCookbook
-  require 'docker_service_base'
+  require_relative 'docker_service_base'
+
   class DockerService < DockerServiceBase
-    use_automatic_resource_name
+    resource_name :docker_service
 
     # register with the resource resolution system
     provides :docker_service

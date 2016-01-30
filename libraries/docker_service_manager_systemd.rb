@@ -1,6 +1,6 @@
 module DockerCookbook
   class DockerServiceManagerSystemd < DockerServiceBase
-    use_automatic_resource_name
+    resource_name :docker_service_manager_systemd
 
     provides :docker_service_manager, platform: 'fedora'
 

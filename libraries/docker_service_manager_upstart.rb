@@ -1,6 +1,6 @@
 module DockerCookbook
   class DockerServiceManagerUpstart < DockerServiceBase
-    use_automatic_resource_name
+    resource_name :docker_service_manager_upstart
 
     provides :docker_service_manager, platform: 'ubuntu'
     provides :docker_service_manager, platform: 'linuxmint'

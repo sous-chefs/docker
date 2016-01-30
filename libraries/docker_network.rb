@@ -1,9 +1,9 @@
 module DockerCookbook
   class DockerNetwork < DockerBase
     require 'docker'
-    require 'helpers_network'
+    require_relative 'helpers_network'
 
-    use_automatic_resource_name
+    resource_name :docker_network
 
     property :network_name, String, name_property: true
     property :id, String

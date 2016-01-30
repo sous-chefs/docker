@@ -1,6 +1,6 @@
 module DockerCookbook
   class DockerServiceManagerExecute < DockerServiceBase
-    use_automatic_resource_name
+    resource_name :docker_service_manager_execute
 
     provides :docker_service_manager, os: 'linux'
 
