@@ -55,7 +55,6 @@ module DockerCookbook
     property :storage_driver, ArrayType
     property :selinux_enabled, [Boolean, nil]
     property :storage_opts, ArrayType
-    property :tls, [Boolean, nil]
     property :default_ulimit, ArrayType
     property :userland_proxy, [Boolean, nil]
     property :disable_legacy_registry, [Boolean, nil]

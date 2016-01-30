@@ -8,7 +8,7 @@ version '2.4.7'
 source_url 'https://github.com/someara/chef-docker'
 issues_url 'https://github.com/someara/chef-docker/issues'
 
-depends 'compat_resource', '>= 12.5.23'
+depends 'compat_resource', '~> 12.5.26'
 
 supports 'amazon'
 supports 'centos'

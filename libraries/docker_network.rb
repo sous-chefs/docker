@@ -6,7 +6,6 @@ module DockerCookbook
     use_automatic_resource_name
 
     property :network_name, String, name_property: true
-    property :host, [String, nil], default: lazy { default_host }
     property :id, String
     property :driver, [String, nil]
     property :driver_opts, [String, Array, nil]
