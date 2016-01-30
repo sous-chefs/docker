@@ -1,3 +1,9 @@
+v2.4.8
+--------------------
+- removing duplicate :tls properties
+- removing instances of 'default: nil'
+- depending on 'compat_resource', '~> 12.5.26'
+
 v2.4.7
 --------------------
 - Using Gem::Version to handle semantic verisoning and be compatible for ≥ 1.10
