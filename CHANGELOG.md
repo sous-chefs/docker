@@ -1,3 +1,8 @@
+v2.4.9
+--------------------
+- using require_relative to load files
+- specifying resource_name instead of use_automatic_resource_name
+
 v2.4.8
 --------------------
 - removing duplicate :tls properties
