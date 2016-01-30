@@ -3,7 +3,7 @@ sudo: required
 addons:
   apt:
     sources:
-      - chef-current-precise
+      - chef-stable-precise
     packages:
       - chefdk
 
