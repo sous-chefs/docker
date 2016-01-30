@@ -2,6 +2,10 @@ module DockerCookbook
   module DockerHelpers
     module Base
       require 'shellwords'
+	  
+	  def self.included(klass)
+	    klass.extend self
+	  end
 
       ##########
       # coersion
