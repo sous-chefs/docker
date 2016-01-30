@@ -94,19 +94,19 @@ module DockerCookbook
     # never kill the container.
     property :kill_after, Numeric, default: -1, desired_state: false
 
-    alias cmd command
-    alias additional_host extra_hosts
-    alias rm autoremove
-    alias remove_automatically autoremove
-    alias host_name hostname
-    alias domainname domain_name
-    alias dnssearch dns_search
-    alias restart_maximum_retries restart_maximum_retry_count
-    alias volume volumes
-    alias binds volumes
-    alias volume_from volumes_from
-    alias destination outfile
-    alias workdir working_dir
+    alias_method :cmd, :command
+    alias_method :additional_host, :extra_hosts
+    alias_method :rm, :autoremove
+    alias_method :remove_automatically, :autoremove
+    alias_method :host_name, :hostname
+    alias_method :domainname, :domain_name
+    alias_method :dnssearch, :dns_search
+    alias_method :restart_maximum_retries, :restart_maximum_retry_count
+    alias_method :volume, :volumes
+    alias_method :binds, :volumes
+    alias_method :volume_from, :volumes_from
+    alias_method :destination, :outfile
+    alias_method :workdir, :working_dir
 
     # ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
     # Begin classic Chef "provider" section
