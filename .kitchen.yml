@@ -1,5 +1,5 @@
----
-driver_plugin: vagrant
+driver:
+  name: vagrant
 
 driver_config:
   customize:
