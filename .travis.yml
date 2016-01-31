@@ -1,9 +1,10 @@
 sudo: required
 
+# install the pre-release chef-dk.  Use chef-stable-precise to install the stable release
 addons:
   apt:
     sources:
-      - chef-stable-precise
+      - chef-current-precise
     packages:
       - chefdk
 
