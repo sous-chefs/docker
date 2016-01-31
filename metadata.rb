@@ -5,8 +5,8 @@ license 'Apache 2.0'
 description 'Provides docker_service, docker_image, and docker_container resources'
 version '2.4.9'
 
-source_url 'https://github.com/someara/chef-docker'
-issues_url 'https://github.com/someara/chef-docker/issues'
+source_url 'https://github.com/chef-cookbooks/docker'
+issues_url 'https://github.com/chef-cookbooks/docker/issues'
 
 depends 'compat_resource', '~> 12.5.26'
 
