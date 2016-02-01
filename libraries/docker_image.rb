@@ -19,10 +19,10 @@ module DockerCookbook
     property :source, String
     property :tag, String, default: 'latest'
 
-    alias_method :image, :repo
-    alias_method :image_name, :repo
-    alias_method :no_cache, :nocache
-    alias_method :no_prune, :noprune
+    alias image repo
+    alias image_name repo
+    alias no_cache nocache
+    alias no_prune noprune
 
     #########
     # Actions
