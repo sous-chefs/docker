@@ -1,65 +1,43 @@
-#!/usr/bin/env rake
+require 'rspec/core/rake_task'
+require 'rubocop/rake_task'
+require 'foodcritic'
+require 'kitchen'
+
+require_relative 'tasks/maintainers'
 
 # Style tests. Rubocop and Foodcritic
 namespace :style do
-  begin
-    require 'rubocop/rake_task'
-    desc 'Run Ruby style checks'
-    RuboCop::RakeTask.new(:ruby)
-  rescue LoadError
-    puts '>>>>> Rubocop gem not loaded, omitting tasks' unless ENV['CI']
-  end
+  desc 'Run Ruby style checks'
+  RuboCop::RakeTask.new(:ruby)
 
-  begin
-    require 'foodcritic'
-
-    desc 'Run Chef style checks'
-    FoodCritic::Rake::LintTask.new(:chef) do |t|
-      t.options = {
-        fail_tags: ['any'],
-        exclude_paths: ['spec']
-      }
-    end
-  rescue LoadError
-    puts '>>>>> foodcritic gem not loaded, omitting tasks' unless ENV['CI']
+  desc 'Run Chef style checks'
+  FoodCritic::Rake::LintTask.new(:chef) do |t|
+    t.options = {
+      fail_tags: ['any']
+    }
   end
 end
 
 desc 'Run all style checks'
 task style: ['style:chef', 'style:ruby']
 
+# Rspec and ChefSpec
+desc 'Run ChefSpec examples'
+RSpec::Core::RakeTask.new(:spec)
+
 # Integration tests. Kitchen.ci
 namespace :integration do
-  begin
-    require 'kitchen/rake_tasks'
-
-    desc 'Run kitchen integration tests'
-    Kitchen::RakeTasks.new
-  rescue LoadError, Kitchen::ClientError
-    puts '>>>>> Kitchen gem not loaded, omitting tasks' unless ENV['CI']
-  end
-end
-
-# Unit tests with rspec/chefspec
-namespace :unit do
-  begin
-    require 'rspec/core/rake_task'
-    desc 'Run unit tests with RSpec/ChefSpec'
-    RSpec::Core::RakeTask.new(:rspec) do |t|
-      t.rspec_opts = [].tap do |a|
-        a.push('--color')
-        a.push('--format progress')
-      end.join(' ')
+  desc 'Run Test Kitchen with Vagrant'
+  task :vagrant do
+    Kitchen.logger = Kitchen.default_file_logger
+    Kitchen::Config.new.instances.each do |instance|
+      instance.test(:always)
     end
-  rescue LoadError
-    puts '>>>>> rspec gem not loaded, omitting tasks' unless ENV['CI']
   end
 end
-
-task unit: ['unit:rspec']
 
 desc 'Run all tests on Travis'
-task travis: %w(style unit)
+task travis: ['style', 'spec', 'integration:cloud']
 
 # Default
-task default: ['style', 'unit', 'integration:kitchen:all']
+task default: ['style', 'spec', 'integration:vagrant']

@@ -1,42 +1,48 @@
-# Berkshelf
-Berksfile.lock
-/cookbooks
-
-# Bundler
-.bundle
-bin/
-Gemfile.lock
-
-# Chef
-metadata.json
-tmp/
-
-# Editors
+*.rbc
+.config
+coverage
+InstalledFiles
+lib/bundler/man
+pkg
+rdoc
+spec/reports
+test/tmp
+test/version_tmp
+tmp
+_Store
 *~
 *#
 .#*
 \#*#
 .*.sw[a-z]
-*.sublime-project
-*.sublime-workspace
 *.un~
-.idea/
-*.iml
+*.tmp
+*.bk
+*.bkup
 
-# OS files
-.DS_Store
-
-# rbenv
+# ruby/bundler files
 .ruby-version
+.ruby-gemset
+.rvmrc
+Gemfile.lock
+.bundle
+*.gem
 
-# Test Kitchen
-.kitchen/
+# YARD artifacts
+.yardoc
+_yardoc
+doc/
+.idea
+
+#chef stuff
+Berksfile.lock
+.kitchen
 .kitchen.local.yml
+vendor/
+.coverage/
+.zero-knife.rb
 
-# Vagrant
-.vagrant
-
-# vagrant-cache
-.cache
-
-*.png
+#vagrant stuff
+.vagrant/
+.vagrant.d/
+.kitchen/
