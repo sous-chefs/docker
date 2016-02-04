@@ -8,7 +8,7 @@ version '2.4.10'
 source_url 'https://github.com/chef-cookbooks/docker'
 issues_url 'https://github.com/chef-cookbooks/docker/issues'
 
-depends 'compat_resource', '~> 12.5.26'
+depends 'compat_resource', '~> 12.7.1'
 
 supports 'amazon'
 supports 'centos'
