@@ -3,7 +3,7 @@ maintainer 'Sean OMeara'
 maintainer_email 'sean@chef.io'
 license 'Apache 2.0'
 description 'Provides docker_service, docker_image, and docker_container resources'
-version '2.4.10'
+version '2.4.11'
 
 source_url 'https://github.com/chef-cookbooks/docker'
 issues_url 'https://github.com/chef-cookbooks/docker/issues'
