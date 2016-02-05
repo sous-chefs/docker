@@ -139,6 +139,7 @@ docker_service 'default' do
   tls_client_key "#{caroot}/key.pem"
   cluster_store "etcd://#{node['ipaddress']}:4001"
   cluster_advertise 'eth0:0'
+  dns_search 'test.local' if false
   install_method 'package'
   action [:create, :start]
 end
