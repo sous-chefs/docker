@@ -49,7 +49,7 @@ module DockerCookbook
     property :entrypoint, ShellCommand
     property :env, UnorderedArrayType, default: []
     property :extra_hosts, NonEmptyArray
-    property :exposed_ports, PartialHashType
+    property :exposed_ports, PartialHashType, default: {}
     property :force, Boolean, desired_state: false
     property :host, [String, nil], default: lazy { default_host }, desired_state: false
     property :hostname, String
