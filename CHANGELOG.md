@@ -1,3 +1,7 @@
+v2.4.12
+--------------------
+- Set default docker_container.exposed_port to empty Hash
+
 v2.4.11
 --------------------
 - Updating metadata to use compat_resource ~> 12.7.1
