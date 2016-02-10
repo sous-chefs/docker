@@ -189,25 +189,25 @@ module DockerCookbook
 
       if network_mode == 'host' &&
          (
-          property_is_set?(:hostname) ||
-          property_is_set?(:dns) ||
-          property_is_set?(:dns_search) ||
-          property_is_set?(:mac_address) ||
-          property_is_set?(:extra_hosts)
+          !(hostname.nil? || hostname.empty?) ||
+          !(dns.nil? || dns.empty?) ||
+          !(dns_search.nil? || dns_search.empty?) ||
+          !(mac_address.nil? || mac_address.empty?) ||
+          !(extra_hosts.nil? || extra_hosts.empty?)
          )
         fail Chef::Exceptions::ValidationFailed, 'Cannot specify hostname, dns, dns_search, mac_address, or extra_hosts when network_mode is host.'
       end
 
       if network_mode == 'container' &&
          (
-          property_is_set?(:hostname) ||
-          property_is_set?(:dns) ||
-          property_is_set?(:dns_search) ||
-          property_is_set?(:mac_address) ||
-          property_is_set?(:extra_hosts) ||
-          property_is_set?(:exposed_ports) ||
-          property_is_set?(:port_bindings) ||
-          property_is_set?(:publish_all_ports) ||
+          !(hostname.nil? || hostname.empty?) ||
+          !(dns.nil? || dns.empty?) ||
+          !(dns_search.nil? || dns_search.empty?) ||
+          !(mac_address.nil? || mac_address.empty?) ||
+          !(extra_hosts.nil? || extra_hosts.empty?) ||
+          !(exposed_ports.nil? || exposed_ports.empty?) ||
+          !(port_bindings.nil? || port_bindings.empty?) ||
+          !(publish_all_ports.nil? || publish_all_ports.empty?) ||
           !port.nil?
          )
         fail Chef::Exceptions::ValidationFailed, 'Cannot specify hostname, dns, dns_search, mac_address, extra_hosts, exposed_ports, port_bindings, publish_all_ports, port when network_mode is container.'
