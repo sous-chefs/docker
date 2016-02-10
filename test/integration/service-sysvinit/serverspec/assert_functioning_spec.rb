@@ -1,12 +1,7 @@
-require 'serverspec'
 
-set :backend, :exec
-puts "os: #{os}"
-
-ENV['DOCKER_HOST'] = 'unix:///var/run/docker.sock'
-
-describe process('docker') do
-  it { should be_running }
+describe processes('docker') do
+  its('users') { should eq ['root'] }
+  its('states') { should include 'Sl' }
 end
 
 describe command('docker ps') do
@@ -23,16 +18,14 @@ systemd = false if os[:family] == 'ubuntu' && os[:release].to_f < 15.04
 unless systemd
   describe file('/var/log/docker.log') do
     it { should be_file }
-    it { should be_mode 644 }
+    it { should be_mode 0644 }
   end
 end
 
-describe 'kernel parameters' do
-  context linux_kernel_parameter('net.ipv4.ip_forward') do
-    its(:value) { should eq 1 }
-  end
+describe kernel_parameter('net.ipv4.ip_forward') do
+  its(:value) { should eq 1 }
+end
 
-  context linux_kernel_parameter('net.ipv6.conf.all.forwarding') do
-    its(:value) { should eq 1 }
-  end
+describe kernel_parameter('net.ipv6.conf.all.forwarding') do
+  its(:value) { should eq 1 }
 end

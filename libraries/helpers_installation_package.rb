@@ -63,7 +63,8 @@ module DockerCookbook
       def default_docker_version
         return '1.7.1' if el6?
         return '1.7.1' if amazon?
-        '1.8.3'
+        return '1.9.1' if fc21?
+        '1.9.1'
       end
 
       def docker_bin
