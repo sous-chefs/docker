@@ -1,3 +1,14 @@
+v2.4.13
+--------------------
+- stricter conditionals on container validation
+- updating vendored docker-api gem to 1.26.0
+- setting default Docker installation version to 1.9.1
+- updating inspec for service-execute
+- updating inspec for service-sysvinit
+- updating inspec for service-upstart
+- updating inspec for service-systemd
+- removing unused serverspec suites
+
 v2.4.12
 --------------------
 - Set default docker_container.exposed_port to empty Hash
