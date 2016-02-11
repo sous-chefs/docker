@@ -1,3 +1,8 @@
+v2.4.17
+--------------------
+- Re-doing service_manager_upstart implementation
+- Using package native init config and utilizing /etc/default
+
 v2.4.16
 --------------------
 - Adding validation proc for docker_service.version to throw error
