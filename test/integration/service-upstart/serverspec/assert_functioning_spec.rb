@@ -16,16 +16,12 @@ systemd = false if os[:family] == 'redhat' && os[:release].to_i < 7
 systemd = false if os[:family] == 'ubuntu' && os[:release].to_f < 15.04
 
 unless systemd
-  describe file('/var/log/docker.log') do
+  describe file('/var/log/upstart/docker.log') do
     it { should be_file }
-    it { should be_mode 0644 }
+    it { should be_mode 0640 }
   end
 end
 
 describe kernel_parameter('net.ipv4.ip_forward') do
-  its(:value) { should eq 1 }
-end
-
-describe kernel_parameter('net.ipv6.conf.all.forwarding') do
   its(:value) { should eq 1 }
 end
