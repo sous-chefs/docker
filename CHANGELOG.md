@@ -1,3 +1,8 @@
+v2.4.16
+--------------------
+- Adding validation proc for docker_service.version to throw error
+  when specifying version with script installations
+
 v2.4.15
 --------------------
 - fixing raiseure -> failure typo in docker_container validation
