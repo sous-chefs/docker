@@ -1,3 +1,7 @@
+v2.4.19
+--------------------
+- Adding docker_tag force property
+
 v2.4.18
 --------------------
 - Fixing broken version / install_method validation check
