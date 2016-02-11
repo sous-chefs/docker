@@ -1,3 +1,7 @@
+v2.4.18
+--------------------
+- Fixing broken version / install_method validation check
+
 v2.4.17
 --------------------
 - Re-doing service_manager_upstart implementation
