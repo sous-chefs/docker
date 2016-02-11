@@ -17,13 +17,6 @@ verifier:
   name: inspec
 
 platforms:
-- name: centos-6.5
-  driver_config:
-    box: opscode-centos-6.5
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-6.5_chef-provisionerless.box
-  run_list:
-  - recipe[yum-docker]
-
 - name: centos-7.1
   driver_config:
     box: opscode-centos-7.1
@@ -151,7 +144,6 @@ suites:
 
 - name: installation_package-171
   includes: [
-    'centos-6.5',
     'ubuntu-12.04',
     'ubuntu-14.04',
     'ubuntu-15.04'
@@ -212,7 +204,6 @@ suites:
 ##################################
 - name: service-sysvinit
   includes: [
-    'centos-6.5',
     'ubuntu-12.04'
   ]
   run_list:
