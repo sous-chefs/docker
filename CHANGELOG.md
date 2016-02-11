@@ -1,3 +1,7 @@
+v2.4.20
+--------------------
+- Temporarily disabling validate_install_method
+
 v2.4.19
 --------------------
 - Adding docker_tag force property

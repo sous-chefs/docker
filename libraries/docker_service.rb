@@ -90,7 +90,7 @@ module DockerCookbook
     #########
 
     action :create do
-      validate_install_method
+      # validate_install_method
 
       installation do
         action :create
