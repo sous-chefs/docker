@@ -410,17 +410,3 @@ suites:
   ]
   run_list:
   - recipe[docker_test::auto]
-
-#################
-# misc test cases
-#################
-
-# - name: timeout
-#   includes: [
-#     'ubuntu-15.10'
-#   ]
-#   attributes:
-#     docker:
-#       version: '1.8.3'
-#   run_list:
-#   - recipe[docker_test::timeout]

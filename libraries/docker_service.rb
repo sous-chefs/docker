@@ -11,23 +11,29 @@ module DockerCookbook
     property :install_method, %w(binary script package none auto), default: 'auto', desired_state: false
     property :service_manager, %w(execute sysvinit upstart systemd auto), default: 'auto', desired_state: false
 
-    # docker_installation_binary
-    property :checksum, String, desired_state: false
-    property :docker_bin, String, desired_state: false
-    property :source, String, desired_state: false
-    property :version, String, desired_state: false
-
     # docker_installation_script
     property :repo, desired_state: false
     property :script_url, String, desired_state: false
 
+    # docker_installation_binary
+    property :checksum, String, desired_state: false
+    property :docker_bin, String, desired_state: false
+    property :source, String, desired_state: false
+
     # docker_installation_package
     property :package_version, String, desired_state: false
-    property :version, String, desired_state: false
+
+    # binary and package
+    property :version, String, coerce: proc { |v| coerce_version(v) }, desired_state: false
 
     ################
     # Helper Methods
     ################
+    def coerce_version(v)
+      if (v && (install_method != 'binary')) || (v && (install_method != 'package'))
+        raise Chef::Exceptions::ValidationFailed, 'Version property only supported for binary and package installation methods'
+      end
+    end
 
     def copy_properties_to(to, *properties)
       properties = self.class.properties.keys if properties.empty?
