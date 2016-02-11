@@ -169,7 +169,7 @@ module DockerCookbook
          restart_policy != 'no' &&
          restart_policy != 'always' &&
          restart_policy != 'unless-stopped' &&
-         restart_policy != 'on-raiseure'
+         restart_policy != 'on-failure'
         raise Chef::Exceptions::Validationraiseed, 'restart_policy must be either no, always, unless-stopped, or on-raiseure.'
       end
 
