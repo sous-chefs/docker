@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["Swipely, Inc."]
-  s.date = "2016-01-23"
+  s.date = "2016-02-11"
   s.description = "A simple REST client for the Docker Remote API"
   s.email = ["tomhulihan@swipely.com", "bright@swipely.com", "toddlunter@swipely.com"]
   s.homepage = "https://github.com/swipely/docker-api"
