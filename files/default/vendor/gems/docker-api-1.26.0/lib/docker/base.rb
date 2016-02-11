@@ -18,6 +18,7 @@ module Docker::Base
 
   # The docker-api will some time return "ID" other times it will return "Id"
   # and other times it will return "id". This method normalize it to "id"
+  # The volumes endpoint returns Name instead of ID, added in the normalize function
   def normalize_hash(hash)
     hash["id"] ||= hash.delete("ID") || hash.delete("Id")
   end

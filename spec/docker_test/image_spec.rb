@@ -186,7 +186,7 @@ describe 'docker_test::image' do
   end
 
   context 'testing pushing to a private registry' do
-    it 'tags docker_tag[private repo tag for name-w-dashes:v1.0.1]'do
+    it 'tags docker_tag[private repo tag for name-w-dashes:v1.0.1]' do
       expect(chef_run).to tag_docker_tag('private repo tag for name-w-dashes:v1.0.1').with(
         target_repo: 'hello-again',
         target_tag: 'v0.1.0',
@@ -195,7 +195,7 @@ describe 'docker_test::image' do
       )
     end
 
-    it 'tags docker_tag[private repo tag for name.w.dots]'do
+    it 'tags docker_tag[private repo tag for name.w.dots]' do
       expect(chef_run).to tag_docker_tag('private repo tag for name.w.dots').with(
         target_repo: 'busybox',
         target_tag: 'latest',

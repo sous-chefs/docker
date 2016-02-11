@@ -223,12 +223,10 @@ module Docker::Util
       credentials = JSON.parse(credentials, symbolize_names: true)
     end
     header = {
-      "configs" => {
-        credentials[:serveraddress].to_s => {
-          "username" => credentials[:username].to_s,
-          "password" => credentials[:password].to_s,
-          "email" => credentials[:email].to_s
-        }
+      credentials[:serveraddress].to_s => {
+        "username" => credentials[:username].to_s,
+        "password" => credentials[:password].to_s,
+        "email" => credentials[:email].to_s
       }
     }.to_json
 

@@ -1,3 +1,57 @@
+v2.4.17
+--------------------
+- Re-doing service_manager_upstart implementation
+- Using package native init config and utilizing /etc/default
+
+v2.4.16
+--------------------
+- Adding validation proc for docker_service.version to throw error
+  when specifying version with script installations
+
+v2.4.15
+--------------------
+- fixing raiseure -> failure typo in docker_container validation
+- Patching vendored docker-api-1.26.0
+- https://github.com/swipely/docker-api/issues/369
+
+v2.4.14
+--------------------
+- Updating .gitignore and re-adding vendored docker-api gem
+
+v2.4.13
+--------------------
+- stricter conditionals on container validation
+- updating vendored docker-api gem to 1.26.0
+- setting default Docker installation version to 1.9.1
+- updating inspec for service-execute
+- updating inspec for service-sysvinit
+- updating inspec for service-upstart
+- updating inspec for service-systemd
+- removing unused serverspec suites
+
+v2.4.12
+--------------------
+- Set default docker_container.exposed_port to empty Hash
+
+v2.4.11
+--------------------
+- Updating metadata to use compat_resource ~> 12.7.1
+
+v2.4.10
+--------------------
+- (re)adding host property to docker_network
+
+v2.4.9
+--------------------
+- using require_relative to load files
+- specifying resource_name instead of use_automatic_resource_name
+
+v2.4.8
+--------------------
+- removing duplicate :tls properties
+- removing instances of 'default: nil'
+- depending on 'compat_resource', '~> 12.5.26'
+
 v2.4.7
 --------------------
 - Using Gem::Version to handle semantic verisoning and be compatible for ≥ 1.10

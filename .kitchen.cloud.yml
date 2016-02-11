@@ -120,33 +120,43 @@ suites:
 # docker_installation_binary resource
 #####################################
 
-- name: installation_binary-171
-  includes: [
-    'ubuntu-15.10'
-  ]
-  attributes:
-    docker:
-      version: '1.7.1'
-  run_list:
-  - recipe[docker_test::installation_binary]
+# - name: installation_binary-171
+#   includes: [
+#     'ubuntu-15.10'
+#   ]
+#   attributes:
+#     docker:
+#       version: '1.7.1'
+#   run_list:
+#   - recipe[docker_test::installation_binary]
 
-- name: installation_binary-183
-  includes: [
-    'ubuntu-15.10'
-  ]
-  attributes:
-    docker:
-      version: '1.8.3'
-  run_list:
-  - recipe[docker_test::installation_binary]
+# - name: installation_binary-183
+#   includes: [
+#     'ubuntu-15.10'
+#   ]
+#   attributes:
+#     docker:
+#       version: '1.8.3'
+#   run_list:
+#   - recipe[docker_test::installation_binary]
 
-- name: installation_binary-190
+# - name: installation_binary-191
+#   includes: [
+#     'ubuntu-15.10'
+#   ]
+#   attributes:
+#     docker:
+#       version: '1.9.1'
+#   run_list:
+#   - recipe[docker_test::installation_binary]
+
+- name: installation_binary-1100
   includes: [
     'ubuntu-15.10'
   ]
   attributes:
     docker:
-      version: '1.9.0'
+      version: '1.10.0'
   run_list:
   - recipe[docker_test::installation_binary]
 
@@ -188,20 +198,35 @@ suites:
 # docker_installation_package resource
 ######################################
 
-- name: installation_package-171
-  includes: [
-    'centos-6.5',
-    'ubuntu-12.04',
-    'ubuntu-14.04',
-    'ubuntu-15.10'
-  ]
-  attributes:
-    docker:
-      version: '1.7.1'
-  run_list:
-  - recipe[docker_test::installation_package]
+# - name: installation_package-171
+#   includes: [
+#     'centos-6.5',
+#     'ubuntu-12.04',
+#     'ubuntu-14.04',
+#     'ubuntu-15.10'
+#   ]
+#   attributes:
+#     docker:
+#       version: '1.7.1'
+#   run_list:
+#   - recipe[docker_test::installation_package]
 
-- name: installation_package-183
+# - name: installation_package-183
+#   includes: [
+#     'centos-7.0',
+#     'debian-8.1',
+#     'fedora-21',
+#     'ubuntu-12.04',
+#     'ubuntu-14.04',
+#     'ubuntu-15.10'
+#   ]
+#   attributes:
+#     docker:
+#       version: '1.8.3'
+#   run_list:
+#   - recipe[docker_test::installation_package]
+
+- name: installation_package-191
   includes: [
     'centos-7.0',
     'debian-8.1',
@@ -212,22 +237,21 @@ suites:
   ]
   attributes:
     docker:
-      version: '1.8.3'
+      version: '1.9.1'
   run_list:
   - recipe[docker_test::installation_package]
 
-- name: installation_package-190
+- name: installation_package-1100
   includes: [
     'centos-7.0',
     'debian-8.1',
-    'fedora-21',
     'ubuntu-12.04',
     'ubuntu-14.04',
     'ubuntu-15.10'
   ]
   attributes:
     docker:
-      version: '1.9.0'
+      version: '1.10.0'
   run_list:
   - recipe[docker_test::installation_package]
 
@@ -236,11 +260,6 @@ suites:
 #################################
 - name: service-execute
   includes: [
-    'centos-7.0',
-    'fedora-21',
-    'debian-8.1',
-    'ubuntu-12.04',
-    'ubuntu-14.04',
     'ubuntu-15.10',
   ]
   run_list:
@@ -248,11 +267,6 @@ suites:
 
 - name: service-execute-multi
   includes: [
-    'centos-7.0',
-    'fedora-21',
-    'debian-8.1',
-    'ubuntu-12.04',
-    'ubuntu-14.04',
     'ubuntu-15.10',
   ]
   run_list:
@@ -321,30 +335,30 @@ suites:
 # bulk resource testing
 #######################
 
-- name: resources-171
-  includes: [
-    'ubuntu-15.10',
-  ]
-  attributes:
-    docker:
-      version: '1.7.1'
-      service_manager: system
-  run_list:
-  - recipe[docker_test::default]
-  - recipe[docker_test::image]
-  - recipe[docker_test::container]
+# - name: resources-171
+#   includes: [
+#     'ubuntu-15.10',
+#   ]
+#   attributes:
+#     docker:
+#       version: '1.7.1'
+#       service_manager: system
+#   run_list:
+#   - recipe[docker_test::default]
+#   - recipe[docker_test::image]
+#   - recipe[docker_test::container]
 
-- name: resources-183
-  includes: [
-    'ubuntu-15.10'
-  ]
-  attributes:
-    docker:
-      version: '1.8.3'
-  run_list:
-  - recipe[docker_test::default]
-  - recipe[docker_test::image]
-  - recipe[docker_test::container]
+# - name: resources-183
+#   includes: [
+#     'ubuntu-15.10'
+#   ]
+#   attributes:
+#     docker:
+#       version: '1.8.3'
+#   run_list:
+#   - recipe[docker_test::default]
+#   - recipe[docker_test::image]
+#   - recipe[docker_test::container]
 
 - name: resources-191
   includes: [
@@ -358,13 +372,25 @@ suites:
   - recipe[docker_test::image]
   - recipe[docker_test::container]
 
+- name: resources-1100
+  includes: [
+    'ubuntu-15.10'
+  ]
+  attributes:
+    docker:
+      version: '1.10.0'
+  run_list:
+  - recipe[docker_test::default]
+  - recipe[docker_test::image]
+  - recipe[docker_test::container]
+
 - name: network
   includes: [
     'ubuntu-15.10'
   ]
   attributes:
     docker:
-      version: '1.9.1'
+      version: '1.10.0'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::network]
@@ -384,27 +410,3 @@ suites:
   ]
   run_list:
   - recipe[docker_test::auto]
-
-#################
-# misc test cases
-#################
-
-- name: notifications
-  includes: [
-    'ubuntu-15.10'
-  ]
-  attributes:
-    docker:
-      version: '1.8.3'
-  run_list:
-  - recipe[docker_test::notifications]
-
-# - name: timeout
-#   includes: [
-#     'ubuntu-15.10'
-#   ]
-#   attributes:
-#     docker:
-#       version: '1.8.3'
-#   run_list:
-#   - recipe[docker_test::timeout]

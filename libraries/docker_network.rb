@@ -1,9 +1,9 @@
 module DockerCookbook
   class DockerNetwork < DockerBase
     require 'docker'
-    require 'helpers_network'
+    require_relative 'helpers_network'
 
-    use_automatic_resource_name
+    resource_name :docker_network
 
     property :network_name, String, name_property: true
     property :host, [String, nil], default: lazy { default_host }
@@ -40,7 +40,7 @@ module DockerCookbook
           options['Driver'] = driver if driver
           options['Options'] = driver_opts if driver_opts
           ipam_options = consolidate_ipam(subnet, ip_range, gateway, aux_address)
-          options['IPAM'] = { 'Config' => ipam_options } if ipam_options.size > 0
+          options['IPAM'] = { 'Config' => ipam_options } unless ipam_options.empty?
           options['IPAM']['Driver'] = ipam_driver if ipam_driver
           Docker::Network.create(network_name, options)
         end

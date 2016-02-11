@@ -48,7 +48,7 @@ class Docker::Network
       resp = conn.post('/networks/create', {},
                        body: default_opts.merge(opts).to_json)
       response_hash = Docker::Util.parse_json(resp) || {}
-      get(response_hash['Id']) || {}
+      get(response_hash['Id'], {}, conn) || {}
     end
 
     def get(id, opts = {}, conn = Docker.connection)

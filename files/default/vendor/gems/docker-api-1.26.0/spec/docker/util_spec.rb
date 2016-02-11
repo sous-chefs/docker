@@ -122,12 +122,10 @@ describe Docker::Util do
 
     let(:credentials_object) {
       {
-        :configs => {
-          :'https://registry.com/' => {
-            :username => 'test',
-            :password => 'password',
-            :email    => 'test@example.com',
-          }
+        :'https://registry.com/' => {
+          :username => 'test',
+          :password => 'password',
+          :email    => 'test@example.com',
         }
       }.to_json
     }

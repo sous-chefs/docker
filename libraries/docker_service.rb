@@ -1,7 +1,8 @@
 module DockerCookbook
-  require 'docker_service_base'
+  require_relative 'docker_service_base'
+
   class DockerService < DockerServiceBase
-    use_automatic_resource_name
+    resource_name :docker_service
 
     # register with the resource resolution system
     provides :docker_service
@@ -10,23 +11,29 @@ module DockerCookbook
     property :install_method, %w(binary script package none auto), default: 'auto', desired_state: false
     property :service_manager, %w(execute sysvinit upstart systemd auto), default: 'auto', desired_state: false
 
-    # docker_installation_binary
-    property :checksum, String, desired_state: false
-    property :docker_bin, String, desired_state: false
-    property :source, String, desired_state: false
-    property :version, String, desired_state: false
-
     # docker_installation_script
     property :repo, desired_state: false
     property :script_url, String, desired_state: false
 
+    # docker_installation_binary
+    property :checksum, String, desired_state: false
+    property :docker_bin, String, desired_state: false
+    property :source, String, desired_state: false
+
     # docker_installation_package
     property :package_version, String, desired_state: false
-    property :version, String, desired_state: false
+
+    # binary and package
+    property :version, String, coerce: proc { |v| coerce_version(v) }, desired_state: false
 
     ################
     # Helper Methods
     ################
+    def coerce_version(v)
+      if (v && (install_method != 'binary')) || (v && (install_method != 'package'))
+        raise Chef::Exceptions::ValidationFailed, 'Version property only supported for binary and package installation methods'
+      end
+    end
 
     def copy_properties_to(to, *properties)
       properties = self.class.properties.keys if properties.empty?

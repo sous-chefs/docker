@@ -1,9 +1,9 @@
 module DockerCookbook
   class DockerRegistry < DockerBase
     require 'docker'
-    require 'helpers_auth'
+    require_relative 'helpers_auth'
 
-    use_automatic_resource_name
+    resource_name :docker_registry
 
     property :email, [String, nil]
     property :password, [String, nil]

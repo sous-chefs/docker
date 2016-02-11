@@ -2,11 +2,11 @@ module DockerCookbook
   class DockerContainer < DockerBase
     require 'docker'
     require 'shellwords'
-    require 'helpers_container'
+    require_relative 'helpers_container'
 
     include DockerHelpers::Container
 
-    use_automatic_resource_name
+    resource_name :docker_container
 
     ###########################################################
     # In Chef 12.5 and later, we no longer have to use separate
@@ -36,8 +36,8 @@ module DockerCookbook
     property :attach_stdin, Boolean, default: false, desired_state: false
     property :attach_stdout, Boolean, default: false, desired_state: false
     property :autoremove, Boolean, desired_state: false
-    property :cap_add, NonEmptyArray, default: nil
-    property :cap_drop, NonEmptyArray, default: nil
+    property :cap_add, NonEmptyArray
+    property :cap_drop, NonEmptyArray
     property :cgroup_parent, String, default: ''
     property :cpu_shares, [Fixnum, nil], default: 0
     property :cpuset_cpus, String, default: ''
@@ -46,25 +46,25 @@ module DockerCookbook
     property :dns, Array, default: []
     property :dns_search, Array, default: []
     property :domain_name, String, default: ''
-    property :entrypoint, ShellCommand, default: nil
+    property :entrypoint, ShellCommand
     property :env, UnorderedArrayType, default: []
-    property :extra_hosts, NonEmptyArray, default: nil
-    property :exposed_ports, PartialHashType
+    property :extra_hosts, NonEmptyArray
+    property :exposed_ports, PartialHashType, default: {}
     property :force, Boolean, desired_state: false
-    property :host, [String], default: lazy { default_host }, desired_state: false
+    property :host, [String, nil], default: lazy { default_host }, desired_state: false
     property :hostname, String
     property :ipc_mode, String, default: ''
     property :labels, [String, Array, Hash], default: {}, coerce: proc { |v| coerce_labels(v) }
-    property :links, UnorderedArrayType, default: nil, coerce: proc { |v| coerce_links(v) }
+    property :links, UnorderedArrayType, coerce: proc { |v| coerce_links(v) }
     property :log_driver, %w( json-file syslog journald gelf fluentd none ), default: 'json-file'
     property :log_opts, [Hash, nil], coerce: proc { |v| coerce_log_opts(v) }
     property :mac_address, String
     property :memory, Fixnum, default: 0
     property :memory_swap, Fixnum, default: 0
     property :network_disabled, Boolean, default: false
-    property :network_mode, [String, nil], default: lazy { default_network_mode }
+    property :network_mode, [String, NilClass], default: lazy { default_network_mode }
     property :open_stdin, Boolean, default: false, desired_state: false
-    property :outfile, [String, nil], default: nil
+    property :outfile, [String, NilClass]
     property :port_bindings, PartialHashType, default: {}
     property :pid_mode, String, default: ''
     property :privileged, Boolean, default: false
@@ -72,16 +72,16 @@ module DockerCookbook
     property :remove_volumes, Boolean
     property :restart_maximum_retry_count, Fixnum, default: 0
     property :restart_policy, String, default: 'no'
-    property :security_opts, [String, ArrayType], default: nil
+    property :security_opts, [String, ArrayType]
     property :signal, String, default: 'SIGTERM'
     property :stdin_once, Boolean, default: false, desired_state: false
     property :timeout, [Fixnum, nil], desired_state: false
     property :tty, Boolean, default: false
-    property :ulimits, [Array, nil], default: nil, coerce: proc { |v| coerce_ulimits(v) }
+    property :ulimits, [Array, nil], coerce: proc { |v| coerce_ulimits(v) }
     property :user, String, default: ''
     property :volumes, PartialHashType, default: {}, coerce: proc { |v| coerce_volumes(v) }
-    property :volumes_from, ArrayType, default: nil
-    property :working_dir, [String, nil], default: ''
+    property :volumes_from, ArrayType
+    property :working_dir, [String, NilClass], default: ''
 
     # Used to store the bind property since binds is an alias to volumes
     property :volumes_binds, Array, desired_state: false
@@ -170,11 +170,11 @@ module DockerCookbook
          restart_policy != 'always' &&
          restart_policy != 'unless-stopped' &&
          restart_policy != 'on-failure'
-        fail Chef::Exceptions::ValidationFailed, 'restart_policy must be either no, always, unless-stopped, or on-failure.'
+        raise Chef::Exceptions::Validationraiseed, 'restart_policy must be either no, always, unless-stopped, or on-raiseure.'
       end
 
       if autoremove == true && (property_is_set?(:restart_policy) && restart_policy != 'no')
-        fail Chef::Exceptions::ValidationFailed, 'Conflicting options restart_policy and autoremove.'
+        raise Chef::Exceptions::Validationraiseed, 'Conflicting options restart_policy and autoremove.'
       end
 
       if detach == true &&
@@ -184,33 +184,33 @@ module DockerCookbook
           attach_stdout == true ||
           stdin_once == true
          )
-        fail Chef::Exceptions::ValidationFailed, 'Conflicting options detach, attach_stderr, attach_stdin, attach_stdout, stdin_once.'
+        raise Chef::Exceptions::Validationraiseed, 'Conflicting options detach, attach_stderr, attach_stdin, attach_stdout, stdin_once.'
       end
 
       if network_mode == 'host' &&
          (
-          property_is_set?(:hostname) ||
-          property_is_set?(:dns) ||
-          property_is_set?(:dns_search) ||
-          property_is_set?(:mac_address) ||
-          property_is_set?(:extra_hosts)
+          !(hostname.nil? || hostname.empty?) ||
+          !(dns.nil? || dns.empty?) ||
+          !(dns_search.nil? || dns_search.empty?) ||
+          !(mac_address.nil? || mac_address.empty?) ||
+          !(extra_hosts.nil? || extra_hosts.empty?)
          )
-        fail Chef::Exceptions::ValidationFailed, 'Cannot specify hostname, dns, dns_search, mac_address, or extra_hosts when network_mode is host.'
+        raise Chef::Exceptions::Validationraiseed, 'Cannot specify hostname, dns, dns_search, mac_address, or extra_hosts when network_mode is host.'
       end
 
       if network_mode == 'container' &&
          (
-          property_is_set?(:hostname) ||
-          property_is_set?(:dns) ||
-          property_is_set?(:dns_search) ||
-          property_is_set?(:mac_address) ||
-          property_is_set?(:extra_hosts) ||
-          property_is_set?(:exposed_ports) ||
-          property_is_set?(:port_bindings) ||
-          property_is_set?(:publish_all_ports) ||
+          !(hostname.nil? || hostname.empty?) ||
+          !(dns.nil? || dns.empty?) ||
+          !(dns_search.nil? || dns_search.empty?) ||
+          !(mac_address.nil? || mac_address.empty?) ||
+          !(extra_hosts.nil? || extra_hosts.empty?) ||
+          !(exposed_ports.nil? || exposed_ports.empty?) ||
+          !(port_bindings.nil? || port_bindings.empty?) ||
+          !(publish_all_ports.nil? || publish_all_ports.empty?) ||
           !port.nil?
          )
-        fail Chef::Exceptions::ValidationFailed, 'Cannot specify hostname, dns, dns_search, mac_address, extra_hosts, exposed_ports, port_bindings, publish_all_ports, port when network_mode is container.'
+        raise Chef::Exceptions::Validationraiseed, 'Cannot specify hostname, dns, dns_search, mac_address, extra_hosts, exposed_ports, port_bindings, publish_all_ports, port when network_mode is container.'
       end
     end
 
@@ -300,7 +300,7 @@ module DockerCookbook
         begin
           with_retries { container.stop!('timeout' => kill_after) }
         rescue Docker::Error::TimeoutError
-          raise Docker::Error::TimeoutError, "Container failed to stop, consider adding kill_after to the container #{container_name}"
+          raise Docker::Error::TimeoutError, "Container raiseed to stop, consider adding kill_after to the container #{container_name}"
         end
         wait_running_state(false)
       end
@@ -387,7 +387,7 @@ module DockerCookbook
     end
 
     action :export do
-      fail "Please set outfile property on #{container_name}" if outfile.nil?
+      raise "Please set outfile property on #{container_name}" if outfile.nil?
       converge_by "exporting #{container_name}" do
         with_retries do
           ::File.open(outfile, 'w') { |f| container.export { |chunk| f.write(chunk) } }
