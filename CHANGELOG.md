@@ -1,3 +1,7 @@
+v2.4.14
+--------------------
+- Updating .gitignore and re-adding vendored docker-api gem
+
 v2.4.13
 --------------------
 - stricter conditionals on container validation
