@@ -1,3 +1,9 @@
+v2.4.15
+--------------------
+- fixing raiseure -> failure typo in docker_container validation
+- Patching vendored docker-api-1.26.0
+- https://github.com/swipely/docker-api/issues/369
+
 v2.4.14
 --------------------
 - Updating .gitignore and re-adding vendored docker-api gem
