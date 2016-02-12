@@ -22,7 +22,5 @@ script:
   - /opt/chefdk/embedded/bin/chef --version
   - /opt/chefdk/embedded/bin/rubocop --version
   - /opt/chefdk/embedded/bin/rubocop
-  - /opt/chefdk/embedded/bin/foodcritic --version
-  - /opt/chefdk/embedded/bin/foodcritic -f any . --exclude spec
   - /opt/chefdk/embedded/bin/bundle install
   - /opt/chefdk/embedded/bin/bundle exec rspec spec
