@@ -1,3 +1,11 @@
+v2.4.21
+--------------------
+- Revamped sysvinit resources to use package native scripts.
+- Using /etc/sysconfig on rhel and /etc/default on Debian
+- Ubuntu 12.04 now uses Upstart
+- Debian Wheezy support
+- Fixed install_method validation
+
 v2.4.20
 --------------------
 - Temporarily disabling validate_install_method
