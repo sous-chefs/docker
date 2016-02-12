@@ -1,3 +1,8 @@
+v2.4.24
+--------------------
+- Avoiding restart loops in chef-client 12.4.3
+- Using delayed notifications for service restarts
+
 v2.4.23
 --------------------
 - Getting rid of Chef 13 deprecation warning
