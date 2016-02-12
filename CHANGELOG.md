@@ -1,3 +1,8 @@
+v2.4.23
+--------------------
+- Getting rid of Chef 13 deprecation warning
+- returning nil in default_tls_cert_path
+
 v2.4.22
 --------------------
 - Revamped systemd resources to use package native unit files
