@@ -189,16 +189,14 @@ suites:
 ##################################
 - name: service-sysvinit
   includes: [
-    'debian-7.9',
-    'centos-6.5'
+    'debian-7.9'
   ]
   run_list:
   - recipe[docker_test::service_sysvinit]
 
 - name: service-sysvinit-multi
   includes: [
-    'debian-7.9',
-    'centos-6.5'
+    'debian-7.9'
   ]
   run_list:
   - recipe[docker_test::service_sysvinit_multi]
