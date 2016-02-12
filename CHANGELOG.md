@@ -1,6 +1,11 @@
+v2.4.22
+--------------------
+- Revamped systemd resources to use package native unit files
+- Using /etc/systemd/system to override settings
+
 v2.4.21
 --------------------
-- Revamped sysvinit resources to use package native scripts.
+- Revamped sysvinit resources to use package native scripts.a
 - Using /etc/sysconfig on rhel and /etc/default on Debian
 - Ubuntu 12.04 now uses Upstart
 - Debian Wheezy support
