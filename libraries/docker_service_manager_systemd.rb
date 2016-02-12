@@ -18,9 +18,13 @@ module DockerCookbook
 
     property :service_timeout, Integer, default: 20
 
+    def libexec_dir
+      return '/usr/libexec/docker' if node['platform_family'] == 'rhel'
+      '/usr/lib/docker'
+    end
+
     action :start do
-      # Needed for Debian / Ubuntu
-      directory '/usr/libexec' do
+      directory libexec_dir do
         owner 'root'
         group 'root'
         mode '0755'
@@ -29,38 +33,75 @@ module DockerCookbook
 
       # this script is called by the main systemd unit file, and
       # spins around until the service is actually up and running.
-      template "/usr/libexec/#{docker_name}-wait-ready" do
+      template "#{libexec_dir}/#{docker_name}-wait-ready" do
         source 'systemd/docker-wait-ready.erb'
         owner 'root'
         group 'root'
         mode '0755'
         variables(
           docker_cmd: docker_cmd,
+          libexec_dir: libexec_dir,
           service_timeout: service_timeout
         )
         cookbook 'docker'
         action :create
       end
 
-      # this is the main systemd unit file
+      # stock systemd unit file
       template "/lib/systemd/system/#{docker_name}.service" do
         source 'systemd/docker.service.erb'
         owner 'root'
         group 'root'
         mode '0644'
+        variables(docker_name: docker_name)
+        cookbook 'docker'
+        action :create
+        not_if { docker_name == 'default' && ::File.exist?('/lib/systemd/system/docker.service') }
+      end
+
+      # stock systemd socket file
+      template "/lib/systemd/system/#{docker_name}.socket" do
+        source 'systemd/docker.socket.erb'
+        owner 'root'
+        group 'root'
+        mode '0644'
+        variables(docker_name: docker_name)
+        cookbook 'docker'
+        action :create
+        not_if { docker_name == 'default' && ::File.exist?('/lib/systemd/system/docker.socket') }
+      end
+
+      # this overrides the main systemd unit file
+      template "/etc/systemd/system/#{docker_name}.service" do
+        source 'systemd/docker.service-override.erb'
+        owner 'root'
+        group 'root'
+        mode '0644'
         variables(
           config: new_resource,
+          docker_daemon_cmd: docker_daemon_cmd,
           docker_name: docker_name,
-          docker_daemon_cmd: docker_daemon_cmd
+          libexec_dir: libexec_dir
         )
         cookbook 'docker'
         notifies :run, 'execute[systemctl daemon-reload]', :immediately
-        notifies :restart, new_resource unless ::File.exist? "/etc/#{docker_name}-firstconverge"
-        notifies :restart, new_resource if auto_restart
+        notifies :restart, new_resource
         action :create
       end
 
-      file "/etc/#{docker_name}-firstconverge" do
+      # this overrides the main systemd socket
+      template "/etc/systemd/system/#{docker_name}.socket" do
+        source 'systemd/docker.socket-override.erb'
+        owner 'root'
+        group 'root'
+        mode '0644'
+        variables(
+          config: new_resource,
+          docker_name: docker_name
+        )
+        cookbook 'docker'
+        notifies :run, 'execute[systemctl daemon-reload]', :immediately
+        notifies :restart, new_resource
         action :create
       end
 
@@ -68,17 +109,6 @@ module DockerCookbook
       execute 'systemctl daemon-reload' do
         command '/bin/systemctl daemon-reload'
         action :nothing
-      end
-
-      # tmpfiles.d config so the service survives reboot
-      template "/usr/lib/tmpfiles.d/#{docker_name}.conf" do
-        source 'systemd/tmpfiles.d.conf.erb'
-        owner 'root'
-        group 'root'
-        mode '0644'
-        variables(config: new_resource)
-        cookbook 'docker'
-        action :create
       end
 
       # service management resource

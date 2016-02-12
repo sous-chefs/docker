@@ -92,7 +92,7 @@ suites:
 
 - name: installation_binary-1100
   includes: [
-    'ubuntu-15.10'
+    'ubuntu-15.04'
   ]
   attributes:
     docker:
@@ -106,7 +106,7 @@ suites:
 
 - name: installation_script_main
   includes: [
-    'ubuntu-15.10',
+    'ubuntu-15.04',
   ]
   attributes:
     docker:
@@ -116,7 +116,7 @@ suites:
 
 - name: installation_script_test
   includes: [
-    'ubuntu-15.10',
+    'ubuntu-15.04',
   ]
   attributes:
     docker:
@@ -126,7 +126,7 @@ suites:
 
 - name: installation_script_experimental
   includes: [
-    'ubuntu-15.10',
+    'ubuntu-15.04',
   ]
   attributes:
     docker:
@@ -145,7 +145,7 @@ suites:
     'fedora-21',
     'ubuntu-12.04',
     'ubuntu-14.04',
-    'ubuntu-15.10'
+    'ubuntu-15.04'
   ]
   attributes:
     docker:
@@ -159,7 +159,7 @@ suites:
     'debian-8.1',
     'ubuntu-12.04',
     'ubuntu-14.04',
-    'ubuntu-15.10'
+    'ubuntu-15.04'
   ]
   attributes:
     docker:
@@ -172,14 +172,14 @@ suites:
 #################################
 - name: service-execute
   includes: [
-    'ubuntu-15.10',
+    'ubuntu-15.04',
   ]
   run_list:
   - recipe[docker_test::service_execute]
 
 - name: service-execute-multi
   includes: [
-    'ubuntu-15.10',
+    'ubuntu-15.04',
   ]
   run_list:
   - recipe[docker_test::service_execute_multi]
@@ -230,7 +230,7 @@ suites:
     'centos-7.0',
     'fedora-21',
     'debian-8.1',
-    'ubuntu-15.10'
+    'ubuntu-15.04'
   ]
   run_list:
   - recipe[docker_test::service_systemd]
@@ -240,7 +240,7 @@ suites:
     'centos-7.0',
     'fedora-21',
     'debian-8.1',
-    'ubuntu-15.10'
+    'ubuntu-15.04'
   ]
   run_list:
   - recipe[docker_test::service_systemd_multi]
@@ -251,7 +251,7 @@ suites:
 
 - name: resources-191
   includes: [
-    'ubuntu-15.10'
+    'ubuntu-15.04'
   ]
   attributes:
     docker:
@@ -263,7 +263,7 @@ suites:
 
 - name: resources-1100
   includes: [
-    'ubuntu-15.10'
+    'ubuntu-15.04'
   ]
   attributes:
     docker:
@@ -275,7 +275,7 @@ suites:
 
 - name: network
   includes: [
-    'ubuntu-15.10'
+    'ubuntu-15.04'
   ]
   attributes:
     docker:
@@ -295,7 +295,7 @@ suites:
     'debian-8.1',
     'ubuntu-12.04',
     'ubuntu-14.04',
-    'ubuntu-15.10'
+    'ubuntu-15.04'
   ]
   run_list:
   - recipe[docker_test::auto]

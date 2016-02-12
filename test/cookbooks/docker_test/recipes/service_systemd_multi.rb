@@ -18,7 +18,7 @@ docker_container 'service default echo server' do
   container_name 'an_echo_server'
   repo 'busybox'
   command 'nc -ll -p 7 -e /bin/cat'
-  port '7:7'
+  port '7'
   action :run
 end
 
@@ -57,7 +57,7 @@ docker_container 'service two echo_server' do
   repo 'alpine'
   tag '3.1'
   command 'nc -ll -p 7 -e /bin/cat'
-  port '7:7'
+  port '7'
   host 'unix:///var/run/docker-two.sock'
   action :run
 end
