@@ -31,7 +31,7 @@ module DockerCookbook
     ################
     def validate_install_method
       if property_is_set?(:version) &&
-         install_method != 'binary' ||
+         install_method != 'binary' &&
          install_method != 'package'
         raise Chef::Exceptions::ValidationFailed, 'Version property only supported for binary and package installation methods'
       end
@@ -90,7 +90,7 @@ module DockerCookbook
     #########
 
     action :create do
-      # validate_install_method
+      validate_install_method
 
       installation do
         action :create
