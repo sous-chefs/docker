@@ -86,7 +86,7 @@ module DockerCookbook
       end
 
       def default_tls_cert_path(v)
-        return false unless ENV['DOCKER_CERT_PATH']
+        return nil unless ENV['DOCKER_CERT_PATH']
         case v
         when 'ca'
           "#{ENV['DOCKER_CERT_PATH']}/ca.pem"
