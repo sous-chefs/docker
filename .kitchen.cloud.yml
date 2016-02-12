@@ -120,36 +120,6 @@ suites:
 # docker_installation_binary resource
 #####################################
 
-# - name: installation_binary-171
-#   includes: [
-#     'ubuntu-15.10'
-#   ]
-#   attributes:
-#     docker:
-#       version: '1.7.1'
-#   run_list:
-#   - recipe[docker_test::installation_binary]
-
-# - name: installation_binary-183
-#   includes: [
-#     'ubuntu-15.10'
-#   ]
-#   attributes:
-#     docker:
-#       version: '1.8.3'
-#   run_list:
-#   - recipe[docker_test::installation_binary]
-
-# - name: installation_binary-191
-#   includes: [
-#     'ubuntu-15.10'
-#   ]
-#   attributes:
-#     docker:
-#       version: '1.9.1'
-#   run_list:
-#   - recipe[docker_test::installation_binary]
-
 - name: installation_binary-1100
   includes: [
     'ubuntu-15.10'
@@ -197,34 +167,6 @@ suites:
 ######################################
 # docker_installation_package resource
 ######################################
-
-# - name: installation_package-171
-#   includes: [
-#     'centos-6.5',
-#     'ubuntu-12.04',
-#     'ubuntu-14.04',
-#     'ubuntu-15.10'
-#   ]
-#   attributes:
-#     docker:
-#       version: '1.7.1'
-#   run_list:
-#   - recipe[docker_test::installation_package]
-
-# - name: installation_package-183
-#   includes: [
-#     'centos-7.0',
-#     'debian-8.1',
-#     'fedora-21',
-#     'ubuntu-12.04',
-#     'ubuntu-14.04',
-#     'ubuntu-15.10'
-#   ]
-#   attributes:
-#     docker:
-#       version: '1.8.3'
-#   run_list:
-#   - recipe[docker_test::installation_package]
 
 - name: installation_package-191
   includes: [
@@ -277,16 +219,14 @@ suites:
 ##################################
 - name: service-sysvinit
   includes: [
-    'centos-6.5',
-    'ubuntu-12.04'
+    'centos-6.5'
   ]
   run_list:
   - recipe[docker_test::service_sysvinit]
 
 - name: service-sysvinit-multi
   includes: [
-    'centos-6.5',
-    'ubuntu-12.04'
+    'centos-6.5'
   ]
   run_list:
   - recipe[docker_test::service_sysvinit_multi]
@@ -296,6 +236,7 @@ suites:
 #################################
 - name: service-upstart
   includes: [
+    'ubuntu-12.04',
     'ubuntu-14.04'
   ]
   run_list:
@@ -303,6 +244,7 @@ suites:
 
 - name: service-upstart-multi
   includes: [
+    'ubuntu-12.04',
     'ubuntu-14.04'
   ]
   run_list:
@@ -334,31 +276,6 @@ suites:
 #######################
 # bulk resource testing
 #######################
-
-# - name: resources-171
-#   includes: [
-#     'ubuntu-15.10',
-#   ]
-#   attributes:
-#     docker:
-#       version: '1.7.1'
-#       service_manager: system
-#   run_list:
-#   - recipe[docker_test::default]
-#   - recipe[docker_test::image]
-#   - recipe[docker_test::container]
-
-# - name: resources-183
-#   includes: [
-#     'ubuntu-15.10'
-#   ]
-#   attributes:
-#     docker:
-#       version: '1.8.3'
-#   run_list:
-#   - recipe[docker_test::default]
-#   - recipe[docker_test::image]
-#   - recipe[docker_test::container]
 
 - name: resources-191
   includes: [

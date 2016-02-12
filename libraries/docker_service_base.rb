@@ -68,18 +68,13 @@ module DockerCookbook
     # logging
     property :logfile, String, default: '/var/log/docker.log'
 
+    allowed_actions :start, :stop, :restart
+
     alias label labels
     alias tlscacert tls_ca_cert
     alias tlscert tls_server_cert
     alias tlskey tls_server_key
     alias tlsverify tls_verify
-  end
-end
-
-# Declare a module for subresoures' providers to sit in (backcompat)
-class Chef
-  class Provider
-    module DockerServiceBase
-    end
+    alias run_group group
   end
 end

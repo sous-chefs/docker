@@ -16,6 +16,11 @@ module DockerCookbook
         false
       end
 
+      def wheezy?
+        return true if node['platform'] == 'debian' && node['platform_version'].to_i == 7
+        false
+      end
+
       def jesse?
         return true if node['platform'] == 'debian' && node['platform_version'].to_i == 8
         false
@@ -52,6 +57,7 @@ module DockerCookbook
         return "#{v}-1.el7.centos" if el7?
         return "#{v}-1.el6" if amazon?
         return "#{v}-1.fc21" if fc21?
+        return "#{v}-0~wheezy" if wheezy?
         return "#{v}-0~jessie" if jesse?
         return "#{v}-0~precise" if precise?
         return "#{v}-0~trusty" if trusty?

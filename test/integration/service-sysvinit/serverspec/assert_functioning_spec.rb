@@ -25,7 +25,3 @@ end
 describe kernel_parameter('net.ipv4.ip_forward') do
   its(:value) { should eq 1 }
 end
-
-describe kernel_parameter('net.ipv6.conf.all.forwarding') do
-  its(:value) { should eq 1 }
-end

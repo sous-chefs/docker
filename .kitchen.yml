@@ -38,6 +38,14 @@ platforms:
   run_list:
   - recipe[yum-docker]
 
+- name: debian-7.9
+  driver_config:
+    box: opscode-debian-7.9
+    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_debian-7.9_chef-provisionerless.box
+  run_list:
+  - recipe[apt]
+  - recipe[apt-docker]
+
 - name: debian-8.1
   driver_config:
     box: opscode-debian-8.1
@@ -76,38 +84,19 @@ platforms:
   - recipe[apt]
   - recipe[apt-docker]
 
+
 suites:
 #####################################
 # docker_installation_binary resource
 #####################################
 
-- name: installation_binary-171
+- name: installation_binary-1100
   includes: [
-    'ubuntu-15.04'
+    'ubuntu-15.10'
   ]
   attributes:
     docker:
-      version: '1.7.1'
-  run_list:
-  - recipe[docker_test::installation_binary]
-
-- name: installation_binary-183
-  includes: [
-    'ubuntu-15.04'
-  ]
-  attributes:
-    docker:
-      version: '1.8.3'
-  run_list:
-  - recipe[docker_test::installation_binary]
-
-- name: installation_binary-191
-  includes: [
-    'ubuntu-15.04'
-  ]
-  attributes:
-    docker:
-      version: '1.9.1'
+      version: '1.10.0'
   run_list:
   - recipe[docker_test::installation_binary]
 
@@ -117,7 +106,7 @@ suites:
 
 - name: installation_script_main
   includes: [
-    'ubuntu-15.04',
+    'ubuntu-15.10',
   ]
   attributes:
     docker:
@@ -127,7 +116,7 @@ suites:
 
 - name: installation_script_test
   includes: [
-    'ubuntu-15.04',
+    'ubuntu-15.10',
   ]
   attributes:
     docker:
@@ -137,7 +126,7 @@ suites:
 
 - name: installation_script_experimental
   includes: [
-    'ubuntu-15.04',
+    'ubuntu-15.10',
   ]
   attributes:
     docker:
@@ -149,46 +138,32 @@ suites:
 # docker_installation_package resource
 ######################################
 
-- name: installation_package-171
-  includes: [
-    'centos-6.5',
-    'ubuntu-12.04',
-    'ubuntu-14.04',
-    'ubuntu-15.04'
-  ]
-  attributes:
-    docker:
-      version: '1.7.1'
-  run_list:
-  - recipe[docker_test::installation_package]
-
-- name: installation_package-183
-  includes: [
-    'centos-7.1',
-    'debian-8.1',
-    'fedora-21',
-    'ubuntu-12.04',
-    'ubuntu-14.04',
-    'ubuntu-15.04'
-  ]
-  attributes:
-    docker:
-      version: '1.8.3'
-  run_list:
-  - recipe[docker_test::installation_package]
-
 - name: installation_package-191
   includes: [
-    'centos-7.1',
+    'centos-7.0',
     'debian-8.1',
     'fedora-21',
     'ubuntu-12.04',
     'ubuntu-14.04',
-    'ubuntu-15.04'
+    'ubuntu-15.10'
   ]
   attributes:
     docker:
       version: '1.9.1'
+  run_list:
+  - recipe[docker_test::installation_package]
+
+- name: installation_package-1100
+  includes: [
+    'centos-7.0',
+    'debian-8.1',
+    'ubuntu-12.04',
+    'ubuntu-14.04',
+    'ubuntu-15.10'
+  ]
+  attributes:
+    docker:
+      version: '1.10.0'
   run_list:
   - recipe[docker_test::installation_package]
 
@@ -197,93 +172,102 @@ suites:
 #################################
 - name: service-execute
   includes: [
-    'centos-7.1',
-    'fedora-21',
-    'debian-8.1',
-    'ubuntu-12.04',
-    'ubuntu-14.04',
-    'ubuntu-15.04',
+    'ubuntu-15.10',
   ]
   run_list:
   - recipe[docker_test::service_execute]
+
+- name: service-execute-multi
+  includes: [
+    'ubuntu-15.10',
+  ]
+  run_list:
+  - recipe[docker_test::service_execute_multi]
 
 ##################################
 # docker_service_sysvinit resource
 ##################################
 - name: service-sysvinit
   includes: [
-    'centos-6.5',
-    'ubuntu-12.04'
+    'debian-7.9',
+    'centos-6.5'
   ]
   run_list:
   - recipe[docker_test::service_sysvinit]
+
+- name: service-sysvinit-multi
+  includes: [
+    'debian-7.9',
+    'centos-6.5'
+  ]
+  run_list:
+  - recipe[docker_test::service_sysvinit_multi]
 
 #################################
 # docker_service_upstart resource
 #################################
 - name: service-upstart
   includes: [
+    'ubuntu-12.04',
     'ubuntu-14.04'
   ]
   run_list:
   - recipe[docker_test::service_upstart]
+
+- name: service-upstart-multi
+  includes: [
+    'ubuntu-12.04',
+    'ubuntu-14.04'
+  ]
+  run_list:
+  - recipe[docker_test::service_upstart_multi]
 
 #################################
 # docker_service_systemd resource
 #################################
 - name: service-systemd
   includes: [
-    'centos-7.1',
+    'centos-7.0',
     'fedora-21',
     'debian-8.1',
-    'ubuntu-15.04'
+    'ubuntu-15.10'
   ]
   run_list:
   - recipe[docker_test::service_systemd]
+
+- name: service-systemd-multi
+  includes: [
+    'centos-7.0',
+    'fedora-21',
+    'debian-8.1',
+    'ubuntu-15.10'
+  ]
+  run_list:
+  - recipe[docker_test::service_systemd_multi]
 
 #######################
 # bulk resource testing
 #######################
 
-- name: resources-171
-  includes: [
-    'debian-8.1',
-    'centos-7.1',
-    'fedora-21',
-    'ubuntu-15.04'
-  ]
-  attributes:
-    docker:
-      version: '1.7.1'
-      service_manager: system
-  run_list:
-  - recipe[docker_test::default]
-  - recipe[docker_test::image]
-  - recipe[docker_test::container]
-
-- name: resources-183
-  includes: [
-    'debian-8.1',
-    'centos-7.1',
-    'fedora-21',
-    'ubuntu-15.04'
-  ]
-  attributes:
-    docker:
-      version: '1.8.3'
-  run_list:
-  - recipe[docker_test::default]
-  - recipe[docker_test::image]
-  - recipe[docker_test::container]
-
 - name: resources-191
   includes: [
-    'centos-7.1',
-    'ubuntu-15.04'
+    'ubuntu-15.10'
   ]
   attributes:
     docker:
       version: '1.9.1'
+  run_list:
+  - recipe[docker_test::default]
+  - recipe[docker_test::image]
+  - recipe[docker_test::container]
+
+- name: resources-1100
+  includes: [
+    'ubuntu-15.10'
+  ]
+  attributes:
+    docker:
+      version: '1.10.0'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::image]
@@ -291,17 +275,12 @@ suites:
 
 - name: network
   includes: [
-    'ubuntu-15.04'
+    'ubuntu-15.10'
   ]
   attributes:
-    consul:
-      config:
-        server: true
-        bootstrap_expect: 1
     docker:
-      version: '1.9.1'
+      version: '1.10.0'
   run_list:
-  - recipe[consul::default]
   - recipe[docker_test::default]
   - recipe[docker_test::network]
 
@@ -311,36 +290,12 @@ suites:
 
 - name: auto
   includes: [
-    'centos-7.1',
+    'centos-7.0',
     'fedora-21',
     'debian-8.1',
     'ubuntu-12.04',
     'ubuntu-14.04',
-    'ubuntu-15.04'
+    'ubuntu-15.10'
   ]
   run_list:
   - recipe[docker_test::auto]
-
-#################
-# misc test cases
-#################
-
-- name: notifications
-  includes: [
-    'ubuntu-15.04'
-  ]
-  attributes:
-    docker:
-      version: '1.8.3'
-  run_list:
-  - recipe[docker_test::notifications]
-
-# - name: timeout
-#   includes: [
-#     'ubuntu-15.04'
-#   ]
-#   attributes:
-#     docker:
-#       version: '1.8.3'
-#   run_list:
-#   - recipe[docker_test::timeout]
