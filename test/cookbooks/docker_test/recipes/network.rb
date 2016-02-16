@@ -66,7 +66,7 @@ end
 # network_c
 ###########
 
-# create a network with aux address
+# create a network with aux_address
 docker_network 'network_c' do
   subnet '192.168.89.0/24'
   gateway '192.168.89.1'
