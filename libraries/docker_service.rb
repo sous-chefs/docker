@@ -23,6 +23,7 @@ module DockerCookbook
     # docker_installation_package
     property :package_version, String, desired_state: false
     property :version, String, desired_state: false
+    property :package_options, String, default: nil, desired_state: false
 
     ################
     # Helper Methods
