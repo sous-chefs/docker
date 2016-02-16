@@ -1,55 +1,137 @@
+# pull alpine image
 docker_image 'alpine' do
   tag '3.1'
   action :pull_if_missing
 end
 
-docker_container 'network-container' do
-  repo 'alpine'
-  tag '3.1'
-  command 'nc -ll -p 31337 -e /bin/cat'
-  action :run
-end
+###########
+# network_a
+###########
 
-# Create a network without any settings
-docker_network 'test-network' do
+# defaults
+docker_network 'network_a' do
   action :create
 end
 
-# Create a overlay network
-docker_network 'test-network-overlay' do
+# docker run --net=
+docker_container 'echo-base-network_a' do
+  repo 'alpine'
+  tag '3.1'
+  command 'nc -ll -p 1337 -e /bin/cat'
+  port '1337'
+  network_mode 'network_a'
+  action :run
+end
+
+docker_container 'echo-station-network_a' do
+  repo 'alpine'
+  tag '3.1'
+  command 'nc -ll -p 31337 -e /bin/cat'
+  port '31337'
+  network_mode 'network_a'
+  action :run
+end
+
+###########
+# network_b
+###########
+
+# specify subnet and gateway
+docker_network 'network_b' do
+  subnet '192.168.88.0/24'
+  gateway '192.168.88.1'
+  action :create
+end
+
+# docker run --net=
+docker_container 'echo-base-network_b' do
+  repo 'alpine'
+  tag '3.1'
+  command 'nc -ll -p 1337 -e /bin/cat'
+  port '1337'
+  network_mode 'network_b'
+  action :run
+end
+
+docker_container 'echo-station-network_b' do
+  repo 'alpine'
+  tag '3.1'
+  command 'nc -ll -p 31337 -e /bin/cat'
+  port '31337'
+  network_mode 'network_b'
+  action :run
+end
+
+###########
+# network_c
+###########
+
+# create a network with aux address
+docker_network 'network_c' do
+  subnet '192.168.89.0/24'
+  gateway '192.168.89.1'
+  aux_address ['a=192.168.89.2', 'b=192.168.89.3']
+end
+
+# ^ Broken... here is the Docker CLI version for reference
+
+# docker network create \
+#  --subnet 192.168.89.0/24 \
+#  --gateway=192.168.89.1 \
+#  --aux-address a=192.168.89.2 \
+#  --aux-address b=192.168.89.3 \
+#  network_c
+
+docker_container 'echo-base-network_c' do
+  repo 'alpine'
+  tag '3.1'
+  command 'nc -ll -p 1337 -e /bin/cat'
+  port '1337'
+  network_mode 'network_c'
+  action :run
+end
+
+docker_container 'echo-station-network_c' do
+  repo 'alpine'
+  tag '3.1'
+  command 'nc -ll -p 31337 -e /bin/cat'
+  port '31337'
+  network_mode 'network_c'
+  action :run
+end
+
+###########
+# network_d
+###########
+
+# specify overlay driver
+docker_network 'network_d' do
   driver 'overlay'
   action :create
 end
 
-# Create a network with specified subnet and gateway
-docker_network 'test-network-ip' do
-  subnet '192.168.88.0/24'
-  gateway '192.168.88.3'
-end
+#######################
+# FIXME - Remove these?
+# Perhaps a docker_network_connection resource would be more appropriate.
+#
+###################
 
-# Create a network with aux address
-docker_network 'test-network-aux' do
-  subnet '192.168.89.0/24'
-  gateway '192.168.89.3'
-  aux_address ['a=192.168.89.4', 'b=192.168.89.5']
-end
+# # Connect a container to a network
+# docker_network 'test-network-aux-connect' do
+#   network_name 'test-network-aux'
+#   container 'network-container'
+#   action :connect
+# end
 
-# Connect a container to a network
-docker_network 'test-network-aux-connect' do
-  network_name 'test-network-aux'
-  container 'network-container'
-  action :connect
-end
+# # Disconnect a container from a network
+# docker_network 'test-network-aux-disconnect' do
+#   network_name 'test-network-aux'
+#   container 'network-container'
+#   action :disconnect
+# end
 
-# Disconnect a container from a network
-docker_network 'test-network-aux-disconnect' do
-  network_name 'test-network-aux'
-  container 'network-container'
-  action :disconnect
-end
-
-# Delete a network
-docker_network 'delete-test-network-ip' do
-  network_name 'test-network-ip'
-  action :delete
-end
+# # Delete a network
+# docker_network 'delete-test-network-ip' do
+#   network_name 'test-network-ip'
+#   action :delete
+# end
