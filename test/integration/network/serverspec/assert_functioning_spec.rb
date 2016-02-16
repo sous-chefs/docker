@@ -85,3 +85,36 @@ describe command('docker network inspect -f "{{ .Driver }}" network_d') do
   its(:exit_status) { should eq 0 }
   its(:stdout) { should eq "overlay\n" }
 end
+
+network_container = JSON.parse(command('docker inspect network-container').stdout).first
+
+describe command('docker network inspect test-network') do
+  its(:exit_status) { should eq 0 }
+end
+
+describe command('docker network inspect test-network-overlay') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/Driver.*overlay/) }
+end
+
+describe command('docker network inspect test-network-ip') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(%r{Subnet.*192\.168\.88\.0/24}) }
+  its(:stdout) { should match(/Gateway.*192\.168\.88\.3/) }
+end
+
+describe command('docker network inspect test-network-aux') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/a.*192\.168\.89\.4/) }
+  its(:stdout) { should match(/b.*192\.168\.89\.5/) }
+end
+
+describe command('docker network inspect test-network-ip-range') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match('asdf') }
+end
+
+describe command('docker network inspect test-network-connect') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should include(network_container['Id']) }
+end
