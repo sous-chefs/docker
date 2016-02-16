@@ -59,4 +59,61 @@ describe 'docker_test::network' do
       )
     end
   end
+
+  context 'testing to connect container to network' do
+    it 'created a container' do
+      expect(chef_run).to run_docker_container('network-container').with(
+        repo: 'alpine',
+        tag: '4.1',
+        command: 'sleep 120'
+      )
+    end
+
+    it 'created the network we are connecting to a container' do
+      expect(chef_run).to create_docker_network('test-network-connect').with(
+        container: 'network-container'
+      )
+    end
+
+    it 'connects container to network' do
+      expect(chef_run).to connect_docker_network('test-network-connect').with(
+        container: 'network-container'
+      )
+    end
+  end
+
+  context 'testing ip range' do
+    it 'should set a ip range' do
+      expect(chef_run).to create_docker_netwrok('test-network-ip-range').with(
+        subnet: '192.168.90.0/24',
+        ip_range: '192.168.90.32/28'
+      )
+    end
+  end
+
+  context 'testing to connect a container to a network' do
+    xit 'connects a container to a network' do
+      expect(chef_run).to connect_docker_network('test-network-aux-connect').with(
+        network_name: 'test-network-aux',
+        container: 'network-container'
+      )
+    end
+  end
+
+  context 'testing to disconnect a container from a network' do
+    xit 'disconnect a container from a network' do
+      expect(chef_run).to disconnect_docker_network('test-network-aux-disconnect').with(
+        network_name: 'test-network-aux',
+        container: 'network-container'
+      )
+    end
+  end
+
+  context 'testing to delete a network' do
+    xit 'deletes a network' do
+      expect(chef_run).to delete_docker_network('delete-test-network-ip').with(
+        network_name: 'test-network-ip'
+      )
+    end
+  end
 end

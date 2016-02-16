@@ -42,6 +42,7 @@ module DockerCookbook
           ipam_options = consolidate_ipam(subnet, ip_range, gateway, aux_address)
           options['IPAM'] = { 'Config' => ipam_options } unless ipam_options.empty?
           options['IPAM']['Driver'] = ipam_driver if ipam_driver
+          p ipam_options
           Docker::Network.create(network_name, options)
         end
       end

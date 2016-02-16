@@ -26,9 +26,8 @@ end
 docker_container 'echo-station-network_a' do
   repo 'alpine'
   tag '3.1'
-  command 'nc -ll -p 31337 -e /bin/cat'
-  port '31337'
   network_mode 'network_a'
+  command 'sleep 120'
   action :run
 end
 
@@ -131,6 +130,25 @@ end
 # end
 
 # # Delete a network
+docker_network 'test-network-ip-range' do
+  subnet '192.168.90.0/24'
+  ip_range '192.168.90.32/28'
+end
+
+# Connect a container to a network
+docker_network 'test-network-connect' do
+  container 'network-container'
+  action [:create, :connect]
+end
+
+# Disconnect a container from a network
+# docker_network 'test-network-aux-disconnect' do
+#   network_name 'test-network-aux'
+#   container 'network-container'
+#   action :disconnect
+# end
+
+# Delete a network
 # docker_network 'delete-test-network-ip' do
 #   network_name 'test-network-ip'
 #   action :delete
