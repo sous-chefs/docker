@@ -32,14 +32,13 @@ module DockerCookbook
           subnets.each do |s|
             ok = subnet_matches(s, r)
             next unless ok
-            if data[s]['IPRange'] != ''
-              raise 'cannot configure multiple ranges on the same subnet'
+            if data[s].fetch('IPRange', '') != ''
+              fail 'cannot configure multiple ranges on the same subnet'
             end
-            data[s]['IPRange']
+            data[s]['IPRange'] = r
             match = true
           end
-
-          raise "no matching subnet for range #{r}" unless match
+          fail "no matching subnet for range #{r}" unless match
         end
 
         gateways.each do |g|
@@ -67,7 +66,6 @@ module DockerCookbook
           end
           raise "no matching subnet for aux-address #{a}" unless match
         end
-
         data.values
       end
 
