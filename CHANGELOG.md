@@ -1,3 +1,8 @@
+v2.4.25
+--------------------
+- Various fixes to docker_network around subsequent runs
+- Utilizing property coersion and converge_if_changed
+
 v2.4.24
 --------------------
 - Avoiding restart loops in chef-client 12.4.3
