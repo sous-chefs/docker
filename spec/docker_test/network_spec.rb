@@ -17,29 +17,27 @@ describe 'docker_test::network' do
     end
   end
 
-  context 'creates a network with subnet and gateway' do
-    it 'creates docke_network_b' do
-      expect(chef_run).to create_docker_network('network_b').with(
-        subnet: '192.168.88.0/24',
-        gateway: '192.168.88.1'
+  context 'when testing network deletion' do
+    it 'creates network_b with the CLI' do
+      expect(chef_run).to run_execute('create network_b').with(
+        command: 'docker network create network_b'
       )
     end
 
-    it 'creates echo-base-network_b' do
-      expect(chef_run).to run_docker_container('echo-base-network_b')
+    it 'creates /marker_delete_network_b' do
+      expect(chef_run).to create_file('/marker_delete_network_b')
     end
 
-    it 'creates echo-station-network_b' do
-      expect(chef_run).to run_docker_container('echo-station-network_b')
+    it 'deletes docker_network[network_b]' do
+      expect(chef_run).to delete_docker_network('network_b')
     end
   end
 
-  context 'creates a network with aux_address' do
+  context 'creates a network with subnet and gateway' do
     it 'creates docke_network_c' do
       expect(chef_run).to create_docker_network('network_c').with(
-        subnet: '192.168.89.0/24',
-        gateway: '192.168.89.1',
-        aux_address: ['a=192.168.89.2', 'b=192.168.89.3']
+        subnet: '192.168.88.0/24',
+        gateway: '192.168.88.1'
       )
     end
 
@@ -52,68 +50,68 @@ describe 'docker_test::network' do
     end
   end
 
-  context 'creates a network with overlay driver' do
-    it 'creates network_d' do
+  context 'creates a network with aux_address' do
+    it 'creates docke_network_d' do
       expect(chef_run).to create_docker_network('network_d').with(
+        subnet: '192.168.89.0/24',
+        gateway: '192.168.89.1',
+        aux_address: ['a=192.168.89.2', 'b=192.168.89.3']
+      )
+    end
+
+    it 'creates echo-base-network_d' do
+      expect(chef_run).to run_docker_container('echo-base-network_d')
+    end
+
+    it 'creates echo-station-network_d' do
+      expect(chef_run).to run_docker_container('echo-station-network_d')
+    end
+  end
+
+  context 'creates a network with overlay driver' do
+    it 'creates network_e' do
+      expect(chef_run).to create_docker_network('network_e').with(
         driver: 'overlay'
       )
     end
   end
 
-  context 'testing to connect container to network' do
-    it 'created a container' do
-      expect(chef_run).to run_docker_container('network-container').with(
-        repo: 'alpine',
-        tag: '4.1',
-        command: 'sleep 120'
+  context 'creates a network with an ip-range' do
+    it 'creates docke_network_f' do
+      expect(chef_run).to create_docker_network('network_f').with(
+        driver: 'bridge',
+        subnet: '172.28.0.0/16',
+        gateway: '172.28.5.254',
+        ip_range: '172.28.5.0/24'
       )
     end
 
-    it 'created the network we are connecting to a container' do
-      expect(chef_run).to create_docker_network('test-network-connect').with(
-        container: 'network-container'
-      )
+    it 'creates echo-base-network_f' do
+      expect(chef_run).to run_docker_container('echo-base-network_f')
     end
 
-    it 'connects container to network' do
-      expect(chef_run).to connect_docker_network('test-network-connect').with(
-        container: 'network-container'
-      )
+    it 'creates echo-station-network_f' do
+      expect(chef_run).to run_docker_container('echo-station-network_f')
     end
   end
 
-  context 'testing ip range' do
-    it 'should set a ip range' do
-      expect(chef_run).to create_docker_netwrok('test-network-ip-range').with(
-        subnet: '192.168.90.0/24',
-        ip_range: '192.168.90.32/28'
+  context 'create an overlay network with multiple subnets' do
+    it 'creates docke_network_g' do
+      expect(chef_run).to create_docker_network('network_g').with(
+        driver: 'overlay',
+        subnet: ['192.168.0.0/16', '192.170.0.0/16'],
+        gateway: ['192.168.0.100', '192.170.0.100'],
+        ip_range: '192.168.1.0/24',
+        aux_address: ['a=192.168.1.5', 'b=192.168.1.6', 'a=192.170.1.5', 'b=192.170.1.6']
       )
     end
-  end
 
-  context 'testing to connect a container to a network' do
-    xit 'connects a container to a network' do
-      expect(chef_run).to connect_docker_network('test-network-aux-connect').with(
-        network_name: 'test-network-aux',
-        container: 'network-container'
-      )
+    it 'creates echo-base-network_g' do
+      expect(chef_run).to run_docker_container('echo-base-network_g')
     end
-  end
 
-  context 'testing to disconnect a container from a network' do
-    xit 'disconnect a container from a network' do
-      expect(chef_run).to disconnect_docker_network('test-network-aux-disconnect').with(
-        network_name: 'test-network-aux',
-        container: 'network-container'
-      )
-    end
-  end
-
-  context 'testing to delete a network' do
-    xit 'deletes a network' do
-      expect(chef_run).to delete_docker_network('delete-test-network-ip').with(
-        network_name: 'test-network-ip'
-      )
+    it 'creates echo-station-network_g' do
+      expect(chef_run).to run_docker_container('echo-station-network_g')
     end
   end
 end

@@ -195,14 +195,6 @@ module DockerCookbook
         "#{repo}:#{tag}"
       end
 
-      def to_snake_case(name)
-        # ExposedPorts -> _exposed_ports
-        name = name.gsub(/[A-Z]/) { |x| "_#{x.downcase}" }
-        # _exposed_ports -> exposed_ports
-        name = name[1..-1] if name.start_with?('_')
-        name
-      end
-
       def to_shellwords(command)
         return nil if command.nil?
         Shellwords.shellwords(command)

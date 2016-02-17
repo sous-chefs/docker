@@ -35,7 +35,7 @@ describe Class.new { include DockerCookbook::DockerHelpers::Network } do
     end
 
     it 'should have aux address' do
-      expect(subject).to include(include('AuxAddress' => { 'foo' => '192.168.0.34', 'bar' => '192.168.0.124' }))
+      expect(subject).to include(include('AuxiliaryAddresses' => { 'foo' => '192.168.0.34', 'bar' => '192.168.0.124' }))
     end
 
     it 'should have gateways' do
