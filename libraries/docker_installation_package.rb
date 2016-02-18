@@ -10,11 +10,13 @@ module DockerCookbook
     property :package_name, String, default: 'docker-engine', desired_state: false
     property :package_version, String, default: lazy { version_string(version) }, desired_state: false
     property :version, String, default: lazy { default_docker_version }, desired_state: false
+    property :package_options, String, default: nil, desired_state: false
 
     # Actions
     action :create do
       package package_name do
         version package_version
+        options package_options
         action :install
       end
     end

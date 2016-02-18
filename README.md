@@ -271,12 +271,14 @@ This is the recommended production installation method.
 docker_installation_package 'default' do
   version '1.8.3'
   action :create
+  options %q|--force-yes -o Dpkg::Options::='--force-confold' -o Dpkg::Options::='--force-all'| # if Ubuntu for example
 end
 ```
 #### Properties
 - `version` - Used to calculate package_version string
 - `package_version` - Manually specify the package version string
 - `package_name` - Name of package to install. Defaults to 'docker-engine'
+- `package_options` - Manually specify additional options, like apt-get directives for example
 
 ## docker_service_manager
 The `docker_service_manager` resource auto-selects one of the below
