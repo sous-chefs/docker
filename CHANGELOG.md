@@ -1,3 +1,7 @@
+v2.4.26
+--------------------
+- Adding docker_volume resource
+
 v2.4.25
 --------------------
 - Various fixes to docker_network around subsequent runs
