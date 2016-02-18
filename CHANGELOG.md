@@ -1,3 +1,7 @@
+v2.5.1
+--------------------
+- package_options property to pass options to underlying package resource
+
 v2.5.0
 --------------------
 - Defaulting installation version to 1.10.0
