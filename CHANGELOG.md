@@ -1,3 +1,7 @@
+v2.5.3
+--------------------
+- Adding ChefSpec.define_matcher for all resources
+
 v2.5.2
 --------------------
 - Setting log_driver and log_opts to desired_state: false
