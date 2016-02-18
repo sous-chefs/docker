@@ -46,7 +46,7 @@ module DockerCookbook
            node['platform_family'] == 'debian' && node['platform_version'].to_i <= 7
           '1.6.2'
         else
-          '1.9.1'
+          '1.10.0'
         end
       end
     end
