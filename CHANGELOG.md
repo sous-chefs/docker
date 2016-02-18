@@ -1,3 +1,9 @@
+v2.5.0
+--------------------
+- Defaulting installation version to 1.10.0
+- Documenting docker_network resource in README
+- Documenting docker_volume resource in README
+
 v2.4.26
 --------------------
 - Adding docker_volume resource
