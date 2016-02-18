@@ -296,4 +296,16 @@ if defined?(ChefSpec)
     ChefSpec::Matchers::ResourceMatcher.new(:docker_network, :disconnect, resource_name)
   end
 
+  ###############
+  # docker_volume
+  ###############
+
+  def create_docker_volume(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_volume, :create, resource_name)
+  end
+
+  def remove_docker_volume(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_volume, :remove, resource_name)
+  end
+
 end

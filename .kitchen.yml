@@ -282,6 +282,17 @@ suites:
   - recipe[docker_test::default]
   - recipe[docker_test::network]
 
+- name: volume
+  includes: [
+    'ubuntu-15.10'
+  ]
+  attributes:
+    docker:
+      version: '1.10.0'
+  run_list:
+  - recipe[docker_test::default]
+  - recipe[docker_test::volume]
+
 #####################
 # docker_service auto
 #####################
