@@ -95,7 +95,7 @@ the `docker_service` resource like this:
 
 ```ruby
 docker_service 'default' do
-   storage_driver 'overlay'
+   storage_driver 'zfs'
 end
 ```
 
@@ -121,6 +121,9 @@ Resources Overview
 * `docker_container`: container operations
 * `docker_tag`: image tagging operations
 * `docker_registry`: registry operations
+
+* `docker_network`: network operations
+* `docker_volume`: volume operations
 
 ## Getting Started
 Here's a quick example of pulling the latest image and running a
@@ -172,6 +175,28 @@ docker_container 'crowsnest' do
   tls_ca_cert "/path/to/ca.pem"
   tls_client_cert "/path/to/cert.pem"
   tls_client_key "/path/to/key.pem"
+  action :run
+end
+```
+
+You can manipulate Docker volumes and networks
+
+```ruby
+docker_network 'my_network' do
+  subnet '10.9.8.0/24'
+  gateway '10.9.8.1'
+end
+
+docker_volume 'my_volume' do
+  action :create
+end
+
+docker_container 'my_container' do
+  repo 'alpine'
+  tag '3.1'
+  command "nc -ll -p 1234 -e /bin/cat"
+  volumes 'my_volume:/my_data'
+  network_mode 'my_network'
   action :run
 end
 ```
@@ -1153,6 +1178,76 @@ docker_registry 'my local registry' do
    email privateme@computers.biz'
 end
 ```
+
+## docker_network
+The `docker_network` resource is responsible for managing Docker named
+networks. Usage of `overlay` driver requires the `docker_service` to be
+configured to use a distributed key/value store like `etcd`, `consul`,
+or `zookeeper`.
+
+#### docker_network action :create
+
+```ruby
+docker_network 'my_network' do
+  subnet '192.168.88.0/24'
+  gateway '192.168.88.1'
+  action :create
+end
+
+docker_container 'echo-base' do
+  repo 'alpine'
+  tag '3.1'
+  command 'nc -ll -p 1337 -e /bin/cat'
+  port '1337'
+  network_mode 'my_network'
+  action :run
+end
+```
+
+#### Properties
+- `driver` - The network driver to use. Defaults to `bridge`, other
+  options include `overlay`.
+- `subnet` - Specify the subnet(s) for the network. Ex: `192.168.0.0/16`
+- `gateway` - Specify the gateway(s) for the network. Ex: `192.168.0.1`
+- `ip_range` - Specify a range of IPs to allocate for containers. Ex: `192.168.1.0/24`
+- `aux_address` - Auxillary addresses for the network. Ex: `['a=192.168.1.5', 'b=192.168.1.6']`
+
+#### Example
+```ruby
+docker_network 'network_g' do
+  driver 'overlay'
+  subnet ['192.168.0.0/16', '192.170.0.0/16']
+  gateway ['192.168.0.100', '192.170.0.100']
+  ip_range '192.168.1.0/24'
+  aux_address ['a=192.168.1.5', 'b=192.168.1.6', 'a=192.170.1.5', 'b=192.170.1.6']
+end
+```
+
+#### Actions
+- `:create` - create a network
+- `:delete` - create a network
+
+## docker_volume
+The `docker_volume` resource is responsible for managing Docker named volumes.
+
+#### docker_volume action :create
+```ruby
+docker_volume 'hello' do
+  action :create
+end
+
+docker_container 'file_writer' do
+  repo 'alpine'
+  tag '3.1'
+  volumes 'hello:/hello'
+  command 'touch /hello/sean_was_here'
+  action :run_if_missing
+end
+```
+
+#### Actions
+- `:create` - create a network
+- `:remove` - create a network
 
 ## Testing and Development
 
