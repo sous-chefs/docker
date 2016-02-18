@@ -1,3 +1,7 @@
+v2.5.2
+--------------------
+- Setting log_driver and log_opts to desired_state: false
+
 v2.5.1
 --------------------
 - package_options property to pass options to underlying package resource
