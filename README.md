@@ -271,7 +271,7 @@ This is the recommended production installation method.
 docker_installation_package 'default' do
   version '1.8.3'
   action :create
-  options %q|--force-yes -o Dpkg::Options::='--force-confold' -o Dpkg::Options::='--force-all'| # if Ubuntu for example
+  package_options %q|--force-yes -o Dpkg::Options::='--force-confold' -o Dpkg::Options::='--force-all'| # if Ubuntu for example
 end
 ```
 #### Properties
