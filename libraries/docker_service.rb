@@ -25,7 +25,7 @@ module DockerCookbook
 
     # binary and package
     property :version, String, desired_state: false
-    property :package_options, [ String, nil ], default: nil, desired_state: false
+    property :package_options, [String, nil], desired_state: false
 
     ################
     # Helper Methods
