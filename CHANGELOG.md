@@ -1,3 +1,7 @@
+v2.5.5
+--------------------
+- Fixing up various default: nil warnings
+
 v2.5.4
 --------------------
 - Allowing nil as type possibility for docker_service :package_options
