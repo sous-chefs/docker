@@ -281,10 +281,9 @@ end
 - `package_options` - Manually specify additional options, like apt-get directives for example
 
 ## docker_service_manager
-The `docker_service_manager` resource auto-selects one of the below
-resources with the provider resolution system. The
-`docker_service` family all share a common set of properties, which
-are listed under the `docker_service` composite resource.
+The `docker_service_manager` resource auto-selects a strategy from the
+`docker_service_manager_*` group of resources based on platform and
+version. The `docker_service` family share a common set of properties.
 
 #### Example
 ```ruby
