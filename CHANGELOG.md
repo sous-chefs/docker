@@ -1,3 +1,7 @@
+v2.5.6
+--------------------
+- Adding no_proxy to Upstart defaults template
+
 v2.5.5
 --------------------
 - Fixing up various default: nil warnings
