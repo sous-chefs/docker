@@ -84,7 +84,7 @@ module DockerCookbook
     property :working_dir, [String, NilClass], default: ''
 
     # Used to store the bind property since binds is an alias to volumes
-    property :volumes_binds, Array, desired_state: false
+    property :volumes_binds, Array
 
     # Used to store the state of the Docker container
     property :container, Docker::Container, desired_state: false
@@ -135,9 +135,10 @@ module DockerCookbook
         public_send(property_name, value) if respond_to?(property_name)
       end
 
-      # RestartPolicy is a special case for us because our names differ from theirs
+      # these are a special case for us because our names differ from theirs
       restart_policy container.info['HostConfig']['RestartPolicy']['Name']
       restart_maximum_retry_count container.info['HostConfig']['RestartPolicy']['MaximumRetryCount']
+      volumes_binds container.info['HostConfig']['Binds']
     end
 
     #########
