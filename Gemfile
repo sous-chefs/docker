@@ -20,13 +20,13 @@ group :unit do
 end
 
 group :kitchen_common do
-  gem 'test-kitchen', '~> 1.4.2'
+  gem 'test-kitchen', '~> 1.5.0'
   gem 'kitchen-sync'
   gem 'kitchen-inspec'
 end
 
 group :kitchen_vagrant do
-  gem 'kitchen-vagrant', '~> 0.19'
+  gem 'kitchen-vagrant'
 end
 
 group :kitchen_cloud do

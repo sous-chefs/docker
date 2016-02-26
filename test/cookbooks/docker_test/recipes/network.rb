@@ -4,6 +4,11 @@ docker_image 'alpine' do
   action :pull_if_missing
 end
 
+# unicode characters
+docker_network 'seseme_straße' do
+  action :create
+end
+
 ###########
 # network_a
 ###########
