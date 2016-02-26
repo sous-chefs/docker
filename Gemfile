@@ -1,5 +1,9 @@
 source 'https://rubygems.org'
 
+group :docker do
+  gem 'docker-api', '= 1.26.2'
+end
+
 group :rake do
   gem 'rake'
   gem 'tomlrb'
