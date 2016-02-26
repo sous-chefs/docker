@@ -113,12 +113,12 @@ end
 ################
 
 etcd_service 'etcd0' do
-  advertise_client_urls "http://#{node[:ipaddress]}:2379,http://0.0.0.0:4001"
+  advertise_client_urls "http://#{node['ipaddress']}:2379,http://0.0.0.0:4001"
   listen_client_urls 'http://0.0.0.0:2379,http://0.0.0.0:4001'
-  initial_advertise_peer_urls "http://#{node[:ipaddress]}:2380"
+  initial_advertise_peer_urls "http://#{node['ipaddress']}:2380"
   listen_peer_urls 'http://0.0.0.0:2380'
   initial_cluster_token 'etcd0'
-  initial_cluster "etcd0=http://#{node[:ipaddress]}:2380"
+  initial_cluster "etcd0=http://#{node['ipaddress']}:2380"
   initial_cluster_state 'new'
   action [:create, :start]
 end
