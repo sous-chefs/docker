@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'docker_test::registry' do
-  cached(:chef_run) { ChefSpec::SoloRunner.converge('docker_test::registry') }
+  cached(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   before do
     stub_command('/usr/bin/test -f /tmp/registry/tls/ca.pem').and_return(false)

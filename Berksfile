@@ -8,5 +8,4 @@ group :integration do
   cookbook 'yum-docker'
   cookbook 'etcd'
   cookbook 'docker_test', path: 'test/cookbooks/docker_test'
-  cookbook 'rspec_helper', path: 'test/cookbooks/rspec_helper'
 end

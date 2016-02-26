@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'docker_test::volume' do
-  cached(:chef_run) { ChefSpec::SoloRunner.converge('docker_test::volume') }
+  cached(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   context 'testing remove action' do
     it 'executes docker creates volume --name remove_me' do
