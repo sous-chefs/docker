@@ -47,7 +47,7 @@ module DockerCookbook
     property :ipv6, [Boolean, nil]
     property :log_level, [:debug, :info, :warn, :error, :fatal, nil]
     property :labels, [String, Array], coerce: proc { |v| coerce_daemon_labels(v) }, desired_state: false
-    property :log_driver, ['json-file', 'syslog', 'journald', 'gelf', 'fluentd', 'none', nil]
+    property :log_driver, %w( json-file syslog journald gelf fluentd awslogs splunk none )
     property :log_opts, ArrayType
     property :mtu, [String, nil]
     property :pidfile, String, default: lazy { "/var/run/#{docker_name}.pid" }
