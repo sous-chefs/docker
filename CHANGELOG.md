@@ -1,3 +1,8 @@
+v2.5.7
+--------------------
+- Remove vendored gems in favor of chef_gem install
+- Extending available log_driver options
+
 v2.5.6
 --------------------
 - Adding no_proxy to Upstart defaults template
