@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'docker_test::image' do
-  cached(:chef_run) { ChefSpec::SoloRunner.converge('docker_test::image') }
+  cached(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   before do
     stub_command('/usr/bin/test -f /tmp/registry/tls/ca-key.pem').and_return(true)

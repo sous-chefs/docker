@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'docker_test::network' do
-  cached(:chef_run) { ChefSpec::SoloRunner.converge('docker_test::network') }
+  cached(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   context 'creates a network with defaults' do
     it 'creates docke_network_a' do
