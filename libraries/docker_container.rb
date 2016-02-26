@@ -343,7 +343,7 @@ module DockerCookbook
     action :restart do
       kill_after_str = " (will kill after #{kill_after}s)" if kill_after != -1
       converge_by "restarting #{container_name} #{kill_after_str}" do
-        with_retries { container.restart!('t' => kill_after) }
+        current_resource ? container.restart('timeout' => kill_after) : call_action(:run)
       end
     end
 
