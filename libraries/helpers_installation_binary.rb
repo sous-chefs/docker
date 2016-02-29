@@ -31,6 +31,8 @@ module DockerCookbook
           when '1.9.0' then '91a8701e41a479def5371a333657c58c36478602e1f5eb1835457a3880232a2e'
           when '1.9.1' then '8750ccc2098ec94ef7db110e0016ab02cfa47a1a76f0deb3faa50335b5ec0df9'
           when '1.10.0' then 'f8dc0c7ef2a7efbe0e062017822066e55a40c752b9e92a636359f59ef562d79f'
+          when '1.10.1' then 'de4057057acd259ec38b5244a40d806993e2ca219e9869ace133fad0e09cedf2'
+          when '1.10.2' then '29249598587ad8f8597235bbeb11a11888fffb977b8089ea80b5ac5267ba9f2e'
           end
         when 'Linux'
           case version
@@ -43,6 +45,8 @@ module DockerCookbook
           when '1.9.0' then '5d46455aac507e231fd2a558459779f1994f7151d6cb027efabfa36f568cf017'
           when '1.9.1' then '52286a92999f003e1129422e78be3e1049f963be1888afc3c9a99d5a9af04666'
           when '1.10.0' then 'a66b20423b7d849aa8ef448b98b41d18c45a30bf3fe952cc2ba4760600b18087'
+          when '1.10.1' then 'de4057057acd259ec38b5244a40d806993e2ca219e9869ace133fad0e09cedf2'
+          when '1.10.2' then '3fcac4f30e1c1a346c52ba33104175ae4ccbd9b9dbb947f56a0a32c9e401b768'
           end
         end
       end
@@ -54,7 +58,7 @@ module DockerCookbook
            node['platform_family'] == 'debian' && node['platform_version'].to_i <= 7
           '1.6.2'
         else
-          '1.10.0'
+          '1.10.2'
         end
       end
     end
