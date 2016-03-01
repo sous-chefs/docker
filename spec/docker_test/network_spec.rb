@@ -3,8 +3,14 @@ require 'spec_helper'
 describe 'docker_test::network' do
   cached(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
+  context 'creates a network with unicode name' do
+    it 'creates docker_network_seseme_straße' do
+      expect(chef_run).to create_docker_network('seseme_straße')
+    end
+  end
+
   context 'creates a network with defaults' do
-    it 'creates docke_network_a' do
+    it 'creates docker_network_a' do
       expect(chef_run).to create_docker_network('network_a')
     end
 
@@ -34,7 +40,7 @@ describe 'docker_test::network' do
   end
 
   context 'creates a network with subnet and gateway' do
-    it 'creates docke_network_c' do
+    it 'creates docker_network_c' do
       expect(chef_run).to create_docker_network('network_c').with(
         subnet: '192.168.88.0/24',
         gateway: '192.168.88.1'
@@ -51,7 +57,7 @@ describe 'docker_test::network' do
   end
 
   context 'creates a network with aux_address' do
-    it 'creates docke_network_d' do
+    it 'creates docker_network_d' do
       expect(chef_run).to create_docker_network('network_d').with(
         subnet: '192.168.89.0/24',
         gateway: '192.168.89.1',
@@ -77,7 +83,7 @@ describe 'docker_test::network' do
   end
 
   context 'creates a network with an ip-range' do
-    it 'creates docke_network_f' do
+    it 'creates docker_network_f' do
       expect(chef_run).to create_docker_network('network_f').with(
         driver: 'bridge',
         subnet: '172.28.0.0/16',
@@ -96,7 +102,7 @@ describe 'docker_test::network' do
   end
 
   context 'create an overlay network with multiple subnets' do
-    it 'creates docke_network_g' do
+    it 'creates docker_network_g' do
       expect(chef_run).to create_docker_network('network_g').with(
         driver: 'overlay',
         subnet: ['192.168.0.0/16', '192.170.0.0/16'],
