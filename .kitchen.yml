@@ -258,6 +258,7 @@ suites:
   - recipe[docker_test::default]
   - recipe[docker_test::image]
   - recipe[docker_test::container]
+  - recipe[docker_test::exec]
 
 - name: resources-1100
   includes: [
@@ -270,6 +271,7 @@ suites:
   - recipe[docker_test::default]
   - recipe[docker_test::image]
   - recipe[docker_test::container]
+  - recipe[docker_test::exec]
 
 - name: network
   includes: [
