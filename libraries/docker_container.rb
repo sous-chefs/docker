@@ -171,11 +171,11 @@ module DockerCookbook
          restart_policy != 'always' &&
          restart_policy != 'unless-stopped' &&
          restart_policy != 'on-failure'
-        raise Chef::Exceptions::Validationraiseed, 'restart_policy must be either no, always, unless-stopped, or on-raiseure.'
+        raise Chef::Exceptions::ValidationFailed, 'restart_policy must be either no, always, unless-stopped, or on-raiseure.'
       end
 
       if autoremove == true && (property_is_set?(:restart_policy) && restart_policy != 'no')
-        raise Chef::Exceptions::Validationraiseed, 'Conflicting options restart_policy and autoremove.'
+        raise Chef::Exceptions::ValidationFailed, 'Conflicting options restart_policy and autoremove.'
       end
 
       if detach == true &&
@@ -185,7 +185,7 @@ module DockerCookbook
           attach_stdout == true ||
           stdin_once == true
          )
-        raise Chef::Exceptions::Validationraiseed, 'Conflicting options detach, attach_stderr, attach_stdin, attach_stdout, stdin_once.'
+        raise Chef::Exceptions::ValidationFailed, 'Conflicting options detach, attach_stderr, attach_stdin, attach_stdout, stdin_once.'
       end
 
       if network_mode == 'host' &&
@@ -196,7 +196,7 @@ module DockerCookbook
           !(mac_address.nil? || mac_address.empty?) ||
           !(extra_hosts.nil? || extra_hosts.empty?)
          )
-        raise Chef::Exceptions::Validationraiseed, 'Cannot specify hostname, dns, dns_search, mac_address, or extra_hosts when network_mode is host.'
+        raise Chef::Exceptions::ValidationFailed, 'Cannot specify hostname, dns, dns_search, mac_address, or extra_hosts when network_mode is host.'
       end
 
       if network_mode == 'container' &&
@@ -211,7 +211,7 @@ module DockerCookbook
           !(publish_all_ports.nil? || publish_all_ports.empty?) ||
           !port.nil?
          )
-        raise Chef::Exceptions::Validationraiseed, 'Cannot specify hostname, dns, dns_search, mac_address, extra_hosts, exposed_ports, port_bindings, publish_all_ports, port when network_mode is container.'
+        raise Chef::Exceptions::ValidationFailed, 'Cannot specify hostname, dns, dns_search, mac_address, extra_hosts, exposed_ports, port_bindings, publish_all_ports, port when network_mode is container.'
       end
     end
 
@@ -301,7 +301,7 @@ module DockerCookbook
         begin
           with_retries { container.stop!('timeout' => kill_after) }
         rescue Docker::Error::TimeoutError
-          raise Docker::Error::TimeoutError, "Container raiseed to stop, consider adding kill_after to the container #{container_name}"
+          raise Docker::Error::TimeoutError, "Container failed to stop, consider adding kill_after to the container #{container_name}"
         end
         wait_running_state(false)
       end

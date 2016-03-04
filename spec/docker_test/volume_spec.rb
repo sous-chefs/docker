@@ -3,6 +3,12 @@ require 'spec_helper'
 describe 'docker_test::volume' do
   cached(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
+  it 'pull_if_missing docker_image[alpine]' do
+    expect(chef_run).to pull_if_missing_docker_image('alpine').with(
+      tag: '3.1'
+    )
+  end
+
   context 'testing remove action' do
     it 'executes docker creates volume --name remove_me' do
       expect(chef_run).to run_execute('docker volume create --name remove_me')
