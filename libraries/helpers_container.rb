@@ -69,13 +69,16 @@ module DockerCookbook
       end
 
       def state
-        container ? container.info['State'] : {}
+        # Always return the latest state, see #510
+        return Docker::Container.get(container_name, {}, connection).info['State']
+      rescue
+        return {}
       end
 
       def wait_running_state(v)
         i = 0
         tries = 20
-        until state['Running'] == v || state['FinishedAt'] != '0001-01-01T00:00:00Z'
+        until state['Running'] == v
           i += 1
           break if i == tries
           sleep 1
