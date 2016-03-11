@@ -76,13 +76,16 @@ module DockerCookbook
       end
 
       def wait_running_state(v)
-        i = 0
         tries = 20
-        until state['Running'] == v
-          i += 1
-          break if i == tries
+        tries.times do
+          return if state['Running'] == v
           sleep 1
         end
+        return if state['Running'] == v
+
+        # Container failed to reach correct state: Throw an error
+        desired_state_str = v ? 'running' : 'not running'
+        raise Docker::Error::TimeoutError, "Container #{container_name} failed to change to #{desired_state_str} state after #{tries} seconds"
       end
 
       def port(v = nil)
