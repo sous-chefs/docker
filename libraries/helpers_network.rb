@@ -12,7 +12,7 @@ module DockerCookbook
         Array(v).each do |e|
           case e
           when String, Array, nil
-            ray = ray + Array(e)
+            ray += Array(e)
           when Hash
             e.each { |key, val| ray << "#{key}=#{val}" }
           end
