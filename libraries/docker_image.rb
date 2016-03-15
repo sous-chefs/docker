@@ -84,5 +84,11 @@ module DockerCookbook
         save_image
       end
     end
+
+    action :load do
+      converge_by "load image #{image_identifier}" do
+        load_image
+      end
+    end
   end
 end
