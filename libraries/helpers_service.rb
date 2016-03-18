@@ -90,6 +90,15 @@ module DockerCookbook
         end
       end
 
+      def coerce_insecure_registry(v)
+        case v
+        when Array, nil
+          v
+        else
+          Array(v)
+        end
+      end
+
       def docker_major_version
         ray = docker_version.split('.')
         ray.pop
@@ -145,7 +154,7 @@ module DockerCookbook
         opts << "--graph=#{graph}" if graph
         host.each { |h| opts << "-H #{h}" } if host
         opts << "--icc=#{icc}" unless icc.nil?
-        opts << "--insecure-registry=#{insecure_registry}" if insecure_registry
+        insecure_registry.each { |i| opts << "--insecure-registry=#{i}" } if insecure_registry
         opts << "--ip=#{ip}" if ip
         opts << "--ip-forward=#{ip_forward}" unless ip_forward.nil?
         opts << "--ip-masq=#{ip_masq}" unless ip_masq.nil?
