@@ -6,8 +6,7 @@
 
 - Setting desired_state: true for volumes / binds properties
 - Now redeploy container on volume change.
-- Change :restart action behavior to :run containers if they don't
-- exist yet.
+- Change :restart action behavior to :run containers if they don't exist yet.
 
 # v2.5.7
 
