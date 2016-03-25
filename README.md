@@ -1088,7 +1088,7 @@ Most `docker_container` properties are the `snake_case` version of the
 - `mac_address` - The mac address for the container to use.
 - `memory` - Memory limit in bytes.
 - `memory_swap` - Total memory limit (memory + swap); set `-1` to
-  disable swap. You must use this with memory and make the swap value
+  disable swap limit (unlimited). You must use this with memory and make the swap value
   larger than memory.
 - `network_disabled` - Boolean to disable networking. Defaults to `false`.
 - `network_mode` - Sets the networking mode for the container. One of `bridge`,
