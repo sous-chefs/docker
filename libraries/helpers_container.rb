@@ -175,8 +175,8 @@ module DockerCookbook
         def_logcfg
       end
 
-      # TODO: test image property in serverspec and kitchen
-      # TODO: test this logic with rspec
+      # TODO: test image property in serverspec and kitchen, not only in rspec
+      # for full specs of image parsing, see spec/helpers_container_spec.rb
       #
       # If you say:    `repo 'blah'`
       # Image will be: `blah:latest`
@@ -192,9 +192,36 @@ module DockerCookbook
       # Repo will be:  `blah`
       # Tag will be:   `3.1`
       #
+      # If you say:    `image 'repo/blah'`
+      # Repo will be:  `repo/blah`
+      # Tag will be:   `latest`
+      #
+      # If you say:    `image 'repo/blah:3.1'`
+      # Repo will be:  `repo/blah`
+      # Tag will be:   `3.1`
+      #
+      # If you say:    `image 'repo:1337/blah'`
+      # Repo will be:  `repo:1337/blah`
+      # Tag will be:   `latest'
+      #
+      # If you say:    `image 'repo:1337/blah:3.1'`
+      # Repo will be:  `repo:1337/blah`
+      # Tag will be:   `3.1`
+      #
       def image(image = nil)
         if image
-          r, t = image.split(':', 2)
+          if image.include?('/')
+            # pathological case, a ':' may be present which starts the 'port'
+            # part of the image name and not a tag. example: 'host:1337/blah'
+            # fortunately, tags are only found in the 'basename' part of image
+            # so we can split on '/' and rebuild once the tag has been parsed.
+            dirname, _, basename = image.rpartition('/')
+            r, t = basename.split(':', 2)
+            r = [dirname, r].join('/')
+          else
+            # normal case, the ':' starts the tag part
+            r, t = image.split(':', 2)
+          end
           repo r
           tag t if t
         end
