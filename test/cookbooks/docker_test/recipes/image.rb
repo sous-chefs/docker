@@ -64,7 +64,7 @@ end
 docker_image 'save hello-world' do
   repo 'hello-world'
   destination '/hello-world.tar'
-  not_if { ::File.exist? '/hello-world.tar' }
+  not_if { ::File.exist?('/hello-world.tar') }
   action :save
 end
 
@@ -86,7 +86,7 @@ docker_image 'someara/image-1' do
   tag 'v0.1.0'
   source '/usr/local/src/container1/Dockerfile'
   force true
-  not_if { ::File.exist? '/marker_image_image-1' }
+  not_if { ::File.exist?('/marker_image_image-1') }
   action :build
 end
 
@@ -163,7 +163,7 @@ end
 
 # docker_image 'push someara/name-w-dashes' do
 #   repo 'someara/name-w-dashes'
-#   not_if { ::File.exist? '/marker_image_public_name-w-dashes' }
+#   not_if { ::File.exist?('/marker_image_public_name-w-dashes') }
 #   action :push
 # end
 
@@ -182,7 +182,7 @@ end
 
 # docker_image 'push someara/name.w.dots' do
 #   repo 'someara/name.w.dots'
-#   not_if { ::File.exist? '/marker_image_public_name.w.dots' }
+#   not_if { ::File.exist?('/marker_image_public_name.w.dots') }
 #   action :push
 # end
 
@@ -201,7 +201,7 @@ end
 
 # docker_image 'push someara/private-repo-test' do
 #   repo 'someara/private-repo-test'
-#   not_if { ::File.exist? '/marker_image_public_private-repo-test' }
+#   not_if { ::File.exist?('/marker_image_public_private-repo-test') }
 #   action :push
 # end
 
@@ -246,7 +246,7 @@ docker_registry 'localhost:5043' do
 end
 
 docker_image 'localhost:5043/someara/name-w-dashes' do
-  not_if { ::File.exist? '/marker_image_private_name-w-dashes' }
+  not_if { ::File.exist?('/marker_image_private_name-w-dashes') }
   action :push
 end
 
@@ -255,7 +255,7 @@ file '/marker_image_private_name-w-dashes' do
 end
 
 docker_image 'localhost:5043/someara/name.w.dots' do
-  not_if { ::File.exist? '/marker_image_private_name.w.dots' }
+  not_if { ::File.exist?('/marker_image_private_name.w.dots') }
   action :push
 end
 

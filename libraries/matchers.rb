@@ -320,4 +320,12 @@ if defined?(ChefSpec)
     ChefSpec::Matchers::ResourceMatcher.new(:docker_volume, :remove, resource_name)
   end
 
+  ###############
+  # docker_exec
+  ###############
+  ChefSpec.define_matcher :docker_exec
+
+  def run_docker_exec(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_exec, :run, resource_name)
+  end
 end

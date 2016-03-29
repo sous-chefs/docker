@@ -169,7 +169,7 @@ bash 'quitter' do
 end
 
 docker_container 'quitter' do
-  not_if { ::File.exist? '/marker_container_quitter_restarter' }
+  not_if { ::File.exist?('/marker_container_quitter_restarter') }
   action :restart
 end
 
@@ -185,7 +185,7 @@ execute 'restarter' do
 end
 
 docker_container 'restarter' do
-  not_if { ::File.exist? '/marker_container_restarter' }
+  not_if { ::File.exist?('/marker_container_restarter') }
   action :restart
 end
 
@@ -402,7 +402,7 @@ docker_container 'sean_was_here' do
   repo 'debian'
   volumes_from 'chef_container'
   autoremove true
-  not_if { ::File.exist? '/marker_container_sean_was_here' }
+  not_if { ::File.exist?('/marker_container_sean_was_here') }
   action :run
 end
 

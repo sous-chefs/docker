@@ -878,3 +878,11 @@ describe command("docker ps -af 'exited=137'") do
   its(:exit_status) { should eq 0 }
   its(:stdout) { should match(/kill_after/) }
 end
+
+# docker_exec[busybox_exec]
+
+describe command('docker exec busybox_exec ls /tmp') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/onefile/) }
+  its(:stdout) { should match(/twofile/) }
+end
