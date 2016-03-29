@@ -1,3 +1,11 @@
+# v2.6.0
+
+- :insecure_registry in the docker_service provider can now be a string or array
+- scientific and oracle have been added to the metadata as supported platforms
+- The effect of -1 on memory_swap has been clarified in the readme
+- Tests have been updated to run faster using trap vs. nc
+- Checksums for new Docker releases have been added
+
 # v2.5.9
 
 - Depend on compat_resource >= 12.9.0
