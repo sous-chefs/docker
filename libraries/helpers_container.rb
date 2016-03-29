@@ -69,17 +69,23 @@ module DockerCookbook
       end
 
       def state
-        container ? container.info['State'] : {}
+        # Always return the latest state, see #510
+        return Docker::Container.get(container_name, {}, connection).info['State']
+      rescue
+        return {}
       end
 
       def wait_running_state(v)
-        i = 0
         tries = 20
-        until state['Running'] == v || state['FinishedAt'] != '0001-01-01T00:00:00Z'
-          i += 1
-          break if i == tries
+        tries.times do
+          return if state['Running'] == v
           sleep 1
         end
+        return if state['Running'] == v
+
+        # Container failed to reach correct state: Throw an error
+        desired_state_str = v ? 'running' : 'not running'
+        raise Docker::Error::TimeoutError, "Container #{container_name} failed to change to #{desired_state_str} state after #{tries} seconds"
       end
 
       def port(v = nil)
