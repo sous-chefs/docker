@@ -12,6 +12,8 @@ depends 'compat_resource', '>= 12.9.0'
 
 supports 'amazon'
 supports 'centos'
+supports 'scientific'
+supports 'oracle'
 supports 'debian'
 supports 'fedora'
 supports 'redhat'
