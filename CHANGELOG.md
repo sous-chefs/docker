@@ -1,3 +1,9 @@
+# v2.6.1
+
+- Add support for docker_container image property with custom repository port
+- Resolve restarting container races
+- New resource docker_exec
+
 # v2.6.0
 
 - :insecure_registry in the docker_service provider can now be a string or array
