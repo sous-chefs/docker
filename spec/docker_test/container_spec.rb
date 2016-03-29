@@ -142,7 +142,7 @@ describe 'docker_test::container' do
 
     it 'run execute[red_light]' do
       expect(chef_run).to run_execute('red_light').with(
-        command:  'docker run --name red_light -d busybox nc -ll -p 42 -e /bin/cat'
+        command:  'docker run --name red_light -d busybox sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
       )
     end
 
@@ -176,7 +176,7 @@ describe 'docker_test::container' do
 
     it 'run execute[restarter]' do
       expect(chef_run).to run_execute('restarter').with(
-        command: 'docker run --name restarter -d busybox nc -ll -p 69 -e /bin/cat'
+        command: 'docker run --name restarter -d busybox sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
       )
     end
 
@@ -689,7 +689,7 @@ describe 'docker_test::container' do
       expect(chef_run).to run_docker_container('ulimits').with(
         repo: 'alpine',
         tag: '3.1',
-        command: 'nc -ll -p 778 -e /bin/cat',
+        command: 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"',
         port: '778:778',
         cap_add: ['SYS_RESOURCE'],
         ulimits: [

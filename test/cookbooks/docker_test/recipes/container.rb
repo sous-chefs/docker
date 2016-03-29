@@ -127,7 +127,7 @@ end
 
 # start a container to be paused
 execute 'red_light' do
-  command 'docker run --name red_light -d busybox nc -ll -p 42 -e /bin/cat'
+  command 'docker run --name red_light -d busybox sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   not_if "[ ! -z `docker ps -qaf 'name=red_light$'` ]"
   action :run
 end
@@ -143,7 +143,7 @@ end
 # start and pause a container to be unpaused
 bash 'green_light' do
   code <<-EOF
-  docker run --name green_light -d busybox nc -ll -p 42 -e /bin/cat
+  docker run --name green_light -d busybox sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"
   docker pause green_light
   EOF
   not_if "[ ! -z `docker ps -qaf 'name=green_light$'` ]"
@@ -161,7 +161,7 @@ end
 # create and stop a container to be restarted
 bash 'quitter' do
   code <<-EOF
-  docker run --name quitter -d busybox nc -ll -p 69 -e /bin/cat
+  docker run --name quitter -d busybox sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"
   docker kill quitter
   EOF
   not_if "[ ! -z `docker ps -qaf 'name=quitter$'` ]"
@@ -179,7 +179,7 @@ end
 
 # start a container to be restarted
 execute 'restarter' do
-  command 'docker run --name restarter -d busybox nc -ll -p 69 -e /bin/cat'
+  command 'docker run --name restarter -d busybox sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   not_if "[ ! -z `docker ps -qaf 'name=restarter$'` ]"
   action :run
 end
@@ -746,7 +746,7 @@ end
 #####################
 
 execute 'change_network_mode' do
-  command 'docker run --name change_network_mode -d alpine:3.1 nc -ll -p 777 -e /bin/cat'
+  command 'docker run --name change_network_mode -d alpine:3.1 sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   not_if "[ ! -z `docker ps -qaf 'name=change_network_mode$'` ]"
   action :run
 end
@@ -754,7 +754,7 @@ end
 docker_container 'change_network_mode' do
   repo 'alpine'
   tag '3.1'
-  command 'nc -ll -p 777 -e /bin/cat'
+  command 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   network_mode 'host'
   action :run
 end
@@ -766,7 +766,7 @@ end
 docker_container 'ulimits' do
   repo 'alpine'
   tag '3.1'
-  command 'nc -ll -p 778 -e /bin/cat'
+  command 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   port '778:778'
   cap_add 'SYS_RESOURCE'
   ulimits [
