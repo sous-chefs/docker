@@ -37,7 +37,7 @@ module DockerCookbook
     property :graph, [String, nil]
     property :host, [String, Array], coerce: proc { |v| coerce_host(v) }
     property :icc, [Boolean, nil]
-    property :insecure_registry, [String, nil]
+    property :insecure_registry, [Array, String, nil], coerce: proc { |v| coerce_insecure_registry(v) }
     property :ip, [IPV4_ADDR, IPV6_ADDR, nil]
     property :ip_forward, [Boolean, nil]
     property :ipv4_forward, Boolean, default: true
