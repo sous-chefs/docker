@@ -1,3 +1,7 @@
+# v2.6.2
+
+- Include init support for oracle platform
+
 # v2.6.1
 
 - Add support for docker_container image property with custom repository port
