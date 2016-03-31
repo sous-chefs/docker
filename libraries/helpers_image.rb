@@ -96,7 +96,7 @@ module DockerCookbook
 
       def load_image
         with_retries do
-          Docker::Image.load(source, (), connection)
+          Docker::Image.load(source, {}, connection)
         end
       end
     end
