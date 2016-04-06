@@ -1,3 +1,7 @@
+# v2.6.3
+
+- Implements load action for images
+
 # v2.6.2
 
 - Include init support for oracle platform
