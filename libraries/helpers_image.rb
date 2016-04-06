@@ -93,6 +93,12 @@ module DockerCookbook
           Docker::Image.save(repo, destination, connection)
         end
       end
+
+      def load_image
+        with_retries do
+          Docker::Image.load(source, {}, connection)
+        end
+      end
     end
   end
 end
