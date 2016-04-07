@@ -595,10 +595,6 @@ describe 'docker_test::container' do
         links: ['another_link_source:derp']
       )
     end
-
-    it 'creates file[/marker_container_remover]' do
-      expect(chef_run).to create_file('/marker_container_remover')
-    end
   end
 
   context 'testing volume removal' do
