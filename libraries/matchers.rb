@@ -256,10 +256,6 @@ if defined?(ChefSpec)
     ChefSpec::Matchers::ResourceMatcher.new(:docker_container, :remove, resource_name)
   end
 
-  def remove_link_docker_container(resource_name)
-    ChefSpec::Matchers::ResourceMatcher.new(:docker_container, :remove_link, resource_name)
-  end
-
   def commit_docker_container(resource_name)
     ChefSpec::Matchers::ResourceMatcher.new(:docker_container, :commit, resource_name)
   end

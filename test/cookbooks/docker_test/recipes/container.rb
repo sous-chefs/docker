@@ -651,11 +651,6 @@ docker_container 'another_link_target' do
   action :run_if_missing
 end
 
-file '/marker_container_remover' do
-  notifies :remove_link, 'docker_container[another_link_target]', :immediately
-  action :create
-end
-
 ################
 # volume removal
 ################
