@@ -24,7 +24,6 @@ end
 # service named 'default'
 docker_service_manager_sysvinit 'default' do
   graph '/var/lib/docker'
-  host 'unix:///var/run/docker.sock'
   action :start
 end
 

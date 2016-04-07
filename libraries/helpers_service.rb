@@ -65,6 +65,20 @@ module DockerCookbook
         sorted.first
       end
 
+      def connect_socket
+        return "/var/run/#{docker_name}.sock" unless host
+        sorted = coerce_host(host).sort do |a, b|
+          c_a = 1 if a =~ /^unix:/
+          c_a = 2 if a =~ /^fd:/
+          c_a = 3 unless c_a
+          c_b = 1 if b =~ /^unix:/
+          c_b = 2 if b =~ /^fd:/
+          c_b = 3 unless c_b
+          c_a <=> c_b
+        end
+        sorted.first.sub(%r{unix://|fd://}, '')
+      end
+
       def coerce_host(v)
         v = v.split if v.is_a?(String)
         Array(v).each_with_object([]) do |s, r|

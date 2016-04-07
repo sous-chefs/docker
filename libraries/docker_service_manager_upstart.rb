@@ -13,7 +13,8 @@ module DockerCookbook
         mode '0644'
         variables(
           docker_name: docker_name,
-          docker_daemon_arg: docker_daemon_arg
+          docker_daemon_arg: docker_daemon_arg,
+          docker_socket: connect_socket
         )
         cookbook 'docker'
         not_if { docker_name == 'default' && ::File.exist?('/etc/init/docker.conf') }

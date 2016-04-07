@@ -6,7 +6,6 @@ end
 # service named 'default'
 docker_service_manager_upstart 'default' do
   graph '/var/lib/docker'
-  host 'unix:///var/run/docker.sock'
   action :start
 end
 
