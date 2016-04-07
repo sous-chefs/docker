@@ -1,3 +1,8 @@
+# v2.6.4
+
+- passing parsed socket file to init script
+- removing unused action remove_link
+
 # v2.6.3
 
 - Implements load action for images
