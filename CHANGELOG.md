@@ -1,3 +1,7 @@
+# v2.6.5
+
+- need a guard around docker_socket incase it isnt set
+
 # v2.6.4
 
 - passing parsed socket file to init script
