@@ -19,9 +19,9 @@ module DockerCookbook
     end
 
     action :start do
+      create_docker_wait_ready
       create_init
       create_service
-      wait_ready
     end
 
     action :stop do
@@ -56,10 +56,10 @@ module DockerCookbook
           mode '0755'
           variables(
             docker_name: docker_name,
-            docker_daemon_arg: docker_daemon_arg
+            docker_daemon_arg: docker_daemon_arg,
+            docker_wait_ready: "#{libexec_dir}/#{docker_name}-wait-ready"
           )
           cookbook 'docker'
-          not_if { docker_name == 'docker' && ::File.exist?('/etc/init.d/docker') }
           action :create
         end
 
@@ -80,25 +80,6 @@ module DockerCookbook
           provider Chef::Provider::Service::Init::Debian
           supports restart: true, status: true
           action [:enable, :start]
-        end
-      end
-
-      def wait_ready
-        bash "docker-wait-ready #{name}" do
-          code <<-EOF
-            timeout=0
-            while [ $timeout -lt 20 ];  do
-              #{docker_cmd} ps | head -n 1 | grep ^CONTAINER
-              if [ $? -eq 0 ]; then
-                break
-              fi
-              ((timeout++))
-              sleep 1
-            done
-            [[ $timeout -eq 20 ]] && exit 1
-            exit 0
-            EOF
-          not_if "#{docker_cmd} ps | head -n 1 | grep ^CONTAINER"
         end
       end
     end

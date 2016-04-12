@@ -68,6 +68,9 @@ module DockerCookbook
     # logging
     property :logfile, String, default: '/var/log/docker.log'
 
+    # docker-wait-ready timeout
+    property :service_timeout, Integer, default: 20
+
     allowed_actions :start, :stop, :restart
 
     alias label labels
@@ -76,5 +79,35 @@ module DockerCookbook
     alias tlskey tls_server_key
     alias tlsverify tls_verify
     alias run_group group
+
+    declare_action_class.class_eval do
+      def libexec_dir
+        return '/usr/libexec/docker' if node['platform_family'] == 'rhel'
+        '/usr/lib/docker'
+      end
+
+      def create_docker_wait_ready
+        directory libexec_dir do
+          owner 'root'
+          group 'root'
+          mode '0755'
+          action :create
+        end
+
+        template "#{libexec_dir}/#{docker_name}-wait-ready" do
+          source 'default/docker-wait-ready.erb'
+          owner 'root'
+          group 'root'
+          mode '0755'
+          variables(
+            docker_cmd: docker_cmd,
+            libexec_dir: libexec_dir,
+            service_timeout: service_timeout
+          )
+          cookbook 'docker'
+          action :create
+        end
+      end
+    end
   end
 end

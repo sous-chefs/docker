@@ -6,6 +6,8 @@ module DockerCookbook
     provides :docker_service_manager, platform: 'linuxmint'
 
     action :start do
+      create_docker_wait_ready
+
       template "/etc/init/#{docker_name}.conf" do
         source 'upstart/docker.conf.erb'
         owner 'root'
@@ -14,10 +16,9 @@ module DockerCookbook
         variables(
           docker_name: docker_name,
           docker_daemon_arg: docker_daemon_arg,
-          docker_socket: connect_socket
+          docker_wait_ready: "#{libexec_dir}/#{docker_name}-wait-ready"
         )
         cookbook 'docker'
-        not_if { docker_name == 'default' && ::File.exist?('/etc/init/docker.conf') }
         action :create
       end
 
@@ -36,24 +37,6 @@ module DockerCookbook
         provider Chef::Provider::Service::Upstart
         supports status: true
         action :start
-      end
-
-      # FIXME: why do we need this? This should be handled in init
-      bash "docker-wait-ready #{name}" do
-        code <<-EOF
-            timeout=0
-            while [ $timeout -lt 20 ];  do
-              #{docker_cmd} ps | head -n 1 | grep ^CONTAINER
-              if [ $? -eq 0 ]; then
-                break
-              fi
-              ((timeout++))
-              sleep 1
-            done
-            [[ $timeout -eq 20 ]] && exit 1
-            exit 0
-            EOF
-        not_if "#{docker_cmd} ps | head -n 1 | grep ^CONTAINER"
       end
     end
 

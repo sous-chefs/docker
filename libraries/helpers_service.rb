@@ -76,7 +76,7 @@ module DockerCookbook
           c_b = 3 unless c_b
           c_a <=> c_b
         end
-        sorted.first.sub(%r{unix://|fd://}, '')
+        sorted.first
       end
 
       def coerce_host(v)

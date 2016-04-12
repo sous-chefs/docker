@@ -49,12 +49,11 @@ post-start script
   if [ -f /etc/default/$UPSTART_JOB ]; then
     . /etc/default/$UPSTART_JOB
   fi
-  if [ -n "<%= @docker_socket %>" ]; then
-    while ! [ -S "<%= @docker_socket %>" ]; do
-      initctl status $UPSTART_JOB | grep -qE "(stop|respawn)/" && exit 1
-      echo "Waiting for <%= @docker_socket %>"
-      sleep 0.1
-    done
+  <%= @docker_wait_ready %>
+  if [ $? -eq 0 ]; then
     echo "<%= @docker_socket %> is up"
+  else
+    echo "<%= @docker_socket %> failed to come start"
+    exit 1
   fi
 end script
