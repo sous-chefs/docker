@@ -1,3 +1,8 @@
+# v2.6.7
+
+- only wait for running state if detached
+- updating systemd template and bugfix for socket
+
 # v2.6.6
 
 - refactor of docker-wait-ready
