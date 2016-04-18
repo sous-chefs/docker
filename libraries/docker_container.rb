@@ -290,7 +290,7 @@ module DockerCookbook
           container.start
           timeout ? container.wait(timeout) : container.wait unless detach
         end
-        wait_running_state(true)
+        wait_running_state(true) if detach
       end
     end
 
