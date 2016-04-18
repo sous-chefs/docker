@@ -40,7 +40,10 @@ module DockerCookbook
         owner 'root'
         group 'root'
         mode '0644'
-        variables(docker_name: docker_name)
+        variables(
+          docker_name: docker_name,
+          docker_socket: connect_socket.sub(%r{unix://|fd://}, '')
+        )
         cookbook 'docker'
         action :create
         not_if { docker_name == 'default' && ::File.exist?('/lib/systemd/system/docker.socket') }
