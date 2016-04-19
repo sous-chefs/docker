@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 group :docker do
-  gem 'docker-api', '= 1.26.2'
+  gem 'docker-api', '= 1.28.0'
 end
 
 group :rake do
