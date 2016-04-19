@@ -1,3 +1,9 @@
+# v2.6.8
+
+- notifies need to restart service immediately to prevent containers from stopping
+- bumping docker-api version 1.28.0
+- adding tests for image load
+
 # v2.6.7
 
 - only wait for running state if detached
