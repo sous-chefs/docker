@@ -68,6 +68,38 @@ docker_image 'save hello-world' do
   action :save
 end
 
+########
+# :load
+########
+
+docker_image 'cirros' do
+  action :pull
+  not_if { ::File.exist?('/marker_load_cirros-1') }
+end
+
+docker_image 'save cirros' do
+  repo 'cirros'
+  destination '/cirros.tar'
+  not_if { ::File.exist?('/cirros.tar') }
+  action :save
+end
+
+docker_image 'remove cirros' do
+  repo 'cirros'
+  not_if { ::File.exist?('/marker_load_cirros-1') }
+  action :remove
+end
+
+docker_image 'load cirros' do
+  source '/cirros.tar'
+  not_if { ::File.exist?('/marker_load_cirros-1') }
+  action :load
+end
+
+file '/marker_load_cirros-1' do
+  action :create
+end
+
 ###########################
 # :build
 ###########################

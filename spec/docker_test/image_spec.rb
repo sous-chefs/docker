@@ -96,6 +96,34 @@ describe 'docker_test::image' do
     end
   end
 
+  context 'testing :load action' do
+    it 'pulls docker_image[cirros]' do
+      expect(chef_run).to pull_docker_image('cirros')
+    end
+
+    it 'saves docker_image[save cirros]' do
+      expect(chef_run).to save_docker_image('save cirros').with(
+        destination: '/cirros.tar'
+      )
+    end
+
+    it 'removes docker_image[remove cirros]' do
+      expect(chef_run).to remove_docker_image('remove cirros').with(
+        repo: 'cirros'
+      )
+    end
+
+    it 'loads docker_image[load cirros]' do
+      expect(chef_run).to load_docker_image('load cirros').with(
+        source: '/cirros.tar'
+      )
+    end
+
+    it 'creates file[/marker_image_image-1]' do
+      expect(chef_run).to create_file('/marker_load_cirros-1')
+    end
+  end
+
   context 'testing the :build action from Dockerfile' do
     it 'creates directory[/usr/local/src/container1]' do
       expect(chef_run).to create_directory('/usr/local/src/container1')

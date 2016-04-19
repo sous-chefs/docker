@@ -93,11 +93,18 @@ describe command('docker images') do
   its(:stdout) { should_not match(/^slackware\s.*latest/) }
 end
 
-# docker_image[save hello-world]
+# docker_image[save cirros]
 
-describe file('/hello-world.tar') do
+describe file('/cirros.tar') do
   it { should be_file }
   it { should be_mode 0644 }
+end
+
+# docker_image[load cirros]
+
+describe command('docker images') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/^cirros\s.*latest/) }
 end
 
 # docker_image[image-1]

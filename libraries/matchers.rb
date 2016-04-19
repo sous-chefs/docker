@@ -203,6 +203,10 @@ if defined?(ChefSpec)
     ChefSpec::Matchers::ResourceMatcher.new(:docker_image, :save, resource_name)
   end
 
+  def load_docker_image(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_image, :load, resource_name)
+  end
+
   ##################
   # docker_container
   ##################
