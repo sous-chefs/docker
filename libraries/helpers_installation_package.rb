@@ -46,6 +46,11 @@ module DockerCookbook
         return true if node['platform'] == 'ubuntu' && node['platform_version'] == '15.10'
         false
       end
+      
+      def xenial?
+        return true if node['platform'] == 'ubuntu' && node['platform_version'] == '16.04'
+        false
+      end
 
       def amazon?
         return true if node['platform'] == 'amazon'
@@ -63,6 +68,7 @@ module DockerCookbook
         return "#{v}-0~trusty" if trusty?
         return "#{v}-0~vivid" if vivid?
         return "#{v}-0~wily" if wily?
+        return "#{v}-0~xenial" if xenial?
         v
       end
 
