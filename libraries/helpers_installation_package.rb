@@ -46,7 +46,7 @@ module DockerCookbook
         return true if node['platform'] == 'ubuntu' && node['platform_version'] == '15.10'
         false
       end
-      
+
       def xenial?
         return true if node['platform'] == 'ubuntu' && node['platform_version'] == '16.04'
         false
