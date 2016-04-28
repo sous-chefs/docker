@@ -77,7 +77,7 @@ module DockerCookbook
         return '1.7.1' if amazon?
         return '1.9.1' if fc21?
         return '1.9.1' if vivid?
-        '1.10.0'
+        '1.11.0'
       end
 
       def docker_bin
