@@ -24,7 +24,7 @@ platforms:
   run_list:
   - recipe[yum-docker]
 
-- name: centos-7.1
+- name: centos-7.2
   driver_config:
     box: opscode-centos-7.1
     box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-7.1_chef-provisionerless.box
@@ -38,7 +38,7 @@ platforms:
   run_list:
   - recipe[yum-docker]
 
-- name: debian-7.9
+- name: debian-7.10
   driver_config:
     box: opscode-debian-7.9
     box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_debian-7.9_chef-provisionerless.box
@@ -46,7 +46,7 @@ platforms:
   - recipe[apt]
   - recipe[apt-docker]
 
-- name: debian-8.1
+- name: debian-8.4
   driver_config:
     box: opscode-debian-8.1
     box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_debian-8.1_chef-provisionerless.box
@@ -74,7 +74,7 @@ platforms:
   - recipe[apt]
   - recipe[apt-docker]
 
-- name: ubuntu-15.04
+- name: ubuntu-16.04
   run_list:
     - recipe[apt]
   driver_config:
