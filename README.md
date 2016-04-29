@@ -1114,7 +1114,7 @@ Most `docker_container` properties are the `snake_case` version of the
 - `security_opts` - A list of string values to customize labels for
   MLS systems, such as SELinux.
 - `signal` - The signal to send when using the `:kill` action.
-  Defaults to `SIGKILL`.
+  Defaults to `SIGTERM`.
 - `tty` - Boolean value to allocate a pseudo-TTY. Defaults to `false`.
 - `user` - A string value specifying the user inside the container.
 - `volumes` - An Array of paths inside the container to expose. Does
