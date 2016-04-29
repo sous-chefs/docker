@@ -17,59 +17,34 @@ verifier:
   name: inspec
 
 platforms:
-- name: centos-6.5
-  driver_config:
-    box: opscode-centos-6.5
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-6.5_chef-provisionerless.box
+- name: centos-6.7
   run_list:
   - recipe[yum-docker]
 
 - name: centos-7.2
-  driver_config:
-    box: opscode-centos-7.1
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-7.1_chef-provisionerless.box
   run_list:
   - recipe[yum-docker]
 
-- name: fedora-21
-  driver_config:
-    box: opscode-fedora-21
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_fedora-21_chef-provisionerless.box
+- name: fedora-22
   run_list:
   - recipe[yum-docker]
 
 - name: debian-7.10
-  driver_config:
-    box: opscode-debian-7.9
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_debian-7.9_chef-provisionerless.box
   run_list:
   - recipe[apt]
   - recipe[apt-docker]
 
 - name: debian-8.4
-  driver_config:
-    box: opscode-debian-8.1
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_debian-8.1_chef-provisionerless.box
   run_list:
   - recipe[apt]
   - recipe[apt-docker]
 
 - name: ubuntu-12.04
   run_list:
-    - recipe[apt]
-  driver_config:
-    box: opscode-ubuntu-12.04
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-12.04_chef-provisionerless.box
-  run_list:
   - recipe[apt]
   - recipe[apt-docker]
 
 - name: ubuntu-14.04
-  run_list:
-    - recipe[apt]
-  driver_config:
-    box: opscode-ubuntu-14.04
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-14.04_chef-provisionerless.box
   run_list:
   - recipe[apt]
   - recipe[apt-docker]
@@ -77,9 +52,6 @@ platforms:
 - name: ubuntu-16.04
   run_list:
     - recipe[apt]
-  driver_config:
-    box: opscode-ubuntu-15.04
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-15.04_chef-provisionerless.box
   run_list:
   - recipe[apt]
   - recipe[apt-docker]
@@ -92,7 +64,7 @@ suites:
 
 - name: installation_binary-1100
   includes: [
-    'ubuntu-15.04'
+    'ubuntu-16.04'
   ]
   attributes:
     docker:
@@ -106,7 +78,7 @@ suites:
 
 - name: installation_script_main
   includes: [
-    'ubuntu-15.04',
+    'ubuntu-16.04',
   ]
   attributes:
     docker:
@@ -116,7 +88,7 @@ suites:
 
 - name: installation_script_test
   includes: [
-    'ubuntu-15.04',
+    'ubuntu-16.04',
   ]
   attributes:
     docker:
@@ -126,7 +98,7 @@ suites:
 
 - name: installation_script_experimental
   includes: [
-    'ubuntu-15.04',
+    'ubuntu-16.04',
   ]
   attributes:
     docker:
@@ -140,12 +112,12 @@ suites:
 
 - name: installation_package-191
   includes: [
-    'centos-7.0',
-    'debian-8.1',
-    'fedora-21',
+    'centos-7.2',
+    'debian-8.4',
+    'fedora-23',
     'ubuntu-12.04',
     'ubuntu-14.04',
-    'ubuntu-15.04'
+    'ubuntu-16.04'
   ]
   attributes:
     docker:
@@ -155,11 +127,11 @@ suites:
 
 - name: installation_package-1100
   includes: [
-    'centos-7.0',
-    'debian-8.1',
+    'centos-7.2',
+    'debian-8.4',
     'ubuntu-12.04',
     'ubuntu-14.04',
-    'ubuntu-15.04'
+    'ubuntu-16.04'
   ]
   attributes:
     docker:
@@ -172,14 +144,14 @@ suites:
 #################################
 - name: service-execute
   includes: [
-    'ubuntu-15.04',
+    'ubuntu-16.04',
   ]
   run_list:
   - recipe[docker_test::service_execute]
 
 - name: service-execute-multi
   includes: [
-    'ubuntu-15.04',
+    'ubuntu-16.04',
   ]
   run_list:
   - recipe[docker_test::service_execute_multi]
@@ -189,14 +161,14 @@ suites:
 ##################################
 - name: service-sysvinit
   includes: [
-    'debian-7.9'
+    'debian-7.10'
   ]
   run_list:
   - recipe[docker_test::service_sysvinit]
 
 - name: service-sysvinit-multi
   includes: [
-    'debian-7.9'
+    'debian-7.10'
   ]
   run_list:
   - recipe[docker_test::service_sysvinit_multi]
@@ -225,20 +197,20 @@ suites:
 #################################
 - name: service-systemd
   includes: [
-    'centos-7.0',
-    'fedora-21',
-    'debian-8.1',
-    'ubuntu-15.04'
+    'centos-7.2',
+    'fedora-23',
+    'debian-8.4',
+    'ubuntu-16.04'
   ]
   run_list:
   - recipe[docker_test::service_systemd]
 
 - name: service-systemd-multi
   includes: [
-    'centos-7.0',
-    'fedora-21',
-    'debian-8.1',
-    'ubuntu-15.04'
+    'centos-7.2',
+    'fedora-23',
+    'debian-8.4',
+    'ubuntu-16.04'
   ]
   run_list:
   - recipe[docker_test::service_systemd_multi]
@@ -249,7 +221,7 @@ suites:
 
 - name: resources-191
   includes: [
-    'ubuntu-15.04'
+    'ubuntu-16.04'
   ]
   attributes:
     docker:
@@ -262,7 +234,7 @@ suites:
 
 - name: resources-1100
   includes: [
-    'ubuntu-15.04'
+    'ubuntu-16.04'
   ]
   attributes:
     docker:
@@ -275,7 +247,7 @@ suites:
 
 - name: network
   includes: [
-    'ubuntu-15.04'
+    'ubuntu-16.04'
   ]
   attributes:
     docker:
@@ -286,7 +258,7 @@ suites:
 
 - name: volume
   includes: [
-    'ubuntu-15.10'
+    'ubuntu-16.04'
   ]
   attributes:
     docker:
@@ -301,12 +273,12 @@ suites:
 
 - name: auto
   includes: [
-    'centos-7.0',
-    'fedora-21',
-    'debian-8.1',
+    'centos-7.2',
+    'fedora-23',
+    'debian-8.4',
     'ubuntu-12.04',
     'ubuntu-14.04',
-    'ubuntu-15.04'
+    'ubuntu-16.04'
   ]
   run_list:
   - recipe[docker_test::auto]
