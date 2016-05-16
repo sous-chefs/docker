@@ -116,8 +116,7 @@ suites:
     'debian-8.4',
     'fedora-23',
     'ubuntu-12.04',
-    'ubuntu-14.04',
-    'ubuntu-16.04'
+    'ubuntu-14.04'
    ]
   attributes:
     docker:
@@ -130,12 +129,25 @@ suites:
     'centos-7.2',
     'debian-8.4',
     'ubuntu-12.04',
+    'ubuntu-14.04'
+   ]
+  attributes:
+    docker:
+      version: '1.10.0'
+  run_list:
+  - recipe[docker_test::installation_package]
+
+- name: installation_package-1111
+  includes: [
+    'centos-7.2',
+    'debian-8.4',
+    'ubuntu-12.04',
     'ubuntu-14.04',
     'ubuntu-16.04'
    ]
   attributes:
     docker:
-      version: '1.10.0'
+      version: '1.11.1'
   run_list:
   - recipe[docker_test::installation_package]
 
