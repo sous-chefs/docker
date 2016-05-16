@@ -73,7 +73,7 @@ platforms:
 #     ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
 #   run_list:
 #   - recipe[apt]
-#   - recipe[apt-docker]
+#   - recipe[chef-apt-docker]
 
 - name: ubuntu-12.04
   driver_plugin: digitalocean
@@ -86,7 +86,7 @@ platforms:
     ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
   run_list:
   - recipe[apt]
-  - recipe[apt-docker]
+  - recipe[chef-apt-docker]
 
 - name: ubuntu-14.04
   driver_plugin: digitalocean
@@ -99,7 +99,7 @@ platforms:
     ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
   run_list:
   - recipe[apt]
-  - recipe[apt-docker]
+  - recipe[chef-apt-docker]
 
 - name: ubuntu-15.10
   driver_plugin: digitalocean
@@ -113,7 +113,7 @@ platforms:
     ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
   run_list:
   - recipe[apt]
-  - recipe[apt-docker]
+  - recipe[chef-apt-docker]
 
 suites:
 #####################################

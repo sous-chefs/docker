@@ -32,29 +32,29 @@ platforms:
 - name: debian-7.10
   run_list:
   - recipe[apt]
-  - recipe[apt-docker]
+  - recipe[chef-apt-docker]
 
 - name: debian-8.4
   run_list:
   - recipe[apt]
-  - recipe[apt-docker]
+  - recipe[chef-apt-docker]
 
 - name: ubuntu-12.04
   run_list:
   - recipe[apt]
-  - recipe[apt-docker]
+  - recipe[chef-apt-docker]
 
 - name: ubuntu-14.04
   run_list:
   - recipe[apt]
-  - recipe[apt-docker]
+  - recipe[chef-apt-docker]
 
 - name: ubuntu-16.04
   run_list:
     - recipe[apt]
   run_list:
   - recipe[apt]
-  - recipe[apt-docker]
+  - recipe[chef-apt-docker]
 
 
 suites:
@@ -65,7 +65,7 @@ suites:
 - name: installation_binary-1100
   includes: [
     'ubuntu-16.04'
-  ]
+   ]
   attributes:
     docker:
       version: '1.10.0'
@@ -79,7 +79,7 @@ suites:
 - name: installation_script_main
   includes: [
     'ubuntu-16.04',
-  ]
+   ]
   attributes:
     docker:
       repo: 'main'
@@ -89,7 +89,7 @@ suites:
 - name: installation_script_test
   includes: [
     'ubuntu-16.04',
-  ]
+   ]
   attributes:
     docker:
       repo: 'test'
@@ -99,7 +99,7 @@ suites:
 - name: installation_script_experimental
   includes: [
     'ubuntu-16.04',
-  ]
+   ]
   attributes:
     docker:
       repo: 'experimental'
@@ -118,7 +118,7 @@ suites:
     'ubuntu-12.04',
     'ubuntu-14.04',
     'ubuntu-16.04'
-  ]
+   ]
   attributes:
     docker:
       version: '1.9.1'
@@ -132,7 +132,7 @@ suites:
     'ubuntu-12.04',
     'ubuntu-14.04',
     'ubuntu-16.04'
-  ]
+   ]
   attributes:
     docker:
       version: '1.10.0'
@@ -145,14 +145,14 @@ suites:
 - name: service-execute
   includes: [
     'ubuntu-16.04',
-  ]
+   ]
   run_list:
   - recipe[docker_test::service_execute]
 
 - name: service-execute-multi
   includes: [
     'ubuntu-16.04',
-  ]
+   ]
   run_list:
   - recipe[docker_test::service_execute_multi]
 
@@ -162,14 +162,14 @@ suites:
 - name: service-sysvinit
   includes: [
     'debian-7.10'
-  ]
+   ]
   run_list:
   - recipe[docker_test::service_sysvinit]
 
 - name: service-sysvinit-multi
   includes: [
     'debian-7.10'
-  ]
+   ]
   run_list:
   - recipe[docker_test::service_sysvinit_multi]
 
@@ -180,7 +180,7 @@ suites:
   includes: [
     'ubuntu-12.04',
     'ubuntu-14.04'
-  ]
+   ]
   run_list:
   - recipe[docker_test::service_upstart]
 
@@ -188,7 +188,7 @@ suites:
   includes: [
     'ubuntu-12.04',
     'ubuntu-14.04'
-  ]
+   ]
   run_list:
   - recipe[docker_test::service_upstart_multi]
 
@@ -201,7 +201,7 @@ suites:
     'fedora-23',
     'debian-8.4',
     'ubuntu-16.04'
-  ]
+   ]
   run_list:
   - recipe[docker_test::service_systemd]
 
@@ -211,7 +211,7 @@ suites:
     'fedora-23',
     'debian-8.4',
     'ubuntu-16.04'
-  ]
+   ]
   run_list:
   - recipe[docker_test::service_systemd_multi]
 
@@ -222,7 +222,7 @@ suites:
 - name: resources-191
   includes: [
     'ubuntu-16.04'
-  ]
+   ]
   attributes:
     docker:
       version: '1.9.1'
@@ -235,7 +235,7 @@ suites:
 - name: resources-1100
   includes: [
     'ubuntu-16.04'
-  ]
+   ]
   attributes:
     docker:
       version: '1.10.0'
@@ -248,7 +248,7 @@ suites:
 - name: network
   includes: [
     'ubuntu-16.04'
-  ]
+   ]
   attributes:
     docker:
       version: '1.10.0'
@@ -259,7 +259,7 @@ suites:
 - name: volume
   includes: [
     'ubuntu-16.04'
-  ]
+   ]
   attributes:
     docker:
       version: '1.10.0'
@@ -279,6 +279,6 @@ suites:
     'ubuntu-12.04',
     'ubuntu-14.04',
     'ubuntu-16.04'
-  ]
+   ]
   run_list:
   - recipe[docker_test::auto]
