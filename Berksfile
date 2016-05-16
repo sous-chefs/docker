@@ -4,7 +4,7 @@ metadata
 
 group :integration do
   cookbook 'apt'
-  cookbook 'apt-docker'
+  cookbook 'chef-apt-docker'
   cookbook 'yum-docker'
   cookbook 'etcd'
   cookbook 'docker_test', path: 'test/cookbooks/docker_test'
