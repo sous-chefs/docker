@@ -26,6 +26,7 @@ _Store
 .rvmrc
 Gemfile.lock
 .bundle
+*.gem
 
 # YARD artifacts
 .yardoc
@@ -37,6 +38,7 @@ doc/
 Berksfile.lock
 .kitchen
 .kitchen.local.yml
+vendor/
 .coverage/
 .zero-knife.rb
 
