@@ -117,8 +117,7 @@ suites:
     'debian-7.10',
     'debian-8.4',
     'ubuntu-12.04',
-    'ubuntu-14.04',
-    'fedora-23',
+    'ubuntu-14.04'
    ]
   attributes:
     docker:
