@@ -1,42 +1,49 @@
-# v2.6.8
+# Docker Cookbook Changelog
+
+## v2.7.0
+
+- Initial support for Ubuntu 16.04
+- Initial support for Fedora 22 / 23
+
+## v2.6.8
 
 - notifies need to restart service immediately to prevent containers from stopping
 - bumping docker-api version 1.28.0
 - adding tests for image load
 
-# v2.6.7
+## v2.6.7
 
 - only wait for running state if detached
 - updating systemd template and bugfix for socket
 
-# v2.6.6
+## v2.6.6
 
 - refactor of docker-wait-ready
 
-# v2.6.5
+## v2.6.5
 
-- need a guard around docker_socket incase it isnt set
+- need a guard around docker_socket incase it isn't set
 
-# v2.6.4
+## v2.6.4
 
 - passing parsed socket file to init script
 - removing unused action remove_link
 
-# v2.6.3
+## v2.6.3
 
 - Implements load action for images
 
-# v2.6.2
+## v2.6.2
 
 - Include init support for oracle platform
 
-# v2.6.1
+## v2.6.1
 
 - Add support for docker_container image property with custom repository port
 - Resolve restarting container races
 - New resource docker_exec
 
-# v2.6.0
+## v2.6.0
 
 - :insecure_registry in the docker_service provider can now be a string or array
 - scientific and oracle have been added to the metadata as supported platforms
@@ -44,77 +51,77 @@
 - Tests have been updated to run faster using trap vs. nc
 - Checksums for new Docker releases have been added
 
-# v2.5.9
+## v2.5.9
 
 - Depend on compat_resource >= 12.9.0
 
-# v2.5.8
+## v2.5.8
 
 - Setting desired_state: true for volumes / binds properties
 - Now redeploy container on volume change.
 - Change :restart action behavior to :run containers if they don't exist yet.
 
-# v2.5.7
+## v2.5.7
 
 - Remove vendored gems in favor of chef_gem install
 - Extending available log_driver options
 
-# v2.5.6
+## v2.5.6
 
 - Adding no_proxy to Upstart defaults template
 
-# v2.5.5
+## v2.5.5
 
 - Fixing up various default: nil warnings
 
-# v2.5.4
+## v2.5.4
 
 - Allowing nil as type possibility for docker_service :package_options
 - property
 
-# v2.5.3
+## v2.5.3
 
 - Adding ChefSpec.define_matcher for all resources
 
-# v2.5.2
+## v2.5.2
 
 - Setting log_driver and log_opts to desired_state: false
 
-# v2.5.1
+## v2.5.1
 
 - package_options property to pass options to underlying package resource
 
-# v2.5.0
+## v2.5.0
 
 - Defaulting installation version to 1.10.0
 - Documenting docker_network resource in README
 - Documenting docker_volume resource in README
 
-# v2.4.26
+## v2.4.26
 
 - Adding docker_volume resource
 
-# v2.4.25
+## v2.4.25
 
 - Various fixes to docker_network around subsequent runs
 - Utilizing property coersion and converge_if_changed
 
-# v2.4.24
+## v2.4.24
 
 - Avoiding restart loops in chef-client 12.4.3
 - Using delayed notifications for service restarts
 
-# v2.4.23
+## v2.4.23
 
 - Getting rid of Chef 13 deprecation warning
 - returning nil in default_tls_cert_path
 
-# v2.4.22
+## v2.4.22
 
 - Revamped systemd resources to use package native unit files
 - Using /etc/systemd/system to override settings
 
-# v2.4.21
+## v2.4.21
 
 - Revamped sysvinit resources to use package native scripts.a
 - Using /etc/sysconfig on rhel and /etc/default on Debian
@@ -122,39 +129,39 @@
 - Debian Wheezy support
 - Fixed install_method validation
 
-# v2.4.20
+## v2.4.20
 
 - Temporarily disabling validate_install_method
 
-# v2.4.19
+## v2.4.19
 
 - Adding docker_tag force property
 
-# v2.4.18
+## v2.4.18
 
 - Fixing broken version / install_method validation check
 
-# v2.4.17
+## v2.4.17
 
 - Re-doing service_manager_upstart implementation
 - Using package native init config and utilizing /etc/default
 
-# v2.4.16
+## v2.4.16
 
 - Adding validation proc for docker_service.version to throw error
 - when specifying version with script installations
 
-# v2.4.15
+## v2.4.15
 
 - fixing raiseure -> failure typo in docker_container validation
 - Patching vendored docker-api-1.26.0
 - <https://github.com/swipely/docker-api/issues/369>
 
-# v2.4.14
+## v2.4.14
 
 - Updating .gitignore and re-adding vendored docker-api gem
 
-# v2.4.13
+## v2.4.13
 
 - stricter conditionals on container validation
 - updating vendored docker-api gem to 1.26.0
@@ -165,30 +172,30 @@
 - updating inspec for service-systemd
 - removing unused serverspec suites
 
-# v2.4.12
+## v2.4.12
 
 - Set default docker_container.exposed_port to empty Hash
 
-# v2.4.11
+## v2.4.11
 
 - Updating metadata to use compat_resource ~> 12.7.1
 
-# v2.4.10
+## v2.4.10
 
 - (re)adding host property to docker_network
 
-# v2.4.9
+## v2.4.9
 
 - using require_relative to load files
 - specifying resource_name instead of use_automatic_resource_name
 
-# v2.4.8
+## v2.4.8
 
 - removing duplicate :tls properties
 - removing instances of 'default: nil'
 - depending on 'compat_resource', '~> 12.5.26'
 
-# v2.4.7
+## v2.4.7
 
 - Using Gem::Version to handle semantic verisoning and be compatible for ≥ 1.10
 - v2.4.6
@@ -197,107 +204,107 @@
 
 - 613 - Fix docker_container redeploys with bad link array ordering
 
-# v2.4.5
+## v2.4.5
 
 - Fix coerce_volumes in case current value is a Chef::Node::ImmutableArray
 - Adding tests for binds alias to volumes
 
-# v2.4.4
+## v2.4.4
 
 - Updating vendored docker-api to 1.25.0
 - Adding experimental docker_network resource
 
-# v2.4.3
+## v2.4.3
 
 - Setting docker_container property defaults to match Docker CLI
 - Reverting image-id hack
 - Adding disable-legacy-registry
 
-# v2.4.2
+## v2.4.2
 
 - Unifying volumes and binds properties on docker_container resource
 - Should use "volumes" everywhere now. Aliased method for backward compatibility.
 
-# v2.4.1
+## v2.4.1
 
 - Various fixes in wait-ready loops:
 - 598 - systemd manager return value check for docker-wait-ready
 - 600 - execute manager last iteration check fix.
 
-# v2.4.0
+## v2.4.0
 
 - Adding support for pid_mode and ipc_mode to docker_container
 
-# v2.3.23
+## v2.3.23
 
 - Changing bridge property validation to String
 
-# v2.3.22
+## v2.3.22
 
 - using parsed_hostname to force nil value to Docker API when
 - network_mode is host
 
-# v2.3.21
+## v2.3.21
 
 - reverting hostname coerce
 
-# v2.3.20
+## v2.3.20
 
 - adding coerce_hostname
 - Fixing github issues #542 and #572
 
-# v2.3.19
+## v2.3.19
 
 switching systemd unit MountFlags from slave to private
 
-# v2.3.18
+## v2.3.18
 
 - removing detach/autoremove conflict check
 
-# v2.3.17
+## v2.3.17
 
 - Reverting gem loading trickery. Reverting to LOAD_PATH.push
 
-# v2.3.16
+## v2.3.16
 
 - Adding validation checking for detach / autoremove property
 - conflicts
 
-# v2.3.15
+## v2.3.15
 
 - Loading vendored gems the same way chef_gem would.
 - Resolving Chef provisioning conflicts
 
-# v2.3.14
+## v2.3.14
 
 - Supporting Upstart for Linux Mint
 
-# v2.3.13
+## v2.3.13
 
 - Updating compat_resource dep to >=12.5.23
 
-# v2.3.12
+## v2.3.12
 
 - Pinning compat_resource version to 12.5.14 to avoid warning
 
-# v2.3.11
+## v2.3.11
 
 - Using LOAD_PATH.push instead of LOAD_PATH.unshift for vendored gems
 
-# v2.3.10
+## v2.3.10
 
 - Fix method name for pidfile in docker_service_manager_execute
 
-# v2.3.9
+## v2.3.9
 
 - Adding Linux Mint to helpers_installation_package
 
-# v2.3.8
+## v2.3.8
 
 - 582 using symbols in excon opts
 - Resolves 458
 
-# v2.3.7
+## v2.3.7
 
 - 574 - updating docker to 1.9.1
 - 575 - remove nil values from container create hash
@@ -306,111 +313,111 @@ switching systemd unit MountFlags from slave to private
 - 578 - Update docker_container library documentation on timeouts
 - 579 - suggest adding kill_after on a failed action stop
 
-# v2.3.6
+## v2.3.6
 
 - 573 adding support for port range
 
-# v2.3.5
+## v2.3.5
 
 - fixing desired_state on docker_container force property
 
-# v2.3.4
+## v2.3.4
 
 - Fixing up ports logic
 - Supporting multiple ip/ports
 
-# v2.3.3
+## v2.3.3
 
 - vendoring docker-api-1.24.1
 
-# v2.3.2
+## v2.3.2
 
 - vendoring docker-api-1.24.0
 - setting desired_state:false for tls properties
 
-# v2.3.1
+## v2.3.1
 
 - Support for multiple docker_service instances with docker_service_manager_upstart
 - Support for multiple docker_service instances with docker_service_manager_systemd
 
-# v2.3.0
+## v2.3.0
 
 - Support for multiple docker_service instances with docker_service_manager_sysvinit
 
-# v2.2.11
+## v2.2.11
 
 - Support for multiple docker_service instances with docker_service_manager_execute
 
-# v2.2.10
+## v2.2.10
 
 - 565 - Add support for --exec-opt to docker daemon
 - 566 - Rename cluster-opts to cluster-opt
 
-# v2.2.9
+## v2.2.9
 
 - 560 - Add cluster-store options to docker daemon
 
-# v2.2.8
+## v2.2.8
 
 - 559 - setting tls and tls_verify should to nil by default
 
-# v2.2.7
+## v2.2.7
 
 - Supporting Docker ENV variables without explicitly setting
 - per-resource host TLS information
 - Serverspec -> inspec fixes
 
-# v2.2.6
+## v2.2.6
 
 - Docker 1.9 support
 - Updates to pull_image id checking
 - Updates default_network_mode calculation
 
-# v2.2.5
+## v2.2.5
 
 - Updating metadata to depend on compat_resource >= 12.5.14
 
-# v2.2.4
+## v2.2.4
 
 - More minor fixes to Upstart script template
 
-# v2.2.3
+## v2.2.3
 
 - Minor fix to Upstart script template
 
-# v2.2.2
+## v2.2.2
 
 - Upstart script now waits for all filesystems instead of just local-filesystems
 
-# v2.2.1
+## v2.2.1
 
 - marking attach_ properties desired_state: false
 
-# v2.2.0
+## v2.2.0
 
 - Switching docker_installation method to auto
 - Cleaning up some old Chef::Provider namespace cruft
 
-# v2.1.23
+## v2.1.23
 
 - Adding docker_service auto_restart property. Defaulting to false.
 
-# v2.1.22
+## v2.1.22
 
 - Updating README with docker_installation and docker_service_manager resources
 - Adding "desired_state: false" to docker_installation properties
 
-# v2.1.21
+## v2.1.21
 
 - Refactoring docker_service into docker_service_manager_whatever
 - Fixing bug in coerce_daemon_labels
 - Fixes to resources-171 suite serverspec
 
-# v2.1.20
+## v2.1.20
 
 - Fixing docker_installation_script resource
 
-# v2.1.19
+## v2.1.19
 
 - Various cruft cleanup in service templates.
 - Explicitly enabling ipv4 forwarding in execute provider
@@ -418,355 +425,355 @@ switching systemd unit MountFlags from slave to private
 - docker_service_upstart test suite
 - docker_service_systemd test suite
 
-# v2.1.18
+## v2.1.18
 
 - Kitchen refactoring
 - docker_service_execute bug fixes
 
-# v2.1.17
+## v2.1.17
 
 - Fixing merge meant for v2.1.16
 
-# v2.1.16
+## v2.1.16
 
 - Adding install_method property to select docker_installation resource
 - Using docker_installation_binary by default
 - Fixing up serverspec for pre-182 resource test recipes
 
-# v2.1.15
+## v2.1.15
 
 - Updates to README around kill_after property on :stop action
 - Updates to various test containers to handle SIGKILL properly
 
-# v2.1.14
+## v2.1.14
 
 - Fixing missing property regression in docker_service
 
-# v2.1.13
+## v2.1.13
 
 - Fixing up independent of docker_installation_binary resource, adding
 - kitchen suites and serverspec tests
 
-# v2.1.12
+## v2.1.12
 
 - 531 - Bugfix for invalid parameters in docker_container :stop
 - action
 
-# v2.1.11
+## v2.1.11
 
 - Fixing LocalJumpError in docker_container
 
-# v2.1.10
+## v2.1.10
 
 - Adding 'desired_state: false' to various timeouts
 
-# v2.1.9
+## v2.1.9
 
 - Refactoring: Moving remote file installation method into
 - docker_installation_binary resource
 
-# v2.1.8
+## v2.1.8
 
 - Refactoring: Removing classes from the Chef::Resource namespace
 
-# v2.1.7
+## v2.1.7
 
 - Fixing connection information in docker_container and helpers_base
 - Refactoring .kitchen.yml tests
 
-# v2.1.6
+## v2.1.6
 
 - Enabling TLS options for docker_container and docker_image
 - Various test fixes
 
-# v2.1.5
+## v2.1.5
 
 - 528 - Don't enable https connection scheme if not using TLS
 
-# v2.1.4
+## v2.1.4
 
 - 517 - Disallowing nil value for Docker command
 
-# v2.1.3
+## v2.1.3
 
 - 514 - Fixing coerce and comparison logic in exposed_ports and
-- volumes to prevent unwanted restarts   
+- volumes to prevent unwanted restarts
 
-# v2.1.2
+## v2.1.2
 
 - Adding why_run support
 
-# v2.1.1
+## v2.1.1
 
 - 511 - fix container wait state checking
 - 512 - wait for registry ports to be open in test recipe
 - 519 - updating README to include labels#511 - fix container
 
-# v2.1.0
+## v2.1.0
 
 - Changing docker_container default action to :run from
 - :run_if_missing.
 
-# v2.0.4
+## v2.0.4
 
 - 504 - stop and start should wait for the container to complete
 - 506 - restart to use the api endpoint
 
-# v2.0.3
+## v2.0.3
 
 - Allowing nil for docker_registry properties
 
-# v2.0.2
+## v2.0.2
 
 - Fixing LocalJumpError caused by next instead of return helper methods
 
-# v2.0.1
+## v2.0.1
 
 - 491 - Return best host for docker to connect
 - 495 - iptables opts shouldn't be forced to true/false
 - 497 - Removing property_is_set so timeout pick up defaults
 
-# v2.0.0
+## v2.0.0
 
 - Converted resources from LWRP to Chef 12.5 Custom Resources
 - Added dependency on compat_resource cookbook, works back to 12.0.0
 - Various fixes around sysvinit scripts in docker_service
 - Total backwards compatibility with recipes written for chef-docker 1.x
 
-# v1.0.49
+## v1.0.49
 
 - Handling NilClass error on docker_image default creds handling
 
-# v1.0.48
+## v1.0.48
 
 - Adding a 20 try timeout to the docker_wait_ready block
 
-# v1.0.47
+## v1.0.47
 
 - 484 - Fall back to creds for index.docker.io on image pull
 
-# v1.0.46
+## v1.0.46
 
 - 438 - Adding per-resource host property to docker_image and
 - docker_container
 
-# v1.0.45
+## v1.0.45
 
 - Allow :redeploy on missing containers
 - TLS fixes
 - Updating sysvinit script to use docker_opts
 
-# v1.0.44
+## v1.0.44
 
 - Adding Label support for docker_container
 
-# v1.0.43
+## v1.0.43
 
 - Switching docker_service sysvinit provider from ::Insserv to ::Debian
 
-# v1.0.42
+## v1.0.42
 
 - Fix for docker_service to allow setting icc to false
 - Get chefspec happy on latest nightly chefdk again
 - Accepting both String and Array for default_ulimit
 
-# v1.0.41
+## v1.0.41
 
 - Refactoring broken sysvinit scripts
 - 421 - Adding docker-wait-ready blocks
 - Discovered TLS verification is broken. Disabling for now.
 
-# v1.0.40
+## v1.0.40
 
 - Fixing broken Chef::Provider::DockerService::Execute
 
-# v1.0.39
+## v1.0.39
 
 - Various fixes around sysvinit
 
-# v1.0.38
+## v1.0.38
 
 - docker_container - enabling Docker CLI syntax for ulimits
 
-# v1.0.37
+## v1.0.37
 
 - Adding tests for #416
 
-# v1.0.36
+## v1.0.36
 
 - Replacing docker_log helper function with docker_service.logfile
 
-# v1.0.35
+## v1.0.35
 
 - Creating DockerHelpers::Service namespace and moving appropriate methods into it.
-- Start of load_current_resource implemenation for docker_service for #423
+- Start of load_current_resource implementation for docker_service for #423
 
-# v1.0.34
+## v1.0.34
 
 - notifying new_resource to restart when updating docker_bin
 
-# v1.0.33
+## v1.0.33
 
 - Registry authentication fixes and slight docker_image refactor
 - Updates for foodcritic and travis
 
-# v1.0.32
+## v1.0.32
 
 - 451 Changed default docker_container memory_swap to prevent unwanted redeploys.
 
-# v1.0.31
+## v1.0.31
 
 - 447 - Fix for log-config driver type
 - 448 - Fix unwanted redeploys due to calculation of exposed_port changes.
 - 450 - Treat docker_container volumes attribute as unmanaged to prevent redeploys
 
-# v1.0.30
+## v1.0.30
 
 - 427 - Qualify port bindings with protocol even when implicitly tcp.
 - 443 - Added docker_container log_driver and log_opts attributes.
 - Changing docker_image read_timeout default to 60
 - Misc cleanup for README and Gemfile
 
-# v1.0.29
+## v1.0.29
 
 - 432 Fixing :redeploy so it returns the container the correct state
 - (create vs run)
 - Fixing blank variable interpolation in tmpfiles.d/docker.conf
 
-# v1.0.28
+## v1.0.28
 
 - Adding journald gelf and fluentd to logging driver whitelist
 - Allow specifying multiple DNS servers for docker_service
 
-# v1.0.27
+## v1.0.27
 
 - Cleaning up code duplication across docker_service init templates
 
-# v1.0.26
+## v1.0.26
 
 - switching from get.docker.io to get.docker.com
 
-# v1.0.25
+## v1.0.25
 
 - Updating checksum in specs for 1.8.2
 - Downloading over https
 - Removing nonexistent action :enable from docker_service
 
-# v1.0.24
+## v1.0.24
 
 - 410 - Fixing Dockerfile override behavior for hostname and ulimits
 - on api 1.9
 - Upgrading to Docker 1.8.2 for default version
 
-# v1.0.23
+## v1.0.23
 
 - Fixing Dockerfile / resource override behavior for working_dir
 
-# v1.0.22
+## v1.0.22
 
 - Removed patch authentication header to bundled docker-api gem
 - Moved credential reset logic into image provider
 
-# v1.0.21
+## v1.0.21
 
 - 379 and #356 - patching vendored docker-api gem authentication headers
 
-# v1.0.20
+## v1.0.20
 
 - Handling the situation where USER COMMAND ENV and ENTRYPOINT are set in
 - an image build, but not in a docker_container resource
 
-# v1.0.19
+## v1.0.19
 
 - Raising error on authentication error in docker_registry
 - Allowing an array for storage_opts in docker_service
 - Fixing parsed_checksum in docker_service
 - Fixing entrypoint parsing in docker_container
 
-# v1.0.18
+## v1.0.18
 
 - Removing leftover log resources used for debugging in development
 
-# v1.0.17
+## v1.0.17
 
 - Fixing up regressions in older Docker API versions introduced in cookbook release 1.0.15
 - _ Adding @api_version instance variable
 - Adding serialized_log_config
 - Adding parsed_network_mode
 
-# v1.0.16
+## v1.0.16
 
 - Adding CIDR support for docker_service bip property
 
-# v1.0.15
+## v1.0.15
 
 - 309 - Adding bits to enable container re-deployment when properties change
 
-# v1.0.14
+## v1.0.14
 
 - Adding api read and write timeouts
 
-# v1.0.13
+## v1.0.13
 
 - Fixing docker_service CLI argument generation for log-driver mtu and pidfile
 
-# v1.0.12
+## v1.0.12
 
 - Fixing platform_family string (redhat -> rhel) in docker_service sysvinit provider
 
-# v1.0.11
+## v1.0.11
 
 - Renaming retries to api_retries to not conflict with Chef::Resource
 
-# v1.0.10
+## v1.0.10
 
 - Accepting userland-proxy flag
 - Fix bug in parsed_storage_driver method
 - Correcting usage of ip_forwarding flag
 - Let Docker pick --log-level instead of defaulting to :info
 
-# v1.0.9
+## v1.0.9
 
 - Fixing Upstart respawn limit
 
-# v1.0.8
+## v1.0.8
 
 - 382 - Fixing docker_service to accept an array for storage_opt
 
-# v1.0.7
+## v1.0.7
 
 - 381 - Removing prepended whitespace in DOCKER_OPTS
 
-# v1.0.6
+## v1.0.6
 
 - 369 - Fixing up HostConfig.NetworkMode to work as expected
 
-# v1.0.5
+## v1.0.5
 
 - 241 - Only updating docker_image resource on :pull if new bits were pulled
 - on tag (useful for latest)
 - Changing docker_image default action to :pull
 
-# v1.0.4
+## v1.0.4
 
 - 368 - Fixing port property to be kind_of [String, Array]
 - Adding missing detach property. Defaulting to false.
 
-# v1.0.3
+## v1.0.3
 
 - 366 - Using docker_kernel instead of docker_arch in parsed_checksum
 
-# v1.0.2
+## v1.0.2
 
 - 365 - Fix logic for parsing an array of hosts
 - 363 - Allow an array for port property
 
-# v1.0.1
+## v1.0.1
 
 - Switching docker_service default TLS setting to false to it works
 - out of the box
 
-# v1.0.0
+## v1.0.0
 
 - vendoring the docker-api rubygem
 - docker_image and docker_container resources now use speak to the
@@ -777,26 +784,26 @@ switching systemd unit MountFlags from slave to private
 - standardizing on "repo" and "tag" as components of an image
 - identifier
 
-# v0.43.0 (2015-07-28)
+## v0.43.0 (2015-07-28)
 
 - Updating README to reflect docker_image and docker_tag reality
 - Implementing rm, noprune, nocache and force on docker_image
 
-# v0.42.0 (2015-07-28)
+## v0.42.0 (2015-07-28)
 
 - removing docker_image :load and :tag action
 - adding docker_tag resource
 - renaming docker_tag image_name property to :repo; creating alias
 - implementing docker_image :push action
 
-# v0.41.0 (2015-07-26)
+## v0.41.0 (2015-07-26)
 
 - vendoring docker-api rubygem
 - beginning work to convert docker_image to use native API instead of shelling out
 - changing docker_image default action to :pull_if_missing
 - removing some deprecated interfaces
 
-# v0.40.3 (2015-07-14)
+## v0.40.3 (2015-07-14)
 
 - remove --no-trunc from docker container status in sysvinit script
 - 334 - docker_container tag property (issue 320)
@@ -805,15 +812,15 @@ switching systemd unit MountFlags from slave to private
 - 326 - Upstart job restart behavior fix sysvinit script examples
 - 236 - README#324 - Reference DOCKER_OPTS Amazon Linux#325
 
-# v0.40.2 (2015-07-14)
+## v0.40.2 (2015-07-14)
 
 - Support for older Chef versions
 
-# v0.40.1 (2015-07-08)
+## v0.40.1 (2015-07-08)
 
 - Changing host property to kind_of Array
 
-# v0.40.0  (2015-06-29)
+## v0.40.0 (2015-06-29)
 
 Important changes with this release:
 
@@ -830,83 +837,83 @@ IMPORTANT
 - most are currently non-functional
 - All options will be driven through resource properties
 
-# v0.37.0
+## v0.37.0
 
 Please note some important changes with this release:
 
-- The sysconfig DOCKER_OPTS improvement in [#250][] can potentially change the behavior of that environment variable as it now allows shell interpolation of any embedded variables. This should not affect most environments. If your DOCKER_OPTS does contains any expected `$`, please escape via `\$` for previous behavior or be sure it will behave as expected before upgrading.
-- The daemon restart option (which is deprecated) has been defaulted to `nil` instead of `false` when `node['docker']['container_init_type']` is set to prevent issues with container restart policies. If you're dependent on the daemon option, please be sure to update your `node['docker']['restart']`  appropriately.
+- The sysconfig DOCKER_OPTS improvement in [#250] can potentially change the behavior of that environment variable as it now allows shell interpolation of any embedded variables. This should not affect most environments. If your DOCKER_OPTS does contains any expected `$`, please escape via `\$` for previous behavior or be sure it will behave as expected before upgrading.
+- The daemon restart option (which is deprecated) has been defaulted to `nil` instead of `false` when `node['docker']['container_init_type']` is set to prevent issues with container restart policies. If you're dependent on the daemon option, please be sure to update your `node['docker']['restart']` appropriately.
 - This release also defaults systemd docker host to `fd://` to match upstream, enabling socket activation properly. Adjust `node['docker']['host']` if necessary.
-- Bugfix: [#239][]: Upstart: install inotify tools only once (avoid CHEF-3694 warning) (thanks jperville)
-- Bugfix: [#240][]: Fixed dead service containers not being restarted on docker_container :run (thanks jperville)
-- Bugfix: [#244][]: Made docker_container action :remove remove the actual upstart service file (thanks jperville)
-- Bugfix: [#246][]: Lengthen shell_out timeout as workaround for slow docker_container action stop (thanks jperville)
-- Bugfix: [#258][]: Fix checking docker container status on debian (thanks fxposter)
-- Bugfix: [#260][]: Fix accidental port changing when using systemd templates (thanks fxposter)
-- Bugfix: [#266][]: Get tests working on master (thanks tduffield)
-- Bugfix: [#267][]: Replace outdated testcontainerd (thanks tduffield)
-- Bugfix: [#269][]: Fix tests on Travis by following Rubocop style guidelines (container LWRP) (thanks fxposter)
-- Bugfix: [#280][] / [#281][]: Fix port handling when omitted in container LWRP (thanks databus23)
-- Bugfix: [#284][] / [#285][]: runit finish script to stop a container (thanks xmik)
+- Bugfix: [#239]: Upstart: install inotify tools only once (avoid CHEF-3694 warning) (thanks jperville)
+- Bugfix: [#240]: Fixed dead service containers not being restarted on docker_container :run (thanks jperville)
+- Bugfix: [#244]: Made docker_container action :remove remove the actual upstart service file (thanks jperville)
+- Bugfix: [#246]: Lengthen shell_out timeout as workaround for slow docker_container action stop (thanks jperville)
+- Bugfix: [#258]: Fix checking docker container status on debian (thanks fxposter)
+- Bugfix: [#260]: Fix accidental port changing when using systemd templates (thanks fxposter)
+- Bugfix: [#266]: Get tests working on master (thanks tduffield)
+- Bugfix: [#267]: Replace outdated testcontainerd (thanks tduffield)
+- Bugfix: [#269]: Fix tests on Travis by following Rubocop style guidelines (container LWRP) (thanks fxposter)
+- Bugfix: [#280] / [#281]: Fix port handling when omitted in container LWRP (thanks databus23)
+- Bugfix: [#284] / [#285]: runit finish script to stop a container (thanks xmik)
 - Bugfix: [#288][]: Fix docker.socket unit for RHEL7 (thanks databus23)
-- Bugfix: [#292][]: readme formatting fix (thanks wormzer)
-- Improvement: [#208][]: Add CentOS/RHEL 7 support (thanks dermusikman and intoximeters)
-- Improvement: [#232][]: Added support for insecure-registry docker daemon option (thanks jperville)
-- Improvement: [#233][] / [#234][]: Added support for registry-mirror docker daemon option (thanks jperville and tarnfeld)
-- Improvement: [#237][]: Deprecate the restart daemon option (thanks jperville)
-- Improvement: [#238][]: Added docker_container restart attribute (thanks jperville)
-- Improvement: [#242][]: Added docker_container action :create (thanks jperville)
-- Improvement: [#245][]: Add a Gitter chat badge to README.md (thanks tduffield)
-- Improvement: [#250][]: Use double-quotes for DOCKER_OPTS (thanks rchekaluk)
-- Improvement: [#259][]: Use registry on image inspection (thanks fxposter)
-- Improvement: [#263][]: Add additional_host attribute to container resource (thanks fxposter)
-- Improvement: [#264][] / [#265][]: Access keyserver.ubuntu.com on port 80 (thanks sauraus)
-- Improvement: [#268][]: Updated the /etc/init/docker.conf template (thanks jperville)
-- Improvement: [#276][]: Added support for docker options device and cap-add (thanks hvolkmer)
-- Improvement: [#279][]: Allow docker_container memory to have String value (eg. memory='1G') (thanks jperville)
-- Improvement: [#287][]: redhat 7 does not need the epel repository (thanks databus23)
-- Improvement: [#289][]: Update systemd service/socket files (from upstream) (thanks databus23)
-- Improvement: [#296][]: Default systemd to fd:// as well as use upstream MountFlags=slave and LimitCORE=infinity
-- Improvement: [#297][]: Update docker daemon SysV init scripts with upstream improvements
-- Improvement: [#298][]: Further deprecate daemon restart flag by default, which interferes with restart policies
+- Bugfix: [#292]: readme formatting fix (thanks wormzer)
+- Improvement: [#208]: Add CentOS/RHEL 7 support (thanks dermusikman and intoximeters)
+- Improvement: [#232]: Added support for insecure-registry docker daemon option (thanks jperville)
+- Improvement: [#233] / [#234]: Added support for registry-mirror docker daemon option (thanks jperville and tarnfeld)
+- Improvement: [#237]: Deprecate the restart daemon option (thanks jperville)
+- Improvement: [#238]: Added docker_container restart attribute (thanks jperville)
+- Improvement: [#242]: Added docker_container action :create (thanks jperville)
+- Improvement: [#245]: Add a Gitter chat badge to README.md (thanks tduffield)
+- Improvement: [#250]: Use double-quotes for DOCKER_OPTS (thanks rchekaluk)
+- Improvement: [#259]: Use registry on image inspection (thanks fxposter)
+- Improvement: [#263]: Add additional_host attribute to container resource (thanks fxposter)
+- Improvement: [#264] / [#265]: Access keyserver.ubuntu.com on port 80 (thanks sauraus)
+- Improvement: [#268]: Updated the /etc/init/docker.conf template (thanks jperville)
+- Improvement: [#276]: Added support for docker options device and cap-add (thanks hvolkmer)
+- Improvement: [#279]: Allow docker_container memory to have String value (eg. memory='1G') (thanks jperville)
+- Improvement: [#287]: redhat 7 does not need the epel repository (thanks databus23)
+- Improvement: [#289]: Update systemd service/socket files (from upstream) (thanks databus23)
+- Improvement: [#296]: Default systemd to fd:// as well as use upstream MountFlags=slave and LimitCORE=infinity
+- Improvement: [#297]: Update docker daemon SysV init scripts with upstream improvements
+- Improvement: [#298]: Further deprecate daemon restart flag by default, which interferes with restart policies
 
 # 0.36.0
 
-- Bugfix: [#181][]: Fixed remove_link action (thanks jperville).
-- Bugfix: [#185][]: Fix for non idempotent run action on docker_container (thanks bplunkert).
-- Bugfix: [#188][]: Applied temporary workaround to address the libcgmanager error to users running LXC on Ubuntu 14.04.
-- Bugfix: [#196][]: Address Helpers module naming conflict (thanks sethrosenblum).
-- Bugfix: [#200][]: Fix how service actions are handled by docker_container resource (thanks brianhartsock).
-- Bugfix: [#202][]: Correctly check for the kernel.release version on Debian (thanks Tritlo, paweloczadly).
-- Bugfix: [#203][]: Fix pull notifications for tagged images (thanks hobofan).
-- Bugfix: [#205][]: Fix current_resource.name assignments in docker_container provider (thanks jperville).
-- Bugfix: [#206][]: Fixes to container name detection (thanks jperville).
-- Enhancement: [#217][]: Explicitly set key and keyserver for docker apt repository (thanks sethrosenblum).
+- Bugfix: [#181]: Fixed remove_link action (thanks jperville).
+- Bugfix: [#185]: Fix for non idempotent run action on docker_container (thanks bplunkert).
+- Bugfix: [#188]: Applied temporary workaround to address the libcgmanager error to users running LXC on Ubuntu 14.04.
+- Bugfix: [#196]: Address Helpers module naming conflict (thanks sethrosenblum).
+- Bugfix: [#200]: Fix how service actions are handled by docker_container resource (thanks brianhartsock).
+- Bugfix: [#202]: Correctly check for the kernel.release version on Debian (thanks Tritlo, paweloczadly).
+- Bugfix: [#203]: Fix pull notifications for tagged images (thanks hobofan).
+- Bugfix: [#205]: Fix current_resource.name assignments in docker_container provider (thanks jperville).
+- Bugfix: [#206]: Fixes to container name detection (thanks jperville).
+- Enhancement: [#217]: Explicitly set key and keyserver for docker apt repository (thanks sethrosenblum).
 - Improvement: Pull in init script changes from upstream for sysv and systemd.
-- Bugfix: [#219][]: Explicitly set Upstart provider for Ubuntu 14.04 and 14.10 (thanks methodx).
-- Improvement: [#220][]: Create graph directory if it is specified (thanks jontg).
-- Bugfix: [#224][]: Fix runit container template to properly use exec (thanks waisbrot).
+- Bugfix: [#219]: Explicitly set Upstart provider for Ubuntu 14.04 and 14.10 (thanks methodx).
+- Improvement: [#220]: Create graph directory if it is specified (thanks jontg).
+- Bugfix: [#224]: Fix runit container template to properly use exec (thanks waisbrot).
 - Bugfix: Appropriately check for LXC when using the binary recipe on Fedora.
 - Bugfix: Implement workaround for docker/docker#2702 on Ubuntu 14.10.
-- Enhancement: [#221][]: Added NO_PROXY support (thanks jperville).
+- Enhancement: [#221]: Added NO_PROXY support (thanks jperville).
 - Various Test Suite Modifications
 
-  - Enhancement: [#192][]: Allow image tags in serverspec matching (thanks bplunkert).
-  - Bugfix: [#223][]: Convert a few occurrences of old 'should' rspec syntax to 'expect' (thanks jperville).
+  - Enhancement: [#192]: Allow image tags in serverspec matching (thanks bplunkert).
+  - Bugfix: [#223]: Convert a few occurrences of old 'should' rspec syntax to 'expect' (thanks jperville).
   - Disable a few platforms that are experiencing bugs unrelated to core functionality.
   - Address ChefSpec 4.1 deprecation warnings.
   - Update Berksfile to reference supermarket.getchef.com instead of api.berkshelf.com
 
 # 0.35.2
 
-- Bugfix: [#171][]: Default Ubuntu 14.04 to Docker PPA
-- Bugfix: [#175][]: Do not set --selinux-enabled in opts unless explicitly defined for older versions
-- Bugfix: [#176][]: Use docker host attribute in docker_container Upstart inotifywait
+- Bugfix: [#171]: Default Ubuntu 14.04 to Docker PPA
+- Bugfix: [#175]: Do not set --selinux-enabled in opts unless explicitly defined for older versions
+- Bugfix: [#176]: Use docker host attribute in docker_container Upstart inotifywait
 
 # 0.35.1
 
-- Bugfix: [#172][]: Generate no cidfile by default, even when deploying as service
-- Bugfix: [#173][]: Updated docker upstart script (should fix service docker restart)
+- Bugfix: [#172]: Generate no cidfile by default, even when deploying as service
+- Bugfix: [#173]: Updated docker upstart script (should fix service docker restart)
 
 # 0.35.0
 
@@ -914,7 +921,7 @@ After a long personal hiatus (sorry!), this is the last minor release before 1.0
 
 This release has a bunch of changes and hasn't been fully tested yet. Wanted to get it out there for broad testing. Please use caution!
 
-Major kudos to @tduffield for the [#147][] PR, which includes:
+Major kudos to @tduffield for the [#147] PR, which includes:
 
 - Binary Installation
 
@@ -939,25 +946,25 @@ Major kudos to @tduffield for the [#147][] PR, which includes:
 
 Other awesome work merged:
 
-- [#142][]: Bugfix: Redeploy breaks when a link is present
-- [#139][]/[#153][]/[#154][]/[#156][]/[#157][]: Bugfix: container/image ID given as nil, fixes deprecated -notrunc
-- [#164][]: Bugfix: Removing a container should also remove its cidfile
-- [#166][]: Bugfix: Fix docker_inspect_id for Docker 1.0+
-- [#158][]/[#160][]/[#165][]: Bugfix: Fix NameError when displaying error messages for timed-out commands
-- [#169][]: Bugfix: Specify Upstart as service provider for cgroup on Ubuntu 14.04 (workaround for CHEF-5276, fixed in Chef 11.14)
-- [#137][]/[#138][]: Enhancement: Experimental Ubuntu 14.04 LTS support
-- [#144][]: Enhancement: Experimental Amazon linux support
-- [#150][]/[#152][]: Enhancement: Add net attribute, deprecate networking
-- [#168][]: Enhancement: Allow override of package name
-- [#161][]: Enhancement: Add minitest case for SysV service
-- [#149][]: Enhancement: Add --selinux-enabled daemon flag
+- [#142]: Bugfix: Redeploy breaks when a link is present
+- [#139]/[#153]/[#154]/[#156]/[#157]: Bugfix: container/image ID given as nil, fixes deprecated -notrunc
+- [#164]: Bugfix: Removing a container should also remove its cidfile
+- [#166]: Bugfix: Fix docker_inspect_id for Docker 1.0+
+- [#158]/[#160]/[#165]: Bugfix: Fix NameError when displaying error messages for timed-out commands
+- [#169]: Bugfix: Specify Upstart as service provider for cgroup on Ubuntu 14.04 (workaround for CHEF-5276, fixed in Chef 11.14)
+- [#137]/[#138]: Enhancement: Experimental Ubuntu 14.04 LTS support
+- [#144]: Enhancement: Experimental Amazon linux support
+- [#150]/[#152]: Enhancement: Add net attribute, deprecate networking
+- [#168]: Enhancement: Allow override of package name
+- [#161]: Enhancement: Add minitest case for SysV service
+- [#149]: Enhancement: Add --selinux-enabled daemon flag
 - Enhancement: container LWRP remove_link and remove_volume actions
 - Enhancement: Add storage-opt daemon flag
 - Enhancement: Add Docker 0.11.0, 0.11.1, 0.12.0, 1.0.0, 1.0.1 binary checksums
 
 # 0.34.2
 
-- [#141][]: Bugfix/Enhancement: Fix and enhance docker_image pull/push behavior with Docker 0.10
+- [#141]: Bugfix/Enhancement: Fix and enhance docker_image pull/push behavior with Docker 0.10
 
   - Removes deprecated --registry and --tag CLI args from docker_image pull
   - Adds support for registry attribute usage in docker_image pull and push
@@ -965,7 +972,7 @@ Other awesome work merged:
 
 # 0.34.1
 
-- [#134][]: Bugfix: Fix docker_registry login handling, fixes #114
+- [#134]: Bugfix: Fix docker_registry login handling, fixes #114
 
 # 0.34.0
 
@@ -973,26 +980,26 @@ Attributes now available for all docker daemon flags as well as system IP forwar
 
 - REMOVED: container_dns_ attributes (use replacement dns_ attributes on daemon for all containers or docker_container dns* attributes instead)
 - DEPRECATED: bind_* attributes to match docker terminology (use host attribute instead)
-- Bugfix: [#132][]: Do Not Explicitly Set storage_driver Attribute
-- Bugfix: [#133][]: Remove explicit false defaults in resources
-- Bugfix: [#114][]: Error executing action login on resource docker_registry
-- Enhancement: [#115][]: Add IP forwarding attributes
-- Enhancement: [#116][]: Docker 0.10.0: Add --no-prune to docker rmi
-- Enhancement: [#117][]: Docker 0.10.0: Add --output flag to docker save (as well as tag support)
-- Enhancement: [#118][]: Docker 0.10.0: Add --input flag to docker load
-- Enhancement: [#119][]: Docker 0.10.0: Add support for --env-file to load environment variables from files
-- Enhancement: [#120][]: Docker 0.10.0: Deprecate docker insert
-- Enhancement: [#123][]: Add docker kill --signal
-- Enhancement: [#124][]: Add all docker daemon options as attributes
-- Enhancement: [#125][]: Use dns* attributes to set docker daemon options, not defaults per-container
-- Enhancement: [#128][]: Add checksum attribute for binary downloads
-- Enhancement: [#126][]: Set long option names for specified docker daemon options
-- Enhancement: [#127][]: Use a helper function to specify single line docker daemon options
+- Bugfix: [#132]: Do Not Explicitly Set storage_driver Attribute
+- Bugfix: [#133]: Remove explicit false defaults in resources
+- Bugfix: [#114]: Error executing action login on resource docker_registry
+- Enhancement: [#115]: Add IP forwarding attributes
+- Enhancement: [#116]: Docker 0.10.0: Add --no-prune to docker rmi
+- Enhancement: [#117]: Docker 0.10.0: Add --output flag to docker save (as well as tag support)
+- Enhancement: [#118]: Docker 0.10.0: Add --input flag to docker load
+- Enhancement: [#119]: Docker 0.10.0: Add support for --env-file to load environment variables from files
+- Enhancement: [#120]: Docker 0.10.0: Deprecate docker insert
+- Enhancement: [#123]: Add docker kill --signal
+- Enhancement: [#124]: Add all docker daemon options as attributes
+- Enhancement: [#125]: Use dns* attributes to set docker daemon options, not defaults per-container
+- Enhancement: [#128]: Add checksum attribute for binary downloads
+- Enhancement: [#126]: Set long option names for specified docker daemon options
+- Enhancement: [#127]: Use a helper function to specify single line docker daemon options
 
 # 0.33.1
 
-- Bugfix: [#112][]: Defines runner methods for ChefSpec matchers
-- Bugfix: [#113][]: [D-15] Fedora 19 installs Docker 0.8.1, does not have the -G or -e flag
+- Bugfix: [#112]: Defines runner methods for ChefSpec matchers
+- Bugfix: [#113]: [D-15] Fedora 19 installs Docker 0.8.1, does not have the -G or -e flag
 
 # 0.33.0
 
@@ -1000,26 +1007,26 @@ This release deprecates AUFS/device-mapper handling from chef-docker, but provid
 
 - aufs: [aufs on community site](http://community.opscode.com/cookbooks/aufs) / [chef-aufs on Github](https://github.com/bflad/chef-aufs)
 - device-mapper: [device-mapper on community site](http://community.opscode.com/cookbooks/device-mapper) / [chef-device-mapper on Github](https://github.com/bflad/chef-device-mapper)
-- Bugfix: [#109][]: Remove on lxc-net start from docker Upstart
-- Enhancement: [#88][]: Migrate AUFS logic to separate cookbook
-- Enhancement: [#90][]: Migrate device-mapper logic to separate cookbook
-- Enhancement: [#110][]: Add docker Upstart pre-start script and limits configuration
-- Enhancement: [#105][]: Add --label for docker run
-- Enhancement: [#106][]: Add --opt for docker run
-- Enhancement: [#107][]: Add --networking for docker run
-- Enhancement: [#108][]: Add --dns-search for docker run
-- Enhancement: [#104][]: Add TMPDIR
-- Enhancement: [#111][]: Add DOCKER_LOGFILE configuration
+- Bugfix: [#109]: Remove on lxc-net start from docker Upstart
+- Enhancement: [#88]: Migrate AUFS logic to separate cookbook
+- Enhancement: [#90]: Migrate device-mapper logic to separate cookbook
+- Enhancement: [#110]: Add docker Upstart pre-start script and limits configuration
+- Enhancement: [#105]: Add --label for docker run
+- Enhancement: [#106]: Add --opt for docker run
+- Enhancement: [#107]: Add --networking for docker run
+- Enhancement: [#108]: Add --dns-search for docker run
+- Enhancement: [#104]: Add TMPDIR
+- Enhancement: [#111]: Add DOCKER_LOGFILE configuration
 - Enhancement: container_dns* attributes to set --dns and --dns-search for all containers
 
 # 0.32.2
 
-- Bugfix: [#101][]: Explicitly install lxc on Ubuntu (when lxc is exec_driver; continue to fully support LXC as a default installation path since its been since Docker 0.1)
-- Bugfix: [#103][]: Fix host argument (in docker run)
+- Bugfix: [#101]: Explicitly install lxc on Ubuntu (when lxc is exec_driver; continue to fully support LXC as a default installation path since its been since Docker 0.1)
+- Bugfix: [#103]: Fix host argument (in docker run)
 
 # 0.32.1
 
-- Bugfix: [#98][]: Ensure Ruby 1.8 syntax is supported
+- Bugfix: [#98]: Ensure Ruby 1.8 syntax is supported
 - Bugfix: Skip empty Array values in cli_args helper
 
 # 0.32.0
@@ -1030,17 +1037,17 @@ This release includes Docker 0.9.0 changes and defaults, such as setting exec_dr
 
 - DEPRECATED: Rename storage_type attribute to storage_driver to [match Docker terminology](http://docs.docker.io/en/latest/reference/commandline/cli/#daemon) (storage_type will be removed in chef-docker 1.0)
 - DEPRECATED: Rename virtualization_type attribute to exec_driver to [match Docker terminology](http://docs.docker.io/en/latest/reference/commandline/cli/#daemon) (virtualization_type will be removed in chef-docker 1.0)
-- Bugfix: [#80][]: Use double dashed arguments on CLI
+- Bugfix: [#80]: Use double dashed arguments on CLI
 - Bugfix: Surround String values on CLI with quotes
-- Enhancement: [#77][]: Improved docker ps handling
-- Enhancement: [#78][]: Docker 0.9.0: Make --rm the default for docker build
-- Enhancement: [#81][]: Docker 0.9.0: Add a -G option to specify the group which unix sockets belong
-- Enhancement: [#82][]: Docker 0.9.0: Add -f flag to docker rm to force removal of running containers
+- Enhancement: [#77]: Improved docker ps handling
+- Enhancement: [#78]: Docker 0.9.0: Make --rm the default for docker build
+- Enhancement: [#81]: Docker 0.9.0: Add a -G option to specify the group which unix sockets belong
+- Enhancement: [#82]: Docker 0.9.0: Add -f flag to docker rm to force removal of running containers
 - Enhancement: Add -f flag for docker rmi to force removal of images
-- Enhancement: [#83][]: Docker 0.9.0: Add DOCKER_RAMDISK environment variable to make Docker work when the root is on a ramdisk
-- Enhancement: [#84][]: Docker 0.9.0: Add -e flag for execution driver
-- Enhancement: [#85][]: Docker 0.9.0: Default to libcontainer
-- Enhancement: [#86][]: Add Chefspec LWRP matchers
+- Enhancement: [#83]: Docker 0.9.0: Add DOCKER_RAMDISK environment variable to make Docker work when the root is on a ramdisk
+- Enhancement: [#84]: Docker 0.9.0: Add -e flag for execution driver
+- Enhancement: [#85]: Docker 0.9.0: Default to libcontainer
+- Enhancement: [#86]: Add Chefspec LWRP matchers
 
 # 0.31.0
 
@@ -1053,69 +1060,70 @@ Cookbook now automatically adds -s option to init configurations if storage_type
 I've also dropped the LANG= and LC_ALL= locale environment settings from the Upstart job configuration. Its not specified in the default docker job. Please open an issue in docker project and here if for some reason this is actually necessary.
 
 - Bugfix: Match devicemapper storage_type attribute to match docker driver name (along with recipe name)
-- Enhancement: [#72][]: Add initial runit init_type
-- Enhancement: [#60][]: Automatically set docker -d -s from storage_type attribute
+- Enhancement: [#72]: Add initial runit init_type
+- Enhancement: [#60]: Automatically set docker -d -s from storage_type attribute
 - Enhancement: Simplify default/sysconfig file into one template (docker.sysconfig.erb) and source into SysV/Upstart init configurations
 - Enhancement: Add Debian docker daemon SysV init template
 
 # 0.30.2
 
-- Bugfix: [#68][]: Fix CommandTimeout handling in LWRPs
-- Bugfix: [#67][]: Fix argument order to pull when tag specified
+- Bugfix: [#68]: Fix CommandTimeout handling in LWRPs
+- Bugfix: [#67]: Fix argument order to pull when tag specified
 
 # 0.30.1
 
 Public or private registry login should now correctly occur and login once per credentials change.
 
-- Bugfix: [#64][]: Correct CLI ordering of registry login
-- Bugfix: [#65][]: login command skipped in registry provider
+- Bugfix: [#64]: Correct CLI ordering of registry login
+- Bugfix: [#65]: login command skipped in registry provider
 - Enhancement: registry provider current resource attributes loaded from .dockercfg
 
 # 0.30.0
 
-Awesome work by [@jcrobak][] to close out two issues ([#49][] and [#52][]) with [#62][]. Note change below in image build action.
+Awesome work by [@jcrobak] to close out two issues ([#49] and [#52]) with [#62]. Note change below in image build action.
 
-- Bugfix: [#52][]: return codes of docker commands not verified
+- Bugfix: [#52]: return codes of docker commands not verified
 - Bugfix: Add missing pull_if_missing action to image resource
-- Enhancement: [#56][]: Switch build action to build_if_missing, build action now builds each run (be careful with image growth!)
-- Enhancement: [#59][]: Add Mac OS X installation support
-- Enhancement: [#49][]: Add docker_cmd_timeout attribute and daemon verification
-- Enhancement: [#58][]: Add container redeploy action
-- Enhancement: [#63][]: Add group_members attribute and group recipe to manage docker group
+- Enhancement: [#56]: Switch build action to build_if_missing, build action now builds each run (be careful with image growth!)
+- Enhancement: [#59]: Add Mac OS X installation support
+- Enhancement: [#49]: Add docker_cmd_timeout attribute and daemon verification
+- Enhancement: [#58]: Add container redeploy action
+- Enhancement: [#63]: Add group_members attribute and group recipe to manage docker group
 
 # 0.29.0
 
-- Enhancement: [#57][]: Implement id checking when determining current_resource
+- Enhancement: [#57]: Implement id checking when determining current_resource
 
   - Added to both container and image LWRPs
 
 - Enhancement: Set created and status attributes for current container resources (for handlers, wrappers, etc.)
+
 - Enhancement: Set created and virtual_size attributes for image resource (for handlers, wrappers, etc.)
 
 # 0.28.0
 
-- Enhancement: [#55][]: image LWRP pull action now attempts pull every run (use pull_if_missing action for old behavior)
+- Enhancement: [#55]: image LWRP pull action now attempts pull every run (use pull_if_missing action for old behavior)
 
 # 0.27.1
 
-- Bugfix: [#51][]: container LWRP current_resource attribute matching should also depend on container_name
+- Bugfix: [#51]: container LWRP current_resource attribute matching should also depend on container_name
 
 # 0.27.0
 
-- Enhancement: [#48][]: Accept FalseClass CLI arguments (also explicitly declare =true for TrueClass CLI arguments)
+- Enhancement: [#48]: Accept FalseClass CLI arguments (also explicitly declare =true for TrueClass CLI arguments)
 
 # 0.26.0
 
 - Bugfix: Add SysV init script for binary installs
 - Enhancement: Add storage_type and virtualization_type attributes
 - Enhancement: Initial devmapper support for binary installs on CentOS/Ubuntu
-- Enhancement: [#47][] Debian-specific container SysV init script
-- Enhancement: [#46][] Add rm attribute for build action on image LWRP
+- Enhancement: [#47] Debian-specific container SysV init script
+- Enhancement: [#46] Add rm attribute for build action on image LWRP
 - Enhancement: Add no_cache attribute for build action on image LWRP
 
 # 0.25.1
 
-- Bugfix: [#44][] Add missing run attribute for commit action on container LWRP
+- Bugfix: [#44] Add missing run attribute for commit action on container LWRP
 
 # 0.25.0
 
@@ -1131,7 +1139,7 @@ Awesome work by [@jcrobak][] to close out two issues ([#49][] and [#52][]) with 
 
 # 0.24.2
 
-- Bugfix: [#43][] Better formatting for container LWRP debug logging
+- Bugfix: [#43] Better formatting for container LWRP debug logging
 
 # 0.24.1
 
@@ -1140,12 +1148,12 @@ Awesome work by [@jcrobak][] to close out two issues ([#49][] and [#52][]) with 
 
 # 0.24.0
 
-- Bugfix: [#42][] fix(upstart): Install inotify-tools if using upstart
-- Enhancement: [#38][] Allow a user to specify a custom template for their container init configuration
+- Bugfix: [#42] fix(upstart): Install inotify-tools if using upstart
+- Enhancement: [#38] Allow a user to specify a custom template for their container init configuration
 
 # 0.23.1
 
-- Bugfix: [#39][] Fix NoMethodError bugs in docker::aufs recipe
+- Bugfix: [#39] Fix NoMethodError bugs in docker::aufs recipe
 
 # 0.23.0
 
@@ -1156,12 +1164,12 @@ Awesome work by [@jcrobak][] to close out two issues ([#49][] and [#52][]) with 
 
 # 0.22.0
 
-- Enhancement: [#35][] Use kernel release for package name on saucy and newer
-- Enhancement: [#37][] dont include aufs recipe on ubuntu 13.10 and up; don't require docker::lxc for package installs
+- Enhancement: [#35] Use kernel release for package name on saucy and newer
+- Enhancement: [#37] dont include aufs recipe on ubuntu 13.10 and up; don't require docker::lxc for package installs
 
 # 0.21.0
 
-- Enhancement: [#31][] More helpful cmd_timeout error messages and catchable exceptions for container (`Chef::Provider::Docker::Container::CommandTimeout`) and image (`Chef::Provider::Docker::Image::CommandTimeout`) LWRPs
+- Enhancement: [#31] More helpful cmd_timeout error messages and catchable exceptions for container (`Chef::Provider::Docker::Container::CommandTimeout`) and image (`Chef::Provider::Docker::Image::CommandTimeout`) LWRPs
 
 # 0.20.0
 
@@ -1172,11 +1180,12 @@ Awesome work by [@jcrobak][] to close out two issues ([#49][] and [#52][]) with 
   - <http://www.oracle.com/technetwork/articles/servers-storage-admin/resource-controllers-linux-1506602.html>
 
 - Enhancement: Split out lxc recipe for default platform lxc handling
+
 - Enhancement: Create cgroups recipe for default platform cgroups handling
 
 # 0.19.1
 
-- Bugfix: [#30][] apt-get throws exit code 100 when upgrading docker
+- Bugfix: [#30] apt-get throws exit code 100 when upgrading docker
 
 # 0.19.0
 
@@ -1220,11 +1229,17 @@ Awesome work by [@jcrobak][] to close out two issues ([#49][] and [#52][]) with 
   - `set['docker']['container_init_type'] = false` or add `init_type false` for the LWRP to disable this behavior
 
 - Enhancement: Add configuration recipe with template
+
 - Enhancement: Add container_cmd_timeout attribute to easily set global container LWRP cmd_timeout default
+
 - Enhancement: Add image_cmd_timeout attribute to easily set global image LWRP cmd_timeout default
+
 - Enhancement: Add cookbook attribute to container LWRP
+
 - Enhancement: Add init_type attribute to container LWRP
+
 - Enhancement: Add locale support for Fedora
+
 - Enhancement: Fail Chef run if `docker run` command errors
 
 # 0.15.0
@@ -1235,9 +1250,9 @@ Awesome work by [@jcrobak][] to close out two issues ([#49][] and [#52][]) with 
 
 # 0.14.0
 
-- Bugfix: [#27][] Only use command to determine running container if provided
-- Bugfix: [#28][] Upstart requires full stop and start of service instead of restart if job configuration changes while already running. Note even `initctl reload-configuration` isn't working as expected from <http://upstart.ubuntu.com/faq.html#reload>
-- Enhancement: [#26][] Add ability to set package action
+- Bugfix: [#27] Only use command to determine running container if provided
+- Bugfix: [#28] Upstart requires full stop and start of service instead of restart if job configuration changes while already running. Note even `initctl reload-configuration` isn't working as expected from <http://upstart.ubuntu.com/faq.html#reload>
+- Enhancement: [#26] Add ability to set package action
 
 # 0.13.0
 
@@ -1250,7 +1265,7 @@ Awesome work by [@jcrobak][] to close out two issues ([#49][] and [#52][]) with 
 # 0.12.0
 
 - Bugfix: Add default bind_uri (nil) to default attributes
-- Enhancement: [#24][] bind_socket attribute added
+- Enhancement: [#24] bind_socket attribute added
 
 # 0.11.0
 
@@ -1289,8 +1304,8 @@ Other behind the scenes changes:
 
 # 0.10.0
 
-- Enhancement: [#22][] cmd_timeout, path (image LWRP), working_directory (container LWRP) LWRP attributes
-- Bugfix: [#25][] Install Go environment only when installing from source
+- Enhancement: [#22] cmd_timeout, path (image LWRP), working_directory (container LWRP) LWRP attributes
+- Bugfix: [#25] Install Go environment only when installing from source
 
 # 0.9.1
 
@@ -1298,7 +1313,7 @@ Other behind the scenes changes:
 
 # 0.9.0
 
-- image LWRP now supports non-stdin build and import actions (thanks [@wingrunr21][]!)
+- image LWRP now supports non-stdin build and import actions (thanks [@wingrunr21]!)
 
 # 0.8.1
 
