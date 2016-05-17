@@ -1,5 +1,9 @@
 # Docker Cookbook Changelog
 
+## v2.7.1
+
+- Updated test matrix in the readme to reflect reality
+
 ## v2.7.0
 
 - Initial support for Ubuntu 16.04
