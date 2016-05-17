@@ -26,7 +26,7 @@ platforms:
   transport:
     ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
   run_list:
-  - recipe[yum-docker]
+  - recipe[chef-yum-docker]
 
 - name: centos-7.0
   driver_plugin: digitalocean
@@ -38,7 +38,7 @@ platforms:
   transport:
     ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
   run_list:
-  - recipe[yum-docker]
+  - recipe[chef-yum-docker]
 
 # - name: amazon-2014.09
 #   driver_plugin: ec2
@@ -48,7 +48,7 @@ platforms:
 #   transport:
 #     ssh_key: <%= ENV['EC2_SSH_KEY_PATH'] %>
 #  run_list:
-#  - recipe[yum-docker]
+#  - recipe[chef-yum-docker]
 
 - name: fedora-21
   driver_plugin: digitalocean
@@ -60,7 +60,7 @@ platforms:
   transport:
     ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
   run_list:
-  - recipe[yum-docker]
+  - recipe[chef-yum-docker]
 
 # - name: debian-8.1
 #   driver_plugin: digitalocean

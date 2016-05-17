@@ -288,7 +288,7 @@ module DockerCookbook
       converge_by "starting #{container_name}" do
         with_retries do
           container.start
-          timeout ? container.wait(timeout) : container.wait unless detach
+          timeout ? container.wait(timeout) : container.wait unless detach # rubocop: disable Style/IfUnlessModifierOfIfUnless
         end
         wait_running_state(true) if detach
       end
