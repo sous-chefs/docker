@@ -255,7 +255,7 @@ end
 
 ## docker_installation_package
 
-The `docker_installation_package` resource uses the system package manager to install Docker. It relies on the pre-configuration of the system's package repositories. The excellent `yum-docker` and `apt-docker` Supermarket cookbooks are used to do this in test-kitchen.
+The `docker_installation_package` resource uses the system package manager to install Docker. It relies on the pre-configuration of the system's package repositories. The `chef-yum-docker` and `chef-apt-docker` Supermarket cookbooks are used to do this in test-kitchen.
 
 This is the recommended production installation method.
 

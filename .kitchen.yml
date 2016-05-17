@@ -19,15 +19,16 @@ verifier:
 platforms:
 - name: centos-6.7
   run_list:
-  - recipe[yum-docker]
+  - recipe[chef-yum-docker]
 
 - name: centos-7.2
   run_list:
-  - recipe[yum-docker]
+  - recipe[chef-yum-docker]
 
-- name: fedora-22
+- name: fedora-23
   run_list:
-  - recipe[yum-docker]
+  - recipe[yum::dnf_yum_compat]
+  - recipe[chef-yum-docker]
 
 - name: debian-7.10
   run_list:
@@ -129,7 +130,8 @@ suites:
     'centos-7.2',
     'debian-8.4',
     'ubuntu-12.04',
-    'ubuntu-14.04'
+    'ubuntu-14.04',
+    'fedora-23'
    ]
   attributes:
     docker:
@@ -143,7 +145,8 @@ suites:
     'debian-8.4',
     'ubuntu-12.04',
     'ubuntu-14.04',
-    'ubuntu-16.04'
+    'ubuntu-16.04',
+    'fedora-23'
    ]
   attributes:
     docker:
