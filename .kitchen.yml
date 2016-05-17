@@ -111,13 +111,44 @@ suites:
 # docker_installation_package resource
 ######################################
 
+- name: installation_package-171
+  includes: [
+    'centos-7.2',
+    'debian-7.10',
+    'debian-8.4',
+    'ubuntu-12.04',
+    'ubuntu-14.04',
+    'fedora-23',
+   ]
+  attributes:
+    docker:
+      version: '1.7.1'
+  run_list:
+  - recipe[docker_test::installation_package]
+
+- name: installation_package-183
+  includes: [
+    'centos-7.2',
+    'debian-7.10',
+    'debian-8.4',
+    'ubuntu-12.04',
+    'ubuntu-14.04'
+   ]
+  attributes:
+    docker:
+      version: '1.8.2'
+  run_list:
+  - recipe[docker_test::installation_package]
+
+
 - name: installation_package-191
   includes: [
     'centos-7.2',
+    'debian-7.10',
     'debian-8.4',
-    'fedora-23',
     'ubuntu-12.04',
-    'ubuntu-14.04'
+    'ubuntu-14.04',
+    'fedora-23',
    ]
   attributes:
     docker:
@@ -125,9 +156,10 @@ suites:
   run_list:
   - recipe[docker_test::installation_package]
 
-- name: installation_package-1100
+- name: installation_package-1103
   includes: [
     'centos-7.2',
+    'debian-7.10',
     'debian-8.4',
     'ubuntu-12.04',
     'ubuntu-14.04',
@@ -135,13 +167,14 @@ suites:
    ]
   attributes:
     docker:
-      version: '1.10.0'
+      version: '1.10.3'
   run_list:
   - recipe[docker_test::installation_package]
 
 - name: installation_package-1111
   includes: [
     'centos-7.2',
+    'debian-7.10',
     'debian-8.4',
     'ubuntu-12.04',
     'ubuntu-14.04',
