@@ -31,8 +31,8 @@ module DockerCookbook
       def coerce_shell_command(v)
         return nil if v.nil?
         return DockerBase::ShellCommandString.new(
-          ::Shellwords.join(v)) if v.is_a?(Array
-                                          )
+          ::Shellwords.join(v)
+        ) if v.is_a?(Array)
         DockerBase::ShellCommandString.new(v)
       end
 
