@@ -564,12 +564,10 @@ end
 
 The `docker_image` resource properties mostly corresponds to the [Docker Remote API](https://docs.docker.com/reference/api/docker_remote_api_v1.20/#2-2-images) as driven by the [Swipley docker-api Ruby gem](https://github.com/swipely/docker-api)
 
-A `docker_image`'s full identifier is a string in the form "\
+A `docker_image`'s full identifier is a string in the form "\<repo\>:\<tag\>". There is some nuance around naming using the public
+registry vs a private one.
 
-<repo\>:\<tag\>". There is some nuance around naming using the public
-registry vs a private one.</tag\></repo\>
-
-- `repo` - aka `image_name` - The first half of a Docker image's identity. This is a string in the form: `registry:port/owner/image_name`. If the `registry:port` portion is left off, Docker will implicitly use the Docker public registry. "Official Images" omit the owner part. This means a repo id can look as short as `busybox`, `alpine`, or `centos`, to refer to official images on the public registry, and as long as `my.computers.biz:5043:/what/ever` to refer to custom images on an private registry. Often you'll see something like `someara/chef` to refer to private images on the public registry. - Defaults to resource name.
+- `repo` - aka `image_name` - The first half of a Docker image's identity. This is a string in the form: `registry:port/owner/image_name`. If the `registry:port` portion is left off, Docker will implicitly use the Docker public registry. "Official Images" omit the owner part. This means a repo id can look as short as `busybox`, `alpine`, or `centos`, to refer to official images on the public registry, and as long as `my.computers.biz:5043/what/ever` to refer to custom images on an private registry. Often you'll see something like `someara/chef` to refer to private images on the public registry. - Defaults to resource name.
 - `tag` - The second half of a Docker image's identity. - Defaults to `latest`
 - `source` - Path to input for the `:import`, `:build` and `:build_if_missing` actions. For building, this can be a Dockerfile, a tarball containing a Dockerfile in its root, or a directory containing a Dockerfile. For import, this should be a tarball containing Docker formatted image, as generated with `:save`.
 - `destination` - Path for output from the `:save` action.
