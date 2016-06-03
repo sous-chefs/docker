@@ -423,6 +423,7 @@ The `docker_service` resource property list mostly corresponds to the options fo
 - `logfile` - Location of Docker daemon log file
 - `userland_proxy`- Enables or disables docker-proxy
 - `disable_legacy_registry` - Do not contact legacy registries
+- `userns_remap` - Configure namespace remapping
 
 ### Actions
 
