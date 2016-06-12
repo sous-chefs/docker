@@ -1,5 +1,8 @@
 # Docker Cookbook Changelog
 
+## v2.8.0
+- Feature - User namespace configuration capability for docker_service
+
 ## v2.7.1
 
 - Updated test matrix in the readme to reflect reality
