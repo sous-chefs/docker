@@ -60,6 +60,20 @@ platforms:
 
 suites:
 #####################################
+# docker_installation_tarball resource
+#####################################
+
+- name: installation_tarball-1111
+  includes: [
+    'ubuntu-16.04'
+   ]
+  attributes:
+    docker:
+      version: '1.11.1'
+  run_list:
+  - recipe[docker_test::installation_tarball]
+
+#####################################
 # docker_installation_binary resource
 #####################################
 
