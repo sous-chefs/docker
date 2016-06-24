@@ -1,5 +1,8 @@
 # Docker Cookbook Changelog
 
+## v2.9.1
+- implement userns_mode for containers
+
 ## v2.9.0
 - Feature - docker_installation_tarball resource
 - Patch - Adding missing http_proxy support to rhel/sysvinit
