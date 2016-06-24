@@ -1,5 +1,13 @@
 # Docker Cookbook Changelog
 
+## v2.9.0
+- Feature - docker_installation_tarball resource
+- Patch - Adding missing http_proxy support to rhel/sysvinit
+- Patch #705 - Avoid installing docker-api gem in ChefSpec
+
+## v2.8.0
+- Feature - User namespace configuration capability for docker_service
+
 ## v2.7.1
 
 - Updated test matrix in the readme to reflect reality

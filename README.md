@@ -234,6 +234,27 @@ end
 - `source` - Path to network accessible Docker binary. Ignores version
 - `checksum` - SHA-256
 
+## docker_installation_tarball
+
+The `docker_installation_tarball` resource copies the precompiled Go binary tarball onto the disk. It exists to help run newer Docker versions from 1.11.0 onwards. It should not be used in production, especially with devicemapper.
+
+### Example
+
+```ruby
+docker_installation_tarball 'default' do
+  version '1.11.0'
+  source 'https://my.computers.biz/dist/docker.tgz'
+  checksum '97a3f5924b0b831a310efa8bf0a4c91956cd6387c4a8667d27e2b2dd3da67e4d'
+  action :create
+end
+```
+
+### Properties
+
+- `version` - The desired version of docker. Used to calculate source.
+- `source` - Path to network accessible Docker binary tarball. Ignores version
+- `checksum` - SHA-256
+
 ## docker_installation_script
 
 The `docker_installation_script` resource runs the script hosted by Docker, Inc at <http://get.docker.com>. It configures package repositories and installs a dynamically compiled binary.
@@ -423,6 +444,7 @@ The `docker_service` resource property list mostly corresponds to the options fo
 - `logfile` - Location of Docker daemon log file
 - `userland_proxy`- Enables or disables docker-proxy
 - `disable_legacy_registry` - Do not contact legacy registries
+- `userns_remap` - Configure namespace remapping
 
 ### Actions
 
