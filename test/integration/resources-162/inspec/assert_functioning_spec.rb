@@ -10,24 +10,28 @@ volumes_filter = '{{ .Volumes }}' if docker_version =~ /1.7/
 volumes_filter = '{{ .Config.Volumes }}' if docker_version =~ /1.8/
 volumes_filter = '{{ .Config.Volumes }}' if docker_version =~ /1.9/
 volumes_filter = '{{ .Config.Volumes }}' if docker_version =~ /1.10/
+volumes_filter = '{{ .Config.Volumes }}' if docker_version =~ /1.11/
 
 overrides_volumes_value = %r{map\[\/home:map\[\]\]} if docker_version =~ /1.6/
 overrides_volumes_value = %r{map\[/home:{}\]} if docker_version =~ /1.7/
 overrides_volumes_value = %r{map\[/home:{}\]} if docker_version =~ /1.8/
 overrides_volumes_value = %r{map\[/home:{}\]} if docker_version =~ /1.9/
 overrides_volumes_value = %r{map\[/home:{}\]} if docker_version =~ /1.10/
+overrides_volumes_value = %r{map\[/home:{}\]} if docker_version =~ /1.11/
 
 mounts_filter = '{{ .Volumes }}' if docker_version =~ /1.6/
 mounts_filter = '{{ .Volumes }}' if docker_version =~ /1.7/
 mounts_filter = '{{ .Mounts }}' if docker_version =~ /1.8/
 mounts_filter = '{{ .Mounts }}' if docker_version =~ /1.9/
 mounts_filter = '{{ .Mounts }}' if docker_version =~ /1.10/
+mounts_filter = '{{ .Mounts }}' if docker_version =~ /1.11/
 
 uber_options_network_mode = 'default' if docker_version =~ /1.6/
 uber_options_network_mode = 'bridge' if docker_version =~ /1.7/
 uber_options_network_mode = 'default' if docker_version =~ /1.8/
 uber_options_network_mode = 'default' if docker_version =~ /1.9/
 uber_options_network_mode = 'default' if docker_version =~ /1.10/
+uber_options_network_mode = 'default' if docker_version =~ /1.11/
 
 nil_string = '<no value>' if docker_version =~ /1.6/
 nil_string = '<nil>' if docker_version =~ /1.7/
@@ -892,4 +896,9 @@ describe command('docker exec busybox_exec ls /tmp') do
   its(:exit_status) { should eq 0 }
   its(:stdout) { should match(/onefile/) }
   its(:stdout) { should match(/twofile/) }
+end
+
+describe command("docker inspect --format '{{ .HostConfig.ReadonlyRootfs }}' ro_rootfs") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { eq 'true' }
 end

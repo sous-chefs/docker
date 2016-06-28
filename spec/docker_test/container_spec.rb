@@ -847,11 +847,23 @@ describe 'docker_test::container' do
     end
 
     it 'run_if_missing docker_container[pid_mode]' do
-      expect(chef_run).to run_if_missing_docker_container('pid_mode')
+      expect(chef_run).to run_if_missing_docker_container('pid_mode').with(
+        pid_mode: 'host'
+      )
     end
 
     it 'run_if_missing docker_container[ipc_mode]' do
-      expect(chef_run).to run_if_missing_docker_container('ipc_mode')
+      expect(chef_run).to run_if_missing_docker_container('ipc_mode').with(
+        ipc_mode: 'host'
+      )
+    end
+  end
+
+  context 'testing ro_rootfs' do
+    it 'creates read-only rootfs' do
+      expect(chef_run).to run_if_missing_docker_container('ro_rootfs').with(
+        ro_rootfs: true
+      )
     end
   end
 end

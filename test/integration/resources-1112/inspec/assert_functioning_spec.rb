@@ -428,7 +428,7 @@ end
 
 describe command('docker logs cmd_test') do
   its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/.dockerinit/) }
+  its(:stdout) { should match(/.dockerenv/) }
 end
 
 # docker_container[sean_was_here]

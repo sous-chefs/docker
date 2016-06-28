@@ -1093,6 +1093,7 @@ Most `docker_container` properties are the `snake_case` version of the `CamelCas
 - `tls_client_cert` - Path to TLS certificate file for docker cli. Defaults to ENV['DOCKER_CERT_PATH'] if set
 - `tls_client_key` - Path to TLS key file for docker cli. Defaults to ENV['DOCKER_CERT_PATH'] if set
 - `userns_mode` - Modify the user namespace mode - Defaults to `nil`, example option: `host`
+- `ro_rootfs` - Mount the container's root filesystem as read only. Defaults to `false`
 
 ### Actions
 

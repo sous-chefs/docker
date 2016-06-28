@@ -986,3 +986,15 @@ docker_container 'ipc_mode' do
   ipc_mode 'host'
   action :run_if_missing
 end
+
+##################
+# read-only rootfs
+##################
+
+docker_container 'ro_rootfs' do
+  repo 'alpine'
+  tag '3.1'
+  command 'ps -ef'
+  ro_rootfs true
+  action :run_if_missing
+end
