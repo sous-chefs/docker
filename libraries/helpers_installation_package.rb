@@ -54,6 +54,7 @@ module DockerCookbook
 
       def amazon?
         return true if node['platform'] == 'amazon'
+        false
       end
 
       # https://github.com/chef/chef/issues/4103
@@ -76,7 +77,7 @@ module DockerCookbook
         return '1.7.1' if el6?
         return '1.7.1' if amazon?
         return '1.9.1' if vivid?
-        '1.11.1'
+        '1.11.2'
       end
 
       def docker_bin
