@@ -1,5 +1,10 @@
 # Docker Cookbook Changelog
 
+## v2.9.2
+- adding feature ReadonlyRootfs
+- bumping docker version to 1.11.2
+- removing etcd, fails tests for xenial and swarm will have it builtin in 1.12
+
 ## v2.9.1
 - implement userns_mode for containers
 
