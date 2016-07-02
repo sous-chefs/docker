@@ -184,3 +184,35 @@ docker_container 'echo-station-network_g' do
   network_mode 'network_g'
   action :run
 end
+
+###########
+# network_h
+###########
+
+# connect same container to multiple networks
+docker_network 'network_h1' do
+  action :create
+end
+
+docker_network 'network_h2' do
+  action :create
+end
+
+docker_container 'container1-network_h' do
+  repo 'alpine'
+  tag '3.1'
+  network_mode 'network_h1'
+  command 'nc -ll -p 1337 -e /bin/cat'
+  action :run
+end
+
+docker_network 'network_h2' do
+  container 'container1-network_h'
+  action :connect
+end
+
+# disconnet from a network
+docker_network 'network_h1' do
+  container 'container1-network_h'
+  action :disconnect
+end
