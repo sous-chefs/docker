@@ -60,6 +60,9 @@ module DockerCookbook
     property :disable_legacy_registry, [Boolean, nil]
     property :userns_remap, [String, nil]
 
+    # These are unvalidated daemon arguments passed in as a string.
+    property :misc_opts, [String, nil]
+
     # environment variables to set before running daemon
     property :http_proxy, [String, nil]
     property :https_proxy, [String, nil]
