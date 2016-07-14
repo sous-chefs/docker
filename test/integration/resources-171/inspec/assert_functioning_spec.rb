@@ -878,6 +878,18 @@ describe command("docker inspect --format '{{ .HostConfig.IpcMode }}' ipc_mode")
   its(:stdout) { eq 'host' }
 end
 
+# docker_container[uts_mode]
+
+describe command("docker ps -af 'name=uts_mode$'") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/Exited \(0\)/) }
+end
+
+describe command("docker inspect --format '{{ .HostConfig.UTSMode }}' uts_mode") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { eq 'host' }
+end
+
 # containers shouldnt be killed, validating only one was force killed
 
 describe command("docker ps -qaf 'exited=137' | wc -l") do

@@ -857,6 +857,12 @@ describe 'docker_test::container' do
         ipc_mode: 'host'
       )
     end
+
+    it 'run_if_missing docker_container[uts_mode]' do
+      expect(chef_run).to run_if_missing_docker_container('uts_mode').with(
+        uts_mode: 'host'
+      )
+    end
   end
 
   context 'testing ro_rootfs' do
