@@ -9,7 +9,12 @@ addons:
     packages:
       - chefdk
 
+# Don't `bundle install` which takes about 1.5 mins
 install: echo "skip bundle install"
+
+branches:
+  only:
+  - master
 
 services: docker
 
@@ -21,7 +26,7 @@ before_script:
 
 script:
   - /opt/chefdk/embedded/bin/chef --version
-  - /opt/chefdk/embedded/bin/rubocop --version
-  - /opt/chefdk/embedded/bin/rubocop
+  - /opt/chefdk/embedded/bin/cookstyle --version
+  - /opt/chefdk/embedded/bin/cookstyle
   - /opt/chefdk/embedded/bin/bundle install
   - /opt/chefdk/embedded/bin/bundle exec rspec spec
