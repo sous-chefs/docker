@@ -987,6 +987,18 @@ docker_container 'ipc_mode' do
   action :run_if_missing
 end
 
+##########
+# uts_mode
+##########
+
+docker_container 'uts_mode' do
+  repo 'alpine'
+  tag '3.1'
+  command 'ps -ef'
+  uts_mode 'host'
+  action :run_if_missing
+end
+
 ##################
 # read-only rootfs
 ##################

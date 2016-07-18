@@ -81,6 +81,7 @@ module DockerCookbook
     property :ulimits, [Array, nil], coerce: proc { |v| coerce_ulimits(v) }
     property :user, String, default: ''
     property :userns_mode, String, default: ''
+    property :uts_mode, String, default: ''
     property :volumes, PartialHashType, default: {}, coerce: proc { |v| coerce_volumes(v) }
     property :volumes_from, ArrayType
     property :working_dir, [String, NilClass], default: ''
@@ -278,6 +279,7 @@ module DockerCookbook
               'ReadonlyRootfs'  => ro_rootfs,
               'Ulimits'         => ulimits_to_hash,
               'UsernsMode'      => userns_mode,
+              'UTSMode'         => uts_mode,
               'VolumesFrom'     => volumes_from
             }
           }

@@ -24,6 +24,7 @@ group :kitchen_common do
   gem 'test-kitchen', '~> 1.5.0'
   gem 'kitchen-sync'
   gem 'kitchen-inspec'
+  gem 'activesupport', '< 5.0.0'
 end
 
 group :kitchen_vagrant do
