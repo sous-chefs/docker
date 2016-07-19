@@ -63,7 +63,7 @@ suites:
 # docker_installation_tarball resource
 #####################################
 
-- name: installation_tarball-1111
+- name: installation_tarball-1112
   includes: [
     'ubuntu-16.04'
    ]
@@ -77,7 +77,7 @@ suites:
 # docker_installation_binary resource
 #####################################
 
-- name: installation_binary-1110
+- name: installation_binary-1112
   includes: [
     'ubuntu-16.04'
    ]
@@ -293,7 +293,7 @@ suites:
   - recipe[docker_test::container]
   - recipe[docker_test::exec]
 
-- name: resources-1110
+- name: resources-1112
   includes: [
     'ubuntu-16.04'
    ]
