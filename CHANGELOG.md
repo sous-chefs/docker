@@ -1,5 +1,8 @@
 # Docker Cookbook Changelog
 
+## v2.9.3
+- add uts_mode support for docker_container provider (#730)
+
 ## v2.9.2
 - adding feature ReadonlyRootfs
 - bumping docker version to 1.11.2
