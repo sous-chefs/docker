@@ -1,8 +1,5 @@
 source 'https://rubygems.org'
 
-# is needed until Chef DK has Ruby version >= 2.2.2
-gem 'activesupport', '=4.2.6'
-
 group :docker do
   gem 'docker-api', '= 1.28.0'
 end
