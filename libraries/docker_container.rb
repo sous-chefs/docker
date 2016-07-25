@@ -234,7 +234,7 @@ module DockerCookbook
             'name'            => container_name,
             'Image'           => "#{repo}:#{tag}",
             'Labels'          => labels,
-            'Cmd'             => to_shellwords(command),
+            'Cmd'             => property_is_set?(:command) ? to_shellwords(command) : nil,
             'AttachStderr'    => attach_stderr,
             'AttachStdin'     => attach_stdin,
             'AttachStdout'    => attach_stdout,
