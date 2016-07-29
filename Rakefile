@@ -1,11 +1,12 @@
 require 'rspec/core/rake_task'
+require 'cookstyle'
 require 'rubocop/rake_task'
 require 'foodcritic'
 require 'kitchen'
 
 require_relative 'tasks/maintainers'
 
-# Style tests. Rubocop and Foodcritic
+# # Style tests. cookstyle (rubocop) and Foodcritic
 namespace :style do
   desc 'Run Ruby style checks'
   RuboCop::RakeTask.new(:ruby)
@@ -35,9 +36,6 @@ namespace :integration do
     end
   end
 end
-
-desc 'Run all tests on Travis'
-task travis: ['style', 'spec', 'integration:cloud']
 
 # Default
 task default: %w(style spec)
