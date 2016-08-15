@@ -31,6 +31,10 @@ module DockerCookbook
         '/usr/bin/docker'
       end
 
+      def dockerd_bin
+        '/usr/bin/dockerd'
+      end
+
       def docker_name
         return 'docker' if name == 'default'
         "docker-#{name}"
@@ -122,13 +126,20 @@ module DockerCookbook
       def docker_daemon_arg
         if Gem::Version.new(docker_major_version) < Gem::Version.new('1.8')
           '-d'
-        else
+        elsif Gem::Version.new(docker_major_version) < Gem::Version.new('1.12')
           'daemon'
+        else
+          ''
         end
       end
 
       def docker_daemon_cmd
-        [docker_bin, docker_daemon_arg, docker_daemon_opts].join(' ')
+        bin = if Gem::Version.new(docker_major_version) < Gem::Version.new('1.12')
+                docker_bin
+              else
+                dockerd_bin
+              end
+        [bin, docker_daemon_arg, docker_daemon_opts].join(' ')
       end
 
       def docker_cmd
