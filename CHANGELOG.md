@@ -1,5 +1,9 @@
 # Docker Cookbook Changelog
 
+## v2.9.4
+- Switch to the dockerd binary on 1.12+
+- Add links to resources overview list
+
 ## v2.9.3
 - add uts_mode support for docker_container provider (#730)
 
