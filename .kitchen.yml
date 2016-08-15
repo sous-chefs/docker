@@ -295,7 +295,8 @@ suites:
 
 - name: resources-1112
   includes: [
-    'ubuntu-16.04'
+    'ubuntu-16.04',
+    'centos-7.2'
    ]
   attributes:
     docker:
