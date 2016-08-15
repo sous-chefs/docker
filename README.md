@@ -90,35 +90,37 @@ Configuration of the backing storage driver, including kernel module loading, is
 
 ## Resources Overview
 
-- `docker_service`: composite resource that uses docker_installation and docker_service_manager
-- `docker_installation`: automatically select an installation method
-- `docker_service_manager`: automatically selects a service manager
+- [docker_service](#docker_service): composite resource that uses docker_installation and docker_service_manager
 
-- `docker_installation_binary`: copies a pre-compiled docker binary onto disk
+- [docker_installation](#docker_installation): automatically select an installation method
 
-- `docker_installation_script`: curl | bash
+- [docker_service_manager](#docker_service_manager): automatically selects a service manager
 
-- `docker_installation_package`: package 'docker-engine'
+- [docker_installation_binary](#docker_installation_binary): copies a pre-compiled docker binary onto disk
 
-- `docker_service_manager_execute`: manage docker daemon with Chef
+- [docker_installation_script](#docker_installation_script): curl | bash
 
-- `docker_service_manager_sysvinit`: manage docker daemon with a sysvinit script
+- [docker_installation_package](#docker_installation_package): package 'docker-engine'
 
-- `docker_service_manager_upstart`: manage docker daemon with upstart script
+- [docker_service_manager_execute](#docker_service_manager_execute): manage docker daemon with Chef
 
-- `docker_service_manager_systemd`: manage docker daemon with systemd unit files
+- [docker_service_manager_sysvinit](#docker_service_manager_sysvinit): manage docker daemon with a sysvinit script
 
-- `docker_image`: image/repository operations
+- [docker_service_manager_upstart](#docker_service_manager_upstart): manage docker daemon with upstart script
 
-- `docker_container`: container operations
+- [docker_service_manager_systemd](#docker_service_manager_systemd): manage docker daemon with systemd unit files
 
-- `docker_tag`: image tagging operations
+- [docker_image](#docker_image): image/repository operations
 
-- `docker_registry`: registry operations
+- [docker_container](#docker_container): container operations
 
-- `docker_network`: network operations
+- [docker_tag](#docker_tag): image tagging operations
 
-- `docker_volume`: volume operations
+- [docker_registry](#docker_registry): registry operations
+
+- [docker_network](#docker_network): network operations
+
+- [docker_volume](#docker_volume): volume operations
 
 ## Getting Started
 
