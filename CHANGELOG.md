@@ -1,5 +1,8 @@
 # Docker Cookbook Changelog
 
+## v2.9.5
+- bumping docker-api gem
+
 ## v2.9.4
 - Switch to the dockerd binary on 1.12+
 - Add links to resources overview list
