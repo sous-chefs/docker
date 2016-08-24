@@ -41,6 +41,7 @@ Berksfile.lock
 vendor/
 .coverage/
 .zero-knife.rb
+Policyfile.lock.json
 
 #vagrant stuff
 .vagrant/
