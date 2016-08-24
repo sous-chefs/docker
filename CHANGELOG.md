@@ -1,5 +1,7 @@
 # Docker Cookbook Changelog
 
+This file is used to list changes made in each version of the docker cookbook.
+
 ## v2.9.5
 - bumping docker-api gem
 
