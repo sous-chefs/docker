@@ -1058,7 +1058,7 @@ Most `docker_container` properties are the `snake_case` version of the `CamelCas
 - `dns` - An array of DNS servers the container will use for name resolution.
 - `dns_search` - An array of domains the container will search for name resolution.
 - `domain_name` - Set's the container's dnsdomainname as returned by the `dnsdomainname` command.
-- `entry_point` - Set the entry point for the container as a string or an array of strings.
+- `entrypoint` - Set the entry point for the container as a string or an array of strings.
 - `env` - Set environment variables in the container in the form `['FOO=bar', 'BIZ=baz']`
 - `extra_hosts` - An array of hosts to add to the container's `/etc/hosts` in the form `['host_a:10.9.8.7', 'host_b:10.9.8.6']`
 - `force` - A boolean to use in container operations that support a `force` option. Defaults to `false`
