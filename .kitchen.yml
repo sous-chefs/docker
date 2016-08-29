@@ -17,7 +17,7 @@ verifier:
   name: inspec
 
 platforms:
-- name: centos-6.7
+- name: centos-6.8
   run_list:
   - recipe[chef-yum-docker]
 
@@ -25,17 +25,17 @@ platforms:
   run_list:
   - recipe[chef-yum-docker]
 
-- name: fedora-23
+- name: fedora-24
   run_list:
   - recipe[yum::dnf_yum_compat]
   - recipe[chef-yum-docker]
 
-- name: debian-7.10
+- name: debian-7.11
   run_list:
   - recipe[apt]
   - recipe[chef-apt-docker]
 
-- name: debian-8.4
+- name: debian-8.5
   run_list:
   - recipe[apt]
   - recipe[chef-apt-docker]
@@ -128,8 +128,8 @@ suites:
 - name: installation_package-171
   includes: [
     'centos-7.2',
-    'debian-7.10',
-    'debian-8.4',
+    'debian-7.11',
+    'debian-8.5',
     'ubuntu-12.04',
     'ubuntu-14.04'
    ]
@@ -142,8 +142,8 @@ suites:
 - name: installation_package-183
   includes: [
     'centos-7.2',
-    'debian-7.10',
-    'debian-8.4',
+    'debian-7.11',
+    'debian-8.5',
     'ubuntu-12.04',
     'ubuntu-14.04'
    ]
@@ -157,11 +157,11 @@ suites:
 - name: installation_package-191
   includes: [
     'centos-7.2',
-    'debian-7.10',
-    'debian-8.4',
+    'debian-7.11',
+    'debian-8.5',
     'ubuntu-12.04',
     'ubuntu-14.04',
-    'fedora-23',
+    'fedora-24',
    ]
   attributes:
     docker:
@@ -172,11 +172,11 @@ suites:
 - name: installation_package-1103
   includes: [
     'centos-7.2',
-    'debian-7.10',
-    'debian-8.4',
+    'debian-7.11',
+    'debian-8.5',
     'ubuntu-12.04',
     'ubuntu-14.04',
-    'fedora-23'
+    'fedora-24'
    ]
   attributes:
     docker:
@@ -187,12 +187,12 @@ suites:
 - name: installation_package-1111
   includes: [
     'centos-7.2',
-    'debian-7.10',
-    'debian-8.4',
+    'debian-7.11',
+    'debian-8.5',
     'ubuntu-12.04',
     'ubuntu-14.04',
     'ubuntu-16.04',
-    'fedora-23'
+    'fedora-24'
    ]
   attributes:
     docker:
@@ -222,14 +222,14 @@ suites:
 ##################################
 - name: service-sysvinit
   includes: [
-    'debian-7.10'
+    'debian-7.11'
    ]
   run_list:
   - recipe[docker_test::service_sysvinit]
 
 - name: service-sysvinit-multi
   includes: [
-    'debian-7.10'
+    'debian-7.11'
    ]
   run_list:
   - recipe[docker_test::service_sysvinit_multi]
@@ -269,8 +269,8 @@ suites:
 - name: service-systemd-multi
   includes: [
     'centos-7.2',
-    'fedora-23',
-    'debian-8.4',
+    'fedora-24',
+    'debian-8.5',
     'ubuntu-16.04'
    ]
   run_list:
@@ -336,8 +336,8 @@ suites:
 - name: auto
   includes: [
     'centos-7.2',
-    'fedora-23',
-    'debian-8.4',
+    'fedora-24',
+    'debian-8.5',
     'ubuntu-12.04',
     'ubuntu-14.04',
     'ubuntu-16.04'
