@@ -74,7 +74,8 @@ module DockerCookbook
         mode '0644'
         variables(
           config: new_resource,
-          docker_name: docker_name
+          docker_name: docker_name,
+          docker_socket: connect_socket.sub(%r{unix://|fd://}, '')
         )
         cookbook 'docker'
         notifies :run, 'execute[systemctl daemon-reload]', :immediately
