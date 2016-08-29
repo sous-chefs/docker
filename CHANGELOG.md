@@ -1,5 +1,10 @@
 # Docker Cookbook Changelog
 
+## v2.9.6
+- entrypoint not entry_point README
+- dockerd binary on 1.12+ for upstart
+- fix docker.socket for systemd
+
 ## v2.9.5
 - bumping docker-api gem
 
