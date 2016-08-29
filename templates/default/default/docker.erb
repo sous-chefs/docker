@@ -1,7 +1,7 @@
 # Docker Upstart and SysVinit configuration file
 
 # Customize location of Docker binary (especially for development testing).
-DOCKER="<%= @config.docker_bin %>"
+DOCKER="<%= @docker_daemon %>"
 
 # Use DOCKER_OPTS to modify the daemon startup options.
 DOCKER_OPTS="<%= @docker_daemon_opts %>"

@@ -123,6 +123,14 @@ module DockerCookbook
         ray.push.join('.')
       end
 
+      def docker_daemon
+        if Gem::Version.new(docker_major_version) < Gem::Version.new('1.12')
+          docker_bin
+        else
+          dockerd_bin
+        end
+      end
+
       def docker_daemon_arg
         if Gem::Version.new(docker_major_version) < Gem::Version.new('1.8')
           '-d'
@@ -134,12 +142,7 @@ module DockerCookbook
       end
 
       def docker_daemon_cmd
-        bin = if Gem::Version.new(docker_major_version) < Gem::Version.new('1.12')
-                docker_bin
-              else
-                dockerd_bin
-              end
-        [bin, docker_daemon_arg, docker_daemon_opts].join(' ')
+        [docker_daemon, docker_daemon_arg, docker_daemon_opts].join(' ')
       end
 
       def docker_cmd
