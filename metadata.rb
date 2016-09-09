@@ -8,7 +8,7 @@ version '2.9.5'
 source_url 'https://github.com/chef-cookbooks/docker'
 issues_url 'https://github.com/chef-cookbooks/docker/issues'
 
-depends 'compat_resource', '>= 12.10.0'
+depends 'compat_resource', '>= 12.14'
 
 supports 'amazon'
 supports 'centos'
@@ -19,4 +19,4 @@ supports 'fedora'
 supports 'redhat'
 supports 'ubuntu'
 
-chef_version '>= 12.1' if respond_to?(:chef_version)
+chef_version '>= 12.1'
