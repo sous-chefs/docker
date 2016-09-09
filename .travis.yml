@@ -1,11 +1,11 @@
 sudo: required
 dist: trusty
 
-# install the pre-release chef-dk.  Use chef-stable-precise to install the stable release
+# install the pre-release chef-dk.  Use chef-stable-trusty to install the stable release
 addons:
   apt:
     sources:
-      - chef-current-precise
+      - chef-current-trusty
     packages:
       - chefdk
 
@@ -19,7 +19,6 @@ before_script:
 
 script:
   - /opt/chefdk/embedded/bin/chef --version
-  - /opt/chefdk/embedded/bin/rubocop --version
-  - /opt/chefdk/embedded/bin/rubocop
+  - /opt/chefdk/embedded/bin/cookstyle --version
   - /opt/chefdk/embedded/bin/bundle install
   - /opt/chefdk/embedded/bin/bundle exec rake
