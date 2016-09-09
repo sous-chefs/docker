@@ -10,8 +10,8 @@ group :rake do
 end
 
 group :lint do
-  gem 'foodcritic', '~> 6.0'
-  gem 'rubocop', '~> 0.36'
+  gem 'foodcritic', '~> 7.0'
+  gem 'cookstyle'
 end
 
 group :unit do
@@ -21,7 +21,7 @@ group :unit do
 end
 
 group :kitchen_common do
-  gem 'test-kitchen', '~> 1.5.0'
+  gem 'test-kitchen', '~> 1.11'
   gem 'kitchen-sync'
   gem 'kitchen-inspec'
   gem 'activesupport', '< 5.0.0'
