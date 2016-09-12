@@ -138,6 +138,9 @@ module DockerCookbook
         public_send(property_name, value) if respond_to?(property_name)
       end
 
+      # load container specific labels (without engine/image ones)
+      load_container_labels
+
       # these are a special case for us because our names differ from theirs
       restart_policy container.info['HostConfig']['RestartPolicy']['Name']
       restart_maximum_retry_count container.info['HostConfig']['RestartPolicy']['MaximumRetryCount']
@@ -166,6 +169,20 @@ module DockerCookbook
       def state
         current_resource ? current_resource.state : {}
       end
+    end
+
+    # Loads container specific labels excluding those of engine or image.
+    # This insures idempotency.
+    def load_container_labels
+      image_labels = Docker::Image.get(container.info['Image'], {}, connection).info['Config']['Labels'] || {}
+      engine_labels = Docker.info(connection)['Labels'] || {}
+
+      labels = (container.info['Config']['Labels'] || {}).reject do |key, val|
+        image_labels.any? { |k, v| k == key && v == val } ||
+          engine_labels.any? { |k, v| k == key && v == val }
+      end
+
+      public_send(:labels, labels)
     end
 
     def validate_container_create
