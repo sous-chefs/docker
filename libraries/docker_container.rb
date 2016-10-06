@@ -194,12 +194,9 @@ module DockerCookbook
       if network_mode == 'host' &&
          (
           !(hostname.nil? || hostname.empty?) ||
-          !(dns.nil? || dns.empty?) ||
-          !(dns_search.nil? || dns_search.empty?) ||
-          !(mac_address.nil? || mac_address.empty?) ||
-          !(extra_hosts.nil? || extra_hosts.empty?)
+          !(mac_address.nil? || mac_address.empty?)
          )
-        raise Chef::Exceptions::ValidationFailed, 'Cannot specify hostname, dns, dns_search, mac_address, or extra_hosts when network_mode is host.'
+        raise Chef::Exceptions::ValidationFailed, 'Cannot specify hostname or mac_address when network_mode is host.'
       end
 
       if network_mode == 'container' &&
