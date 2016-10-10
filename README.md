@@ -447,6 +447,7 @@ The `docker_service` resource property list mostly corresponds to the options fo
 - `userland_proxy`- Enables or disables docker-proxy
 - `disable_legacy_registry` - Do not contact legacy registries
 - `userns_remap` - Enable user namespace remapping options - `default`, `uid`, `uid:gid`, `username`, `username:groupname` (see: [Docker User Namespaces](see: https://docs.docker.com/v1.10/engine/reference/commandline/daemon/#daemon-user-namespace-options))
+- `mount_flags` - Set the systemd mount propagation flag. Defaults to slave.
 
 ##### Miscellaneous Options
 - `misc_opts` - Pass the docker daemon any other options bypassing flag validation, supplied as `--flag=value`
