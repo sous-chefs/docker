@@ -1,5 +1,14 @@
 # Docker Cookbook Changelog
 
+This file is used to list changes made in each version of the docker cookbook.
+
+## 2.9.7 (2016-10-14)
+- Require the most recent compat_resource
+- Get foodcritic passing
+- Update the Rakefile and use cookstyle
+- Use cookstyle in Travis
+- Add matchers for docker_installation_tarball
+
 ## v2.9.6
 - entrypoint not entry_point README
 - dockerd binary on 1.12+ for upstart
