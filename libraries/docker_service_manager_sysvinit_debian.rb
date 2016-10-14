@@ -67,6 +67,7 @@ module DockerCookbook
           source 'default/docker.erb'
           variables(
             config: new_resource,
+            docker_daemon: docker_daemon,
             docker_daemon_opts: docker_daemon_opts.join(' ')
           )
           cookbook 'docker'
