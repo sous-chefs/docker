@@ -16,6 +16,8 @@ module DockerCookbook
       node['platform_version'].to_f >= 15.04
     end
 
+    property :systemd_mountflags, String, default: 'private'
+
     action :start do
       create_docker_wait_ready
 
