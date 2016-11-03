@@ -8,14 +8,14 @@ module DockerCookbook
     provides :docker_service
 
     # installation type and service_manager
-    property :install_method, %w(binary script package none auto), default: 'auto', desired_state: false
+    property :install_method, %w(binary script package tarball none auto), default: 'auto', desired_state: false
     property :service_manager, %w(execute sysvinit upstart systemd auto), default: 'auto', desired_state: false
 
     # docker_installation_script
     property :repo, desired_state: false
     property :script_url, String, desired_state: false
 
-    # docker_installation_binary
+    # docker_installation_binary and tarball
     property :checksum, String, desired_state: false
     property :docker_bin, String, desired_state: false
     property :source, String, desired_state: false
@@ -23,7 +23,7 @@ module DockerCookbook
     # docker_installation_package
     property :package_version, String, desired_state: false
 
-    # binary and package
+    # binary, package and tarball
     property :version, String, desired_state: false
     property :package_options, [String, nil], desired_state: false
 
@@ -33,8 +33,9 @@ module DockerCookbook
     def validate_install_method
       if property_is_set?(:version) &&
          install_method != 'binary' &&
-         install_method != 'package'
-        raise Chef::Exceptions::ValidationFailed, 'Version property only supported for binary and package installation methods'
+         install_method != 'package' &&
+         install_method != 'tarball'
+        raise Chef::Exceptions::ValidationFailed, 'Version property only supported for binary, package and tarball installation methods'
       end
     end
 
@@ -60,6 +61,8 @@ module DockerCookbook
           install = docker_installation_script(name, &block)
         when 'package'
           install = docker_installation_package(name, &block)
+        when 'tarball'
+          install = docker_installation_tarball(name, &block)
         when 'none'
           Chef::Log.info('Skipping Docker installation. Assuming it was handled previously.')
           return
