@@ -191,7 +191,7 @@ module DockerCookbook
         opts << "--log-level=#{log_level}" if log_level
         labels.each { |l| opts << "--label=#{l}" } if labels
         opts << "--log-driver=#{log_driver}" if log_driver
-        log_opts.each { |log_opt| opts << "--log-opt=#{log_opt}" } if log_opts
+        log_opts.each { |log_opt| opts << "--log-opt #{log_opt}" } if log_opts
         opts << "--mtu=#{mtu}" if mtu
         opts << "--pidfile=#{pidfile}" if pidfile
         opts << "--registry-mirror=#{registry_mirror}" if registry_mirror
