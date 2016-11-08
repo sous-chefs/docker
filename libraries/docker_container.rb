@@ -174,7 +174,7 @@ module DockerCookbook
          restart_policy != 'always' &&
          restart_policy != 'unless-stopped' &&
          restart_policy != 'on-failure'
-        raise Chef::Exceptions::ValidationFailed, 'restart_policy must be either no, always, unless-stopped, or on-raiseure.'
+        raise Chef::Exceptions::ValidationFailed, 'restart_policy must be either no, always, unless-stopped, or on-failure.'
       end
 
       if autoremove == true && (property_is_set?(:restart_policy) && restart_policy != 'no')
