@@ -201,6 +201,24 @@ suites:
   - recipe[docker_test::installation_package]
 
 #################################
+# docker_service_install resource
+#################################
+- name: service_install_tarball-1111
+  includes: [
+    'centos-7.2',
+    'debian-7.11',
+    'debian-8.5',
+    'ubuntu-14.04',
+    'ubuntu-16.04',
+    'fedora-24'
+   ]
+  attributes:
+    docker:
+      version: '1.11.1'
+  run_list:
+  - recipe[docker_test::service_install_tarball]
+
+#################################
 # docker_service_execute resource
 #################################
 - name: service-execute
