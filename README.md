@@ -29,7 +29,7 @@ The following platforms have been tested with Test Kitchen: You may be able to g
 |--------------+-------+-------+-------|--------|--------|
 | centos-7     | X     | X     | X     | X      | X      |
 |--------------+-------+-------+-------|--------|--------|
-| fedora-23    |       |       | X     | X      | X      |
+| fedora       |       |       | X     | X      | X      |
 |--------------+-------+-------+-------|--------|--------|
 | ubuntu-12.04 | X     | X     | X     | X      | X      |
 |--------------+-------+-------+-------|--------|--------|
@@ -448,7 +448,8 @@ The `docker_service` resource property list mostly corresponds to the options fo
 - `disable_legacy_registry` - Do not contact legacy registries
 - `userns_remap` - Enable user namespace remapping options - `default`, `uid`, `uid:gid`, `username`, `username:groupname` (see: [Docker User Namespaces](see: https://docs.docker.com/v1.10/engine/reference/commandline/daemon/#daemon-user-namespace-options))
 
-##### Miscellaneous Options
+#### Miscellaneous Options
+
 - `misc_opts` - Pass the docker daemon any other options bypassing flag validation, supplied as `--flag=value`
 
 ### Actions
@@ -1098,7 +1099,7 @@ Most `docker_container` properties are the `snake_case` version of the `CamelCas
 - `tls_client_cert` - Path to TLS certificate file for docker cli. Defaults to ENV['DOCKER_CERT_PATH'] if set
 - `tls_client_key` - Path to TLS key file for docker cli. Defaults to ENV['DOCKER_CERT_PATH'] if set
 - `userns_mode` - Modify the user namespace mode - Defaults to `nil`, example option: `host`
-- `pid_mode` - Set the PID (Process) Namespace mode for the container. `host`: use the host's PID namespace inside the container. 
+- `pid_mode` - Set the PID (Process) Namespace mode for the container. `host`: use the host's PID namespace inside the container.
 - `ipc_mode` - Set the IPC mode for the container - Defaults to `nil`, example option: `host`
 - `uts_mode` - Set the UTS namespace mode for the container. The UTS namespace is for setting the hostname and the domain that is visible to running processes in that namespace. By default, all containers, including those with `--network=host`, have their own UTS namespace. The host setting will result in the container using the same UTS namespace as the host. Note that --hostname is invalid in host UTS mode.
 - `ro_rootfs` - Mount the container's root filesystem as read only. Defaults to `false`
