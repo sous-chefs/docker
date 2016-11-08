@@ -59,6 +59,7 @@ module DockerCookbook
     property :userland_proxy, [Boolean, nil]
     property :disable_legacy_registry, [Boolean, nil]
     property :userns_remap, [String, nil]
+    property :mount_flags, String, default: 'slave'
 
     # These are unvalidated daemon arguments passed in as a string.
     property :misc_opts, [String, nil]
