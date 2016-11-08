@@ -2,6 +2,12 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.9.8 (2016-11-08)
+- Fixed a typo in an error message 
+- Enable tarball install through docker_service
+- option log_opt is defined as --log-opt value1 --log-opt value2 instead of --log-opt=value1 --log-opt=value2
+- Depend on a working compat_resource cookbook
+
 ## 2.9.7 (2016-10-14)
 - Require the most recent compat_resource
 - Get foodcritic passing
