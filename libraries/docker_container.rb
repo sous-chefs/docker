@@ -130,7 +130,7 @@ module DockerCookbook
       # Go through everything in the container and set corresponding properties:
       # c.info['Config']['ExposedPorts'] -> exposed_ports
       (container.info['Config'].to_a + container.info['HostConfig'].to_a).each do |key, value|
-        next if value.nil? || key == 'RestartPolicy' || key == 'Binds'
+        next if value.nil? || key == 'RestartPolicy' || key == 'Binds' || key == 'ReadonlyRootfs'
 
         # Image => image
         # Set exposed_ports = ExposedPorts (etc.)
@@ -142,6 +142,7 @@ module DockerCookbook
       restart_policy container.info['HostConfig']['RestartPolicy']['Name']
       restart_maximum_retry_count container.info['HostConfig']['RestartPolicy']['MaximumRetryCount']
       volumes_binds container.info['HostConfig']['Binds']
+      ro_rootfs container.info['HostConfig']['ReadonlyRootfs']
     end
 
     #########
