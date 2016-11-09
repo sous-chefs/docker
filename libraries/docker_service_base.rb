@@ -60,6 +60,11 @@ module DockerCookbook
     property :disable_legacy_registry, [Boolean, nil]
     property :userns_remap, [String, nil]
 
+    # These are options specific to systemd configuration such as
+    # LimitNOFILE or TasksMax that you may wannt to use to customize
+    # the environment in which Docker runs.
+    property :systemd_opts, ArrayType
+
     # These are unvalidated daemon arguments passed in as a string.
     property :misc_opts, [String, nil]
 

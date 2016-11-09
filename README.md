@@ -356,6 +356,7 @@ docker_service_manager_systemd 'default' do
   tls_server_key "/path/to/server-key.pem"
   tls_client_cert "/path/to/cert.pem"
   tls_client_key "/path/to/key.pem"
+  systemd_ops ["TasksMax=infinity","MountFlags=private"]
   action :start
 end
 ```
@@ -451,6 +452,10 @@ The `docker_service` resource property list mostly corresponds to the options fo
 #### Miscellaneous Options
 
 - `misc_opts` - Pass the docker daemon any other options bypassing flag validation, supplied as `--flag=value`
+
+#### Systemd-specific Options
+
+- `systemd_opts` - An array of strings that will be included as individual lines in the systemd service unit for Docker.  *Note*: This option is only relevant for systems where systemd is the default service manager or where systemd is specified explicitly as the service manager.   
 
 ### Actions
 
