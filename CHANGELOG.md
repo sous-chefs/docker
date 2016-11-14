@@ -2,6 +2,12 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.9.9 (2016-11-14)
+-Fixing resource idempotence in labels property
+-Fix regression introduced by #741, breaking Debian installation
+-Added ro_rootfs => ReadonlyRootfs special cases mapping
+-Enable systemd options as a docker_service attribute
+
 ## 2.9.8 (2016-11-08)
 - Fixed a typo in an error message 
 - Enable tarball install through docker_service
