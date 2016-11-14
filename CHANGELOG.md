@@ -2,6 +2,9 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.9.10 (2016-11-14)
+-renaming systemd_conf to systemd_args due to a conflict with systemd cookbook
+
 ## 2.9.9 (2016-11-14)
 -Fixing resource idempotence in labels property
 -Fix regression introduced by #741, breaking Debian installation
