@@ -58,7 +58,7 @@ module DockerCookbook
         variables(
           config: new_resource,
           docker_daemon_cmd: docker_daemon_cmd,
-          systemd_conf: systemd_conf,
+          systemd_args: systemd_args,
           docker_wait_ready: "#{libexec_dir}/#{docker_name}-wait-ready"
         )
         cookbook 'docker'

@@ -162,7 +162,7 @@ module DockerCookbook
         opts
       end
 
-      def systemd_conf
+      def systemd_args
         opts = ''
         systemd_opts.each { |systemd_opt| opts << "#{systemd_opt}\n" } if systemd_opts
         opts
