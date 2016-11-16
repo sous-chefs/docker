@@ -684,14 +684,14 @@ docker_container 'busybox_ls' do
 end
 ```
 
-- The :run_if_missing action will only run once. It is the default action.
+- The :run action contains both :create and :start the container in one action. Redeploys the container on resource change. It is the default action.
 
 ```ruby
 docker_container 'alpine_ls' do
   repo 'alpine'
   tag '3.1'
   command 'ls -la /'
-  action :run_if_missing
+  action :run
 end
 ```
 
@@ -702,7 +702,7 @@ docker_container 'env' do
   repo 'debian'
   env ['PATH=/usr/bin', 'FOO=bar']
   command 'env'
-  action :run_if_missing
+  action :run
 end
 ```
 
