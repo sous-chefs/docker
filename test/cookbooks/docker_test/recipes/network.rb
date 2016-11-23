@@ -207,13 +207,13 @@ docker_container 'container1-network_h' do
   action :run
 end
 
-docker_network 'network_h2' do
+docker_network 'network_h2 connector' do
   container 'container1-network_h'
   action :connect
 end
 
 # disconnet from a network
-docker_network 'network_h1' do
+docker_network 'network_h1 disconnector' do
   container 'container1-network_h'
   action :disconnect
 end

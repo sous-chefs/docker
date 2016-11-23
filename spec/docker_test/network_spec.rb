@@ -3,7 +3,7 @@ require 'spec_helper'
 
 describe 'docker_test::network' do
   cached(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '16.04').converge(described_recipe) }
-  
+
   context 'creates a network with unicode name' do
     it 'creates docker_network_seseme_straße' do
       expect(chef_run).to create_docker_network('seseme_straße')
@@ -136,13 +136,13 @@ describe 'docker_test::network' do
     end
 
     it 'connects container1-network_h with network_h2' do
-      expect(chef_run).to connect_docker_network('network_h2').with(
+      expect(chef_run).to connect_docker_network('network_h2 connector').with(
         container: 'container1-network_h'
       )
     end
 
     it 'disconnects container1-network_h from network_h1' do
-      expect(chef_run).to disconnect_docker_network('network_h1').with(
+      expect(chef_run).to disconnect_docker_network('network_h1 disconnector').with(
         container: 'container1-network_h'
       )
     end
