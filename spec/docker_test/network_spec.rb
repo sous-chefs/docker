@@ -1,8 +1,9 @@
+# coding: utf-8
 require 'spec_helper'
 
 describe 'docker_test::network' do
-  cached(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
-
+  cached(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '16.04').converge(described_recipe) }
+  
   context 'creates a network with unicode name' do
     it 'creates docker_network_seseme_straße' do
       expect(chef_run).to create_docker_network('seseme_straße')

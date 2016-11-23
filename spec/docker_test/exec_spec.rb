@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'docker_test::exec' do
-  cached(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  cached(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '16.04').converge(described_recipe) }
 
   it 'pull_if_missing docker_image[busybox]' do
     expect(chef_run).to pull_if_missing_docker_image('busybox')
