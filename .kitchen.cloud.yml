@@ -101,11 +101,11 @@ platforms:
   - recipe[apt]
   - recipe[chef-apt-docker]
 
-- name: ubuntu-15.10
+- name: ubuntu-16.04
   driver_plugin: digitalocean
   driver_config:
     size: 2gb
-    image: ubuntu-15-10-x64
+    image: ubuntu-16-04-x64
     region: <%= ENV['DIGITALOCEAN_REGION'] %>
     ssh_key_ids: <%= ENV['DIGITALOCEAN_SSH_KEYS'] %>
     ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
@@ -122,7 +122,7 @@ suites:
 
 - name: installation_binary-1100
   includes: [
-    'ubuntu-15.10'
+    'ubuntu-16.04'
   ]
   attributes:
     docker:
@@ -136,7 +136,7 @@ suites:
 
 - name: installation_script_main
   includes: [
-    'ubuntu-15.10',
+    'ubuntu-16.04',
   ]
   attributes:
     docker:
@@ -146,7 +146,7 @@ suites:
 
 - name: installation_script_test
   includes: [
-    'ubuntu-15.10',
+    'ubuntu-16.04',
   ]
   attributes:
     docker:
@@ -156,7 +156,7 @@ suites:
 
 - name: installation_script_experimental
   includes: [
-    'ubuntu-15.10',
+    'ubuntu-16.04',
   ]
   attributes:
     docker:
@@ -168,32 +168,17 @@ suites:
 # docker_installation_package resource
 ######################################
 
-- name: installation_package-191
-  includes: [
-    'centos-7.0',
-    'debian-8.1',
-    'fedora-23',
-    'ubuntu-12.04',
-    'ubuntu-14.04',
-    'ubuntu-15.10'
-  ]
-  attributes:
-    docker:
-      version: '1.9.1'
-  run_list:
-  - recipe[docker_test::installation_package]
-
-- name: installation_package-1100
+- name: installation_package-1123
   includes: [
     'centos-7.0',
     'debian-8.1',
     'ubuntu-12.04',
     'ubuntu-14.04',
-    'ubuntu-15.10'
+    'ubuntu-16.04'
   ]
   attributes:
     docker:
-      version: '1.10.0'
+      version: '1.12.3'
   run_list:
   - recipe[docker_test::installation_package]
 
@@ -202,14 +187,14 @@ suites:
 #################################
 - name: service-execute
   includes: [
-    'ubuntu-15.10',
+    'ubuntu-16.04',
   ]
   run_list:
   - recipe[docker_test::service_execute]
 
 - name: service-execute-multi
   includes: [
-    'ubuntu-15.10',
+    'ubuntu-16.04',
   ]
   run_list:
   - recipe[docker_test::service_execute_multi]
@@ -258,7 +243,7 @@ suites:
     'centos-7.0',
     'fedora-23',
     'debian-8.1',
-    'ubuntu-15.10'
+    'ubuntu-16.04'
   ]
   run_list:
   - recipe[docker_test::service_systemd]
@@ -268,7 +253,7 @@ suites:
     'centos-7.0',
     'fedora-23',
     'debian-8.1',
-    'ubuntu-15.10'
+    'ubuntu-16.04'
   ]
   run_list:
   - recipe[docker_test::service_systemd_multi]
@@ -277,25 +262,13 @@ suites:
 # bulk resource testing
 #######################
 
-- name: resources-191
+- name: resources-1123
   includes: [
-    'ubuntu-15.10'
+    'ubuntu-16.04'
   ]
   attributes:
     docker:
-      version: '1.9.1'
-  run_list:
-  - recipe[docker_test::default]
-  - recipe[docker_test::image]
-  - recipe[docker_test::container]
-
-- name: resources-1100
-  includes: [
-    'ubuntu-15.10'
-  ]
-  attributes:
-    docker:
-      version: '1.10.0'
+      version: '1.12.3'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::image]
@@ -303,22 +276,22 @@ suites:
 
 - name: network
   includes: [
-    'ubuntu-15.10'
+    'ubuntu-16.04'
   ]
   attributes:
     docker:
-      version: '1.10.0'
+      version: '1.12.3'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::network]
 
 - name: volume
   includes: [
-    'ubuntu-15.10'
+    'ubuntu-16.04'
   ]
   attributes:
     docker:
-      version: '1.10.0'
+      version: '1.12.3'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::volume]
@@ -334,7 +307,7 @@ suites:
     'debian-8.1',
     'ubuntu-12.04',
     'ubuntu-14.04',
-    'ubuntu-15.10'
+    'ubuntu-16.04'
   ]
   run_list:
   - recipe[docker_test::auto]

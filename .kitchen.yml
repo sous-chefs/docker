@@ -83,7 +83,7 @@ suites:
    ]
   attributes:
     docker:
-      version: '1.11.2'
+      version: '1.10.0'
   run_list:
   - recipe[docker_test::installation_binary]
 
@@ -125,66 +125,7 @@ suites:
 # docker_installation_package resource
 ######################################
 
-- name: installation_package-171
-  includes: [
-    'centos-7.2',
-    'debian-7.11',
-    'debian-8.5',
-    'ubuntu-12.04',
-    'ubuntu-14.04'
-   ]
-  attributes:
-    docker:
-      version: '1.7.1'
-  run_list:
-  - recipe[docker_test::installation_package]
-
-- name: installation_package-183
-  includes: [
-    'centos-7.2',
-    'debian-7.11',
-    'debian-8.5',
-    'ubuntu-12.04',
-    'ubuntu-14.04'
-   ]
-  attributes:
-    docker:
-      version: '1.8.2'
-  run_list:
-  - recipe[docker_test::installation_package]
-
-
-- name: installation_package-191
-  includes: [
-    'centos-7.2',
-    'debian-7.11',
-    'debian-8.5',
-    'ubuntu-12.04',
-    'ubuntu-14.04',
-    'fedora-24',
-   ]
-  attributes:
-    docker:
-      version: '1.9.1'
-  run_list:
-  - recipe[docker_test::installation_package]
-
-- name: installation_package-1103
-  includes: [
-    'centos-7.2',
-    'debian-7.11',
-    'debian-8.5',
-    'ubuntu-12.04',
-    'ubuntu-14.04',
-    'fedora-24'
-   ]
-  attributes:
-    docker:
-      version: '1.10.3'
-  run_list:
-  - recipe[docker_test::installation_package]
-
-- name: installation_package-1111
+- name: installation_package-1123
   includes: [
     'centos-7.2',
     'debian-7.11',
@@ -196,27 +137,9 @@ suites:
    ]
   attributes:
     docker:
-      version: '1.11.1'
+      version: '1.12.3'
   run_list:
   - recipe[docker_test::installation_package]
-
-#################################
-# docker_service_install resource
-#################################
-- name: service_install_tarball-1111
-  includes: [
-    'centos-7.2',
-    'debian-7.11',
-    'debian-8.5',
-    'ubuntu-14.04',
-    'ubuntu-16.04',
-    'fedora-24'
-   ]
-  attributes:
-    docker:
-      version: '1.11.1'
-  run_list:
-  - recipe[docker_test::service_install_tarball]
 
 #################################
 # docker_service_execute resource
@@ -298,27 +221,14 @@ suites:
 # bulk resource testing
 #######################
 
-- name: resources-191
-  includes: [
-    'ubuntu-14.04'
-   ]
-  attributes:
-    docker:
-      version: '1.9.1'
-  run_list:
-  - recipe[docker_test::default]
-  - recipe[docker_test::image]
-  - recipe[docker_test::container]
-  - recipe[docker_test::exec]
-
-- name: resources-1112
+- name: resources-1123
   includes: [
     'ubuntu-16.04',
     'centos-7.2'
    ]
   attributes:
     docker:
-      version: '1.11.2'
+      version: '1.12.3'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::image]
