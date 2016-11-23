@@ -5,33 +5,19 @@ docker_version = docker_version_string.split(/\s/)[2].split(',')[0]
 
 puts "docker_version: #{docker_version}"
 
-volumes_filter = '{{ .Volumes }}' if docker_version =~ /1.6/
-volumes_filter = '{{ .Volumes }}' if docker_version =~ /1.7/
-volumes_filter = '{{ .Config.Volumes }}' if docker_version =~ /1.8/
-volumes_filter = '{{ .Config.Volumes }}' if docker_version =~ /1.9/
-volumes_filter = '{{ .Config.Volumes }}' if docker_version =~ /1.10/
-volumes_filter = '{{ .Config.Volumes }}' if docker_version =~ /1.11/
+case docker_version
+when '1.6', '1.7'
+  volumes_filter = '{{ .Volumes }}'
+  mounts_filter = '{{ .Volumes }}'
+else
+  volumes_filter = '{{ .Config.Volumes }}'
+  mounts_filter = '{{ .Mounts }}'
+end
 
-overrides_volumes_value = %r{map\[\/home:map\[\]\]} if docker_version =~ /1.6/
-overrides_volumes_value = %r{map\[/home:{}\]} if docker_version =~ /1.7/
-overrides_volumes_value = %r{map\[/home:{}\]} if docker_version =~ /1.8/
-overrides_volumes_value = %r{map\[/home:{}\]} if docker_version =~ /1.9/
-overrides_volumes_value = %r{map\[/home:{}\]} if docker_version =~ /1.10/
-overrides_volumes_value = %r{map\[/home:{}\]} if docker_version =~ /1.11/
+# overrides_volumes_value
 
-mounts_filter = '{{ .Volumes }}' if docker_version =~ /1.6/
-mounts_filter = '{{ .Volumes }}' if docker_version =~ /1.7/
-mounts_filter = '{{ .Mounts }}' if docker_version =~ /1.8/
-mounts_filter = '{{ .Mounts }}' if docker_version =~ /1.9/
-mounts_filter = '{{ .Mounts }}' if docker_version =~ /1.10/
-mounts_filter = '{{ .Mounts }}' if docker_version =~ /1.11/
-
-uber_options_network_mode = 'default' if docker_version =~ /1.6/
-uber_options_network_mode = 'bridge' if docker_version =~ /1.7/
-uber_options_network_mode = 'default' if docker_version =~ /1.8/
-uber_options_network_mode = 'default' if docker_version =~ /1.9/
-uber_options_network_mode = 'default' if docker_version =~ /1.10/
-uber_options_network_mode = 'default' if docker_version =~ /1.11/
+overrides_volumes_value = docker_version == '1.6' ? %r{map\[\/home:map\[\]\]} : %r{map\[/home:{}\]}
+uber_options_network_mode = docker_version == '1.7' ? 'bridge' : 'default'
 
 nil_string = '<no value>' if docker_version =~ /1.6/
 nil_string = '<nil>' if docker_version =~ /1.7/
@@ -825,7 +811,7 @@ end
 
 describe command("docker inspect -f '{{ .HostConfig.LogConfig.Config }}' syslogger") do
   its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/syslog-tag:container-syslogger/) }
+  its(:stdout) { should match(/tag:container-syslogger/) }
 end
 
 # docker_container[host_override]
@@ -891,7 +877,6 @@ describe command("docker inspect --format '{{ .HostConfig.UTSMode }}' uts_mode")
 end
 
 # containers shouldnt be killed, validating only one was force killed
-
 describe command("docker ps -qaf 'exited=137' | wc -l") do
   its(:exit_status) { should eq 0 }
   its(:stdout) { should match(/1/) }
@@ -900,14 +885,6 @@ end
 describe command("docker ps -af 'exited=137'") do
   its(:exit_status) { should eq 0 }
   its(:stdout) { should match(/kill_after/) }
-end
-
-# docker_exec[busybox_exec]
-
-describe command('docker exec busybox_exec ls /tmp') do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/onefile/) }
-  its(:stdout) { should match(/twofile/) }
 end
 
 describe command("docker inspect --format '{{ .HostConfig.ReadonlyRootfs }}' ro_rootfs") do
