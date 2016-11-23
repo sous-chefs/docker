@@ -16,7 +16,7 @@ systemd = false if os[:family] == 'redhat' && os[:release].to_i < 7
 systemd = false if os[:family] == 'ubuntu' && os[:release].to_f < 15.04
 
 unless systemd
-  describe file('/var/log/docker.log') do
+  describe file('/var/log/docker') do
     it { should be_file }
     it { should be_mode 0644 }
   end
