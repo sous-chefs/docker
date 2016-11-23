@@ -120,4 +120,30 @@ describe 'docker_test::network' do
       expect(chef_run).to run_docker_container('echo-station-network_g')
     end
   end
+
+  context 'connect and disconnect a container' do
+    it 'creates docker_network_h1' do
+      expect(chef_run).to create_docker_network('network_h1')
+    end
+
+    it 'creates docker_network_h2' do
+      expect(chef_run).to create_docker_network('network_h2')
+    end
+
+    it 'creates container1-network_h' do
+      expect(chef_run).to run_docker_container('container1-network_h')
+    end
+
+    it 'connects container1-network_h with network_h2' do
+      expect(chef_run).to connect_docker_network('network_h2').with(
+        container: 'container1-network_h'
+      )
+    end
+
+    it 'disconnects container1-network_h from network_h1' do
+      expect(chef_run).to disconnect_docker_network('network_h1').with(
+        container: 'container1-network_h'
+      )
+    end
+  end
 end

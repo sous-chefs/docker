@@ -65,7 +65,7 @@ module DockerCookbook
       def pull_image
         with_retries do
           registry_host = parse_registry_host(repo)
-          creds = node.run_state['docker_auth'] && node.run_state['docker_auth'][registry_host] || (node.run_state['docker_auth'] ||= {})['index.docker.io']
+          creds = node.run_state['docker_auth'] && node.run_state['docker_auth'][registry_host] || (node.run_state['docker_auth'] ||= {})['index.docker.io'].tap { |hs| hs.delete("serveraddress") }
 
           original_image = Docker::Image.get(image_identifier, {}, connection) if Docker::Image.exist?(image_identifier, {}, connection)
           new_image = Docker::Image.create({ 'fromImage' => image_identifier }, creds, connection)

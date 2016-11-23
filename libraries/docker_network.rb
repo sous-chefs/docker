@@ -7,7 +7,7 @@ module DockerCookbook
     resource_name :docker_network
 
     property :auxiliary_addresses, [String, Array, nil], coerce: proc { |v| coerce_auxiliary_addresses(v) }
-    property :container, ArrayType, desired_state: false
+    property :container, String, desired_state: false
     property :driver, String
     property :driver_opts, PartialHashType
     property :gateway, [String, Array, nil], coerce: proc { |v| coerce_gateway(v) }
@@ -87,22 +87,40 @@ module DockerCookbook
     end
 
     action :connect do
-      return unless current_resource
-      return unless container
-      converge_if_changed do
-        with_retries do
-          network.connect(container)
+      unless container
+        raise Chef::Exceptions::ValidationFailed, 'Container id or name is required for action :connect'
+      end
+
+      if current_resource
+        container_index = network.info['Containers'].values.index { |c| c['Name'] == container }
+        if container_index.nil?
+          converge_by("connect #{container}") do
+            with_retries do
+              network.connect(container)
+            end
+          end
         end
+      else
+        Chef::Log.warn("Cannot connect to #{network_name}: network does not exist")
       end
     end
 
     action :disconnect do
-      return unless current_resource
-      return unless container
-      converge_if_changed do
-        with_retries do
-          network.disconnect(container)
+      unless container
+        raise Chef::Exceptions::ValidationFailed, 'Container id or name is required for action :disconnect'
+      end
+
+      if current_resource
+        container_index = network.info['Containers'].values.index { |c| c['Name'] == container }
+        unless container_index.nil?
+          converge_by("disconnect #{container}") do
+            with_retries do
+              network.disconnect(container)
+            end
+          end
         end
+      else
+        Chef::Log.warn("Cannot disconnect from #{network_name}: network does not exist")
       end
     end
   end

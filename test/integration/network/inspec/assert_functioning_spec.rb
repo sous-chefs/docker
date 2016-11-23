@@ -169,6 +169,25 @@ describe command('docker network inspect -f "{{ .Containers }}" network_g') do
   its(:stdout) { should match 'echo-base-network_g' }
 end
 
+###########
+# network_h
+###########
+
+describe command("docker network ls -qf 'name=network_h1$'") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should_not be_empty }
+end
+
+describe command("docker network inspect -f '{{ range $c:=.Containers }}{{ $c.Name }}{{ end }}' network_h1") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should_not match 'container1-network_h' }
+end
+
+describe command("docker network inspect -f '{{ range $c:=.Containers }}{{ $c.Name }}{{ end }}' network_h2") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match 'container1-network_h' }
+end
+
 # describe command('docker network inspect test-network') do
 #   its(:exit_status) { should eq 0 }
 # end
