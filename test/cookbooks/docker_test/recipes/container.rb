@@ -907,7 +907,7 @@ docker_container 'syslogger' do
   repo 'alpine'
   tag '3.1'
   log_driver 'syslog'
-  log_opts 'syslog-tag=container-syslogger'
+  log_opts 'tag=container-syslogger'
   action :run_if_missing
 end
 
