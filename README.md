@@ -1180,6 +1180,7 @@ end
 - `gateway` - Specify the gateway(s) for the network. Ex: `192.168.0.1`
 - `ip_range` - Specify a range of IPs to allocate for containers. Ex: `192.168.1.0/24`
 - `aux_address` - Auxillary addresses for the network. Ex: `['a=192.168.1.5', 'b=192.168.1.6']`
+- `container` - Container-id/name to be connected/disconnected to/from the network. Used only by `:connect` and `:disconnect` actions
 
 ### Example
 
@@ -1193,10 +1194,38 @@ docker_network 'network_g' do
 end
 ```
 
+Connect to multiple networks
+
+```ruby
+docker_network 'network_h1' do
+  action :create
+end
+
+docker_network 'network_h2' do
+  action :create
+end
+
+docker_container 'echo-base-networks_h' do
+  repo 'alpine'
+  tag '3.1'
+  command 'nc -ll -p 1337 -e /bin/cat'
+  port '1337'
+  network_mode 'network_h1'
+  action :run
+end
+
+docker_network 'network_h2' do
+  container 'echo-base-networks_h'
+  action :connect
+end
+```
+
 ### Actions
 
 - `:create` - create a network
 - `:delete` - create a network
+- `:connect` - connect a container to a network
+- `:disconnect` - disconnect a container from a network
 
 ## docker_volume
 
