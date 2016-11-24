@@ -112,7 +112,7 @@ Configuration of the backing storage driver, including kernel module loading, is
 
 - [docker_image](#docker_image): image/repository operations
 
-- [docker_container](#docker_container): container operations
+- [docker_ainer](#docker_container): container operations
 
 - [docker_tag](#docker_tag): image tagging operations
 
@@ -1088,6 +1088,7 @@ Most `docker_container` properties are the `snake_case` version of the `CamelCas
 - `remove_volumes` - A boolean to clean up "dangling" volumes when removing the last container with a reference to it. Default to `false` to match the Docker CLI behavior.
 - `restart_policy` - One of `no`, `on-failure`, `unless-stopped`, or `always`. Use `always` if you want a service container to survive a Dockerhost reboot. Defaults to `no`.
 - `restart_maximum_retry_count` - Maximum number of restarts to try when `restart_policy` is `on-failure`. Defaults to an ever increasing delay (double the previous delay, starting at 100mS), to prevent flooding the server.
+- `running_wait_time` - Amount of seconds `docker_container` wait to determine if a process is running.`
 - `security_opts` - A list of string values to customize labels for MLS systems, such as SELinux.
 - `signal` - The signal to send when using the `:kill` action. Defaults to `SIGTERM`.
 - `tty` - Boolean value to allocate a pseudo-TTY. Defaults to `false`.

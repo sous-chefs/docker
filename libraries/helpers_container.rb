@@ -76,7 +76,7 @@ module DockerCookbook
       end
 
       def wait_running_state(v)
-        tries = 20
+        tries = running_wait_time
         tries.times do
           return if state['Running'] == v
           sleep 1
