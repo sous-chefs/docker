@@ -2,6 +2,11 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.10.0 (2016-11-23)
+- Implement network connect/disconnect
+- Fixed dns options mutual exclusion
+- Misc test harness cleanup
+
 ## 2.9.10 (2016-11-14)
 -renaming systemd_conf to systemd_args due to a conflict with systemd cookbook
 
