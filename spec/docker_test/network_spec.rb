@@ -138,7 +138,7 @@ describe 'docker_test::network' do
     it 'creates /marker/network_h' do
       expect(chef_run).to create_file('/marker_network_h')
     end
-    
+
     it 'connects container1-network_h with network_h2' do
       expect(chef_run).to connect_docker_network('network_h2 connector').with(
         container: 'container1-network_h'
