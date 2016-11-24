@@ -2,6 +2,9 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.11.1 (2016-11-24)
+- Fix for #701 - Revert commit that caused restart loops in systemd provider
+
 ## 2.11.0 (2016-11-23)
 - make systemd MountFlags configurable
 - make running wait time configurable
