@@ -26,7 +26,7 @@ ExecStartPre=/sbin/sysctl -w net.ipv6.conf.all.forwarding=1
 ExecStart=<%= @docker_daemon_cmd %>
 ExecStartPost=<%= @docker_wait_ready %>
 Restart=always
-MountFlags=private
+MountFlags=<%= @docker_mount_flags %>
 LimitNOFILE=1048576
 LimitNPROC=1048576
 LimitCORE=infinity

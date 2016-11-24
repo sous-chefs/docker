@@ -20,23 +20,23 @@ This cookbook is concerned with the [Docker](http://docker.io) container engine 
 The following platforms have been tested with Test Kitchen: You may be able to get it working on other platforms, with appropriate configuration of cgroups and storage back ends.
 
 ```
-|--------------+-------+-------+-------|--------|--------|
-|              | 1.7.1 | 1.8.3 | 1.9.1 | 1.10.3 | 1.11.1 |
-|--------------+-------+-------+-------|--------|--------|
-| debian-7     | X     | X     | X     | X      | X      |
-|--------------+-------+-------+-------|--------|--------|
-| debian-8     | X     | X     | X     | X      | X      |
-|--------------+-------+-------+-------|--------|--------|
-| centos-7     | X     | X     | X     | X      | X      |
-|--------------+-------+-------+-------|--------|--------|
-| fedora       |       |       | X     | X      | X      |
-|--------------+-------+-------+-------|--------|--------|
-| ubuntu-12.04 | X     | X     | X     | X      | X      |
-|--------------+-------+-------+-------|--------|--------|
-| ubuntu-14.04 | X     | X     | X     | X      | X      |
-|--------------+-------+-------+-------|--------|--------|
-| ubuntu-16.04 |       |       |       |        | X      |
-|--------------+-------+-------+-------|--------|--------|
+|--------------+-------+-------+-------|--------|--------|--------|
+|              | 1.7.1 | 1.8.3 | 1.9.1 | 1.10.3 | 1.11.1 | 1.12.3 |
+|--------------+-------+-------+-------|--------|--------|--------|
+| debian-7     | X     | X     | X     | X      | X      | X      |
+|--------------+-------+-------+-------|--------|--------|--------|
+| debian-8     | X     | X     | X     | X      | X      | X      |
+|--------------+-------+-------+-------|--------|--------|--------|
+| centos-7     | X     | X     | X     | X      | X      | X      |
+|--------------+-------+-------+-------|--------|--------|--------|
+| fedora       |       |       | X     | X      | X      | X      |
+|--------------+-------+-------+-------|--------|--------|--------|
+| ubuntu-12.04 | X     | X     | X     | X      | X      | X      |
+|--------------+-------+-------+-------|--------|--------|--------|
+| ubuntu-14.04 | X     | X     | X     | X      | X      | X      |
+|--------------+-------+-------+-------|--------|--------|--------|
+| ubuntu-16.04 |       |       |       |        | X      | X      |
+|--------------+-------+-------+-------|--------|--------|--------|
 ```
 
 ## Cookbook Dependencies
@@ -448,6 +448,7 @@ The `docker_service` resource property list mostly corresponds to the options fo
 - `userland_proxy`- Enables or disables docker-proxy
 - `disable_legacy_registry` - Do not contact legacy registries
 - `userns_remap` - Enable user namespace remapping options - `default`, `uid`, `uid:gid`, `username`, `username:groupname` (see: [Docker User Namespaces](see: https://docs.docker.com/v1.10/engine/reference/commandline/daemon/#daemon-user-namespace-options))
+- `mount_flags` - Set the systemd mount propagation flag. Defaults to slave.
 
 #### Miscellaneous Options
 

@@ -49,6 +49,7 @@ module DockerCookbook
     property :labels, [String, Array], coerce: proc { |v| coerce_daemon_labels(v) }, desired_state: false
     property :log_driver, %w( json-file syslog journald gelf fluentd awslogs splunk none )
     property :log_opts, ArrayType
+    property :mount_flags, String, default: 'slave'
     property :mtu, [String, nil]
     property :pidfile, String, default: lazy { "/var/run/#{docker_name}.pid" }
     property :registry_mirror, [String, nil]
@@ -59,7 +60,7 @@ module DockerCookbook
     property :userland_proxy, [Boolean, nil]
     property :disable_legacy_registry, [Boolean, nil]
     property :userns_remap, [String, nil]
-
+    
     # These are options specific to systemd configuration such as
     # LimitNOFILE or TasksMax that you may wannt to use to customize
     # the environment in which Docker runs.
