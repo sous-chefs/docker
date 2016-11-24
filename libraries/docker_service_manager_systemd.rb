@@ -65,7 +65,7 @@ module DockerCookbook
         )
         cookbook 'docker'
         notifies :run, 'execute[systemctl daemon-reload]', :immediately
-        notifies :restart, new_resource, :immediately
+        notifies :restart, new_resource
         action :create
       end
 
@@ -82,7 +82,7 @@ module DockerCookbook
         )
         cookbook 'docker'
         notifies :run, 'execute[systemctl daemon-reload]', :immediately
-        notifies :restart, new_resource, :immediately
+        notifies :restart, new_resource
         action :create
       end
 
