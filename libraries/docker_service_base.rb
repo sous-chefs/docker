@@ -60,7 +60,7 @@ module DockerCookbook
     property :userland_proxy, [Boolean, nil]
     property :disable_legacy_registry, [Boolean, nil]
     property :userns_remap, [String, nil]
-    
+
     # These are options specific to systemd configuration such as
     # LimitNOFILE or TasksMax that you may wannt to use to customize
     # the environment in which Docker runs.
