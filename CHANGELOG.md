@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.11.0 (2016-11-23)
+- make systemd MountFlags configurable
+- make running wait time configurable
+
 ## 2.10.0 (2016-11-23)
 - Implement network connect/disconnect
 - Fixed dns options mutual exclusion
