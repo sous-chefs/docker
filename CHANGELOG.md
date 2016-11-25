@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.12.0 (2016-11-25)
+- Updating compat_resource dep to 12.16.2
+- Updating docker-api gem dep 1.32.1
+
 ## 2.11.1 (2016-11-24)
 - Fix for #701 - Revert commit that caused restart loops in systemd provider
 
