@@ -882,14 +882,14 @@ end
 
 - Revoke MKNOD rights to a container
 
-  ```ruby
-  docker_container 'cap_drop_mknod' do
+```ruby
+docker_container 'cap_drop_mknod' do
   repo 'debian'
   command 'bash -c "mknod -m 444 /dev/urandom2 c 1 9 ; ls -la /dev/urandom2"'
   cap_drop 'MKNOD'
   action :run_if_missing
-  end
-  ```
+end
+```
 
 - Set a container's hostname and domainname
 
