@@ -76,6 +76,7 @@ module DockerCookbook
     property :security_opts, [String, ArrayType]
     property :signal, String, default: 'SIGTERM'
     property :stdin_once, Boolean, default: false, desired_state: false
+    property :sysctls, Hash, default: {}
     property :timeout, [Fixnum, nil], desired_state: false
     property :tty, Boolean, default: false
     property :ulimits, [Array, nil], coerce: proc { |v| coerce_ulimits(v) }
@@ -292,6 +293,7 @@ module DockerCookbook
                 'MaximumRetryCount' => restart_maximum_retry_count
               },
               'ReadonlyRootfs'  => ro_rootfs,
+              'Sysctls'         => sysctls,
               'Ulimits'         => ulimits_to_hash,
               'UsernsMode'      => userns_mode,
               'UTSMode'         => uts_mode,

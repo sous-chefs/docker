@@ -1,5 +1,4 @@
 #
-
 docker_version_string = command('docker -v').stdout
 docker_version = docker_version_string.split(/\s/)[2].split(',')[0]
 
@@ -890,4 +889,11 @@ end
 describe command("docker inspect --format '{{ .HostConfig.ReadonlyRootfs }}' ro_rootfs") do
   its(:exit_status) { should eq 0 }
   its(:stdout) { eq 'true' }
+end
+
+# sysctls
+describe command("docker inspect --format '{{ .HostConfig.Sysctls }}' sysctls") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/net.core.somaxconn:65535/) }
+  its(:stdout) { should match(/net.core.xfrm_acq_expires:42/) }
 end

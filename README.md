@@ -1194,6 +1194,7 @@ Most `docker_container` properties are the `snake_case` version of the `CamelCas
 - `running_wait_time` - Amount of seconds `docker_container` wait to determine if a process is running.`
 - `security_opts` - A list of string values to customize labels for MLS systems, such as SELinux.
 - `signal` - The signal to send when using the `:kill` action. Defaults to `SIGTERM`.
+- `sysctls` - A hash of sysctls to set on the container. Defaults to `{}`.
 - `tty` - Boolean value to allocate a pseudo-TTY. Defaults to `false`.
 - `user` - A string value specifying the user inside the container.
 - `volumes` - An Array of paths inside the container to expose. Does the same thing as the `VOLUME` directive in a Dockerfile, but works on container creation.

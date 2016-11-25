@@ -1010,3 +1010,16 @@ docker_container 'ro_rootfs' do
   ro_rootfs true
   action :run_if_missing
 end
+
+##################
+# sysctl settings
+##################
+
+docker_container 'sysctls' do
+  repo 'alpine'
+  tag '3.1'
+  command '/sbin/sysctl -a'
+  sysctls 'net.core.somaxconn' => '65535',
+          'net.core.xfrm_acq_expires' => '42'
+  action :run_if_missing
+end
