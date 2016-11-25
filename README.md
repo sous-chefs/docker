@@ -112,7 +112,7 @@ Configuration of the backing storage driver, including kernel module loading, is
 
 - [docker_image](#docker_image): image/repository operations
 
-- [docker_ainer](#docker_container): container operations
+- [docker_container](#docker_container): container operations
 
 - [docker_tag](#docker_tag): image tagging operations
 
