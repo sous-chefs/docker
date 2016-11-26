@@ -2,6 +2,9 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.13.0 (2016-11-25)
+- Adding sysctl property to docker_container resource
+
 ## 2.12.0 (2016-11-25)
 - Updating compat_resource dep to 12.16.2
 - Updating docker-api gem dep 1.32.1
