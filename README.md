@@ -1340,7 +1340,7 @@ end
 ### Actions
 
 - `:create` - create a network
-- `:delete` - create a network
+- `:delete` - delete a network
 - `:connect` - connect a container to a network
 - `:disconnect` - disconnect a container from a network
 
@@ -1367,8 +1367,8 @@ end
 
 ### Actions
 
-- `:create` - create a network
-- `:remove` - create a network
+- `:create` - create a volume
+- `:remove` - remove a volume
 
 ## docker_execute
 
