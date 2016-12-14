@@ -41,7 +41,8 @@ module DockerCookbook
 
     action :stop do
       execute "stop docker #{name}" do
-        command "kill `cat #{pidfile}`"
+        command "kill `cat #{pidfile}` && while [ -e #{pidfile} ]; do sleep 1; done"
+        timeout 10
         only_if "#{docker_cmd} ps | head -n 1 | grep ^CONTAINER"
       end
     end
