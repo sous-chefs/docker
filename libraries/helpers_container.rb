@@ -125,7 +125,7 @@ module DockerCookbook
           {
             'host_ip' => host_ip,
             'host_port' => host_port,
-            'container_port' => "#{port}/#{protocol}",
+            'container_port' => "#{port}/#{protocol}"
           }
         end
       end
@@ -154,7 +154,7 @@ module DockerCookbook
             h[y['container_port']] = [] unless h[y['container_port']]
             h[y['container_port']] << {
               'HostIp' => y['host_ip'],
-              'HostPort' => y['host_port'],
+              'HostPort' => y['host_port']
             }
           end
         end

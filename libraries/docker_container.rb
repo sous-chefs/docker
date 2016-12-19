@@ -290,15 +290,15 @@ module DockerCookbook
               'PublishAllPorts' => publish_all_ports,
               'RestartPolicy'   => {
                 'Name'              => restart_policy,
-                'MaximumRetryCount' => restart_maximum_retry_count,
+                'MaximumRetryCount' => restart_maximum_retry_count
               },
               'ReadonlyRootfs'  => ro_rootfs,
               'Sysctls'         => sysctls,
               'Ulimits'         => ulimits_to_hash,
               'UsernsMode'      => userns_mode,
               'UTSMode'         => uts_mode,
-              'VolumesFrom'     => volumes_from,
-            },
+              'VolumesFrom'     => volumes_from
+            }
           }
           Docker::Container.create(config, connection)
         end
