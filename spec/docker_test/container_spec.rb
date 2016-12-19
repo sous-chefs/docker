@@ -124,7 +124,7 @@ describe 'docker_test::container' do
   context 'testing action :stop' do
     it 'run execute[hammer_time]' do
       expect(chef_run).to run_execute('hammer_time').with(
-        command:  'docker run --name hammer_time -d busybox sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
+        command: 'docker run --name hammer_time -d busybox sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
       )
     end
 
@@ -142,7 +142,7 @@ describe 'docker_test::container' do
 
     it 'run execute[red_light]' do
       expect(chef_run).to run_execute('red_light').with(
-        command:  'docker run --name red_light -d busybox sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
+        command: 'docker run --name red_light -d busybox sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
       )
     end
 
@@ -691,7 +691,7 @@ describe 'docker_test::container' do
         ulimits: [
           'nofile=40960:40960',
           'core=100000000:100000000',
-          'memlock=100000000:100000000'
+          'memlock=100000000:100000000',
         ]
       )
     end
@@ -745,7 +745,7 @@ describe 'docker_test::container' do
         ulimits: [
           'nofile=40960:40960',
           'core=100000000:100000000',
-          'memlock=100000000:100000000'
+          'memlock=100000000:100000000',
         ],
         labels: { 'foo' => 'bar', 'hello' => 'world' }
       )

@@ -21,7 +21,7 @@ namespace :style do
     FoodCritic::Rake::LintTask.new(:chef) do |t|
       t.options = {
         fail_tags: ['any'],
-        progress: true
+        progress: true,
       }
     end
   rescue LoadError

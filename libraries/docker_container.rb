@@ -39,7 +39,7 @@ module DockerCookbook
     property :cap_add, NonEmptyArray
     property :cap_drop, NonEmptyArray
     property :cgroup_parent, String, default: ''
-    property :cpu_shares, [Fixnum, nil], default: 0
+    property :cpu_shares, [Integer, nil], default: 0
     property :cpuset_cpus, String, default: ''
     property :detach, Boolean, default: true, desired_state: false
     property :devices, Array, default: []
@@ -59,8 +59,8 @@ module DockerCookbook
     property :log_driver, %w( json-file syslog journald gelf fluentd awslogs splunk none ), default: 'json-file', desired_state: false
     property :log_opts, [Hash, nil], coerce: proc { |v| coerce_log_opts(v) }, desired_state: false
     property :mac_address, String
-    property :memory, Fixnum, default: 0
-    property :memory_swap, Fixnum, default: 0
+    property :memory, Integer, default: 0
+    property :memory_swap, Integer, default: 0
     property :network_disabled, Boolean, default: false
     property :network_mode, [String, NilClass], default: lazy { default_network_mode }
     property :open_stdin, Boolean, default: false, desired_state: false
@@ -70,14 +70,14 @@ module DockerCookbook
     property :privileged, Boolean, default: false
     property :publish_all_ports, Boolean, default: false
     property :remove_volumes, Boolean
-    property :restart_maximum_retry_count, Fixnum, default: 0
+    property :restart_maximum_retry_count, Integer, default: 0
     property :restart_policy, String, default: 'no'
     property :ro_rootfs, Boolean, default: false
     property :security_opts, [String, ArrayType]
     property :signal, String, default: 'SIGTERM'
     property :stdin_once, Boolean, default: false, desired_state: false
     property :sysctls, Hash, default: {}
-    property :timeout, [Fixnum, nil], desired_state: false
+    property :timeout, [Integer, nil], desired_state: false
     property :tty, Boolean, default: false
     property :ulimits, [Array, nil], coerce: proc { |v| coerce_ulimits(v) }
     property :user, String, default: ''
@@ -290,15 +290,15 @@ module DockerCookbook
               'PublishAllPorts' => publish_all_ports,
               'RestartPolicy'   => {
                 'Name'              => restart_policy,
-                'MaximumRetryCount' => restart_maximum_retry_count
+                'MaximumRetryCount' => restart_maximum_retry_count,
               },
               'ReadonlyRootfs'  => ro_rootfs,
               'Sysctls'         => sysctls,
               'Ulimits'         => ulimits_to_hash,
               'UsernsMode'      => userns_mode,
               'UTSMode'         => uts_mode,
-              'VolumesFrom'     => volumes_from
-            }
+              'VolumesFrom'     => volumes_from,
+            },
           }
           Docker::Container.create(config, connection)
         end
