@@ -20,5 +20,5 @@ before_script:
 script:
   - /opt/chefdk/embedded/bin/chef --version
   - /opt/chefdk/embedded/bin/cookstyle --version
-  - /opt/chefdk/embedded/bin/bundle install
-  - /opt/chefdk/embedded/bin/bundle exec rake
+  - /opt/chefdk/embedded/bin/cookstyle
+  - /opt/chefdk/embedded/bin/rspec
