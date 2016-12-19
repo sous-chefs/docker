@@ -50,16 +50,17 @@ platforms:
 #  run_list:
 #  - recipe[chef-yum-docker]
 
-# - name: fedora-23
+# - name: fedora-25
 #   driver_plugin: digitalocean
 #   driver_config:
 #     size: 2gb
-#     image: fedora-23-x64
+#     image: fedora-25-x64
 #     region: <%= ENV['DIGITALOCEAN_REGION'] %>
 #     ssh_key_ids: <%= ENV['DIGITALOCEAN_SSH_KEYS'] %>
 #   transport:
 #     ssh_key: <%= ENV['DIGITALOCEAN_SSH_KEY_PATH'] %>
 #   run_list:
+#   - recipe[yum::dnf_yum_compat]
 #   - recipe[chef-yum-docker]
 
 # - name: debian-8.1
@@ -174,7 +175,8 @@ suites:
     'debian-8.1',
     'ubuntu-12.04',
     'ubuntu-14.04',
-    'ubuntu-16.04'
+    'ubuntu-16.04',
+    'fedora-25'
   ]
   attributes:
     docker:
