@@ -20,7 +20,7 @@ module DockerCookbook
 
     action :create do
       converge_by "creating volume #{volume_name}" do
-        Docker::Volume.create(volume_name, connection)
+        Docker::Volume.create(volume_name, {}, connection)
       end if volume.nil?
     end
 
