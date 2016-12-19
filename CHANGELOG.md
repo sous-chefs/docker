@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.13.1 (2016-12-19)
+- #786 - Adding options hash to docker_volume connection
+- #787 - Adding wait loop to docker_service_manager_execute :stop
+
 ## 2.13.0 (2016-11-25)
 - Adding sysctl property to docker_container resource
 
