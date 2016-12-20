@@ -134,8 +134,8 @@ module DockerCookbook
       def docker_daemon_arg
         if Gem::Version.new(docker_major_version) < Gem::Version.new('1.8')
           '-d'
-        elsif Gem::Version.new(docker_major_version) < Gem::Version.new('1.12')
-          'daemon'
+        elsif Gem::Version.new(docker_major_version) <= Gem::Version.new('1.12')
+          ''
         else
           ''
         end
