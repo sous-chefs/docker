@@ -2,6 +2,9 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.13.3 (2016-12-20)
+- 792 - Reverting 791 fix
+
 ## 2.13.2 (2016-12-20)
 - 791 - Fix logic bug in docker_service daemon args calculation
 
