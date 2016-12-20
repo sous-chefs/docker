@@ -767,7 +767,7 @@ docker_container 'ulimits' do
   ulimits [
     { 'Name' => 'nofile', 'Soft' => 40_960, 'Hard' => 40_960 },
     { 'Name' => 'core', 'Soft' => 100_000_000, 'Hard' => 100_000_000 },
-    { 'Name' => 'memlock', 'Soft' => 100_000_000, 'Hard' => 100_000_000 }
+    { 'Name' => 'memlock', 'Soft' => 100_000_000, 'Hard' => 100_000_000 },
   ]
   action :run
 end
@@ -823,7 +823,7 @@ docker_container 'uber_options' do
   ulimits [
     'nofile=40960:40960',
     'core=100000000:100000000',
-    'memlock=100000000:100000000'
+    'memlock=100000000:100000000',
   ]
   labels ['foo:bar', 'hello:world']
   action :run

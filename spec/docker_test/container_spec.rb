@@ -691,7 +691,7 @@ describe 'docker_test::container' do
         ulimits: [
           'nofile=40960:40960',
           'core=100000000:100000000',
-          'memlock=100000000:100000000'
+          'memlock=100000000:100000000',
         ]
       )
     end
@@ -745,7 +745,7 @@ describe 'docker_test::container' do
         ulimits: [
           'nofile=40960:40960',
           'core=100000000:100000000',
-          'memlock=100000000:100000000'
+          'memlock=100000000:100000000',
         ],
         labels: { 'foo' => 'bar', 'hello' => 'world' }
       )

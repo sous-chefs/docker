@@ -19,7 +19,7 @@ module DockerCookbook
         'serveraddress' => registry_host,
         'username' => username,
         'password' => password,
-        'email' => email
+        'email' => email,
       }
 
       begin
