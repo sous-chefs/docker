@@ -2,6 +2,9 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.13.2 (2016-12-20)
+- 791 - Fix logic bug in docker_service daemon args calculation
+
 ## 2.13.1 (2016-12-19)
 - #786 - Adding options hash to docker_volume connection
 - #787 - Adding wait loop to docker_service_manager_execute :stop
