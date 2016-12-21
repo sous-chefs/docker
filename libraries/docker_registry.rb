@@ -28,11 +28,8 @@ module DockerCookbook
           body: node.run_state['docker_auth'][registry_host].to_json
         )
       rescue Docker::Error::ServerError, Docker::Error::UnauthorizedError
-        if (tries -= 1).zero?
-          raise Docker::Error::AuthenticationError, "#{username} failed to authenticate with #{serveraddress}"
-        else
-          retry
-        end
+        raise Docker::Error::AuthenticationError, "#{username} failed to authenticate with #{serveraddress}" if (tries -= 1).zero?
+        retry
       end
 
       true

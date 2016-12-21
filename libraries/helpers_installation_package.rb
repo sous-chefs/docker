@@ -59,17 +59,23 @@ module DockerCookbook
 
       # https://github.com/chef/chef/issues/4103
       def version_string(v)
+        ubuntu_prefix = if Gem::Version.new(v) > Gem::Version.new('1.12.3')
+                          'ubuntu-'
+                        else
+                          ''
+                        end
+
         return "#{v}-1.el6" if el6?
         return "#{v}-1.el7.centos" if el7?
         return "#{v}-1.el6" if amazon?
         return "#{v}-1.fc#{node['platform_version'].to_i}" if fedora?
         return "#{v}-0~wheezy" if wheezy?
         return "#{v}-0~jessie" if jesse?
-        return "#{v}-0~precise" if precise?
-        return "#{v}-0~trusty" if trusty?
-        return "#{v}-0~vivid" if vivid?
-        return "#{v}-0~wily" if wily?
-        return "#{v}-0~xenial" if xenial?
+        return "#{v}-0~#{ubuntu_prefix}precise" if precise?
+        return "#{v}-0~#{ubuntu_prefix}trusty" if trusty?
+        return "#{v}-0~#{ubuntu_prefix}vivid" if vivid?
+        return "#{v}-0~#{ubuntu_prefix}wily" if wily?
+        return "#{v}-0~#{ubuntu_prefix}xenial" if xenial?
         v
       end
 

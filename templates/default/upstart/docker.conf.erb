@@ -10,40 +10,38 @@ respawn
 kill timeout 20
 
 pre-start script
-  # see also https://github.com/tianon/cgroupfs-mount/blob/master/cgroupfs-mount
-  if grep -v '^#' /etc/fstab | grep -q cgroup \
-    || [ ! -e /proc/cgroups ] \
-    || [ ! -d /sys/fs/cgroup ]; then
-    exit 0
-  fi
-  if ! mountpoint -q /sys/fs/cgroup; then
-    mount -t tmpfs -o uid=0,gid=0,mode=0755 cgroup /sys/fs/cgroup
-  fi
-  (
-    cd /sys/fs/cgroup
-    for sys in $(awk '!/^#/ { if ($4 == 1) print $1 }' /proc/cgroups); do
-      mkdir -p $sys
-      if ! mountpoint -q $sys; then
-        if ! mount -n -t cgroup -o $sys cgroup $sys; then
-          rmdir $sys || true
-        fi
-      fi
-    done
-  )
+    # see also https://github.com/tianon/cgroupfs-mount/blob/master/cgroupfs-mount
+    if grep -v '^#' /etc/fstab | grep -q cgroup \
+        || [ ! -e /proc/cgroups ] \
+        || [ ! -d /sys/fs/cgroup ]; then
+        exit 0
+    fi
+    if ! mountpoint -q /sys/fs/cgroup; then
+        mount -t tmpfs -o uid=0,gid=0,mode=0755 cgroup /sys/fs/cgroup
+    fi
+    (
+        cd /sys/fs/cgroup
+        for sys in $(awk '!/^#/ { if ($4 == 1) print $1 }' /proc/cgroups); do
+            mkdir -p $sys
+            if ! mountpoint -q $sys; then
+                if ! mount -n -t cgroup -o $sys cgroup $sys; then
+                    rmdir $sys || true
+                fi
+            fi
+        done
+    )
 end script
 
 script
-  # modify these in /etc/default/$UPSTART_JOB (/etc/default/docker)
-  DOCKER=/usr/bin/$UPSTART_JOB
-  DOCKER_OPTS=
-  if [ -f /etc/default/$UPSTART_JOB ]; then
-    . /etc/default/$UPSTART_JOB
-  fi
-  exec "$DOCKER" <%= @docker_daemon_arg %> $DOCKER_OPTS
+    # modify these in /etc/default/$UPSTART_JOB (/etc/default/docker)
+    DOCKERD=/usr/bin/dockerd
+    DOCKER_OPTS=
+    if [ -f /etc/default/$UPSTART_JOB ]; then
+        . /etc/default/$UPSTART_JOB
+    fi
+    exec "$DOCKERD" <%= @docker_daemon %> $DOCKER_OPTS --raw-logs
 end script
 
-# Don't emit "started" event until the docker socket is ready.
-# See https://github.com/docker/docker/issues/6647
 post-start script
   DOCKER_OPTS=
   if [ -f /etc/default/$UPSTART_JOB ]; then

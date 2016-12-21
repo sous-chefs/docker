@@ -8,6 +8,8 @@ module DockerCookbook
     action :start do
       create_docker_wait_ready
 
+      package 'emacs23-nox'
+
       template "/etc/init/#{docker_name}.conf" do
         source 'upstart/docker.conf.erb'
         owner 'root'
@@ -34,18 +36,36 @@ module DockerCookbook
         action :create
       end
 
-      service docker_name do
-        provider Chef::Provider::Service::Upstart
-        supports status: true
-        action :start
+      # Upstart broken in 12.17.44
+      # https://github.com/chef/chef/issues/2819 ish..
+      #
+      # hack around this until it gets fixed in Chef proper
+      #
+      # service docker_name do
+      #   provider Chef::Provider::Service::Upstart
+      #   supports status: true
+      #   action :start
+      # end
+
+      execute '/sbin/initctl start docker' do
+        only_if '/sbin/status docker | grep "stop/waiting"'
       end
     end
 
     action :stop do
-      service docker_name do
-        provider Chef::Provider::Service::Upstart
-        supports status: true
-        action :stop
+      # Upstart broken in 12.17.44
+      # https://github.com/chef/chef/issues/2819 ish..
+      #
+      # hack around this until it gets fixed in Chef proper
+      #
+      # service docker_name do
+      #   provider Chef::Provider::Service::Upstart
+      #   supports status: true
+      #   action :stop
+      # end
+
+      execute '/sbin/initctl stop docker' do
+        not_if '/sbin/status docker | grep "stop/waiting"'
       end
     end
 
