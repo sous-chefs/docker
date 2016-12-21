@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.13.5 (2016-12-21)
+- Temporary work around for broke upstart provider in chef-client
+- Fixing package name for ubuntu version later than 1.12.3
+
 ## 2.13.4 (2016-12-20)
 - Fixing comparison operator docker daemon args for versions < 1.12
 
