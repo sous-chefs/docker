@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.13.6 (2016-12-22)
+- adding ip_address support for docker_containers
+- adding volume_driver support
+
 ## 2.13.5 (2016-12-21)
 - Temporary work around for broke upstart provider in chef-client
 - Fixing package name for ubuntu version later than 1.12.3
@@ -48,7 +52,7 @@ This file is used to list changes made in each version of the docker cookbook.
 -Enable systemd options as a docker_service attribute
 
 ## 2.9.8 (2016-11-08)
-- Fixed a typo in an error message 
+- Fixed a typo in an error message
 - Enable tarball install through docker_service
 - option log_opt is defined as --log-opt value1 --log-opt value2 instead of --log-opt=value1 --log-opt=value2
 - Depend on a working compat_resource cookbook
