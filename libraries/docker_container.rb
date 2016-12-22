@@ -308,11 +308,11 @@ module DockerCookbook
               'EndpointsConfig' => {
                 network_mode => {
                   'IPAMConfig' => {
-                    'IPv4Address' => ip_address
-                  }
-                }
-              }
-            }
+                    'IPv4Address' => ip_address,
+                  },
+                },
+              },
+            },
           } if network_mode
           config.merge! net_config
 
