@@ -132,6 +132,11 @@ describe command('docker network inspect -f "{{ .Containers }}" network_f') do
   its(:stdout) { should match 'echo-base-network_f' }
 end
 
+describe command('docker inspect -f "{{ .NetworkSettings.Networks.network_f.IPAddress }}" echo-base-network_f') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match '172.28.5.5' }
+end
+
 ###########
 # network_g
 ###########

@@ -58,6 +58,7 @@ module DockerCookbook
     property :links, UnorderedArrayType, coerce: proc { |v| coerce_links(v) }
     property :log_driver, %w( json-file syslog journald gelf fluentd awslogs splunk none ), default: 'json-file', desired_state: false
     property :log_opts, [Hash, nil], coerce: proc { |v| coerce_log_opts(v) }, desired_state: false
+    property :ip_address, String
     property :mac_address, String
     property :memory, Integer, default: 0
     property :memory_swap, Integer, default: 0
@@ -302,6 +303,19 @@ module DockerCookbook
               'VolumeDriver'    => volume_driver,
             },
           }
+          net_config = {
+            'NetworkingConfig' => {
+              'EndpointsConfig' => {
+                network_mode => {
+                  'IPAMConfig' => {
+                    'IPv4Address' => ip_address
+                  }
+                }
+              }
+            }
+          } if network_mode
+          config.merge! net_config
+
           Docker::Container.create(config, connection)
         end
       end
