@@ -85,6 +85,7 @@ module DockerCookbook
     property :uts_mode, String, default: ''
     property :volumes, PartialHashType, default: {}, coerce: proc { |v| coerce_volumes(v) }
     property :volumes_from, ArrayType
+    property :volume_driver, String
     property :working_dir, [String, NilClass], default: ''
 
     # Used to store the bind property since binds is an alias to volumes
@@ -298,6 +299,7 @@ module DockerCookbook
               'UsernsMode'      => userns_mode,
               'UTSMode'         => uts_mode,
               'VolumesFrom'     => volumes_from,
+              'VolumeDriver'    => volume_driver,
             },
           }
           Docker::Container.create(config, connection)

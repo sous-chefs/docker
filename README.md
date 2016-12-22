@@ -1189,6 +1189,7 @@ Most `docker_container` properties are the `snake_case` version of the `CamelCas
 - `user` - A string value specifying the user inside the container.
 - `volumes` - An Array of paths inside the container to expose. Does the same thing as the `VOLUME` directive in a Dockerfile, but works on container creation.
 - `volumes_from` - A list of volumes to inherit from another container. Specified in the form `<container name>[:<ro|rw>]`
+- `volume_driver` - Driver that this container users to mount volumes.
 - `working_dir` - A string specifying the working directory for commands to run in.
 - `read_timeout` - May need to increase for commits or exports that are slow
 - `write_timeout` - May need to increase for commits or exports that are slow
