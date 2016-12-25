@@ -56,7 +56,7 @@ module DockerCookbook
     property :ipc_mode, String, default: ''
     property :labels, [String, Array, Hash], default: {}, coerce: proc { |v| coerce_labels(v) }
     property :links, UnorderedArrayType, coerce: proc { |v| coerce_links(v) }
-    property :log_driver, %w( json-file syslog journald gelf fluentd awslogs splunk none ), default: 'json-file', desired_state: false
+    property :log_driver, %w( json-file syslog journald gelf fluentd awslogs splunk etwlogs gcplogs none ), default: 'json-file', desired_state: false
     property :log_opts, [Hash, nil], coerce: proc { |v| coerce_log_opts(v) }, desired_state: false
     property :mac_address, String
     property :memory, Fixnum, default: 0
