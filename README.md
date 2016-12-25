@@ -1220,6 +1220,7 @@ Most `docker_container` properties are the `snake_case` version of the `CamelCas
 - `:unpause` - Unpauses the container.
 - `:delete` - Deletes the container.
 - `:redeploy` - Deletes and runs the container.
+- `:reload` - Sends SIGHUP to pid 1 in the container
 
 ## docker_registry
 
