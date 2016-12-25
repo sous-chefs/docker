@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.13.7 (2016-12-24)
+- adding additional logging drivers
+- adding action :reload
+
 ## 2.13.6 (2016-12-22)
 - adding ip_address support for docker_containers
 - adding volume_driver support
