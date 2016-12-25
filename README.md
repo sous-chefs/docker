@@ -456,10 +456,15 @@ options found in the
 - `iptables` - Enable addition of iptables rules
 - `ipv6` - Enable IPv6 networking
 - `log_level` - Set the logging level
+<<<<<<< HEAD
 - `labels` A string or array to set metadata on the daemon in the form
   ['foo:bar', 'hello:world']`
 - `log_driver` - Container's logging driver
   (json-file/syslog/journald/gelf/fluentd/none)
+=======
+- `labels` A string or array to set metadata on the daemon in the form ['foo:bar', 'hello:world']`
+- `log_driver` - Container's logging driver (json-file/syslog/journald/gelf/fluentd/awslogs/splunk/etwlogs/gcplogs/none)
+>>>>>>> log_drivers
 - `log_opts` - Container's logging driver options (driver-specific)
 - `mtu` - Set the containers network MTU
 - `pidfile` - Path to use for daemon PID file
