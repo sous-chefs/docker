@@ -370,6 +370,12 @@ module DockerCookbook
       end
     end
 
+    action :reload do
+      converge_by "reloading #{container_name}" do
+        with_retries { container.kill(signal: 'SIGHUP') }
+      end
+    end
+
     action :redeploy do
       validate_container_create
 
