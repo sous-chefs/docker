@@ -8,8 +8,6 @@ module DockerCookbook
     action :start do
       create_docker_wait_ready
 
-      package 'emacs23-nox'
-
       template "/etc/init/#{docker_name}.conf" do
         source 'upstart/docker.conf.erb'
         owner 'root'
