@@ -63,7 +63,7 @@ module DockerCookbook
     property :memory, Integer, default: 0
     property :memory_swap, Integer, default: 0
     property :network_disabled, Boolean, default: false
-    property :network_mode, [String, NilClass], default: lazy { default_network_mode }
+    property :network_mode, [String, NilClass], default: 'bridge'
     property :open_stdin, Boolean, default: false, desired_state: false
     property :outfile, [String, NilClass]
     property :port_bindings, PartialHashType, default: {}

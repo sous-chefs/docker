@@ -57,17 +57,6 @@ module DockerCookbook
         end
       end
 
-      def default_network_mode
-        case api_version
-        when '1.19'
-          'bridge'
-        when proc { |n| n.to_f < 1.19 }
-          ''
-        else
-          'default'
-        end
-      end
-
       def state
         # Always return the latest state, see #510
         return Docker::Container.get(container_name, {}, connection).info['State']
