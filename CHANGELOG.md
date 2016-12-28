@@ -2,6 +2,11 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.13.8 (2016-12-28)
+- #794 - network mode bridge
+- removing emacs package in upstart provider
+- Adding dokken / travis test matrix
+
 ## 2.13.7 (2016-12-24)
 - adding additional logging drivers
 - adding action :reload
