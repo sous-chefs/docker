@@ -34,6 +34,7 @@ module DockerCookbook
       end
 
       create_docker_wait_ready
+
       execute 'docker-wait-ready' do
         command "#{libexec_dir}/#{docker_name}-wait-ready"
       end

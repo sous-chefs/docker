@@ -3,9 +3,10 @@
 ################
 
 caname = 'docker_service_default'
-caroot = "/tmp/kitchen/#{caname}"
+caroot = "/ca/#{caname}"
 
 directory caroot.to_s do
+  recursive true
   action :create
 end
 

@@ -1,6 +1,6 @@
 # Two variables, one recipe.
 caname = 'docker_service_default'
-caroot = "/tmp/kitchen/#{caname}"
+caroot = "/ca/#{caname}"
 
 #########################
 # :pull_if_missing, :pull
