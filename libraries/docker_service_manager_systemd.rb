@@ -50,7 +50,6 @@ module DockerCookbook
         not_if { docker_name == 'default' && ::File.exist?('/lib/systemd/system/docker.socket') }
       end
 
-      # this overrides the main systemd unit file
       template "/etc/systemd/system/#{docker_name}.service" do
         source 'systemd/docker.service-override.erb'
         owner 'root'
@@ -65,7 +64,6 @@ module DockerCookbook
         )
         cookbook 'docker'
         notifies :run, 'execute[systemctl daemon-reload]', :immediately
-        notifies :restart, new_resource
         action :create
       end
 
@@ -82,7 +80,6 @@ module DockerCookbook
         )
         cookbook 'docker'
         notifies :run, 'execute[systemctl daemon-reload]', :immediately
-        notifies :restart, new_resource
         action :create
       end
 

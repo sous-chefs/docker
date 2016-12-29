@@ -30,7 +30,6 @@ module DockerCookbook
           docker_daemon_opts: docker_daemon_opts.join(' ')
         )
         cookbook 'docker'
-        notifies :restart, new_resource
         action :create
       end
 

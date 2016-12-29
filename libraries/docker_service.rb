@@ -98,7 +98,6 @@ module DockerCookbook
 
       installation do
         action :create
-        notifies :restart, new_resource
       end
     end
 
