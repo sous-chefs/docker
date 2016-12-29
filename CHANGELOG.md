@@ -2,6 +2,9 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.13.9 (2016-12-29)
+- 793 - Removing service restarts due to chef-client behavior changes.
+
 ## 2.13.8 (2016-12-28)
 - #794 - network mode bridge
 - removing emacs package in upstart provider
