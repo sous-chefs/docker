@@ -375,7 +375,7 @@ docker_service_manager_systemd 'default' do
   tls_server_key "/path/to/server-key.pem"
   tls_client_cert "/path/to/cert.pem"
   tls_client_key "/path/to/key.pem"
-  systemd_ops ["TasksMax=infinity","MountFlags=private"]
+  systemd_opts ["TasksMax=infinity","MountFlags=private"]
   action :start
 end
 ```
