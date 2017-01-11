@@ -34,12 +34,12 @@ end script
 
 script
     # modify these in /etc/default/$UPSTART_JOB (/etc/default/docker)
-    DOCKERD=/usr/bin/dockerd
+    DOCKER=/usr/bin/dockerd
     DOCKER_OPTS=
     if [ -f /etc/default/$UPSTART_JOB ]; then
         . /etc/default/$UPSTART_JOB
     fi
-    exec "$DOCKERD" <%= @docker_daemon %> $DOCKER_OPTS --raw-logs
+    exec "$DOCKER" <%= @docker_daemon_arg %> $DOCKER_OPTS --raw-logs
 end script
 
 post-start script
