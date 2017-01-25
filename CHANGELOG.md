@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.13.11 (2017-01-25)
+- #798 - Temporary "fix" for delayed service restart: using :immediate
+  notification in docker_service resource
+
 ## 2.13.10 (2017-01-13)
 - #800 - fixing ubuntu startup script
 - #802 - using chef_version methong only in 12.6.0 and higher
