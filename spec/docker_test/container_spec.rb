@@ -15,6 +15,8 @@ describe 'docker_test::container' do
     stub_command("[ ! -z `docker ps -qaf 'name=uber_options$'` ]").and_return(false)
     stub_command("[ ! -z `docker ps -qaf 'name=kill_after$'` ]").and_return(false)
     stub_command("[ ! -z `docker ps -qaf 'name=change_network_mode$'` ]").and_return(false)
+    stub_command('docker images | grep cmd_change').and_return(false)
+    stub_command('docker ps -a | grep cmd_change$').and_return(false)
   end
 
   context 'testing create action' do

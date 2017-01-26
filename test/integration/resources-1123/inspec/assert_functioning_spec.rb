@@ -897,3 +897,10 @@ describe command("docker inspect --format '{{ .HostConfig.Sysctls }}' sysctls") 
   its(:stdout) { should match(/net.core.somaxconn:65535/) }
   its(:stdout) { should match(/net.core.xfrm_acq_expires:42/) }
 end
+
+# cmd_change
+
+describe command("docker inspect -f '{{ .Config.Cmd }}' cmd_change") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/nc -ll -p 9/) }
+end

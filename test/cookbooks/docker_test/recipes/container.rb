@@ -1023,3 +1023,60 @@ docker_container 'sysctls' do
           'net.core.xfrm_acq_expires' => '42'
   action :run_if_missing
 end
+
+########################
+# Dockerfile CMD changes
+########################
+
+directory '/usr/local/src/cmd_change_one' do
+  action :create
+end
+
+file '/usr/local/src/cmd_change_one/Dockerfile' do
+  content <<EOF
+FROM alpine:3.1
+CMD [ "nc", "-ll", "-p", "6", "-e", "/bin/cat" ]
+EOF
+  action :create
+end
+
+directory '/usr/local/src/cmd_change_two' do
+  action :create
+end
+
+file '/usr/local/src/cmd_change_two/Dockerfile' do
+  content <<EOF
+FROM alpine:3.1
+CMD [ "nc", "-ll", "-p", "9", "-e", "/bin/cat" ]
+EOF
+  action :create
+end
+
+execute 'build initial cmd_change image' do
+  command 'docker build -t cmd_change /usr/local/src/cmd_change_one'
+  not_if 'docker images | grep cmd_change'
+  action :run
+end
+
+execute 'run cmd_change' do
+  command 'docker run --name cmd_change -d --network=bridge cmd_change'
+  not_if 'docker ps -a | grep cmd_change$'
+  action :run
+end
+
+docker_container 'cmd_change' do
+  repo 'cmd_change'
+  action :run
+end
+
+docker_image 'cmd_change' do
+  tag 'latest'
+  action :build
+  source '/usr/local/src/cmd_change_two'
+  not_if { ::File.exist?('/marker_cmd_change') }
+  notifies :redeploy, 'docker_container[cmd_change]'
+end
+
+file '/marker_cmd_change' do
+  action :create
+end
