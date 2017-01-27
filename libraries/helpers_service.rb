@@ -40,7 +40,7 @@ module DockerCookbook
         "docker-#{name}"
       end
 
-      def docker_version
+      def installed_docker_version
         o = shell_out("#{docker_bin} --version")
         o.stdout.split[2].chomp(',')
       end
@@ -118,7 +118,7 @@ module DockerCookbook
       end
 
       def docker_major_version
-        ray = docker_version.split('.')
+        ray = installed_docker_version.split('.')
         ray.pop
         ray.push.join('.')
       end
