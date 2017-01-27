@@ -65,12 +65,18 @@ module DockerCookbook
                           ''
                         end
 
+        debian_prefix = if Gem::Version.new(v) > Gem::Version.new('1.12.3')
+                          'debian-'
+                        else
+                          ''
+                        end
+        
         return "#{v}-1.el6" if el6?
         return "#{v}-1.el7.centos" if el7?
         return "#{v}-1.el6" if amazon?
         return "#{v}-1.fc#{node['platform_version'].to_i}" if fedora?
-        return "#{v}-0~wheezy" if wheezy?
-        return "#{v}-0~jessie" if jesse?
+        return "#{v}-0~#{debian_prefix}wheezy" if wheezy?
+        return "#{v}-0~#{debian_prefix}jessie" if jesse?
         return "#{v}-0~#{ubuntu_prefix}precise" if precise?
         return "#{v}-0~#{ubuntu_prefix}trusty" if trusty?
         return "#{v}-0~#{ubuntu_prefix}vivid" if vivid?
@@ -78,7 +84,7 @@ module DockerCookbook
         return "#{v}-0~#{ubuntu_prefix}xenial" if xenial?
         v
       end
-
+      
       def default_docker_version
         return '1.7.1' if el6?
         return '1.7.1' if amazon?
