@@ -39,7 +39,7 @@ module DockerCookbook
         end
 
         link "/usr/bin/#{docker_name}" do
-          to '/usr/bin/docker'
+          to dockerd_bin
           link_type :hard
           action :create
           not_if { docker_name == 'docker' }
@@ -52,7 +52,8 @@ module DockerCookbook
           mode '0755'
           variables(
             docker_name: docker_name,
-            docker_daemon_arg: docker_daemon_arg,
+            dockerd_bin: dockerd_bin,
+            docker_daemon_cmd: docker_daemon_cmd,
             docker_wait_ready: "#{libexec_dir}/#{docker_name}-wait-ready"
           )
           cookbook 'docker'
