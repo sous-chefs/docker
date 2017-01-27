@@ -22,7 +22,7 @@ platforms:
     pid_one_command: /sbin/init
     intermediate_instructions:
       - RUN /usr/bin/apt-get update
-      - RUN /usr/bin/apt-get -y install net-tools apt-transport-https lsb-release kmod iptables wget perl
+      - RUN /usr/bin/apt-get -y install net-tools apt-transport-https lsb-release kmod iptables wget perl procps
       - RUN wget http://launchpadlibrarian.net/173841617/init-system-helpers_1.18_all.deb
       - RUN dpkg -i /init-system-helpers_1.18_all.deb
   run_list:

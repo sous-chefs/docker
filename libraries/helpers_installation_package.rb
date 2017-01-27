@@ -70,7 +70,7 @@ module DockerCookbook
                         else
                           ''
                         end
-        
+
         return "#{v}-1.el6" if el6?
         return "#{v}-1.el7.centos" if el7?
         return "#{v}-1.el6" if amazon?
@@ -84,7 +84,7 @@ module DockerCookbook
         return "#{v}-0~#{ubuntu_prefix}xenial" if xenial?
         v
       end
-      
+
       def default_docker_version
         return '1.7.1' if el6?
         return '1.7.1' if amazon?

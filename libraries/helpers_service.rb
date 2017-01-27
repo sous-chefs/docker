@@ -36,6 +36,10 @@ module DockerCookbook
         '/usr/bin/dockerd'
       end
 
+      def dockerd_bin_link
+        "/usr/bin/dockerd-#{name}"
+      end
+
       def docker_name
         return 'docker' if name == 'default'
         "docker-#{name}"
