@@ -21,19 +21,6 @@ if wheezy?
   end
 end
 
-if amazon?
-  package 'util-linux' do
-    action :install
-  end
-
-  mount '/var/run' do
-    fstype 'tmpfs'
-    device 'tmpfs'
-    options 'rw,nosuid,nodev,noexec,relatime,size=1227540k'
-    action [:mount, :enable]
-  end
-end
-
 # installation
 docker_installation_package 'default' do
   action :create

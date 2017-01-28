@@ -3,7 +3,7 @@ driver:
   name: dokken
   chef_version: latest
   privileged: true # because Docker and SystemD/Upstart
-  binds: '/var/run/docker.sock:/var/run/docker.sock'
+  # binds: '/var/run/docker.sock:/var/run/docker.sock'
 
 transport:
   name: dokken
@@ -26,6 +26,7 @@ platforms:
       - RUN wget http://launchpadlibrarian.net/173841617/init-system-helpers_1.18_all.deb
       - RUN dpkg -i /init-system-helpers_1.18_all.deb
   run_list:
+  - recipe[docker_test::tmpfs]
   - recipe[chef-apt-docker]
 
 - name: debian-8
@@ -36,6 +37,7 @@ platforms:
       - RUN /usr/bin/apt-get update
       - RUN /usr/bin/apt-get -y install net-tools apt-transport-https kmod iptables lsb-release
   run_list:
+  - recipe[docker_test::tmpfs]
   - recipe[chef-apt-docker]
 
 - name: centos-6
@@ -46,6 +48,7 @@ platforms:
     intermediate_instructions:
       - RUN yum -y install which initscripts
   run_list:
+    - recipe[docker_test::tmpfs]
     - recipe[chef-yum-docker]
 
 - name: centos-7
@@ -56,6 +59,7 @@ platforms:
     intermediate_instructions:
       - RUN yum -y install lsof which net-tools
   run_list:
+    - recipe[docker_test::tmpfs]
     - recipe[chef-yum-docker]
 
 - name: fedora-latest
@@ -65,6 +69,7 @@ platforms:
     intermediate_instructions:
       - RUN dnf -y install yum which net-tools
   run_list:
+    - recipe[docker_test::tmpfs]
     - recipe[chef-yum-docker]
 
 - name: ubuntu-12.04
@@ -75,6 +80,7 @@ platforms:
       - RUN /usr/bin/apt-get update
       - RUN /usr/bin/apt-get -y install net-tools apt-transport-https iptables
   run_list:
+  - recipe[docker_test::tmpfs]
   - recipe[chef-apt-docker]
 
 - name: ubuntu-14.04
@@ -85,6 +91,7 @@ platforms:
       - RUN /usr/bin/apt-get update
       - RUN /usr/bin/apt-get -y install net-tools apt-transport-https kmod iptables
   run_list:
+  - recipe[docker_test::tmpfs]
   - recipe[chef-apt-docker]
 
 - name: ubuntu-16.04
@@ -95,6 +102,7 @@ platforms:
       - RUN /usr/bin/apt-get update
       - RUN /usr/bin/apt-get -y install net-tools apt-transport-https kmod iptables
   run_list:
+  - recipe[docker_test::tmpfs]
   - recipe[chef-apt-docker]
 
 - name: opensuse-13.2
@@ -103,10 +111,14 @@ platforms:
     pid_one_command: /bin/systemd
     intermediate_instructions:
       - RUN zypper install -y net-tools
+  run_list:
+  - recipe[docker_test::tmpfs]
 
-- name: amazonlinux
+  - name: amazonlinux
   driver:
     image: amazonlinux:latest
     pid_one_command: /sbin/init
     intermediate_instructions:
-      - RUN yum -y install upstart procps
+      - RUN yum -y install upstart procps util-linux
+  run_list:
+  - recipe[docker_test::tmpfs]
