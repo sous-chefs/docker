@@ -237,14 +237,14 @@ suites:
 # bulk resource testing
 #######################
 
-- name: resources-1123
+- name: resources-1130
   includes: [
     'ubuntu-16.04',
     'centos-7.2'
    ]
   attributes:
     docker:
-      version: '1.12.3'
+      version: '1.13.0'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::image]
