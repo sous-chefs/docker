@@ -7,6 +7,7 @@ end
 docker_service_manager_execute 'default' do
   graph '/var/lib/docker'
   host 'unix:///var/run/docker.sock'
+  storage_driver 'devicemapper'
   action :start
 end
 
@@ -25,6 +26,7 @@ end
 # service A
 docker_service_manager_execute 'one' do
   graph '/var/lib/docker-one'
+  storage_driver 'devicemapper'
   host 'unix:///var/run/docker-one.sock'
   action :start
 end
@@ -43,6 +45,7 @@ end
 # service B
 docker_service_manager_execute 'two' do
   graph '/var/lib/docker-two'
+  storage_driver 'devicemapper'
   host 'unix:///var/run/docker-two.sock'
   action :start
 end

@@ -1,11 +1,7 @@
-###################################################
-# We're testing Docker by running it inside Docker.
-# This leads to strange behavior when using various
-# storage drivers.
-#
-# To hack around this, we mount a tmpfs in various
-# locations so the filesystem looks "fresh".
-###################################################
+def amazon?
+  return true if node['platform'] == 'amazon'
+  false
+end
 
 def precise?
   return true if node['platform'] == 'ubuntu' && node['platform_version'] == '12.04'
@@ -18,24 +14,11 @@ def trusty?
   false
 end
 
-if precise? || trusty?
+if precise? || trusty? || amazon?
   mount '/var/run' do
     fstype 'tmpfs'
     device 'tmpfs'
     options 'rw,nosuid,nodev,noexec,relatime,size=1227540k'
-    action [:mount, :enable]
-  end
-end
-
-%w( docker docker-one docker-two ).each do |dir|
-  directory "/var/lib/#{dir}" do
-    action :create
-  end
-
-  mount "/var/lib/#{dir}" do
-    fstype 'tmpfs'
-    device 'tmpfs'
-    options 'rw,nosuid,nodev,noexec,relatime,size=0'
     action [:mount, :enable]
   end
 end

@@ -141,5 +141,6 @@ docker_service 'default' do
   cluster_store "etcd://#{node['ipaddress']}:4001"
   cluster_advertise "#{node['ipaddress']}:4001"
   install_method 'package'
+  storage_driver 'devicemapper'
   action [:create, :start]
 end
