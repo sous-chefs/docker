@@ -1,6 +1,6 @@
 #
 
-docker_installation_binary 'default' do
+docker_installation_package 'default' do
   action :create
 end
 
