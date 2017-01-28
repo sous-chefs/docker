@@ -125,6 +125,16 @@ suites:
 # docker_installation_package resource
 ######################################
 
+- name: installation_package-1126
+  includes: [
+    'amazonlinux', # for dokken
+    ]
+  attributes:
+    docker:
+      version: '1.12.6'
+  run_list:
+  - recipe[docker_test::installation_package]
+
 - name: installation_package-1130
   includes: [
     'centos-7', # for dokken
