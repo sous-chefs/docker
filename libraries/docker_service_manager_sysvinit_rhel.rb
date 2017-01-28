@@ -38,11 +38,10 @@ module DockerCookbook
           action :run
         end
 
-        link "/usr/bin/#{docker_name}" do
+        link dockerd_bin_link do
           to dockerd_bin
           link_type :hard
           action :create
-          not_if { docker_name == 'docker' }
         end
 
         template "/etc/init.d/#{docker_name}" do
@@ -52,7 +51,7 @@ module DockerCookbook
           mode '0755'
           variables(
             docker_name: docker_name,
-            dockerd_bin: dockerd_bin,
+            dockerd_bin_link: dockerd_bin_link,
             docker_daemon_cmd: docker_daemon_cmd,
             docker_wait_ready: "#{libexec_dir}/#{docker_name}-wait-ready"
           )

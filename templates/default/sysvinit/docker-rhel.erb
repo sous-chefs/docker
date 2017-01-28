@@ -22,7 +22,7 @@
 # Source function library.
 . /etc/rc.d/init.d/functions
 
-prog="<%= @dockerd_bin %>"
+prog="<%= @dockerd_bin_link %>"
 instance=<%= @docker_name %>
 unshare=/usr/bin/unshare
 exec="$prog"

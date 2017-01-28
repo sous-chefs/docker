@@ -3,6 +3,11 @@ def wheezy?
   false
 end
 
+def amazon?
+  return true if node['platform'] == 'amazon'
+  false
+end
+
 if wheezy?
   file '/etc/apt/sources.list.d/wheezy-backports.list' do
     content 'deb http://ftp.de.debian.org/debian wheezy-backports main'
@@ -13,6 +18,19 @@ if wheezy?
   execute 'wheezy apt update' do
     command 'apt-get update'
     action :nothing
+  end
+end
+
+if amazon?
+  package 'util-linux' do
+    action :install
+  end
+
+  mount '/var/run' do
+    fstype 'tmpfs'
+    device 'tmpfs'
+    options 'rw,nosuid,nodev,noexec,relatime,size=1227540k'
+    action [:mount, :enable]
   end
 end
 

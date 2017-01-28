@@ -173,6 +173,7 @@ suites:
 
 - name: service-sysvinit-multi
   includes: [
+    'amazonlinux', # for dokken
     'debian-7', # for dokken
     'debian-7.11'
    ]

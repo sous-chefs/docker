@@ -108,3 +108,5 @@ platforms:
   driver:
     image: amazonlinux:latest
     pid_one_command: /sbin/init
+    intermediate_instructions:
+      - RUN yum -y install upstart procps
