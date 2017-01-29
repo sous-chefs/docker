@@ -6,7 +6,6 @@ end
 # service named 'default'
 docker_service_manager_systemd 'default' do
   graph '/var/lib/docker'
-  storage_driver 'devicemapper'
   action :start
 end
 
@@ -25,7 +24,6 @@ end
 # service A
 docker_service_manager_systemd 'one' do
   graph '/var/lib/docker-one'
-  storage_driver 'devicemapper'
   host 'unix:///var/run/docker-one.sock'
   action :start
 end
@@ -44,7 +42,6 @@ end
 # service B
 docker_service_manager_systemd 'two' do
   graph '/var/lib/docker-two'
-  storage_driver 'devicemapper'
   host 'unix:///var/run/docker-two.sock'
   action :start
 end

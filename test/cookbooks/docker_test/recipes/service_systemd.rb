@@ -5,7 +5,6 @@ end
 
 docker_service_manager_systemd 'default' do
   host 'unix:///var/run/docker.sock'
-  storage_driver 'devicemapper'
   action :start
 end
 
