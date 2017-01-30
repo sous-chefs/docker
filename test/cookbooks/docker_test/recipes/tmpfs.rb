@@ -22,3 +22,16 @@ if precise? || trusty? || amazon?
     action [:mount, :enable]
   end
 end
+
+# %w(/var/lib/docker /var/lib/docker-one /var/lib/docker-two).each do |dir|
+#   directory dir do
+#     action :create
+#   end
+
+#   mount dir.to_s do
+#     fstype 'tmpfs'
+#     device 'tmpfs'
+#     options 'rw,size=0'
+#     action [:mount, :enable]
+#   end
+# end

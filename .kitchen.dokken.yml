@@ -3,9 +3,11 @@ driver:
   name: dokken
   chef_version: latest
   privileged: true # because Docker and SystemD/Upstart
-  # binds: '/var/run/docker.sock:/var/run/docker.sock'
-  binds: [ '/var/lib/docker', '/var/lib/docker-one', '/var/lib/docker-two' ]
-  
+  volumes: [
+  '/var/run/docker.sock:/var/run/docker.sock',
+  '/var/lib/docker', '/var/lib/docker-one', '/var/lib/docker-two'
+  ]
+
 transport:
   name: dokken
 
@@ -99,6 +101,7 @@ platforms:
       - RUN /usr/bin/apt-get update
       - RUN /usr/bin/apt-get -y install net-tools apt-transport-https kmod iptables
   run_list:
+  - recipe[docker_test::tmpfs]
   - recipe[chef-apt-docker]
 
 - name: opensuse-13.2
