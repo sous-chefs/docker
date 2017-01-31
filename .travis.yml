@@ -28,11 +28,11 @@ env:
   - INSTANCE=installation-package-1130-ubuntu-1604
   - INSTANCE=service-execute-multi-ubuntu-1604
   - INSTANCE=service-sysvinit-multi-debian-7
-#  - INSTANCE=service-sysvinit-multi-amazonlinux
+  - INSTANCE=service-sysvinit-multi-amazonlinux
   - INSTANCE=service-upstart-multi-ubuntu-1204
   - INSTANCE=service-upstart-multi-ubuntu-1404
   - INSTANCE=service-systemd-multi-debian-8
-#  - INSTANCE=service-systemd-multi-centos-7
+  - INSTANCE=service-systemd-multi-centos-7
   - INSTANCE=service-systemd-multi-ubuntu-1604
   - INSTANCE=resources-1130-ubuntu-1604
   - INSTANCE=network-ubuntu-1604
@@ -44,7 +44,8 @@ env:
 before_script:
   - sudo iptables -L DOCKER || ( echo "DOCKER iptables chain missing" ; sudo iptables -N DOCKER )
   - eval "$(/opt/chefdk/bin/chef shell-init bash)"
-
+  - chef gem install kitchen-dokken
+  
 script: KITCHEN_LOCAL_YAML=.kitchen.dokken.yml /opt/chefdk/embedded/bin/kitchen verify ${INSTANCE}
 
 matrix:
