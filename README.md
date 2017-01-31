@@ -29,15 +29,16 @@ The following platforms have been tested with Test Kitchen: You may be
 able to get it working on other platforms, with appropriate
 configuration of cgroups and storage back ends.
 
-|              | 1.7.1 | 1.8.3 | 1.9.1 | 1.10.3 | 1.11.1 | 1.12.3 |
-|--------------|:-----:|:------|:-----:|:------:|:------:|:------:|
-| debian-7     | ✔     | ✔     | ✔     | ✔      | ✔      | ✔      |
-| debian-8     | ✔     | ✔     | ✔     | ✔      | ✔      | ✔      |
-| centos-7     | ✔     | ✔     | ✔     | ✔      | ✔      | ✔      |
-| fedora       |       |       | ✔     | ✔      | ✔      | ✔      |
-| ubuntu-12.04 | ✔     | ✔     | ✔     | ✔      | ✔      | ✔      |
-| ubuntu-14.04 | ✔     | ✔     | ✔     | ✔      | ✔      | ✔      |
-| ubuntu-16.04 |       |       |       |        | ✔      | ✔      |
+|              | 1.7.1 | 1.8.3 | 1.9.1 | 1.10.3 | 1.11.1 | 1.12.3 | 1.13.0 |
+|--------------|:-----:|:------|:-----:|:------:|:------:|:------:|:-------|
+| amazon linux |       |       |       |        |        |        | ✔      |
+| debian-7     | ✔     | ✔     | ✔     | ✔      | ✔      | ✔      | ✔      |
+| debian-8     | ✔     | ✔     | ✔     | ✔      | ✔      | ✔      | ✔      |
+| centos-7     | ✔     | ✔     | ✔     | ✔      | ✔      | ✔      | ✔      |
+| fedora       |       |       | ✔     | ✔      | ✔      | ✔      | ✔      |
+| ubuntu-12.04 | ✔     | ✔     | ✔     | ✔      | ✔      | ✔      | ✔      |
+| ubuntu-14.04 | ✔     | ✔     | ✔     | ✔      | ✔      | ✔      | ✔      |
+| ubuntu-16.04 |       |       |       |        | ✔      | ✔      | ✔      |
 
 
 ## Cookbook Dependencies
