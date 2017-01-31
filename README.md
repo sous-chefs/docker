@@ -419,10 +419,8 @@ The `docker_service` resource property list mostly corresponds to the
 options found in the
 [Docker Command Line Reference](https://docs.docker.com/reference/commandline/cli/)
 
-- `source` - URL to the pre-compiled Docker binary used for
-  installation. Defaults to a calculated URL based on kernel version,
-  Docker version, and platform arch. By default, this will try to get
-  to "<http://get.docker.io/builds/>".
+- `install_method` - Select binary, script, package, tarball, none, or auto. Defaults to  `auto`.
+- `source` - URL to the pre-compiled Docker binary used for installation. Defaults to a calculated URL based on kernel version, Docker version, and platform arch. By default, this will try to get to "<http://get.docker.io/builds/>".
 - `version` - Docker version to install
 - `checksum` - sha256 checksum of Docker binary
 - `instance` - Identity for `docker_service` resource. Defaults to
@@ -457,15 +455,10 @@ options found in the
 - `iptables` - Enable addition of iptables rules
 - `ipv6` - Enable IPv6 networking
 - `log_level` - Set the logging level
-<<<<<<< HEAD
-- `labels` A string or array to set metadata on the daemon in the form
-  ['foo:bar', 'hello:world']`
-- `log_driver` - Container's logging driver
-  (json-file/syslog/journald/gelf/fluentd/none)
-=======
+- `labels` A string or array to set metadata on the daemon in the form ['foo:bar', 'hello:world']`
+- `log_driver` - Container's logging driver (json-file/syslog/journald/gelf/fluentd/none)
 - `labels` A string or array to set metadata on the daemon in the form ['foo:bar', 'hello:world']`
 - `log_driver` - Container's logging driver (json-file/syslog/journald/gelf/fluentd/awslogs/splunk/etwlogs/gcplogs/none)
->>>>>>> log_drivers
 - `log_opts` - Container's logging driver options (driver-specific)
 - `mtu` - Set the containers network MTU
 - `pidfile` - Path to use for daemon PID file
@@ -473,18 +466,13 @@ options found in the
 - `storage_driver` - Storage driver to use
 - `selinux_enabled` - Enable selinux support
 - `storage_opts` - Set storage driver options
-- `tls` - Use TLS; implied by --tlsverify. Defaults to
-  ENV['DOCKER_TLS'] if set
-- `tls_verify` - Use TLS and verify the remote. Defaults to
-  ENV['DOCKER_TLS_VERIFY'] if set
-- `tls_ca_cert` - Trust certs signed only by this CA. Defaults to
-  ENV['DOCKER_CERT_PATH'] if set
+- `tls` - Use TLS; implied by --tlsverify. Defaults to  ENV['DOCKER_TLS'] if set
+- `tls_verify` - Use TLS and verify the remote. Defaults to  ENV['DOCKER_TLS_VERIFY'] if set
+- `tls_ca_cert` - Trust certs signed only by this CA. Defaults to  ENV['DOCKER_CERT_PATH'] if set
 - `tls_server_cert` - Path to TLS certificate file for docker service
 - `tls_server_key` - Path to TLS key file for docker service
-- `tls_client_cert` - Path to TLS certificate file for docker
-  cli. Defaults to ENV['DOCKER_CERT_PATH'] if set
-- `tls_client_key` - Path to TLS key file for docker cli. Defaults to
-  ENV['DOCKER_CERT_PATH'] if set
+- `tls_client_cert` - Path to TLS certificate file for docker cli. Defaults to ENV['DOCKER_CERT_PATH'] if set
+- `tls_client_key` - Path to TLS key file for docker cli. Defaults to  ENV['DOCKER_CERT_PATH'] if set
 - `default_ulimit` - Set default ulimit settings for containers
 - `http_proxy` - ENV variable set before for Docker daemon starts
 - `https_proxy` - ENV variable set before for Docker daemon starts
@@ -494,9 +482,7 @@ options found in the
 - `userland_proxy`- Enables or disables docker-proxy
 - `disable_legacy_registry` - Do not contact legacy registries
 - `userns_remap` - Enable user namespace remapping options -
-  `default`, `uid`, `uid:gid`, `username`, `username:groupname` (see:
-  [Docker User Namespaces](see:
-  https://docs.docker.com/v1.10/engine/reference/commandline/daemon/#daemon-user-namespace-options))
+  `default`, `uid`, `uid:gid`, `username`, `username:groupname` (see: [Docker User Namespaces](see: https://docs.docker.com/v1.10/engine/reference/commandline/daemon/#daemon-user-namespace-options))
 - `mount_flags` - Set the systemd mount propagation flag. Defaults to slave.
 
 #### Miscellaneous Options
