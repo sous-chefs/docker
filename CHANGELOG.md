@@ -2,6 +2,12 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.14.0 (2017-01-31)
+- various updates for Docker 1.13.0
+- defaulting to 1.13.0 for docker_installation
+- package name fixes for new debian/ubuntu schemes
+- defaulting restart_policy to nil in docker_resource
+
 ## 2.13.11 (2017-01-25)
 - #798 - Temporary "fix" for delayed service restart: using :immediate
   notification in docker_service resource
