@@ -2,6 +2,9 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 12.14.2 (2017-01-31)
+- Vendoring docker-api-1.33.2
+
 ## 12.14.1 (2017-01-31)
 - defaulting to package installation on amazonlinux
 
