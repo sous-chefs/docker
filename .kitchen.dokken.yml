@@ -4,7 +4,6 @@ driver:
   chef_version: latest
   privileged: true # because Docker and SystemD/Upstart
   volumes: [
-  '/var/run/docker.sock:/var/run/docker.sock',
   '/var/lib/docker', '/var/lib/docker-one', '/var/lib/docker-two'
   ]
 
@@ -68,7 +67,6 @@ platforms:
     intermediate_instructions:
       - RUN dnf -y install yum which net-tools
   run_list:
-    - recipe[docker_test::tmpfs]
     - recipe[chef-yum-docker]
 
 - name: ubuntu-12.04
@@ -79,7 +77,6 @@ platforms:
       - RUN /usr/bin/apt-get update
       - RUN /usr/bin/apt-get -y install net-tools apt-transport-https iptables
   run_list:
-  - recipe[docker_test::tmpfs]
   - recipe[chef-apt-docker]
 
   - name: ubuntu-14.04
@@ -90,7 +87,6 @@ platforms:
       - RUN /usr/bin/apt-get update
       - RUN /usr/bin/apt-get -y install net-tools apt-transport-https kmod iptables
   run_list:
-  - recipe[docker_test::tmpfs]
   - recipe[chef-apt-docker]
 
 - name: ubuntu-16.04
@@ -101,7 +97,6 @@ platforms:
       - RUN /usr/bin/apt-get update
       - RUN /usr/bin/apt-get -y install net-tools apt-transport-https kmod iptables
   run_list:
-  - recipe[docker_test::tmpfs]
   - recipe[chef-apt-docker]
 
 - name: opensuse-13.2
@@ -117,5 +112,3 @@ platforms:
     pid_one_command: /sbin/init
     intermediate_instructions:
       - RUN yum -y install upstart procps util-linux
-  run_list:
-  - recipe[docker_test::tmpfs]

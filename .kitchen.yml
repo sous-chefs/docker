@@ -227,6 +227,7 @@ suites:
     'centos-7', # for dokken
     'centos-7.2',
     'fedora-24',
+    'debian-8', # for dokken
     'debian-8.5',
     'ubuntu-16.04'
    ]
