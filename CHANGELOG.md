@@ -2,6 +2,9 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 12.14.1 (2017-01-31)
+- defaulting to package installation on amazonlinux
+
 ## 2.14.0 (2017-01-31)
 - various updates for Docker 1.13.0
 - defaulting to 1.13.0 for docker_installation
