@@ -72,7 +72,7 @@ module DockerCookbook
     property :publish_all_ports, Boolean, default: false
     property :remove_volumes, Boolean
     property :restart_maximum_retry_count, Integer, default: 0
-    property :restart_policy, String, default: 'no'
+    property :restart_policy, String
     property :ro_rootfs, Boolean, default: false
     property :security_opts, [String, ArrayType]
     property :signal, String, default: 'SIGTERM'

@@ -22,13 +22,12 @@ export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin
 BASE=<%= @docker_name %>
 
 # modify these in /etc/default/$BASE (/etc/default/docker)
-DOCKER=/usr/bin/$BASE
+DOCKER=<%= @dockerd_bin_link %>
 # This is the pid file managed by docker itself
 DOCKER_PIDFILE=/var/run/$BASE.pid
 # This is the pid file created/managed by start-stop-daemon
 DOCKER_SSD_PIDFILE=/var/run/$BASE-ssd.pid
 DOCKER_LOGFILE=/var/log/$BASE.log
-DOCKER_OPTS=
 DOCKER_DESC="Docker"
 
 # Get lsb functions
@@ -102,14 +101,14 @@ case "$1" in
 
     log_begin_msg "Starting $DOCKER_DESC: $BASE"
     start-stop-daemon --start --background \
-      --no-close \
-      --exec "$DOCKER" \
-      --pidfile "$DOCKER_SSD_PIDFILE" \
-      --make-pidfile \
-      -- \
-        daemon -p "$DOCKER_PIDFILE" \
-        $DOCKER_OPTS \
-          >> "$DOCKER_LOGFILE" 2>&1
+                      --no-close \
+                      --exec "$DOCKER" \
+                      --pidfile "$DOCKER_SSD_PIDFILE" \
+                      --make-pidfile \
+                      -- \
+                        <%= @docker_daemon_arg %> -p "$DOCKER_PID_FILE" \
+                        $DOCKER_OPTS \
+                        >> "$DOCKER_LOGFILE" 2>&1
     <%= @docker_wait_ready %>
     log_end_msg $?
     ;;

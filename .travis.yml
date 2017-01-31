@@ -15,34 +15,37 @@ services: docker
 
 env:
   matrix:
-  - INSTANCE=installation-tarball-1112-ubuntu-1604
-  - INSTANCE=installation-binary-1112-ubuntu-1604
   - INSTANCE=installation-script-main-ubuntu-1604
   - INSTANCE=installation-script-test-ubuntu-1604
   - INSTANCE=installation-script-experimental-ubuntu-1604
-  - INSTANCE=installation-package-1123-ubuntu-1204
-  - INSTANCE=installation-package-1123-ubuntu-1404
-  - INSTANCE=installation-package-1123-ubuntu-1604
-  - INSTANCE=service-execute-ubuntu-1604
+  - INSTANCE=installation-package-1126-amazonlinux
+  - INSTANCE=installation-package-1130-debian-7
+  - INSTANCE=installation-package-1130-debian-8
+  - INSTANCE=installation-package-1130-centos-7
+  - INSTANCE=installation-package-1130-fedora-latest
+  - INSTANCE=installation-package-1130-ubuntu-1204
+  - INSTANCE=installation-package-1130-ubuntu-1404
+  - INSTANCE=installation-package-1130-ubuntu-1604
   - INSTANCE=service-execute-multi-ubuntu-1604
-#  - INSTANCE=service-upstart-ubuntu-1204
-#  - INSTANCE=service-upstart-ubuntu-1404
-#  - INSTANCE=service-upstart-multi-ubuntu-1204
-#  - INSTANCE=service-upstart-multi-ubuntu-1404
-  - INSTANCE=service-systemd-ubuntu-1604
+  - INSTANCE=service-sysvinit-multi-debian-7
+  - INSTANCE=service-sysvinit-multi-amazonlinux
+  - INSTANCE=service-upstart-multi-ubuntu-1204
+  - INSTANCE=service-upstart-multi-ubuntu-1404
+  - INSTANCE=service-systemd-multi-debian-8
+  - INSTANCE=service-systemd-multi-centos-7
   - INSTANCE=service-systemd-multi-ubuntu-1604
-  - INSTANCE=resources-1123-ubuntu-1604
+  - INSTANCE=resources-1130-ubuntu-1604
   - INSTANCE=network-ubuntu-1604
   - INSTANCE=volume-ubuntu-1604
-#  - INSTANCE=auto-ubuntu-1204
-#  - INSTANCE=auto-ubuntu-1404
+  - INSTANCE=auto-ubuntu-1204
   - INSTANCE=auto-ubuntu-1604
 
 # Ensure we make ChefDK's Ruby the default
 before_script:
   - sudo iptables -L DOCKER || ( echo "DOCKER iptables chain missing" ; sudo iptables -N DOCKER )
   - eval "$(/opt/chefdk/bin/chef shell-init bash)"
-
+  - chef gem install kitchen-dokken
+  
 script: KITCHEN_LOCAL_YAML=.kitchen.dokken.yml /opt/chefdk/embedded/bin/kitchen verify ${INSTANCE}
 
 matrix:

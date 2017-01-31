@@ -63,29 +63,29 @@ suites:
 # docker_installation_tarball resource
 #####################################
 
-- name: installation_tarball-1112
-  includes: [
-    'ubuntu-16.04'
-   ]
-  attributes:
-    docker:
-      version: '1.11.2'
-  run_list:
-  - recipe[docker_test::installation_tarball]
+# - name: installation_tarball-1112
+#   includes: [
+#   'ubuntu-16.04'
+#   ]
+#   attributes:
+#     docker:
+#       version: '1.11.2'
+#       run_list:
+#         - recipe[docker_test::installation_tarball]
 
 #####################################
 # docker_installation_binary resource
 #####################################
 
-- name: installation_binary-1112
-  includes: [
-    'ubuntu-16.04'
-   ]
-  attributes:
-    docker:
-      version: '1.10.0'
-  run_list:
-  - recipe[docker_test::installation_binary]
+# - name: installation_binary-1112
+#   includes: [
+#     'ubuntu-16.04'
+#    ]
+#   attributes:
+#     docker:
+#       version: '1.10.0'
+#   run_list:
+#   - recipe[docker_test::installation_binary]
 
 #####################################
 # docker_installation_script resource
@@ -125,31 +125,44 @@ suites:
 # docker_installation_package resource
 ######################################
 
-- name: installation_package-1123
+- name: installation_package-1126
   includes: [
+    'amazonlinux', # for dokken
+    ]
+  attributes:
+    docker:
+      version: '1.12.6'
+  run_list:
+  - recipe[docker_test::installation_package]
+
+- name: installation_package-1130
+  includes: [
+    'centos-7', # for dokken
     'centos-7.2',
+    'debian-7', # for dokken
     'debian-7.11',
+    'debian-8', # for dokken
     'debian-8.5',
     'ubuntu-12.04',
     'ubuntu-14.04',
     'ubuntu-16.04',
-    'fedora-24'
+    'fedora-latest'
    ]
   attributes:
     docker:
-      version: '1.12.3'
+      version: '1.13.0'
   run_list:
   - recipe[docker_test::installation_package]
 
 #################################
 # docker_service_execute resource
 #################################
-- name: service-execute
-  includes: [
-    'ubuntu-16.04',
-   ]
-  run_list:
-  - recipe[docker_test::service_execute]
+# - name: service-execute
+#   includes: [
+#     'ubuntu-16.04',
+#    ]
+#   run_list:
+#   - recipe[docker_test::service_execute]
 
 - name: service-execute-multi
   includes: [
@@ -161,15 +174,17 @@ suites:
 ##################################
 # docker_service_sysvinit resource
 ##################################
-- name: service-sysvinit
-  includes: [
-    'debian-7.11'
-   ]
-  run_list:
-  - recipe[docker_test::service_sysvinit]
+# - name: service-sysvinit
+#   includes: [
+#     'debian-7.11'
+#    ]
+#   run_list:
+#   - recipe[docker_test::service_sysvinit]
 
 - name: service-sysvinit-multi
   includes: [
+    'amazonlinux', # for dokken
+    'debian-7', # for dokken
     'debian-7.11'
    ]
   run_list:
@@ -178,13 +193,13 @@ suites:
 #################################
 # docker_service_upstart resource
 #################################
-- name: service-upstart
-  includes: [
-    'ubuntu-12.04',
-    'ubuntu-14.04'
-   ]
-  run_list:
-  - recipe[docker_test::service_upstart]
+# - name: service-upstart
+#   includes: [
+#     'ubuntu-12.04',
+#     'ubuntu-14.04'
+#    ]
+#   run_list:
+#   - recipe[docker_test::service_upstart]
 
 - name: service-upstart-multi
   includes: [
@@ -197,20 +212,22 @@ suites:
 #################################
 # docker_service_systemd resource
 #################################
-- name: service-systemd
-  includes: [
-    'centos-7.2',
-    'fedora-24',
-    'debian-8.5',
-    'ubuntu-16.04'
-   ]
-  run_list:
-  - recipe[docker_test::service_systemd]
+# - name: service-systemd
+#   includes: [
+#     'centos-7.2',
+#     'fedora-24',
+#     'debian-8.5',
+#     'ubuntu-16.04'
+#    ]
+#   run_list:
+#   - recipe[docker_test::service_systemd]
 
 - name: service-systemd-multi
   includes: [
+    'centos-7', # for dokken
     'centos-7.2',
     'fedora-24',
+    'debian-8', # for dokken
     'debian-8.5',
     'ubuntu-16.04'
    ]
@@ -221,14 +238,14 @@ suites:
 # bulk resource testing
 #######################
 
-- name: resources-1123
+- name: resources-1130
   includes: [
     'ubuntu-16.04',
     'centos-7.2'
    ]
   attributes:
     docker:
-      version: '1.12.3'
+      version: '1.13.0'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::image]

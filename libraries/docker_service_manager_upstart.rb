@@ -8,6 +8,12 @@ module DockerCookbook
     action :start do
       create_docker_wait_ready
 
+      link dockerd_bin_link do
+        to dockerd_bin
+        link_type :hard
+        action :create
+      end
+
       template "/etc/init/#{docker_name}.conf" do
         source 'upstart/docker.conf.erb'
         owner 'root'
@@ -15,6 +21,7 @@ module DockerCookbook
         mode '0644'
         variables(
           docker_name: docker_name,
+          dockerd_bin_link: dockerd_bin_link,
           docker_daemon_arg: docker_daemon_arg,
           docker_wait_ready: "#{libexec_dir}/#{docker_name}-wait-ready"
         )
@@ -26,43 +33,25 @@ module DockerCookbook
         source 'default/docker.erb'
         variables(
           config: new_resource,
-          docker_daemon: docker_daemon,
+          dockerd_bin_link: dockerd_bin_link,
           docker_daemon_opts: docker_daemon_opts.join(' ')
         )
         cookbook 'docker'
         action :create
       end
 
-      # Upstart broken in 12.17.44
-      # https://github.com/chef/chef/issues/2819 ish..
-      #
-      # hack around this until it gets fixed in Chef proper
-      #
-      # service docker_name do
-      #   provider Chef::Provider::Service::Upstart
-      #   supports status: true
-      #   action :start
-      # end
-
-      execute '/sbin/initctl start docker' do
-        only_if '/sbin/status docker | grep "stop/waiting"'
+      service docker_name do
+        provider Chef::Provider::Service::Upstart
+        supports status: true
+        action :start
       end
     end
 
     action :stop do
-      # Upstart broken in 12.17.44
-      # https://github.com/chef/chef/issues/2819 ish..
-      #
-      # hack around this until it gets fixed in Chef proper
-      #
-      # service docker_name do
-      #   provider Chef::Provider::Service::Upstart
-      #   supports status: true
-      #   action :stop
-      # end
-
-      execute '/sbin/initctl stop docker' do
-        not_if '/sbin/status docker | grep "stop/waiting"'
+      service docker_name do
+        provider Chef::Provider::Service::Upstart
+        supports status: true
+        action :stop
       end
     end
 

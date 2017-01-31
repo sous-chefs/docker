@@ -3,6 +3,11 @@ def wheezy?
   false
 end
 
+def amazon?
+  return true if node['platform'] == 'amazon'
+  false
+end
+
 if wheezy?
   file '/etc/apt/sources.list.d/wheezy-backports.list' do
     content 'deb http://ftp.de.debian.org/debian wheezy-backports main'
@@ -57,24 +62,24 @@ docker_container 'hello-world' do
   action :create
 end
 
-# service B
-docker_service_manager_sysvinit 'two' do
-  graph '/var/lib/docker-two'
-  host 'unix:///var/run/docker-two.sock'
-  action :start
-end
+# # service B
+# docker_service_manager_sysvinit 'two' do
+#   graph '/var/lib/docker-two'
+#   host 'unix:///var/run/docker-two.sock'
+#   action :start
+# end
 
-docker_image 'alpine' do
-  host 'unix:///var/run/docker-two.sock'
-  tag '3.1'
-end
+# docker_image 'alpine' do
+#   host 'unix:///var/run/docker-two.sock'
+#   tag '3.1'
+# end
 
-docker_container 'service two echo_server' do
-  container_name 'an_echo_server'
-  repo 'alpine'
-  tag '3.1'
-  command 'nc -ll -p 7 -e /bin/cat'
-  port '7'
-  host 'unix:///var/run/docker-two.sock'
-  action :run
-end
+# docker_container 'service two echo_server' do
+#   container_name 'an_echo_server'
+#   repo 'alpine'
+#   tag '3.1'
+#   command 'nc -ll -p 7 -e /bin/cat'
+#   port '7'
+#   host 'unix:///var/run/docker-two.sock'
+#   action :run
+# end

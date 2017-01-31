@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-#       /etc/rc.d/init.d/docker
+#       /etc/rc.d/init.d/<%= @docker_name %>
 #
 #       Daemon for docker.com
 #
@@ -22,14 +22,15 @@
 # Source function library.
 . /etc/rc.d/init.d/functions
 
-prog="<%= @docker_name %>"
+prog="<%= @dockerd_bin_link %>"
+instance=<%= @docker_name %>
 unshare=/usr/bin/unshare
-exec="/usr/bin/$prog"
-pidfile="/var/run/$prog.pid"
-lockfile="/var/lock/subsys/$prog"
-logfile="/var/log/$prog"
+exec="$prog"
+pidfile="/var/run/$instance.pid"
+lockfile="/var/lock/subsys/$instance"
+logfile="/var/log/$instance"
 
-[ -e /etc/sysconfig/$prog ] && . /etc/sysconfig/$prog
+[ -e /etc/sysconfig/$instance ] && . /etc/sysconfig/$instance
 
 prestart() {
     service cgconfig status > /dev/null
@@ -49,7 +50,7 @@ start() {
         prestart
         printf "Starting $prog:\t"
         echo "\n$(date)\n" >> $logfile
-        "$unshare" -m -- $exec <%= @docker_daemon_arg %> $other_args &>> $logfile &
+        "$unshare" -m -- <%= @docker_daemon_cmd %> &>> $logfile &
         <%= @docker_wait_ready %>
         [ $? -eq 0 ] && success || failure
         echo
