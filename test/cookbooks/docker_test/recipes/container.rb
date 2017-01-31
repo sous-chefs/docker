@@ -540,7 +540,6 @@ docker_container 'reboot_survivor_retry' do
   tag '3.1'
   command 'nc -ll -p 123 -e /bin/cat'
   port '123'
-  restart_policy 'always'
   restart_maximum_retry_count 2
   action :run_if_missing
 end

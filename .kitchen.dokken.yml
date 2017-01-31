@@ -3,7 +3,9 @@ driver:
   name: dokken
   chef_version: latest
   privileged: true # because Docker and SystemD/Upstart
-  binds: '/var/run/docker.sock:/var/run/docker.sock'
+  volumes: [
+  '/var/lib/docker', '/var/lib/docker-one', '/var/lib/docker-two'
+  ]
 
 transport:
   name: dokken
@@ -22,8 +24,9 @@ platforms:
     pid_one_command: /sbin/init
     intermediate_instructions:
       - RUN /usr/bin/apt-get update
-      - RUN /usr/bin/apt-get -y install net-tools apt-transport-https
-      - RUN /usr/bin/apt-get -y install kmod iptables
+      - RUN /usr/bin/apt-get -y install net-tools apt-transport-https lsb-release kmod iptables wget perl procps
+      - RUN wget http://launchpadlibrarian.net/173841617/init-system-helpers_1.18_all.deb
+      - RUN dpkg -i /init-system-helpers_1.18_all.deb
   run_list:
   - recipe[chef-apt-docker]
 
@@ -33,18 +36,9 @@ platforms:
     pid_one_command: /bin/systemd
     intermediate_instructions:
       - RUN /usr/bin/apt-get update
-      - RUN /usr/bin/apt-get -y install net-tools apt-transport-https
-      - RUN /usr/bin/apt-get -y install kmod iptables
+      - RUN /usr/bin/apt-get -y install net-tools apt-transport-https kmod iptables lsb-release
   run_list:
   - recipe[chef-apt-docker]
-
-- name: centos-5
-  driver:
-    image: centos:5
-    platform: rhel
-    pid_one_command: /sbin/init
-    intermediate_instructions:
-      - RUN yum install -y which initscripts
 
 - name: centos-6
   driver:
@@ -53,6 +47,8 @@ platforms:
     pid_one_command: /sbin/init
     intermediate_instructions:
       - RUN yum -y install which initscripts
+  run_list:
+    - recipe[chef-yum-docker]
 
 - name: centos-7
   driver:
@@ -61,6 +57,8 @@ platforms:
     pid_one_command: /usr/lib/systemd/systemd
     intermediate_instructions:
       - RUN yum -y install lsof which net-tools
+  run_list:
+    - recipe[chef-yum-docker]
 
 - name: fedora-latest
   driver:
@@ -68,6 +66,8 @@ platforms:
     pid_one_command: /usr/lib/systemd/systemd
     intermediate_instructions:
       - RUN dnf -y install yum which net-tools
+  run_list:
+    - recipe[chef-yum-docker]
 
 - name: ubuntu-12.04
   driver:
@@ -75,8 +75,7 @@ platforms:
     pid_one_command: /sbin/init
     intermediate_instructions:
       - RUN /usr/bin/apt-get update
-      - RUN /usr/bin/apt-get -y install net-tools apt-transport-https
-      - RUN /usr/bin/apt-get -y install iptables
+      - RUN /usr/bin/apt-get -y install net-tools apt-transport-https iptables
   run_list:
   - recipe[chef-apt-docker]
 
@@ -86,8 +85,7 @@ platforms:
     pid_one_command: /sbin/init
     intermediate_instructions:
       - RUN /usr/bin/apt-get update
-      - RUN /usr/bin/apt-get -y install net-tools apt-transport-https
-      - RUN /usr/bin/apt-get -y install kmod iptables
+      - RUN /usr/bin/apt-get -y install net-tools apt-transport-https kmod iptables
   run_list:
   - recipe[chef-apt-docker]
 
@@ -97,8 +95,7 @@ platforms:
     pid_one_command: /bin/systemd
     intermediate_instructions:
       - RUN /usr/bin/apt-get update
-      - RUN /usr/bin/apt-get -y install net-tools apt-transport-https
-      - RUN /usr/bin/apt-get -y install kmod iptables
+      - RUN /usr/bin/apt-get -y install net-tools apt-transport-https kmod iptables
   run_list:
   - recipe[chef-apt-docker]
 
@@ -113,3 +110,5 @@ platforms:
   driver:
     image: amazonlinux:latest
     pid_one_command: /sbin/init
+    intermediate_instructions:
+      - RUN yum -y install upstart procps util-linux

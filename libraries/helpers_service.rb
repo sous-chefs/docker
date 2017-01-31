@@ -32,7 +32,12 @@ module DockerCookbook
       end
 
       def dockerd_bin
+        return '/usr/bin/docker' if Gem::Version.new(docker_major_version) < Gem::Version.new('1.12')
         '/usr/bin/dockerd'
+      end
+
+      def dockerd_bin_link
+        "/usr/bin/dockerd-#{name}"
       end
 
       def docker_name
@@ -40,7 +45,7 @@ module DockerCookbook
         "docker-#{name}"
       end
 
-      def docker_version
+      def installed_docker_version
         o = shell_out("#{docker_bin} --version")
         o.stdout.split[2].chomp(',')
       end
@@ -118,17 +123,9 @@ module DockerCookbook
       end
 
       def docker_major_version
-        ray = docker_version.split('.')
+        ray = installed_docker_version.split('.')
         ray.pop
         ray.push.join('.')
-      end
-
-      def docker_daemon
-        if Gem::Version.new(docker_major_version) < Gem::Version.new('1.12')
-          docker_bin
-        else
-          dockerd_bin
-        end
       end
 
       def docker_daemon_arg
@@ -142,7 +139,7 @@ module DockerCookbook
       end
 
       def docker_daemon_cmd
-        [docker_daemon, docker_daemon_arg, docker_daemon_opts].join(' ')
+        [dockerd_bin, docker_daemon_arg, docker_daemon_opts].join(' ')
       end
 
       def docker_cmd

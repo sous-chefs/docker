@@ -1,4 +1,3 @@
-#
 def wheezy?
   return true if node['platform'] == 'debian' && node['platform_version'].to_i == 7
   false
