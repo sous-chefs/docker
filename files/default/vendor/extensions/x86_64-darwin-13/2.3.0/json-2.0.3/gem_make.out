@@ -1,0 +1,13 @@
+current directory: /Users/someara/src/chef-cookbooks/docker/files/default/vendor/gems/json-2.0.3/ext/json
+/opt/chefdk/embedded/bin/ruby -r ./siteconf20170131-68034-13fqyux.rb extconf.rb
+creating Makefile
+
+current directory: /Users/someara/src/chef-cookbooks/docker/files/default/vendor/gems/json-2.0.3/ext/json
+make "DESTDIR=" clean
+
+current directory: /Users/someara/src/chef-cookbooks/docker/files/default/vendor/gems/json-2.0.3/ext/json
+make "DESTDIR="
+make: Nothing to be done for `all'.
+
+current directory: /Users/someara/src/chef-cookbooks/docker/files/default/vendor/gems/json-2.0.3/ext/json
+make "DESTDIR=" install

@@ -38,7 +38,7 @@ doc/
 Berksfile.lock
 .kitchen
 .kitchen.local.yml
-vendor/
+#vendor/
 .coverage/
 .zero-knife.rb
 Policyfile.lock.json
