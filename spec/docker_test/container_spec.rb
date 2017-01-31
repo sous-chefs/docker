@@ -39,7 +39,7 @@ describe 'docker_test::container' do
         network_disabled: false,
         outfile: nil,
         restart_maximum_retry_count: 0,
-        restart_policy: 'no',
+        restart_policy: nil,
         security_opts: nil,
         signal: 'SIGTERM',
         user: ''
@@ -509,7 +509,7 @@ describe 'docker_test::container' do
         tag: '3.1',
         command: 'nc -ll -p 123 -e /bin/cat',
         port: '123',
-        restart_policy: 'always',
+        restart_policy: nil,
         restart_maximum_retry_count: 2
       )
     end
