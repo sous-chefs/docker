@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 12.14.3 (2017-02-06)
+- Reverting gem vendor due to c extensions in json dep.
+- Using docker-api-1.33.2 in _autoload
+
 ## 12.14.2 (2017-01-31)
 - Vendoring docker-api-1.33.2
 
