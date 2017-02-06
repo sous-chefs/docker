@@ -1,8 +1,0 @@
-AllCops:
-  Exclude:
-    - files/default/vendor/**/*
-    - vendor/**/*
-
-Lint/AmbiguousOperator:
-  Exclude:
-    - 'libraries/_autoload.rb'
