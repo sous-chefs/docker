@@ -213,7 +213,6 @@ resources with the provider resolution system.
 
 ```ruby
 docker_installation 'default' do
-  repo 'test'
   action :create
 end
 ```
@@ -296,7 +295,7 @@ system's package repositories. The `chef-yum-docker` and
 `chef-apt-docker` Supermarket cookbooks are used to do this in
 test-kitchen.
 
-This is the recommended production installation method.
+**_This is the recommended production installation method._**
 
 ### Example
 
@@ -423,9 +422,6 @@ options found in the
 - `source` - URL to the pre-compiled Docker binary used for installation. Defaults to a calculated URL based on kernel version, Docker version, and platform arch. By default, this will try to get to "<http://get.docker.io/builds/>".
 - `version` - Docker version to install
 - `checksum` - sha256 checksum of Docker binary
-- `instance` - Identity for `docker_service` resource. Defaults to
-  name. Mostly unimportant for the 1.0 version because of its
-  singleton status. | String | nil
 - `api_cors_header` - Set CORS headers in the remote API
 - `bridge` - Attach containers to a network bridge
 - `bip` - Specify network bridge IP
@@ -649,19 +645,17 @@ as driven by the
 
 A `docker_image`'s full identifier is a string in the form
 "\<repo\>:\<tag\>". There is some nuance around naming using the
-public
-
-registry vs a private one.
+public registry vs a private one.
 
 - `repo` - aka `image_name` - The first half of a Docker image's
   identity. This is a string in the form:
   `registry:port/owner/image_name`. If the `registry:port` portion is
   left off, Docker will implicitly use the Docker public
   registry. "Official Images" omit the owner part. This means a repo
-  id can look as short as `busybox`, `alpine`, or `centos`, to refer
-  to official images on the public registry, and as long as
+  id can be as short as `busybox`, `alpine`, or `centos`. These names refer
+  to official images on the public registry. Names can be as long as
   `my.computers.biz:5043/what/ever` to refer to custom images on an
-  private registry. Often you'll see something like `someara/chef` to
+  private registry. Often you'll see something like `chef/chef` to
   refer to private images on the public registry. - Defaults to
   resource name.
 - `tag` - The second half of a Docker image's identity. - Defaults to
@@ -669,7 +663,7 @@ registry vs a private one.
 - `source` - Path to input for the `:import`, `:build` and
   `:build_if_missing` actions. For building, this can be a Dockerfile,
   a tarball containing a Dockerfile in its root, or a directory
-  containing a Dockerfile. For import, this should be a tarball
+  containing a Dockerfile. For `:import`, this should be a tarball
   containing Docker formatted image, as generated with `:save`.
 - `destination` - Path for output from the `:save` action.
 - `force` - A force boolean used in various actions - Defaults to
@@ -681,17 +675,17 @@ registry vs a private one.
 - `read_timeout` - May need to increase for long image builds/pulls
 - `write_timeout` - May need to increase for long image builds/pulls
 - `host` - A string containing the host the API should communicate
-  with. Defaults to ENV['DOCKER_HOST'] if set
+  with. Defaults to `ENV['DOCKER_HOST']` if set.
 - `tls` - Use TLS; implied by --tlsverify. Defaults to
-  ENV['DOCKER_TLS'] if set
+  ENV['DOCKER_TLS'] if set.
 - `tls_verify` - Use TLS and verify the remote. Defaults to
-  ENV['DOCKER_TLS_VERIFY'] if set
+  `ENV['DOCKER_TLS_VERIFY']` if set
 - `tls_ca_cert` - Trust certs signed only by this CA. Defaults to
-  ENV['DOCKER_CERT_PATH'] if set
+  `ENV['DOCKER_CERT_PATH']` if set.
 - `tls_client_cert` - Path to TLS certificate file for docker
-  cli. Defaults to ENV['DOCKER_CERT_PATH'] if set
+  cli. Defaults to `ENV['DOCKER_CERT_PATH']` if set
 - `tls_client_key` - Path to TLS key file for docker cli. Defaults to
-  ENV['DOCKER_CERT_PATH'] if set
+  `ENV['DOCKER_CERT_PATH']` if set.
 
 ### Actions
 
@@ -760,7 +754,7 @@ docker_container 'hello-world' do
 end
 ```
 
-- This command will exit succesfully. This will happen on every chef-client run.
+- This will exit succesfully. It will happen on every chef-client run.
 
 ```ruby
 docker_container 'busybox_ls' do
