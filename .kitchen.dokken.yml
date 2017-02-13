@@ -65,7 +65,7 @@ platforms:
     image: fedora:latest
     pid_one_command: /usr/lib/systemd/systemd
     intermediate_instructions:
-      - RUN dnf -y install yum which net-tools
+      - RUN dnf -y install yum which net-tools procps-ng
   run_list:
     - recipe[chef-yum-docker]
 
