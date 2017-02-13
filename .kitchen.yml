@@ -135,7 +135,7 @@ suites:
   run_list:
   - recipe[docker_test::installation_package]
 
-- name: installation_package-1130
+- name: installation_package-1131
   includes: [
     'centos-7', # for dokken
     'centos-7.2',
@@ -150,7 +150,7 @@ suites:
    ]
   attributes:
     docker:
-      version: '1.13.0'
+      version: '1.13.1'
   run_list:
   - recipe[docker_test::installation_package]
 
@@ -158,14 +158,14 @@ suites:
 # bulk resource testing
 #######################
 
-- name: resources-1130
+- name: resources-1131
   includes: [
     'ubuntu-16.04',
     'centos-7.2'
    ]
   attributes:
     docker:
-      version: '1.13.0'
+      version: '1.13.1'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::image]
