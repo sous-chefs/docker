@@ -154,86 +154,6 @@ suites:
   run_list:
   - recipe[docker_test::installation_package]
 
-#################################
-# docker_service_execute resource
-#################################
-# - name: service-execute
-#   includes: [
-#     'ubuntu-16.04',
-#    ]
-#   run_list:
-#   - recipe[docker_test::service_execute]
-
-- name: service-execute-multi
-  includes: [
-    'ubuntu-16.04',
-   ]
-  run_list:
-  - recipe[docker_test::service_execute_multi]
-
-##################################
-# docker_service_sysvinit resource
-##################################
-# - name: service-sysvinit
-#   includes: [
-#     'debian-7.11'
-#    ]
-#   run_list:
-#   - recipe[docker_test::service_sysvinit]
-
-- name: service-sysvinit-multi
-  includes: [
-    'amazonlinux', # for dokken
-    'debian-7', # for dokken
-    'debian-7.11'
-   ]
-  run_list:
-  - recipe[docker_test::service_sysvinit_multi]
-
-#################################
-# docker_service_upstart resource
-#################################
-# - name: service-upstart
-#   includes: [
-#     'ubuntu-12.04',
-#     'ubuntu-14.04'
-#    ]
-#   run_list:
-#   - recipe[docker_test::service_upstart]
-
-- name: service-upstart-multi
-  includes: [
-    'ubuntu-12.04',
-    'ubuntu-14.04'
-   ]
-  run_list:
-  - recipe[docker_test::service_upstart_multi]
-
-#################################
-# docker_service_systemd resource
-#################################
-# - name: service-systemd
-#   includes: [
-#     'centos-7.2',
-#     'fedora-24',
-#     'debian-8.5',
-#     'ubuntu-16.04'
-#    ]
-#   run_list:
-#   - recipe[docker_test::service_systemd]
-
-- name: service-systemd-multi
-  includes: [
-    'centos-7', # for dokken
-    'centos-7.2',
-    'fedora-24',
-    'debian-8', # for dokken
-    'debian-8.5',
-    'ubuntu-16.04'
-   ]
-  run_list:
-  - recipe[docker_test::service_systemd_multi]
-
 #######################
 # bulk resource testing
 #######################
@@ -274,18 +194,14 @@ suites:
   - recipe[docker_test::default]
   - recipe[docker_test::volume]
 
-#####################
-# docker_service auto
-#####################
-
-- name: auto
-  includes: [
-    'centos-7.2',
-    'fedora-24',
-    'debian-8.5',
-    'ubuntu-12.04',
-    'ubuntu-14.04',
-    'ubuntu-16.04'
-   ]
+######################################
+# service smoke testing
+######################################
+  
+- name: smoke
+  excludes: [
+    'centos-6',
+    'opensuse-13.2'
+  ]
   run_list:
-  - recipe[docker_test::auto]
+  - recipe[docker_test::smoke]
