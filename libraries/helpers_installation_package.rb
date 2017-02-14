@@ -89,7 +89,7 @@ module DockerCookbook
         return '1.7.1' if el6?
         return '1.9.1' if vivid?
         return '1.12.6' if amazon?
-        '1.13.0'
+        '1.13.1'
       end
 
       def default_package_name
