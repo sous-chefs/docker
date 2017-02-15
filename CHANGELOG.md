@@ -2,6 +2,9 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 12.15.1 (2017-02-15)
+- 799 - Adding service restarts to systemd template resources
+
 ## 12.15.0 (2017-02-15)
 - Removing dependency on compat_resource.
 - Now requires Chef 12.5 or higher.
