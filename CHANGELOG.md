@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 12.15.0 (2017-02-15)
+- Removing dependency on compat_resource.
+- Now requires Chef 12.5 or higher.
+
 ## 12.14.3 (2017-02-14)
 - Defaulting package installation version to docker 1.13.1
 
