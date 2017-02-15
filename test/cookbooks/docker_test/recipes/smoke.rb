@@ -52,6 +52,7 @@ docker_container 'squid_forward_proxy' do
   repo 'someara/squid'
   tag 'latest'
   restart_policy 'on-failure'
+  kill_after 5
   port '3128:3128'
   command '/usr/sbin/squid -NCd1'
   volumes '/etc/squid_forward_proxy/squid.conf:/etc/squid/squid.conf'
