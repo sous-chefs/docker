@@ -2,6 +2,9 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 12.15.2 (2017-02-15)
+- Reverting 12.15.1 changes
+
 ## 12.15.1 (2017-02-15)
 - 799 - Adding service restarts to systemd template resources
 
