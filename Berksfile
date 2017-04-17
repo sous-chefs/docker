@@ -3,6 +3,7 @@ source 'https://supermarket.chef.io'
 metadata
 
 group :integration do
+  cookbook 'build-essential'
   cookbook 'apt'
   cookbook 'yum'
   cookbook 'chef-apt-docker'
