@@ -1113,7 +1113,7 @@ docker_container 'syslogger' do
   tag '3.1'
   command 'nc -ll -p 780 -e /bin/cat'
   log_driver 'syslog'
-  log_opts 'syslog-tag=container-syslogger'
+  log_opts 'tag=container-syslogger'
 end
 ```
 
