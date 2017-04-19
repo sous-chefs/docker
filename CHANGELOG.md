@@ -2,7 +2,10 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
-## 12.15.3 (2017-04-15)
+## 12.15.4 (2017-04-19)
+- Fixing security_opt property
+
+## 12.15.3 (2017-04-18)
 - Updating for 17.04.0
 
 ## 12.15.2 (2017-02-15)
