@@ -74,7 +74,7 @@ module DockerCookbook
     property :restart_maximum_retry_count, Integer, default: 0
     property :restart_policy, String
     property :ro_rootfs, Boolean, default: false
-    property :security_opts, [String, ArrayType]
+    property :security_opt, [String, ArrayType]
     property :signal, String, default: 'SIGTERM'
     property :stdin_once, Boolean, default: false, desired_state: false
     property :sysctls, Hash, default: {}
@@ -295,6 +295,7 @@ module DockerCookbook
                 'MaximumRetryCount' => restart_maximum_retry_count,
               },
               'ReadonlyRootfs'  => ro_rootfs,
+              'SecurityOpt'     => security_opt,
               'Sysctls'         => sysctls,
               'Ulimits'         => ulimits_to_hash,
               'UsernsMode'      => userns_mode,
