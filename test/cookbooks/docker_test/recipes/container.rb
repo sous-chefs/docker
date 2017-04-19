@@ -1079,3 +1079,16 @@ end
 file '/marker_cmd_change' do
   action :create
 end
+
+##############
+# security_opt
+##############
+
+docker_container 'security_opt' do
+  repo 'alpine'
+  tag '3.1'
+  command 'nc -ll -p 70 -e /bin/cat'
+  port '70:70'
+  security_opt ['no-new-privileges', 'label=type:DERP']
+  action :run
+end
