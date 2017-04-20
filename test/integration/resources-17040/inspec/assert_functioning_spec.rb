@@ -904,3 +904,30 @@ describe command("docker inspect -f '{{ .Config.Cmd }}' cmd_change") do
   its(:exit_status) { should eq 0 }
   its(:stdout) { should match(/nc -ll -p 9/) }
 end
+
+# docker_container[memory]
+
+describe command("docker inspect -f '{{ .HostConfig.KernelMemory }}' memory") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/10485760/) }
+end
+
+describe command("docker inspect -f '{{ .HostConfig.Memory }}' memory") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/5242880/) }
+end
+
+describe command("docker inspect -f '{{ .HostConfig.MemorySwap }}' memory") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/5242880/) }
+end
+
+describe command("docker inspect -f '{{ .HostConfig.MemorySwappiness }}' memory") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/50/) }
+end
+
+describe command("docker inspect -f '{{ .HostConfig.MemoryReservation }}' memory") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/5242880/) }
+end

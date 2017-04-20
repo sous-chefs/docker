@@ -17,6 +17,70 @@ module DockerCookbook
         end
       end
 
+      def to_bytes(v)
+        n, u = v.split(/(?=[a-z])/)
+        case u
+        when 'b', 'B', nil
+          return n.to_i
+        when 'k', 'K'
+          return n.to_i * 1024**1
+        when 'm', 'M'
+          return n.to_i * 1024**2
+        when 'g', 'G'
+          return n.to_i * 1024**3
+        when 't', 'T'
+          return n.to_i * 1024**4
+        when 'p', 'P'
+          return n.to_i * 1024**5
+        when 'e', 'E'
+          return n.to_i * 1024**6
+        when 'z', 'Z'
+          return n.to_i * 1024**7
+        when 'y', 'Y'
+          return n.to_i * 1024**8
+        end
+      end
+
+      def coerce_kernel_memory(v)
+        case v
+        when Integer, nil
+          v
+        else
+          to_bytes(v)
+        end
+      end
+
+      def coerce_memory(v)
+        case v
+        when Integer, nil
+          v
+        else
+          to_bytes(v)
+        end
+      end
+
+      def coerce_memory_swap(v)
+        case v
+        when Integer, nil
+          v
+        else
+          to_bytes(v)
+        end
+      end
+
+      def coerce_memory_swappiness(v)
+        v.to_i
+      end
+
+      def coerce_memory_reservation(v)
+        case v
+        when Integer, nil
+          v
+        else
+          to_bytes(v)
+        end
+      end
+
       def coerce_log_opts(v)
         case v
         when Hash, nil

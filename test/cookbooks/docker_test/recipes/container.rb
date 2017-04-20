@@ -1092,3 +1092,20 @@ docker_container 'security_opt' do
   security_opt ['no-new-privileges', 'label=type:DERP']
   action :run
 end
+
+########
+# memory
+########
+
+docker_container 'memory' do
+  repo 'alpine'
+  tag '3.1'
+  command 'nc -ll -p 70 -e /bin/cat'
+  port '71:71'
+  kernel_memory '10m'
+  memory '5m'
+  memory_swap '5m'
+  memory_swappiness '50'
+  memory_reservation '5m'
+  action :run
+end
