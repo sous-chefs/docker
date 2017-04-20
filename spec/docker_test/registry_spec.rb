@@ -68,7 +68,7 @@ describe 'docker_test::registry' do
 
     it 'pulls docker_image[registry]' do
       expect(chef_run).to pull_docker_image('registry').with(
-        tag: '2.1'
+        tag: '2.6.1'
       )
     end
 

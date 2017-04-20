@@ -54,14 +54,17 @@ module DockerCookbook
     property :host, [String, nil], default: lazy { default_host }, desired_state: false
     property :hostname, String
     property :ipc_mode, String, default: ''
+    property :kernel_memory, [String, Integer], coerce: proc { |v| coerce_kernel_memory(v) }, default: 0
     property :labels, [String, Array, Hash], default: {}, coerce: proc { |v| coerce_labels(v) }
     property :links, UnorderedArrayType, coerce: proc { |v| coerce_links(v) }
     property :log_driver, %w( json-file syslog journald gelf fluentd awslogs splunk etwlogs gcplogs none ), default: 'json-file', desired_state: false
     property :log_opts, [Hash, nil], coerce: proc { |v| coerce_log_opts(v) }, desired_state: false
     property :ip_address, String
     property :mac_address, String
-    property :memory, Integer, default: 0
-    property :memory_swap, Integer, default: 0
+    property :memory, [String, Integer], coerce: proc { |v| coerce_memory(v) }, default: 0
+    property :memory_swap, [String, Integer], coerce: proc { |v| coerce_memory_swap(v) }, default: 0
+    property :memory_swappiness, Integer, coerce: proc { |v| coerce_memory_swappiness(v) }, default: 0
+    property :memory_reservation, Integer, coerce: proc { |v| coerce_memory_reservation(v) }, default: 0
     property :network_disabled, Boolean, default: false
     property :network_mode, [String, NilClass], default: 'bridge'
     property :open_stdin, Boolean, default: false, desired_state: false
@@ -281,10 +284,13 @@ module DockerCookbook
               'DnsSearch'       => dns_search,
               'ExtraHosts'      => extra_hosts,
               'IpcMode'         => ipc_mode,
+              'KernelMemory'    => kernel_memory,
               'Links'           => links,
               'LogConfig'       => log_config,
               'Memory'          => memory,
               'MemorySwap'      => memory_swap,
+              'MemorySwappiness' => memory_swappiness,
+              'MemoryReservation' => memory_reservation,
               'NetworkMode'     => network_mode,
               'Privileged'      => privileged,
               'PidMode'         => pid_mode,
