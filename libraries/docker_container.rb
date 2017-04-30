@@ -67,6 +67,7 @@ module DockerCookbook
     property :memory_reservation, Integer, coerce: proc { |v| coerce_memory_reservation(v) }, default: 0
     property :network_disabled, Boolean, default: false
     property :network_mode, [String, NilClass], default: 'bridge'
+    property :network_aliases, [ArrayType], default: []
     property :open_stdin, Boolean, default: false, desired_state: false
     property :outfile, [String, NilClass]
     property :port_bindings, PartialHashType, default: {}
@@ -317,6 +318,7 @@ module DockerCookbook
                   'IPAMConfig' => {
                     'IPv4Address' => ip_address,
                   },
+                  'Aliases' => network_aliases,
                 },
               },
             },
