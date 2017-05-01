@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 12.15.6 (2017-05-01)
+- #853 - Add network_aliases support
+- #854 - Expose package_name through the docker_service resource
+
 ## 12.15.5 (2017-04-19)
 - Fixing up memory related API keys
 - Adding KernelMemory
