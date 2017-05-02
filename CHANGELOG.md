@@ -2,11 +2,11 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
-## 12.15.6 (2017-05-01)
+## 2.15.6 (2017-05-01)
 - #853 - Add network_aliases support
 - #854 - Expose package_name through the docker_service resource
 
-## 12.15.5 (2017-04-19)
+## 2.15.5 (2017-04-19)
 - Fixing up memory related API keys
 - Adding KernelMemory
 - Adding MemorySwappiness
@@ -14,33 +14,33 @@ This file is used to list changes made in each version of the docker cookbook.
 - Fixing MemorySwap convergatude (bug #833)
 - Allowing for both integer and string input for all memory values
 
-## 12.15.4 (2017-04-19)
+## 2.15.4 (2017-04-19)
 - Fixing security_opt property
 
-## 12.15.3 (2017-04-18)
+## 2.15.3 (2017-04-18)
 - Updating for 17.04.0
 
-## 12.15.2 (2017-02-15)
+## 2.15.2 (2017-02-15)
 - Reverting 12.15.1 changes
 
-## 12.15.1 (2017-02-15)
+## 2.15.1 (2017-02-15)
 - 799 - Adding service restarts to systemd template resources
 
-## 12.15.0 (2017-02-15)
+## 2.15.0 (2017-02-15)
 - Removing dependency on compat_resource.
 - Now requires Chef 12.5 or higher.
 
-## 12.14.3 (2017-02-14)
+## 2.14.3 (2017-02-14)
 - Defaulting package installation version to docker 1.13.1
 
-## 12.14.3 (2017-02-06)
+## 2.14.3 (2017-02-06)
 - Reverting gem vendor due to c extensions in json dep.
 - Using docker-api-1.33.2 in _autoload
 
-## 12.14.2 (2017-01-31)
+## 2.14.2 (2017-01-31)
 - Vendoring docker-api-1.33.2
 
-## 12.14.1 (2017-01-31)
+## 2.14.1 (2017-01-31)
 - defaulting to package installation on amazonlinux
 
 ## 2.14.0 (2017-01-31)
