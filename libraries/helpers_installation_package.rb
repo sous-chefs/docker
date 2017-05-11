@@ -26,19 +26,9 @@ module DockerCookbook
         false
       end
 
-      def precise?
-        return true if node['platform'] == 'ubuntu' && node['platform_version'] == '12.04'
-        false
-      end
-
       def trusty?
         return true if node['platform'] == 'ubuntu' && node['platform_version'] == '14.04'
         return true if node['platform'] == 'linuxmint' && node['platform_version'] =~ /^17\.[0-9]$/
-        false
-      end
-
-      def vivid?
-        return true if node['platform'] == 'ubuntu' && node['platform_version'] == '15.04'
         false
       end
 
@@ -89,9 +79,7 @@ module DockerCookbook
         return "#{v}#{edition}-1.fc#{node['platform_version'].to_i}" if fedora?
         return "#{v}#{edition}-0~#{debian_prefix}wheezy" if wheezy?
         return "#{v}#{edition}-0~#{debian_prefix}jessie" if jesse?
-        return "#{v}#{edition}-0~#{ubuntu_prefix}precise" if precise?
         return "#{v}#{edition}-0~#{ubuntu_prefix}trusty" if trusty?
-        return "#{v}#{edition}-0~#{ubuntu_prefix}vivid" if vivid?
         return "#{v}#{edition}-0~#{ubuntu_prefix}wily" if wily?
         return "#{v}#{edition}-0~#{ubuntu_prefix}xenial" if xenial?
         v
@@ -99,7 +87,6 @@ module DockerCookbook
 
       def default_docker_version
         return '1.7.1' if el6?
-        return '1.9.1' if vivid?
         return '1.12.6' if amazon?
         '17.04.0'
       end
