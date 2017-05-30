@@ -6,8 +6,10 @@ rescue LoadError
 
     require 'chef/resource/chef_gem'
 
-    docker = Chef::Resource::ChefGem.new('docker-api', run_context)
-    docker.version '= 1.33.2'
+    vendored_gems = *Dir[File.expand_path('../../files/default/vendor/cache/*.gem', __FILE__)]
+    gems = vendored_gems.join('" "')
+    docker = Chef::Resource::ChefGem.new(gems, run_context)
+    docker.options '--local'
     docker.run_action(:install)
   end
 end
