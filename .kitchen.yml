@@ -17,7 +17,7 @@ verifier:
   name: inspec
 
 platforms:
-- name: centos-6.8
+- name: centos-6.9
   run_list:
   - recipe[chef-yum-docker]
 
@@ -35,7 +35,7 @@ platforms:
   - recipe[apt]
   - recipe[chef-apt-docker]
 
-- name: debian-8.5
+- name: debian-8.7
   run_list:
   - recipe[apt]
   - recipe[chef-apt-docker]
@@ -142,7 +142,7 @@ suites:
     'debian-7', # for dokken
     'debian-7.11',
     'debian-8', # for dokken
-    'debian-8.5',
+    'debian-8.7',
     'ubuntu-12.04',
     'ubuntu-14.04',
     'ubuntu-16.04',
