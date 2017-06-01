@@ -19,6 +19,23 @@ module DockerCookbook
     action :start do
       create_docker_wait_ready
 
+      # stock systemd unit file
+      template "/lib/systemd/system/#{docker_name}.service" do
+        source 'systemd/docker.service.erb'
+        owner 'root'
+        group 'root'
+        mode '0644'
+        variables(
+          docker_name: docker_name,
+          docker_socket: connect_socket.sub(%r{unix://|fd://}, ''),
+          docker_mount_flags: mount_flags,
+          env_vars: env_vars
+        )
+        cookbook 'docker'
+        action :create
+        not_if { docker_name == 'default' && ::File.exist?('/lib/systemd/system/docker.service') }
+      end
+
       # stock systemd socket file
       template "/lib/systemd/system/#{docker_name}.socket" do
         source 'systemd/docker.socket.erb'
