@@ -30,7 +30,7 @@ Restart=on-failure
 StartLimitBurst=3
 StartLimitInterval=60s
 <% @env_vars.each |key, val| do %>
-Environment=<%= key %>=<%= val%>
+Environment="<%= key %>=<%= val %>"
 <% end %>
 
 [Install]
