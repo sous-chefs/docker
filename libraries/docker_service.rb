@@ -8,7 +8,7 @@ module DockerCookbook
     provides :docker_service
 
     # Environment variables to docker service
-    provides :env_vars, Hash
+    property :env_vars, Hash
 
     # installation type and service_manager
     property :install_method, %w(binary script package tarball none auto), default: 'auto', desired_state: false

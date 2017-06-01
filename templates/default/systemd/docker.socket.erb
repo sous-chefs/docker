@@ -10,10 +10,3 @@ SocketGroup=<%= @config.group %>
 
 [Install]
 WantedBy=sockets.target
-
-<% unless @env_vars.empty? %>
-[Service]
-<% @env_vars.each |key, val| do %>
-Environment=<%= key %>=<%= val%>
-<% end %>
-<% end %>
