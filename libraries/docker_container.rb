@@ -100,9 +100,9 @@ module DockerCookbook
     property :container, Docker::Container, desired_state: false
 
     # Used by :stop action. If the container takes longer than this
-    # many seconds to stop, kill itinstead. -1 (the default) means
+    # many seconds to stop, kill it instead. A nil value (the default) means
     # never kill the container.
-    property :kill_after, Numeric, default: -1, desired_state: false
+    property :kill_after, [Integer, NilClass], default: nil, desired_state: false
 
     alias cmd command
     alias additional_host extra_hosts
@@ -344,7 +344,7 @@ module DockerCookbook
 
     action :stop do
       return unless state['Running']
-      kill_after_str = " (will kill after #{kill_after}s)" if kill_after != -1
+      kill_after_str = "(will kill after #{kill_after}s)" if kill_after
       converge_by "stopping #{container_name} #{kill_after_str}" do
         begin
           with_retries do
