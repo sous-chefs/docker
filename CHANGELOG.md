@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.15.9 (2017-06-13)
+- updating systemd docker.service with changes from official docker install
+- 12.04 doesnt support docker 17.05.0
+
 ## 2.15.8 (2017-06-12)
 - Bumping to latest docker version
 
