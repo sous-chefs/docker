@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.15.10 (2017-06-13)
+- adding support for chef >= 12.8 metadata gem installs
+- using docker-api 1.33.4
+
 ## 2.15.9 (2017-06-13)
 - updating systemd docker.service with changes from official docker install
 - 12.04 doesnt support docker 17.05.0
@@ -45,7 +49,7 @@ This file is used to list changes made in each version of the docker cookbook.
 
 ## 2.14.3 (2017-02-06)
 - Reverting gem vendor due to c extensions in json dep.
-- Using docker-api-1.33.2 in _autoload
+- Using docker-api-1.33.2 in \_autoload
 
 ## 2.14.2 (2017-01-31)
 - Vendoring docker-api-1.33.2
