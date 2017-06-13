@@ -2,6 +2,9 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.15.11 (2017-06-13)
+- make docker.service override match closer to stock
+
 ## 2.15.10 (2017-06-13)
 - adding support for chef >= 12.8 metadata gem installs
 - using docker-api 1.33.4
