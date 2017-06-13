@@ -2,6 +2,9 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.15.12 (2017-06-13)
+- reverting gem metadata for now as it requires build tools dependency for the json gem
+
 ## 2.15.11 (2017-06-13)
 - make docker.service override match closer to stock
 
