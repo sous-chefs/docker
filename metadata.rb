@@ -18,5 +18,3 @@ supports 'redhat'
 supports 'ubuntu'
 
 chef_version '>= 12.5' if respond_to?(:chef_version)
-
-gem 'docker-api', '= 1.33.4'
