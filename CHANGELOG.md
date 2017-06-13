@@ -2,6 +2,9 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.15.8 (2017-06-12)
+- Bumping to latest docker version
+
 ## 2.15.7 (2017-06-12)
 - Adding Ubuntu Zesty 17.04 support
 
