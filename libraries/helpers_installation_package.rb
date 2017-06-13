@@ -52,6 +52,11 @@ module DockerCookbook
         false
       end
 
+      def zesty?
+        return true if node['platform'] == 'ubuntu' && node['platform_version'] == '17.04'
+        false
+      end
+
       def amazon?
         return true if node['platform'] == 'amazon'
         false
@@ -94,6 +99,7 @@ module DockerCookbook
         return "#{v}#{edition}-0~#{ubuntu_prefix}vivid" if vivid?
         return "#{v}#{edition}-0~#{ubuntu_prefix}wily" if wily?
         return "#{v}#{edition}-0~#{ubuntu_prefix}xenial" if xenial?
+        return "#{v}#{edition}-0~#{ubuntu_prefix}zesty" if zesty?
         v
       end
 
