@@ -1,18 +1,25 @@
 [Unit]
 Description=Docker Application Container Engine
 Documentation=https://docs.docker.com
-After=network.target <%= @docker_name %>.socket
+After=network-online.target <%= @docker_name %>.socket firewalld.service
+Wants=network-online.target
 Requires=<%= @docker_name %>.socket
 
 [Service]
 Type=notify
 ExecStart=/usr/bin/docker daemon -H fd://
+ExecReload=/bin/kill -s HUP $MAINPID
 MountFlags=<%= @docker_mount_flags %>
 LimitNOFILE=1048576
-LimitNPROC=1048576
+LimitNPROC=infinity
 LimitCORE=infinity
-TasksMax=1048576
+TasksMax=infinity
 TimeoutStartSec=0
+Delegate=yes
+KillMode=process
+Restart=on-failure
+StartLimitBurst=3
+StartLimitInterval=60s
 
 [Install]
 WantedBy=multi-user.target

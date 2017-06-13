@@ -1,7 +1,7 @@
 [Unit]
 Description=Docker Application Container Engine
 Documentation=http://docs.docker.com
-After=network.target
+After=network-online.target
 
 [Service]
 Type=notify
@@ -27,9 +27,6 @@ ExecStart=<%= @docker_daemon_cmd %>
 ExecStartPost=<%= @docker_wait_ready %>
 Restart=always
 MountFlags=<%= @docker_mount_flags %>
-LimitNOFILE=1048576
-LimitNPROC=1048576
-LimitCORE=infinity
 <%= @systemd_args  %>
 
 [Install]
