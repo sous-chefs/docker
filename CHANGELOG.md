@@ -2,6 +2,9 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.15.7 (2017-06-12)
+- Adding Ubuntu Zesty 17.04 support
+
 ## 2.15.6 (2017-05-01)
 - #853 - Add network_aliases support
 - #854 - Expose package_name through the docker_service resource
