@@ -1,7 +1,9 @@
 [Unit]
 Description=Docker Application Container Engine
-Documentation=http://docs.docker.com
-After=network-online.target
+Documentation=https://docs.docker.com
+After=network-online.target <%= @docker_name %>.socket firewalld.service
+Wants=network-online.target
+Requires=<%= @docker_name %>.socket
 
 [Service]
 Type=notify
@@ -25,8 +27,18 @@ ExecStartPre=/sbin/sysctl -w net.ipv6.conf.all.forwarding=1
 <% end %>
 ExecStart=<%= @docker_daemon_cmd %>
 ExecStartPost=<%= @docker_wait_ready %>
-Restart=always
+ExecReload=/bin/kill -s HUP $MAINPID
 MountFlags=<%= @docker_mount_flags %>
+LimitNOFILE=1048576
+LimitNPROC=infinity
+LimitCORE=infinity
+TasksMax=infinity
+TimeoutStartSec=0
+Delegate=yes
+KillMode=process
+Restart=always
+StartLimitBurst=3
+StartLimitInterval=60s
 <%= @systemd_args  %>
 
 [Install]
