@@ -107,7 +107,8 @@ module DockerCookbook
         return '1.7.1' if el6?
         return '1.9.1' if vivid?
         return '1.12.6' if amazon?
-        '17.04.0'
+        return '17.04.0' if precise?
+        '17.05.0'
       end
 
       def default_package_name

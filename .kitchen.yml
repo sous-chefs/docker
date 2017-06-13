@@ -57,6 +57,13 @@ platforms:
   - recipe[apt]
   - recipe[chef-apt-docker]
 
+- name: ubuntu-17.04
+  run_list:
+    - recipe[apt]
+  run_list:
+  - recipe[apt]
+  - recipe[chef-apt-docker]
+
 
 suites:
 #####################################
@@ -94,6 +101,7 @@ suites:
 - name: installation_script_main
   includes: [
     'ubuntu-16.04',
+    'ubuntu-17.04',
    ]
   attributes:
     docker:
@@ -104,6 +112,7 @@ suites:
 - name: installation_script_test
   includes: [
     'ubuntu-16.04',
+    'ubuntu-17.04',
    ]
   attributes:
     docker:
@@ -114,6 +123,7 @@ suites:
 - name: installation_script_experimental
   includes: [
     'ubuntu-16.04',
+    'ubuntu-17.04',
    ]
   attributes:
     docker:
@@ -137,6 +147,16 @@ suites:
 
 - name: installation_package-17040
   includes: [
+    'ubuntu-12.04',
+   ]
+  attributes:
+    docker:
+      version: '17.04.0'
+  run_list:
+  - recipe[docker_test::installation_package]
+
+- name: installation_package-17050
+  includes: [
     'centos-7', # for dokken
     'centos-7.2',
     'debian-7', # for dokken
@@ -146,11 +166,12 @@ suites:
     'ubuntu-12.04',
     'ubuntu-14.04',
     'ubuntu-16.04',
-    'fedora-latest'
+    'ubuntu-17.04',
+    'fedora-latest',
    ]
   attributes:
     docker:
-      version: '17.04.0'
+      version: '17.05.0'
   run_list:
   - recipe[docker_test::installation_package]
 
@@ -158,14 +179,15 @@ suites:
 # bulk resource testing
 #######################
 
-- name: resources-17040
+- name: resources-17050
   includes: [
     'ubuntu-16.04',
-    'centos-7.2'
+    'ubuntu-17.04',
+    'centos-7.2',
    ]
   attributes:
     docker:
-      version: '17.04.0'
+      version: '17.05.0'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::image]
@@ -174,22 +196,24 @@ suites:
 
 - name: network
   includes: [
-    'ubuntu-16.04'
+    'ubuntu-16.04',
+    'ubuntu-17.04',
    ]
   attributes:
     docker:
-      version: '17.04.0'
+      version: '17.05.0'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::network]
 
 - name: volume
   includes: [
-    'ubuntu-16.04'
+    'ubuntu-16.04',
+    'ubuntu-17.04',
    ]
   attributes:
     docker:
-      version: '17.04.0'
+      version: '17.05.0'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::volume]
@@ -197,11 +221,11 @@ suites:
 ######################################
 # service smoke testing
 ######################################
-  
+
 - name: smoke
   excludes: [
     'centos-6',
-    'opensuse-13.2'
+    'opensuse-13.2',
   ]
   run_list:
   - recipe[docker_test::smoke]

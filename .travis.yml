@@ -15,7 +15,7 @@ services: docker
 
 env:
   matrix:
-  - INSTANCE=resources-17040-ubuntu-1604
+  - INSTANCE=resources-17050-ubuntu-1604
   - INSTANCE=network-ubuntu-1604
   - INSTANCE=volume-ubuntu-1604
   - INSTANCE=smoke-amazonlinux
@@ -26,13 +26,14 @@ env:
   - INSTANCE=smoke-ubuntu-1204
   - INSTANCE=smoke-ubuntu-1404
   - INSTANCE=smoke-ubuntu-1604
-  
+  - INSTANCE=smoke-ubuntu-1704
+
 # Ensure we make ChefDK's Ruby the default
 before_script:
   - sudo iptables -L DOCKER || ( echo "DOCKER iptables chain missing" ; sudo iptables -N DOCKER )
   - eval "$(/opt/chefdk/bin/chef shell-init bash)"
   - chef gem install kitchen-dokken
-  
+
 script: KITCHEN_LOCAL_YAML=.kitchen.dokken.yml /opt/chefdk/embedded/bin/kitchen verify ${INSTANCE}
 
 matrix:
