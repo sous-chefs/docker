@@ -163,7 +163,6 @@ suites:
     'debian-7.11',
     'debian-8', # for dokken
     'debian-8.7',
-    'ubuntu-12.04',
     'ubuntu-14.04',
     'ubuntu-16.04',
     'ubuntu-17.04',
