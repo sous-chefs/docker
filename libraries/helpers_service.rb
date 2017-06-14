@@ -138,6 +138,14 @@ module DockerCookbook
         end
       end
 
+      def docker_raw_logs_arg
+        if Gem::Version.new(docker_major_version) < Gem::Version.new('1.11')
+          ''
+        else
+          '--raw-logs'
+        end
+      end
+
       def docker_daemon_cmd
         [dockerd_bin, docker_daemon_arg, docker_daemon_opts].join(' ')
       end
