@@ -23,6 +23,7 @@ module DockerCookbook
           docker_name: docker_name,
           dockerd_bin_link: dockerd_bin_link,
           docker_daemon_arg: docker_daemon_arg,
+          docker_raw_logs_arg: docker_raw_logs_arg,
           docker_wait_ready: "#{libexec_dir}/#{docker_name}-wait-ready"
         )
         cookbook 'docker'

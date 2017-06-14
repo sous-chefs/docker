@@ -39,7 +39,7 @@ script
     if [ -f /etc/default/$UPSTART_JOB ]; then
         . /etc/default/$UPSTART_JOB
     fi
-    exec "$DOCKER" <%= @docker_daemon_arg %> $DOCKER_OPTS --raw-logs
+    exec "$DOCKER" <%= @docker_daemon_arg %> $DOCKER_OPTS <%= @docker_raw_logs_arg %>
 end script
 
 post-start script
