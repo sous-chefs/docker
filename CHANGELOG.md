@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.15.13 (2017-06-15)
+- kill_after property default value to nil
+- only use --raw-logs argument in versions which support it
+
 ## 2.15.12 (2017-06-13)
 - reverting gem metadata for now as it requires build tools dependency for the json gem
 
