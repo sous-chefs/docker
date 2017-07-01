@@ -83,14 +83,20 @@ module DockerCookbook
                         end
 
         edition = if Gem::Version.new(v) > Gem::Version.new('17.03.0')
-                    debuntu? ? '~ce' : '.ce'
+                    if debuntu?
+                      '~ce'
+                    elsif amazon?
+                      'ce'
+                    else
+                      '.ce'
+                    end
                   else
                     ''
                   end
 
         return "#{v}#{edition}-1.el6" if el6?
         return "#{v}#{edition}-1.el7.centos" if el7?
-        return "#{v}#{edition}-2.19.amzn1" if amazon?
+        return "#{v}#{edition}-1.50.amzn1" if amazon?
         return "#{v}#{edition}-1.fc#{node['platform_version'].to_i}" if fedora?
         return "#{v}#{edition}-0~#{debian_prefix}wheezy" if wheezy?
         return "#{v}#{edition}-0~#{debian_prefix}jessie" if jesse?
@@ -106,7 +112,7 @@ module DockerCookbook
       def default_docker_version
         return '1.7.1' if el6?
         return '1.9.1' if vivid?
-        return '1.12.6' if amazon?
+        return '17.03.1' if amazon?
         return '17.04.0' if precise?
         '17.05.0'
       end

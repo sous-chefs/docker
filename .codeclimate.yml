@@ -1,5 +1,0 @@
-engines:
-  foodcritic:
-    enabled: true
-  rubocop:
-    enabled: true

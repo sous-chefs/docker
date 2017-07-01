@@ -34,7 +34,7 @@ before_script:
   - eval "$(/opt/chefdk/bin/chef shell-init bash)"
   - chef gem install kitchen-dokken
 
-script: KITCHEN_LOCAL_YAML=.kitchen.dokken.yml /opt/chefdk/embedded/bin/kitchen verify ${INSTANCE}
+script: /opt/chefdk/embedded/bin/kitchen verify ${INSTANCE}
 
 matrix:
   include:
