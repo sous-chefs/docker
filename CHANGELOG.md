@@ -2,6 +2,12 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.15.14 (2017-07-03)
+- Simplifying kitchen config
+- Using dokken-images to speed up tests
+- Updating Amazon Linux to default to 17.03.1
+- Package helper for debian-9
+
 ## 2.15.13 (2017-06-15)
 - kill_after property default value to nil
 - only use --raw-logs argument in versions which support it
