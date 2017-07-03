@@ -1,103 +1,93 @@
+---
 driver:
-  name: vagrant
+  name: dokken
+  chef_version: latest
+  privileged: true
+  volumes: [
+  '/var/lib/docker', '/var/lib/docker-one', '/var/lib/docker-two'
+  ]
 
-driver_config:
-  customize:
-    cpus: 2
-    memory: 1024
+transport:
+  name: dokken
 
 provisioner:
-  name: chef_zero
-  require_chef_omnibus: true
-  attributes:
-    docker:
-      container_cmd_timeout: 30
+  name: dokken
 
 verifier:
   name: inspec
+  format: doc
 
 platforms:
-- name: centos-6.9
+- name: debian-7
+  driver:
+    image: dokken/debian-7
+    pid_one_command: /sbin/init
   run_list:
-  - recipe[chef-yum-docker]
-
-- name: centos-7.2
-  run_list:
-  - recipe[chef-yum-docker]
-
-- name: fedora-24
-  run_list:
-  - recipe[yum::dnf_yum_compat]
-  - recipe[chef-yum-docker]
-
-- name: debian-7.11
-  run_list:
-  - recipe[apt]
   - recipe[chef-apt-docker]
 
-- name: debian-8.7
+- name: debian-8
+  driver:
+    image: dokken/debian-8
+    pid_one_command: /bin/systemd
   run_list:
-  - recipe[apt]
   - recipe[chef-apt-docker]
+
+- name: centos-6
+  driver:
+    image: dokken/centos-6
+    platform: rhel
+    pid_one_command: /sbin/init
+  run_list:
+    - recipe[chef-yum-docker]
+
+- name: centos-7
+  driver:
+    image: dokken/centos-7
+    platform: rhel
+    pid_one_command: /usr/lib/systemd/systemd
+  run_list:
+    - recipe[chef-yum-docker]
+
+- name: fedora-latest
+  driver:
+    image: dokken/fedora-latest
+    pid_one_command: /usr/lib/systemd/systemd
+  run_list:
+    - recipe[chef-yum-docker]
 
 - name: ubuntu-12.04
+  driver:
+    image: dokken/ubuntu-12.04
+    pid_one_command: /sbin/init
   run_list:
-  - recipe[apt]
   - recipe[chef-apt-docker]
 
 - name: ubuntu-14.04
+  driver:
+    image: dokken/ubuntu-14.04
+    pid_one_command: /sbin/init
   run_list:
-  - recipe[apt]
   - recipe[chef-apt-docker]
 
 - name: ubuntu-16.04
+  driver:
+    image: dokken/ubuntu-16.04
+    pid_one_command: /bin/systemd
   run_list:
-    - recipe[apt]
-  run_list:
-  - recipe[apt]
   - recipe[chef-apt-docker]
 
-- name: ubuntu-17.04
-  run_list:
-    - recipe[apt]
-  run_list:
-  - recipe[apt]
-  - recipe[chef-apt-docker]
+- name: opensuse-13.2
+  driver:
+    image: dokken/opensuse-13.2
+    pid_one_command: /bin/systemd
+
+- name: amazonlinux
+  driver:
+    image: dokken/amazonlinux
+    pid_one_command: /sbin/init
 
 
 suites:
-#####################################
-# docker_installation_tarball resource
-#####################################
-
-# - name: installation_tarball-1112
-#   includes: [
-#   'ubuntu-16.04'
-#   ]
-#   attributes:
-#     docker:
-#       version: '1.11.2'
-#       run_list:
-#         - recipe[docker_test::installation_tarball]
-
-#####################################
-# docker_installation_binary resource
-#####################################
-
-# - name: installation_binary-1112
-#   includes: [
-#     'ubuntu-16.04'
-#    ]
-#   attributes:
-#     docker:
-#       version: '1.10.0'
-#   run_list:
-#   - recipe[docker_test::installation_binary]
-
-#####################################
-# docker_installation_script resource
-#####################################
-
 - name: installation_script_main
   includes: [
     'ubuntu-16.04',
@@ -135,13 +125,13 @@ suites:
 # docker_installation_package resource
 ######################################
 
-- name: installation_package-1126
+- name: installation_package-17031
   includes: [
     'amazonlinux', # for dokken
     ]
   attributes:
     docker:
-      version: '1.12.6'
+      version: '17.03.1'
   run_list:
   - recipe[docker_test::installation_package]
 
