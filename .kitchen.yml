@@ -76,6 +76,13 @@ platforms:
   run_list:
   - recipe[chef-apt-docker]
 
+- name: ubuntu-17.04
+  driver:
+    image: dokken/ubuntu-17.04
+    pid_one_command: /bin/systemd
+  run_list:
+  - recipe[chef-apt-docker]
+  
 - name: opensuse-13.2
   driver:
     image: dokken/opensuse-13.2
@@ -91,7 +98,6 @@ suites:
 - name: installation_script_main
   includes: [
     'ubuntu-16.04',
-    'ubuntu-17.04',
    ]
   attributes:
     docker:
@@ -102,7 +108,6 @@ suites:
 - name: installation_script_test
   includes: [
     'ubuntu-16.04',
-    'ubuntu-17.04',
    ]
   attributes:
     docker:
@@ -113,7 +118,6 @@ suites:
 - name: installation_script_experimental
   includes: [
     'ubuntu-16.04',
-    'ubuntu-17.04',
    ]
   attributes:
     docker:
@@ -148,11 +152,8 @@ suites:
 - name: installation_package-17050
   includes: [
     'centos-7', # for dokken
-    'centos-7.2',
     'debian-7', # for dokken
-    'debian-7.11',
     'debian-8', # for dokken
-    'debian-8.7',
     'ubuntu-14.04',
     'ubuntu-16.04',
     'ubuntu-17.04',
@@ -171,8 +172,6 @@ suites:
 - name: resources-17050
   includes: [
     'ubuntu-16.04',
-    'ubuntu-17.04',
-    'centos-7.2',
    ]
   attributes:
     docker:
@@ -186,7 +185,6 @@ suites:
 - name: network
   includes: [
     'ubuntu-16.04',
-    'ubuntu-17.04',
    ]
   attributes:
     docker:
@@ -198,7 +196,6 @@ suites:
 - name: volume
   includes: [
     'ubuntu-16.04',
-    'ubuntu-17.04',
    ]
   attributes:
     docker:
