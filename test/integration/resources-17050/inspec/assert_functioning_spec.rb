@@ -460,7 +460,8 @@ end
 
 describe command('docker logs cap_drop_mknod') do
   its(:exit_status) { should eq 0 }
-  its(:stderr) { should match(%r{mknod: '/dev/urandom2': Operation not permitted}) }
+  its(:stderr) { should match(%r{mknod: /dev/urandom2: Operation not permitted}) }
+  its(:stderr) { should match(%r{ls: cannot access '/dev/urandom2': No such file or directory}) }
 end
 
 # docker_container[cap_drop_mknod_error]
