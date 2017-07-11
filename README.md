@@ -480,7 +480,7 @@ options found in the
 - `disable_legacy_registry` - Do not contact legacy registries
 - `userns_remap` - Enable user namespace remapping options -
   `default`, `uid`, `uid:gid`, `username`, `username:groupname` (see: [Docker User Namespaces](see: https://docs.docker.com/v1.10/engine/reference/commandline/daemon/#daemon-user-namespace-options))
-- `mount_flags` - Set the systemd mount propagation flag. Defaults to slave.
+- `mount_flags` - Set the systemd mount propagation flag.
 
 #### Miscellaneous Options
 

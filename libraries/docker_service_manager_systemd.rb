@@ -63,6 +63,7 @@ module DockerCookbook
         mode '0644'
         variables(
           config: new_resource,
+          docker_name: docker_name,
           docker_daemon_cmd: docker_daemon_cmd,
           systemd_args: systemd_args,
           docker_wait_ready: "#{libexec_dir}/#{docker_name}-wait-ready",
