@@ -2,6 +2,9 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.15.15 (2017-07-10)
+- upstream systemd config no longer contains the slave mount flag
+
 ## 2.15.14 (2017-07-03)
 - Simplifying kitchen config
 - Using dokken-images to speed up tests
