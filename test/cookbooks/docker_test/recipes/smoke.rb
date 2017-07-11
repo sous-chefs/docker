@@ -43,20 +43,20 @@ template '/etc/squid_forward_proxy/squid.conf' do
   action :create
 end
 
-docker_image 'someara/squid' do
+docker_image 'cbolt/squid' do
   tag 'latest'
   action :pull
 end
 
 docker_container 'squid_forward_proxy' do
-  repo 'someara/squid'
+  repo 'cbolt/squid'
   tag 'latest'
   restart_policy 'on-failure'
   kill_after 5
   port '3128:3128'
   command '/usr/sbin/squid -NCd1'
   volumes '/etc/squid_forward_proxy/squid.conf:/etc/squid/squid.conf'
-  subscribes :redeploy, 'docker_image[someara/squid]'
+  subscribes :redeploy, 'docker_image[cbolt/squid]'
   action :run
 end
 
