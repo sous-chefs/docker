@@ -39,7 +39,6 @@ begin
       end
     end
   end
-
 rescue LoadError
   STDERR.puts "\n*** TomlRb not available.\n\n"
 end
