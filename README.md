@@ -436,7 +436,7 @@ options found in the
 - `exec_driver` - Exec driver to use
 - `fixed_cidr` - IPv4 subnet for fixed IPs
 - `fixed_cidr_v6` - IPv6 subnet for fixed IPs
-- `group` - Posix group for the unix socket
+- `group` - Posix group for the unix socket. Default to `docker`
 - `graph` - Root of the Docker runtime - Effectively, the "data
   directory"
 - `host` - Daemon socket(s) to connect to - `tcp://host:port`,
