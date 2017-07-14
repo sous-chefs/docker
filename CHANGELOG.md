@@ -2,6 +2,9 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.15.16 (2017-07-14)
+- Issue #849 Fix service restarts on OS using systemd
+
 ## 2.15.15 (2017-07-10)
 - upstream systemd config no longer contains the slave mount flag
 
