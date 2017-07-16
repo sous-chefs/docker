@@ -1,8 +1,6 @@
 require 'chefspec'
 require 'chefspec/berkshelf'
 
-at_exit { ChefSpec::Coverage.report! }
-
 class RSpecHelper
   class<<self
     attr_accessor :current_example
