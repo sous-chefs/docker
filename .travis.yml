@@ -37,14 +37,10 @@ before_script:
   - sudo iptables -L DOCKER || ( echo "DOCKER iptables chain missing" ; sudo iptables -N DOCKER )
   - eval "$(/opt/chefdk/bin/chef shell-init bash)"
 
-script: /opt/chefdk/embedded/bin/kitchen verify ${INSTANCE}
+script: kitchen verify ${INSTANCE}
 
 matrix:
   include:
-    - before_script:
-      - eval "$(/opt/chefdk/bin/chef shell-init bash)"
     - script:
-      - /opt/chefdk/embedded/bin/chef --version
-      - /opt/chefdk/embedded/bin/cookstyle --version
-      - /opt/chefdk/embedded/bin/cookstyle
-      - /opt/chefdk/embedded/bin/rspec
+      - chef exec delivery local all
+      env: UNIT_AND_LINT=1
