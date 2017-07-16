@@ -31,7 +31,6 @@ env:
 before_script:
   - sudo iptables -L DOCKER || ( echo "DOCKER iptables chain missing" ; sudo iptables -N DOCKER )
   - eval "$(/opt/chefdk/bin/chef shell-init bash)"
-  - chef gem install kitchen-dokken
 
 script: /opt/chefdk/embedded/bin/kitchen verify ${INSTANCE}
 
