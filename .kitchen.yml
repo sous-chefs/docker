@@ -1,7 +1,7 @@
 ---
 driver:
   name: dokken
-  chef_version: latest
+  chef_version: current
   privileged: true
   volumes: [
   '/var/lib/docker', '/var/lib/docker-one', '/var/lib/docker-two'
@@ -15,7 +15,6 @@ provisioner:
 
 verifier:
   name: inspec
-  format: doc
 
 platforms:
 - name: debian-7
