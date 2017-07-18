@@ -2,6 +2,11 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.15.17 (2017-07-18)
+- adding restart notifications to upstart and cleaning house on the configs
+- fix docker socket group being empty
+- bring systemd unit file closer to stock
+
 ## 2.15.16 (2017-07-14)
 - Issue #849 Fix service restarts on OS using systemd
 
