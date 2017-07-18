@@ -33,7 +33,7 @@ module DockerCookbook
     property :exec_opts, ArrayType
     property :fixed_cidr, [String, nil]
     property :fixed_cidr_v6, [String, nil]
-    property :group, [String, nil]
+    property :group, [String], default: 'docker'
     property :graph, [String, nil]
     property :host, [String, Array], coerce: proc { |v| coerce_host(v) }
     property :icc, [Boolean, nil]
@@ -49,7 +49,7 @@ module DockerCookbook
     property :labels, [String, Array], coerce: proc { |v| coerce_daemon_labels(v) }, desired_state: false
     property :log_driver, %w( json-file syslog journald gelf fluentd awslogs splunk none )
     property :log_opts, ArrayType
-    property :mount_flags, String
+    property :mount_flags, [String, nil]
     property :mtu, [String, nil]
     property :pidfile, String, default: lazy { "/var/run/#{docker_name}.pid" }
     property :registry_mirror, [String, nil]
