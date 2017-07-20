@@ -45,6 +45,10 @@ module DockerCookbook
         "docker-#{name}"
       end
 
+      def default_group
+        platform?('redhat') ? 'dockerroot' : 'docker'
+      end
+
       def installed_docker_version
         o = shell_out("#{docker_bin} --version")
         o.stdout.split[2].chomp(',')
