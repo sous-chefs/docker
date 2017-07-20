@@ -2,6 +2,12 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.15.18 (2017-07-20)
+- create the socket first so restarts on the service unit file dont fail
+- redhat defaults to a different group name
+- socket group shouldnt be hardcoded
+- docker_network: support ipv6 & internal
+
 ## 2.15.17 (2017-07-18)
 - adding restart notifications to upstart and cleaning house on the configs
 - fix docker socket group being empty
