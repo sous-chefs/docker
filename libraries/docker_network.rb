@@ -10,9 +10,11 @@ module DockerCookbook
     property :container, String, desired_state: false
     property :driver, String
     property :driver_opts, PartialHashType
+    property :enable_ipv6, [Boolean, nil]
     property :gateway, [String, Array, nil], coerce: proc { |v| coerce_gateway(v) }
     property :host, [String, nil], default: lazy { default_host }, desired_state: false
     property :id, String
+    property :internal, [Boolean, nil]
     property :ip_range, [String, Array, nil], coerce: proc { |v| coerce_ip_range(v) }
     property :ipam_driver, String
     property :network, Docker::Network, desired_state: false
@@ -68,6 +70,8 @@ module DockerCookbook
           ipam_options = consolidate_ipam(subnet, ip_range, gateway, aux_address)
           options['IPAM'] = { 'Config' => ipam_options } unless ipam_options.empty?
           options['IPAM']['Driver'] = ipam_driver if ipam_driver
+          options['EnableIPv6'] = enable_ipv6 if enable_ipv6
+          options['Internal'] = internal if internal
           Docker::Network.create(network_name, options)
         end
       end

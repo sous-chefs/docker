@@ -151,4 +151,25 @@ describe 'docker_test::network' do
       )
     end
   end
+
+  context 'ipv6 network' do
+    it 'creates docker_network_ipv6' do
+      expect(chef_run).to create_docker_network('network_ipv6').with(
+        enable_ipv6: true,
+        subnet: 'fd00:dead:beef::/48'
+      )
+    end
+
+    it 'creates docker_network_ipv4' do
+      expect(chef_run).to create_docker_network('network_ipv4')
+    end
+  end
+
+  context 'internal network' do
+    it 'creates docker_network_internal' do
+      expect(chef_run).to create_docker_network('network_internal').with(
+        internal: true
+      )
+    end
+  end
 end

@@ -225,3 +225,28 @@ docker_network 'network_h1 disconnector' do
   network_name 'network_h1'
   action :disconnect
 end
+
+##############
+# network_ipv6
+##############
+# IPv6 enabled network
+docker_network 'network_ipv6' do
+  enable_ipv6 true
+  subnet 'fd00:dead:beef::/48'
+  action :create
+end
+
+##############
+# network_ipv4
+##############
+docker_network 'network_ipv4' do
+  action :create
+end
+
+##################
+# network_internal
+##################
+docker_network 'network_internal' do
+  internal true
+  action :create
+end
