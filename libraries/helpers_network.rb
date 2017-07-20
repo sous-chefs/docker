@@ -92,7 +92,6 @@ module DockerCookbook
             data[s]['Gateway'] = g
             match = true
           end
-          raise "no matching subnet for gateway #{s}" unless match
         end
 
         auxaddrs.each do |aa|

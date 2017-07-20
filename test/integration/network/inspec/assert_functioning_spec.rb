@@ -193,6 +193,58 @@ describe command("docker network inspect -f '{{ range $c:=.Containers }}{{ $c.Na
   its(:stdout) { should match 'container1-network_h' }
 end
 
+##############
+# network_ipv4
+##############
+
+describe command("docker network ls -qf 'name=network_ipv4$'") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should_not be_empty }
+end
+
+describe command("docker network inspect -f '{{ .EnableIPv6 }}' network_ipv4") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match 'false' }
+end
+
+describe command("docker network inspect -f '{{ .Internal }}' network_ipv4") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match 'false' }
+end
+
+##############
+# network_ipv6
+##############
+
+describe command("docker network ls -qf 'name=network_ipv6$'") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should_not be_empty }
+end
+
+describe command("docker network inspect -f '{{ .EnableIPv6 }}' network_ipv6") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match 'true' }
+end
+
+describe command("docker network inspect -f '{{ range $i:=.IPAM.Config }}{{ .Subnet | printf \"%s\\n\" }}{{ end }}' network_ipv6") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should include 'fd00:dead:beef::/48' }
+end
+
+##################
+# network_internal
+##################
+
+describe command("docker network ls -qf 'name=network_internal'") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should_not be_empty }
+end
+
+describe command("docker network inspect -f '{{ .Internal }}' network_internal") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match 'true' }
+end
+
 # describe command('docker network inspect test-network') do
 #   its(:exit_status) { should eq 0 }
 # end

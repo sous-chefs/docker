@@ -1274,6 +1274,7 @@ end
   `192.168.0.1`
 - `ip_range` - Specify a range of IPs to allocate for containers. Ex:
   `192.168.1.0/24`
+- `enable_ipv6` - Enable IPv6 on the network. Ex: true
 - `aux_address` - Auxillary addresses for the network. Ex:
   `['a=192.168.1.5', 'b=192.168.1.6']`
 - `container` - Container-id/name to be connected/disconnected to/from
@@ -1315,6 +1316,16 @@ end
 docker_network 'network_h2' do
   container 'echo-base-networks_h'
   action :connect
+end
+```
+
+IPv6 enabled network
+
+```ruby
+docker_network 'network_i1' do
+  enable_ipv6 true
+  subnet 'fd00:dead:beef::/48'
+  action :create
 end
 ```
 
