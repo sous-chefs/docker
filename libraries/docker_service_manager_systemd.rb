@@ -19,9 +19,25 @@ module DockerCookbook
     action :start do
       create_docker_wait_ready
 
+      # stock systemd socket file
+      template "/lib/systemd/system/#{docker_name}.socket" do
+        source 'systemd/docker.socket.erb'
+        cookbook 'docker'
+        owner 'root'
+        group 'root'
+        mode '0644'
+        variables(
+          config: new_resource,
+          docker_name: docker_name,
+          docker_socket: connect_socket.sub(%r{unix://|fd://}, '')
+        )
+        not_if { docker_name == 'default' && ::File.exist?('/lib/systemd/system/docker.socket') }
+      end
+
       # stock systemd unit file
       template "/lib/systemd/system/#{docker_name}.service" do
         source 'systemd/docker.service.erb'
+        cookbook 'docker'
         owner 'root'
         group 'root'
         mode '0644'
@@ -29,34 +45,27 @@ module DockerCookbook
           docker_name: docker_name,
           docker_daemon_cmd: docker_daemon_cmd
         )
-        cookbook 'docker'
-        action :create
         not_if { docker_name == 'default' && ::File.exist?('/lib/systemd/system/docker.service') }
       end
 
-      # stock systemd socket file
-      template "/lib/systemd/system/#{docker_name}.socket" do
-        source 'systemd/docker.socket.erb'
+      # this overrides the main systemd socket
+      template "/etc/systemd/system/#{docker_name}.socket" do
+        source 'systemd/docker.socket-override.erb'
+        cookbook 'docker'
         owner 'root'
         group 'root'
         mode '0644'
         variables(
+          config: new_resource,
           docker_name: docker_name,
           docker_socket: connect_socket.sub(%r{unix://|fd://}, '')
         )
-        cookbook 'docker'
-        action :create
-        not_if { docker_name == 'default' && ::File.exist?('/lib/systemd/system/docker.socket') }
       end
 
-      # restart if changes in template resources
-      execute "systemctl restart #{docker_name}" do
-        command "/bin/systemctl restart #{docker_name}"
-        action :nothing
-      end
-
+      # this overrides the main systemd service
       template "/etc/systemd/system/#{docker_name}.service" do
         source 'systemd/docker.service-override.erb'
+        cookbook 'docker'
         owner 'root'
         group 'root'
         mode '0644'
@@ -67,32 +76,19 @@ module DockerCookbook
           systemd_args: systemd_args,
           docker_wait_ready: "#{libexec_dir}/#{docker_name}-wait-ready"
         )
-        cookbook 'docker'
         notifies :run, 'execute[systemctl daemon-reload]', :immediately
         notifies :run, "execute[systemctl restart #{docker_name}]", :immediately
-        action :create
-      end
-
-      # this overrides the main systemd socket
-      template "/etc/systemd/system/#{docker_name}.socket" do
-        source 'systemd/docker.socket-override.erb'
-        owner 'root'
-        group 'root'
-        mode '0644'
-        variables(
-          config: new_resource,
-          docker_name: docker_name,
-          docker_socket: connect_socket.sub(%r{unix://|fd://}, '')
-        )
-        cookbook 'docker'
-        notifies :run, 'execute[systemctl daemon-reload]', :immediately
-        notifies :run, "execute[systemctl restart #{docker_name}]", :immediately
-        action :create
       end
 
       # avoid 'Unit file changed on disk' warning
       execute 'systemctl daemon-reload' do
         command '/bin/systemctl daemon-reload'
+        action :nothing
+      end
+
+      # restart if changes in template resources
+      execute "systemctl restart #{docker_name}" do
+        command "/bin/systemctl restart #{docker_name}"
         action :nothing
       end
 
