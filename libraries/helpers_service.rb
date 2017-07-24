@@ -46,7 +46,7 @@ module DockerCookbook
       end
 
       def default_group
-        platform?('redhat') ? 'dockerroot' : 'docker'
+        platform_family?('rhel') ? 'dockerroot' : 'docker'
       end
 
       def installed_docker_version
