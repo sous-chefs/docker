@@ -114,12 +114,21 @@ module DockerCookbook
         return '1.9.1' if vivid?
         return '17.03.1' if amazon?
         return '17.04.0' if precise?
-        '17.05.0'
+        '17.06.0'
       end
 
       def default_package_name
         return 'docker' if amazon?
-        'docker-engine'
+        return 'docker-engine' if el6?
+        return 'docker-engine' if wheezy?
+        return 'docker-engine' if jesse?
+        return 'docker-engine' if precise?
+        return 'docker-engine' if trusty?
+        return 'docker-engine' if vivid?
+        return 'docker-engine' if wily?
+        return 'docker-engine' if xenial?
+        return 'docker-engine' if zesty?
+        'docker-ce'
       end
 
       def docker_bin
