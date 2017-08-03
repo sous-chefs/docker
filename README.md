@@ -43,7 +43,7 @@ configuration of cgroups and storage back ends.
 
 ## Cookbook Dependencies
 
-- [compat_resource](https://supermarket.chef.io/cookbooks/compat_resource)
+- none
 
 ## Usage
 
