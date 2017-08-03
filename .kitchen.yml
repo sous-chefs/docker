@@ -54,13 +54,6 @@ platforms:
   run_list:
     - recipe[chef-yum-docker]
 
-- name: ubuntu-12.04
-  driver:
-    image: dokken/ubuntu-12.04
-    pid_one_command: /sbin/init
-  run_list:
-  - recipe[chef-apt-docker]
-
 - name: ubuntu-14.04
   driver:
     image: dokken/ubuntu-14.04
@@ -135,16 +128,6 @@ suites:
   attributes:
     docker:
       version: '17.03.1'
-  run_list:
-  - recipe[docker_test::installation_package]
-
-- name: installation_package-17040
-  includes: [
-    'ubuntu-12.04',
-   ]
-  attributes:
-    docker:
-      version: '17.04.0'
   run_list:
   - recipe[docker_test::installation_package]
 

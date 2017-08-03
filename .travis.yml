@@ -27,7 +27,6 @@ env:
   - INSTANCE=smoke-debian-8
   - INSTANCE=smoke-centos-7
   - INSTANCE=smoke-fedora-25
-  - INSTANCE=smoke-ubuntu-1204
   - INSTANCE=smoke-ubuntu-1404
   - INSTANCE=smoke-ubuntu-1604
   - INSTANCE=smoke-ubuntu-1704
