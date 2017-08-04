@@ -3,7 +3,7 @@ maintainer 'Cookbook Engineering Team'
 maintainer_email 'cookbooks@chef.io'
 license 'Apache-2.0'
 description 'Provides docker_service, docker_image, and docker_container resources'
-version '2.15.19'
+version '2.15.20'
 
 source_url 'https://github.com/chef-cookbooks/docker'
 issues_url 'https://github.com/chef-cookbooks/docker/issues'

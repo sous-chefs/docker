@@ -2,6 +2,9 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.15.20 (2017-08-04)
+- Using stable docker package version numbers
+
 ## 2.15.19 (2017-08-04)
 - reverting default_group
 - adding docker group to README
