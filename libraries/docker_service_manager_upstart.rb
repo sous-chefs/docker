@@ -24,7 +24,7 @@ module DockerCookbook
           docker_daemon_cmd: [dockerd_bin_link, docker_daemon_arg, docker_daemon_opts].join(' '),
           docker_raw_logs_arg: docker_raw_logs_arg,
           docker_wait_ready: "#{libexec_dir}/#{docker_name}-wait-ready",
-          docker_socket: connect_socket.sub(%r{unix://|fd://}, '')
+          docker_socket: connect_socket
         )
         notifies :restart, "service[#{docker_name}]", :immediately
       end
