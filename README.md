@@ -41,7 +41,18 @@ configuration of cgroups and storage back ends.
 
 ## Cookbook Dependencies
 
-- none
+This cookbook has a loose dependency on the official docker repositories, which can be installed with `chef-apt-docker` or `chef-yum-docker`. You may choose to use your OS version of docker, but you may run into issues such as the docker root being named differently.
+
+## Docker Group
+
+If you are not using the official docker repositories you may run into issues with the docker group being different. RHEL is a known issue that defaults to using `dockerroot` for the service group. Add the `group` property to the `docker_service`.
+
+```
+docker_service 'default' do
+  group 'dockerroot'
+  action [:create, :start]
+end
+```
 
 ## Usage
 
