@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.15.19 (2017-08-04)
+- reverting default_group
+- adding docker group to README
+
 ## 2.15.18 (2017-07-20)
 - create the socket first so restarts on the service unit file dont fail
 - redhat defaults to a different group name
