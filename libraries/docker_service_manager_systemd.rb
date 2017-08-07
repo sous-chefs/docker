@@ -29,8 +29,9 @@ module DockerCookbook
         variables(
           config: new_resource,
           docker_name: docker_name,
-          docker_socket: connect_socket.sub(%r{unix://|fd://}, '')
+          docker_socket: connect_socket
         )
+        action connect_socket.nil? ? :delete : :create
         not_if { docker_name == 'default' && ::File.exist?('/lib/systemd/system/docker.socket') }
       end
 
@@ -43,7 +44,8 @@ module DockerCookbook
         mode '0644'
         variables(
           docker_name: docker_name,
-          docker_daemon_cmd: docker_daemon_cmd
+          docker_daemon_cmd: docker_daemon_cmd,
+          docker_socket: connect_socket
         )
         not_if { docker_name == 'default' && ::File.exist?('/lib/systemd/system/docker.service') }
       end
@@ -58,8 +60,9 @@ module DockerCookbook
         variables(
           config: new_resource,
           docker_name: docker_name,
-          docker_socket: connect_socket.sub(%r{unix://|fd://}, '')
+          docker_socket: connect_socket
         )
+        action connect_socket.nil? ? :delete : :create
       end
 
       # this overrides the main systemd service
@@ -72,6 +75,7 @@ module DockerCookbook
         variables(
           config: new_resource,
           docker_name: docker_name,
+          docker_socket: connect_socket,
           docker_daemon_cmd: docker_daemon_cmd,
           systemd_args: systemd_args,
           docker_wait_ready: "#{libexec_dir}/#{docker_name}-wait-ready"
