@@ -40,7 +40,7 @@ describe 'docker_test::container' do
         outfile: nil,
         restart_maximum_retry_count: 0,
         restart_policy: nil,
-        security_opts: nil,
+        security_opt: nil,
         signal: 'SIGTERM',
         user: ''
       )
