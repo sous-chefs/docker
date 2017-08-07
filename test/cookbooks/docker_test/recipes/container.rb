@@ -1104,7 +1104,7 @@ docker_container 'memory' do
   port '71:71'
   kernel_memory '10m'
   memory '5m'
-  memory_swap '5m'
+  memory_swap '5M'
   memory_swappiness '50'
   memory_reservation '5m'
   action :run

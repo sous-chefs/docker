@@ -18,27 +18,33 @@ module DockerCookbook
       end
 
       def to_bytes(v)
-        n, u = v.split(/(?=[a-z])/)
-        case u
-        when 'b', 'B', nil
-          return n.to_i
-        when 'k', 'K'
-          return n.to_i * 1024**1
-        when 'm', 'M'
-          return n.to_i * 1024**2
-        when 'g', 'G'
-          return n.to_i * 1024**3
-        when 't', 'T'
-          return n.to_i * 1024**4
-        when 'p', 'P'
-          return n.to_i * 1024**5
-        when 'e', 'E'
-          return n.to_i * 1024**6
-        when 'z', 'Z'
-          return n.to_i * 1024**7
-        when 'y', 'Y'
-          return n.to_i * 1024**8
-        end
+        n = v.to_i
+        u = v.gsub(/\d/, '').upcase
+
+        multiplier = case u
+                     when 'B'
+                       1
+                     when 'K'
+                       1024**1
+                     when 'M'
+                       1024**2
+                     when 'G'
+                       1024**3
+                     when 'T'
+                       1024**4
+                     when 'P'
+                       1024**5
+                     when 'E'
+                       1024**6
+                     when 'Z'
+                       1024**7
+                     when 'Y'
+                       1024**8
+                     else
+                       1
+                     end
+
+        n * multiplier
       end
 
       def coerce_kernel_memory(v)
