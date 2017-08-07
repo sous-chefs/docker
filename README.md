@@ -41,7 +41,7 @@ configuration of cgroups and storage back ends.
 
 ## Cookbook Dependencies
 
-This cookbook has a loose dependency on the official docker repositories, which can be installed with `chef-apt-docker` or `chef-yum-docker`. You may choose to use your OS version of docker, but you may run into issues such as the docker root being named differently.
+This cookbook has a loose dependency on the official docker repositories, which can be installed with `chef-apt-docker` or `chef-yum-docker`. You may choose to use your OS version of docker, but you may run into issues such as the docker group being named differently.
 
 ## Docker Group
 
