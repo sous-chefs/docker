@@ -150,35 +150,40 @@ module DockerCookbook
       end
 
       def parse_port(v)
+        _, protocol = v.split('/')
         parts = v.split(':')
         case parts.length
         when 3
           host_ip = parts[0]
-          host_port = parts[1]
-          container_port = parts[2]
+          host_port = parts[1].split('-')
+          container_port = parts[2].split('-')
         when 2
           host_ip = '0.0.0.0'
-          host_port = parts[0]
-          container_port = parts[1]
+          host_port = parts[0].split('-')
+          container_port = parts[1].split('-')
         when 1
           host_ip = ''
-          host_port = ''
-          container_port = parts[0]
+          host_port = ['']
+          container_port = parts[0].split('-')
         end
-        port_range, protocol = container_port.split('/')
-        if port_range.include?('-')
-          port_range = container_port.split('-')
-          port_range.map!(&:to_i)
-          Chef::Log.fatal("FATAL: Invalid port range! #{container_port}") if port_range[0] > port_range[1]
-          port_range = (port_range[0]..port_range[1]).to_a
+        host_port.map!(&:to_i) unless host_port == ['']
+        container_port.map!(&:to_i)
+        if host_port.count > 1
+          Chef::Log.fatal("FATAL: Invalid port range! #{host_port}") if host_port[0] > host_port[1]
+          host_port = (host_port[0]..host_port[1]).to_a
         end
+        if container_port.count > 1
+          Chef::Log.fatal("FATAL: Invalid port range! #{container_port}") if container_port[0] > container_port[1]
+          container_port = (container_port[0]..container_port[1]).to_a
+        end
+        Chef::Log.fatal('FATAL: Port range size does not match!') if host_port.count > 1 && host_port.count != container_port.count
         # qualify the port-binding protocol even when it is implicitly tcp #427.
         protocol = 'tcp' if protocol.nil?
-        Array(port_range).map do |port|
+        Array(container_port).map.with_index do |_, i|
           {
             'host_ip' => host_ip,
-            'host_port' => host_port,
-            'container_port' => "#{port}/#{protocol}",
+            'host_port' => host_port[i].to_s,
+            'container_port' => "#{container_port[i]}/#{protocol}",
           }
         end
       end

@@ -227,6 +227,9 @@ describe command("docker inspect -f '{{ .HostConfig.PortBindings }}' port_range"
   its(:stdout) { should include('2001/udp:[{ }]') }
   its(:stdout) { should include('3000/tcp:[{ }]') }
   its(:stdout) { should include('3001/tcp:[{ }]') }
+  its(:stdout) { should include('8000/tcp:[{0.0.0.0 7000}]') }
+  its(:stdout) { should include('8001/tcp:[{0.0.0.0 7001}]') }
+  its(:stdout) { should include('8002/tcp:[{0.0.0.0 7002}]') }
 end
 
 # docker_container[bill]
