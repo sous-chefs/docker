@@ -2,8 +2,7 @@
 
 [![Build Status](https://travis-ci.org/chef-cookbooks/docker.svg?branch=master)](https://travis-ci.org/chef-cookbooks/docker)
 [![Cookbook Version](https://img.shields.io/cookbook/v/docker.svg)](https://supermarket.chef.io/cookbooks/docker)
-[![Gitter](https://badges.gitter.im/Join
-Chat.svg)](https://gitter.im/someara/chef-docker?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Gitter](https://badges.gitter.im/JoinChat.svg)](https://gitter.im/someara/chef-docker?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 The Docker Cookbook is a library cookbook that provides custom
 resources for use in recipes.
@@ -19,7 +18,6 @@ aufs.
 ## Requirements
 
 - Chef 12.5.x or higher. Chef 11 is NOT SUPPORTED, please do not open issues about it.
-- Ruby 2.1 or higher (preferably, the Chef full-stack installer)
 - Network accessible web server hosting the docker binary.
 - SELinux permissive/disabled if CentOS [Docker Issue #15498](https://github.com/docker/docker/issues/15498)
 
@@ -43,7 +41,18 @@ configuration of cgroups and storage back ends.
 
 ## Cookbook Dependencies
 
-- [compat_resource](https://supermarket.chef.io/cookbooks/compat_resource)
+This cookbook has a loose dependency on the official docker repositories, which can be installed with `chef-apt-docker` or `chef-yum-docker`. You may choose to use your OS version of docker, but you may run into issues such as the docker group being named differently.
+
+## Docker Group
+
+If you are not using the official docker repositories you may run into issues with the docker group being different. RHEL is a known issue that defaults to using `dockerroot` for the service group. Add the `group` property to the `docker_service`.
+
+```
+docker_service 'default' do
+  group 'dockerroot'
+  action [:create, :start]
+end
+```
 
 ## Usage
 
@@ -1171,7 +1180,7 @@ Most `docker_container` properties are the `snake_case` version of the `CamelCas
 - `restart_policy` - One of `no`, `on-failure`, `unless-stopped`, or `always`. Use `always` if you want a service container to survive a Dockerhost reboot. Defaults to `no`.
 - `restart_maximum_retry_count` - Maximum number of restarts to try when `restart_policy` is `on-failure`. Defaults to an ever increasing delay (double the previous delay, starting at 100mS), to prevent flooding the server.
 - `running_wait_time` - Amount of seconds `docker_container` wait to determine if a process is running.`
-- `security_opts` - A list of string values to customize labels for MLS systems, such as SELinux.
+- `security_opt` - A list of string values to customize labels for MLS systems, such as SELinux.
 - `signal` - The signal to send when using the `:kill` action. Defaults to `SIGTERM`.
 - `sysctls` - A hash of sysctls to set on the container. Defaults to `{}`.
 - `tty` - Boolean value to allocate a pseudo-TTY. Defaults to `false`.

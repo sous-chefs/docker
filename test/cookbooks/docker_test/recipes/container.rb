@@ -80,7 +80,7 @@ docker_container 'port_range' do
   repo 'alpine'
   tag '3.1'
   command 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
-  port ['2000-2001', '2000-2001/udp', '3000-3001/tcp']
+  port ['2000-2001', '2000-2001/udp', '3000-3001/tcp', '7000-7002:8000-8002']
   action :run
 end
 
@@ -1104,7 +1104,7 @@ docker_container 'memory' do
   port '71:71'
   kernel_memory '10m'
   memory '5m'
-  memory_swap '5m'
+  memory_swap '5M'
   memory_swappiness '50'
   memory_reservation '5m'
   action :run

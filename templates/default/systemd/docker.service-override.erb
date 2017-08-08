@@ -1,9 +1,13 @@
 [Unit]
 Description=Docker Application Container Engine
 Documentation=https://docs.docker.com
+<% if @docker_socket.nil? %>
+After=network-online.target firewalld.service
+<% else %>
 After=network-online.target <%= @docker_name %>.socket firewalld.service
-Wants=network-online.target
 Requires=<%= @docker_name %>.socket
+<% end %>
+Wants=network-online.target
 
 [Service]
 Type=notify

@@ -47,19 +47,12 @@ platforms:
   run_list:
     - recipe[chef-yum-docker]
 
-- name: fedora-latest
+- name: fedora-25
   driver:
-    image: dokken/fedora-latest
+    image: dokken/fedora-25
     pid_one_command: /usr/lib/systemd/systemd
   run_list:
     - recipe[chef-yum-docker]
-
-- name: ubuntu-12.04
-  driver:
-    image: dokken/ubuntu-12.04
-    pid_one_command: /sbin/init
-  run_list:
-  - recipe[chef-apt-docker]
 
 - name: ubuntu-14.04
   driver:
@@ -81,7 +74,7 @@ platforms:
     pid_one_command: /bin/systemd
   run_list:
   - recipe[chef-apt-docker]
-  
+
 - name: opensuse-13.2
   driver:
     image: dokken/opensuse-13.2
@@ -138,17 +131,7 @@ suites:
   run_list:
   - recipe[docker_test::installation_package]
 
-- name: installation_package-17040
-  includes: [
-    'ubuntu-12.04',
-   ]
-  attributes:
-    docker:
-      version: '17.04.0'
-  run_list:
-  - recipe[docker_test::installation_package]
-
-- name: installation_package-17050
+- name: installation_package-17060
   includes: [
     'centos-7', # for dokken
     'debian-7', # for dokken
@@ -156,11 +139,11 @@ suites:
     'ubuntu-14.04',
     'ubuntu-16.04',
     'ubuntu-17.04',
-    'fedora-latest',
+    'fedora-25',
    ]
   attributes:
     docker:
-      version: '17.05.0'
+      version: '17.06.0'
   run_list:
   - recipe[docker_test::installation_package]
 
@@ -168,13 +151,13 @@ suites:
 # bulk resource testing
 #######################
 
-- name: resources-17050
+- name: resources-17060
   includes: [
     'ubuntu-16.04',
    ]
   attributes:
     docker:
-      version: '17.05.0'
+      version: '17.06.0'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::image]
@@ -187,7 +170,7 @@ suites:
    ]
   attributes:
     docker:
-      version: '17.05.0'
+      version: '17.06.0'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::network]
@@ -198,7 +181,7 @@ suites:
    ]
   attributes:
     docker:
-      version: '17.05.0'
+      version: '17.06.0'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::volume]

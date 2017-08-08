@@ -18,27 +18,33 @@ module DockerCookbook
       end
 
       def to_bytes(v)
-        n, u = v.split(/(?=[a-z])/)
-        case u
-        when 'b', 'B', nil
-          return n.to_i
-        when 'k', 'K'
-          return n.to_i * 1024**1
-        when 'm', 'M'
-          return n.to_i * 1024**2
-        when 'g', 'G'
-          return n.to_i * 1024**3
-        when 't', 'T'
-          return n.to_i * 1024**4
-        when 'p', 'P'
-          return n.to_i * 1024**5
-        when 'e', 'E'
-          return n.to_i * 1024**6
-        when 'z', 'Z'
-          return n.to_i * 1024**7
-        when 'y', 'Y'
-          return n.to_i * 1024**8
-        end
+        n = v.to_i
+        u = v.gsub(/\d/, '').upcase
+
+        multiplier = case u
+                     when 'B'
+                       1
+                     when 'K'
+                       1024**1
+                     when 'M'
+                       1024**2
+                     when 'G'
+                       1024**3
+                     when 'T'
+                       1024**4
+                     when 'P'
+                       1024**5
+                     when 'E'
+                       1024**6
+                     when 'Z'
+                       1024**7
+                     when 'Y'
+                       1024**8
+                     else
+                       1
+                     end
+
+        n * multiplier
       end
 
       def coerce_kernel_memory(v)
@@ -150,35 +156,40 @@ module DockerCookbook
       end
 
       def parse_port(v)
+        _, protocol = v.split('/')
         parts = v.split(':')
         case parts.length
         when 3
           host_ip = parts[0]
-          host_port = parts[1]
-          container_port = parts[2]
+          host_port = parts[1].split('-')
+          container_port = parts[2].split('-')
         when 2
           host_ip = '0.0.0.0'
-          host_port = parts[0]
-          container_port = parts[1]
+          host_port = parts[0].split('-')
+          container_port = parts[1].split('-')
         when 1
           host_ip = ''
-          host_port = ''
-          container_port = parts[0]
+          host_port = ['']
+          container_port = parts[0].split('-')
         end
-        port_range, protocol = container_port.split('/')
-        if port_range.include?('-')
-          port_range = container_port.split('-')
-          port_range.map!(&:to_i)
-          Chef::Log.fatal("FATAL: Invalid port range! #{container_port}") if port_range[0] > port_range[1]
-          port_range = (port_range[0]..port_range[1]).to_a
+        host_port.map!(&:to_i) unless host_port == ['']
+        container_port.map!(&:to_i)
+        if host_port.count > 1
+          Chef::Log.fatal("FATAL: Invalid port range! #{host_port}") if host_port[0] > host_port[1]
+          host_port = (host_port[0]..host_port[1]).to_a
         end
+        if container_port.count > 1
+          Chef::Log.fatal("FATAL: Invalid port range! #{container_port}") if container_port[0] > container_port[1]
+          container_port = (container_port[0]..container_port[1]).to_a
+        end
+        Chef::Log.fatal('FATAL: Port range size does not match!') if host_port.count > 1 && host_port.count != container_port.count
         # qualify the port-binding protocol even when it is implicitly tcp #427.
         protocol = 'tcp' if protocol.nil?
-        Array(port_range).map do |port|
+        Array(container_port).map.with_index do |_, i|
           {
             'host_ip' => host_ip,
-            'host_port' => host_port,
-            'container_port' => "#{port}/#{protocol}",
+            'host_port' => host_port[i].to_s,
+            'container_port' => "#{container_port[i]}/#{protocol}",
           }
         end
       end

@@ -36,7 +36,7 @@ module DockerCookbook
     property :exec_opts, ArrayType
     property :fixed_cidr, [String, nil]
     property :fixed_cidr_v6, [String, nil]
-    property :group, [String], default: lazy { default_group }
+    property :group, [String], default: 'docker'
     property :graph, [String, nil]
     property :host, [String, Array], coerce: proc { |v| coerce_host(v) }
     property :icc, [Boolean, nil]

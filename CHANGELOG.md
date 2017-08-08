@@ -2,6 +2,19 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.15.21 (2017-08-07)
+- fix to_bytes parsing
+- host port can now be a range and matches properly with container port range
+- typo on security_opt
+- fix for docker_service not containing a listening socket
+
+## 2.15.20 (2017-08-04)
+- Using stable docker package version numbers
+
+## 2.15.19 (2017-08-04)
+- reverting default_group
+- adding docker group to README
+
 ## 2.15.18 (2017-07-20)
 - create the socket first so restarts on the service unit file dont fail
 - redhat defaults to a different group name

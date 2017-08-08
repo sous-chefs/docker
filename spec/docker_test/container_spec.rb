@@ -40,7 +40,7 @@ describe 'docker_test::container' do
         outfile: nil,
         restart_maximum_retry_count: 0,
         restart_policy: nil,
-        security_opts: nil,
+        security_opt: nil,
         signal: 'SIGTERM',
         user: ''
       )
@@ -106,7 +106,7 @@ describe 'docker_test::container' do
         repo: 'alpine',
         tag: '3.1',
         command: 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"',
-        port: ['2000-2001', '2000-2001/udp', '3000-3001/tcp']
+        port: ['2000-2001', '2000-2001/udp', '3000-3001/tcp', '7000-7002:8000-8002']
       )
     end
   end
