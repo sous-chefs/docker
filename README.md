@@ -1211,7 +1211,7 @@ Most `docker_container` properties are the `snake_case` version of the `CamelCas
 - `:run` - The default action. Both `:create` and `:start` the container in one action. Redeploys the container on resource change.
 - `:run_if_missing` - Runs a container only once.
 - `:stop` - Stops the container.
-- `:restart` - Stops the starts the container.
+- `:restart` - Stops and then starts the container.
 - `:kill` - Send a signal to the container process. Defaults to `SIGKILL`.
 - `:pause` - Pauses the container.
 - `:unpause` - Unpauses the container.
