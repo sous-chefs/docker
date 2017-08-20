@@ -2,6 +2,9 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.15.22 (2017-00-20)
+- Fixing up deprecation warnings
+
 ## 2.15.21 (2017-08-07)
 - fix to_bytes parsing
 - host port can now be a range and matches properly with container port range
