@@ -112,7 +112,7 @@ module DockerCookbook
           variables(
             docker_cmd: docker_cmd,
             libexec_dir: libexec_dir,
-            service_timeout: service_timeout
+            service_timeout: new_resource.service_timeout
           )
           cookbook 'docker'
           action :create

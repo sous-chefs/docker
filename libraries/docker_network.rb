@@ -65,23 +65,23 @@ module DockerCookbook
 
         with_retries do
           options = {}
-          options['Driver'] = driver if driver
-          options['Options'] = driver_opts if driver_opts
-          ipam_options = consolidate_ipam(subnet, ip_range, gateway, aux_address)
+          options['Driver'] = new_resource.driver if new_resource.driver
+          options['Options'] = new_resource.driver_opts if new_resource.driver_opts
+          ipam_options = consolidate_ipam(new_resource.subnet, new_resource.ip_range, new_resource.gateway, new_resource.aux_address)
           options['IPAM'] = { 'Config' => ipam_options } unless ipam_options.empty?
-          options['IPAM']['Driver'] = ipam_driver if ipam_driver
-          options['EnableIPv6'] = enable_ipv6 if enable_ipv6
-          options['Internal'] = internal if internal
-          Docker::Network.create(network_name, options)
+          options['IPAM']['Driver'] = new_resource.ipam_driver if new_resource.ipam_driver
+          options['EnableIPv6'] = new_resource.enable_ipv6 if new_resource.enable_ipv6
+          options['Internal'] = new_resource.internal if new_resource.internal
+          Docker::Network.create(new_resource.network_name, options)
         end
       end
     end
 
     action :delete do
       return unless current_resource
-      converge_by "deleting #{network_name}" do
+      converge_by "deleting #{new_resource.network_name}" do
         with_retries do
-          network.delete
+          current_resource.network.delete
         end
       end
     end
@@ -91,12 +91,12 @@ module DockerCookbook
     end
 
     action :connect do
-      unless container
+      unless new_resource.container
         raise Chef::Exceptions::ValidationFailed, 'Container id or name is required for action :connect'
       end
 
       if current_resource
-        container_index = network.info['Containers'].values.index { |c| c['Name'] == container }
+        container_index = current_resource.network.info['Containers'].values.index { |c| c['Name'] == new_resource.container }
         if container_index.nil?
           converge_by("connect #{container}") do
             with_retries do
@@ -110,12 +110,12 @@ module DockerCookbook
     end
 
     action :disconnect do
-      unless container
+      unless new_resource.container
         raise Chef::Exceptions::ValidationFailed, 'Container id or name is required for action :disconnect'
       end
 
       if current_resource
-        container_index = network.info['Containers'].values.index { |c| c['Name'] == container }
+        container_index = current_resource.network.info['Containers'].values.index { |c| c['Name'] == container }
         unless container_index.nil?
           converge_by("disconnect #{container}") do
             with_retries do

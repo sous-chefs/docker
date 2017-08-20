@@ -253,76 +253,76 @@ module DockerCookbook
 
         with_retries do
           config = {
-            'name'            => container_name,
-            'Image'           => "#{repo}:#{tag}",
-            'Labels'          => labels,
-            'Cmd'             => to_shellwords(command),
-            'AttachStderr'    => attach_stderr,
-            'AttachStdin'     => attach_stdin,
-            'AttachStdout'    => attach_stdout,
-            'Domainname'      => domain_name,
-            'Entrypoint'      => to_shellwords(entrypoint),
-            'Env'             => env,
-            'ExposedPorts'    => exposed_ports,
+            'name'            => new_resource.container_name,
+            'Image'           => "#{new_resource.repo}:#{new_resource.tag}",
+            'Labels'          => new_resource.labels,
+            'Cmd'             => to_shellwords(new_resource.command),
+            'AttachStderr'    => new_resource.attach_stderr,
+            'AttachStdin'     => new_resource.attach_stdin,
+            'AttachStdout'    => new_resource.attach_stdout,
+            'Domainname'      => new_resource.domain_name,
+            'Entrypoint'      => to_shellwords(new_resource.entrypoint),
+            'Env'             => new_resource.env,
+            'ExposedPorts'    => new_resource.exposed_ports,
             'Hostname'        => parsed_hostname,
-            'MacAddress'      => mac_address,
-            'NetworkDisabled' => network_disabled,
-            'OpenStdin'       => open_stdin,
-            'StdinOnce'       => stdin_once,
-            'Tty'             => tty,
-            'User'            => user,
-            'Volumes'         => volumes,
-            'WorkingDir'      => working_dir,
+            'MacAddress'      => new_resource.mac_address,
+            'NetworkDisabled' => new_resource.network_disabled,
+            'OpenStdin'       => new_resource.open_stdin,
+            'StdinOnce'       => new_resource.stdin_once,
+            'Tty'             => new_resource.tty,
+            'User'            => new_resource.user,
+            'Volumes'         => new_resource.volumes,
+            'WorkingDir'      => new_resource.working_dir,
             'HostConfig'      => {
-              'Binds'           => volumes_binds,
-              'CapAdd'          => cap_add,
-              'CapDrop'         => cap_drop,
-              'CgroupParent'    => cgroup_parent,
-              'CpuShares'       => cpu_shares,
-              'CpusetCpus'      => cpuset_cpus,
-              'Devices'         => devices,
-              'Dns'             => dns,
-              'DnsSearch'       => dns_search,
-              'ExtraHosts'      => extra_hosts,
-              'IpcMode'         => ipc_mode,
-              'KernelMemory'    => kernel_memory,
-              'Links'           => links,
+              'Binds'           => new_resource.volumes_binds,
+              'CapAdd'          => new_resource.cap_add,
+              'CapDrop'         => new_resource.cap_drop,
+              'CgroupParent'    => new_resource.cgroup_parent,
+              'CpuShares'       => new_resource.cpu_shares,
+              'CpusetCpus'      => new_resource.cpuset_cpus,
+              'Devices'         => new_resource.devices,
+              'Dns'             => new_resource.dns,
+              'DnsSearch'       => new_resource.dns_search,
+              'ExtraHosts'      => new_resource.extra_hosts,
+              'IpcMode'         => new_resource.ipc_mode,
+              'KernelMemory'    => new_resource.kernel_memory,
+              'Links'           => new_resource.links,
               'LogConfig'       => log_config,
-              'Memory'          => memory,
-              'MemorySwap'      => memory_swap,
-              'MemorySwappiness' => memory_swappiness,
-              'MemoryReservation' => memory_reservation,
-              'NetworkMode'     => network_mode,
-              'Privileged'      => privileged,
-              'PidMode'         => pid_mode,
-              'PortBindings'    => port_bindings,
-              'PublishAllPorts' => publish_all_ports,
+              'Memory'          => new_resource.memory,
+              'MemorySwap'      => new_resource.memory_swap,
+              'MemorySwappiness' => new_resource.memory_swappiness,
+              'MemoryReservation' => new_resource.memory_reservation,
+              'NetworkMode'     => new_resource.network_mode,
+              'Privileged'      => new_resource.privileged,
+              'PidMode'         => new_resource.pid_mode,
+              'PortBindings'    => new_resource.port_bindings,
+              'PublishAllPorts' => new_resource.publish_all_ports,
               'RestartPolicy'   => {
-                'Name'              => restart_policy,
-                'MaximumRetryCount' => restart_maximum_retry_count,
+                'Name'              => new_resource.restart_policy,
+                'MaximumRetryCount' => new_resource.restart_maximum_retry_count,
               },
-              'ReadonlyRootfs'  => ro_rootfs,
-              'SecurityOpt'     => security_opt,
-              'Sysctls'         => sysctls,
-              'Ulimits'         => ulimits_to_hash,
-              'UsernsMode'      => userns_mode,
-              'UTSMode'         => uts_mode,
-              'VolumesFrom'     => volumes_from,
-              'VolumeDriver'    => volume_driver,
+              'ReadonlyRootfs'  => new_resource.ro_rootfs,
+              'SecurityOpt'     => new_resource.security_opt,
+              'Sysctls'         => new_resource.sysctls,
+              'Ulimits'         => new_resource.ulimits_to_hash,
+              'UsernsMode'      => new_resource.userns_mode,
+              'UTSMode'         => new_resource.uts_mode,
+              'VolumesFrom'     => new_resource.volumes_from,
+              'VolumeDriver'    => new_resource.volume_driver,
             },
           }
           net_config = {
             'NetworkingConfig' => {
               'EndpointsConfig' => {
-                network_mode => {
+                new_resource.network_mode => {
                   'IPAMConfig' => {
-                    'IPv4Address' => ip_address,
+                    'IPv4Address' => new_resource.ip_address,
                   },
-                  'Aliases' => network_aliases,
+                  'Aliases' => new_resource.network_aliases,
                 },
               },
             },
-          } if network_mode
+          } if new_resource.network_mode
           config.merge! net_config
 
           Docker::Container.create(config, connection)
@@ -333,34 +333,34 @@ module DockerCookbook
     action :start do
       return if state['Restarting']
       return if state['Running']
-      converge_by "starting #{container_name}" do
+      converge_by "starting #{new_resource.container_name}" do
         with_retries do
-          container.start
-          timeout ? container.wait(timeout) : container.wait unless detach
+          current_resource.container.start
+          timeout ? container.wait(timeout) : container.wait unless new_resource.detach
         end
-        wait_running_state(true) if detach
+        wait_running_state(true) if new_resource.detach
       end
     end
 
     action :stop do
       return unless state['Running']
-      kill_after_str = "(will kill after #{kill_after}s)" if kill_after
-      converge_by "stopping #{container_name} #{kill_after_str}" do
+      kill_after_str = "(will kill after #{new_resource.kill_after}s)" if new_resource.kill_after
+      converge_by "stopping #{new_resource.container_name} #{kill_after_str}" do
         begin
           with_retries do
-            container.stop!('timeout' => kill_after)
+            current_resource.container.stop!('timeout' => new_resource.kill_after)
             wait_running_state(false)
           end
         rescue Docker::Error::TimeoutError
-          raise Docker::Error::TimeoutError, "Container failed to stop, consider adding kill_after to the container #{container_name}"
+          raise Docker::Error::TimeoutError, "Container failed to stop, consider adding kill_after to the container #{new_resource.container_name}"
         end
       end
     end
 
     action :kill do
       return unless state['Running']
-      converge_by "killing #{container_name}" do
-        with_retries { container.kill(signal: signal) }
+      converge_by "killing #{new_resource.container_name}" do
+        with_retries { current_resource.container.kill(signal: new_resource.signal) }
       end
     end
 
@@ -368,7 +368,7 @@ module DockerCookbook
       validate_container_create
       call_action(:create)
       call_action(:start)
-      call_action(:delete) if autoremove
+      call_action(:delete) if new_resource.autoremove
     end
 
     action :run_if_missing do
@@ -378,27 +378,27 @@ module DockerCookbook
 
     action :pause do
       return if state['Paused']
-      converge_by "pausing #{container_name}" do
-        with_retries { container.pause }
+      converge_by "pausing #{new_resource.container_name}" do
+        with_retries { current_resource.container.pause }
       end
     end
 
     action :unpause do
       return if current_resource && !state['Paused']
-      converge_by "unpausing #{container_name}" do
-        with_retries { container.unpause }
+      converge_by "unpausing #{new_resource.container_name}" do
+        with_retries { current_resource.container.unpause }
       end
     end
 
     action :restart do
-      kill_after_str = " (will kill after #{kill_after}s)" if kill_after != -1
-      converge_by "restarting #{container_name} #{kill_after_str}" do
-        current_resource ? container.restart('timeout' => kill_after) : call_action(:run)
+      kill_after_str = " (will kill after #{new_resource.kill_after}s)" if new_resource.kill_after != -1
+      converge_by "restarting #{new_resource.container_name} #{kill_after_str}" do
+        current_resource ? current_resource.container.restart('timeout' => new_resource.kill_after) : call_action(:run)
       end
     end
 
     action :reload do
-      converge_by "reloading #{container_name}" do
+      converge_by "reloading #{new_resource.container_name}" do
         with_retries { container.kill(signal: 'SIGHUP') }
       end
     end
@@ -416,8 +416,8 @@ module DockerCookbook
       return unless current_resource
       call_action(:unpause)
       call_action(:stop)
-      converge_by "deleting #{container_name}" do
-        with_retries { container.delete(force: force, v: remove_volumes) }
+      converge_by "deleting #{new_resource.container_name}" do
+        with_retries { current_resource.container.delete(force: new_resource.force, v: new_resource.remove_volumes) }
       end
     end
 
@@ -426,19 +426,19 @@ module DockerCookbook
     end
 
     action :commit do
-      converge_by "committing #{container_name}" do
+      converge_by "committing #{new_resource.container_name}" do
         with_retries do
-          new_image = container.commit
-          new_image.tag('repo' => repo, 'tag' => tag, 'force' => force)
+          new_image = current_resource.container.commit
+          new_image.tag('repo' => new_resource.repo, 'tag' => new_resource.tag, 'force' => new_resource.force)
         end
       end
     end
 
     action :export do
-      raise "Please set outfile property on #{container_name}" if outfile.nil?
-      converge_by "exporting #{container_name}" do
+      raise "Please set outfile property on #{new_resource.container_name}" if new_resource.outfile.nil?
+      converge_by "exporting #{new_resource.container_name}" do
         with_retries do
-          ::File.open(outfile, 'w') { |f| container.export { |chunk| f.write(chunk) } }
+          ::File.open(new_resource.outfile, 'w') { |f| current_resource.container.export { |chunk| f.write(chunk) } }
         end
       end
     end

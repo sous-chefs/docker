@@ -11,15 +11,15 @@ module DockerCookbook
     property :username, [String, nil]
 
     action :login do
-      tries = api_retries
+      tries = new_resource.api_retries
 
-      registry_host = parse_registry_host(serveraddress)
+      registry_host = parse_registry_host(new_resource.serveraddress)
 
       (node.run_state['docker_auth'] ||= {})[registry_host] = {
         'serveraddress' => registry_host,
-        'username' => username,
-        'password' => password,
-        'email' => email,
+        'username' => new_resource.username,
+        'password' => new_resource.password,
+        'email' => new_resource.email,
       }
 
       begin
@@ -28,7 +28,7 @@ module DockerCookbook
           body: node.run_state['docker_auth'][registry_host].to_json
         )
       rescue Docker::Error::ServerError, Docker::Error::UnauthorizedError
-        raise Docker::Error::AuthenticationError, "#{username} failed to authenticate with #{serveraddress}" if (tries -= 1) == 0
+        raise Docker::Error::AuthenticationError, "#{new_resource.username} failed to authenticate with #{new_resource.serveraddress}" if (tries -= 1) == 0
         retry
       end
 
