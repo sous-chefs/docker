@@ -16,7 +16,7 @@ end
 # overrides_volumes_value
 
 overrides_volumes_value = docker_version == '1.6' ? %r{map\[\/home:map\[\]\]} : %r{map\[/home:{}\]}
-uber_options_network_mode = docker_version == '1.7' ? 'bridge' : 'default'
+uber_options_network_mode = 'bridge'
 
 nil_string = '<no value>' if docker_version =~ /1.6/
 nil_string = '<nil>' if docker_version =~ /1.7/
