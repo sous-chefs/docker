@@ -16,6 +16,9 @@ module DockerCookbook
     # register with the resource resolution system
     provides :docker_service_manager
 
+    # Environment variables to docker service
+    property :env_vars, Hash
+
     # daemon management
     property :instance, String, name_property: true, required: true, desired_state: false
     property :auto_restart, Boolean, default: false
