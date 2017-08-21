@@ -21,13 +21,13 @@ module DockerCookbook
     action :create do
       converge_by "creating volume #{new_resource.volume_name}" do
         Docker::Volume.create(new_resource.volume_name, {}, connection)
-      end if new_resource.volume.nil?
+      end if current_resource.nil?
     end
 
     action :remove do
-      converge_by "removing volume #{volume_name}" do
-        volume.remove
-      end unless new_resource.volume.nil?
+      converge_by "removing volume #{new_resource.volume_name}" do
+        current_resource.volume.remove
+      end unless current_resource.nil?
     end
   end
 end
