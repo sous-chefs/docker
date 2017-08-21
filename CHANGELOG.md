@@ -2,6 +2,9 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.15.24 (2017-00-20)
+- Supporting env_vars and using in systemd
+
 ## 2.15.23 (2017-00-20)
 - Fixing bug in volumes introduced with namespacing fixes
 
