@@ -78,7 +78,8 @@ module DockerCookbook
           docker_socket: connect_socket,
           docker_daemon_cmd: docker_daemon_cmd,
           systemd_args: systemd_args,
-          docker_wait_ready: "#{libexec_dir}/#{docker_name}-wait-ready"
+          docker_wait_ready: "#{libexec_dir}/#{docker_name}-wait-ready",
+          env_vars: new_resource.env_vars
         )
         notifies :run, 'execute[systemctl daemon-reload]', :immediately
         notifies :run, "execute[systemctl restart #{docker_name}]", :immediately

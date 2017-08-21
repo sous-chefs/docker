@@ -23,6 +23,9 @@ Environment="NO_PROXY=<%= @config.no_proxy %>"
 <% if @config.tmpdir %>
 Environment="TMPDIR=<%= @config.tmpdir %>"
 <% end %>
+<% @env_vars.each do |key, val| %>
+Environment="<%= key %>=<%= val %>"
+<% end unless @env_vars.nil? %>
 <% if @config.ipv4_forward %>
 ExecStartPre=/sbin/sysctl -w net.ipv4.ip_forward=1
 <% end %>
