@@ -26,7 +26,8 @@ module DockerCookbook
           docker_wait_ready: "#{libexec_dir}/#{docker_name}-wait-ready",
           docker_socket: connect_socket
         )
-        notifies :restart, "service[#{docker_name}]", :immediately
+        notifies :stop, "service[#{docker_name}]", :immediately
+        notifies :start, "service[#{docker_name}]", :immediately
       end
 
       template "/etc/default/#{docker_name}" do
