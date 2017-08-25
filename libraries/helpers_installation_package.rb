@@ -32,6 +32,11 @@ module DockerCookbook
         false
       end
 
+      def stretch?
+        return true if node['platform'] == 'debian' && node['platform_version'].to_i == 9
+        false
+      end
+
       def precise?
         return true if node['platform'] == 'ubuntu' && node['platform_version'] == '12.04'
         false
@@ -98,6 +103,8 @@ module DockerCookbook
                        '-wheezy'
                      elsif jessie?
                        '-jessie'
+                     elsif stretch?
+                       '-stretch'
                      elsif precise?
                        '-precise'
                      elsif trusty?
