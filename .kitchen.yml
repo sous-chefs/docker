@@ -131,7 +131,7 @@ suites:
   run_list:
   - recipe[docker_test::installation_package]
 
-- name: installation_package-17060
+- name: installation_package-17061
   includes: [
     'centos-7', # for dokken
     'debian-7', # for dokken
@@ -143,7 +143,7 @@ suites:
    ]
   attributes:
     docker:
-      version: '17.06.0'
+      version: '17.06.1'
   run_list:
   - recipe[docker_test::installation_package]
 
@@ -157,7 +157,7 @@ suites:
    ]
   attributes:
     docker:
-      version: '17.06.0'
+      version: '17.06.1'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::image]
@@ -170,7 +170,7 @@ suites:
    ]
   attributes:
     docker:
-      version: '17.06.0'
+      version: '17.06.1'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::network]
@@ -181,7 +181,7 @@ suites:
    ]
   attributes:
     docker:
-      version: '17.06.0'
+      version: '17.06.1'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::volume]
