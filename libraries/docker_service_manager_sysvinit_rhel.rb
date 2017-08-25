@@ -67,6 +67,7 @@ module DockerCookbook
           )
           cookbook 'docker'
           action :create
+          notifies :restart, "service[#{docker_name}]", :immediately
         end
       end
 
