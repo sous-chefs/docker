@@ -31,6 +31,13 @@ platforms:
   run_list:
   - recipe[chef-apt-docker]
 
+- name: debian-9
+  driver:
+    image: dokken/debian-9
+    pid_one_command: /bin/systemd
+  run_list:
+  - recipe[chef-apt-docker]
+
 - name: centos-6
   driver:
     image: dokken/centos-6
@@ -89,7 +96,7 @@ platforms:
 suites:
 - name: installation_script_main
   includes: [
-    'ubuntu-16.04',
+    'ubuntu-17.04',
    ]
   attributes:
     docker:
@@ -99,7 +106,7 @@ suites:
 
 - name: installation_script_test
   includes: [
-    'ubuntu-16.04',
+    'ubuntu-17.04',
    ]
   attributes:
     docker:
@@ -109,7 +116,7 @@ suites:
 
 - name: installation_script_experimental
   includes: [
-    'ubuntu-16.04',
+    'ubuntu-17.04',
    ]
   attributes:
     docker:
@@ -153,7 +160,7 @@ suites:
 
 - name: resources-17060
   includes: [
-    'ubuntu-16.04',
+    'ubuntu-17.04',
    ]
   attributes:
     docker:
@@ -166,7 +173,7 @@ suites:
 
 - name: network
   includes: [
-    'ubuntu-16.04',
+    'ubuntu-17.04',
    ]
   attributes:
     docker:
@@ -177,7 +184,7 @@ suites:
 
 - name: volume
   includes: [
-    'ubuntu-16.04',
+    'ubuntu-17.04',
    ]
   attributes:
     docker:
