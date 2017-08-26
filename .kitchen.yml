@@ -96,7 +96,7 @@ platforms:
 suites:
 - name: installation_script_main
   includes: [
-    'ubuntu-17.04',
+    'ubuntu-16.04',
    ]
   attributes:
     docker:
@@ -106,7 +106,7 @@ suites:
 
 - name: installation_script_test
   includes: [
-    'ubuntu-17.04',
+    'ubuntu-16.04',
    ]
   attributes:
     docker:
@@ -116,7 +116,7 @@ suites:
 
 - name: installation_script_experimental
   includes: [
-    'ubuntu-17.04',
+    'ubuntu-16.04',
    ]
   attributes:
     docker:
@@ -158,9 +158,9 @@ suites:
 # bulk resource testing
 #######################
 
-- name: resources-17060
+- name: resources-17061
   includes: [
-    'ubuntu-17.04',
+    'ubuntu-16.04',
    ]
   attributes:
     docker:
@@ -173,7 +173,7 @@ suites:
 
 - name: network
   includes: [
-    'ubuntu-17.04',
+    'ubuntu-16.04',
    ]
   attributes:
     docker:
@@ -184,7 +184,7 @@ suites:
 
 - name: volume
   includes: [
-    'ubuntu-17.04',
+    'ubuntu-16.04',
    ]
   attributes:
     docker:
