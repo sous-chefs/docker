@@ -31,6 +31,13 @@ platforms:
   run_list:
   - recipe[chef-apt-docker]
 
+- name: debian-9
+  driver:
+    image: dokken/debian-9
+    pid_one_command: /bin/systemd
+  run_list:
+  - recipe[chef-apt-docker]
+
 - name: centos-6
   driver:
     image: dokken/centos-6
@@ -131,7 +138,7 @@ suites:
   run_list:
   - recipe[docker_test::installation_package]
 
-- name: installation_package-17060
+- name: installation_package-17061
   includes: [
     'centos-7', # for dokken
     'debian-7', # for dokken
@@ -143,7 +150,7 @@ suites:
    ]
   attributes:
     docker:
-      version: '17.06.0'
+      version: '17.06.1'
   run_list:
   - recipe[docker_test::installation_package]
 
@@ -151,13 +158,13 @@ suites:
 # bulk resource testing
 #######################
 
-- name: resources-17060
+- name: resources-17061
   includes: [
     'ubuntu-16.04',
    ]
   attributes:
     docker:
-      version: '17.06.0'
+      version: '17.06.1'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::image]
@@ -170,7 +177,7 @@ suites:
    ]
   attributes:
     docker:
-      version: '17.06.0'
+      version: '17.06.1'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::network]
@@ -181,7 +188,7 @@ suites:
    ]
   attributes:
     docker:
-      version: '17.06.0'
+      version: '17.06.1'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::volume]
