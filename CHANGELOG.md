@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.15.26 (2017-08-25)
+- bumping to 17.06.1
+- support for debian 9
+
 ## 2.15.25 (2017-08-24)
 - notifying :stop and :start instead of :restart in upstart service manager
 
