@@ -124,11 +124,21 @@ describe command('docker images') do
   its(:stdout) { should match(%r{^localhost\:5043/someara/name-w-dashes\s.*latest}) }
 end
 
-# docker_tag[private repo tag for name.w.dots:latest]
+# docker_tag[private repo tag for name.w.dots:latest / v0.1.0 / / v0.1.1 /]
 
 describe command('docker images') do
   its(:exit_status) { should eq 0 }
   its(:stdout) { should match(%r{^localhost\:5043/someara/name\.w\.dots\s.*latest}) }
+end
+
+describe command('docker images') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(%r{^localhost\:5043/someara/name\.w\.dots\s.*v0.1.0}) }
+end
+
+describe command('docker images') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(%r{^localhost\:5043/someara/name\.w\.dots\s.*v0.1.1}) }
 end
 
 # FIXME: We need to test the "docker_registry" stuff...

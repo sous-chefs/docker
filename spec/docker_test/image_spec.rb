@@ -244,6 +244,18 @@ describe 'docker_test::image' do
       expect(chef_run).to push_docker_image('localhost:5043/someara/name.w.dots')
     end
 
+    it 'pushes docker_image[localhost:5043/someara/name.w.dots] with tag v0.1.0' do
+      expect(chef_run).to push_docker_image('localhost:5043/someara/name.w.dots').with(
+        tag: 'v0.1.0'
+      )
+    end
+
+    it 'pushes docker_image[localhost:5043/someara/name.w.dots] with tag v0.1.1' do
+      expect(chef_run).to push_docker_image('localhost:5043/someara/name.w.dots').with(
+        tag: 'v0.1.1'
+      )
+    end
+
     it 'login docker_registry[localhost:5043]' do
       expect(chef_run).to login_docker_registry('localhost:5043').with(
         username: 'testuser',
