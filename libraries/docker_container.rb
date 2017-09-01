@@ -8,24 +8,6 @@ module DockerCookbook
 
     resource_name :docker_container
 
-    ###########################################################
-    # In Chef 12.5 and later, we no longer have to use separate
-    # classes for resource and providers. Instead, we have
-    # everything in a single class.
-    #
-    # For the purposes of my own sanity, I'm going to place all the
-    # "resource" related bits at the top of the files, and the
-    # providerish bits at the bottom.
-    #
-    #
-    # Methods for default values and coersion are found in
-    # helpers_container.rb
-    ###########################################################
-
-    # ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
-    # Begin classic Chef "resource" section
-    # ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
-
     # The non-standard types Boolean, ArrayType, ShellCommand, etc
     # are found in the DockerBase class.
     property :container_name, String, name_property: true

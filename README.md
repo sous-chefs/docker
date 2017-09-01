@@ -462,11 +462,10 @@ options found in the
 - `log_level` - Set the logging level
 - `labels` A string or array to set metadata on the daemon in the form ['foo:bar', 'hello:world']`
 - `log_driver` - Container's logging driver (json-file/syslog/journald/gelf/fluentd/none)
-- `labels` A string or array to set metadata on the daemon in the form ['foo:bar', 'hello:world']`
 - `log_driver` - Container's logging driver (json-file/syslog/journald/gelf/fluentd/awslogs/splunk/etwlogs/gcplogs/none)
 - `log_opts` - Container's logging driver options (driver-specific)
 - `mtu` - Set the containers network MTU
-- `package_name` - Set the package name. Defaults to `docker-engine`
+- `package_name` - Set the package name. Defaults to `docker-ce`
 - `pidfile` - Path to use for daemon PID file
 - `registry_mirror` - Preferred Docker registry mirror
 - `storage_driver` - Storage driver to use
