@@ -136,11 +136,6 @@ describe command('docker images') do
   its(:stdout) { should match(%r{^localhost\:5043/someara/name\.w\.dots\s.*v0.1.0}) }
 end
 
-describe command('docker images') do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(%r{^localhost\:5043/someara/name\.w\.dots\s.*v0.1.1}) }
-end
-
 # FIXME: We need to test the "docker_registry" stuff...
 # I can't figure out how to search the local registry to see if the
 # authentication and :push actions in the test recipe actually worked.
