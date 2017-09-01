@@ -6,7 +6,6 @@ module DockerCookbook
     property :command, Array
     property :container, String
     property :timeout, Numeric, default: 60
-
     property :container_obj, Docker::Container, desired_state: false
 
     alias cmd command
