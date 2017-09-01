@@ -35,7 +35,10 @@ env:
 # Ensure we make ChefDK's Ruby the default
 before_script:
   - sudo iptables -L DOCKER || ( echo "DOCKER iptables chain missing" ; sudo iptables -N DOCKER )
-  - eval "$(/opt/chefdk/bin/chef shell-init bash)"
+  - eval "$(chef shell-init bash)"
+  - chef --version
+  - cookstyle --version
+  - foodcritic --version
 
 script: kitchen verify ${INSTANCE}
 
