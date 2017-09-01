@@ -82,16 +82,10 @@ platforms:
   run_list:
   - recipe[chef-apt-docker]
 
-- name: opensuse-13.2
-  driver:
-    image: dokken/opensuse-13.2
-    pid_one_command: /bin/systemd
-
 - name: amazonlinux
   driver:
     image: dokken/amazonlinux
     pid_one_command: /sbin/init
-
 
 suites:
 - name: installation_script_main
