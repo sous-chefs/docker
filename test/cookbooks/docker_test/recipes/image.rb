@@ -271,6 +271,14 @@ docker_tag 'private repo tag for name.w.dots' do
   action :tag
 end
 
+docker_tag 'private repo tag for name.w.dots v0.1.0' do
+  target_repo 'busybox'
+  target_tag 'latest'
+  to_repo 'localhost:5043/someara/name.w.dots'
+  to_tag 'v0.1.0'
+  action :tag
+end
+
 docker_registry 'localhost:5043' do
   username 'testuser'
   password 'testpassword'
@@ -288,6 +296,12 @@ end
 
 docker_image 'localhost:5043/someara/name.w.dots' do
   not_if { ::File.exist?('/marker_image_private_name.w.dots') }
+  action :push
+end
+
+docker_image 'localhost:5043/someara/name.w.dots' do
+  not_if { ::File.exist?('/marker_image_private_name.w.dots') }
+  tag 'v0.1.0'
   action :push
 end
 

@@ -64,9 +64,7 @@ module DockerCookbook
 
       def pull_image
         with_retries do
-          registry_host = parse_registry_host(new_resource.repo)
-          creds = node.run_state['docker_auth'] && node.run_state['docker_auth'][registry_host] || (node.run_state['docker_auth'] ||= {})['index.docker.io']
-
+          creds = credentails
           original_image = Docker::Image.get(image_identifier, {}, connection) if Docker::Image.exist?(image_identifier, {}, connection)
           new_image = Docker::Image.create({ 'fromImage' => image_identifier }, creds, connection)
 
@@ -76,8 +74,9 @@ module DockerCookbook
 
       def push_image
         with_retries do
+          creds = credentails
           i = Docker::Image.get(image_identifier, {}, connection)
-          i.push
+          i.push(creds, repo_tag: image_identifier)
         end
       end
 
@@ -98,6 +97,12 @@ module DockerCookbook
         with_retries do
           Docker::Image.load(new_resource.source, {}, connection)
         end
+      end
+
+      def credentails
+        registry_host = parse_registry_host(new_resource.repo)
+        creds = node.run_state['docker_auth'] && node.run_state['docker_auth'][registry_host] || (node.run_state['docker_auth'] ||= {})['index.docker.io']
+        creds
       end
     end
   end
