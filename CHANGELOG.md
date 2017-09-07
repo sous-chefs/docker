@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.15.28 (2017-09-07)
+- bumping to 17.06.2
+- GH-910 image push needs to pass the credentials and a specific tag
+
 ## 2.15.27 (2017-08-31)
 - restart docker on rhel sysvinit changes
 
