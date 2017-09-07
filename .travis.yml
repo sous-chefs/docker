@@ -19,7 +19,7 @@ services: docker
 
 env:
   matrix:
-  - INSTANCE=resources-17061-ubuntu-1604
+  - INSTANCE=resources-17062-ubuntu-1604
   - INSTANCE=network-ubuntu-1604
   - INSTANCE=volume-ubuntu-1604
   # - INSTANCE=smoke-amazonlinux

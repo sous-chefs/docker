@@ -135,7 +135,7 @@ module DockerCookbook
         return '1.7.1' if el6?
         return '17.03.1' if amazon?
         return '17.04.0' if precise?
-        '17.06.1'
+        '17.06.2'
       end
 
       def default_package_name
