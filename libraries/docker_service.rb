@@ -31,15 +31,6 @@ module DockerCookbook
     ################
     # Helper Methods
     ################
-    def validate_install_method
-      if property_is_set?(:version) &&
-         install_method != 'binary' &&
-         install_method != 'package' &&
-         install_method != 'tarball'
-        raise Chef::Exceptions::ValidationFailed, 'Version property only supported for binary, package and tarball installation methods'
-      end
-    end
-
     def copy_properties_to(to, *properties)
       properties = self.class.properties.keys if properties.empty?
       properties.each do |p|
@@ -52,6 +43,15 @@ module DockerCookbook
     end
 
     action_class.class_eval do
+      def validate_install_method
+        if property_is_set?(:version) &&
+           new_resource.install_method != 'binary' &&
+           new_resource.install_method != 'package' &&
+           new_resource.install_method != 'tarball'
+          raise Chef::Exceptions::ValidationFailed, 'Version property only supported for binary, package and tarball installation methods'
+        end
+      end
+
       def installation(&block)
         case new_resource.install_method
         when 'auto'

@@ -98,9 +98,9 @@ module DockerCookbook
       if current_resource
         container_index = current_resource.network.info['Containers'].values.index { |c| c['Name'] == new_resource.container }
         if container_index.nil?
-          converge_by("connect #{container}") do
+          converge_by("connect #{new_resource.container}") do
             with_retries do
-              network.connect(container)
+              current_resource.network.connect(new_resource.container)
             end
           end
         end
@@ -115,11 +115,11 @@ module DockerCookbook
       end
 
       if current_resource
-        container_index = current_resource.network.info['Containers'].values.index { |c| c['Name'] == container }
+        container_index = current_resource.network.info['Containers'].values.index { |c| c['Name'] == new_resource.container }
         unless container_index.nil?
-          converge_by("disconnect #{container}") do
+          converge_by("disconnect #{new_resource.container}") do
             with_retries do
-              network.disconnect(container)
+              current_resource.network.disconnect(new_resource.container)
             end
           end
         end
