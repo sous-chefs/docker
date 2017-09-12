@@ -4,8 +4,8 @@ driver:
   chef_version: current
   privileged: true
   volumes: [
-  '/var/lib/docker', '/var/lib/docker-one', '/var/lib/docker-two'
-  ]
+    '/var/lib/docker', '/var/lib/docker-one', '/var/lib/docker-two'
+    ]
 
 transport:
   name: dokken
@@ -196,6 +196,6 @@ suites:
   excludes: [
     'centos-6',
     'opensuse-13.2',
-  ]
+    ]
   run_list:
   - recipe[docker_test::smoke]
