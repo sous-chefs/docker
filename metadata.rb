@@ -1,5 +1,5 @@
 name 'docker'
-maintainer 'Cookbook Engineering Team'
+maintainer 'Chef Software, Inc.'
 maintainer_email 'cookbooks@chef.io'
 license 'Apache-2.0'
 description 'Provides docker_service, docker_image, and docker_container resources'
