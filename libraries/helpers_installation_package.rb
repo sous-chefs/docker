@@ -17,8 +17,7 @@ module DockerCookbook
       end
 
       def debuntu?
-        return true if node['platform'] == 'debian'
-        return true if node['platform'] == 'ubuntu'
+        return true if node['platform_family'] == 'debian'
         false
       end
 
