@@ -17,7 +17,7 @@ aufs.
 
 ## Requirements
 
-- Chef 12.5.x or higher. Chef 11 is NOT SUPPORTED, please do not open issues about it.
+- Chef 12.7 or later
 - Network accessible web server hosting the docker binary.
 - SELinux permissive/disabled if CentOS [Docker Issue #15498](https://github.com/docker/docker/issues/15498)
 
