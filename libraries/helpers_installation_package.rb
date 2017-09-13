@@ -46,16 +46,6 @@ module DockerCookbook
         false
       end
 
-      def vivid?
-        return true if node['platform'] == 'ubuntu' && node['platform_version'] == '15.04'
-        false
-      end
-
-      def wily?
-        return true if node['platform'] == 'ubuntu' && node['platform_version'] == '15.10'
-        false
-      end
-
       def xenial?
         return true if node['platform'] == 'ubuntu' && node['platform_version'] == '16.04'
         false
@@ -108,10 +98,6 @@ module DockerCookbook
                        '-precise'
                      elsif trusty?
                        '-trusty'
-                     elsif vivid?
-                       '-vivid'
-                     elsif wily?
-                       '-wily'
                      elsif xenial?
                        '-xenial'
                      elsif zesty?
