@@ -47,7 +47,7 @@ This cookbook has a loose dependency on the official docker repositories, which 
 
 If you are not using the official docker repositories you may run into issues with the docker group being different. RHEL is a known issue that defaults to using `dockerroot` for the service group. Add the `group` property to the `docker_service`.
 
-```
+```ruby
 docker_service 'default' do
   group 'dockerroot'
   action [:create, :start]
@@ -83,7 +83,7 @@ The cookbooks ran under test-kitchen make excellent usage examples.
 
 The test recipes are found at:
 
-```ruby
+```
 test/cookbooks/docker_test/
 ```
 
@@ -213,6 +213,7 @@ end
 See full documentation for each resource and action below for more information.
 
 ## Resources Details
+
 ## docker_installation
 
 The `docker_installation` resource auto-selects one of the below
