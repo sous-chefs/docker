@@ -14,7 +14,6 @@ container engine as distributed by Docker, Inc. It does not address
 Docker ecosystem tooling or prerequisite technology such as cgroups or
 aufs.
 
-
 ## Requirements
 
 - Chef 12.7 or later
@@ -1417,12 +1416,9 @@ Please see contributing information in:
 
 - Sean OMeara ([sean@sean.io](mailto:sean@sean.io))
 - Brian Flad ([bflad417@gmail.com](mailto:bflad417@gmail.com))
-- Tom Duffield (<http://tomduffield.com>)
-- Fletcher Nichol ([fnichol@nichol.ca](mailto:fnichol@nichol.ca))
 - Chase Bolt ([chase.bolt@gmail.com](mailto:chase.bolt@gmail.com))
 
 ## License
-
 
 **Copyright:** 2015-2017, Chef Software, Inc.
 
