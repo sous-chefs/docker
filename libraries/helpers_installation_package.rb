@@ -17,8 +17,7 @@ module DockerCookbook
       end
 
       def debuntu?
-        return true if node['platform'] == 'debian'
-        return true if node['platform'] == 'ubuntu'
+        return true if node['platform_family'] == 'debian'
         false
       end
 
@@ -44,16 +43,6 @@ module DockerCookbook
 
       def trusty?
         return true if node['platform'] == 'ubuntu' && node['platform_version'] == '14.04'
-        false
-      end
-
-      def vivid?
-        return true if node['platform'] == 'ubuntu' && node['platform_version'] == '15.04'
-        false
-      end
-
-      def wily?
-        return true if node['platform'] == 'ubuntu' && node['platform_version'] == '15.10'
         false
       end
 
@@ -109,10 +98,6 @@ module DockerCookbook
                        '-precise'
                      elsif trusty?
                        '-trusty'
-                     elsif vivid?
-                       '-vivid'
-                     elsif wily?
-                       '-wily'
                      elsif xenial?
                        '-xenial'
                      elsif zesty?
