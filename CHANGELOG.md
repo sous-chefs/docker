@@ -2,6 +2,14 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.16.0 (2017-09-18)
+
+- Use docker-api 1.33.6 which includes a few fixes
+- This cookbook actually requires Chef 12.7+ so make sure that's mentioned everywhere
+- Simplify debian/ubuntu detection code
+- Remove support for long ago EOL Ubuntu distros like 15.04/15.10
+- Update Amazon Linux to default to 17.03.2
+
 ## 2.15.29 (2017-09-12)
 
 - Resolve Chef 14 deprecation warnings in docker_network
