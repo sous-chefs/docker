@@ -30,6 +30,7 @@ module DockerCookbook
     property :domain_name, String, default: ''
     property :entrypoint, ShellCommand
     property :env, UnorderedArrayType, default: []
+    property :env_file, String, default: ''
     property :extra_hosts, NonEmptyArray
     property :exposed_ports, PartialHashType, default: {}
     property :force, Boolean, desired_state: false
@@ -306,6 +307,18 @@ module DockerCookbook
             },
           } if new_resource.network_mode
           config.merge! net_config
+
+          if ::File.exists? env_file
+            env_file_arr = []
+            envs = ::File.open(env_file).each_line do |l|
+              l = l.chomp
+              env_file_arr << l unless ( l.nil? || l.empty? )
+            end
+            env_file_config = {
+              'Env' => new_resource.env + env_file_arr
+            }
+            config.merge! env_file_config
+          end
 
           Docker::Container.create(config, connection)
         end
