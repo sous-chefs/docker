@@ -308,14 +308,14 @@ module DockerCookbook
           } if new_resource.network_mode
           config.merge! net_config
 
-          if ::File.exists? new_resource.env_file
+          if ::File.exist? new_resource.env_file
             env_file_arr = []
             ::File.open(new_resource.env_file).each_line do |l|
               l = l.chomp
-              env_file_arr << l unless ( l.nil? || l.empty? )
+              env_file_arr << l unless l.nil? || l.empty?
             end
             env_file_config = {
-              'Env' => new_resource.env + env_file_arr
+              'Env' => new_resource.env + env_file_arr,
             }
             config.merge! env_file_config
           end
