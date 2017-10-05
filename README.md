@@ -785,6 +785,15 @@ docker_container 'env' do
 end
 ```
 
+```ruby
+docker_container 'env_files' do
+  repo 'debian'
+  env_file lazy { ['/env_file1', '/env_file2'] }
+  command 'env'
+  action :run
+end
+```
+
 - This process remains running between chef-client runs, :run will do nothing on subsequent converges.
 
 ```ruby
@@ -1145,6 +1154,7 @@ Most `docker_container` properties are the `snake_case` version of the `CamelCas
 - `domain_name` - Set's the container's dnsdomainname as returned by the `dnsdomainname` command.
 - `entrypoint` - Set the entry point for the container as a string or an array of strings.
 - `env` - Set environment variables in the container in the form `['FOO=bar', 'BIZ=baz']`
+- `env_file` - Read environment variables from a file and set in the container. Accepts an Array or String to the file location. lazy evaluator must be set if the file passed is created by Chef.
 - `extra_hosts` - An array of hosts to add to the container's `/etc/hosts` in the form `['host_a:10.9.8.7', 'host_b:10.9.8.6']`
 - `force` - A boolean to use in container operations that support a `force` option. Defaults to `false`
 - `host` - A string containing the host the API should communicate with. Defaults to ENV['DOCKER_HOST'] if set

@@ -224,6 +224,11 @@ module DockerCookbook
         end
       end
 
+      def coerce_env_file(v)
+        return v if v.empty?
+        Array(v).map { |f| ::File.readlines(f).map(&:strip) }.flatten
+      end
+
       # log_driver and log_opts really handle this
       def log_config(value = Chef::NOT_PASSED)
         if value != Chef::NOT_PASSED
