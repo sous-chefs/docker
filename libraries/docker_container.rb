@@ -136,6 +136,14 @@ module DockerCookbook
       restart_maximum_retry_count container.info['HostConfig']['RestartPolicy']['MaximumRetryCount']
       volumes_binds container.info['HostConfig']['Binds']
       ro_rootfs container.info['HostConfig']['ReadonlyRootfs']
+      if container.info['NetworkSettings'] &&
+         container.info['NetworkSettings']['Networks'] &&
+         container.info['NetworkSettings']['Networks'][network_mode] &&
+         container.info['NetworkSettings']['Networks'][network_mode]['IPAMConfig'] &&
+         container.info['NetworkSettings']['Networks'][network_mode]['IPAMConfig']['IPv4Address']
+
+        ip_address container.info['NetworkSettings']['Networks'][network_mode]['IPAMConfig']['IPv4Address']
+      end
     end
 
     #########
