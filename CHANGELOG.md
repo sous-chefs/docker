@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.16.1 (2017-10-05)
+- added support for env_file property
+- bumping to 17.09.0
+
 ## 2.16.0 (2017-09-18)
 
 - Use docker-api 1.33.6 which includes a few fixes
