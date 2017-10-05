@@ -2,6 +2,9 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.16.2 (2017-10-05)
+- fix for ip_address not being set
+
 ## 2.16.1 (2017-10-05)
 - added support for env_file property
 - bumping to 17.09.0
