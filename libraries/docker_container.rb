@@ -30,6 +30,7 @@ module DockerCookbook
     property :domain_name, String, default: ''
     property :entrypoint, ShellCommand
     property :env, UnorderedArrayType, default: []
+    property :env_file, [Array, String], coerce: proc { |v| coerce_env_file(v) }, default: [], desired_state: false
     property :extra_hosts, NonEmptyArray
     property :exposed_ports, PartialHashType, default: {}
     property :force, Boolean, desired_state: false
@@ -244,7 +245,7 @@ module DockerCookbook
             'AttachStdout'    => new_resource.attach_stdout,
             'Domainname'      => new_resource.domain_name,
             'Entrypoint'      => to_shellwords(new_resource.entrypoint),
-            'Env'             => new_resource.env,
+            'Env'             => new_resource.env + new_resource.env_file,
             'ExposedPorts'    => new_resource.exposed_ports,
             'Hostname'        => parsed_hostname,
             'MacAddress'      => new_resource.mac_address,

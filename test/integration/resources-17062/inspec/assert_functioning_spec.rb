@@ -398,7 +398,19 @@ end
 
 describe command('docker inspect -f "{{ .Config.Env }}" env') do
   its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(%r{\[PATH=\/usr\/bin FOO=bar\]}) }
+  its(:stdout) { should match(%r{\[PATH=\/usr\/bin FOO=bar GOODBYE=TOMPETTY 1950=2017\]}) }
+end
+
+# docker_container[env_files]
+
+describe command("docker ps -af 'name=env_files$'") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/Exited/) }
+end
+
+describe command('docker inspect -f "{{ .Config.Env }}" env_files') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/\[GOODBYE=TOMPETTY 1950=2017 HELLO=WORLD /) }
 end
 
 # docker_container[ohai_again]

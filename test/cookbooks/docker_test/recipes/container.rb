@@ -339,10 +339,32 @@ end
 # env
 #####
 
-# Inspect container logs with test-kitchen bussers
+file '/env_file1' do
+  content <<-EOF
+  GOODBYE=TOMPETTY
+  1950=2017
+  EOF
+  action :create
+end
+
+file '/env_file2' do
+  content <<-EOF
+  HELLO=WORLD
+  EOF
+  action :create
+end
+
 docker_container 'env' do
   repo 'debian'
   env ['PATH=/usr/bin', 'FOO=bar']
+  env_file lazy { '/env_file1' }
+  command 'env'
+  action :run_if_missing
+end
+
+docker_container 'env_files' do
+  repo 'debian'
+  env_file lazy { ['/env_file1', '/env_file2'] }
   command 'env'
   action :run_if_missing
 end
