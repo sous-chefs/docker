@@ -872,6 +872,18 @@ describe command("docker inspect --format '{{ .HostConfig.PidMode }}' pid_mode")
   its(:stdout) { eq 'host' }
 end
 
+# docker_container[init]
+
+describe command("docker ps -af 'name=init$'") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/Exited \(0\)/) }
+end
+
+describe command("docker inspect --format '{{ .HostConfig.Init }}' init") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { eq 'true' }
+end
+
 # docker_container[ipc_mode]
 
 describe command("docker ps -af 'name=ipc_mode$'") do

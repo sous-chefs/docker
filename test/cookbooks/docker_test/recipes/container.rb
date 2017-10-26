@@ -996,6 +996,19 @@ docker_container 'pid_mode' do
   action :run_if_missing
 end
 
+######
+# init
+######
+
+# docker inspect init | grep '"Init": true'
+docker_container 'init' do
+  repo 'alpine'
+  tag '3.1'
+  command 'ls -la'
+  init true
+  action :run_if_missing
+end
+
 ##########
 # ipc_mode
 ##########
