@@ -1163,6 +1163,7 @@ Most `docker_container` properties are the `snake_case` version of the `CamelCas
 - `links` - An array of source container/alias pairs to link the container to in the form `[container_a:www', container_b:db']`
 - `log_driver` - Sets a custom logging driver for the container (json-file/syslog/journald/gelf/fluentd/none).
 - `log_opts` - Configures the above logging driver options (driver-specific).
+- `init` - Run an init inside the container that forwards signals and reaps processes.
 - `ip_address` - Container IPv4 address (e.g. 172.30.100.104)
 - `mac_address` - The mac address for the container to use.
 - `memory` - Memory limit in bytes.

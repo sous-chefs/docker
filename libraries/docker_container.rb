@@ -42,6 +42,7 @@ module DockerCookbook
     property :links, UnorderedArrayType, coerce: proc { |v| coerce_links(v) }
     property :log_driver, %w( json-file syslog journald gelf fluentd awslogs splunk etwlogs gcplogs none ), default: 'json-file', desired_state: false
     property :log_opts, [Hash, nil], coerce: proc { |v| coerce_log_opts(v) }, desired_state: false
+    property :init, [Boolean, nil]
     property :ip_address, String
     property :mac_address, String
     property :memory, [String, Integer], coerce: proc { |v| coerce_memory(v) }, default: 0
@@ -276,6 +277,7 @@ module DockerCookbook
               'DnsSearch'       => new_resource.dns_search,
               'ExtraHosts'      => new_resource.extra_hosts,
               'IpcMode'         => new_resource.ipc_mode,
+              'Init'            => new_resource.init,
               'KernelMemory'    => new_resource.kernel_memory,
               'Links'           => new_resource.links,
               'LogConfig'       => log_config,
