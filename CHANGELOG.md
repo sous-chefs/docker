@@ -2,6 +2,9 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.16.4 (2017-10-30)
+- quote log_opt
+
 ## 2.16.3 (2017-10-26)
 - add init support to docker_container
 
