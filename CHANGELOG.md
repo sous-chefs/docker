@@ -2,6 +2,9 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 2.17.0 (2017-11-10)
+ - Update Amazon Linux to default to 17.06.2
+
 ## 2.16.4 (2017-10-30)
 - quote log_opt
 
