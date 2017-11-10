@@ -123,13 +123,13 @@ suites:
 # docker_installation_package resource
 ######################################
 
-- name: installation_package-17032
+- name: installation_package-17062
   includes: [
     'amazonlinux', # for dokken
     ]
   attributes:
     docker:
-      version: '17.03.2'
+      version: '17.06.2'
   run_list:
   - recipe[docker_test::installation_package]
 
