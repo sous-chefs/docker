@@ -337,9 +337,9 @@ if defined?(ChefSpec)
     ChefSpec::Matchers::ResourceMatcher.new(:docker_exec, :run, resource_name)
   end
 
-  ###############
+  ######################
   # docker_swarm_manager
-  ###############
+  ######################
   ChefSpec.define_matcher :docker_swarm_manager
 
   def create_docker_swarm_manager(resource_name)
@@ -347,4 +347,50 @@ if defined?(ChefSpec)
                                             resource_name)
   end
 
+  def destroy_docker_swarm_manager(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_swarm_manager, :destroy,
+                                            resource_name)
+  end
+
+  def drain_docker_swarm_manager(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_swarm_manager, :drain,
+                                            resource_name)
+  end
+
+  #####################
+  # docker_swarm_worker
+  #####################
+  ChefSpec.define_matcher :docker_swarm_worker
+
+  def create_docker_swarm_worker(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_swarm_worker, :create,
+                                            resource_name)
+  end
+
+  def destroy_docker_swarm_worker(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_swarm_worker, :destroy,
+                                            resource_name)
+  end
+
+  def drain_docker_swarm_worker(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_swarm_worker, :drain,
+                                            resource_name)
+  end
+
+  ##############################
+  # docker_swarm_overlay_network
+  ##############################
+  ChefSpec.define_matcher :docker_swarm_overlay_network
+
+  def create_docker_swarm_overlay_network(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_swarm_overlay_network,
+                                            :create,
+                                            resource_name)
+  end
+
+  def destroy_docker_swarm_overlay_network(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_swarm_overlay_network,
+                                            :destroy,
+                                            resource_name)
+  end
 end

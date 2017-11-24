@@ -9,7 +9,14 @@ describe 'docker_test::swarm' do
 
   describe 'Cluster creation' do
     it 'creates a docker_swarm_manager resource' do
-      expect(chef_run).to create_docker_swarm_manager('test').with(init: true)
+      expect(chef_run).to create_docker_swarm_manager('test')
+        .with(first_manager: true)
+    end
+  end
+
+  describe 'Overlay network creation' do
+    it 'creates a docker_swarm_overlay_network resource' do
+      expect(chef_run).to create_docker_swarm_overlay_network('test_network')
     end
   end
 end

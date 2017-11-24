@@ -2,20 +2,15 @@ require 'docker-swarm'
 
 module DockerCookbook
   # Initialize a docker swarm
-  class DockerSwarmManager < DockerSwarmBase
-    require_relative 'helpers_swarm_manager'
+  class DockerSwarmManager < DockerSwarmNodeBase
+    require_relative 'helpers_swarm_cluster'
 
-    include DockerHelpers::SwarmManager
+    include DockerHelpers::SwarmCluster
 
     # Resource properties
     resource_name :docker_swarm_manager
 
-    property :cluster_name, String, name_propery: true
-    property :listen_address, String, default: '0.0.0.0:2377'
     property :first_manager, Boolean, default: false
-
-    property :worker_join_token, String
-    property :manager_join_token, String
 
     declare_action_class.class_eval do
       def whyrun_supported?
@@ -33,8 +28,11 @@ module DockerCookbook
           manager_init
         end
       else
+        if join_address.nil? || join_token.nil?
+          raise 'Provide join_address & join_token or set `first_manager true`'
+        end
         converge_by 'Running swarm join' do
-          manager_join
+          cluster_join(:manager, join_address, join_token)
         end
       end
     end
