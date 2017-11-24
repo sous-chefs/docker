@@ -21,7 +21,7 @@ rescue LoadError
     require 'chef/resource/chef_gem'
 
     docker = Chef::Resource::ChefGem.new('docker-swarm-sdk', run_context)
-    docker.version '= 1.2.9'
+    docker.version '= 1.2.4'
     docker.run_action(:install)
   end
 end
