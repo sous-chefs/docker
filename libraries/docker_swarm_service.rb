@@ -7,6 +7,8 @@ module DockerCookbook
 
     include DockerHelpers::SwarmService
 
+    resource_name :docker_swarm_service
+
     property :service_name, String, name_propery: true
 
     property :image, String, required: true
@@ -48,6 +50,12 @@ module DockerCookbook
       end
     end
 
+    #########
+    # Actions
+    #########
+
+    default_action :create
+
     action :create do
       ensure_swarm_available!
 
@@ -60,7 +68,7 @@ module DockerCookbook
 
     action :destroy do
       ensure_swarm_available!
-      return unless current_service service
+      return unless current_service
 
       converge_by 'Delete service' do
         current_service.remove

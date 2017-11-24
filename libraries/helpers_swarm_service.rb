@@ -1,9 +1,11 @@
+require 'active_support/core_ext'
+
 module DockerCookbook
   module DockerHelpers
     # Helpers for Docker Swarm Networks
     module SwarmService
       def current_service
-        @current_service ||= current_swarm.find_service_by_name(service_name)
+        @current_service ||= current_swarm.find_service_by_name(name)
       end
 
       def current_service_changed?
@@ -36,7 +38,7 @@ module DockerCookbook
           'UpdateConfig' => service_update_spec(:update),
           'RollbackConfig' => service_update_spec(:rollback),
           'Labels' => labels,
-          'Networks' => networks,
+          'Networks' => service_network_spec,
         }
       end
 
@@ -45,7 +47,7 @@ module DockerCookbook
           'Networks' => [],
           'Image' => image,
           'User' => user,
-          'Mounts' => '',
+          'Mounts' => [],
         }
       end
 
@@ -95,12 +97,18 @@ module DockerCookbook
 
       def service_update_spec(kind)
         {
-          'Delay' => send("#{kind}_delay"),
+          'Delay' => send("#{kind}_delay") * 1_000_000_000,
           'Parallelism' => send("#{kind}_parallelism"),
-          'Monitor' => send("#{kind}_monitor"),
+          'Monitor' => send("#{kind}_monitor") * 1_000_000_000,
           'MaxFailureRatio' => send("#{kind}_max_failure_ratio"),
           'FailureAction' => send("#{kind}_failure_action"),
         }
+      end
+
+      def service_network_spec
+        networks.map do |network_name|
+          { 'Target' => network_name }
+        end
       end
     end
   end
