@@ -19,19 +19,18 @@ module DockerCookbook
         raise msg unless version[0].to_i >= 1 && version[1].to_i >= 12
       end
 
-      def fetch_current_node
-        swarm_node = Docker::Swarm::Node.new(current_swarm,
-                                             'ID' => current_swarm.id)
-        swarm_node.refresh
-        swarm_node
+      def fetch_current_swarm_node
+        current_swarm.nodes.each do |swarm_node|
+          return swarm_node if swarm_node.id == current_swarm.id
+        end
       end
 
       def current_swarm
-        @current_swarm ||= Docker::Swarm::Swarm.swarm(connection)
+        @current_swarm ||= Docker::Swarm::Swarm.find(connection)
       end
 
       def current_swarm_node
-        @current_swarm_node ||= fetch_current_node
+        @current_swarm_node ||= fetch_current_swarm_node
       end
     end
   end

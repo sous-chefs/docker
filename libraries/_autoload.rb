@@ -13,9 +13,7 @@ rescue LoadError
 end
 
 begin
-  gem 'docker-swarm-sdk',
-      github: 'elthariel/docker_swarm_sdk',
-      branch: 'fix/swarm_init_typo'
+  gem 'docker-swarm-sdk', '~> 1.2.4'
 rescue LoadError
   unless defined?(ChefSpec)
     run_context = Chef::RunContext.new(Chef::Node.new, {}, Chef::EventDispatch::Dispatcher.new)
