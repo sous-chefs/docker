@@ -393,4 +393,22 @@ if defined?(ChefSpec)
                                             :destroy,
                                             resource_name)
   end
+
+  ######################
+  # docker_swarm_service
+  ######################
+  ChefSpec.define_matcher :docker_swarm_service
+
+  def create_docker_swarm_service(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_swarm_service,
+                                            :create,
+                                            resource_name)
+  end
+
+  def destroy_docker_swarm_service(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(:docker_swarm_service,
+                                            :destroy,
+                                            resource_name)
+  end
+
 end

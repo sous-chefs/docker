@@ -37,7 +37,7 @@ module DockerCookbook
       def cluster_join(type, join_address, join_token)
         opts = {
           'manager_ip' => join_address,
-          'node_ip' => listen_address
+          'node_ip' => listen_address,
         }
 
         with_retries do

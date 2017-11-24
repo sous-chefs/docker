@@ -1,7 +1,8 @@
 require 'docker-swarm'
 
 module DockerCookbook
-  # Initialize a docker swarm
+  require_relative 'docker_swarm_node_base'
+  # Docker swarm manager init and join
   class DockerSwarmManager < DockerSwarmNodeBase
     require_relative 'helpers_swarm_cluster'
 
@@ -18,7 +19,12 @@ module DockerCookbook
       end
     end
 
-    # Resource actions
+    #########
+    # Actions
+    #########
+
+    default_action :create
+
     action :create do
       ensure_swarm_available!
       return if cluster_initialized?

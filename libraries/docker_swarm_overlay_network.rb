@@ -7,6 +7,8 @@ module DockerCookbook
 
     include DockerHelpers::SwarmNetwork
 
+    # Resource properties
+    resource_name :docker_swarm_overlay_network
     property :network_name, String, name_propery: true
 
     declare_action_class.class_eval do
@@ -14,6 +16,12 @@ module DockerCookbook
         true
       end
     end
+
+    #########
+    # Actions
+    #########
+
+    default_action :create
 
     action :create do
       ensure_swarm_available!

@@ -12,23 +12,26 @@ module DockerCookbook
       end
 
       def ensure_swarm_available!
+        # XXX: Raise an error when Docker is not installed/running
+
         version = Docker.version['ApiVersion'].split('.')
         msg = 'Docker API Version >= 1.12 is required to use Docker Swarm'
         raise msg unless version[0].to_i >= 1 && version[1].to_i >= 12
       end
 
       def fetch_current_node
-        node = Docker::Swarm::Node.new(current_swarm, 'ID' => current_swarm.id)
-        node.refresh
-        node
+        swarm_node = Docker::Swarm::Node.new(current_swarm,
+                                             'ID' => current_swarm.id)
+        swarm_node.refresh
+        swarm_node
       end
 
       def current_swarm
         @current_swarm ||= Docker::Swarm::Swarm.swarm(connection)
       end
 
-      def current_node
-        @current_node ||= fetch_current_node
+      def current_swarm_node
+        @current_swarm_node ||= fetch_current_node
       end
     end
   end

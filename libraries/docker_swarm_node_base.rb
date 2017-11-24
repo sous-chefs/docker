@@ -25,10 +25,10 @@ module DockerCookbook
     action :drain do
       ensure_swarm_available!
       return unless cluster_initialized?
-      return if current_node.running_tasks.zero?
+      return if current_swarm_node.running_tasks == 0
 
       converge_by 'Draining node' do
-        current_node.drain(drain_opts)
+        current_swarm_node.drain(drain_opts)
       end
     end
 
