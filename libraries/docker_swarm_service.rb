@@ -29,7 +29,7 @@ module DockerCookbook
 
     property :global, Boolean, required: true, default: false
     property :replicas, Integer, default: 1
-    property :ports, Hash, default: {}
+    property :ports, Array, default: []
     property :labels, Hash, default: {}
 
     %i(update rollback).each do |kind|
