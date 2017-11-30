@@ -66,6 +66,11 @@ module DockerCookbook
       end
     end
 
+    action :update do
+      ensure_swarm_available!
+      converge_by('Update service') { update_service }
+    end
+
     action :destroy do
       ensure_swarm_available!
       return unless current_service
