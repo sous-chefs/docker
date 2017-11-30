@@ -8,9 +8,24 @@ module DockerCookbook
         @current_service ||= current_swarm.find_service_by_name(name)
       end
 
+      def find_network_by_name(name)
+        current_swarm.networks.each do |net|
+          return net if net.name == name
+        end
+      end
+
+      def network_name_to_id(name)
+        net = find_network_by_name name
+        return net.id if net
+      end
+
       def current_service_changed?
         current_spec = current_service.hash['Spec']
         new_spec = current_spec.deep_dup.deep_merge(service_spec)
+
+        # This helps debug idempotency
+        Chef::Log.debug "Current spec for #{name}: #{current_spec.inspect}"
+        Chef::Log.debug "Computed spec for #{name}: #{new_spec.inspect}"
         current_spec != new_spec
       end
 
@@ -23,11 +38,10 @@ module DockerCookbook
       end
 
       def service_spec
-        {
+        spec = {
           'Name' => name,
           'TaskTemplate' => {
             'ContainerSpec' => service_container_spec,
-            'Env' => format_env,
             'LogDriver' => service_log_driver_spec,
             'Placement' => {},
             'Resources' => service_resources_spec,
@@ -37,17 +51,28 @@ module DockerCookbook
           'EndpointSpec' => { 'Ports' => service_endpoint_ports_spec },
           'UpdateConfig' => service_update_spec(:update),
           'RollbackConfig' => service_update_spec(:rollback),
-          'Labels' => labels,
+          'Labels' => format_labels,
           'Networks' => service_network_spec,
         }
+
+        spec['TaskTemplate']['Env'] = format_env unless environment.empty?
+
+        spec
+      end
+
+      def format_labels
+        labels.inject({}) do |memo, (key, value)|
+          memo[key.to_s] = value
+          memo
+        end
       end
 
       def service_container_spec
         {
-          'Networks' => [],
+          # 'Networks' => [],
           'Image' => image,
           'User' => user,
-          'Mounts' => [],
+          # 'Mounts' => [],
         }
       end
 
@@ -91,23 +116,30 @@ module DockerCookbook
             'Protocol' => hash[:proto] || 'tcp',
             'PublishedPort' => hash[:published],
             'TargetPort' => hash[:target],
+            'PublishMode' => 'ingress',
           }
         end
       end
 
       def service_update_spec(kind)
+        # This is rather stupid, but it is required for idempotency
+        ratio = send("#{kind}_max_failure_ratio")
+        ratio = ratio.to_i if ratio.to_i == ratio
+
         {
           'Delay' => send("#{kind}_delay") * 1_000_000_000,
           'Parallelism' => send("#{kind}_parallelism"),
           'Monitor' => send("#{kind}_monitor") * 1_000_000_000,
-          'MaxFailureRatio' => send("#{kind}_max_failure_ratio"),
+          'MaxFailureRatio' => ratio,
           'FailureAction' => send("#{kind}_failure_action"),
         }
       end
 
       def service_network_spec
         networks.map do |network_name|
-          { 'Target' => network_name }
+          network_id = network_name_to_id network_name
+
+          { 'Target' => network_id || network_name }
         end
       end
     end

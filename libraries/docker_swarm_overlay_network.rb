@@ -25,17 +25,17 @@ module DockerCookbook
 
     action :create do
       ensure_swarm_available!
-      return if network_find(name)
+      return if network_find(new_resource.name)
 
       converge_by 'Create overlay network' do
-        create_overlay_network(name)
+        create_overlay_network(new_resource.name)
       end
     end
 
     action :destroy do
       ensure_swarm_available!
 
-      network = network_find(name)
+      network = network_find(new_resource.name)
       return unless network
 
       converge_by 'Destroying network' do
