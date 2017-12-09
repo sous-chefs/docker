@@ -109,7 +109,7 @@ module DockerCookbook
 
         return "#{v}#{edition}-1.el6" if el6?
         return "#{v}#{edition}-1.el7.centos" if el7?
-        return "#{v}#{edition}-1.93.amzn1" if amazon?
+        return "#{v}#{edition}-1.94.amzn1" if amazon?
         return "#{v}#{edition}-1.fc#{node['platform_version'].to_i}" if fedora?
         return "#{v}#{edition}-0~#{debian_prefix}#{codename}" if node['platform'] == 'debian'
         return "#{v}#{edition}-0~#{ubuntu_prefix}#{codename}" if node['platform'] == 'ubuntu'
