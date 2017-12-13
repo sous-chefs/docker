@@ -6,16 +6,8 @@ module DockerCookbook
       node['platform_version'].to_f < 8.0
     end
 
-    provides :docker_service_manager, platform: 'ubuntu' do |node|
-      node['platform_version'].to_f < 12.04
-    end
-
     provides :docker_service_manager_sysvinit, platform: 'debian' do |node|
       node['platform_version'].to_f < 8.0
-    end
-
-    provides :docker_service_manager_sysvinit, platform: 'ubuntu' do |node|
-      node['platform_version'].to_f < 12.04
     end
 
     action :start do
