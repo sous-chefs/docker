@@ -2,8 +2,10 @@ module DockerCookbook
   class DockerServiceManagerUpstart < DockerServiceBase
     resource_name :docker_service_manager_upstart
 
-    provides :docker_service_manager, platform: 'ubuntu'
-    provides :docker_service_manager, platform: 'linuxmint'
+    provides :docker_service_manager, platform_family: 'debian' do |_node|
+      Chef::Platform::ServiceHelpers.service_resource_providers.include?(:upstart) &&
+        !Chef::Platform::ServiceHelpers.service_resource_providers.include?(:systemd)
+    end
 
     action :start do
       create_docker_wait_ready
