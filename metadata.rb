@@ -17,4 +17,5 @@ supports 'fedora'
 supports 'redhat'
 supports 'ubuntu'
 
-chef_version '>= 12.7' if respond_to?(:chef_version)
+chef_version '>= 12.10' if respond_to?(:chef_version)
+gem 'docker-api', '= 1.34.0'
