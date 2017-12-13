@@ -55,9 +55,9 @@ platforms:
   run_list:
     - recipe[chef-yum-docker]
 
-- name: fedora-25
+- name: fedora-26
   driver:
-    image: dokken/fedora-25
+    image: dokken/fedora-26
     pid_one_command: /usr/lib/systemd/systemd
   run_list:
     - recipe[chef-yum-docker]
@@ -141,7 +141,7 @@ suites:
     'ubuntu-14.04',
     'ubuntu-16.04',
     'ubuntu-17.04',
-    'fedora-25',
+    'fedora-26',
    ]
   attributes:
     docker:
