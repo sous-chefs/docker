@@ -15,18 +15,17 @@ aufs.
 
 ## Requirements
 
-- Chef 12.7 or later
+- Chef 12.10 or later
 - Network accessible web server hosting the docker binary.
 - SELinux permissive/disabled if CentOS [Docker Issue #15498](https://github.com/docker/docker/issues/15498)
 
 ## Platform Support
 
 - Amazon Linux
-- Debian 7/8/9
+- Debian 8/9
 - Fedora
 - Ubuntu 14.04/16.04
 - CentOS 7
-
 
 ## Cookbook Dependencies
 

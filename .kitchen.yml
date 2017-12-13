@@ -55,9 +55,9 @@ platforms:
   run_list:
     - recipe[chef-yum-docker]
 
-- name: fedora-25
+- name: fedora-26
   driver:
-    image: dokken/fedora-25
+    image: dokken/fedora-26
     pid_one_command: /usr/lib/systemd/systemd
   run_list:
     - recipe[chef-yum-docker]
@@ -141,11 +141,11 @@ suites:
     'ubuntu-14.04',
     'ubuntu-16.04',
     'ubuntu-17.04',
-    'fedora-25',
+    'fedora-26',
    ]
   attributes:
     docker:
-      version: '17.09.0'
+      version: '17.09.1'
   run_list:
   - recipe[docker_test::installation_package]
 
@@ -159,7 +159,7 @@ suites:
    ]
   attributes:
     docker:
-      version: '17.09.0'
+      version: '17.09.1'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::image]
@@ -172,7 +172,7 @@ suites:
    ]
   attributes:
     docker:
-      version: '17.09.0'
+      version: '17.09.1'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::network]
@@ -183,7 +183,7 @@ suites:
    ]
   attributes:
     docker:
-      version: '17.09.0'
+      version: '17.09.1'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::volume]
@@ -195,7 +195,6 @@ suites:
 - name: smoke
   excludes: [
     'centos-6',
-    'opensuse-13.2',
     ]
   run_list:
   - recipe[docker_test::smoke]
