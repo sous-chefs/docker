@@ -36,11 +36,6 @@ module DockerCookbook
         false
       end
 
-      def precise?
-        return true if node['platform'] == 'ubuntu' && node['platform_version'] == '12.04'
-        false
-      end
-
       def trusty?
         return true if node['platform'] == 'ubuntu' && node['platform_version'] == '14.04'
         false
@@ -94,8 +89,6 @@ module DockerCookbook
                        '-jessie'
                      elsif stretch?
                        '-stretch'
-                     elsif precise?
-                       '-precise'
                      elsif trusty?
                        '-trusty'
                      elsif xenial?
@@ -119,7 +112,6 @@ module DockerCookbook
       def default_docker_version
         return '1.7.1' if el6?
         return '17.06.2' if amazon?
-        return '17.04.0' if precise?
         '17.09.0'
       end
 
