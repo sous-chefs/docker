@@ -2,13 +2,24 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 3.0.0 (2017-12-22)
+
+- Install docker-api via gem metadata. This bumps the required chef release for this cookbook to 12.10+
+- Removed support for Ubuntu Precise
+- Reworked the init system detection logic to work on additional platforms and without hardcoded distro version numbers
+- Removed shasums from the binary installation resource for Docker 1.6-1.9.1 which are long ago EOL Docker releases
+- Test on newer releases of openSUSE and Fedora and test on the latest Docker release
+
 ## 2.17.0 (2017-11-10)
+
  - Update Amazon Linux to default to 17.06.2
 
 ## 2.16.4 (2017-10-30)
+
 - quote log_opt
 
 ## 2.16.3 (2017-10-26)
+
 - add init support to docker_container
 
 ## 2.16.2 (2017-10-05)
