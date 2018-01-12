@@ -71,6 +71,16 @@ module DockerCookbook
       converge_by('Update service') { update_service }
     end
 
+    action :force_update do
+      ensure_swarm_available!
+      converge_by('Update service [forced]') { update_service(true) }
+    end
+
+    action :restart do
+      ensure_swarm_available!
+      converge_by('Restart service') { restart_service }
+    end
+
     action :destroy do
       ensure_swarm_available!
       return unless current_service

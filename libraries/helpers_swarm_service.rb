@@ -33,8 +33,19 @@ module DockerCookbook
         current_swarm.create_service(service_spec)
       end
 
-      def update_service
-        current_service.update(service_spec)
+      def update_service(force = false)
+        spec = service_spec
+
+        if force
+          spec = service_spec.deep_dup
+          spec['TaskTemplate']['ForceUpdate'] = 1
+        end
+
+        current_service.update(spec)
+      end
+
+      def restart_service
+        current_service.restart
       end
 
       def service_spec
@@ -55,8 +66,6 @@ module DockerCookbook
           'Networks' => service_network_spec,
         }
 
-        spec['TaskTemplate']['Env'] = format_env unless environment.empty?
-
         spec
       end
 
@@ -68,12 +77,16 @@ module DockerCookbook
       end
 
       def service_container_spec
-        {
+        spec = {
           # 'Networks' => [],
           'Image' => image,
           'User' => user,
           # 'Mounts' => [],
         }
+
+        spec['Env'] = format_env unless environment.empty?
+
+        spec
       end
 
       def format_env
