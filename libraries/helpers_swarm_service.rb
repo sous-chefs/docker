@@ -108,9 +108,9 @@ module DockerCookbook
 
       def service_restart_spec
         {
-          'Condition' => 'on-failure',
-          'Delay' => 1,
-          'MaxAttempts' => 3,
+          'Condition' => restart_condition,
+          'Delay' => restart_delay,
+          'MaxAttempts' => restart_attempts,
         }
       end
 
