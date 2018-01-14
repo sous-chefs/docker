@@ -19,11 +19,14 @@ services: docker
 
 env:
   matrix:
-  - INSTANCE=resources-ubuntu-1604
+  - INSTANCE=installation-script-main-ubuntu-1604
+  - INSTANCE=installation-tarball-ubuntu-1604
+  - INSTANCE=installation-package-ubuntu-1604
   - INSTANCE=exec-ubuntu-1604
   - INSTANCE=registry-ubuntu-1604
   - INSTANCE=network-ubuntu-1604
   - INSTANCE=volume-ubuntu-1604
+  - INSTANCE=resources-ubuntu-1604
   - INSTANCE=smoke-debian-8
   - INSTANCE=smoke-debian-9
   - INSTANCE=smoke-centos-7
