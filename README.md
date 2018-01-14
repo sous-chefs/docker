@@ -74,24 +74,6 @@ The test recipes are found at:
 test/cookbooks/docker_test/
 ```
 
-## Cgroups, Execution and Storage drivers
-
-Beginning in chef-docker 1.0, support for LXC execution driver has
-been removed in favor of native. Cgroups and storage drivers are now
-loosely coupled dependencies and should be configured using other
-cookbooks if needed.
-
-Storage drivers can be selected with the `storage_driver` property on
-the `docker_service` resource like this:
-
-```ruby
-docker_service 'default' do
-   storage_driver 'zfs'
-end
-```
-
-Configuration of the backing storage driver, including kernel module loading, is out of scope for this cookbook.
-
 ## Resources Overview
 
 - [docker_service](#docker_service): composite resource that uses
