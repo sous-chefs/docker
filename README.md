@@ -215,7 +215,7 @@ end
 
 ### Properties
 
-- `repo` - One of 'main', 'test', or 'experimental'. Used to calculate script_url in its absense. Defaults to 'main'
+- `repo` - One of 'main', 'test', or 'experimental'. Used to calculate script_url in its absence. Defaults to 'main'
 - `script_url` - 'URL of script to pipe into /bin/sh as root.
 
 ## docker_installation_package
@@ -418,7 +418,7 @@ The `docker_service` resource property list mostly corresponds to the options fo
 
 ## docker_image
 
-The `docker_image` is responsible for managing Docker image pulls, builds, and deletions. It speaks directly to the [Docker remote API](https://docs.docker.com/reference/api/docker_remote_api_v1.20/).
+The `docker_image` is responsible for managing Docker image pulls, builds, and deletions. It speaks directly to the [Docker Engine API](https://docs.docker.com/engine/api/v1.35/#tag/Image).
 
 ### Examples
 
@@ -536,7 +536,7 @@ end
 
 ### Properties
 
-The `docker_image` resource properties mostly corresponds to the [Docker Remote API](https://docs.docker.com/reference/api/docker_remote_api_v1.20/#2-2-images) as driven by the [Swipley docker-api Ruby gem](https://github.com/swipely/docker-api)
+The `docker_image` resource properties mostly corresponds to the [Docker Engine API](https://docs.docker.com/engine/api/v1.35/#tag/Image) as driven by the [docker-api Ruby gem](https://github.com/swipely/docker-api)
 
 A `docker_image`'s full identifier is a string in the form "\
 
