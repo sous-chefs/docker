@@ -524,7 +524,7 @@ builds, and deletions. It speaks directly to the
 docker_image 'hello-world'
 ```
 
-- non-default name attribute
+- non-default name property
 
 ```ruby
 docker_image "Tom's container" do
