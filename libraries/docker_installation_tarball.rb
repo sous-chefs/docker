@@ -13,8 +13,6 @@ module DockerCookbook
     property :source, String, default: lazy { default_source }, desired_state: false
     property :version, String, default: lazy { default_version }, desired_state: false
 
-    default_action :create
-
     #########
     # Actions
     #########
