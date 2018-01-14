@@ -20,6 +20,8 @@ module DockerCookbook
     #########
 
     action :create do
+      package 'tar'
+
       # Pull a precompiled binary off the network
       remote_file docker_tarball do
         source new_resource.source
