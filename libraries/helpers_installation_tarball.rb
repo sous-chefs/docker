@@ -22,7 +22,7 @@ module DockerCookbook
       end
 
       def default_source
-        "https://get.docker.com/builds/#{docker_kernel}/#{docker_arch}/docker-#{version}.tgz"
+        "https://download.docker.com/#{docker_kernel.downcase}/static/#{channel}/#{docker_arch}/docker-#{version}-ce.tgz"
       end
 
       def default_checksum
