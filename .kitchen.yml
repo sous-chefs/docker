@@ -61,9 +61,9 @@ platforms:
   run_list:
   - recipe[chef-apt-docker]
 
-- name: ubuntu-17.04
+- name: ubuntu-17.10
   driver:
-    image: dokken/ubuntu-17.04
+    image: dokken/ubuntu-17.10
     pid_one_command: /bin/systemd
   run_list:
   - recipe[chef-apt-docker]
