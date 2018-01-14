@@ -558,60 +558,33 @@ end
 
 ### Properties
 
-The `docker_image` resource properties mostly corresponds to the
-[Docker Remote API](https://docs.docker.com/reference/api/docker_remote_api_v1.20/#2-2-images)
-as driven by the
-[Swipley docker-api Ruby gem](https://github.com/swipely/docker-api)
+The `docker_image` resource properties mostly corresponds to the [Docker Remote API](https://docs.docker.com/reference/api/docker_remote_api_v1.20/#2-2-images) as driven by the [Swipley docker-api Ruby gem](https://github.com/swipely/docker-api)
 
+A `docker_image`'s full identifier is a string in the form "\
 
-A `docker_image`'s full identifier is a string in the form
-"\<repo\>:\<tag\>". There is some nuance around naming using the
-public registry vs a private one.
+<repo\>:\<tag\>". There is some nuance around naming using the
+public registry vs a private one.</tag\></repo\>
 
-- `repo` - aka `image_name` - The first half of a Docker image's
-  identity. This is a string in the form:
-  `registry:port/owner/image_name`. If the `registry:port` portion is
-  left off, Docker will implicitly use the Docker public
-  registry. "Official Images" omit the owner part. This means a repo
-  id can be as short as `busybox`, `alpine`, or `centos`. These names refer
-  to official images on the public registry. Names can be as long as
-  `my.computers.biz:5043/what/ever` to refer to custom images on an
-  private registry. Often you'll see something like `chef/chef` to
-  refer to private images on the public registry. - Defaults to
-  resource name.
-- `tag` - The second half of a Docker image's identity. - Defaults to
-  `latest`
-- `source` - Path to input for the `:import`, `:build` and
-  `:build_if_missing` actions. For building, this can be a Dockerfile,
-  a tarball containing a Dockerfile in its root, or a directory
-  containing a Dockerfile. For `:import`, this should be a tarball
-  containing Docker formatted image, as generated with `:save`.
+- `repo` - aka `image_name` - The first half of a Docker image's identity. This is a string in the form: `registry:port/owner/image_name`. If the `registry:port` portion is left off, Docker will implicitly use the Docker public registry. "Official Images" omit the owner part. This means a repo id can be as short as `busybox`, `alpine`, or `centos`. These names refer to official images on the public registry. Names can be as long as `my.computers.biz:5043/what/ever` to refer to custom images on an private registry. Often you'll see something like `chef/chef` to refer to private images on the public registry. - Defaults to resource name.
+- `tag` - The second half of a Docker image's identity. - Defaults to `latest`
+- `source` - Path to input for the `:import`, `:build` and `:build_if_missing` actions. For building, this can be a Dockerfile, a tarball containing a Dockerfile in its root, or a directory containing a Dockerfile. For `:import`, this should be a tarball containing Docker formatted image, as generated with `:save`.
 - `destination` - Path for output from the `:save` action.
-- `force` - A force boolean used in various actions - Defaults to
-  false
+- `force` - A force boolean used in various actions - Defaults to false
 - `nocache` - Used in `:build` operations. - Defaults to false
 - `noprune` - Used in `:remove` operations - Defaults to false
-- `rm` - Remove intermediate containers after a successful build
-  (default behavior) - Defaults to `true`
+- `rm` - Remove intermediate containers after a successful build (default behavior) - Defaults to `true`
 - `read_timeout` - May need to increase for long image builds/pulls
 - `write_timeout` - May need to increase for long image builds/pulls
-- `host` - A string containing the host the API should communicate
-  with. Defaults to `ENV['DOCKER_HOST']` if set.
-- `tls` - Use TLS; implied by --tlsverify. Defaults to
-  ENV['DOCKER_TLS'] if set.
-- `tls_verify` - Use TLS and verify the remote. Defaults to
-  `ENV['DOCKER_TLS_VERIFY']` if set
-- `tls_ca_cert` - Trust certs signed only by this CA. Defaults to
-  `ENV['DOCKER_CERT_PATH']` if set.
-- `tls_client_cert` - Path to TLS certificate file for docker
-  cli. Defaults to `ENV['DOCKER_CERT_PATH']` if set
-- `tls_client_key` - Path to TLS key file for docker cli. Defaults to
-  `ENV['DOCKER_CERT_PATH']` if set.
+- `host` - A string containing the host the API should communicate with. Defaults to `ENV['DOCKER_HOST']` if set.
+- `tls` - Use TLS; implied by --tlsverify. Defaults to ENV['DOCKER_TLS'] if set.
+- `tls_verify` - Use TLS and verify the remote. Defaults to `ENV['DOCKER_TLS_VERIFY']` if set
+- `tls_ca_cert` - Trust certs signed only by this CA. Defaults to `ENV['DOCKER_CERT_PATH']` if set.
+- `tls_client_cert` - Path to TLS certificate file for docker cli. Defaults to `ENV['DOCKER_CERT_PATH']` if set
+- `tls_client_key` - Path to TLS key file for docker cli. Defaults to `ENV['DOCKER_CERT_PATH']` if set.
 
 ### Actions
 
-The following actions are available for a `docker_image`
-resource. Defaults to `pull`
+The following actions are available for a `docker_image` resource. Defaults to `pull`
 
 - `:pull` - Pulls an image from the registry
 - `:pull_if_missing` - Pulls an image from the registry, only if it missing
