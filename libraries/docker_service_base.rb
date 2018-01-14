@@ -28,8 +28,9 @@ module DockerCookbook
     property :cluster_store, [String, nil]
     property :cluster_advertise, [String, nil]
     property :cluster_store_opts, ArrayType
-    property :debug, [Boolean, nil]
     property :daemon, Boolean, default: true
+    property :data_root, [String, nil]
+    property :debug, [Boolean, nil]
     property :dns, ArrayType
     property :dns_search, [Array, nil]
     property :exec_driver, ['native', 'lxc', nil]
@@ -37,7 +38,6 @@ module DockerCookbook
     property :fixed_cidr, [String, nil]
     property :fixed_cidr_v6, [String, nil]
     property :group, [String], default: 'docker'
-    property :graph, [String, nil]
     property :host, [String, Array], coerce: proc { |v| coerce_host(v) }
     property :icc, [Boolean, nil]
     property :insecure_registry, [Array, String, nil], coerce: proc { |v| coerce_insecure_registry(v) }
@@ -92,6 +92,7 @@ module DockerCookbook
     alias tlskey tls_server_key
     alias tlsverify tls_verify
     alias run_group group
+    alias graph data_root
 
     declare_action_class.class_eval do
       def libexec_dir
