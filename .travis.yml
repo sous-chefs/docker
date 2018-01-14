@@ -22,7 +22,6 @@ env:
   - INSTANCE=resources-ubuntu-1604
   - INSTANCE=network-ubuntu-1604
   - INSTANCE=volume-ubuntu-1604
-  - INSTANCE=smoke-debian-7
   - INSTANCE=smoke-debian-8
   - INSTANCE=smoke-debian-9
   - INSTANCE=smoke-centos-7
