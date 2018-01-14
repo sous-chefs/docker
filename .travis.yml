@@ -29,7 +29,7 @@ env:
   - INSTANCE=smoke-fedora-26
   - INSTANCE=smoke-ubuntu-1404
   - INSTANCE=smoke-ubuntu-1604
-  - INSTANCE=smoke-ubuntu-1704
+  - INSTANCE=smoke-ubuntu-1710
 
 # Ensure we make ChefDK's Ruby the default
 before_script:
