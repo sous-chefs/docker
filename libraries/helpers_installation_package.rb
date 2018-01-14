@@ -102,7 +102,7 @@ module DockerCookbook
 
         return "#{v}#{edition}-1.el6" if el6?
         return "#{v}#{edition}-1.el7.centos" if el7?
-        return "#{v}#{edition}-1.94.amzn1" if amazon?
+        return "#{v}#{edition}-1.111.amzn1" if amazon?
         return "#{v}#{edition}-1.fc#{node['platform_version'].to_i}" if fedora?
         return "#{v}#{edition}-0~#{debian_prefix}#{codename}" if node['platform'] == 'debian'
         return "#{v}#{edition}-0~#{ubuntu_prefix}#{codename}" if node['platform'] == 'ubuntu'
@@ -111,7 +111,7 @@ module DockerCookbook
 
       def default_docker_version
         return '1.7.1' if el6?
-        return '17.06.2' if amazon?
+        return '17.09.1' if amazon?
         '17.12.0'
       end
 
