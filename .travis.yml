@@ -28,7 +28,7 @@ env:
   - INSTANCE=smoke-fedora-26
   - INSTANCE=smoke-ubuntu-1404
   - INSTANCE=smoke-ubuntu-1604
-  - INSTANCE=smoke-ubuntu-1710
+    #  - INSTANCE=smoke-ubuntu-1710 # waiting on the dokken image
 
 # Ensure we make ChefDK's Ruby the default
 before_script:
