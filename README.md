@@ -39,7 +39,7 @@ end
 
 ## Usage
 
-- Add `depends 'docker', '~> 2.0'` to your cookbook's metadata.rb
+- Add `depends 'docker', '~> 3.0'` to your cookbook's metadata.rb
 - Use the resources shipped in cookbook in a recipe, the same way you'd use core Chef resources (file, template, directory, package, etc).
 
 ```ruby
@@ -99,7 +99,7 @@ docker_image 'nginx' do
   notifies :redeploy, 'docker_container[my_nginx]'
 end
 
-# Run container exposing ports
+# Run container mapping containers port 80 to the host's port 80
 docker_container 'my_nginx' do
   repo 'nginx'
   tag 'latest'
@@ -165,7 +165,7 @@ end
 
 See full documentation for each resource and action below for more information.
 
-## Resources Details
+## Resources
 
 ## docker_installation
 
@@ -242,7 +242,7 @@ end
 
 ## docker_installation_package
 
-The `docker_installation_package` resource uses the system package manager to install Docker. It relies on the pre-configuration of the system's package repositories. The `chef-yum-docker` and `chef-apt-docker` Supermarket cookbooks are used to do this in test-kitchen.
+The `docker_installation_package` resource uses the system package manager to install Docker. It relies on the pre-configuration of the system's package repositories. The `chef-yum-docker` and `chef-apt-docker` Supermarket cookbooks can be used to use Docker's own repositories.
 
 **_This is the recommended production installation method._**
 
