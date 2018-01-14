@@ -112,7 +112,7 @@ module DockerCookbook
       def default_docker_version
         return '1.7.1' if el6?
         return '17.06.2' if amazon?
-        '17.09.0'
+        '17.12.0'
       end
 
       def default_package_name

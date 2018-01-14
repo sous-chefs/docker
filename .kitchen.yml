@@ -145,7 +145,7 @@ suites:
    ]
   attributes:
     docker:
-      version: '17.09.1'
+      version: '17.12.0'
   run_list:
   - recipe[docker_test::installation_package]
 
@@ -159,7 +159,7 @@ suites:
    ]
   attributes:
     docker:
-      version: '17.09.1'
+      version: '17.12.0'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::image]
@@ -172,7 +172,7 @@ suites:
    ]
   attributes:
     docker:
-      version: '17.09.1'
+      version: '17.12.0'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::network]
@@ -183,7 +183,7 @@ suites:
    ]
   attributes:
     docker:
-      version: '17.09.1'
+      version: '17.12.0'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::volume]
