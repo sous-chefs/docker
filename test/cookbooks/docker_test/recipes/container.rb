@@ -993,6 +993,7 @@ docker_container 'pid_mode' do
   tag '3.1'
   command 'ps -ef'
   pid_mode 'host'
+  timeout 40
   action :run_if_missing
 end
 
