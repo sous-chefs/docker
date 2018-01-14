@@ -3,8 +3,7 @@
 [![Build Status](https://travis-ci.org/chef-cookbooks/docker.svg?branch=master)](https://travis-ci.org/chef-cookbooks/docker)
 [![Cookbook Version](https://img.shields.io/cookbook/v/docker.svg)](https://supermarket.chef.io/cookbooks/docker)
 
-The Docker Cookbook is a library cookbook that provides custom
-resources for use in recipes.
+The Docker Cookbook provides custom resources for installing docker and managing docker containers.
 
 ## Scope
 
