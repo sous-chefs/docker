@@ -41,6 +41,11 @@ module DockerCookbook
         false
       end
 
+      def artful?
+        return true if node['platform'] == 'ubuntu' && node['platform_version'] == '17.10'
+        false
+      end
+
       def amazon?
         return true if node['platform'] == 'amazon'
         false
@@ -83,6 +88,8 @@ module DockerCookbook
                        '-xenial'
                      elsif zesty?
                        '-zesty'
+                     elsif artful?
+                       '-artful'
                      end
                    else
                      ''
