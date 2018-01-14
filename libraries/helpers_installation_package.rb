@@ -53,29 +53,13 @@ module DockerCookbook
 
       # https://github.com/chef/chef/issues/4103
       def version_string(v)
-        ubuntu_prefix = if Gem::Version.new(v) > Gem::Version.new('1.12.3')
-                          'ubuntu'
-                        else
-                          ''
-                        end
-
-        debian_prefix = if Gem::Version.new(v) > Gem::Version.new('1.12.3')
-                          'debian'
-                        else
-                          ''
-                        end
-
-        edition = if Gem::Version.new(v) > Gem::Version.new('17.03.0')
-                    if debuntu?
-                      '~ce'
-                    elsif amazon?
-                      'ce'
-                    else
-                      '.ce'
-                    end
-                  else
-                    ''
-                  end
+        edition =  if debuntu?
+                     '~ce'
+                   elsif amazon?
+                     'ce'
+                   else
+                     '.ce'
+                   end
 
         codename = if Gem::Version.new(v) < Gem::Version.new('17.06.0')
                      if jessie?
@@ -98,8 +82,8 @@ module DockerCookbook
         return "#{v}#{edition}-1.el7.centos" if el7?
         return "#{v}#{edition}-1.111.amzn1" if amazon?
         return "#{v}#{edition}-1.fc#{node['platform_version'].to_i}" if fedora?
-        return "#{v}#{edition}-0~#{debian_prefix}#{codename}" if node['platform'] == 'debian'
-        return "#{v}#{edition}-0~#{ubuntu_prefix}#{codename}" if node['platform'] == 'ubuntu'
+        return "#{v}#{edition}-0~debian#{codename}" if node['platform'] == 'debian'
+        return "#{v}#{edition}-0~ubuntu#{codename}" if node['platform'] == 'ubuntu'
         v
       end
 
