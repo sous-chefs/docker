@@ -73,7 +73,6 @@ test/cookbooks/docker_test/
 - [docker_service](#docker_service): composite resource that uses docker_installation and docker_service_manager
 - [docker_installation](#docker_installation): automatically select an installation method
 - [docker_service_manager](#docker_service_manager): automatically selects a service manager
-- [docker_installation_binary](#docker_installation_binary): copies a pre-compiled docker binary onto disk
 - [docker_installation_script](#docker_installation_script): curl | bash
 - [docker_installation_package](#docker_installation_package): package 'docker-engine'
 - [docker_service_manager_execute](#docker_service_manager_execute): manage docker daemon with Chef
@@ -178,27 +177,6 @@ docker_installation 'default' do
   action :create
 end
 ```
-
-## docker_installation_binary
-
-The `docker_installation_binary` resource copies the precompiled Go binary onto the disk. It exists to help run older Docker versions. It should not be used in production, especially with devicemapper.
-
-### Example
-
-```ruby
-docker_installation_binary 'default' do
-  version '1.8.2'
-  source 'https://my.computers.biz/dist/docker'
-  checksum '97a3f5924b0b831a310efa8bf0a4c91956cd6387c4a8667d27e2b2dd3da67e4d'
-  action :create
-end
-```
-
-### Properties
-
-- `version` - The desired version of docker. Used to calculate source.
-- `source` - Path to network accessible Docker binary. Ignores version
-- `checksum` - SHA-256
 
 ## docker_installation_tarball
 
@@ -357,7 +335,7 @@ WARNING - When creating multiple `docker_service` resources on the same machine,
 
 The `docker_service` resource property list mostly corresponds to the options found in the [Docker Command Line Reference](https://docs.docker.com/engine/reference/commandline/docker/)
 
-- `install_method` - Select binary, script, package, tarball, none, or auto. Defaults to `auto`.
+- `install_method` - Select script, package, tarball, none, or auto. Defaults to `auto`.
 - `source` - URL to the pre-compiled Docker binary used for installation. Defaults to a calculated URL based on kernel version, Docker version, and platform arch. By default, this will try to get to "<http://get.docker.io/builds/>".
 - `version` - Docker version to install
 - `checksum` - sha256 checksum of Docker binary
