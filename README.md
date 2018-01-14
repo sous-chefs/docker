@@ -405,17 +405,13 @@ docker_service 'tls_test:2376' do
 end
 ```
 
-WARNING - When creating multiple `docker_service` resources on the
-same machine, you will need to specify unique graph properties to
-avoid unexpected behavior and possible data corruption.
+WARNING - When creating multiple `docker_service` resources on the same machine, you will need to specify unique data_root properties to avoid unexpected behavior and possible data corruption.
 
 ### Properties
 
-The `docker_service` resource property list mostly corresponds to the
-options found in the
-[Docker Command Line Reference](https://docs.docker.com/reference/commandline/cli/)
+The `docker_service` resource property list mostly corresponds to the options found in the [Docker Command Line Reference](https://docs.docker.com/engine/reference/commandline/docker/)
 
-- `install_method` - Select binary, script, package, tarball, none, or auto. Defaults to  `auto`.
+- `install_method` - Select binary, script, package, tarball, none, or auto. Defaults to `auto`.
 - `source` - URL to the pre-compiled Docker binary used for installation. Defaults to a calculated URL based on kernel version, Docker version, and platform arch. By default, this will try to get to "<http://get.docker.io/builds/>".
 - `version` - Docker version to install
 - `checksum` - sha256 checksum of Docker binary
@@ -424,20 +420,17 @@ options found in the
 - `bip` - Specify network bridge IP
 - `debug` - Enable debug mode
 - `cluster_store` - Cluster store to use
-- `cluster_advertise` - IP and port that this daemon should advertise
-  to the cluster
+- `cluster_advertise` - IP and port that this daemon should advertise to the cluster
 - `cluster_store_opts` - Cluster store options
 - `daemon` - Enable daemon mode
+- `data_root` - Root of the Docker runtime
 - `dns` - DNS server(s) to use
 - `dns_search` - DNS search domains to use
 - `exec_driver` - Exec driver to use
 - `fixed_cidr` - IPv4 subnet for fixed IPs
 - `fixed_cidr_v6` - IPv6 subnet for fixed IPs
 - `group` - Posix group for the unix socket. Default to `docker`
-- `graph` - Root of the Docker runtime - Effectively, the "data
-  directory"
-- `host` - Daemon socket(s) to connect to - `tcp://host:port`,
-  `unix:///path/to/socket`, `fd://*` or `fd://socketfd`
+- `host` - Daemon socket(s) to connect to - `tcp://host:port`, `unix:///path/to/socket`, `fd://*` or `fd://socketfd`
 - `icc` - Enable inter-container communication
 - `insecure_registry` - Enable insecure registry communication
 - `ip` - Default IP when binding container ports
@@ -459,13 +452,13 @@ options found in the
 - `storage_driver` - Storage driver to use
 - `selinux_enabled` - Enable selinux support
 - `storage_opts` - Set storage driver options
-- `tls` - Use TLS; implied by --tlsverify. Defaults to  ENV['DOCKER_TLS'] if set
-- `tls_verify` - Use TLS and verify the remote. Defaults to  ENV['DOCKER_TLS_VERIFY'] if set
-- `tls_ca_cert` - Trust certs signed only by this CA. Defaults to  ENV['DOCKER_CERT_PATH'] if set
+- `tls` - Use TLS; implied by --tlsverify. Defaults to ENV['DOCKER_TLS'] if set
+- `tls_verify` - Use TLS and verify the remote. Defaults to ENV['DOCKER_TLS_VERIFY'] if set
+- `tls_ca_cert` - Trust certs signed only by this CA. Defaults to ENV['DOCKER_CERT_PATH'] if set
 - `tls_server_cert` - Path to TLS certificate file for docker service
 - `tls_server_key` - Path to TLS key file for docker service
 - `tls_client_cert` - Path to TLS certificate file for docker cli. Defaults to ENV['DOCKER_CERT_PATH'] if set
-- `tls_client_key` - Path to TLS key file for docker cli. Defaults to  ENV['DOCKER_CERT_PATH'] if set
+- `tls_client_key` - Path to TLS key file for docker cli. Defaults to ENV['DOCKER_CERT_PATH'] if set
 - `default_ulimit` - Set default ulimit settings for containers
 - `http_proxy` - ENV variable set before for Docker daemon starts
 - `https_proxy` - ENV variable set before for Docker daemon starts
@@ -474,14 +467,12 @@ options found in the
 - `logfile` - Location of Docker daemon log file
 - `userland_proxy`- Enables or disables docker-proxy
 - `disable_legacy_registry` - Do not contact legacy registries
-- `userns_remap` - Enable user namespace remapping options -
-  `default`, `uid`, `uid:gid`, `username`, `username:groupname` (see: [Docker User Namespaces](see: https://docs.docker.com/v1.10/engine/reference/commandline/daemon/#daemon-user-namespace-options))
+- `userns_remap` - Enable user namespace remapping options - `default`, `uid`, `uid:gid`, `username`, `username:groupname` (see: [Docker User Namespaces](see: https://docs.docker.com/v1.10/engine/reference/commandline/daemon/#daemon-user-namespace-options))
 - `mount_flags` - Set the systemd mount propagation flag.
 
 #### Miscellaneous Options
 
-- `misc_opts` - Pass the docker daemon any other options bypassing
-  flag validation, supplied as `--flag=value`
+- `misc_opts` - Pass the docker daemon any other options bypassing flag validation, supplied as `--flag=value`
 
 #### Systemd-specific Options
 
@@ -621,7 +612,7 @@ end
 docker_image 'my.computers.biz:5043/someara/hello-again' do
   action :push
 end
-  ```
+```
 
 - Connect to an external docker daemon and pull an image
 
@@ -1345,8 +1336,7 @@ end
 
 ## docker_volume
 
-The `docker_volume` resource is responsible for managing Docker named
-volumes.
+The `docker_volume` resource is responsible for managing Docker named volumes.
 
 ### docker_volume action :create
 
@@ -1371,8 +1361,7 @@ end
 
 ## docker_execute
 
-The `docker_execute` resource allows you to execute commands inside of
-a running container.
+The `docker_execute` resource allows you to execute commands inside of a running container.
 
 ### Examples
 
