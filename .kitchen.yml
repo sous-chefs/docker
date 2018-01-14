@@ -18,13 +18,6 @@ verifier:
   name: inspec
 
 platforms:
-- name: debian-7
-  driver:
-    image: dokken/debian-7
-    pid_one_command: /sbin/init
-  run_list:
-  - recipe[chef-apt-docker]
-
 - name: debian-8
   driver:
     image: dokken/debian-8
@@ -38,14 +31,6 @@ platforms:
     pid_one_command: /bin/systemd
   run_list:
   - recipe[chef-apt-docker]
-
-- name: centos-6
-  driver:
-    image: dokken/centos-6
-    platform: rhel
-    pid_one_command: /sbin/init
-  run_list:
-    - recipe[chef-yum-docker]
 
 - name: centos-7
   driver:
@@ -194,7 +179,7 @@ suites:
 
 - name: smoke
   excludes: [
-    'centos-6',
+    'centos-7',
     ]
   run_list:
   - recipe[docker_test::smoke]
