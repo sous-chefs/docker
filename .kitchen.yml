@@ -110,7 +110,7 @@ suites:
 
 - name: installation_package-17091
   includes: [
-    'amazonlinux', # for dokken
+    'amazonlinux',
     ]
   attributes:
     docker:
