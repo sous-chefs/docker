@@ -8,7 +8,7 @@ module DockerCookbook
     # Modify the default of read_timeout from 60 to 120
     property :read_timeout, default: 120, desired_state: false
 
-    # https://docs.docker.com/reference/api/docker_remote_api_v1.20/
+    # https://docs.docker.com/engine/api/v1.35/#tag/Image
     property :destination, [String, nil]
     property :force, Boolean, default: false
     property :host, [String, nil], default: lazy { default_host }, desired_state: false
