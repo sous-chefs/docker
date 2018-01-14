@@ -20,6 +20,8 @@ services: docker
 env:
   matrix:
   - INSTANCE=resources-ubuntu-1604
+  - INSTANCE=exec-ubuntu-1604
+  - INSTANCE=registry-ubuntu-1604
   - INSTANCE=network-ubuntu-1604
   - INSTANCE=volume-ubuntu-1604
   - INSTANCE=smoke-debian-8
@@ -28,7 +30,6 @@ env:
   - INSTANCE=smoke-fedora-26
   - INSTANCE=smoke-ubuntu-1404
   - INSTANCE=smoke-ubuntu-1604
-    #  - INSTANCE=smoke-ubuntu-1710 # waiting on the dokken image
 
 # Ensure we make ChefDK's Ruby the default
 before_script:
