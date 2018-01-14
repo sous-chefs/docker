@@ -117,17 +117,7 @@ suites:
       version: '17.09.1'
   run_list:
   - recipe[docker_test::installation_package]
-
-- name: installation_package-17090
-  includes: [
-    'centos-7', # for dokken
-    'debian-7', # for dokken
-    'debian-8', # for dokken
-    'ubuntu-14.04',
-    'ubuntu-16.04',
-    'ubuntu-17.04',
-    'fedora-26',
-   ]
+- name: installation_package
   attributes:
     docker:
       version: '17.12.0'
@@ -138,7 +128,7 @@ suites:
 # bulk resource testing
 #######################
 
-- name: resources-17090
+- name: resources
   includes: [
     'ubuntu-16.04',
    ]
