@@ -1,16 +1,12 @@
 # Docker Cookbook
 
-[![Build Status](https://travis-ci.org/chef-cookbooks/docker.svg?branch=master)](https://travis-ci.org/chef-cookbooks/docker)
-[![Cookbook Version](https://img.shields.io/cookbook/v/docker.svg)](https://supermarket.chef.io/cookbooks/docker)
+[![Build Status](https://travis-ci.org/chef-cookbooks/docker.svg?branch=master)](https://travis-ci.org/chef-cookbooks/docker) [![Cookbook Version](https://img.shields.io/cookbook/v/docker.svg)](https://supermarket.chef.io/cookbooks/docker)
 
 The Docker Cookbook provides custom resources for installing docker and managing docker containers.
 
 ## Scope
 
-This cookbook is concerned with the [Docker](http://docker.io)
-container engine as distributed by Docker, Inc. It does not address
-Docker ecosystem tooling or prerequisite technology such as cgroups or
-aufs.
+This cookbook is concerned with the [Docker](http://docker.io) container engine as distributed by Docker, Inc. It does not address Docker ecosystem tooling or prerequisite technology such as cgroups or aufs.
 
 ## Requirements
 
@@ -44,9 +40,7 @@ end
 ## Usage
 
 - Add `depends 'docker', '~> 2.0'` to your cookbook's metadata.rb
-- Use the resources shipped in cookbook in a recipe, the same way
-  you'd use core Chef resources (file, template, directory, package,
-  etc).
+- Use the resources shipped in cookbook in a recipe, the same way you'd use core Chef resources (file, template, directory, package, etc).
 
 ```ruby
 docker_service 'default' do
@@ -76,25 +70,16 @@ test/cookbooks/docker_test/
 
 ## Resources Overview
 
-- [docker_service](#docker_service): composite resource that uses
-  docker_installation and docker_service_manager
-- [docker_installation](#docker_installation): automatically select an
-  installation method
-- [docker_service_manager](#docker_service_manager): automatically
-  selects a service manager
-- [docker_installation_binary](#docker_installation_binary): copies a
-  pre-compiled docker binary onto disk
+- [docker_service](#docker_service): composite resource that uses docker_installation and docker_service_manager
+- [docker_installation](#docker_installation): automatically select an installation method
+- [docker_service_manager](#docker_service_manager): automatically selects a service manager
+- [docker_installation_binary](#docker_installation_binary): copies a pre-compiled docker binary onto disk
 - [docker_installation_script](#docker_installation_script): curl | bash
-- [docker_installation_package](#docker_installation_package): package
-  'docker-engine'
-- [docker_service_manager_execute](#docker_service_manager_execute):
-  manage docker daemon with Chef
-- [docker_service_manager_sysvinit](#docker_service_manager_sysvinit):
-  manage docker daemon with a sysvinit script
-- [docker_service_manager_upstart](#docker_service_manager_upstart):
-  manage docker daemon with upstart script
-- [docker_service_manager_systemd](#docker_service_manager_systemd):
-  manage docker daemon with systemd unit files
+- [docker_installation_package](#docker_installation_package): package 'docker-engine'
+- [docker_service_manager_execute](#docker_service_manager_execute): manage docker daemon with Chef
+- [docker_service_manager_sysvinit](#docker_service_manager_sysvinit): manage docker daemon with a sysvinit script
+- [docker_service_manager_upstart](#docker_service_manager_upstart): manage docker daemon with upstart script
+- [docker_service_manager_systemd](#docker_service_manager_systemd): manage docker daemon with systemd unit files
 - [docker_image](#docker_image): image/repository operations
 - [docker_container](#docker_container): container operations
 - [docker_tag](#docker_tag): image tagging operations
@@ -104,8 +89,7 @@ test/cookbooks/docker_test/
 
 ## Getting Started
 
-Here's a quick example of pulling the latest image and running a
-container with exposed ports.
+Here's a quick example of pulling the latest image and running a container with exposed ports.
 
 ```ruby
 # Pull latest image
@@ -185,8 +169,7 @@ See full documentation for each resource and action below for more information.
 
 ## docker_installation
 
-The `docker_installation` resource auto-selects one of the below
-resources with the provider resolution system.
+The `docker_installation` resource auto-selects one of the below resources with the provider resolution system.
 
 ### Example
 
@@ -198,9 +181,7 @@ end
 
 ## docker_installation_binary
 
-The `docker_installation_binary` resource copies the precompiled Go
-binary onto the disk. It exists to help run older Docker versions. It
-should not be used in production, especially with devicemapper.
+The `docker_installation_binary` resource copies the precompiled Go binary onto the disk. It exists to help run older Docker versions. It should not be used in production, especially with devicemapper.
 
 ### Example
 
@@ -221,10 +202,7 @@ end
 
 ## docker_installation_tarball
 
-The `docker_installation_tarball` resource copies the precompiled Go
-binary tarball onto the disk. It exists to help run newer Docker
-versions from 1.11.0 onwards. It should not be used in production,
-especially with devicemapper.
+The `docker_installation_tarball` resource copies the precompiled Go binary tarball onto the disk. It exists to help run newer Docker versions from 1.11.0 onwards. It should not be used in production, especially with devicemapper.
 
 ### Example
 
@@ -240,15 +218,12 @@ end
 ### Properties
 
 - `version` - The desired version of docker. Used to calculate source.
-- `source` - Path to network accessible Docker binary tarball. Ignores
-  version
+- `source` - Path to network accessible Docker binary tarball. Ignores version
 - `checksum` - SHA-256
 
 ## docker_installation_script
 
-The `docker_installation_script` resource runs the script hosted by
-Docker, Inc at <http://get.docker.com>. It configures package
-repositories and installs a dynamically compiled binary.
+The `docker_installation_script` resource runs the script hosted by Docker, Inc at <http://get.docker.com>. It configures package repositories and installs a dynamically compiled binary.
 
 ### Example
 
@@ -262,17 +237,12 @@ end
 
 ### Properties
 
-- `repo` - One of 'main', 'test', or 'experimental'. Used to calculate
-  script_url in its absense. Defaults to 'main'
+- `repo` - One of 'main', 'test', or 'experimental'. Used to calculate script_url in its absense. Defaults to 'main'
 - `script_url` - 'URL of script to pipe into /bin/sh as root.
 
 ## docker_installation_package
 
-The `docker_installation_package` resource uses the system package
-manager to install Docker. It relies on the pre-configuration of the
-system's package repositories. The `chef-yum-docker` and
-`chef-apt-docker` Supermarket cookbooks are used to do this in
-test-kitchen.
+The `docker_installation_package` resource uses the system package manager to install Docker. It relies on the pre-configuration of the system's package repositories. The `chef-yum-docker` and `chef-apt-docker` Supermarket cookbooks are used to do this in test-kitchen.
 
 **_This is the recommended production installation method._**
 
@@ -290,16 +260,12 @@ end
 
 - `version` - Used to calculate package_version string
 - `package_version` - Manually specify the package version string
-- `package_name` - Name of package to install. Defaults to
-  'docker-engine'
-- `package_options` - Manually specify additional options, like
-  apt-get directives for example
+- `package_name` - Name of package to install. Defaults to 'docker-engine'
+- `package_options` - Manually specify additional options, like apt-get directives for example
 
 ## docker_service_manager
 
-The `docker_service_manager` resource auto-selects a strategy from the
-`docker_service_manager_*` group of resources based on platform and
-version. The `docker_service` family share a common set of properties.
+The `docker_service_manager` resource auto-selects a strategy from the `docker_service_manager_*` group of resources based on platform and version. The `docker_service` family share a common set of properties.
 
 ### Example
 
@@ -361,16 +327,14 @@ end
 
 ## docker_service
 
-The `docker_service`: resource is a composite resource that uses
-`docker_installation` and `docker_service_manager` resources.
+The `docker_service`: resource is a composite resource that uses `docker_installation` and `docker_service_manager` resources.
 
 - The `:create` action uses a `docker_installation`
 - The `:delete` action uses a `docker_installation`
 - The `:start` action uses a `docker_service_manager`
 - The `:stop` action uses a `docker_service_manager`
 
-The service management strategy for the host platform is dynamically
-chosen based on platform, but can be overridden.
+The service management strategy for the host platform is dynamically chosen based on platform, but can be overridden.
 
 ### Example
 
@@ -457,11 +421,7 @@ The `docker_service` resource property list mostly corresponds to the options fo
 
 #### Systemd-specific Options
 
-- `systemd_opts` - An array of strings that will be included as
-  individual lines in the systemd service unit for Docker.  *Note*:
-  This option is only relevant for systems where systemd is the
-  default service manager or where systemd is specified explicitly as
-  the service manager.
+- `systemd_opts` - An array of strings that will be included as individual lines in the systemd service unit for Docker. _Note_: This option is only relevant for systems where systemd is the default service manager or where systemd is specified explicitly as the service manager.
 
 ### Actions
 
@@ -473,20 +433,14 @@ The `docker_service` resource property list mostly corresponds to the options fo
 
 ### `docker_service` implementations
 
-- `docker_service_execute` - The simplest docker_service. Just starts
-  a process. Fire and forget.
-- `docker_service_sysvinit` - Uses a SystemV init script to manage the
-  service state.
-- `docker_service_upstart` - Uses an Upstart script to manage the
-  service state.
-- `docker_service_systemd` - Uses an Systemd unit file to manage the
-  service state. NOTE: This does NOT enable systemd socket activation.
+- `docker_service_execute` - The simplest docker_service. Just starts a process. Fire and forget.
+- `docker_service_sysvinit` - Uses a SystemV init script to manage the service state.
+- `docker_service_upstart` - Uses an Upstart script to manage the service state.
+- `docker_service_systemd` - Uses an Systemd unit file to manage the service state. NOTE: This does NOT enable systemd socket activation.
 
 ## docker_image
 
-The `docker_image` is responsible for managing Docker image pulls,
-builds, and deletions. It speaks directly to the
-[Docker remote API](https://docs.docker.com/reference/api/docker_remote_api_v1.20/).
+The `docker_image` is responsible for managing Docker image pulls, builds, and deletions. It speaks directly to the [Docker remote API](https://docs.docker.com/reference/api/docker_remote_api_v1.20/).
 
 ### Examples
 
@@ -567,9 +521,7 @@ docker_image 'image_2' do
 end
 ```
 
-- build from a tarball NOTE: this is not an "export" tarball generated
-  from an an image save. The contents should be a Dockerfile, and
-  anything it references to COPY or ADD
+- build from a tarball NOTE: this is not an "export" tarball generated from an an image save. The contents should be a Dockerfile, and anything it references to COPY or ADD
 
 ```ruby
 docker_image 'image_3' do
@@ -672,9 +624,7 @@ resource. Defaults to `pull`
 
 ## docker_tag
 
-Docker tags work very much like hard links in a Unix filesystem. They
-are just references to an existing image. Therefore, the docker_tag
-resource has taken inspiration from the Chef `link` resource.
+Docker tags work very much like hard links in a Unix filesystem. They are just references to an existing image. Therefore, the docker_tag resource has taken inspiration from the Chef `link` resource.
 
 ### Examples
 
@@ -701,16 +651,9 @@ end
 
 ## docker_container
 
-The `docker_container` is responsible for managing Docker container
-actions. It speaks directly to the
-[Docker remote API](https://docs.docker.com/reference/api/docker_remote_api_v1.20/).
+The `docker_container` is responsible for managing Docker container actions. It speaks directly to the [Docker remote API](https://docs.docker.com/reference/api/docker_remote_api_v1.20/).
 
-
-Containers are process oriented, and move through an event
-cycle. Thanks to [Glider Labs](http://gliderlabs.com/) for this
-excellent
-diagram. ![alt tag](http://gliderlabs.com/images/docker_events.png)
-
+Containers are process oriented, and move through an event cycle. Thanks to [Glider Labs](http://gliderlabs.com/) for this excellent diagram. ![alt tag](http://gliderlabs.com/images/docker_events.png)
 
 ### Examples
 
@@ -1191,8 +1134,7 @@ Most `docker_container` properties are the `snake_case` version of the `CamelCas
 
 ## docker_registry
 
-The `docker_registry` resource is responsible for managing the
-connection auth information to a Docker registry.
+The `docker_registry` resource is responsible for managing the connection auth information to a Docker registry.
 
 ### docker_registry action :login
 
@@ -1219,10 +1161,7 @@ end
 
 ## docker_network
 
-The `docker_network` resource is responsible for managing Docker named
-networks. Usage of `overlay` driver requires the `docker_service` to
-be configured to use a distributed key/value store like `etcd`,
-`consul`, or `zookeeper`.
+The `docker_network` resource is responsible for managing Docker named networks. Usage of `overlay` driver requires the `docker_service` to be configured to use a distributed key/value store like `etcd`, `consul`, or `zookeeper`.
 
 ### docker_network action :create
 
@@ -1245,20 +1184,13 @@ end
 
 ### Properties
 
-- `driver` - The network driver to use. Defaults to `bridge`, other
-  options include `overlay`.
-- `subnet` - Specify the subnet(s) for the network. Ex:
-  `192.168.0.0/16`
-- `gateway` - Specify the gateway(s) for the network. Ex:
-  `192.168.0.1`
-- `ip_range` - Specify a range of IPs to allocate for containers. Ex:
-  `192.168.1.0/24`
+- `driver` - The network driver to use. Defaults to `bridge`, other options include `overlay`.
+- `subnet` - Specify the subnet(s) for the network. Ex: `192.168.0.0/16`
+- `gateway` - Specify the gateway(s) for the network. Ex: `192.168.0.1`
+- `ip_range` - Specify a range of IPs to allocate for containers. Ex: `192.168.1.0/24`
 - `enable_ipv6` - Enable IPv6 on the network. Ex: true
-- `aux_address` - Auxillary addresses for the network. Ex:
-  `['a=192.168.1.5', 'b=192.168.1.6']`
-- `container` - Container-id/name to be connected/disconnected to/from
-  the network. Used only by `:connect` and `:disconnect` actions
-
+- `aux_address` - Auxillary addresses for the network. Ex: `['a=192.168.1.5', 'b=192.168.1.6']`
+- `container` - Container-id/name to be connected/disconnected to/from the network. Used only by `:connect` and `:disconnect` actions
 
 ### Example
 
@@ -1355,13 +1287,10 @@ end
 
 ### Properties
 
-- `host` - Daemon socket(s) to connect to - `tcp://host:port`,
-  `unix:///path/to/socket`, `fd://*` or `fd://socketfd`.
-- `command` - A command structured as an Array similar to `CMD` in a
-  Dockerfile.
+- `host` - Daemon socket(s) to connect to - `tcp://host:port`, `unix:///path/to/socket`, `fd://*` or `fd://socketfd`.
+- `command` - A command structured as an Array similar to `CMD` in a Dockerfile.
 - `container` - Name of the container to execute the command in.
-- `timeout`- Seconds to wait for an attached container to
-  return. Defaults to 60 seconds.
+- `timeout`- Seconds to wait for an attached container to return. Defaults to 60 seconds.
 
 ### Actions
 
