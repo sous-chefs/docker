@@ -1031,6 +1031,7 @@ docker_container 'uts_mode' do
   tag '3.1'
   command 'ps -ef'
   uts_mode 'host'
+  timeout 40
   action :run_if_missing
 end
 
