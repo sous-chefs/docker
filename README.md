@@ -10,7 +10,7 @@ This cookbook is concerned with the [Docker](http://docker.io) container engine 
 
 ## Requirements
 
-- Chef 12.10 or later
+- Chef 12.15 or later
 - Network accessible web server hosting the docker binary.
 - SELinux permissive/disabled if CentOS [Docker Issue #15498](https://github.com/docker/docker/issues/15498)
 
@@ -24,7 +24,7 @@ This cookbook is concerned with the [Docker](http://docker.io) container engine 
 
 ## Cookbook Dependencies
 
-This cookbook has a loose dependency on the official docker repositories, which can be installed with [chef-apt-docker](https://supermarket.chef.io/cookbooks/chef-apt-docker) or [chef-yum-docker](https://supermarket.chef.io/cookbooks/chef-yum-docker) cookbooks. You may choose to use your OS version of docker, but you may run into issues such as the docker group being named differently.
+This cookbook automatically sets up the upstream Docker package repositories. If you would like to use your own repositories this functionality can be disabled and you can instead setup the repos yourself with yum_repository/apt_repository resources or the [chef-apt-docker](https://supermarket.chef.io/cookbooks/chef-apt-docker) / [chef-yum-docker](https://supermarket.chef.io/cookbooks/chef-yum-docker) cookbooks.
 
 ## Docker Group
 
@@ -74,7 +74,7 @@ test/cookbooks/docker_test/
 - [docker_installation](#docker_installation): automatically select an installation method
 - [docker_service_manager](#docker_service_manager): automatically selects a service manager
 - [docker_installation_script](#docker_installation_script): curl | bash
-- [docker_installation_package](#docker_installation_package): package 'docker-engine'
+- [docker_installation_package](#docker_installation_package): package 'docker-ce'
 - [docker_service_manager_execute](#docker_service_manager_execute): manage docker daemon with Chef
 - [docker_service_manager_sysvinit](#docker_service_manager_sysvinit): manage docker daemon with a sysvinit script
 - [docker_service_manager_upstart](#docker_service_manager_upstart): manage docker daemon with upstart script
@@ -238,8 +238,10 @@ end
 
 - `version` - Used to calculate package_version string
 - `package_version` - Manually specify the package version string
-- `package_name` - Name of package to install. Defaults to 'docker-engine'
+- `package_name` - Name of package to install. Defaults to 'docker-ce'
 - `package_options` - Manually specify additional options, like apt-get directives for example
+- `setup_docker_repo` - Setup the download.docker.com repo. If you would like to manage the repo yourself so you can use an internal repo then set this to false. default: true on all platforms except Amazon Linux.
+- `repo_channel` - The channel of docker to setup from download.docker.com. Only used if `setup_docker_repo` is true. default: 'stable'
 
 ## docker_service_manager
 
