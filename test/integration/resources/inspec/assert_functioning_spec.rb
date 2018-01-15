@@ -1,6 +1,3 @@
-#
-docker_version_string = command('docker -v').stdout
-docker_version = docker_version_string.split(/\s/)[2].split(',')[0]
 volumes_filter = '{{ .Config.Volumes }}'
 mounts_filter = '{{ .Mounts }}'
 uber_options_network_mode = 'bridge'
