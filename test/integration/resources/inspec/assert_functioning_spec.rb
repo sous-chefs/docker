@@ -799,9 +799,9 @@ end
 
 # docker_container[kill_after]
 
-describe command("docker ps -af 'name=kill_after$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/Exited \(137\)/) }
+describe docker_container('kill_after') do
+  it { should exist }
+  it { should_not be_running }
 end
 
 kill_after_start = command("docker inspect -f '{{.State.StartedAt}}' kill_after").stdout
@@ -862,17 +862,6 @@ end
 describe command("docker inspect --format '{{ .HostConfig.UTSMode }}' uts_mode") do
   its(:exit_status) { should eq 0 }
   its(:stdout) { eq 'host' }
-end
-
-# containers shouldnt be killed, validating only one was force killed
-describe command("docker ps -qaf 'exited=137' | wc -l") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/1/) }
-end
-
-describe command("docker ps -af 'exited=137'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/kill_after/) }
 end
 
 describe command("docker inspect --format '{{ .HostConfig.ReadonlyRootfs }}' ro_rootfs") do
