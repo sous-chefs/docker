@@ -283,9 +283,9 @@ end
 
 # docker_container[bind_mounter]
 
-describe command("docker ps -af 'name=bind_mounter$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/Exited/) }
+describe docker_container('bind_mounter') do
+  it { should exist }
+  it { should_not be_running }
 end
 
 describe command('docker inspect -f "{{ .HostConfig.Binds }}" bind_mounter') do
@@ -297,9 +297,9 @@ end
 
 # docker_container[binds_alias]
 
-describe command("docker ps -af 'name=binds_alias$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/Exited/) }
+describe docker_container('binds_alias') do
+  it { should exist }
+  it { should_not be_running }
 end
 
 describe command('docker inspect -f "{{ .HostConfig.Binds }}" binds_alias') do
@@ -316,10 +316,9 @@ end
 
 # docker_container[chef_container]
 
-describe command("docker ps -af 'name=chef_container$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should_not match(/Exited/) }
-  its(:stdout) { should_not match(/Up/) }
+describe docker_container('chef_container') do
+  it { should exist }
+  it { should_not be_running }
 end
 
 describe command("docker inspect -f \"#{volumes_filter}\" chef_container") do
@@ -328,9 +327,9 @@ describe command("docker inspect -f \"#{volumes_filter}\" chef_container") do
 end
 
 # docker_container[ohai_debian]
-describe command("docker ps -af 'name=ohai_debian$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/Exited/) }
+describe docker_container('ohai_debian') do
+  it { should exist }
+  it { should_not be_running }
 end
 
 describe command('docker logs ohai_debian') do
@@ -345,9 +344,9 @@ end
 
 # docker_container[env]
 
-describe command("docker ps -af 'name=env$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/Exited/) }
+describe docker_container('env') do
+  it { should exist }
+  it { should_not be_running }
 end
 
 describe command('docker inspect -f "{{ .Config.Env }}" env') do
@@ -357,9 +356,9 @@ end
 
 # docker_container[env_files]
 
-describe command("docker ps -af 'name=env_files$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/Exited/) }
+describe docker_container('env_files') do
+  it { should exist }
+  it { should_not be_running }
 end
 
 describe command('docker inspect -f "{{ .Config.Env }}" env_files') do
@@ -368,9 +367,9 @@ describe command('docker inspect -f "{{ .Config.Env }}" env_files') do
 end
 
 # docker_container[ohai_again]
-describe command("docker ps -af 'name=ohai_again$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/Exited/) }
+describe docker_container('ohai_again') do
+  it { should exist }
+  it { should_not be_running }
 end
 
 describe command('docker logs ohai_again') do
@@ -380,9 +379,9 @@ end
 
 # docker_container[cmd_test]
 
-describe command("docker ps -af 'name=cmd_test$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/Exited/) }
+describe docker_container('cmd_test') do
+  it { should exist }
+  it { should_not be_running }
 end
 
 describe command('docker logs cmd_test') do
@@ -391,9 +390,9 @@ describe command('docker logs cmd_test') do
 end
 
 # docker_container[sean_was_here]
-describe command("docker ps -aqf 'name=sean_was_here$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should be_empty }
+describe docker_container('sean_was_here') do
+  it { should_not exist }
+  it { should_not be_running }
 end
 
 describe command('docker run --rm --volumes-from chef_container debian ls -la /opt/chef/') do
@@ -403,9 +402,9 @@ end
 
 # docker_container[cap_add_net_admin]
 
-describe command("docker ps -af 'name=cap_add_net_admin$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/Exited/) }
+describe docker_container('cap_add_net_admin') do
+  it { should exist }
+  it { should_not be_running }
 end
 
 describe command('docker logs cap_add_net_admin') do
@@ -415,9 +414,9 @@ end
 
 # docker_container[cap_add_net_admin_error]
 
-describe command("docker ps -af 'name=cap_add_net_admin_error$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/Exited/) }
+describe docker_container('cap_add_net_admin_error') do
+  it { should exist }
+  it { should_not be_running }
 end
 
 describe command('docker logs cap_add_net_admin_error') do
@@ -427,9 +426,9 @@ end
 
 # docker_container[cap_drop_mknod]
 
-describe command("docker ps -af 'name=cap_drop_mknod$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/Exited/) }
+describe docker_container('cap_drop_mknod') do
+  it { should exist }
+  it { should_not be_running }
 end
 
 describe command('docker logs cap_drop_mknod') do
@@ -440,9 +439,9 @@ end
 
 # docker_container[cap_drop_mknod_error]
 
-describe command("docker ps -af 'name=cap_drop_mknod_error$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/Exited/) }
+describe docker_container('cap_drop_mknod_error') do
+  it { should exist }
+  it { should_not be_running }
 end
 
 describe command('docker logs cap_drop_mknod_error') do
@@ -452,9 +451,9 @@ end
 
 # docker_container[fqdn]
 
-describe command("docker ps -af 'name=fqdn$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/Exited/) }
+describe docker_container('fqdn') do
+  it { should exist }
+  it { should_not be_running }
 end
 
 describe command('docker logs fqdn') do
@@ -464,9 +463,9 @@ end
 
 # docker_container[dns]
 
-describe command("docker ps -af 'name=dns$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/Exited/) }
+describe docker_container('dns') do
+  it { should exist }
+  it { should_not be_running }
 end
 
 describe command('docker inspect -f "{{ .HostConfig.Dns }}" dns') do
@@ -475,9 +474,9 @@ end
 
 # docker_container[extra_hosts]
 
-describe command("docker ps -af 'name=extra_hosts$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/Exited/) }
+describe docker_container('extra_hosts') do
+  it { should exist }
+  it { should_not be_running }
 end
 
 describe command('docker inspect -f "{{ .HostConfig.ExtraHosts }}" extra_hosts') do
@@ -512,9 +511,9 @@ end
 
 # docker_container[cpu_shares]
 
-describe command("docker ps -af 'name=cpu_shares$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/Exited/) }
+describe docker_container('cpu_shares') do
+  it { should exist }
+  it { should_not be_running }
 end
 
 describe command("docker inspect -f '{{ .HostConfig.CpuShares }}' cpu_shares") do
@@ -524,9 +523,9 @@ end
 
 # docker_container[cpuset_cpus]
 
-describe command("docker ps -af 'name=cpuset_cpus$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/Exited/) }
+describe docker_container('cpuset_cpus') do
+  it { should exist }
+  it { should_not be_running }
 end
 
 describe command("docker inspect -f '{{ .HostConfig.CpusetCpus }}' cpuset_cpus") do
@@ -537,9 +536,9 @@ end
 # docker_container[try_try_again]
 
 # FIXME: Find better tests
-describe command("docker ps -af 'name=try_try_again$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/Exited/) }
+describe docker_container('try_try_again') do
+  it { should exist }
+  it { should_not be_running }
 end
 
 # docker_container[reboot_survivor]
@@ -551,30 +550,30 @@ end
 
 # docker_container[reboot_survivor_retry]
 
-describe command("docker ps -af 'name=reboot_survivor_retry$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should_not match(/Exited/) }
+describe docker_container('reboot_survivor_retry') do
+  it { should exist }
+  it { should be_running }
 end
 
 # docker_container[link_source]
 
-describe command("docker ps -af 'name=link_source$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should_not match(/Exited/) }
+describe docker_container('link_source') do
+  it { should exist }
+  it { should be_running }
 end
 
 # docker_container[link_source_2]
 
-describe command("docker ps -af 'name=link_source_2$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should_not match(/Exited/) }
+describe docker_container('link_source_2') do
+  it { should exist }
+  it { should be_running }
 end
 
 # docker_container[link_target_1]
 
-describe command("docker ps -af 'name=link_target_1$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/Exited/) }
+describe docker_container('link_target_1') do
+  it { should exist }
+  it { should_not be_running }
 end
 
 describe command('docker logs link_target_1') do
@@ -584,9 +583,9 @@ end
 
 # docker_container[link_target_2]
 
-describe command("docker ps -af 'name=link_target_2$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/Exited/) }
+describe docker_container('link_target_2') do
+  it { should exist }
+  it { should_not be_running }
 end
 
 describe command('docker logs link_target_2') do
@@ -596,9 +595,9 @@ end
 
 # docker_container[link_target_3]
 
-describe command("docker ps -af 'name=link_target_3$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/Exited/) }
+describe docker_container('link_target_3') do
+  it { should exist }
+  it { should_not be_running }
 end
 
 describe command('docker logs link_target_3') do
@@ -613,9 +612,9 @@ end
 
 # docker_container[link_target_4]
 
-describe command("docker ps -af 'name=link_target_4$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/Exited/) }
+describe docker_container('link_target_4') do
+  it { should exist }
+  it { should_not be_running }
 end
 
 describe command('docker logs link_target_4') do
@@ -636,17 +635,24 @@ end
 # end
 
 # FIXME: this changed with 1.8.x. Find a way to sanely test across various platforms
+
 # docker_container[mutator]
 
-describe command('ls -la /mutator.tar') do
-  its(:exit_status) { should eq 0 }
+describe docker_container('mutator') do
+  it { should exist }
+  it { should_not be_running }
+end
+
+describe file('/mutator.tar') do
+  it { should be_file }
+  its('mode') { should cmp '0644' }
 end
 
 # docker_container[network_mode]
 
-describe command("docker ps -af 'name=network_mode$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should_not match(/Exited/) }
+describe docker_container('network_mode') do
+  it { should exist }
+  it { should be_running }
 end
 
 describe command("docker inspect -f '{{ .HostConfig.NetworkMode }}' network_mode") do
@@ -654,10 +660,10 @@ describe command("docker inspect -f '{{ .HostConfig.NetworkMode }}' network_mode
   its(:stdout) { should match(/host/) }
 end
 
-# docker_container[ulimit]
-describe command("docker ps -af 'name=ulimit$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should_not match(/Exited/) }
+# docker_container[ulimits]
+describe docker_container('ulimits') do
+  it { should exist }
+  it { should be_running }
 end
 
 describe command("docker inspect -f '{{ .HostConfig.Ulimits }}' ulimits") do
@@ -666,9 +672,9 @@ describe command("docker inspect -f '{{ .HostConfig.Ulimits }}' ulimits") do
 end
 
 # docker_container[uber_options]
-describe command("docker ps -af 'name=uber_options$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should_not match(/Exited/) }
+describe docker_container('uber_options') do
+  it { should exist }
+  it { should be_running }
 end
 
 describe command("docker inspect -f '{{ .Config.Domainname }}' uber_options") do
@@ -700,9 +706,9 @@ end
 
 # docker_container[overrides-1]
 
-describe command("docker ps -af 'name=overrides-1$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should_not match(/Exited/) }
+describe docker_container('overrides-1') do
+  it { should exist }
+  it { should be_running }
 end
 
 describe command('docker inspect -f "{{ .Config.User }}" overrides-1') do
@@ -737,9 +743,9 @@ end
 
 # docker_container[overrides-2]
 
-describe command("docker ps -af 'name=overrides-2$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should_not match(/Exited/) }
+describe docker_container('overrides-2') do
+  it { should exist }
+  it { should be_running }
 end
 
 describe command('docker inspect -f "{{ .Config.User }}" overrides-2') do
@@ -769,9 +775,9 @@ end
 
 # docker_container[syslogger]
 
-describe command("docker ps -af 'name=syslogger$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should_not match(/Exited/) }
+describe docker_container('syslogger') do
+  it { should exist }
+  it { should be_running }
 end
 
 describe command("docker inspect -f '{{ .HostConfig.LogConfig.Type }}' syslogger") do
@@ -786,9 +792,9 @@ end
 
 # docker_container[host_override]
 
-describe command("docker ps -af 'name=host_override$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should_not be_empty }
+describe docker_container('host_override') do
+  it { should exist }
+  it { should_not be_running }
 end
 
 # docker_container[kill_after]
