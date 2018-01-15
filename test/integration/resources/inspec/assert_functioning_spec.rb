@@ -28,9 +28,10 @@ end
 
 # docker_image[hello-world]
 
-describe command('docker images') do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/^hello-world\s.*latest/) }
+describe docker_image('hello-world:latest') do
+  it { should exist }
+  its('repo') { should eq 'hello-world' }
+  its('tag') { should eq 'latest' }
 end
 
 # docker_image[Tom's container]
@@ -42,30 +43,33 @@ end
 
 # docker_image[busybox]
 
-describe command('docker images') do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/^busybox\s.*latest/) }
+describe docker_image('busybox:latest') do
+  it { should exist }
+  its('repo') { should eq 'busybox' }
+  its('tag') { should eq 'latest' }
 end
 
 # docker_image[alpine]
 
-describe command('docker images') do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/^alpine\s.*3.1/) }
+describe docker_image('alpine:3.1') do
+  it { should exist }
+  its('repo') { should eq 'alpine' }
+  its('tag') { should eq '3.1' }
 end
 
-describe command('docker images') do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/^alpine\s.*2.7/) }
+describe docker_image('alpine:2.7') do
+  it { should exist }
+  its('repo') { should eq 'alpine' }
+  its('tag') { should eq '2.7' }
 end
 
 # docker_image[vbatts/slackware]
 
-describe command('docker images') do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should_not match(/^slackware\s.*latest/) }
+describe docker_image('vbatts/slackware:latest') do
+  it { should_not exist }
+  its('repo') { should_not eq 'vbatts/slackware' }
+  its('tag') { should_not eq 'latest' }
 end
-
 # docker_image[save cirros]
 
 describe file('/cirros.tar') do
@@ -75,49 +79,56 @@ end
 
 # docker_image[load cirros]
 
-describe command('docker images') do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/^cirros\s.*latest/) }
+describe docker_image('cirros:latest') do
+  it { should exist }
+  its('repo') { should eq 'cirros' }
+  its('tag') { should eq 'latest' }
 end
 
-# docker_image[image-1]
+# docker_image[someara/image-1]
 
-describe command('docker images') do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should_not match(/^image-1\s.*v1.0.1/) }
+describe docker_image('someara/image-1:v0.1.0') do
+  it { should exist }
+  its('repo') { should eq 'someara/image-1' }
+  its('tag') { should eq 'v0.1.0' }
 end
 
-# docker_image[image.2]
+# docker_image[someara/image.2]
 
-describe command('docker images') do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should_not match(/^image.2\s.*v1.0.1/) }
+describe docker_image('someara/image.2:v0.1.0') do
+  it { should exist }
+  its('repo') { should eq 'someara/image.2' }
+  its('tag') { should eq 'v0.1.0' }
 end
 
 # docker_image[image_3]
 
-describe command('docker images') do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should_not match(/^image_3\s.*v1.0.1/) }
+describe docker_image('image_3:v0.1.0') do
+  it { should exist }
+  its('repo') { should eq 'image_3' }
+  its('tag') { should eq 'v0.1.0' }
 end
 
 # docker_image[name-w-dashes]
 
-describe command('docker images') do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(%r{^localhost\:5043/someara/name-w-dashes\s.*latest}) }
+describe docker_image('localhost:5043/someara/name-w-dashes:latest') do
+  it { should exist }
+  its('repo') { should eq 'localhost:5043/someara/name-w-dashes' }
+  its('tag') { should eq 'latest' }
 end
 
 # docker_tag[private repo tag for name.w.dots:latest / v0.1.0 / / v0.1.1 /]
 
-describe command('docker images') do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(%r{^localhost\:5043/someara/name\.w\.dots\s.*latest}) }
+describe docker_image('localhost:5043/someara/name.w.dots:latest') do
+  it { should exist }
+  its('repo') { should eq 'localhost:5043/someara/name.w.dots' }
+  its('tag') { should eq 'latest' }
 end
 
-describe command('docker images') do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(%r{^localhost\:5043/someara/name\.w\.dots\s.*v0.1.0}) }
+describe docker_image('localhost:5043/someara/name.w.dots:v0.1.0') do
+  it { should exist }
+  its('repo') { should eq 'localhost:5043/someara/name.w.dots' }
+  its('tag') { should eq 'v0.1.0' }
 end
 
 # FIXME: We need to test the "docker_registry" stuff...
