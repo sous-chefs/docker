@@ -1007,6 +1007,7 @@ docker_container 'init' do
   tag '3.1'
   command 'ls -la'
   init true
+  timeout 40
   action :run_if_missing
 end
 
@@ -1019,6 +1020,7 @@ docker_container 'ipc_mode' do
   tag '3.1'
   command 'ps -ef'
   ipc_mode 'host'
+  timeout 40
   action :run_if_missing
 end
 
@@ -1044,6 +1046,7 @@ docker_container 'ro_rootfs' do
   tag '3.1'
   command 'ps -ef'
   ro_rootfs true
+  timeout 40
   action :run_if_missing
 end
 
@@ -1057,6 +1060,7 @@ docker_container 'sysctls' do
   command '/sbin/sysctl -a'
   sysctls 'net.core.somaxconn' => '65535',
           'net.core.xfrm_acq_expires' => '42'
+  timeout 40
   action :run_if_missing
 end
 
