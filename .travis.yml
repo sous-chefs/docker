@@ -19,17 +19,18 @@ services: docker
 
 env:
   matrix:
-  - INSTANCE=resources-17090-ubuntu-1604
+  - INSTANCE=installation-script-main-ubuntu-1604
+  - INSTANCE=installation-tarball-ubuntu-1604
+  - INSTANCE=installation-package-ubuntu-1604
+  - INSTANCE=registry-ubuntu-1604
   - INSTANCE=network-ubuntu-1604
   - INSTANCE=volume-ubuntu-1604
-  - INSTANCE=smoke-debian-7
-  - INSTANCE=smoke-debian-8
-  - INSTANCE=smoke-debian-9
-  - INSTANCE=smoke-centos-7
-  - INSTANCE=smoke-fedora-26
-  - INSTANCE=smoke-ubuntu-1404
-  - INSTANCE=smoke-ubuntu-1604
-  - INSTANCE=smoke-ubuntu-1704
+  - INSTANCE=resources-debian-8
+  - INSTANCE=resources-debian-9
+  - INSTANCE=resources-centos-7
+    #  - INSTANCE=resources-fedora-26 # waiting on a fix for https://github.com/chef/chef/issues/6743
+  - INSTANCE=resources-ubuntu-1404
+  - INSTANCE=resources-ubuntu-1604
 
 # Ensure we make ChefDK's Ruby the default
 before_script:

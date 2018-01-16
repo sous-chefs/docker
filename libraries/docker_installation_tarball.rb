@@ -11,15 +11,16 @@ module DockerCookbook
 
     property :checksum, String, default: lazy { default_checksum }, desired_state: false
     property :source, String, default: lazy { default_source }, desired_state: false
-    property :version, String, default: lazy { default_version }, desired_state: false
-
-    default_action :create
+    property :channel, String, default: 'stable', desired_state: false
+    property :version, String, default: '17.12.0', desired_state: false
 
     #########
     # Actions
     #########
 
     action :create do
+      package 'tar'
+
       # Pull a precompiled binary off the network
       remote_file docker_tarball do
         source new_resource.source

@@ -191,8 +191,8 @@ module DockerCookbook
         opts << "--fixed-cidr=#{fixed_cidr}" if fixed_cidr
         opts << "--fixed-cidr-v6=#{fixed_cidr_v6}" if fixed_cidr_v6
         opts << "--group=#{group}" if group
-        opts << "--graph=#{graph}" if graph
-        host.each { |h| opts << "-H #{h}" } if host
+        opts << "--data-root=#{data_root}" if data_root
+        host.each { |h| opts << "--host #{h}" } if host
         opts << "--icc=#{icc}" unless icc.nil?
         insecure_registry.each { |i| opts << "--insecure-registry=#{i}" } if insecure_registry
         opts << "--ip=#{ip}" if ip
