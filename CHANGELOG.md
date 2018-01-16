@@ -2,6 +2,32 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 4.0.0 (2018-01-15)
+
+### Breaking Changes
+
+- Default to Docker 17.12.0
+- Remove previously deprecated support for Debian 7 / CentOS 6\. Currently supported released of Docker do not run on these platforms.
+- Removed support for the EOL Docker 1.12.3
+- Removed the ChefSpec matchers which are no longer needed with ChefDK 2.X
+- Remove the broken legacy binary installation resource. This was only used by very old EOL docker releases
+- By default setup the apt/yum repos in the package install resource so that out of the box there's no need for additional cookbooks. If you would like to manage your own docker repos or other internal repos this may be disabled by property. Due to this change the cookbook now requires Chef 12.15+
+
+### Other Changes
+
+- Greatly expand Travis CI testing of the cookbook and use new InSpec resources for Docker instead of shelling out
+- Add support for Ubuntu 17.10
+- Update Fedora support for new DNF support in Chef
+- Minor correctness and formatting updates to the readme
+- load internal and ipv6 status for existing docker_network resources
+- Update Amazon Linux to default to 17.09.1, which is the current version in their repos
+- Fix the remove action in docker_installation_script
+- Replace deprecated graph with data_root. Graph will now silently map to data_root
+- Pass --host instead of -H in docker_service for clarity
+- Make sure tar is installed to decompress the tarball in the docker_installation_tarball resource
+- Update the download path for Docker CE to unbreak docker_installation_tarball
+- Allow specifying channels in the docker_installation_tarball resource so you can install non-stable releases
+
 ## 3.0.0 (2017-12-22)
 
 - Install docker-api via gem metadata. This bumps the required chef release for this cookbook to 12.10+
@@ -12,7 +38,7 @@ This file is used to list changes made in each version of the docker cookbook.
 
 ## 2.17.0 (2017-11-10)
 
- - Update Amazon Linux to default to 17.06.2
+- Update Amazon Linux to default to 17.06.2
 
 ## 2.16.4 (2017-10-30)
 
@@ -23,9 +49,11 @@ This file is used to list changes made in each version of the docker cookbook.
 - add init support to docker_container
 
 ## 2.16.2 (2017-10-05)
+
 - fix for ip_address not being set
 
 ## 2.16.1 (2017-10-05)
+
 - added support for env_file property
 - bumping to 17.09.0
 
