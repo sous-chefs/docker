@@ -29,23 +29,27 @@ module DockerCookbook
         current_spec != new_spec
       end
 
+      def current_force_update_counter
+        current_spec = current_service.hash['Spec']
+        current_spec['TaskTemplate']['ForceUpdate'] || 0
+      end
+
+
       def create_service
         current_swarm.create_service(service_spec)
       end
 
       def update_service(force = false)
-        spec = service_spec
+        spec = service_spec.deep_dup
 
         if force
-          spec = service_spec.deep_dup
-          spec['TaskTemplate']['ForceUpdate'] = 1
+            # For the update to be forced, you need to change the ForceUpdate
+            # counter. We're wrapping to avoid overflow, although unlikely
+          force_update = current_force_update_counter + 1 % 1000
+          spec['TaskTemplate']['ForceUpdate'] = force_update
         end
 
         current_service.update(spec)
-      end
-
-      def restart_service
-        current_service.restart
       end
 
       def service_spec
