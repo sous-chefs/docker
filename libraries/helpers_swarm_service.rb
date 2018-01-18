@@ -84,11 +84,12 @@ module DockerCookbook
         spec = {
           # 'Networks' => [],
           'Image' => image,
-          'User' => user,
+          'User' => user
           # 'Mounts' => [],
         }
 
         spec['Env'] = format_env unless environment.empty?
+        spec['Hostname'] = hostname unless hostname.empty?
 
         spec
       end
@@ -126,7 +127,6 @@ module DockerCookbook
           { 'Replicated' => { 'Replicas' => replicas } }
         end
       end
-
       def service_endpoint_ports_spec
         ports.map do |hash|
           {

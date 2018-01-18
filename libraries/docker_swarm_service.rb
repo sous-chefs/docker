@@ -14,6 +14,7 @@ module DockerCookbook
     property :image, String, required: true
     property :user, String, required: true, default: 'root'
     property :networks, NonEmptyArray, required: true
+    property :hostname, String
 
     property :environment, Hash, default: {}
     property :log_driver, String, required: true, default: 'json-file'
