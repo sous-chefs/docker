@@ -173,9 +173,7 @@ The `docker_installation` resource auto-selects one of the below resources with 
 ### Example
 
 ```ruby
-docker_installation 'default' do
-  action :create
-end
+docker_installation 'default'
 ```
 
 ## docker_installation_tarball
@@ -426,6 +424,43 @@ The `docker_service` resource property list mostly corresponds to the options fo
 
 The `docker_image` is responsible for managing Docker image pulls, builds, and deletions. It speaks directly to the [Docker Engine API](https://docs.docker.com/engine/api/v1.35/#tag/Image).
 
+### Actions
+
+- `:pull` - Pulls an image from the registry. Default action.
+- `:pull_if_missing` - Pulls an image from the registry, only if it missing
+- `:build` - Builds an image from a Dockerfile, directory, or tarball
+- `:build_if_missing` - Same build, but only if it is missing
+- `:save` - Exports an image to a tarball at `destination`
+- `:import` - Imports an image from a tarball at `destination`
+- `:remove` - Removes (untags) an image
+- `:push` - Pushes an image to the registry
+
+### Properties
+
+The `docker_image` resource properties mostly corresponds to the [Docker Engine API](https://docs.docker.com/engine/api/v1.35/#tag/Image) as driven by the [docker-api Ruby gem](https://github.com/swipely/docker-api)
+
+A `docker_image`'s full identifier is a string in the form "\
+
+<repo\>:\<tag\>". There is some nuance around naming using the
+public registry vs a private one.</tag\></repo\>
+
+- `repo` - aka `image_name` - The first half of a Docker image's identity. This is a string in the form: `registry:port/owner/image_name`. If the `registry:port` portion is left off, Docker will implicitly use the Docker public registry. "Official Images" omit the owner part. This means a repo id can be as short as `busybox`, `alpine`, or `centos`. These names refer to official images on the public registry. Names can be as long as `my.computers.biz:5043/what/ever` to refer to custom images on an private registry. Often you'll see something like `chef/chef` to refer to private images on the public registry. - Defaults to resource name.
+- `tag` - The second half of a Docker image's identity. - Defaults to `latest`
+- `source` - Path to input for the `:import`, `:build` and `:build_if_missing` actions. For building, this can be a Dockerfile, a tarball containing a Dockerfile in its root, or a directory containing a Dockerfile. For `:import`, this should be a tarball containing Docker formatted image, as generated with `:save`.
+- `destination` - Path for output from the `:save` action.
+- `force` - A force boolean used in various actions - Defaults to false
+- `nocache` - Used in `:build` operations. - Defaults to false
+- `noprune` - Used in `:remove` operations - Defaults to false
+- `rm` - Remove intermediate containers after a successful build (default behavior) - Defaults to `true`
+- `read_timeout` - May need to increase for long image builds/pulls
+- `write_timeout` - May need to increase for long image builds/pulls
+- `host` - A string containing the host the API should communicate with. Defaults to `ENV['DOCKER_HOST']` if set.
+- `tls` - Use TLS; implied by --tlsverify. Defaults to ENV['DOCKER_TLS'] if set.
+- `tls_verify` - Use TLS and verify the remote. Defaults to `ENV['DOCKER_TLS_VERIFY']` if set
+- `tls_ca_cert` - Trust certs signed only by this CA. Defaults to `ENV['DOCKER_CERT_PATH']` if set.
+- `tls_client_cert` - Path to TLS certificate file for docker cli. Defaults to `ENV['DOCKER_CERT_PATH']` if set
+- `tls_client_key` - Path to TLS key file for docker cli. Defaults to `ENV['DOCKER_CERT_PATH']` if set.
+
 ### Examples
 
 - default action, default properties
@@ -540,48 +575,20 @@ docker_image 'alpine' do
 end
 ```
 
-### Properties
-
-The `docker_image` resource properties mostly corresponds to the [Docker Engine API](https://docs.docker.com/engine/api/v1.35/#tag/Image) as driven by the [docker-api Ruby gem](https://github.com/swipely/docker-api)
-
-A `docker_image`'s full identifier is a string in the form "\
-
-<repo\>:\<tag\>". There is some nuance around naming using the
-public registry vs a private one.</tag\></repo\>
-
-- `repo` - aka `image_name` - The first half of a Docker image's identity. This is a string in the form: `registry:port/owner/image_name`. If the `registry:port` portion is left off, Docker will implicitly use the Docker public registry. "Official Images" omit the owner part. This means a repo id can be as short as `busybox`, `alpine`, or `centos`. These names refer to official images on the public registry. Names can be as long as `my.computers.biz:5043/what/ever` to refer to custom images on an private registry. Often you'll see something like `chef/chef` to refer to private images on the public registry. - Defaults to resource name.
-- `tag` - The second half of a Docker image's identity. - Defaults to `latest`
-- `source` - Path to input for the `:import`, `:build` and `:build_if_missing` actions. For building, this can be a Dockerfile, a tarball containing a Dockerfile in its root, or a directory containing a Dockerfile. For `:import`, this should be a tarball containing Docker formatted image, as generated with `:save`.
-- `destination` - Path for output from the `:save` action.
-- `force` - A force boolean used in various actions - Defaults to false
-- `nocache` - Used in `:build` operations. - Defaults to false
-- `noprune` - Used in `:remove` operations - Defaults to false
-- `rm` - Remove intermediate containers after a successful build (default behavior) - Defaults to `true`
-- `read_timeout` - May need to increase for long image builds/pulls
-- `write_timeout` - May need to increase for long image builds/pulls
-- `host` - A string containing the host the API should communicate with. Defaults to `ENV['DOCKER_HOST']` if set.
-- `tls` - Use TLS; implied by --tlsverify. Defaults to ENV['DOCKER_TLS'] if set.
-- `tls_verify` - Use TLS and verify the remote. Defaults to `ENV['DOCKER_TLS_VERIFY']` if set
-- `tls_ca_cert` - Trust certs signed only by this CA. Defaults to `ENV['DOCKER_CERT_PATH']` if set.
-- `tls_client_cert` - Path to TLS certificate file for docker cli. Defaults to `ENV['DOCKER_CERT_PATH']` if set
-- `tls_client_key` - Path to TLS key file for docker cli. Defaults to `ENV['DOCKER_CERT_PATH']` if set.
-
-### Actions
-
-The following actions are available for a `docker_image` resource. Defaults to `pull`
-
-- `:pull` - Pulls an image from the registry
-- `:pull_if_missing` - Pulls an image from the registry, only if it missing
-- `:build` - Builds an image from a Dockerfile, directory, or tarball
-- `:build_if_missing` - Same build, but only if it is missing
-- `:save` - Exports an image to a tarball at `destination`
-- `:import` - Imports an image from a tarball at `destination`
-- `:remove` - Removes (untags) an image
-- `:push` - Pushes an image to the registry
-
 ## docker_tag
 
 Docker tags work very much like hard links in a Unix filesystem. They are just references to an existing image. Therefore, the docker_tag resource has taken inspiration from the Chef `link` resource.
+
+### Actions
+
+- `:tag` - Tags the image
+
+### Properties
+
+- `target_repo` - The repo half of the source image identifier.
+- `target_tag` - The tag half of the source image identifier.
+- `to_repo` - The repo half of the new image identifier
+- `to_tag`- The tag half of the new image identifier
 
 ### Examples
 
@@ -595,22 +602,95 @@ docker_tag 'private repo tag for hello-again:1.0.1' do
 end
 ```
 
-### Properties
-
-- `target_repo` - The repo half of the source image identifier.
-- `target_tag` - The tag half of the source image identifier.
-- `to_repo` - The repo half of the new image identifier
-- `to_tag`- The tag half of the new image identifier
-
-### Actions
-
-- `:tag` - Tags the image
-
 ## docker_container
 
 The `docker_container` is responsible for managing Docker container actions. It speaks directly to the [Docker remote API](https://docs.docker.com/reference/api/docker_remote_api_v1.20/).
 
 Containers are process oriented, and move through an event cycle. Thanks to [Glider Labs](http://gliderlabs.com/) for this excellent diagram. ![alt tag](http://gliderlabs.com/images/docker_events.png)
+
+### Actions
+
+- `:create` - Creates the container but does not start it. Useful for Volume containers.
+- `:start` - Starts the container. Useful for containers that run jobs.. command that exit.
+- `:run` - The default action. Both `:create` and `:start` the container in one action. Redeploys the container on resource change.
+- `:run_if_missing` - Runs a container only once.
+- `:stop` - Stops the container.
+- `:restart` - Stops and then starts the container.
+- `:kill` - Send a signal to the container process. Defaults to `SIGKILL`.
+- `:pause` - Pauses the container.
+- `:unpause` - Unpauses the container.
+- `:delete` - Deletes the container.
+- `:redeploy` - Deletes and runs the container.
+- `:reload` - Sends SIGHUP to pid 1 in the container
+
+### Properties
+
+Most `docker_container` properties are the `snake_case` version of the `CamelCase` keys found in the [Docker Remote Api](https://docs.docker.com/reference/api/docker_remote_api_v1.20/)
+
+- `container_name` - The name of the container. Defaults to the name of the `docker_container` resource.
+- `repo` - aka `image_name`. The first half of a the complete identifier for a Docker Image.
+- `tag` - The second half of a Docker image's identity. - Defaults to `latest`.
+- `command` - The command to run when starting the container.
+- `autoremove` - Boolean - Automatically delete a container when it's command exits. Defaults to `false`.
+- `volumes` - An array of volume bindings for this container. Each volume binding is a string in one of these forms: `container_path` to create a new volume for the container. `host_path:container_path` to bind-mount a host path into the container. `host_path:container_path:ro` to make the bind-mount read-only inside the container.
+- `cap_add` - An array Linux Capabilities (`man 7 capabilities`) to add to grant the container beyond what it normally gets.
+- `cap_drop` - An array Linux Capabilities (`man 7 capabilities`) to revoke that the container normally has.
+- `cpu_shares` - An integer value containing the CPU Shares for the container.
+- `devices` - A Hash of devices to add to the container.
+- `dns` - An array of DNS servers the container will use for name resolution.
+- `dns_search` - An array of domains the container will search for name resolution.
+- `domain_name` - Set's the container's dnsdomainname as returned by the `dnsdomainname` command.
+- `entrypoint` - Set the entry point for the container as a string or an array of strings.
+- `env` - Set environment variables in the container in the form `['FOO=bar', 'BIZ=baz']`
+- `env_file` - Read environment variables from a file and set in the container. Accepts an Array or String to the file location. lazy evaluator must be set if the file passed is created by Chef.
+- `extra_hosts` - An array of hosts to add to the container's `/etc/hosts` in the form `['host_a:10.9.8.7', 'host_b:10.9.8.6']`
+- `force` - A boolean to use in container operations that support a `force` option. Defaults to `false`
+- `host` - A string containing the host the API should communicate with. Defaults to ENV['DOCKER_HOST'] if set
+- `host_name` - The hostname for the container.
+- `labels` A string, array, or hash to set metadata on the container in the form ['foo:bar', 'hello:world']`
+- `links` - An array of source container/alias pairs to link the container to in the form `[container_a:www', container_b:db']`
+- `log_driver` - Sets a custom logging driver for the container (json-file/syslog/journald/gelf/fluentd/none).
+- `log_opts` - Configures the above logging driver options (driver-specific).
+- `init` - Run an init inside the container that forwards signals and reaps processes.
+- `ip_address` - Container IPv4 address (e.g. 172.30.100.104)
+- `mac_address` - The mac address for the container to use.
+- `memory` - Memory limit in bytes.
+- `memory_swap` - Total memory limit (memory + swap); set `-1` to disable swap limit (unlimited). You must use this with memory and make the swap value larger than memory.
+- `network_disabled` - Boolean to disable networking. Defaults to `false`.
+- `network_mode` - Sets the networking mode for the container. One of `bridge`, `host`, `container`.
+- `network_aliases` - Adds network-scoped alias for the container in form `['alias-1', 'alias-2']`.
+- `open_stdin` - Boolean value, opens stdin. Defaults to `false`.
+- `outfile` - The path to write the file when using `:export` action.
+- `port` - The port configuration to use in the container. Matches the syntax used by the `docker` CLI tool.
+- `privileged` - Boolean to start the container in privileged more. Defaults to `false`
+- `publish_all_ports` - Allocates a random host port for all of a container's exposed ports.
+- `remove_volumes` - A boolean to clean up "dangling" volumes when removing the last container with a reference to it. Default to `false` to match the Docker CLI behavior.
+- `restart_policy` - One of `no`, `on-failure`, `unless-stopped`, or `always`. Use `always` if you want a service container to survive a Dockerhost reboot. Defaults to `no`.
+- `restart_maximum_retry_count` - Maximum number of restarts to try when `restart_policy` is `on-failure`. Defaults to an ever increasing delay (double the previous delay, starting at 100mS), to prevent flooding the server.
+- `running_wait_time` - Amount of seconds `docker_container` wait to determine if a process is running.`
+- `security_opt` - A list of string values to customize labels for MLS systems, such as SELinux.
+- `signal` - The signal to send when using the `:kill` action. Defaults to `SIGTERM`.
+- `sysctls` - A hash of sysctls to set on the container. Defaults to `{}`.
+- `tty` - Boolean value to allocate a pseudo-TTY. Defaults to `false`.
+- `user` - A string value specifying the user inside the container.
+- `volumes` - An Array of paths inside the container to expose. Does the same thing as the `VOLUME` directive in a Dockerfile, but works on container creation.
+- `volumes_from` - A list of volumes to inherit from another container. Specified in the form `<container name>[:<ro|rw>]`
+- `volume_driver` - Driver that this container users to mount volumes.
+- `working_dir` - A string specifying the working directory for commands to run in.
+- `read_timeout` - May need to increase for commits or exports that are slow
+- `write_timeout` - May need to increase for commits or exports that are slow
+- `kill_after` - Number of seconds to wait before killing the container. Defaults to wait indefinitely; eventually will hit read_timeout limit.
+- `timeout` - Seconds to wait for an attached container to return
+- `tls` - Use TLS; implied by --tlsverify. Defaults to ENV['DOCKER_TLS'] if set
+- `tls_verify` - Use TLS and verify the remote. Defaults to ENV['DOCKER_TLS_VERIFY'] if set
+- `tls_ca_cert` - Trust certs signed only by this CA. Defaults to ENV['DOCKER_CERT_PATH'] if set
+- `tls_client_cert` - Path to TLS certificate file for docker cli. Defaults to ENV['DOCKER_CERT_PATH'] if set
+- `tls_client_key` - Path to TLS key file for docker cli. Defaults to ENV['DOCKER_CERT_PATH'] if set
+- `userns_mode` - Modify the user namespace mode - Defaults to `nil`, example option: `host`
+- `pid_mode` - Set the PID (Process) Namespace mode for the container. `host`: use the host's PID namespace inside the container.
+- `ipc_mode` - Set the IPC mode for the container - Defaults to `nil`, example option: `host`
+- `uts_mode` - Set the UTS namespace mode for the container. The UTS namespace is for setting the hostname and the domain that is visible to running processes in that namespace. By default, all containers, including those with `--network=host`, have their own UTS namespace. The host setting will result in the container using the same UTS namespace as the host. Note that --hostname is invalid in host UTS mode.
+- `ro_rootfs` - Mount the container's root filesystem as read only. Defaults to `false`
 
 ### Examples
 
@@ -1005,95 +1085,22 @@ docker_container 'external_daemon' do
 end
 ```
 
-### Properties
-
-Most `docker_container` properties are the `snake_case` version of the `CamelCase` keys found in the [Docker Remote Api](https://docs.docker.com/reference/api/docker_remote_api_v1.20/)
-
-- `container_name` - The name of the container. Defaults to the name of the `docker_container` resource.
-- `repo` - aka `image_name`. The first half of a the complete identifier for a Docker Image.
-- `tag` - The second half of a Docker image's identity. - Defaults to `latest`.
-- `command` - The command to run when starting the container.
-- `autoremove` - Boolean - Automatically delete a container when it's command exits. Defaults to `false`.
-- `volumes` - An array of volume bindings for this container. Each volume binding is a string in one of these forms: `container_path` to create a new volume for the container. `host_path:container_path` to bind-mount a host path into the container. `host_path:container_path:ro` to make the bind-mount read-only inside the container.
-- `cap_add` - An array Linux Capabilities (`man 7 capabilities`) to add to grant the container beyond what it normally gets.
-- `cap_drop` - An array Linux Capabilities (`man 7 capabilities`) to revoke that the container normally has.
-- `cpu_shares` - An integer value containing the CPU Shares for the container.
-- `devices` - A Hash of devices to add to the container.
-- `dns` - An array of DNS servers the container will use for name resolution.
-- `dns_search` - An array of domains the container will search for name resolution.
-- `domain_name` - Set's the container's dnsdomainname as returned by the `dnsdomainname` command.
-- `entrypoint` - Set the entry point for the container as a string or an array of strings.
-- `env` - Set environment variables in the container in the form `['FOO=bar', 'BIZ=baz']`
-- `env_file` - Read environment variables from a file and set in the container. Accepts an Array or String to the file location. lazy evaluator must be set if the file passed is created by Chef.
-- `extra_hosts` - An array of hosts to add to the container's `/etc/hosts` in the form `['host_a:10.9.8.7', 'host_b:10.9.8.6']`
-- `force` - A boolean to use in container operations that support a `force` option. Defaults to `false`
-- `host` - A string containing the host the API should communicate with. Defaults to ENV['DOCKER_HOST'] if set
-- `host_name` - The hostname for the container.
-- `labels` A string, array, or hash to set metadata on the container in the form ['foo:bar', 'hello:world']`
-- `links` - An array of source container/alias pairs to link the container to in the form `[container_a:www', container_b:db']`
-- `log_driver` - Sets a custom logging driver for the container (json-file/syslog/journald/gelf/fluentd/none).
-- `log_opts` - Configures the above logging driver options (driver-specific).
-- `init` - Run an init inside the container that forwards signals and reaps processes.
-- `ip_address` - Container IPv4 address (e.g. 172.30.100.104)
-- `mac_address` - The mac address for the container to use.
-- `memory` - Memory limit in bytes.
-- `memory_swap` - Total memory limit (memory + swap); set `-1` to disable swap limit (unlimited). You must use this with memory and make the swap value larger than memory.
-- `network_disabled` - Boolean to disable networking. Defaults to `false`.
-- `network_mode` - Sets the networking mode for the container. One of `bridge`, `host`, `container`.
-- `network_aliases` - Adds network-scoped alias for the container in form `['alias-1', 'alias-2']`.
-- `open_stdin` - Boolean value, opens stdin. Defaults to `false`.
-- `outfile` - The path to write the file when using `:export` action.
-- `port` - The port configuration to use in the container. Matches the syntax used by the `docker` CLI tool.
-- `privileged` - Boolean to start the container in privileged more. Defaults to `false`
-- `publish_all_ports` - Allocates a random host port for all of a container's exposed ports.
-- `remove_volumes` - A boolean to clean up "dangling" volumes when removing the last container with a reference to it. Default to `false` to match the Docker CLI behavior.
-- `restart_policy` - One of `no`, `on-failure`, `unless-stopped`, or `always`. Use `always` if you want a service container to survive a Dockerhost reboot. Defaults to `no`.
-- `restart_maximum_retry_count` - Maximum number of restarts to try when `restart_policy` is `on-failure`. Defaults to an ever increasing delay (double the previous delay, starting at 100mS), to prevent flooding the server.
-- `running_wait_time` - Amount of seconds `docker_container` wait to determine if a process is running.`
-- `security_opt` - A list of string values to customize labels for MLS systems, such as SELinux.
-- `signal` - The signal to send when using the `:kill` action. Defaults to `SIGTERM`.
-- `sysctls` - A hash of sysctls to set on the container. Defaults to `{}`.
-- `tty` - Boolean value to allocate a pseudo-TTY. Defaults to `false`.
-- `user` - A string value specifying the user inside the container.
-- `volumes` - An Array of paths inside the container to expose. Does the same thing as the `VOLUME` directive in a Dockerfile, but works on container creation.
-- `volumes_from` - A list of volumes to inherit from another container. Specified in the form `<container name>[:<ro|rw>]`
-- `volume_driver` - Driver that this container users to mount volumes.
-- `working_dir` - A string specifying the working directory for commands to run in.
-- `read_timeout` - May need to increase for commits or exports that are slow
-- `write_timeout` - May need to increase for commits or exports that are slow
-- `kill_after` - Number of seconds to wait before killing the container. Defaults to wait indefinitely; eventually will hit read_timeout limit.
-- `timeout` - Seconds to wait for an attached container to return
-- `tls` - Use TLS; implied by --tlsverify. Defaults to ENV['DOCKER_TLS'] if set
-- `tls_verify` - Use TLS and verify the remote. Defaults to ENV['DOCKER_TLS_VERIFY'] if set
-- `tls_ca_cert` - Trust certs signed only by this CA. Defaults to ENV['DOCKER_CERT_PATH'] if set
-- `tls_client_cert` - Path to TLS certificate file for docker cli. Defaults to ENV['DOCKER_CERT_PATH'] if set
-- `tls_client_key` - Path to TLS key file for docker cli. Defaults to ENV['DOCKER_CERT_PATH'] if set
-- `userns_mode` - Modify the user namespace mode - Defaults to `nil`, example option: `host`
-- `pid_mode` - Set the PID (Process) Namespace mode for the container. `host`: use the host's PID namespace inside the container.
-- `ipc_mode` - Set the IPC mode for the container - Defaults to `nil`, example option: `host`
-- `uts_mode` - Set the UTS namespace mode for the container. The UTS namespace is for setting the hostname and the domain that is visible to running processes in that namespace. By default, all containers, including those with `--network=host`, have their own UTS namespace. The host setting will result in the container using the same UTS namespace as the host. Note that --hostname is invalid in host UTS mode.
-- `ro_rootfs` - Mount the container's root filesystem as read only. Defaults to `false`
-
-### Actions
-
-- `:create` - Creates the container but does not start it. Useful for Volume containers.
-- `:start` - Starts the container. Useful for containers that run jobs.. command that exit.
-- `:run` - The default action. Both `:create` and `:start` the container in one action. Redeploys the container on resource change.
-- `:run_if_missing` - Runs a container only once.
-- `:stop` - Stops the container.
-- `:restart` - Stops and then starts the container.
-- `:kill` - Send a signal to the container process. Defaults to `SIGKILL`.
-- `:pause` - Pauses the container.
-- `:unpause` - Unpauses the container.
-- `:delete` - Deletes the container.
-- `:redeploy` - Deletes and runs the container.
-- `:reload` - Sends SIGHUP to pid 1 in the container
-
 ## docker_registry
 
 The `docker_registry` resource is responsible for managing the connection auth information to a Docker registry.
 
-### docker_registry action :login
+### Actions
+
+- `:login` - Login to the Docker Registry
+
+### Properties
+
+- `email`
+- `password`
+- `serveraddress`
+- `username`
+
+### Examples
 
 - Log into or register with public registry:
 
@@ -1137,7 +1144,7 @@ The `docker_network` resource is responsible for managing Docker named networks.
 - `ip_range` - Specify a range of IPs to allocate for containers. Ex: `192.168.1.0/24`
 - `subnet` - Specify the subnet(s) for the network. Ex: `192.168.0.0/16`
 
-### Example
+### Examples
 
 Create a network and use it in a container
 
