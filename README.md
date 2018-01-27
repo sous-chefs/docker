@@ -1120,36 +1120,26 @@ end
 
 The `docker_network` resource is responsible for managing Docker named networks. Usage of `overlay` driver requires the `docker_service` to be configured to use a distributed key/value store like `etcd`, `consul`, or `zookeeper`.
 
-### docker_network action :create
+### Actions
 
-```ruby
-docker_network 'my_network' do
-  subnet '192.168.88.0/24'
-  gateway '192.168.88.1'
-  action :create
-end
-
-docker_container 'echo-base' do
-  repo 'alpine'
-  tag '3.1'
-  command 'nc -ll -p 1337 -e /bin/cat'
-  port '1337'
-  network_mode 'my_network'
-  action :run
-end
-```
+- `:create` - create a network
+- `:delete` - delete a network
+- `:connect` - connect a container to a network
+- `:disconnect` - disconnect a container from a network
 
 ### Properties
 
+- `aux_address` - Auxiliary addresses for the network. Ex: `['a=192.168.1.5', 'b=192.168.1.6']`
+- `container` - Container-id/name to be connected/disconnected to/from the network. Used only by `:connect` and `:disconnect` actions
 - `driver` - The network driver to use. Defaults to `bridge`, other options include `overlay`.
-- `subnet` - Specify the subnet(s) for the network. Ex: `192.168.0.0/16`
+- `enable_ipv6` - Enable IPv6 on the network. Ex: true
 - `gateway` - Specify the gateway(s) for the network. Ex: `192.168.0.1`
 - `ip_range` - Specify a range of IPs to allocate for containers. Ex: `192.168.1.0/24`
-- `enable_ipv6` - Enable IPv6 on the network. Ex: true
-- `aux_address` - Auxillary addresses for the network. Ex: `['a=192.168.1.5', 'b=192.168.1.6']`
-- `container` - Container-id/name to be connected/disconnected to/from the network. Used only by `:connect` and `:disconnect` actions
+- `subnet` - Specify the subnet(s) for the network. Ex: `192.168.0.0/16`
 
 ### Example
+
+Create a network and use it in a container
 
 ```ruby
 docker_network 'network_g' do
@@ -1158,6 +1148,15 @@ docker_network 'network_g' do
   gateway ['192.168.0.100', '192.170.0.100']
   ip_range '192.168.1.0/24'
   aux_address ['a=192.168.1.5', 'b=192.168.1.6', 'a=192.170.1.5', 'b=192.170.1.6']
+end
+
+docker_container 'echo-base' do
+  repo 'alpine'
+  tag '3.1'
+  command 'nc -ll -p 1337 -e /bin/cat'
+  port '1337'
+  network_mode 'network_g'
+  action :run
 end
 ```
 
@@ -1197,18 +1196,26 @@ docker_network 'network_i1' do
 end
 ```
 
-### Actions
-
-- `:create` - create a network
-- `:delete` - delete a network
-- `:connect` - connect a container to a network
-- `:disconnect` - disconnect a container from a network
-
 ## docker_volume
 
 The `docker_volume` resource is responsible for managing Docker named volumes.
 
-### docker_volume action :create
+### Actions
+
+- `:create` - create a volume
+- `:remove` - remove a volume
+
+### Properties
+
+- `driver`
+- `host`
+- `opts`
+- `volume`
+- `volume_name`
+
+### Examples
+
+Create a volume named 'hello'
 
 ```ruby
 docker_volume 'hello' do
@@ -1224,14 +1231,21 @@ docker_container 'file_writer' do
 end
 ```
 
-### Actions
-
-- `:create` - create a volume
-- `:remove` - remove a volume
-
 ## docker_execute
 
 The `docker_execute` resource allows you to execute commands inside of a running container.
+
+### Actions
+
+- `:run` - Runs the command
+
+### Properties
+
+- `host` - Daemon socket(s) to connect to - `tcp://host:port`, `unix:///path/to/socket`, `fd://*` or `fd://socketfd`.
+- `command` - A command structured as an Array similar to `CMD` in a Dockerfile.
+- `container` - Name of the container to execute the command in.
+- `timeout`- Seconds to wait for an attached container to return. Defaults to 60 seconds.
+- `container_obj`
 
 ### Examples
 
@@ -1242,31 +1256,6 @@ docker_exec 'touch_it' do
 end
 ```
 
-### Properties
-
-- `host` - Daemon socket(s) to connect to - `tcp://host:port`, `unix:///path/to/socket`, `fd://*` or `fd://socketfd`.
-- `command` - A command structured as an Array similar to `CMD` in a Dockerfile.
-- `container` - Name of the container to execute the command in.
-- `timeout`- Seconds to wait for an attached container to return. Defaults to 60 seconds.
-
-### Actions
-
-- `:run` - Runs the command
-
-## Testing and Development
-
-- Full development and testing workflow with Test Kitchen and friends:
-
-  <testing.md>
-  </testing.md>
-
-## Contributing
-
-Please see contributing information in:
-
-<contributing.md>
-</contributing.md>
-
 ## Maintainers
 
 - Sean OMeara ([sean@sean.io](mailto:sean@sean.io))
@@ -1275,7 +1264,7 @@ Please see contributing information in:
 
 ## License
 
-**Copyright:** 2015-2017, Chef Software, Inc.
+**Copyright:** 2015-2018, Chef Software, Inc.
 
 ```
 Licensed under the Apache License, Version 2.0 (the "License");
