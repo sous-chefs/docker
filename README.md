@@ -39,7 +39,7 @@ end
 
 ## Usage
 
-- Add `depends 'docker', '~> 3.0'` to your cookbook's metadata.rb
+- Add `depends 'docker'` to your cookbook's metadata.rb
 - Use the resources shipped in cookbook in a recipe, the same way you'd use core Chef resources (file, template, directory, package, etc).
 
 ```ruby
@@ -180,7 +180,7 @@ end
 
 ## docker_installation_tarball
 
-The `docker_installation_tarball` resource copies the precompiled Go binary tarball onto the disk. It exists to help run newer Docker versions from 1.11.0 onwards. It should not be used in production, especially with devicemapper.
+The `docker_installation_tarball` resource copies the precompiled Go binary tarball onto the disk. It should not be used in production, especially with devicemapper.
 
 ### Example
 
@@ -195,9 +195,10 @@ end
 
 ### Properties
 
-- `version` - The desired version of docker. Used to calculate source.
-- `source` - Path to network accessible Docker binary tarball. Ignores version
-- `checksum` - SHA-256
+- `version` - The desired version of docker to fetch.
+- `channel` - The docker channel to fetch the tarball from. Default: stable
+- `source` - Path to network accessible Docker binary tarball. Ignores version when set.
+- `checksum` - SHA-256 checksum of the tarball file.
 
 ## docker_installation_script
 
