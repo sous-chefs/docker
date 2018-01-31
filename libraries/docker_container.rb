@@ -61,6 +61,7 @@ module DockerCookbook
     property :remove_volumes, Boolean
     property :restart_maximum_retry_count, Integer, default: 0
     property :restart_policy, String
+    property :runtime, String, default: 'runc'
     property :ro_rootfs, Boolean, default: false
     property :security_opt, [String, ArrayType]
     property :signal, String, default: 'SIGTERM'
@@ -291,6 +292,7 @@ module DockerCookbook
                 'MaximumRetryCount' => new_resource.restart_maximum_retry_count,
               },
               'ReadonlyRootfs'  => new_resource.ro_rootfs,
+              'Runtime'         => new_resource.runtime,
               'SecurityOpt'     => new_resource.security_opt,
               'Sysctls'         => new_resource.sysctls,
               'Ulimits'         => new_resource.ulimits_to_hash,
