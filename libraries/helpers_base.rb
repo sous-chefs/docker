@@ -23,7 +23,7 @@ module DockerCookbook
         else
           Array(v).each_with_object({}) do |label, h|
             parts = label.split(':')
-            h[parts[0]] = parts[1]
+            h[parts[0]] = parts[1..-1].join(':')
           end
         end
       end
