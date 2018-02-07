@@ -2,6 +2,9 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 4.0.1 (2018-02-07)
+- allow labels to have colons in the value
+
 ## 4.0.0 (2018-01-15)
 
 ### Breaking Changes
