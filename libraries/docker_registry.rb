@@ -6,7 +6,7 @@ module DockerCookbook
     resource_name :docker_registry
 
     property :email, [String, nil]
-    property :password, [String, nil]
+    property :password, [String, nil], sensitive: true
     property :serveraddress, [String, nil], name_property: true
     property :username, [String, nil]
 
