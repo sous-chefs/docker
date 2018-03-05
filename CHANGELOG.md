@@ -2,6 +2,9 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 4.0.2 (2018-03-05)
+- Flag registry password property as sensitive in docker_registry resource
+
 ## 4.0.1 (2018-02-07)
 - allow labels to have colons in the value
 
