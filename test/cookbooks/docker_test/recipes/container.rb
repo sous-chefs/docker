@@ -1146,7 +1146,7 @@ docker_container 'memory' do
   kernel_memory '10m'
   memory '5m'
   memory_swap '5M'
-  memory_swappiness '50'
+  memory_swappiness 50
   memory_reservation '5m'
   action :run
 end
