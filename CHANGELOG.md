@@ -2,6 +2,14 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 4.1.0 (2018-03-10)
+
+- Remove required from the name property. This resolves Foodcritic warnings in Foodcritic 13
+- Resolve a pile of Chef 14 deprecation warnings in the container and images resources
+- Remove support for Ubuntu 17.04 from the installation_package resource
+- Moved all the helper libraries into the resources themselves. This is part 1 of the work to get these resources ready for inclusion in Chef 14
+- Removed the version logic from installation_package when on Amazon Linux. Since we don't setup the repo we only have a single version available to us and we should just install that version. This resolves the constant need to update the hardcoded version in the cookbook every time Amazon releases a new Docker version.
+
 ## 4.0.2 (2018-03-05)
 - Flag registry password property as sensitive in docker_registry resource
 
