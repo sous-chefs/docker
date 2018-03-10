@@ -41,11 +41,6 @@ module DockerCookbook
       coerce: proc { |v| v.nil? ? nil : Array(v) }
     ) unless defined?(ArrayType)
 
-    Boolean = property_type(
-      is: [true, false],
-      default: false
-    ) unless defined?(Boolean)
-
     NonEmptyArray = property_type(
       is: [Array, nil],
       coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
@@ -75,8 +70,8 @@ module DockerCookbook
     property :write_timeout, [Integer, nil], desired_state: false
     property :running_wait_time, [Integer, nil], default: 20, desired_state: false
 
-    property :tls, [Boolean, nil], default: lazy { default_tls }, desired_state: false
-    property :tls_verify, [Boolean, nil], default: lazy { default_tls_verify }, desired_state: false
+    property :tls, [true, false, nil], default: lazy { default_tls }, desired_state: false
+    property :tls_verify, [true, false, nil], default: lazy { default_tls_verify }, desired_state: false
     property :tls_ca_cert, [String, nil], default: lazy { default_tls_cert_path('ca') }, desired_state: false
     property :tls_server_cert, [String, nil], desired_state: false
     property :tls_server_key, [String, nil], desired_state: false
