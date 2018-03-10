@@ -27,7 +27,6 @@ module DockerCookbook
 
     default_action :pull
 
-
     action :build do
       converge_by "Build image #{image_identifier}" do
         build_image
