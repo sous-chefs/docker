@@ -20,7 +20,7 @@ module DockerCookbook
     property :env_vars, Hash
 
     # daemon management
-    property :instance, String, name_property: true, required: true, desired_state: false
+    property :instance, String, name_property: true, desired_state: false
     property :auto_restart, Boolean, default: false
     property :api_cors_header, [String, nil]
     property :bridge, [String, nil]

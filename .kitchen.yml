@@ -34,9 +34,9 @@ platforms:
     platform: rhel
     pid_one_command: /usr/lib/systemd/systemd
 
-- name: fedora-26
+- name: fedora-27
   driver:
-    image: dokken/fedora-26
+    image: dokken/fedora-27
     pid_one_command: /usr/lib/systemd/systemd
 
 - name: ubuntu-14.04
@@ -49,9 +49,9 @@ platforms:
     image: dokken/ubuntu-16.04
     pid_one_command: /bin/systemd
 
-- name: ubuntu-17.10
+- name: ubuntu-18.04
   driver:
-    image: dokken/ubuntu-17.10
+    image: dokken/ubuntu-18.04
     pid_one_command: /bin/systemd
 
 - name: amazonlinux

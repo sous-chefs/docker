@@ -28,7 +28,7 @@ env:
   - INSTANCE=resources-debian-8
   - INSTANCE=resources-debian-9
   - INSTANCE=resources-centos-7
-    #  - INSTANCE=resources-fedora-26 # waiting on a fix for https://github.com/chef/chef/issues/6743
+  - INSTANCE=resources-fedora-27
   - INSTANCE=resources-ubuntu-1404
   - INSTANCE=resources-ubuntu-1604
 
