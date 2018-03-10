@@ -31,7 +31,6 @@ platforms:
 - name: centos-7
   driver:
     image: dokken/centos-7
-    platform: rhel
     pid_one_command: /usr/lib/systemd/systemd
 
 - name: fedora-27
@@ -58,6 +57,11 @@ platforms:
   driver:
     image: dokken/amazonlinux
     pid_one_command: /sbin/init
+
+- name: amazonlinux-2
+  driver:
+    image: dokken/amazonlinux
+    pid_one_command: /usr/lib/systemd/systemd
 
 suites:
 - name: installation_script_main
