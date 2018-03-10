@@ -435,11 +435,11 @@ module DockerCookbook
       ro_rootfs container.info['HostConfig']['ReadonlyRootfs']
       if container.info['NetworkSettings'] &&
          container.info['NetworkSettings']['Networks'] &&
-         container.info['NetworkSettings']['Networks'][network_mode] &&
-         container.info['NetworkSettings']['Networks'][network_mode]['IPAMConfig'] &&
-         container.info['NetworkSettings']['Networks'][network_mode]['IPAMConfig']['IPv4Address']
+         container.info['NetworkSettings']['Networks'][new_resource.network_mode] &&
+         container.info['NetworkSettings']['Networks'][new_resource.network_mode]['IPAMConfig'] &&
+         container.info['NetworkSettings']['Networks'][new_resource.network_mode]['IPAMConfig']['IPv4Address']
 
-        ip_address container.info['NetworkSettings']['Networks'][network_mode]['IPAMConfig']['IPv4Address']
+        ip_address container.info['NetworkSettings']['Networks'][new_resource.network_mode]['IPAMConfig']['IPv4Address']
       end
     end
 
@@ -532,7 +532,7 @@ module DockerCookbook
               'Runtime'         => new_resource.runtime,
               'SecurityOpt'     => new_resource.security_opt,
               'Sysctls'         => new_resource.sysctls,
-              'Ulimits'         => new_resource.ulimits_to_hash,
+              'Ulimits'         => ulimits_to_hash,
               'UsernsMode'      => new_resource.userns_mode,
               'UTSMode'         => new_resource.uts_mode,
               'VolumesFrom'     => new_resource.volumes_from,
@@ -680,15 +680,15 @@ module DockerCookbook
 
         if new_resource.detach == true &&
            (
-            attach_stderr == true ||
-            attach_stdin == true ||
-            attach_stdout == true ||
-            stdin_once == true
+            new_resource.attach_stderr == true ||
+            new_resource.attach_stdin == true ||
+            new_resource.attach_stdout == true ||
+            new_resource.stdin_once == true
            )
           raise Chef::Exceptions::ValidationFailed, 'Conflicting options detach, attach_stderr, attach_stdin, attach_stdout, stdin_once.'
         end
 
-        if network_mode == 'host' &&
+        if new_resource.network_mode == 'host' &&
            (
             !(hostname.nil? || hostname.empty?) ||
             !(mac_address.nil? || mac_address.empty?)
@@ -696,25 +696,25 @@ module DockerCookbook
           raise Chef::Exceptions::ValidationFailed, 'Cannot specify hostname or mac_address when network_mode is host.'
         end
 
-        if network_mode == 'container' &&
+        if new_resource.network_mode == 'container' &&
            (
-            !(hostname.nil? || hostname.empty?) ||
-            !(dns.nil? || dns.empty?) ||
-            !(dns_search.nil? || dns_search.empty?) ||
-            !(mac_address.nil? || mac_address.empty?) ||
-            !(extra_hosts.nil? || extra_hosts.empty?) ||
-            !(exposed_ports.nil? || exposed_ports.empty?) ||
-            !(port_bindings.nil? || port_bindings.empty?) ||
-            !(publish_all_ports.nil? || publish_all_ports.empty?) ||
-            !port.nil?
+            !(new_reosurce.hostname.nil? || new_reosurce.hostname.empty?) ||
+            !(new_reosurce.dns.nil? || new_reosurce.dns.empty?) ||
+            !(new_reosurce.dns_search.nil? || new_reosurce.dns_search.empty?) ||
+            !(new_reosurce.mac_address.nil? || new_reosurce.mac_address.empty?) ||
+            !(new_reosurce.extra_hosts.nil? || new_reosurce.extra_hosts.empty?) ||
+            !(new_reosurce.exposed_ports.nil? || new_reosurce.exposed_ports.empty?) ||
+            !(new_reosurce.port_bindings.nil? || new_reosurce.port_bindings.empty?) ||
+            !(new_reosurce.publish_all_ports.nil? || new_reosurce.publish_all_ports.empty?) ||
+            !new_reosurce.port.nil?
            )
           raise Chef::Exceptions::ValidationFailed, 'Cannot specify hostname, dns, dns_search, mac_address, extra_hosts, exposed_ports, port_bindings, publish_all_ports, port when network_mode is container.'
         end
       end
 
       def parsed_hostname
-        return nil if network_mode == 'host'
-        hostname
+        return nil if new_resource.network_mode == 'host'
+        new_resource.hostname
       end
 
       def call_action(action)
@@ -727,8 +727,8 @@ module DockerCookbook
       end
 
       def ulimits_to_hash
-        return nil if ulimits.nil?
-        ulimits.map do |u|
+        return nil if new_resource.ulimits.nil?
+        new_resource.ulimits.map do |u|
           name = u.split('=')[0]
           soft = u.split('=')[1].split(':')[0]
           hard = u.split('=')[1].split(':')[1]
