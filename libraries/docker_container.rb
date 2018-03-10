@@ -31,7 +31,7 @@ module DockerCookbook
     property :host, [String, nil], default: lazy { default_host }, desired_state: false
     property :hostname, String
     property :ipc_mode, String, default: ''
-    property :kernel_memory, [String, Integer], coerce: proc { |v| coerce_kernel_memory(v) }, default: 0
+    property :kernel_memory, [String, Integer], coerce: proc { |v| coerce_to_bytes(v) }, default: 0
     property :labels, [String, Array, Hash], default: {}, coerce: proc { |v| coerce_labels(v) }
     property :links, UnorderedArrayType, coerce: proc { |v| coerce_links(v) }
     property :log_driver, %w( json-file syslog journald gelf fluentd awslogs splunk etwlogs gcplogs none ), default: 'json-file', desired_state: false
@@ -39,10 +39,10 @@ module DockerCookbook
     property :init, [Boolean, nil]
     property :ip_address, String
     property :mac_address, String
-    property :memory, [String, Integer], coerce: proc { |v| coerce_memory(v) }, default: 0
-    property :memory_swap, [String, Integer], coerce: proc { |v| coerce_memory_swap(v) }, default: 0
-    property :memory_swappiness, Integer, coerce: proc { |v| coerce_memory_swappiness(v) }, default: 0
-    property :memory_reservation, Integer, coerce: proc { |v| coerce_memory_reservation(v) }, default: 0
+    property :memory, [String, Integer], coerce: proc { |v| coerce_to_bytes(v) }, default: 0
+    property :memory_swap, [String, Integer], coerce: proc { |v| coerce_to_bytes(v) }, default: 0
+    property :memory_swappiness, Integer, default: 0
+    property :memory_reservation, Integer, coerce: proc { |v| coerce_to_bytes(v) }, default: 0
     property :network_disabled, Boolean, default: false
     property :network_mode, [String, NilClass], default: 'bridge'
     property :network_aliases, [ArrayType], default: []
@@ -147,38 +147,7 @@ module DockerCookbook
       n * multiplier
     end
 
-    def coerce_kernel_memory(v)
-      case v
-      when Integer, nil
-        v
-      else
-        to_bytes(v)
-      end
-    end
-
-    def coerce_memory(v)
-      case v
-      when Integer, nil
-        v
-      else
-        to_bytes(v)
-      end
-    end
-
-    def coerce_memory_swap(v)
-      case v
-      when Integer, nil
-        v
-      else
-        to_bytes(v)
-      end
-    end
-
-    def coerce_memory_swappiness(v)
-      v.to_i
-    end
-
-    def coerce_memory_reservation(v)
+    def coerce_to_bytes(v)
       case v
       when Integer, nil
         v
