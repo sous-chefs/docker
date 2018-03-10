@@ -667,10 +667,10 @@ module DockerCookbook
     declare_action_class.class_eval do
       def validate_container_create
         if property_is_set?(:restart_policy) &&
-           restart_policy != 'no' &&
-           restart_policy != 'always' &&
-           restart_policy != 'unless-stopped' &&
-           restart_policy != 'on-failure'
+           new_resource.restart_policy != 'no' &&
+           new_resource.restart_policy != 'always' &&
+           new_resource.restart_policy != 'unless-stopped' &&
+           new_resource.restart_policy != 'on-failure'
           raise Chef::Exceptions::ValidationFailed, 'restart_policy must be either no, always, unless-stopped, or on-failure.'
         end
 
@@ -690,8 +690,8 @@ module DockerCookbook
 
         if new_resource.network_mode == 'host' &&
            (
-            !(hostname.nil? || hostname.empty?) ||
-            !(mac_address.nil? || mac_address.empty?)
+            !(new_resource.hostname.nil? || new_resource.hostname.empty?) ||
+            !(new_resource.mac_address.nil? || new_resource.mac_address.empty?)
            )
           raise Chef::Exceptions::ValidationFailed, 'Cannot specify hostname or mac_address when network_mode is host.'
         end
