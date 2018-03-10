@@ -97,11 +97,6 @@ module DockerCookbook
       false
     end
 
-    def zesty?
-      return true if node['platform'] == 'ubuntu' && node['platform_version'] == '17.04'
-      false
-    end
-
     def artful?
       return true if node['platform'] == 'ubuntu' && node['platform_version'] == '17.10'
       false
