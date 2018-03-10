@@ -7,12 +7,12 @@ module DockerCookbook
 
     # https://docs.docker.com/engine/api/v1.35/#tag/Image
     property :destination, [String, nil]
-    property :force, Boolean, default: false
+    property :force, [TrueClass, FalseClass], default: false
     property :host, [String, nil], default: lazy { default_host }, desired_state: false
-    property :nocache, Boolean, default: false
-    property :noprune, Boolean, default: false
+    property :nocache, [TrueClass, FalseClass], default: false
+    property :noprune, [TrueClass, FalseClass], default: false
     property :repo, String, name_property: true
-    property :rm, Boolean, default: true
+    property :rm, [TrueClass, FalseClass], default: true
     property :source, String
     property :tag, String, default: 'latest'
 

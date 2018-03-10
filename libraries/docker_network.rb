@@ -6,11 +6,11 @@ module DockerCookbook
     property :container, String, desired_state: false
     property :driver, String
     property :driver_opts, PartialHashType
-    property :enable_ipv6, [Boolean, nil]
+    property :enable_ipv6, [TrueClass, FalseClass, nil]
     property :gateway, [String, Array, nil], coerce: proc { |v| coerce_gateway(v) }
     property :host, [String, nil], default: lazy { default_host }, desired_state: false
     property :id, String
-    property :internal, [Boolean, nil]
+    property :internal, [TrueClass, FalseClass, nil]
     property :ip_range, [String, Array, nil], coerce: proc { |v| coerce_ip_range(v) }
     property :ipam_driver, String
     property :network, Docker::Network, desired_state: false

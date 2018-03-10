@@ -21,16 +21,16 @@ module DockerCookbook
 
     # daemon management
     property :instance, String, name_property: true, desired_state: false
-    property :auto_restart, Boolean, default: false
+    property :auto_restart, [TrueClass, FalseClass], default: false
     property :api_cors_header, [String, nil]
     property :bridge, [String, nil]
     property :bip, [IPV4_ADDR, IPV4_CIDR, IPV6_ADDR, IPV6_CIDR, nil]
     property :cluster_store, [String, nil]
     property :cluster_advertise, [String, nil]
     property :cluster_store_opts, ArrayType
-    property :daemon, Boolean, default: true
+    property :daemon, [TrueClass, FalseClass], default: true
     property :data_root, [String, nil]
-    property :debug, [Boolean, nil]
+    property :debug, [TrueClass, FalseClass], default: false
     property :dns, ArrayType
     property :dns_search, [Array, nil]
     property :exec_driver, ['native', 'lxc', nil]
@@ -39,15 +39,15 @@ module DockerCookbook
     property :fixed_cidr_v6, [String, nil]
     property :group, [String], default: 'docker'
     property :host, [String, Array], coerce: proc { |v| coerce_host(v) }
-    property :icc, [Boolean, nil]
+    property :icc, [TrueClass, FalseClass, nil]
     property :insecure_registry, [Array, String, nil], coerce: proc { |v| coerce_insecure_registry(v) }
     property :ip, [IPV4_ADDR, IPV6_ADDR, nil]
-    property :ip_forward, [Boolean, nil]
-    property :ipv4_forward, Boolean, default: true
-    property :ipv6_forward, Boolean, default: true
-    property :ip_masq, [Boolean, nil]
-    property :iptables, [Boolean, nil]
-    property :ipv6, [Boolean, nil]
+    property :ip_forward, [TrueClass, FalseClass, nil]
+    property :ipv4_forward, [TrueClass, FalseClass], default: true
+    property :ipv6_forward, [TrueClass, FalseClass], default: true
+    property :ip_masq, [TrueClass, FalseClass, nil]
+    property :iptables, [TrueClass, FalseClass, nil]
+    property :ipv6, [TrueClass, FalseClass, nil]
     property :log_level, [:debug, :info, :warn, :error, :fatal, nil]
     property :labels, [String, Array], coerce: proc { |v| coerce_daemon_labels(v) }, desired_state: false
     property :log_driver, %w( json-file syslog journald gelf fluentd awslogs splunk none )
@@ -57,11 +57,11 @@ module DockerCookbook
     property :pidfile, String, default: lazy { "/var/run/#{docker_name}.pid" }
     property :registry_mirror, [String, nil]
     property :storage_driver, ArrayType
-    property :selinux_enabled, [Boolean, nil]
+    property :selinux_enabled, [TrueClass, FalseClass, nil]
     property :storage_opts, ArrayType
     property :default_ulimit, ArrayType
-    property :userland_proxy, [Boolean, nil]
-    property :disable_legacy_registry, [Boolean, nil]
+    property :userland_proxy, [TrueClass, FalseClass, nil]
+    property :disable_legacy_registry, [TrueClass, FalseClass, nil]
     property :userns_remap, [String, nil]
 
     # These are options specific to systemd configuration such as
