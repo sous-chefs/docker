@@ -1,7 +1,7 @@
 ---
 driver:
   name: dokken
-  chef_version: current
+  chef_version: latest
   privileged: true
   volumes: [
     '/var/lib/docker', '/var/lib/docker-one', '/var/lib/docker-two'
