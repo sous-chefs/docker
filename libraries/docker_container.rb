@@ -406,6 +406,14 @@ module DockerCookbook
     # Load Current Value
     ######################
 
+    def to_snake_case(name)
+      # ExposedPorts -> _exposed_ports
+      name = name.gsub(/[A-Z]/) { |x| "_#{x.downcase}" }
+      # _exposed_ports -> exposed_ports
+      name = name[1..-1] if name.start_with?('_')
+      name
+    end
+
     load_current_value do
       # Grab the container and assign the container property
       begin

@@ -3,15 +3,6 @@ module DockerCookbook
     require 'docker'
     require 'shellwords'
 
-    # Misc
-    def to_snake_case(name)
-      # ExposedPorts -> _exposed_ports
-      name = name.gsub(/[A-Z]/) { |x| "_#{x.downcase}" }
-      # _exposed_ports -> exposed_ports
-      name = name[1..-1] if name.start_with?('_')
-      name
-    end
-
     ##########
     # coersion
     ##########
