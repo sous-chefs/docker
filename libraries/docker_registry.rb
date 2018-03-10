@@ -1,8 +1,5 @@
 module DockerCookbook
   class DockerRegistry < DockerBase
-    require 'docker'
-    require_relative 'helpers_auth'
-
     resource_name :docker_registry
 
     property :email, [String, nil]

@@ -1,8 +1,5 @@
 module DockerCookbook
   class DockerInstallationScript < DockerBase
-    #####################
-    # Resource properties
-    #####################
     resource_name :docker_installation_script
 
     provides :docker_installation, os: 'linux'
@@ -12,9 +9,9 @@ module DockerCookbook
 
     default_action :create
 
-    ################
-    # helper methods
-    ################
+    #########################
+    # property helper methods
+    #########################
 
     def default_script_url
       case repo

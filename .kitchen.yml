@@ -1,7 +1,7 @@
 ---
 driver:
   name: dokken
-  chef_version: current
+  chef_version: latest
   privileged: true
   volumes: [
     '/var/lib/docker', '/var/lib/docker-one', '/var/lib/docker-two'
@@ -31,7 +31,6 @@ platforms:
 - name: centos-7
   driver:
     image: dokken/centos-7
-    platform: rhel
     pid_one_command: /usr/lib/systemd/systemd
 
 - name: fedora-27
@@ -59,7 +58,16 @@ platforms:
     image: dokken/amazonlinux
     pid_one_command: /sbin/init
 
+- name: amazonlinux-2
+  driver:
+    image: dokken/amazonlinux
+    pid_one_command: /usr/lib/systemd/systemd
+
 suites:
+
+###############################
+# docker_installation resources
+###############################
 - name: installation_script_main
   includes: [
     'ubuntu-16.04',
@@ -89,20 +97,6 @@ suites:
       repo: 'experimental'
   run_list:
   - recipe[docker_test::installation_script]
-
-###############################
-# docker_installation resources
-###############################
-
-- name: installation_package-17091
-  includes: [
-    'amazonlinux',
-    ]
-  attributes:
-    docker:
-      version: '17.09.1'
-  run_list:
-  - recipe[docker_test::installation_package]
 
 - name: installation_package
   attributes:
