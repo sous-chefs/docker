@@ -198,9 +198,9 @@ module DockerCookbook
 
     def state
       # Always return the latest state, see #510
-      return Docker::Container.get(container_name, {}, connection).info['State']
-    rescue
-      return {}
+      Docker::Container.get(container_name, {}, connection).info['State']
+    rescue StandardError
+      {}
     end
 
     def wait_running_state(v)

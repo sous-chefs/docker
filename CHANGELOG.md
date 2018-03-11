@@ -18,9 +18,11 @@ This file is used to list changes made in each version of the docker cookbook.
 - Removed the version logic from installation_package when on Amazon Linux. Since we don't setup the repo we only have a single version available to us and we should just install that version. This resolves the constant need to update the hardcoded version in the cookbook every time Amazon releases a new Docker version.
 
 ## 4.0.2 (2018-03-05)
+
 - Flag registry password property as sensitive in docker_registry resource
 
 ## 4.0.1 (2018-02-07)
+
 - allow labels to have colons in the value
 
 ## 4.0.0 (2018-01-15)

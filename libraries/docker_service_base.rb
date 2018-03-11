@@ -50,7 +50,7 @@ module DockerCookbook
     property :ipv6, [TrueClass, FalseClass, nil]
     property :log_level, [:debug, :info, :warn, :error, :fatal, nil]
     property :labels, [String, Array], coerce: proc { |v| coerce_daemon_labels(v) }, desired_state: false
-    property :log_driver, %w( json-file syslog journald gelf fluentd awslogs splunk none )
+    property :log_driver, %w(json-file syslog journald gelf fluentd awslogs splunk none)
     property :log_opts, ArrayType
     property :mount_flags, [String, nil]
     property :mtu, [String, nil]
