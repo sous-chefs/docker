@@ -212,7 +212,6 @@ module DockerCookbook
         end
 
         gateways.each do |g|
-          match = false
           subnets.each do |s|
             ok = subnet_matches(s, g)
             next unless ok
@@ -220,7 +219,6 @@ module DockerCookbook
               raise "cannot configure multiple gateways (#{g}, #{data[s]['Gateway']}) for the same subnet (#{s})"
             end
             data[s]['Gateway'] = g
-            match = true
           end
         end
 

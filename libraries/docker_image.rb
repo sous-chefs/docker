@@ -182,8 +182,7 @@ module DockerCookbook
 
       def credentails
         registry_host = parse_registry_host(new_resource.repo)
-        creds = node.run_state['docker_auth'] && node.run_state['docker_auth'][registry_host] || (node.run_state['docker_auth'] ||= {})['index.docker.io']
-        creds
+        node.run_state['docker_auth'] && node.run_state['docker_auth'][registry_host] || (node.run_state['docker_auth'] ||= {})['index.docker.io']
       end
     end
   end
