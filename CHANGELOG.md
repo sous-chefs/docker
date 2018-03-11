@@ -2,6 +2,13 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 4.1.1 (2018-03-11)
+
+- Move to_snake_case to the container resource where it's used
+- Reduce the number of coerce helpers in the the container resource
+- Remove the Boolean type and instead just use TrueClass,FalseClass
+- Use an actual integer in the memory_swappiness test since after reworking the coerce helpers we're requiring what we always stated we required here
+
 ## 4.1.0 (2018-03-10)
 
 - Remove required from the name property. This resolves Foodcritic warnings in Foodcritic 13
