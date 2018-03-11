@@ -1101,7 +1101,7 @@ switching systemd unit MountFlags from slave to private
 ## v1.0.17
 
 - Fixing up regressions in older Docker API versions introduced in cookbook release 1.0.15
-- _ Adding @api_version instance variable
+- Adding @api_version instance variable
 - Adding serialized_log_config
 - Adding parsed_network_mode
 

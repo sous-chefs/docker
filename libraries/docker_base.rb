@@ -31,10 +31,6 @@ module DockerCookbook
     # Helper methods
     ################
 
-    def api_version
-      @api_version ||= Docker.version(connection)['ApiVersion']
-    end
-
     def connection
       @connection ||= begin
                         opts = {}
