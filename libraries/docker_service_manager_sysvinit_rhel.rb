@@ -4,13 +4,13 @@ module DockerCookbook
 
     provides :docker_service_manager, platform: 'amazon'
     provides :docker_service_manager, platform: 'suse'
-    provides :docker_service_manager, platform: %w(redhat centos scientific oracle) do |node| # ~FC005
+    provides :docker_service_manager, platform_family: 'rhel' do |node|
       node['platform_version'].to_f <= 7.0
     end
 
     provides :docker_service_manager_sysvinit, platform: 'amazon'
     provides :docker_service_manager_sysvinit, platform: 'suse'
-    provides :docker_service_manager_sysvinit, platform: %w(redhat centos scientific oracle) do |node| # ~FC005
+    provides :docker_service_manager_sysvinit, platform_family: 'rhel' do |node|
       node['platform_version'].to_f <= 7.0
     end
 
