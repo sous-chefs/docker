@@ -38,7 +38,7 @@ module DockerCookbook
     property :fixed_cidr, [String, nil]
     property :fixed_cidr_v6, [String, nil]
     property :group, [String], default: 'docker'
-    property :host, [String, Array], coerce: proc { |v| coerce_host(v) }
+    property :host, [String, Array], coerce: proc { |v| coerce_host(v) }, desired_state: false
     property :icc, [TrueClass, FalseClass, nil]
     property :insecure_registry, [Array, String, nil], coerce: proc { |v| coerce_insecure_registry(v) }
     property :ip, [IPV4_ADDR, IPV6_ADDR, nil]

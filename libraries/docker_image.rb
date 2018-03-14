@@ -7,7 +7,7 @@ module DockerCookbook
 
     # https://docs.docker.com/engine/api/v1.35/#tag/Image
     property :destination, [String, nil]
-    property :force, [TrueClass, FalseClass], default: false
+    property :force, [TrueClass, FalseClass], default: false, desired_state: false
     property :host, [String, nil], default: lazy { ENV['DOCKER_HOST'] }, desired_state: false
     property :nocache, [TrueClass, FalseClass], default: false
     property :noprune, [TrueClass, FalseClass], default: false
