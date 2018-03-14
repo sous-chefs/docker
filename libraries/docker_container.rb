@@ -28,7 +28,7 @@ module DockerCookbook
     property :extra_hosts, NonEmptyArray
     property :exposed_ports, PartialHashType, default: {}
     property :force, [TrueClass, FalseClass], default: false, desired_state: false
-    property :host, [String, nil], default: lazy { default_host }, desired_state: false
+    property :host, [String, nil], default: lazy { ENV['DOCKER_HOST'] }, desired_state: false
     property :hostname, String
     property :ipc_mode, String, default: ''
     property :kernel_memory, [String, Integer], coerce: proc { |v| coerce_to_bytes(v) }, default: 0
