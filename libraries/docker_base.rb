@@ -67,17 +67,14 @@ module DockerCookbook
     end
 
     def default_host
-      return nil unless ENV['DOCKER_HOST']
       ENV['DOCKER_HOST']
     end
 
     def default_tls
-      return nil unless ENV['DOCKER_TLS']
       ENV['DOCKER_TLS']
     end
 
     def default_tls_verify
-      return nil unless ENV['DOCKER_TLS_VERIFY']
       ENV['DOCKER_TLS_VERIFY']
     end
 
