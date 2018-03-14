@@ -984,6 +984,32 @@ docker_container 'kill_after' do
   action :stop
 end
 
+######
+# oom_kill_disable
+######
+
+docker_container 'oom_kill_disable' do
+  repo 'alpine'
+  tag '3.1'
+  command 'ls -la'
+  oom_kill_disable true
+  timeout 40
+  action :run_if_missing
+end
+
+######
+# oom_score_adj
+######
+
+docker_container 'oom_score_adj' do
+  repo 'alpine'
+  tag '3.1'
+  command 'ls -la'
+  oom_score_adj 600
+  timeout 40
+  action :run_if_missing
+end
+
 ##########
 # pid_mode
 ##########

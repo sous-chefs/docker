@@ -660,6 +660,30 @@ describe command("docker inspect -f '{{ .HostConfig.NetworkMode }}' network_mode
   its(:stdout) { should match(/host/) }
 end
 
+# docker_container[oom_kill_disable]
+
+describe command("docker ps -af 'name=oom_kill_disable$'") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/Exited \(0\)/) }
+end
+
+describe command("docker inspect --format '{{ .HostConfig.OomKillDisable }}' oom_kill_disable") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { eq 'true' }
+end
+
+# docker_container[oom_score_adj]
+
+describe command("docker ps -af 'name=oom_score_adj$'") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/Exited \(0\)/) }
+end
+
+describe command("docker inspect --format '{{ .HostConfig.OomScoreAdj }}' oom_score_adj") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/600/) }
+end
+
 # docker_container[ulimits]
 describe docker_container('ulimits') do
   it { should exist }

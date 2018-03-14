@@ -46,6 +46,8 @@ module DockerCookbook
     property :network_disabled, [TrueClass, FalseClass], default: false
     property :network_mode, [String, NilClass], default: 'bridge'
     property :network_aliases, [ArrayType], default: []
+    property :oom_kill_disable, [TrueClass, FalseClass], default: false
+    property :oom_score_adj, [Integer, nil], default: -500
     property :open_stdin, [TrueClass, FalseClass], default: false, desired_state: false
     property :outfile, [String, NilClass]
     property :port_bindings, PartialHashType, default: {}
@@ -497,6 +499,8 @@ module DockerCookbook
               'MemorySwappiness' => new_resource.memory_swappiness,
               'MemoryReservation' => new_resource.memory_reservation,
               'NetworkMode'     => new_resource.network_mode,
+              'OomKillDisable'  => new_resource.oom_kill_disable,
+              'OomScoreAdj'     => new_resource.oom_score_adj,
               'Privileged'      => new_resource.privileged,
               'PidMode'         => new_resource.pid_mode,
               'PortBindings'    => new_resource.port_bindings,
