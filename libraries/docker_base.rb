@@ -6,19 +6,6 @@ module DockerCookbook
     ##########
     # coersion
     ##########
-
-    def coerce_labels(v)
-      case v
-      when Hash, nil
-        v
-      else
-        Array(v).each_with_object({}) do |label, h|
-          parts = label.split(':')
-          h[parts[0]] = parts[1..-1].join(':')
-        end
-      end
-    end
-
     def coerce_shell_command(v)
       return nil if v.nil?
       return DockerBase::ShellCommandString.new(
@@ -51,8 +38,8 @@ module DockerCookbook
       tries = api_retries
       begin
         yield
-        # Only catch errors that can be fixed with retries.
-      rescue Docker::Error::ServerError, # 404
+      # Only catch errors that can be fixed with retries.
+      rescue Docker::Error::ServerError, # 500
              Docker::Error::UnexpectedResponseError, # 400
              Docker::Error::TimeoutError,
              Docker::Error::IOError

@@ -101,6 +101,18 @@ module DockerCookbook
     # Property helpers
     ###################
 
+    def coerce_labels(v)
+      case v
+      when Hash, nil
+        v
+      else
+        Array(v).each_with_object({}) do |label, h|
+          parts = label.split(':')
+          h[parts[0]] = parts[1..-1].join(':')
+        end
+      end
+    end
+
     def coerce_links(v)
       case v
       when DockerBase::UnorderedArray, nil
