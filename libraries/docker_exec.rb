@@ -2,7 +2,7 @@ module DockerCookbook
   class DockerExec < DockerBase
     resource_name :docker_exec
 
-    property :host, [String, nil], default: lazy { default_host }
+    property :host, [String, nil], default: lazy { ENV['DOCKER_HOST'] }
     property :command, Array
     property :container, String
     property :timeout, Numeric, default: 60
