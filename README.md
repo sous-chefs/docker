@@ -659,6 +659,8 @@ Most `docker_container` properties are the `snake_case` version of the `CamelCas
 - `network_disabled` - Boolean to disable networking. Defaults to `false`.
 - `network_mode` - Sets the networking mode for the container. One of `bridge`, `host`, `container`.
 - `network_aliases` - Adds network-scoped alias for the container in form `['alias-1', 'alias-2']`.
+- `oom_kill_disable` - Whether to disable OOM Killer for the container or not.
+- `oom_score_adj` - Tune container's OOM preferences (-1000 to 1000).
 - `open_stdin` - Boolean value, opens stdin. Defaults to `false`.
 - `outfile` - The path to write the file when using `:export` action.
 - `port` - The port configuration to use in the container. Matches the syntax used by the `docker` CLI tool.
