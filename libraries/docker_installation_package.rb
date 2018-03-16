@@ -21,7 +21,7 @@ module DockerCookbook
           yum_repository 'Docker' do
             baseurl "https://download.docker.com/linux/#{platform}/#{node['platform_version'].to_i}/x86_64/#{new_resource.repo_channel}"
             gpgkey "https://download.docker.com/linux/#{platform}/gpg"
-            description "Docker #{new_resource.repo_channel.capitalize} Respository"
+            description "Docker #{new_resource.repo_channel.capitalize} repository"
             gpgcheck true
             enabled true
           end
