@@ -113,18 +113,46 @@ module DockerCookbook
     # Resource properties
     #####################
 
-    property :api_retries, Integer, default: 3, desired_state: false
-    property :read_timeout, [Integer, nil], default: 60, desired_state: false
-    property :write_timeout, [Integer, nil], desired_state: false
-    property :running_wait_time, [Integer, nil], default: 20, desired_state: false
+    property :api_retries, Integer,
+             default: 3,
+             desired_state: false
 
-    property :tls, [TrueClass, FalseClass, nil], default: lazy { ENV['DOCKER_TLS'] }, desired_state: false
-    property :tls_verify, [TrueClass, FalseClass, nil], default: lazy { ENV['DOCKER_TLS_VERIFY'] }, desired_state: false
-    property :tls_ca_cert, [String, nil], default: lazy { "#{ENV['DOCKER_CERT_PATH']}/ca.pem" }, desired_state: false
-    property :tls_server_cert, [String, nil], desired_state: false
-    property :tls_server_key, [String, nil], desired_state: false
-    property :tls_client_cert, [String, nil], default: lazy { "#{ENV['DOCKER_CERT_PATH']}/cert.pem" }, desired_state: false
-    property :tls_client_key, [String, nil], default: lazy { "#{ENV['DOCKER_CERT_PATH']}/key.pem" }, desired_state: false
+    property :read_timeout, [Integer, nil],
+             default: 60,
+             desired_state: false
+
+    property :write_timeout, [Integer, nil],
+             desired_state: false
+
+    property :running_wait_time, [Integer, nil],
+             default: 20,
+             desired_state: false
+
+    property :tls, [TrueClass, FalseClass, nil],
+             default: lazy { ENV['DOCKER_TLS'] },
+             desired_state: false
+
+    property :tls_verify, [TrueClass, FalseClass, nil],
+             default: lazy { ENV['DOCKER_TLS_VERIFY'] },
+             desired_state: false
+
+    property :tls_ca_cert, [String, nil],
+             default: lazy { ENV['DOCKER_CERT_PATH'] ? "#{ENV['DOCKER_CERT_PATH']}/ca.pem" : nil },
+             desired_state: false
+
+    property :tls_server_cert, [String, nil],
+             desired_state: false
+
+    property :tls_server_key, [String, nil],
+             desired_state: false
+
+    property :tls_client_cert, [String, nil],
+             default: lazy { ENV['DOCKER_CERT_PATH'] ? "#{ENV['DOCKER_CERT_PATH']}/cert.pem" : nil },
+             desired_state: false
+
+    property :tls_client_key, [String, nil],
+             default: lazy { ENV['DOCKER_CERT_PATH'] ? "#{ENV['DOCKER_CERT_PATH']}/key.pem" : nil },
+             desired_state: false
 
     declare_action_class.class_eval do
       # https://github.com/docker/docker/blob/4fcb9ac40ce33c4d6e08d5669af6be5e076e2574/registry/auth.go#L231
