@@ -17,7 +17,7 @@ module DockerCookbook
     property :network_name, String, name_property: true
     property :subnet, [String, Array, nil], coerce: proc { |v| coerce_subnet(v) }
 
-    alias aux_address auxiliary_addresses
+    alias_method :aux_address, :auxiliary_addresses
 
     ###################
     # property helpers

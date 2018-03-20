@@ -12,8 +12,8 @@ module DockerCookbook
     property :attach_stdin, [TrueClass, FalseClass], default: false, desired_state: false
     property :attach_stdout, [TrueClass, FalseClass], default: false, desired_state: false
     property :autoremove, [TrueClass, FalseClass], default: false, desired_state: false
-    property :cap_add, NonEmptyArray
-    property :cap_drop, NonEmptyArray
+    property :cap_add, [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
+    property :cap_drop, [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
     property :cgroup_parent, String, default: ''
     property :cpu_shares, Integer, default: 0
     property :cpuset_cpus, String, default: ''
@@ -25,7 +25,7 @@ module DockerCookbook
     property :entrypoint, ShellCommand
     property :env, UnorderedArrayType, default: []
     property :env_file, [Array, String], coerce: proc { |v| coerce_env_file(v) }, default: [], desired_state: false
-    property :extra_hosts, NonEmptyArray
+    property :extra_hosts, [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
     property :exposed_ports, PartialHashType, default: {}
     property :force, [TrueClass, FalseClass], default: false, desired_state: false
     property :host, [String, nil], default: lazy { ENV['DOCKER_HOST'] }, desired_state: false
@@ -45,7 +45,7 @@ module DockerCookbook
     property :memory_reservation, Integer, coerce: proc { |v| coerce_to_bytes(v) }, default: 0
     property :network_disabled, [TrueClass, FalseClass], default: false
     property :network_mode, String, default: 'bridge'
-    property :network_aliases, [ArrayType], default: []
+    property :network_aliases, [String, Array], default: [], coerce: proc { Array(v) }
     property :oom_kill_disable, [TrueClass, FalseClass], default: false
     property :oom_score_adj, Integer, default: -500
     property :open_stdin, [TrueClass, FalseClass], default: false, desired_state: false
@@ -59,7 +59,7 @@ module DockerCookbook
     property :restart_policy, String
     property :runtime, String, default: 'runc'
     property :ro_rootfs, [TrueClass, FalseClass], default: false
-    property :security_opt, [String, ArrayType]
+    property :security_opt, [String, Array], coerce: proc { |v| v.nil? ? nil : Array(v) }
     property :signal, String, default: 'SIGTERM'
     property :stdin_once, [TrueClass, FalseClass], default: false, desired_state: false
     property :sysctls, Hash, default: {}
@@ -70,7 +70,7 @@ module DockerCookbook
     property :userns_mode, String, default: ''
     property :uts_mode, String, default: ''
     property :volumes, PartialHashType, default: {}, coerce: proc { |v| coerce_volumes(v) }
-    property :volumes_from, ArrayType
+    property :volumes_from, [String, Array], coerce: proc { |v| v.nil? ? nil : Array(v) }
     property :volume_driver, String
     property :working_dir, String, default: ''
 
@@ -85,19 +85,19 @@ module DockerCookbook
     # never kill the container.
     property :kill_after, [Integer, NilClass], default: nil, desired_state: false
 
-    alias cmd command
-    alias additional_host extra_hosts
-    alias rm autoremove
-    alias remove_automatically autoremove
-    alias host_name hostname
-    alias domainname domain_name
-    alias dnssearch dns_search
-    alias restart_maximum_retries restart_maximum_retry_count
-    alias volume volumes
-    alias binds volumes
-    alias volume_from volumes_from
-    alias destination outfile
-    alias workdir working_dir
+    alias_method :cmd, :command
+    alias_method :additional_host, :extra_hosts
+    alias_method :rm, :autoremove
+    alias_method :remove_automatically, :autoremove
+    alias_method :host_name, :hostname
+    alias_method :domainname, :domain_name
+    alias_method :dnssearch, :dns_search
+    alias_method :restart_maximum_retries, :restart_maximum_retry_count
+    alias_method :volume, :volumes
+    alias_method :binds, :volumes
+    alias_method :volume_from, :volumes_from
+    alias_method :destination, :outfile
+    alias_method :workdir, :working_dir
 
     ###################
     # Property helpers

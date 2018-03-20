@@ -27,14 +27,14 @@ module DockerCookbook
     property :bip, [IPV4_ADDR, IPV4_CIDR, IPV6_ADDR, IPV6_CIDR, nil]
     property :cluster_store, String
     property :cluster_advertise, String
-    property :cluster_store_opts, ArrayType
+    property :cluster_store_opts, [String, Array], coerce: proc { |v| v.nil? ? nil : Array(v) }
     property :daemon, [TrueClass, FalseClass], default: true
-    property :data_root, [String, nil]
+    property :data_root, String
     property :debug, [TrueClass, FalseClass], default: false
-    property :dns, ArrayType
-    property :dns_search, [Array, nil]
+    property :dns, [String, Array], coerce: proc { |v| v.nil? ? nil : Array(v) }
+    property :dns_search, Array
     property :exec_driver, ['native', 'lxc', nil]
-    property :exec_opts, ArrayType
+    property :exec_opts, [String, Array], coerce: proc { |v| v.nil? ? nil : Array(v) }
     property :fixed_cidr, String
     property :fixed_cidr_v6, String
     property :group, String, default: 'docker'
@@ -51,15 +51,15 @@ module DockerCookbook
     property :log_level, [:debug, :info, :warn, :error, :fatal, nil]
     property :labels, [String, Array], coerce: proc { |v| coerce_daemon_labels(v) }, desired_state: false
     property :log_driver, %w(json-file syslog journald gelf fluentd awslogs splunk none)
-    property :log_opts, ArrayType
+    property :log_opts, [String, Array], coerce: proc { |v| v.nil? ? nil : Array(v) }
     property :mount_flags, String
     property :mtu, String
     property :pidfile, String, default: lazy { "/var/run/#{docker_name}.pid" }
     property :registry_mirror, String
-    property :storage_driver, ArrayType
+    property :storage_driver, [String, Array], coerce: proc { |v| v.nil? ? nil : Array(v) }
     property :selinux_enabled, [TrueClass, FalseClass]
-    property :storage_opts, ArrayType
-    property :default_ulimit, ArrayType
+    property :storage_opts, Array
+    property :default_ulimit, [String, Array], coerce: proc { |v| v.nil? ? nil : Array(v) }
     property :userland_proxy, [TrueClass, FalseClass]
     property :disable_legacy_registry, [TrueClass, FalseClass]
     property :userns_remap, String
@@ -67,16 +67,16 @@ module DockerCookbook
     # These are options specific to systemd configuration such as
     # LimitNOFILE or TasksMax that you may wannt to use to customize
     # the environment in which Docker runs.
-    property :systemd_opts, ArrayType
+    property :systemd_opts, [String, Array], coerce: proc { |v| v.nil? ? nil : Array(v) }
 
     # These are unvalidated daemon arguments passed in as a string.
-    property :misc_opts, [String, nil]
+    property :misc_opts, String
 
     # environment variables to set before running daemon
-    property :http_proxy, [String, nil]
-    property :https_proxy, [String, nil]
-    property :no_proxy, [String, nil]
-    property :tmpdir, [String, nil]
+    property :http_proxy, String
+    property :https_proxy, String
+    property :no_proxy, String
+    property :tmpdir, String
 
     # logging
     property :logfile, String, default: '/var/log/docker.log'
@@ -86,13 +86,13 @@ module DockerCookbook
 
     allowed_actions :start, :stop, :restart
 
-    alias label labels
-    alias tlscacert tls_ca_cert
-    alias tlscert tls_server_cert
-    alias tlskey tls_server_key
-    alias tlsverify tls_verify
-    alias run_group group
-    alias graph data_root
+    alias_method :label, :labels
+    alias_method :tlscacert, :tls_ca_cert
+    alias_method :tlscert, :tls_server_cert
+    alias_method :tlskey, :tls_server_key
+    alias_method :tlsverify, :tls_verify
+    alias_method :run_group, :group
+    alias_method :graph, :data_root
 
     declare_action_class.class_eval do
       def libexec_dir
