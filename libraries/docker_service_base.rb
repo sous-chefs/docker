@@ -86,10 +86,6 @@ module DockerCookbook
     allowed_actions :start, :stop, :restart
 
     alias_method :label, :labels
-    alias_method :tlscacert, :tls_ca_cert
-    alias_method :tlscert, :tls_server_cert
-    alias_method :tlskey, :tls_server_key
-    alias_method :tlsverify, :tls_verify
     alias_method :run_group, :group
     alias_method :graph, :data_root
 

@@ -3,17 +3,6 @@ module DockerCookbook
     require 'docker'
     require 'shellwords'
 
-    ##########
-    # coersion
-    ##########
-    def coerce_shell_command(v)
-      return nil if v.nil?
-      return DockerBase::ShellCommandString.new(
-        ::Shellwords.join(v)
-      ) if v.is_a?(Array)
-      DockerBase::ShellCommandString.new(v)
-    end
-
     ################
     # Helper methods
     ################
@@ -64,12 +53,6 @@ module DockerCookbook
       end
     end
 
-    class ShellCommandString < String
-      def ==(other)
-        other.is_a?(String) && Shellwords.shellwords(self) == Shellwords.shellwords(other)
-      end
-    end
-
     class PartialHash < Hash
       def ==(other)
         other.is_a?(Hash) && all? { |key, val| other.key?(key) && other[key] == val }
@@ -83,11 +66,6 @@ module DockerCookbook
     # docker_service, docker_container, and docker_image resource.
     #
     ################
-
-    ShellCommand = property_type(
-      is: [String],
-      coerce: proc { |v| coerce_shell_command(v) }
-    ) unless defined?(ShellCommand)
 
     UnorderedArrayType = property_type(
       is: [UnorderedArray, nil],
