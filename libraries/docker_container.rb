@@ -15,7 +15,7 @@ module DockerCookbook
     property :cap_add, NonEmptyArray
     property :cap_drop, NonEmptyArray
     property :cgroup_parent, String, default: ''
-    property :cpu_shares, [Integer, nil], default: 0
+    property :cpu_shares, Integer, default: 0
     property :cpuset_cpus, String, default: ''
     property :detach, [TrueClass, FalseClass], default: true, desired_state: false
     property :devices, Array, default: []
@@ -44,12 +44,12 @@ module DockerCookbook
     property :memory_swappiness, Integer, default: 0
     property :memory_reservation, Integer, coerce: proc { |v| coerce_to_bytes(v) }, default: 0
     property :network_disabled, [TrueClass, FalseClass], default: false
-    property :network_mode, [String, NilClass], default: 'bridge'
+    property :network_mode, String, default: 'bridge'
     property :network_aliases, [ArrayType], default: []
     property :oom_kill_disable, [TrueClass, FalseClass], default: false
-    property :oom_score_adj, [Integer, nil], default: -500
+    property :oom_score_adj, Integer, default: -500
     property :open_stdin, [TrueClass, FalseClass], default: false, desired_state: false
-    property :outfile, [String, NilClass]
+    property :outfile, String
     property :port_bindings, PartialHashType, default: {}
     property :pid_mode, String, default: ''
     property :privileged, [TrueClass, FalseClass], default: false
@@ -63,7 +63,7 @@ module DockerCookbook
     property :signal, String, default: 'SIGTERM'
     property :stdin_once, [TrueClass, FalseClass], default: false, desired_state: false
     property :sysctls, Hash, default: {}
-    property :timeout, [Integer, nil], desired_state: false
+    property :timeout, Integer, desired_state: false
     property :tty, [TrueClass, FalseClass], default: false
     property :ulimits, [Array, nil], coerce: proc { |v| coerce_ulimits(v) }
     property :user, String, default: ''
@@ -72,7 +72,7 @@ module DockerCookbook
     property :volumes, PartialHashType, default: {}, coerce: proc { |v| coerce_volumes(v) }
     property :volumes_from, ArrayType
     property :volume_driver, String
-    property :working_dir, [String, NilClass], default: ''
+    property :working_dir, String, default: ''
 
     # Used to store the bind property since binds is an alias to volumes
     property :volumes_binds, Array

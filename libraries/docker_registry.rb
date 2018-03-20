@@ -2,10 +2,15 @@ module DockerCookbook
   class DockerRegistry < DockerBase
     resource_name :docker_registry
 
-    property :email, [String, nil]
-    property :password, [String, nil], sensitive: true
-    property :serveraddress, [String, nil], name_property: true
-    property :username, [String, nil]
+    property :email, String
+
+    property :password, String,
+             sensitive: true
+
+    property :serveraddress, String,
+             name_property: true
+
+    property :username, String
 
     action :login do
       tries = new_resource.api_retries

@@ -117,14 +117,14 @@ module DockerCookbook
              default: 3,
              desired_state: false
 
-    property :read_timeout, [Integer, nil],
+    property :read_timeout, Integer,
              default: 60,
              desired_state: false
 
-    property :write_timeout, [Integer, nil],
+    property :write_timeout, Integer,
              desired_state: false
 
-    property :running_wait_time, [Integer, nil],
+    property :running_wait_time, Integer,
              default: 20,
              desired_state: false
 
@@ -140,10 +140,10 @@ module DockerCookbook
              default: lazy { ENV['DOCKER_CERT_PATH'] ? "#{ENV['DOCKER_CERT_PATH']}/ca.pem" : nil },
              desired_state: false
 
-    property :tls_server_cert, [String, nil],
+    property :tls_server_cert, String,
              desired_state: false
 
-    property :tls_server_key, [String, nil],
+    property :tls_server_key, String,
              desired_state: false
 
     property :tls_client_cert, [String, nil],

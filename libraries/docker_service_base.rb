@@ -22,11 +22,11 @@ module DockerCookbook
     # daemon management
     property :instance, String, name_property: true, desired_state: false
     property :auto_restart, [TrueClass, FalseClass], default: false
-    property :api_cors_header, [String, nil]
-    property :bridge, [String, nil]
+    property :api_cors_header, String
+    property :bridge, String
     property :bip, [IPV4_ADDR, IPV4_CIDR, IPV6_ADDR, IPV6_CIDR, nil]
-    property :cluster_store, [String, nil]
-    property :cluster_advertise, [String, nil]
+    property :cluster_store, String
+    property :cluster_advertise, String
     property :cluster_store_opts, ArrayType
     property :daemon, [TrueClass, FalseClass], default: true
     property :data_root, [String, nil]
@@ -35,34 +35,34 @@ module DockerCookbook
     property :dns_search, [Array, nil]
     property :exec_driver, ['native', 'lxc', nil]
     property :exec_opts, ArrayType
-    property :fixed_cidr, [String, nil]
-    property :fixed_cidr_v6, [String, nil]
-    property :group, [String], default: 'docker'
+    property :fixed_cidr, String
+    property :fixed_cidr_v6, String
+    property :group, String, default: 'docker'
     property :host, [String, Array], coerce: proc { |v| coerce_host(v) }, desired_state: false
-    property :icc, [TrueClass, FalseClass, nil]
+    property :icc, [TrueClass, FalseClass]
     property :insecure_registry, [Array, String, nil], coerce: proc { |v| coerce_insecure_registry(v) }
     property :ip, [IPV4_ADDR, IPV6_ADDR, nil]
-    property :ip_forward, [TrueClass, FalseClass, nil]
+    property :ip_forward, [TrueClass, FalseClass]
     property :ipv4_forward, [TrueClass, FalseClass], default: true
     property :ipv6_forward, [TrueClass, FalseClass], default: true
-    property :ip_masq, [TrueClass, FalseClass, nil]
-    property :iptables, [TrueClass, FalseClass, nil]
-    property :ipv6, [TrueClass, FalseClass, nil]
+    property :ip_masq, [TrueClass, FalseClass]
+    property :iptables, [TrueClass, FalseClass]
+    property :ipv6, [TrueClass, FalseClass]
     property :log_level, [:debug, :info, :warn, :error, :fatal, nil]
     property :labels, [String, Array], coerce: proc { |v| coerce_daemon_labels(v) }, desired_state: false
     property :log_driver, %w(json-file syslog journald gelf fluentd awslogs splunk none)
     property :log_opts, ArrayType
-    property :mount_flags, [String, nil]
-    property :mtu, [String, nil]
+    property :mount_flags, String
+    property :mtu, String
     property :pidfile, String, default: lazy { "/var/run/#{docker_name}.pid" }
-    property :registry_mirror, [String, nil]
+    property :registry_mirror, String
     property :storage_driver, ArrayType
-    property :selinux_enabled, [TrueClass, FalseClass, nil]
+    property :selinux_enabled, [TrueClass, FalseClass]
     property :storage_opts, ArrayType
     property :default_ulimit, ArrayType
-    property :userland_proxy, [TrueClass, FalseClass, nil]
-    property :disable_legacy_registry, [TrueClass, FalseClass, nil]
-    property :userns_remap, [String, nil]
+    property :userland_proxy, [TrueClass, FalseClass]
+    property :disable_legacy_registry, [TrueClass, FalseClass]
+    property :userns_remap, String
 
     # These are options specific to systemd configuration such as
     # LimitNOFILE or TasksMax that you may wannt to use to customize

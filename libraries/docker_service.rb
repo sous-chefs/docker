@@ -26,7 +26,7 @@ module DockerCookbook
 
     # package and tarball
     property :version, String, desired_state: false
-    property :package_options, [String, nil], desired_state: false
+    property :package_options, String, desired_state: false
 
     ################
     # Helper Methods
