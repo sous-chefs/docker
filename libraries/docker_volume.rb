@@ -1,7 +1,5 @@
 module DockerCookbook
   class DockerVolume < DockerBase
-    require 'docker'
-
     resource_name :docker_volume
 
     property :driver, String, desired_state: false
