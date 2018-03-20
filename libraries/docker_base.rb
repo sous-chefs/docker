@@ -144,10 +144,10 @@ module DockerCookbook
              default: lazy { ENV['DOCKER_CERT_PATH'] ? "#{ENV['DOCKER_CERT_PATH']}/key.pem" : nil },
              desired_state: false
 
-     alias_method :tlscacert, :tls_ca_cert
-     alias_method :tlscert, :tls_server_cert
-     alias_method :tlskey, :tls_server_key
-     alias_method :tlsverify, :tls_verify
+    alias_method :tlscacert, :tls_ca_cert
+    alias_method :tlscert, :tls_server_cert
+    alias_method :tlskey, :tls_server_key
+    alias_method :tlsverify, :tls_verify
 
     declare_action_class.class_eval do
       # https://github.com/docker/docker/blob/4fcb9ac40ce33c4d6e08d5669af6be5e076e2574/registry/auth.go#L231
