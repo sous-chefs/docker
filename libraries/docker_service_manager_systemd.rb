@@ -72,7 +72,7 @@ module DockerCookbook
           env_vars: new_resource.env_vars
         )
         notifies :run, 'execute[systemctl daemon-reload]', :immediately
-        notifies :run, "execute[systemctl restart #{docker_name}]", :immediately
+        notifies :run, "execute[systemctl try-restart #{docker_name}]", :immediately
       end
 
       # avoid 'Unit file changed on disk' warning
@@ -82,8 +82,8 @@ module DockerCookbook
       end
 
       # restart if changes in template resources
-      execute "systemctl restart #{docker_name}" do
-        command "/bin/systemctl restart #{docker_name}"
+      execute "systemctl try-restart #{docker_name}" do
+        command "/bin/systemctl try-restart #{docker_name}"
         action :nothing
       end
 
@@ -93,6 +93,7 @@ module DockerCookbook
         supports status: true
         action [:enable, :start]
         only_if { ::File.exist?("/lib/systemd/system/#{docker_name}.service") }
+        retries 1
       end
     end
 
