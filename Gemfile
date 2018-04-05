@@ -6,4 +6,8 @@
 
 source 'https://rubygems.org'
 
+gem 'berkshelf'
 gem 'community_cookbook_releaser'
+gem 'kitchen-dokken'
+gem 'kitchen-inspec'
+gem 'test-kitchen'

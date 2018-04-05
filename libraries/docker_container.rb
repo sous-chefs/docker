@@ -5,7 +5,7 @@ module DockerCookbook
     property :container_name, String, name_property: true
     property :repo, String, default: lazy { container_name }
     property :tag, String, default: 'latest'
-    property :command, [Array, String, nil], coerce: proc { |v| v.nil? ? nil : ::Shellwords.shellwords(v) }
+    property :command, [Array, String, nil], coerce: proc { |v| v.is_a?(String) ? ::Shellwords.shellwords(v) : v }
     property :attach_stderr, [TrueClass, FalseClass], default: false, desired_state: false
     property :attach_stdin, [TrueClass, FalseClass], default: false, desired_state: false
     property :attach_stdout, [TrueClass, FalseClass], default: false, desired_state: false
@@ -20,7 +20,7 @@ module DockerCookbook
     property :dns, Array, default: []
     property :dns_search, Array, default: []
     property :domain_name, String, default: ''
-    property :entrypoint, [Array, String, nil], coerce: proc { |v| v.nil? ? nil : ::Shellwords.shellwords(v) }
+    property :entrypoint, [Array, String, nil], coerce: proc { |v| v.is_a?(String) ? ::Shellwords.shellwords(v) : v }
     property :env, UnorderedArrayType, default: []
     property :env_file, [Array, String], coerce: proc { |v| coerce_env_file(v) }, default: [], desired_state: false
     property :extra_hosts, [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
@@ -43,7 +43,7 @@ module DockerCookbook
     property :memory_reservation, Integer, coerce: proc { |v| coerce_to_bytes(v) }, default: 0
     property :network_disabled, [TrueClass, FalseClass], default: false
     property :network_mode, String, default: 'bridge'
-    property :network_aliases, [String, Array], default: [], coerce: proc { Array(v) }
+    property :network_aliases, [String, Array], default: [], coerce: proc { |v| Array(v) }
     property :oom_kill_disable, [TrueClass, FalseClass], default: false
     property :oom_score_adj, Integer, default: -500
     property :open_stdin, [TrueClass, FalseClass], default: false, desired_state: false
@@ -379,8 +379,7 @@ module DockerCookbook
     end
 
     def to_shellwords(command)
-      return nil if command.nil?
-      Shellwords.shellwords(command)
+      command.is_a?(String) ? ::Shellwords.shellwords(command) : command
     end
 
     ######################
@@ -657,7 +656,7 @@ module DockerCookbook
 
     declare_action_class.class_eval do
       def validate_container_create
-        if property_is_set?(:restart_policy) &&
+        if new_resource.property_is_set?(:restart_policy) &&
            new_resource.restart_policy != 'no' &&
            new_resource.restart_policy != 'always' &&
            new_resource.restart_policy != 'unless-stopped' &&
@@ -665,7 +664,7 @@ module DockerCookbook
           raise Chef::Exceptions::ValidationFailed, 'restart_policy must be either no, always, unless-stopped, or on-failure.'
         end
 
-        if new_resource.autoremove == true && (property_is_set?(:restart_policy) && restart_policy != 'no')
+        if new_resource.autoremove == true && (new_resource.property_is_set?(:restart_policy) && restart_policy != 'no')
           raise Chef::Exceptions::ValidationFailed, 'Conflicting options restart_policy and autoremove.'
         end
 

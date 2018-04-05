@@ -44,7 +44,7 @@ module DockerCookbook
 
     action_class.class_eval do
       def validate_install_method
-        if property_is_set?(:version) &&
+        if new_resource.property_is_set?(:version) &&
            new_resource.install_method != 'package' &&
            new_resource.install_method != 'tarball'
           raise Chef::Exceptions::ValidationFailed, 'Version property only supported for package and tarball installation methods'
