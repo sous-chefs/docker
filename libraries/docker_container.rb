@@ -5,7 +5,7 @@ module DockerCookbook
     property :container_name, String, name_property: true
     property :repo, String, default: lazy { container_name }
     property :tag, String, default: 'latest'
-    property :command, [Array, String, nil], coerce: proc { |v| v.nil? ? nil : ::Shellwords.shellwords(v) }
+    property :command, [Array, String, nil], coerce: proc { |v| v.is_a?(String) ? ::Shellwords.shellwords(v) : v }
     property :attach_stderr, [TrueClass, FalseClass], default: false, desired_state: false
     property :attach_stdin, [TrueClass, FalseClass], default: false, desired_state: false
     property :attach_stdout, [TrueClass, FalseClass], default: false, desired_state: false
@@ -20,7 +20,7 @@ module DockerCookbook
     property :dns, Array, default: []
     property :dns_search, Array, default: []
     property :domain_name, String, default: ''
-    property :entrypoint, [Array, String, nil], coerce: proc { |v| v.nil? ? nil : ::Shellwords.shellwords(v) }
+    property :entrypoint, [Array, String, nil], coerce: proc { |v| v.is_a?(String) ? ::Shellwords.shellwords(v) : v }
     property :env, UnorderedArrayType, default: []
     property :env_file, [Array, String], coerce: proc { |v| coerce_env_file(v) }, default: [], desired_state: false
     property :extra_hosts, [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
@@ -379,8 +379,7 @@ module DockerCookbook
     end
 
     def to_shellwords(command)
-      return nil if command.nil?
-      Shellwords.shellwords(command)
+      command.is_a?(String) ? ::Shellwords.shellwords(command) : command
     end
 
     ######################
