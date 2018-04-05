@@ -43,7 +43,7 @@ module DockerCookbook
     property :memory_reservation, Integer, coerce: proc { |v| coerce_to_bytes(v) }, default: 0
     property :network_disabled, [TrueClass, FalseClass], default: false
     property :network_mode, String, default: 'bridge'
-    property :network_aliases, [String, Array], default: [], coerce: proc { Array(v) }
+    property :network_aliases, [String, Array], default: [], coerce: proc { |v| Array(v) }
     property :oom_kill_disable, [TrueClass, FalseClass], default: false
     property :oom_score_adj, Integer, default: -500
     property :open_stdin, [TrueClass, FalseClass], default: false, desired_state: false
