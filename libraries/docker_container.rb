@@ -656,7 +656,7 @@ module DockerCookbook
 
     declare_action_class.class_eval do
       def validate_container_create
-        if property_is_set?(:restart_policy) &&
+        if new_resource.property_is_set?(:restart_policy) &&
            new_resource.restart_policy != 'no' &&
            new_resource.restart_policy != 'always' &&
            new_resource.restart_policy != 'unless-stopped' &&
@@ -664,7 +664,7 @@ module DockerCookbook
           raise Chef::Exceptions::ValidationFailed, 'restart_policy must be either no, always, unless-stopped, or on-failure.'
         end
 
-        if new_resource.autoremove == true && (property_is_set?(:restart_policy) && restart_policy != 'no')
+        if new_resource.autoremove == true && (new_resource.property_is_set?(:restart_policy) && restart_policy != 'no')
           raise Chef::Exceptions::ValidationFailed, 'Conflicting options restart_policy and autoremove.'
         end
 
