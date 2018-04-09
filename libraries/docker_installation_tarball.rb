@@ -5,7 +5,7 @@ module DockerCookbook
     property :checksum, String, default: lazy { default_checksum }, desired_state: false
     property :source, String, default: lazy { default_source }, desired_state: false
     property :channel, String, default: 'stable', desired_state: false
-    property :version, String, default: '17.12.0', desired_state: false
+    property :version, String, default: '18.03.0', desired_state: false
 
     ##################
     # Property Helpers
@@ -28,10 +28,12 @@ module DockerCookbook
       when 'Darwin'
         case version
         when '17.12.0' then 'dc673421e0368c2c970203350a9d0cb739bc498c897e832779369b0b2a9c6192'
+        when '18.03.0' then '2d44ed2ac1e24cb22b6e72cb16d74fc9e60245a8ac1d4f79475604b804f46d38'
         end
       when 'Linux'
         case version
         when '17.12.0' then '692e1c72937f6214b1038def84463018d8e320c8eaf8530546c84c2f8f9c767d'
+        when '18.03.0' then 'e5dff6245172081dbf14285dafe4dede761f8bc1750310156b89928dbf56a9ee'
         end
       end
     end

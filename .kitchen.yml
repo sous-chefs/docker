@@ -108,7 +108,7 @@ suites:
 - name: installation_tarball
   attributes:
     docker:
-      version: '17.12.0'
+      version: '18.03.0'
   run_list:
   - recipe[docker_test::installation_tarball]
   includes: [
@@ -122,7 +122,7 @@ suites:
 - name: resources
   attributes:
     docker:
-      version: '17.12.0'
+      version: '18.03.0'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::image]
@@ -135,7 +135,7 @@ suites:
    ]
   attributes:
     docker:
-      version: '17.12.0'
+      version: '18.03.0'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::network]
@@ -146,7 +146,7 @@ suites:
    ]
   attributes:
     docker:
-      version: '17.12.0'
+      version: '18.03.0'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::volume]
@@ -157,7 +157,7 @@ suites:
    ]
   attributes:
     docker:
-      version: '17.12.0'
+      version: '18.03.0'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::registry]
