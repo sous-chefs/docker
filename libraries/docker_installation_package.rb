@@ -131,8 +131,6 @@ module DockerCookbook
                      '-trusty'
                    elsif xenial?
                      '-xenial'
-                   elsif zesty?
-                     '-zesty'
                    elsif artful?
                      '-artful'
                    elsif bionic?
