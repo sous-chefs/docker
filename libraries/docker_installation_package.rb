@@ -87,6 +87,11 @@ module DockerCookbook
       false
     end
 
+    def buster?
+      return true if node['platform'] == 'debian' && node['platform_version'].to_i == 10
+      false
+    end
+
     def trusty?
       return true if node['platform'] == 'ubuntu' && node['platform_version'] == '14.04'
       false
@@ -127,6 +132,8 @@ module DockerCookbook
                      '-jessie'
                    elsif stretch?
                      '-stretch'
+                   elsif buster?
+                     '-buster'
                    elsif trusty?
                      '-trusty'
                    elsif xenial?
