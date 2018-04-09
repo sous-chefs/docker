@@ -2,6 +2,26 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 4.2.0 (2018-04-09)
+
+- Initial support for Chef 14
+- Remove unused api_version helper
+- Support additional sysv RHEL like platforms by using platform_family
+- Added oom_kill_disable and oom_score_adj support to docker_container
+- ENV returns nil if the variable isn't found
+- Remove the TLS default helpers
+- Move coerce_labels into docker_container where its used
+- Add desired_state false to a few more properties
+- If the ENV values are nil don't use them to build busted defaults for TLS
+- Remove a giant pile of Chef 12-isms
+- Kill off ArrayType and NonEmptyArray types
+- Don't require docker all over the place
+- Kill the ShellCommand type
+- Fix undefined method `v' for DockerContainer
+- Make to_shellwords idempotent in DockerContainer
+- Fix(Chef14): Use property_is_set with new_resource
+- Use try-restart for systemd & retry start one time
+
 ## 4.1.1 (2018-03-11)
 
 - Move to_snake_case to the container resource where it's used
