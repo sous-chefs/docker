@@ -54,7 +54,7 @@ module DockerCookbook
 
     # These are helpers for the properties so they are not in an action class
     def default_docker_version
-      '17.12.0'
+      '18.03.0'
     end
 
     def default_package_name

@@ -101,7 +101,7 @@ suites:
 - name: installation_package
   attributes:
     docker:
-      version: '17.12.0'
+      version: '18.03.0'
   run_list:
   - recipe[docker_test::installation_package]
 
