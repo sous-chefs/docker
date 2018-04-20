@@ -47,3 +47,5 @@ Policyfile.lock.json
 .vagrant/
 .vagrant.d/
 .kitchen/
+.cache/
+.bash_history

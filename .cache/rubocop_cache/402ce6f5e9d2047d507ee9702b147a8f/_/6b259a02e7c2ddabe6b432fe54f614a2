@@ -1,1 +1,0 @@
-[{"severity":"convention","location":{"begin_pos":1802,"end_pos":1808},"message":"Trailing whitespace detected.","cop_name":"Layout/TrailingWhitespace","status":"uncorrected"}]
