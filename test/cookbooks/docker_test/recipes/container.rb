@@ -420,7 +420,7 @@ end
 
 # Inspect volume container with test-kitchen bussers
 docker_container 'sean_was_here' do
-  command "touch /opt/chef/sean_was_here-#{Time.new.strftime('%Y%m%d%H%M')}" #
+  command "touch /opt/chef/sean_was_here-#{Time.new.strftime('%Y%m%d%H%M')}"
   repo 'debian'
   volumes_from 'chef_container'
   autoremove true
