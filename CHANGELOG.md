@@ -2,6 +2,14 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 4.3.0 (2018-06-19)
+
+- Remove the zesty? helper
+- Initial support for Debian Buster (10)
+- Bump the package default to 18.03.0
+- Remove old integration tests
+- Update package specs to pass on Amazon Linux
+
 ## 4.2.0 (2018-04-09)
 
 - Initial support for Chef 14
