@@ -37,7 +37,7 @@ doc/
 # chef stuff
 Berksfile.lock
 .kitchen
-.kitchen.local.yml
+kitchen.local.yml
 vendor/
 .coverage/
 .zero-knife.rb
