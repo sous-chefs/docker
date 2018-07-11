@@ -5,7 +5,7 @@ module DockerCookbook
     property :checksum, String, default: lazy { default_checksum }, desired_state: false
     property :source, String, default: lazy { default_source }, desired_state: false
     property :channel, String, default: 'stable', desired_state: false
-    property :version, String, default: '18.03.0', desired_state: false
+    property :version, String, default: '18.03.1', desired_state: false
 
     ##################
     # Property Helpers
