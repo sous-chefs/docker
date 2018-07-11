@@ -54,7 +54,7 @@ module DockerCookbook
 
     # These are helpers for the properties so they are not in an action class
     def default_docker_version
-      '18.03.0'
+      '18.03.1'
     end
 
     def default_package_name
@@ -147,10 +147,19 @@ module DockerCookbook
                    ''
                  end
 
+      # https://github.com/seemethere/docker-ce-packaging/blob/9ba8e36e8588ea75209d813558c8065844c953a0/deb/gen-deb-ver#L16-L20
+      test_versioning_scheme = if Gem::Version.new(v) < Gem::Version.new('17.06.0')
+                   if new_resource.repo_channel == 'stable' && bionic?
+                     '-3'
+                   end
+                 else
+                   ''
+                 end
+
       return "#{v}#{edition}-1.el7.centos" if el7?
       return "#{v}#{edition}" if fedora?
       return "#{v}#{edition}-0~debian#{codename}" if node['platform'] == 'debian'
-      return "#{v}#{edition}-0~ubuntu#{codename}" if node['platform'] == 'ubuntu'
+      return "#{v}#{edition}#{test_versioning_scheme}-0~ubuntu#{codename}" if node['platform'] == 'ubuntu'
       v
     end
   end
