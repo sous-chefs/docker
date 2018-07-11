@@ -71,6 +71,7 @@ suites:
 - name: installation_script_main
   includes: [
     'ubuntu-16.04',
+    'ubuntu-18.04'
    ]
   attributes:
     docker:
@@ -81,6 +82,7 @@ suites:
 - name: installation_script_test
   includes: [
     'ubuntu-16.04',
+    'ubuntu-18.04'
    ]
   attributes:
     docker:
@@ -91,6 +93,7 @@ suites:
 - name: installation_script_experimental
   includes: [
     'ubuntu-16.04',
+    'ubuntu-18.04'
    ]
   attributes:
     docker:
@@ -113,6 +116,7 @@ suites:
   - recipe[docker_test::installation_tarball]
   includes: [
     'ubuntu-16.04',
+    'ubuntu-18.04'
    ]
 
 ##################
@@ -169,6 +173,7 @@ suites:
 - name: smoke
   includes: [
     'ubuntu-16.04',
+    'ubuntu-18.04'
    ]
   run_list:
   - recipe[docker_test::smoke]
