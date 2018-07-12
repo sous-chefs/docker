@@ -693,7 +693,7 @@ describe 'docker_test::container' do
         ulimits: [
           'nofile=40960:40960',
           'core=100000000:100000000',
-          'memlock=100000000:100000000'
+          'memlock=100000000:100000000',
         ]
       )
     end
@@ -731,7 +731,7 @@ describe 'docker_test::container' do
         volumes_binds: ['/hostbits:/bits', '/more-hostbits:/more-bits'],
         volumes: { '/root' => {} },
         working_dir: '/',
-        cap_add: %w[NET_ADMIN SYS_RESOURCE],
+        cap_add: %w(NET_ADMIN SYS_RESOURCE),
         cap_drop: ['MKNOD'],
         cpu_shares: 512,
         cpuset_cpus: '0,1',
@@ -747,7 +747,7 @@ describe 'docker_test::container' do
         ulimits: [
           'nofile=40960:40960',
           'core=100000000:100000000',
-          'memlock=100000000:100000000'
+          'memlock=100000000:100000000',
         ],
         labels: { 'foo' => 'bar', 'hello' => 'world' }
       )
