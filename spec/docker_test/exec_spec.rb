@@ -10,7 +10,7 @@ describe 'docker_test::exec' do
   it 'run docker_container[busybox_exec]' do
     expect(chef_run).to run_docker_container('busybox_exec').with(
       repo: 'busybox',
-      command: 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
+      command: ['sh', '-c', 'trap exit 0 SIGTERM; while :; do sleep 1; done']
     )
   end
 
