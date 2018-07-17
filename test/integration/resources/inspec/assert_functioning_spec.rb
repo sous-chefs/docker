@@ -400,6 +400,28 @@ describe command('docker run --rm --volumes-from chef_container debian ls -la /o
   its(:stdout) { should match(/sean_was_here-/) }
 end
 
+# docker_container[attached]
+describe docker_container('attached') do
+  it { should exist }
+  it { should_not be_running }
+end
+
+describe command('docker run --rm --volumes-from chef_container debian ls -la /opt/chef/') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/attached-\d{12}/) }
+end
+
+# docker_container[attached_with_timeout]
+describe docker_container('attached_with_timeout') do
+  it { should exist }
+  it { should_not be_running }
+end
+
+describe command('docker run --rm --volumes-from chef_container debian ls -la /opt/chef/') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should_not match(/attached_with_timeout-\d{12}/) }
+end
+
 # docker_container[cap_add_net_admin]
 
 describe docker_container('cap_add_net_admin') do
