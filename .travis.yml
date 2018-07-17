@@ -19,8 +19,11 @@ services: docker
 env:
   matrix:
   - INSTANCE=installation-script-main-ubuntu-1604
+  - INSTANCE=installation-script-main-ubuntu-1804
   - INSTANCE=installation-tarball-ubuntu-1604
+  - INSTANCE=installation-tarball-ubuntu-1804
   - INSTANCE=installation-package-ubuntu-1604
+  - INSTANCE=installation-package-ubuntu-1804
   - INSTANCE=registry-ubuntu-1604
   - INSTANCE=network-ubuntu-1604
   - INSTANCE=volume-ubuntu-1604
@@ -30,6 +33,7 @@ env:
   - INSTANCE=resources-fedora-28
   - INSTANCE=resources-ubuntu-1404
   - INSTANCE=resources-ubuntu-1604
+  - INSTANCE=resources-ubuntu-1804
 
 # Ensure we make ChefDK's Ruby the default
 before_script:
