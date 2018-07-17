@@ -554,7 +554,10 @@ module DockerCookbook
       converge_by "starting #{new_resource.container_name}" do
         with_retries do
           current_resource.container.start
-          timeout ? container.wait(timeout) : container.wait unless new_resource.detach
+
+          unless new_resource.detach
+            new_resource.timeout ? current_resource.container.wait(new_resource.timeout) : current_resource.container.wait
+          end
         end
         wait_running_state(true) if new_resource.detach
       end
