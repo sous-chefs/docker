@@ -2,6 +2,12 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 4.4.0 (2018-07-17)
+
+- docker service :log_level property converted to String.
+- Use new package versioning scheme for Ubuntu bionic
+- Bump the docker version everywhere
+
 ## 4.3.0 (2018-06-19)
 
 - Remove the zesty? helper
