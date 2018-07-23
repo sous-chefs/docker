@@ -2,6 +2,11 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 4.4.1 (2018-07-23)
+
+- Adding tests for docker_container detach == false (container is attached)
+- Add new_resource and current_resource objects as context for methods when telling a container to wait (when detach is false)
+
 ## 4.4.0 (2018-07-17)
 
 - docker service :log_level property converted to String.
