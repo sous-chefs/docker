@@ -393,6 +393,35 @@ describe 'docker_test::container' do
     end
   end
 
+  context 'testing detach' do
+    it 'runs docker_container[attached]' do
+      expect(chef_run).to run_docker_container('attached').with(
+        repo: 'debian',
+        volumes_from: ['chef_container'],
+        detach: false
+      )
+    end
+
+    it 'creates file[/marker_container_attached]' do
+      expect(chef_run).to create_file('/marker_container_attached')
+    end
+
+    context 'with timeout' do
+      it 'runs docker_container[attached_with_timeout]' do
+        expect(chef_run).to run_docker_container('attached_with_timeout').with(
+          repo: 'debian',
+          volumes_from: ['chef_container'],
+          detach: false,
+          timeout: 10
+        )
+      end
+
+      it 'creates file[/marker_container_attached_with_timeout]' do
+        expect(chef_run).to create_file('/marker_container_attached_with_timeout')
+      end
+    end
+  end
+
   context 'testing cap_add' do
     it 'run_if_missing docker_container[cap_add_net_admin]' do
       expect(chef_run).to run_if_missing_docker_container('cap_add_net_admin').with(

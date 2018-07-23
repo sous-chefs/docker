@@ -434,6 +434,45 @@ file '/marker_container_sean_was_here' do
 end
 
 #########
+# :detach
+#########
+
+# Inspect volume container with test-kitchen bussers
+docker_container 'attached' do
+  command "touch /opt/chef/attached-#{Time.new.strftime('%Y%m%d%H%M')}"
+  repo 'debian'
+  volumes_from 'chef_container'
+  detach false
+  not_if { ::File.exist?('/marker_container_attached') }
+  action :run
+end
+
+# marker to prevent :run on subsequent converges.
+file '/marker_container_attached' do
+  action :create
+end
+
+######################
+# :detach with timeout
+######################
+
+# Inspect volume container with test-kitchen bussers
+docker_container 'attached_with_timeout' do
+  command "sleep 15 && touch /opt/chef/attached_with_timeout-#{Time.new.strftime('%Y%m%d%H%M')}"
+  repo 'debian'
+  volumes_from 'chef_container'
+  detach false
+  timeout 10
+  not_if { ::File.exist?('/marker_container_attached_with_timeout') }
+  action :run
+end
+
+# marker to prevent :run on subsequent converges.
+file '/marker_container_attached_with_timeout' do
+  action :create
+end
+
+#########
 # cap_add
 #########
 
