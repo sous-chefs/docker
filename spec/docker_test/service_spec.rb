@@ -11,7 +11,7 @@ describe 'docker_test::service' do
   cached(:chef_run) do
     ChefSpec::SoloRunner.new(platform: 'ubuntu',
                              version: '16.04',
-                             step_into: %w[helpers_service docker_service docker_service_base docker_service_manager docker_service_manager_systemd]).converge(described_recipe)
+                             step_into: %w(helpers_service docker_service docker_service_base docker_service_manager docker_service_manager_systemd)).converge(described_recipe)
   end
 
   # If you have to change this file you most likely updated a default service option
