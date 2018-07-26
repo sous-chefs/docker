@@ -1,7 +1,5 @@
 require 'spec_helper'
-
-# Require all our libraries
-Dir['libraries/*.rb'].each { |f| require File.expand_path(f) }
+require_relative '../../libraries/helpers_service'
 
 describe 'docker_test::service' do
   before do
