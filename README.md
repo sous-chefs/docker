@@ -1241,9 +1241,9 @@ docker_container 'file_writer' do
 end
 ```
 
-## docker_execute
+## docker_exec
 
-The `docker_execute` resource allows you to execute commands inside of a running container.
+The `docker_exec` resource allows you to execute commands inside of a running container.
 
 ### Actions
 
