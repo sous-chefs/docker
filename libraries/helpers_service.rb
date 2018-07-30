@@ -227,6 +227,6 @@ module DockerCookbook
         return true if o.stdout =~ /CONTAINER/
         false
       end
-    end
+    end unless defined?(DockerCookbook::DockerHelpers::Service)
   end
 end
