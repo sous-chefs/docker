@@ -1,97 +1,76 @@
 module DockerCookbook
   class DockerContainer < DockerBase
-    require 'docker'
-    require 'shellwords'
-    require_relative 'helpers_container'
-
-    include DockerHelpers::Container
-
     resource_name :docker_container
 
-    ###########################################################
-    # In Chef 12.5 and later, we no longer have to use separate
-    # classes for resource and providers. Instead, we have
-    # everything in a single class.
-    #
-    # For the purposes of my own sanity, I'm going to place all the
-    # "resource" related bits at the top of the files, and the
-    # providerish bits at the bottom.
-    #
-    #
-    # Methods for default values and coersion are found in
-    # helpers_container.rb
-    ###########################################################
-
-    # ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
-    # Begin classic Chef "resource" section
-    # ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
-
-    # The non-standard types Boolean, ArrayType, ShellCommand, etc
-    # are found in the DockerBase class.
     property :container_name, String, name_property: true
     property :repo, String, default: lazy { container_name }
     property :tag, String, default: 'latest'
-    property :command, ShellCommand
-    property :attach_stderr, Boolean, default: false, desired_state: false
-    property :attach_stdin, Boolean, default: false, desired_state: false
-    property :attach_stdout, Boolean, default: false, desired_state: false
-    property :autoremove, Boolean, desired_state: false
-    property :cap_add, NonEmptyArray
-    property :cap_drop, NonEmptyArray
+    property :command, [Array, String, nil], coerce: proc { |v| v.is_a?(String) ? ::Shellwords.shellwords(v) : v }
+    property :attach_stderr, [TrueClass, FalseClass], default: false, desired_state: false
+    property :attach_stdin, [TrueClass, FalseClass], default: false, desired_state: false
+    property :attach_stdout, [TrueClass, FalseClass], default: false, desired_state: false
+    property :autoremove, [TrueClass, FalseClass], default: false, desired_state: false
+    property :cap_add, [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
+    property :cap_drop, [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
     property :cgroup_parent, String, default: ''
-    property :cpu_shares, [Integer, nil], default: 0
+    property :cpu_shares, Integer, default: 0
     property :cpuset_cpus, String, default: ''
-    property :detach, Boolean, default: true, desired_state: false
+    property :detach, [TrueClass, FalseClass], default: true, desired_state: false
     property :devices, Array, default: []
     property :dns, Array, default: []
     property :dns_search, Array, default: []
     property :domain_name, String, default: ''
-    property :entrypoint, ShellCommand
+    property :entrypoint, [Array, String, nil], coerce: proc { |v| v.is_a?(String) ? ::Shellwords.shellwords(v) : v }
     property :env, UnorderedArrayType, default: []
-    property :extra_hosts, NonEmptyArray
+    property :env_file, [Array, String], coerce: proc { |v| coerce_env_file(v) }, default: [], desired_state: false
+    property :extra_hosts, [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
     property :exposed_ports, PartialHashType, default: {}
-    property :force, Boolean, desired_state: false
-    property :host, [String, nil], default: lazy { default_host }, desired_state: false
+    property :force, [TrueClass, FalseClass], default: false, desired_state: false
+    property :host, [String, nil], default: lazy { ENV['DOCKER_HOST'] }, desired_state: false
     property :hostname, String
     property :ipc_mode, String, default: ''
-    property :kernel_memory, [String, Integer], coerce: proc { |v| coerce_kernel_memory(v) }, default: 0
+    property :kernel_memory, [String, Integer], coerce: proc { |v| coerce_to_bytes(v) }, default: 0
     property :labels, [String, Array, Hash], default: {}, coerce: proc { |v| coerce_labels(v) }
     property :links, UnorderedArrayType, coerce: proc { |v| coerce_links(v) }
     property :log_driver, %w( json-file syslog journald gelf fluentd awslogs splunk etwlogs gcplogs none ), default: 'json-file', desired_state: false
     property :log_opts, [Hash, nil], coerce: proc { |v| coerce_log_opts(v) }, desired_state: false
+    property :init, [TrueClass, FalseClass, nil]
     property :ip_address, String
     property :mac_address, String
-    property :memory, [String, Integer], coerce: proc { |v| coerce_memory(v) }, default: 0
-    property :memory_swap, [String, Integer], coerce: proc { |v| coerce_memory_swap(v) }, default: 0
-    property :memory_swappiness, Integer, coerce: proc { |v| coerce_memory_swappiness(v) }, default: 0
-    property :memory_reservation, Integer, coerce: proc { |v| coerce_memory_reservation(v) }, default: 0
-    property :network_disabled, Boolean, default: false
-    property :network_mode, [String, NilClass], default: 'bridge'
-    property :network_aliases, [ArrayType], default: []
-    property :open_stdin, Boolean, default: false, desired_state: false
-    property :outfile, [String, NilClass]
+    property :memory, [String, Integer], coerce: proc { |v| coerce_to_bytes(v) }, default: 0
+    property :memory_swap, [String, Integer], coerce: proc { |v| coerce_to_bytes(v) }, default: 0
+    property :memory_swappiness, Integer, default: 0
+    property :memory_reservation, Integer, coerce: proc { |v| coerce_to_bytes(v) }, default: 0
+    property :network_disabled, [TrueClass, FalseClass], default: false
+    property :network_mode, String, default: 'bridge'
+    property :network_aliases, [String, Array], default: [], coerce: proc { |v| Array(v) }
+    property :oom_kill_disable, [TrueClass, FalseClass], default: false
+    property :oom_score_adj, Integer, default: -500
+    property :open_stdin, [TrueClass, FalseClass], default: false, desired_state: false
+    property :outfile, String
     property :port_bindings, PartialHashType, default: {}
     property :pid_mode, String, default: ''
-    property :privileged, Boolean, default: false
-    property :publish_all_ports, Boolean, default: false
-    property :remove_volumes, Boolean
+    property :privileged, [TrueClass, FalseClass], default: false
+    property :publish_all_ports, [TrueClass, FalseClass], default: false
+    property :remove_volumes, [TrueClass, FalseClass], default: false
     property :restart_maximum_retry_count, Integer, default: 0
     property :restart_policy, String
-    property :ro_rootfs, Boolean, default: false
-    property :security_opt, [String, ArrayType]
+    property :runtime, String, default: 'runc'
+    property :ro_rootfs, [TrueClass, FalseClass], default: false
+    property :security_opt, [String, Array], coerce: proc { |v| v.nil? ? nil : Array(v) }
     property :signal, String, default: 'SIGTERM'
-    property :stdin_once, Boolean, default: false, desired_state: false
+    property :stdin_once, [TrueClass, FalseClass], default: false, desired_state: false
     property :sysctls, Hash, default: {}
-    property :timeout, [Integer, nil], desired_state: false
-    property :tty, Boolean, default: false
+    property :timeout, Integer, desired_state: false
+    property :tty, [TrueClass, FalseClass], default: false
     property :ulimits, [Array, nil], coerce: proc { |v| coerce_ulimits(v) }
     property :user, String, default: ''
     property :userns_mode, String, default: ''
     property :uts_mode, String, default: ''
     property :volumes, PartialHashType, default: {}, coerce: proc { |v| coerce_volumes(v) }
-    property :volumes_from, ArrayType
+    property :volumes_from, [String, Array], coerce: proc { |v| v.nil? ? nil : Array(v) }
     property :volume_driver, String
-    property :working_dir, [String, NilClass], default: ''
+    property :working_dir, String, default: ''
 
     # Used to store the bind property since binds is an alias to volumes
     property :volumes_binds, Array
@@ -104,27 +83,316 @@ module DockerCookbook
     # never kill the container.
     property :kill_after, [Integer, NilClass], default: nil, desired_state: false
 
-    alias cmd command
-    alias additional_host extra_hosts
-    alias rm autoremove
-    alias remove_automatically autoremove
-    alias host_name hostname
-    alias domainname domain_name
-    alias dnssearch dns_search
-    alias restart_maximum_retries restart_maximum_retry_count
-    alias volume volumes
-    alias binds volumes
-    alias volume_from volumes_from
-    alias destination outfile
-    alias workdir working_dir
+    alias_method :cmd, :command
+    alias_method :additional_host, :extra_hosts
+    alias_method :rm, :autoremove
+    alias_method :remove_automatically, :autoremove
+    alias_method :host_name, :hostname
+    alias_method :domainname, :domain_name
+    alias_method :dnssearch, :dns_search
+    alias_method :restart_maximum_retries, :restart_maximum_retry_count
+    alias_method :volume, :volumes
+    alias_method :binds, :volumes
+    alias_method :volume_from, :volumes_from
+    alias_method :destination, :outfile
+    alias_method :workdir, :working_dir
 
-    # ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
-    # Begin classic Chef "provider" section
-    # ~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~
+    ###################
+    # Property helpers
+    ###################
 
-    ########################################################
+    def coerce_labels(v)
+      case v
+      when Hash, nil
+        v
+      else
+        Array(v).each_with_object({}) do |label, h|
+          parts = label.split(':')
+          h[parts[0]] = parts[1..-1].join(':')
+        end
+      end
+    end
+
+    def coerce_links(v)
+      case v
+      when DockerBase::UnorderedArray, nil
+        v
+      else
+        return nil if v.empty?
+        # Parse docker input of /source:/container_name/dest into source:dest
+        DockerBase::UnorderedArray.new(Array(v)).map! do |link|
+          if link =~ %r{^/(?<source>.+):/#{name}/(?<dest>.+)}
+            link = "#{Regexp.last_match[:source]}:#{Regexp.last_match[:dest]}"
+          end
+          link
+        end
+      end
+    end
+
+    def to_bytes(v)
+      n = v.to_i
+      u = v.gsub(/\d/, '').upcase
+
+      multiplier = case u
+                   when 'B'
+                     1
+                   when 'K'
+                     1024**1
+                   when 'M'
+                     1024**2
+                   when 'G'
+                     1024**3
+                   when 'T'
+                     1024**4
+                   when 'P'
+                     1024**5
+                   when 'E'
+                     1024**6
+                   when 'Z'
+                     1024**7
+                   when 'Y'
+                     1024**8
+                   else
+                     1
+                   end
+
+      n * multiplier
+    end
+
+    def coerce_to_bytes(v)
+      case v
+      when Integer, nil
+        v
+      else
+        to_bytes(v)
+      end
+    end
+
+    def coerce_log_opts(v)
+      case v
+      when Hash, nil
+        v
+      else
+        Array(v).each_with_object({}) do |log_opt, memo|
+          key, value = log_opt.split('=', 2)
+          memo[key] = value
+        end
+      end
+    end
+
+    def coerce_ulimits(v)
+      return v if v.nil?
+      Array(v).map do |u|
+        u = "#{u['Name']}=#{u['Soft']}:#{u['Hard']}" if u.is_a?(Hash)
+        u
+      end
+    end
+
+    def coerce_volumes(v)
+      case v
+      when DockerBase::PartialHash, nil
+        v
+      when Hash
+        DockerBase::PartialHash[v]
+      else
+        b = []
+        v = Array(v).to_a # in case v.is_A?(Chef::Node::ImmutableArray)
+        v.delete_if do |x|
+          parts = x.split(':')
+          b << x if parts.length > 1
+        end
+        b = nil if b.empty?
+        volumes_binds b
+        return DockerBase::PartialHash.new if v.empty?
+        v.each_with_object(DockerBase::PartialHash.new) { |volume, h| h[volume] = {} }
+      end
+    end
+
+    def state
+      # Always return the latest state, see #510
+      Docker::Container.get(container_name, {}, connection).info['State']
+    rescue StandardError
+      {}
+    end
+
+    def wait_running_state(v)
+      tries = running_wait_time
+      tries.times do
+        return if state['Running'] == v
+        sleep 1
+      end
+      return if state['Running'] == v
+
+      # Container failed to reach correct state: Throw an error
+      desired_state_str = v ? 'running' : 'not running'
+      raise Docker::Error::TimeoutError, "Container #{container_name} failed to change to #{desired_state_str} state after #{tries} seconds"
+    end
+
+    def port(v = nil)
+      return @port if v.nil?
+      exposed_ports coerce_exposed_ports(v)
+      port_bindings coerce_port_bindings(v)
+      @port = v
+      @port
+    end
+
+    def parse_port(v)
+      _, protocol = v.split('/')
+      parts = v.split(':')
+      case parts.length
+      when 3
+        host_ip = parts[0]
+        host_port = parts[1].split('-')
+        container_port = parts[2].split('-')
+      when 2
+        host_ip = '0.0.0.0'
+        host_port = parts[0].split('-')
+        container_port = parts[1].split('-')
+      when 1
+        host_ip = ''
+        host_port = ['']
+        container_port = parts[0].split('-')
+      end
+      host_port.map!(&:to_i) unless host_port == ['']
+      container_port.map!(&:to_i)
+      if host_port.count > 1
+        Chef::Log.fatal("FATAL: Invalid port range! #{host_port}") if host_port[0] > host_port[1]
+        host_port = (host_port[0]..host_port[1]).to_a
+      end
+      if container_port.count > 1
+        Chef::Log.fatal("FATAL: Invalid port range! #{container_port}") if container_port[0] > container_port[1]
+        container_port = (container_port[0]..container_port[1]).to_a
+      end
+      Chef::Log.fatal('FATAL: Port range size does not match!') if host_port.count > 1 && host_port.count != container_port.count
+      # qualify the port-binding protocol even when it is implicitly tcp #427.
+      protocol = 'tcp' if protocol.nil?
+      Array(container_port).map.with_index do |_, i|
+        {
+          'host_ip' => host_ip,
+          'host_port' => host_port[i].to_s,
+          'container_port' => "#{container_port[i]}/#{protocol}",
+        }
+      end
+    end
+
+    def coerce_exposed_ports(v)
+      case v
+      when Hash, nil
+        v
+      else
+        x = Array(v).map { |a| parse_port(a) }
+        x.flatten!
+        x.each_with_object({}) do |y, h|
+          h[y['container_port']] = {}
+        end
+      end
+    end
+
+    def coerce_port_bindings(v)
+      case v
+      when Hash, nil
+        v
+      else
+        x = Array(v).map { |a| parse_port(a) }
+        x.flatten!
+        x.each_with_object({}) do |y, h|
+          h[y['container_port']] = [] unless h[y['container_port']]
+          h[y['container_port']] << {
+            'HostIp' => y['host_ip'],
+            'HostPort' => y['host_port'],
+          }
+        end
+      end
+    end
+
+    def coerce_env_file(v)
+      return v if v.empty?
+      Array(v).map { |f| ::File.readlines(f).map(&:strip) }.flatten
+    end
+
+    # log_driver and log_opts really handle this
+    def log_config(value = Chef::NOT_PASSED)
+      if value != Chef::NOT_PASSED
+        @log_config = value
+        log_driver value['Type']
+        log_opts value['Config']
+      end
+      return @log_config if defined?(@log_config)
+      def_logcfg = {}
+      def_logcfg['Type'] = log_driver if property_is_set?(:log_driver)
+      def_logcfg['Config'] = log_opts if property_is_set?(:log_opts)
+      def_logcfg = nil if def_logcfg.empty?
+      def_logcfg
+    end
+
+    # TODO: test image property in serverspec and kitchen, not only in rspec
+    # for full specs of image parsing, see spec/helpers_container_spec.rb
+    #
+    # If you say:    `repo 'blah'`
+    # Image will be: `blah:latest`
+    #
+    # If you say:    `repo 'blah'; tag '3.1'`
+    # Image will be: `blah:3.1`
+    #
+    # If you say:    `image 'blah'`
+    # Repo will be:  `blah`
+    # Tag will be:   `latest`
+    #
+    # If you say:    `image 'blah:3.1'`
+    # Repo will be:  `blah`
+    # Tag will be:   `3.1`
+    #
+    # If you say:    `image 'repo/blah'`
+    # Repo will be:  `repo/blah`
+    # Tag will be:   `latest`
+    #
+    # If you say:    `image 'repo/blah:3.1'`
+    # Repo will be:  `repo/blah`
+    # Tag will be:   `3.1`
+    #
+    # If you say:    `image 'repo:1337/blah'`
+    # Repo will be:  `repo:1337/blah`
+    # Tag will be:   `latest'
+    #
+    # If you say:    `image 'repo:1337/blah:3.1'`
+    # Repo will be:  `repo:1337/blah`
+    # Tag will be:   `3.1`
+    #
+    def image(image = nil)
+      if image
+        if image.include?('/')
+          # pathological case, a ':' may be present which starts the 'port'
+          # part of the image name and not a tag. example: 'host:1337/blah'
+          # fortunately, tags are only found in the 'basename' part of image
+          # so we can split on '/' and rebuild once the tag has been parsed.
+          dirname, _, basename = image.rpartition('/')
+          r, t = basename.split(':', 2)
+          r = [dirname, r].join('/')
+        else
+          # normal case, the ':' starts the tag part
+          r, t = image.split(':', 2)
+        end
+        repo r
+        tag t if t
+      end
+      "#{repo}:#{tag}"
+    end
+
+    def to_shellwords(command)
+      command.is_a?(String) ? ::Shellwords.shellwords(command) : command
+    end
+
+    ######################
     # Load Current Value
-    ########################################################
+    ######################
+
+    def to_snake_case(name)
+      # ExposedPorts -> _exposed_ports
+      name = name.gsub(/[A-Z]/) { |x| "_#{x.downcase}" }
+      # _exposed_ports -> exposed_ports
+      name = name[1..-1] if name.start_with?('_')
+      name
+    end
 
     load_current_value do
       # Grab the container and assign the container property
@@ -153,6 +421,14 @@ module DockerCookbook
       restart_maximum_retry_count container.info['HostConfig']['RestartPolicy']['MaximumRetryCount']
       volumes_binds container.info['HostConfig']['Binds']
       ro_rootfs container.info['HostConfig']['ReadonlyRootfs']
+      if container.info['NetworkSettings'] &&
+         container.info['NetworkSettings']['Networks'] &&
+         container.info['NetworkSettings']['Networks'][new_resource.network_mode] &&
+         container.info['NetworkSettings']['Networks'][new_resource.network_mode]['IPAMConfig'] &&
+         container.info['NetworkSettings']['Networks'][new_resource.network_mode]['IPAMConfig']['IPv4Address']
+
+        ip_address container.info['NetworkSettings']['Networks'][new_resource.network_mode]['IPAMConfig']['IPv4Address']
+      end
     end
 
     #########
@@ -161,23 +437,6 @@ module DockerCookbook
 
     # Super handy visual reference!
     # http://gliderlabs.com/images/docker_events.png
-
-    default_action :run
-
-    declare_action_class.class_eval do
-      def whyrun_supported?
-        true
-      end
-
-      def call_action(action)
-        send("action_#{action}")
-        load_current_resource
-      end
-
-      def state
-        current_resource ? current_resource.state : {}
-      end
-    end
 
     # Loads container specific labels excluding those of engine or image.
     # This insures idempotency.
@@ -193,56 +452,11 @@ module DockerCookbook
       public_send(:labels, labels)
     end
 
-    def validate_container_create
-      if property_is_set?(:restart_policy) &&
-         restart_policy != 'no' &&
-         restart_policy != 'always' &&
-         restart_policy != 'unless-stopped' &&
-         restart_policy != 'on-failure'
-        raise Chef::Exceptions::ValidationFailed, 'restart_policy must be either no, always, unless-stopped, or on-failure.'
-      end
-
-      if autoremove == true && (property_is_set?(:restart_policy) && restart_policy != 'no')
-        raise Chef::Exceptions::ValidationFailed, 'Conflicting options restart_policy and autoremove.'
-      end
-
-      if detach == true &&
-         (
-          attach_stderr == true ||
-          attach_stdin == true ||
-          attach_stdout == true ||
-          stdin_once == true
-         )
-        raise Chef::Exceptions::ValidationFailed, 'Conflicting options detach, attach_stderr, attach_stdin, attach_stdout, stdin_once.'
-      end
-
-      if network_mode == 'host' &&
-         (
-          !(hostname.nil? || hostname.empty?) ||
-          !(mac_address.nil? || mac_address.empty?)
-         )
-        raise Chef::Exceptions::ValidationFailed, 'Cannot specify hostname or mac_address when network_mode is host.'
-      end
-
-      if network_mode == 'container' &&
-         (
-          !(hostname.nil? || hostname.empty?) ||
-          !(dns.nil? || dns.empty?) ||
-          !(dns_search.nil? || dns_search.empty?) ||
-          !(mac_address.nil? || mac_address.empty?) ||
-          !(extra_hosts.nil? || extra_hosts.empty?) ||
-          !(exposed_ports.nil? || exposed_ports.empty?) ||
-          !(port_bindings.nil? || port_bindings.empty?) ||
-          !(publish_all_ports.nil? || publish_all_ports.empty?) ||
-          !port.nil?
-         )
-        raise Chef::Exceptions::ValidationFailed, 'Cannot specify hostname, dns, dns_search, mac_address, extra_hosts, exposed_ports, port_bindings, publish_all_ports, port when network_mode is container.'
-      end
-    end
-
-    def parsed_hostname
-      return nil if network_mode == 'host'
-      hostname
+    action :run do
+      validate_container_create
+      call_action(:create)
+      call_action(:start)
+      call_action(:delete) if new_resource.autoremove
     end
 
     action :create do
@@ -262,7 +476,7 @@ module DockerCookbook
             'AttachStdout'    => new_resource.attach_stdout,
             'Domainname'      => new_resource.domain_name,
             'Entrypoint'      => to_shellwords(new_resource.entrypoint),
-            'Env'             => new_resource.env,
+            'Env'             => new_resource.env + new_resource.env_file,
             'ExposedPorts'    => new_resource.exposed_ports,
             'Hostname'        => parsed_hostname,
             'MacAddress'      => new_resource.mac_address,
@@ -285,6 +499,7 @@ module DockerCookbook
               'DnsSearch'       => new_resource.dns_search,
               'ExtraHosts'      => new_resource.extra_hosts,
               'IpcMode'         => new_resource.ipc_mode,
+              'Init'            => new_resource.init,
               'KernelMemory'    => new_resource.kernel_memory,
               'Links'           => new_resource.links,
               'LogConfig'       => log_config,
@@ -293,6 +508,8 @@ module DockerCookbook
               'MemorySwappiness' => new_resource.memory_swappiness,
               'MemoryReservation' => new_resource.memory_reservation,
               'NetworkMode'     => new_resource.network_mode,
+              'OomKillDisable'  => new_resource.oom_kill_disable,
+              'OomScoreAdj'     => new_resource.oom_score_adj,
               'Privileged'      => new_resource.privileged,
               'PidMode'         => new_resource.pid_mode,
               'PortBindings'    => new_resource.port_bindings,
@@ -302,9 +519,10 @@ module DockerCookbook
                 'MaximumRetryCount' => new_resource.restart_maximum_retry_count,
               },
               'ReadonlyRootfs'  => new_resource.ro_rootfs,
+              'Runtime'         => new_resource.runtime,
               'SecurityOpt'     => new_resource.security_opt,
               'Sysctls'         => new_resource.sysctls,
-              'Ulimits'         => new_resource.ulimits_to_hash,
+              'Ulimits'         => ulimits_to_hash,
               'UsernsMode'      => new_resource.userns_mode,
               'UTSMode'         => new_resource.uts_mode,
               'VolumesFrom'     => new_resource.volumes_from,
@@ -336,7 +554,10 @@ module DockerCookbook
       converge_by "starting #{new_resource.container_name}" do
         with_retries do
           current_resource.container.start
-          timeout ? container.wait(timeout) : container.wait unless new_resource.detach
+
+          unless new_resource.detach
+            new_resource.timeout ? current_resource.container.wait(new_resource.timeout) : current_resource.container.wait
+          end
         end
         wait_running_state(true) if new_resource.detach
       end
@@ -362,13 +583,6 @@ module DockerCookbook
       converge_by "killing #{new_resource.container_name}" do
         with_retries { current_resource.container.kill(signal: new_resource.signal) }
       end
-    end
-
-    action :run do
-      validate_container_create
-      call_action(:create)
-      call_action(:start)
-      call_action(:delete) if new_resource.autoremove
     end
 
     action :run_if_missing do
@@ -439,6 +653,79 @@ module DockerCookbook
       converge_by "exporting #{new_resource.container_name}" do
         with_retries do
           ::File.open(new_resource.outfile, 'w') { |f| current_resource.container.export { |chunk| f.write(chunk) } }
+        end
+      end
+    end
+
+    declare_action_class.class_eval do
+      def validate_container_create
+        if new_resource.property_is_set?(:restart_policy) &&
+           new_resource.restart_policy != 'no' &&
+           new_resource.restart_policy != 'always' &&
+           new_resource.restart_policy != 'unless-stopped' &&
+           new_resource.restart_policy != 'on-failure'
+          raise Chef::Exceptions::ValidationFailed, 'restart_policy must be either no, always, unless-stopped, or on-failure.'
+        end
+
+        if new_resource.autoremove == true && (new_resource.property_is_set?(:restart_policy) && restart_policy != 'no')
+          raise Chef::Exceptions::ValidationFailed, 'Conflicting options restart_policy and autoremove.'
+        end
+
+        if new_resource.detach == true &&
+           (
+            new_resource.attach_stderr == true ||
+            new_resource.attach_stdin == true ||
+            new_resource.attach_stdout == true ||
+            new_resource.stdin_once == true
+           )
+          raise Chef::Exceptions::ValidationFailed, 'Conflicting options detach, attach_stderr, attach_stdin, attach_stdout, stdin_once.'
+        end
+
+        if new_resource.network_mode == 'host' &&
+           (
+            !(new_resource.hostname.nil? || new_resource.hostname.empty?) ||
+            !(new_resource.mac_address.nil? || new_resource.mac_address.empty?)
+           )
+          raise Chef::Exceptions::ValidationFailed, 'Cannot specify hostname or mac_address when network_mode is host.'
+        end
+
+        if new_resource.network_mode == 'container' &&
+           (
+            !(new_reosurce.hostname.nil? || new_reosurce.hostname.empty?) ||
+            !(new_reosurce.dns.nil? || new_reosurce.dns.empty?) ||
+            !(new_reosurce.dns_search.nil? || new_reosurce.dns_search.empty?) ||
+            !(new_reosurce.mac_address.nil? || new_reosurce.mac_address.empty?) ||
+            !(new_reosurce.extra_hosts.nil? || new_reosurce.extra_hosts.empty?) ||
+            !(new_reosurce.exposed_ports.nil? || new_reosurce.exposed_ports.empty?) ||
+            !(new_reosurce.port_bindings.nil? || new_reosurce.port_bindings.empty?) ||
+            !(new_reosurce.publish_all_ports.nil? || new_reosurce.publish_all_ports.empty?) ||
+            !new_reosurce.port.nil?
+           )
+          raise Chef::Exceptions::ValidationFailed, 'Cannot specify hostname, dns, dns_search, mac_address, extra_hosts, exposed_ports, port_bindings, publish_all_ports, port when network_mode is container.'
+        end
+      end
+
+      def parsed_hostname
+        return nil if new_resource.network_mode == 'host'
+        new_resource.hostname
+      end
+
+      def call_action(action)
+        send("action_#{action}")
+        load_current_resource
+      end
+
+      def state
+        current_resource ? current_resource.state : {}
+      end
+
+      def ulimits_to_hash
+        return nil if new_resource.ulimits.nil?
+        new_resource.ulimits.map do |u|
+          name = u.split('=')[0]
+          soft = u.split('=')[1].split(':')[0]
+          hard = u.split('=')[1].split(':')[1]
+          { 'Name' => name, 'Soft' => soft.to_i, 'Hard' => hard.to_i }
         end
       end
     end

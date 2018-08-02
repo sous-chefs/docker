@@ -2,18 +2,8 @@ module DockerCookbook
   class DockerServiceManagerSystemd < DockerServiceBase
     resource_name :docker_service_manager_systemd
 
-    provides :docker_service_manager, platform: 'fedora'
-
-    provides :docker_service_manager, platform: %w(redhat centos scientific oracle) do |node| # ~FC005
-      node['platform_version'].to_f >= 7.0
-    end
-
-    provides :docker_service_manager, platform: 'debian' do |node|
-      node['platform_version'].to_f >= 8.0
-    end
-
-    provides :docker_service_manager, platform: 'ubuntu' do |node|
-      node['platform_version'].to_f >= 15.04
+    provides :docker_service_manager, os: 'linux' do |_node|
+      Chef::Platform::ServiceHelpers.service_resource_providers.include?(:systemd)
     end
 
     action :start do
@@ -78,10 +68,11 @@ module DockerCookbook
           docker_socket: connect_socket,
           docker_daemon_cmd: docker_daemon_cmd,
           systemd_args: systemd_args,
-          docker_wait_ready: "#{libexec_dir}/#{docker_name}-wait-ready"
+          docker_wait_ready: "#{libexec_dir}/#{docker_name}-wait-ready",
+          env_vars: new_resource.env_vars
         )
         notifies :run, 'execute[systemctl daemon-reload]', :immediately
-        notifies :run, "execute[systemctl restart #{docker_name}]", :immediately
+        notifies :run, "execute[systemctl try-restart #{docker_name}]", :immediately
       end
 
       # avoid 'Unit file changed on disk' warning
@@ -91,8 +82,8 @@ module DockerCookbook
       end
 
       # restart if changes in template resources
-      execute "systemctl restart #{docker_name}" do
-        command "/bin/systemctl restart #{docker_name}"
+      execute "systemctl try-restart #{docker_name}" do
+        command "/bin/systemctl try-restart #{docker_name}"
         action :nothing
       end
 
@@ -102,6 +93,7 @@ module DockerCookbook
         supports status: true
         action [:enable, :start]
         only_if { ::File.exist?("/lib/systemd/system/#{docker_name}.service") }
+        retries 1
       end
     end
 

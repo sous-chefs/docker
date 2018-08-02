@@ -58,13 +58,13 @@ module DockerCookbook
           c_a = 3 if a =~ %r{^tcp://127.0.0.1:}
           c_a = 4 if a =~ %r{^tcp://(192\.168|10\.|172\.1[6789]\.|172\.2[0-9]\.|172\.3[01]\.).*:}
           c_a = 5 if a =~ %r{^tcp://0.0.0.0:}
-          c_a = 6 unless c_a
+          c_a ||= 6
           c_b = 1 if b =~ /^unix:/
           c_b = 2 if b =~ /^fd:/
           c_b = 3 if b =~ %r{^tcp://127.0.0.1:}
           c_b = 4 if b =~ %r{^tcp://(192\.168|10\.|172\.1[6789]\.|172\.2[0-9]\.|172\.3[01]\.).*:}
           c_b = 5 if b =~ %r{^tcp://0.0.0.0:}
-          c_b = 6 unless c_b
+          c_b ||= 6
           c_a <=> c_b
         end
         if sorted.first =~ %r{^tcp://0.0.0.0:}
@@ -80,10 +80,10 @@ module DockerCookbook
         sorted = coerce_host(host).sort do |a, b|
           c_a = 1 if a =~ /^unix:/
           c_a = 2 if a =~ /^fd:/
-          c_a = 3 unless c_a
+          c_a ||= 3
           c_b = 1 if b =~ /^unix:/
           c_b = 2 if b =~ /^fd:/
-          c_b = 3 unless c_b
+          c_b ||= 3
           c_a <=> c_b
         end
         sorted.first.sub(%r{unix://|fd://}, '')
@@ -191,8 +191,8 @@ module DockerCookbook
         opts << "--fixed-cidr=#{fixed_cidr}" if fixed_cidr
         opts << "--fixed-cidr-v6=#{fixed_cidr_v6}" if fixed_cidr_v6
         opts << "--group=#{group}" if group
-        opts << "--graph=#{graph}" if graph
-        host.each { |h| opts << "-H #{h}" } if host
+        opts << "--data-root=#{data_root}" if data_root
+        host.each { |h| opts << "--host #{h}" } if host
         opts << "--icc=#{icc}" unless icc.nil?
         insecure_registry.each { |i| opts << "--insecure-registry=#{i}" } if insecure_registry
         opts << "--ip=#{ip}" if ip
@@ -203,7 +203,7 @@ module DockerCookbook
         opts << "--log-level=#{log_level}" if log_level
         labels.each { |l| opts << "--label=#{l}" } if labels
         opts << "--log-driver=#{log_driver}" if log_driver
-        log_opts.each { |log_opt| opts << "--log-opt #{log_opt}" } if log_opts
+        log_opts.each { |log_opt| opts << "--log-opt '#{log_opt}'" } if log_opts
         opts << "--mtu=#{mtu}" if mtu
         opts << "--pidfile=#{pidfile}" if pidfile
         opts << "--registry-mirror=#{registry_mirror}" if registry_mirror
@@ -227,6 +227,6 @@ module DockerCookbook
         return true if o.stdout =~ /CONTAINER/
         false
       end
-    end
+    end unless defined?(DockerCookbook::DockerHelpers::Service)
   end
 end

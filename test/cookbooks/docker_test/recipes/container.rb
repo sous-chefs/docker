@@ -339,10 +339,32 @@ end
 # env
 #####
 
-# Inspect container logs with test-kitchen bussers
+file '/env_file1' do
+  content <<-EOF
+  GOODBYE=TOMPETTY
+  1950=2017
+  EOF
+  action :create
+end
+
+file '/env_file2' do
+  content <<-EOF
+  HELLO=WORLD
+  EOF
+  action :create
+end
+
 docker_container 'env' do
   repo 'debian'
   env ['PATH=/usr/bin', 'FOO=bar']
+  env_file lazy { '/env_file1' }
+  command 'env'
+  action :run_if_missing
+end
+
+docker_container 'env_files' do
+  repo 'debian'
+  env_file lazy { ['/env_file1', '/env_file2'] }
   command 'env'
   action :run_if_missing
 end
@@ -398,7 +420,7 @@ end
 
 # Inspect volume container with test-kitchen bussers
 docker_container 'sean_was_here' do
-  command "touch /opt/chef/sean_was_here-#{Time.new.strftime('%Y%m%d%H%M')}" #
+  command "touch /opt/chef/sean_was_here-#{Time.new.strftime('%Y%m%d%H%M')}"
   repo 'debian'
   volumes_from 'chef_container'
   autoremove true
@@ -408,6 +430,45 @@ end
 
 # marker to prevent :run on subsequent converges.
 file '/marker_container_sean_was_here' do
+  action :create
+end
+
+#########
+# :detach
+#########
+
+# Inspect volume container with test-kitchen bussers
+docker_container 'attached' do
+  command "touch /opt/chef/attached-#{Time.new.strftime('%Y%m%d%H%M')}"
+  repo 'debian'
+  volumes_from 'chef_container'
+  detach false
+  not_if { ::File.exist?('/marker_container_attached') }
+  action :run
+end
+
+# marker to prevent :run on subsequent converges.
+file '/marker_container_attached' do
+  action :create
+end
+
+######################
+# :detach with timeout
+######################
+
+# Inspect volume container with test-kitchen bussers
+docker_container 'attached_with_timeout' do
+  command "sleep 15 && touch /opt/chef/attached_with_timeout-#{Time.new.strftime('%Y%m%d%H%M')}"
+  repo 'debian'
+  volumes_from 'chef_container'
+  detach false
+  timeout 10
+  not_if { ::File.exist?('/marker_container_attached_with_timeout') }
+  action :run
+end
+
+# marker to prevent :run on subsequent converges.
+file '/marker_container_attached_with_timeout' do
   action :create
 end
 
@@ -962,6 +1023,32 @@ docker_container 'kill_after' do
   action :stop
 end
 
+######
+# oom_kill_disable
+######
+
+docker_container 'oom_kill_disable' do
+  repo 'alpine'
+  tag '3.1'
+  command 'ls -la'
+  oom_kill_disable true
+  timeout 40
+  action :run_if_missing
+end
+
+######
+# oom_score_adj
+######
+
+docker_container 'oom_score_adj' do
+  repo 'alpine'
+  tag '3.1'
+  command 'ls -la'
+  oom_score_adj 600
+  timeout 40
+  action :run_if_missing
+end
+
 ##########
 # pid_mode
 ##########
@@ -971,6 +1058,21 @@ docker_container 'pid_mode' do
   tag '3.1'
   command 'ps -ef'
   pid_mode 'host'
+  timeout 40
+  action :run_if_missing
+end
+
+######
+# init
+######
+
+# docker inspect init | grep '"Init": true'
+docker_container 'init' do
+  repo 'alpine'
+  tag '3.1'
+  command 'ls -la'
+  init true
+  timeout 40
   action :run_if_missing
 end
 
@@ -983,6 +1085,7 @@ docker_container 'ipc_mode' do
   tag '3.1'
   command 'ps -ef'
   ipc_mode 'host'
+  timeout 40
   action :run_if_missing
 end
 
@@ -995,6 +1098,7 @@ docker_container 'uts_mode' do
   tag '3.1'
   command 'ps -ef'
   uts_mode 'host'
+  timeout 40
   action :run_if_missing
 end
 
@@ -1007,6 +1111,7 @@ docker_container 'ro_rootfs' do
   tag '3.1'
   command 'ps -ef'
   ro_rootfs true
+  timeout 40
   action :run_if_missing
 end
 
@@ -1020,6 +1125,7 @@ docker_container 'sysctls' do
   command '/sbin/sysctl -a'
   sysctls 'net.core.somaxconn' => '65535',
           'net.core.xfrm_acq_expires' => '42'
+  timeout 40
   action :run_if_missing
 end
 
@@ -1105,7 +1211,7 @@ docker_container 'memory' do
   kernel_memory '10m'
   memory '5m'
   memory_swap '5M'
-  memory_swappiness '50'
+  memory_swappiness 50
   memory_reservation '5m'
   action :run
 end

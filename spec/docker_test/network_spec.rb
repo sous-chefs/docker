@@ -1,4 +1,4 @@
-# coding: utf-8
+
 require 'spec_helper'
 
 describe 'docker_test::network' do

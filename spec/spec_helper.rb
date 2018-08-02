@@ -4,11 +4,9 @@ require 'chefspec/berkshelf'
 class RSpecHelper
   class<<self
     attr_accessor :current_example
-    attr_accessor :api_version
   end
   def self.reset!
     @current_example = nil
-    @api_version = '1.18'
   end
 end
 
