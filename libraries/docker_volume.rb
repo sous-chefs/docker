@@ -1,12 +1,10 @@
 module DockerCookbook
   class DockerVolume < DockerBase
-    require 'docker'
-
     resource_name :docker_volume
 
     property :driver, String, desired_state: false
-    property :host, [String, nil], default: lazy { default_host }, desired_state: false
-    property :opts, [String, Array, nil], desired_state: false
+    property :host, [String, nil], default: lazy { ENV['DOCKER_HOST'] }, desired_state: false
+    property :opts, [String, Array], desired_state: false
     property :volume, Docker::Volume, desired_state: false
     property :volume_name, String, name_property: true
 

@@ -2,8 +2,10 @@ module DockerCookbook
   class DockerServiceManagerUpstart < DockerServiceBase
     resource_name :docker_service_manager_upstart
 
-    provides :docker_service_manager, platform: 'ubuntu'
-    provides :docker_service_manager, platform: 'linuxmint'
+    provides :docker_service_manager, platform_family: 'debian' do |_node|
+      Chef::Platform::ServiceHelpers.service_resource_providers.include?(:upstart) &&
+        !Chef::Platform::ServiceHelpers.service_resource_providers.include?(:systemd)
+    end
 
     action :start do
       create_docker_wait_ready
@@ -26,7 +28,8 @@ module DockerCookbook
           docker_wait_ready: "#{libexec_dir}/#{docker_name}-wait-ready",
           docker_socket: connect_socket
         )
-        notifies :restart, "service[#{docker_name}]", :immediately
+        notifies :stop, "service[#{docker_name}]", :immediately
+        notifies :start, "service[#{docker_name}]", :immediately
       end
 
       template "/etc/default/#{docker_name}" do

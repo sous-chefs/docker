@@ -1,83 +1,56 @@
 ---
 driver:
   name: dokken
-  chef_version: current
+  chef_version: latest
   privileged: true
   volumes: [
-  '/var/lib/docker', '/var/lib/docker-one', '/var/lib/docker-two'
-  ]
+    '/var/lib/docker', '/var/lib/docker-one', '/var/lib/docker-two'
+    ]
 
 transport:
   name: dokken
 
 provisioner:
   name: dokken
+  deprecations_as_errors: true
 
 verifier:
   name: inspec
 
 platforms:
-- name: debian-7
-  driver:
-    image: dokken/debian-7
-    pid_one_command: /sbin/init
-  run_list:
-  - recipe[chef-apt-docker]
-
 - name: debian-8
   driver:
     image: dokken/debian-8
     pid_one_command: /bin/systemd
-  run_list:
-  - recipe[chef-apt-docker]
 
-- name: centos-6
+- name: debian-9
   driver:
-    image: dokken/centos-6
-    platform: rhel
-    pid_one_command: /sbin/init
-  run_list:
-    - recipe[chef-yum-docker]
+    image: dokken/debian-9
+    pid_one_command: /bin/systemd
 
 - name: centos-7
   driver:
     image: dokken/centos-7
-    platform: rhel
     pid_one_command: /usr/lib/systemd/systemd
-  run_list:
-    - recipe[chef-yum-docker]
 
-- name: fedora-25
+- name: fedora-28
   driver:
-    image: dokken/fedora-25
+    image: dokken/fedora-28
     pid_one_command: /usr/lib/systemd/systemd
-  run_list:
-    - recipe[chef-yum-docker]
 
 - name: ubuntu-14.04
   driver:
     image: dokken/ubuntu-14.04
     pid_one_command: /sbin/init
-  run_list:
-  - recipe[chef-apt-docker]
 
 - name: ubuntu-16.04
   driver:
     image: dokken/ubuntu-16.04
     pid_one_command: /bin/systemd
-  run_list:
-  - recipe[chef-apt-docker]
 
-- name: ubuntu-17.04
+- name: ubuntu-18.04
   driver:
-    image: dokken/ubuntu-17.04
-    pid_one_command: /bin/systemd
-  run_list:
-  - recipe[chef-apt-docker]
-
-- name: opensuse-13.2
-  driver:
-    image: dokken/opensuse-13.2
+    image: dokken/ubuntu-18.04
     pid_one_command: /bin/systemd
 
 - name: amazonlinux
@@ -85,11 +58,20 @@ platforms:
     image: dokken/amazonlinux
     pid_one_command: /sbin/init
 
+- name: amazonlinux-2
+  driver:
+    image: dokken/amazonlinux
+    pid_one_command: /usr/lib/systemd/systemd
 
 suites:
+
+###############################
+# docker_installation resources
+###############################
 - name: installation_script_main
   includes: [
     'ubuntu-16.04',
+    'ubuntu-18.04'
    ]
   attributes:
     docker:
@@ -100,6 +82,7 @@ suites:
 - name: installation_script_test
   includes: [
     'ubuntu-16.04',
+    'ubuntu-18.04'
    ]
   attributes:
     docker:
@@ -110,6 +93,7 @@ suites:
 - name: installation_script_experimental
   includes: [
     'ubuntu-16.04',
+    'ubuntu-18.04'
    ]
   attributes:
     docker:
@@ -117,47 +101,32 @@ suites:
   run_list:
   - recipe[docker_test::installation_script]
 
-######################################
-# docker_installation_package resource
-######################################
-
-- name: installation_package-17031
-  includes: [
-    'amazonlinux', # for dokken
-    ]
+- name: installation_package
   attributes:
     docker:
-      version: '17.03.1'
+      version: '18.03.1'
   run_list:
   - recipe[docker_test::installation_package]
 
-- name: installation_package-17060
-  includes: [
-    'centos-7', # for dokken
-    'debian-7', # for dokken
-    'debian-8', # for dokken
-    'ubuntu-14.04',
-    'ubuntu-16.04',
-    'ubuntu-17.04',
-    'fedora-25',
-   ]
+- name: installation_tarball
   attributes:
     docker:
-      version: '17.06.0'
+      version: '18.03.1'
   run_list:
-  - recipe[docker_test::installation_package]
-
-#######################
-# bulk resource testing
-#######################
-
-- name: resources-17060
+  - recipe[docker_test::installation_tarball]
   includes: [
     'ubuntu-16.04',
+    'ubuntu-18.04'
    ]
+
+##################
+# resource testing
+##################
+
+- name: resources
   attributes:
     docker:
-      version: '17.06.0'
+      version: '18.03.1'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::image]
@@ -170,7 +139,7 @@ suites:
    ]
   attributes:
     docker:
-      version: '17.06.0'
+      version: '18.03.1'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::network]
@@ -181,19 +150,30 @@ suites:
    ]
   attributes:
     docker:
-      version: '17.06.0'
+      version: '18.03.1'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::volume]
 
-######################################
-# service smoke testing
-######################################
+- name: registry
+  includes: [
+    'ubuntu-16.04',
+   ]
+  attributes:
+    docker:
+      version: '18.03.1'
+  run_list:
+  - recipe[docker_test::default]
+  - recipe[docker_test::registry]
+
+#############################
+# quick service smoke testing
+#############################
 
 - name: smoke
-  excludes: [
-    'centos-6',
-    'opensuse-13.2',
-  ]
+  includes: [
+    'ubuntu-16.04',
+    'ubuntu-18.04'
+   ]
   run_list:
   - recipe[docker_test::smoke]

@@ -1,8 +1,5 @@
 module DockerCookbook
   class DockerInstallationScript < DockerBase
-    #####################
-    # Resource properties
-    #####################
     resource_name :docker_installation_script
 
     provides :docker_installation, os: 'linux'
@@ -12,9 +9,9 @@ module DockerCookbook
 
     default_action :create
 
-    ################
-    # helper methods
-    ################
+    #########################
+    # property helper methods
+    #########################
 
     def default_script_url
       case repo
@@ -32,9 +29,7 @@ module DockerCookbook
     #########
 
     action :create do
-      package 'curl' do
-        action :install
-      end
+      package 'curl'
 
       execute 'install docker' do
         command "curl -sSL #{new_resource.script_url} | sh"
@@ -43,7 +38,7 @@ module DockerCookbook
     end
 
     action :delete do
-      package 'docker-engine' do
+      package %w(docker-ce docker-engine) do
         action :remove
       end
     end
