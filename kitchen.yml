@@ -132,6 +132,7 @@ suites:
   - recipe[docker_test::image]
   - recipe[docker_test::container]
   - recipe[docker_test::exec]
+  - recipe[docker_test::plugin]
 
 - name: network
   includes: [
