@@ -2,6 +2,14 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 4.5.0 (2018-08-16)
+
+- sets the default log_level for the systemd docker service back to nil
+- change require relative to library path
+- docker_execute -> docker_exec
+- Loosen up the requirement on docker-api gem
+- Add new docker_plugin resource
+
 ## 4.4.1 (2018-07-23)
 
 - Adding tests for docker_container detach == false (container is attached)
