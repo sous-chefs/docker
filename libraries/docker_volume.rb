@@ -4,7 +4,7 @@ module DockerCookbook
 
     property :driver, String, desired_state: false
     property :host, [String, nil], default: lazy { ENV['DOCKER_HOST'] }, desired_state: false
-    property :opts, [String, Array], desired_state: false
+    property :opts, Hash, desired_state: false
     property :volume, Docker::Volume, desired_state: false
     property :volume_name, String, name_property: true
 
@@ -18,7 +18,14 @@ module DockerCookbook
 
     action :create do
       converge_by "creating volume #{new_resource.volume_name}" do
-        Docker::Volume.create(new_resource.volume_name, {}, connection)
+        opts = {}
+        if property_is_set?(:driver)
+          opts['Driver'] = driver
+        end
+        if property_is_set?(:opts)
+          opts['DriverOpts'] = opts
+        end
+        Docker::Volume.create(new_resource.volume_name, opts, connection)
       end if current_resource.nil?
     end
 

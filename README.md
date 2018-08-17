@@ -1218,11 +1218,11 @@ The `docker_volume` resource is responsible for managing Docker named volumes.
 
 ### Properties
 
-- `driver`
+- `driver` - Name of the volume driver to use. Only used for `:create`.
 - `host`
-- `opts`
+- `opts` - Options to pass to the volume driver. Only used for `:create`.
 - `volume`
-- `volume_name`
+- `volume_name` - Name of the volume to operate on (defaults to the resource name).
 
 ### Examples
 
