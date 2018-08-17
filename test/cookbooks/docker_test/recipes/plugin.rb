@@ -67,14 +67,14 @@ end
 docker_plugin 'sshfs 2.1' do
   local_alias 'sshfs'
   remote 'vieux/sshfs'
-  remote_tag '1.0.1'
+  remote_tag 'latest'
   grant_privileges true
 end
 
 docker_plugin 'sshfs 2.2' do
   local_alias 'sshfs'
   remote 'vieux/sshfs'
-  remote_tag '1.0.1'
+  remote_tag 'latest'
   grant_privileges true
 end
 

@@ -88,15 +88,15 @@ describe 'docker_test::plugin' do
     it 'installs vieux/sshfs two times' do
       expect(chef_run).to install_docker_plugin('sshfs 2.1').with(
         remote: 'vieux/sshfs',
+        remote_tag: 'latest',
         local_alias: 'sshfs',
-        remote_tag: '1.0.1',
         grant_privileges: true
       )
 
       expect(chef_run).to install_docker_plugin('sshfs 2.2').with(
         remote: 'vieux/sshfs',
+        remote_tag: 'latest',
         local_alias: 'sshfs',
-        remote_tag: '1.0.1',
         grant_privileges: true
       )
     end
