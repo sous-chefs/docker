@@ -54,7 +54,7 @@ module DockerCookbook
 
     # These are helpers for the properties so they are not in an action class
     def default_docker_version
-      '18.03.1'
+      '18.06.0'
     end
 
     def default_package_name
@@ -127,37 +127,13 @@ module DockerCookbook
                    '.ce'
                  end
 
-      codename = if Gem::Version.new(v) < Gem::Version.new('17.06.0')
-                   if jessie?
-                     '-jessie'
-                   elsif stretch?
-                     '-stretch'
-                   elsif buster?
-                     '-buster'
-                   elsif trusty?
-                     '-trusty'
-                   elsif xenial?
-                     '-xenial'
-                   elsif artful?
-                     '-artful'
-                   elsif bionic?
-                     '-bionic'
-                   end
-                 else
-                   ''
-                 end
-
       # https://github.com/seemethere/docker-ce-packaging/blob/9ba8e36e8588ea75209d813558c8065844c953a0/deb/gen-deb-ver#L16-L20
-      test_versioning_scheme = if bionic?
-                                 '~3'
-                               else
-                                 ''
-                               end
+      test_versioning = '3'
 
-      return "#{v}#{edition}-1.el7.centos" if el7?
+      return "#{v}#{edition}-#{test_versioning}.el7" if el7?
       return "#{v}#{edition}" if fedora?
-      return "#{v}#{edition}-0~debian#{codename}" if node['platform'] == 'debian'
-      return "#{v}#{edition}#{test_versioning_scheme}-0~ubuntu#{codename}" if node['platform'] == 'ubuntu'
+      return "#{v}#{edition}~#{test_versioning}-0~debian" if node['platform'] == 'debian'
+      return "#{v}#{edition}~#{test_versioning}-0~ubuntu" if node['platform'] == 'ubuntu'
       v
     end
   end

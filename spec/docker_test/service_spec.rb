@@ -3,7 +3,7 @@ require_relative '../../libraries/helpers_service'
 
 describe 'docker_test::service' do
   before do
-    allow_any_instance_of(DockerCookbook::DockerHelpers::Service).to receive(:installed_docker_version).and_return('18.03.1')
+    allow_any_instance_of(DockerCookbook::DockerHelpers::Service).to receive(:installed_docker_version).and_return('18.06.0')
   end
 
   cached(:chef_run) do
