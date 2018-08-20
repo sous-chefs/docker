@@ -29,7 +29,7 @@ module DockerCookbook
         case version
         when '17.12.0' then 'dc673421e0368c2c970203350a9d0cb739bc498c897e832779369b0b2a9c6192'
         when '18.03.0' then '2d44ed2ac1e24cb22b6e72cb16d74fc9e60245a8ac1d4f79475604b804f46d38'
-        when '18.03.1' then 'bfb9c599a4fdb45523496c2ead191056ff43d6be90cf0e348421dd56bc3dcf0'
+        when '18.03.1' then 'bbfb9c599a4fdb45523496c2ead191056ff43d6be90cf0e348421dd56bc3dcf0'
         end
       when 'Linux'
         case version
