@@ -119,13 +119,13 @@ module DockerCookbook
 
     # https://github.com/chef/chef/issues/4103
     def version_string(v)
-      edition =  if debuntu?
-                   '~ce'
-                 elsif amazon?
-                   'ce'
-                 else
-                   '.ce'
-                 end
+      edition = if debuntu?
+                  '~ce'
+                elsif amazon?
+                  'ce'
+                else
+                  '.ce'
+                end
 
       # https://github.com/seemethere/docker-ce-packaging/blob/9ba8e36e8588ea75209d813558c8065844c953a0/deb/gen-deb-ver#L16-L20
       test_versioning = '3'
