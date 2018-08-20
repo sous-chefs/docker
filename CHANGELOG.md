@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 4.6.0 (2018-08-19)
+
+- Bump docker version to 18.06.0
+
 ## 4.5.0 (2018-08-16)
 
 - sets the default log_level for the systemd docker service back to nil
