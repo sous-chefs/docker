@@ -128,9 +128,11 @@ module DockerCookbook
                 end
 
       # https://github.com/seemethere/docker-ce-packaging/blob/9ba8e36e8588ea75209d813558c8065844c953a0/deb/gen-deb-ver#L16-L20
-      test_versioning = '3'
+      test_versioning = v.to_f > 18.03 ? '3' : '1'
 
-      return "#{v}#{edition}-#{test_versioning}.el7" if el7?
+      centos_extra = v.to_f > 18.03 ? '' : '.centos'
+
+      return "#{v}#{edition}-#{test_versioning}.el7#{centos_extra}" if el7?
       return "#{v}#{edition}" if fedora?
       return "#{v}#{edition}~#{test_versioning}-0~debian" if node['platform'] == 'debian'
       return "#{v}#{edition}~#{test_versioning}-0~ubuntu" if node['platform'] == 'ubuntu'
