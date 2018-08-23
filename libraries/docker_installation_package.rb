@@ -77,6 +77,16 @@ module DockerCookbook
       false
     end
 
+    def debian?
+      return true if node['platform'] == 'debian'
+      false
+    end
+
+    def ubuntu?
+      return true if node['platform'] == 'ubuntu'
+      false
+    end
+
     def jessie?
       return true if node['platform'] == 'debian' && node['platform_version'].to_i == 8
       false
@@ -119,26 +129,39 @@ module DockerCookbook
 
     # https://github.com/chef/chef/issues/4103
     def version_string(v)
-      edition = if debuntu?
-                  '~ce'
-                elsif amazon?
-                  'ce'
-                else
-                  '.ce'
-                end
+      codename = if jessie?
+                   'jessie'
+                 elsif stretch?
+                   'stretch'
+                 elsif buster?
+                   'buster'
+                 elsif trusty?
+                   'trusty'
+                 elsif xenial?
+                   'xenial'
+                 elsif artful?
+                   'artful'
+                 elsif bionic?
+                   'bionic'
+                 end
 
       # https://github.com/seemethere/docker-ce-packaging/blob/9ba8e36e8588ea75209d813558c8065844c953a0/deb/gen-deb-ver#L16-L20
-      test_versioning = v.to_f > 18.03 ? '3' : '1'
+      test_version = '3'
 
-      centos_extra = v.to_f > 18.03 ? '' : '.centos'
-
-      return "#{v}#{edition}-#{test_versioning}.el7#{centos_extra}" if el7?
-      return "#{v}#{edition}" if fedora?
-      return "#{v}#{edition}~#{test_versioning}-0~debian" if node['platform'] == 'debian' && v.to_f > 18.03
-      return "#{v}#{edition}~#{test_versioning}-0~ubuntu" if node['platform'] == 'ubuntu' && v.to_f > 18.03
-      return "#{v}#{edition}-0~debian" if node['platform'] == 'debian'
-      return "#{v}#{edition}-0~ubuntu" if node['platform'] == 'ubuntu'
-      v
+      if v.to_f < 17.06 && debuntu?
+        return "#{v}~ce-0~debian-#{codename}" if debian?
+        return "#{v}~ce-0~ubuntu-#{codename}" if ubuntu?
+      elsif v.to_f < 18.06
+        return "#{v}.ce-1.el7.centos" if el7?
+        return "#{v}~ce-0~debian" if debian?
+        return "#{v}~ce-0~ubuntu" if ubuntu?
+      else
+        return "#{v}.ce" if fedora?
+        return "#{v}.ce-#{test_version}.el7" if el7?
+        return "#{v}~ce~#{test_version}-0~debian" if debian?
+        return "#{v}~ce~#{test_version}-0~ubuntu" if ubuntu?
+        v
+      end
     end
   end
 end
