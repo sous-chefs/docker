@@ -134,8 +134,10 @@ module DockerCookbook
 
       return "#{v}#{edition}-#{test_versioning}.el7#{centos_extra}" if el7?
       return "#{v}#{edition}" if fedora?
-      return "#{v}#{edition}~#{test_versioning}-0~debian" if node['platform'] == 'debian'
-      return "#{v}#{edition}~#{test_versioning}-0~ubuntu" if node['platform'] == 'ubuntu'
+      return "#{v}#{edition}~#{test_versioning}-0~debian" if node['platform'] == 'debian' && v.to_f > 18.03
+      return "#{v}#{edition}~#{test_versioning}-0~ubuntu" if node['platform'] == 'ubuntu' && v.to_f > 18.03
+      return "#{v}#{edition}-0~debian" if node['platform'] == 'debian'
+      return "#{v}#{edition}-0~ubuntu" if node['platform'] == 'ubuntu'
       v
     end
   end
