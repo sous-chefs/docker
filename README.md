@@ -338,7 +338,7 @@ WARNING - When creating multiple `docker_service` resources on the same machine,
 The `docker_service` resource property list mostly corresponds to the options found in the [Docker Command Line Reference](https://docs.docker.com/engine/reference/commandline/docker/)
 
 - `api_cors_header` - Set CORS headers in the remote API
-- `auto_restart`
+- `auto_restart` - Default: true. service will restart on update unless this is set to false.
 - `exec_opts`
 - `bip` - Specify network bridge IP
 - `bridge` - Attach containers to a network bridge

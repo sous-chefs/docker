@@ -20,7 +20,7 @@ module DockerCookbook
 
     # daemon management
     property :instance, String, name_property: true, desired_state: false
-    property :auto_restart, [TrueClass, FalseClass], default: false
+    property :auto_restart, [TrueClass, FalseClass], default: true
     property :api_cors_header, String
     property :bridge, String
     property :bip, [IPV4_ADDR, IPV4_CIDR, IPV6_ADDR, IPV6_CIDR, nil]

@@ -55,7 +55,7 @@ module DockerCookbook
             docker_daemon_cmd: docker_daemon_cmd,
             docker_wait_ready: "#{libexec_dir}/#{docker_name}-wait-ready"
           )
-          notifies :restart, "service[#{docker_name}]", :immediately
+          notifies :restart, "service[#{docker_name}]", :immediately if auto_restart
         end
 
         template "/etc/sysconfig/#{docker_name}" do
@@ -65,7 +65,7 @@ module DockerCookbook
           group 'root'
           mode '0644'
           variables(config: new_resource)
-          notifies :restart, "service[#{docker_name}]", :immediately
+          notifies :restart, "service[#{docker_name}]", :immediately if auto_restart
         end
       end
 

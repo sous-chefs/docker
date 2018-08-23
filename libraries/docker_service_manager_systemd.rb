@@ -72,7 +72,7 @@ module DockerCookbook
           env_vars: new_resource.env_vars
         )
         notifies :run, 'execute[systemctl daemon-reload]', :immediately
-        notifies :run, "execute[systemctl try-restart #{docker_name}]", :immediately
+        notifies :run, "execute[systemctl try-restart #{docker_name}]", :immediately if auto_restart
       end
 
       # avoid 'Unit file changed on disk' warning

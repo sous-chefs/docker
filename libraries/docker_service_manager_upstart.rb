@@ -28,15 +28,15 @@ module DockerCookbook
           docker_wait_ready: "#{libexec_dir}/#{docker_name}-wait-ready",
           docker_socket: connect_socket
         )
-        notifies :stop, "service[#{docker_name}]", :immediately
-        notifies :start, "service[#{docker_name}]", :immediately
+        notifies :stop, "service[#{docker_name}]", :immediately if auto_restart
+        notifies :start, "service[#{docker_name}]", :immediately if auto_restart
       end
 
       template "/etc/default/#{docker_name}" do
         source 'default/docker.erb'
         cookbook 'docker'
         variables(config: new_resource)
-        notifies :restart, "service[#{docker_name}]", :immediately
+        notifies :restart, "service[#{docker_name}]", :immediately if auto_restart
       end
 
       service docker_name do
