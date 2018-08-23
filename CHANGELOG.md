@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 4.6.2 (2018-08-23)
+
+- Use different version string on .deb packages
+
 ## 4.6.1 (2018-08-21)
 
 - Include setup_docker_repo in docker_service and allow old docker-ce versions for centos
