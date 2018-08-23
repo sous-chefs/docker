@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 4.6.3 (2018-08-23)
+
+- refactor version_string
+
 ## 4.6.2 (2018-08-23)
 
 - Use different version string on .deb packages
