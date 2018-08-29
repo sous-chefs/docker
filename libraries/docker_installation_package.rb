@@ -151,7 +151,7 @@ module DockerCookbook
       if v.to_f < 17.06 && debuntu?
         return "#{v}~ce-0~debian-#{codename}" if debian?
         return "#{v}~ce-0~ubuntu-#{codename}" if ubuntu?
-      elsif v.to_f < 18.06 && ! xenial?
+      elsif v.to_f < 18.06 && !xenial?
         return "#{v}.ce-1.el7.centos" if el7?
         return "#{v}~ce-0~debian" if debian?
         return "#{v}~ce-0~ubuntu" if ubuntu?
