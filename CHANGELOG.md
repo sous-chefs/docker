@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 4.6.4 (2018-08-29)
+
+- xenial 18.03 contains the new test version format
+
 ## 4.6.3 (2018-08-23)
 
 - refactor version_string
