@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 4.6.5 (2018-09-04)
+
+- package names changed again. looks like they swapped xenial and bionic name schema.
+
 ## 4.6.4 (2018-08-29)
 
 - xenial 18.03 contains the new test version format
