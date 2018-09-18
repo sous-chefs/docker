@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 4.6.6 (unreleased)
+
+- :default_ip_address_pool property added to configure default address pool for networks created by Docker.
+
 ## 4.6.5 (2018-09-04)
 
 - package names changed again. looks like they swapped xenial and bionic name schema.

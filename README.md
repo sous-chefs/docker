@@ -349,6 +349,7 @@ The `docker_service` resource property list mostly corresponds to the options fo
 - `daemon` - Enable daemon mode
 - `data_root` - Root of the Docker runtime
 - `debug` - Enable debug mode
+- `default_ip_address_pool` - Set the default address pool for networks creates by docker
 - `default_ulimit` - Set default ulimit settings for containers
 - `disable_legacy_registry` - Do not contact legacy registries
 - `dns_search` - DNS search domains to use

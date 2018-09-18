@@ -27,7 +27,7 @@ Wants=network-online.target
 Type=notify
 ExecStartPre=/sbin/sysctl -w net.ipv4.ip_forward=1
 ExecStartPre=/sbin/sysctl -w net.ipv6.conf.all.forwarding=1
-ExecStart=/usr/bin/dockerd  --bip=10.10.10.0/16 --group=docker --pidfile=/var/run/docker.pid --storage-driver=overlay2
+ExecStart=/usr/bin/dockerd  --bip=10.10.10.0/24 --group=docker --default-address-pool=base=10.10.10.0/16,size=24 --pidfile=/var/run/docker.pid --storage-driver=overlay2
 ExecStartPost=/usr/lib/docker/docker-wait-ready
 ExecReload=/bin/kill -s HUP $MAINPID
 LimitNOFILE=1048576
