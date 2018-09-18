@@ -47,6 +47,7 @@ module DockerCookbook
     property :ip_masq, [TrueClass, FalseClass]
     property :iptables, [TrueClass, FalseClass]
     property :ipv6, [TrueClass, FalseClass]
+    property :default_ip_address_pool, String
     property :log_level, %w(debug info warn error fatal)
     property :labels, [String, Array], coerce: proc { |v| coerce_daemon_labels(v) }, desired_state: false
     property :log_driver, %w(json-file syslog journald gelf fluentd awslogs splunk none)
