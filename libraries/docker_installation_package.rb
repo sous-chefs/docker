@@ -31,7 +31,7 @@ module DockerCookbook
             uri "https://download.docker.com/linux/#{node['platform']}"
             arch 'amd64'
             keyserver 'keyserver.ubuntu.com'
-            key '9DC858229FC7DD38854AE2D88D81803C0EBFCD88'
+            key "https://download.docker.com/linux/#{node['platform']}/gpg"
             action :add
           end
         else
