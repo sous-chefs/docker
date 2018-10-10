@@ -2,6 +2,11 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 4.6.7 (2018-10-10)
+
+- Add :default_address_pool property to docker_service
+- Import docker.com repository gpg key via HTTPS directly from docker to avoid timeouts with Ubuntu's key registry
+
 ## 4.6.6 (unreleased)
 
 - :default_ip_address_pool property added to configure default address pool for networks created by Docker.
