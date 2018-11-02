@@ -422,10 +422,10 @@ module DockerCookbook
       volumes_binds container.info['HostConfig']['Binds']
       ro_rootfs container.info['HostConfig']['ReadonlyRootfs']
       if container.info['NetworkSettings'] &&
-        container.info['NetworkSettings']['Networks'] &&
-        container.info['NetworkSettings']['Networks'][network_mode] &&
-        container.info['NetworkSettings']['Networks'][network_mode]['IPAMConfig'] &&
-        container.info['NetworkSettings']['Networks'][network_mode]['IPAMConfig']['IPv4Address']
+         container.info['NetworkSettings']['Networks'] &&
+         container.info['NetworkSettings']['Networks'][network_mode] &&
+         container.info['NetworkSettings']['Networks'][network_mode]['IPAMConfig'] &&
+         container.info['NetworkSettings']['Networks'][network_mode]['IPAMConfig']['IPv4Address']
 
         ip_address container.info['NetworkSettings']['Networks'][network_mode]['IPAMConfig']['IPv4Address']
       end
