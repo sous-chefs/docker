@@ -422,12 +422,12 @@ module DockerCookbook
       volumes_binds container.info['HostConfig']['Binds']
       ro_rootfs container.info['HostConfig']['ReadonlyRootfs']
       if container.info['NetworkSettings'] &&
-         container.info['NetworkSettings']['Networks'] &&
-         container.info['NetworkSettings']['Networks'][new_resource.network_mode] &&
-         container.info['NetworkSettings']['Networks'][new_resource.network_mode]['IPAMConfig'] &&
-         container.info['NetworkSettings']['Networks'][new_resource.network_mode]['IPAMConfig']['IPv4Address']
+        container.info['NetworkSettings']['Networks'] &&
+        container.info['NetworkSettings']['Networks'][network_mode] &&
+        container.info['NetworkSettings']['Networks'][network_mode]['IPAMConfig'] &&
+        container.info['NetworkSettings']['Networks'][network_mode]['IPAMConfig']['IPv4Address']
 
-        ip_address container.info['NetworkSettings']['Networks'][new_resource.network_mode]['IPAMConfig']['IPv4Address']
+        ip_address container.info['NetworkSettings']['Networks'][network_mode]['IPAMConfig']['IPv4Address']
       end
     end
 
@@ -542,6 +542,11 @@ module DockerCookbook
             },
           } if new_resource.network_mode
           config.merge! net_config
+
+          # Remove any options not valid on docker for windows
+          if platform?('windows')
+            config['HostConfig'].delete('MemorySwappiness')
+          end
 
           Docker::Container.create(config, connection)
         end
