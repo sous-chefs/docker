@@ -613,7 +613,7 @@ module DockerCookbook
 
     action :reload do
       converge_by "reloading #{new_resource.container_name}" do
-        with_retries { container.kill(signal: 'SIGHUP') }
+        with_retries { current_resource.container.kill(signal: 'SIGHUP') }
       end
     end
 
