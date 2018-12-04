@@ -36,7 +36,7 @@ describe 'docker_test::installation_package' do
       it 'generates the correct version string ubuntu bionic' do
         custom_resource = chef_run.docker_installation_package('default')
         actual = custom_resource.version_string(suite[:docker_version])
-        expect(actual).to eq(suite[:expected]), "#{suite[:platform_version]} - Expected #{suite[:expected]}, got #{actual}"
+        expect(actual).to eq(suite[:expected])
       end
     end
   end
@@ -68,7 +68,7 @@ describe 'docker_test::installation_package' do
       it 'generates the correct version string ubuntu xenial' do
         custom_resource = chef_run.docker_installation_package('default')
         actual = custom_resource.version_string(suite[:docker_version])
-        expect(actual).to eq(suite[:expected]), "#{suite[:platform_version]} - Expected #{suite[:expected]}, got #{actual}"
+        expect(actual).to eq(suite[:expected])
       end
     end
   end
@@ -100,7 +100,7 @@ describe 'docker_test::installation_package' do
       it 'generates the correct version string debian stretch' do
         custom_resource = chef_run.docker_installation_package('default')
         actual = custom_resource.version_string(suite[:docker_version])
-        expect(actual).to eq(suite[:expected]), "#{suite[:platform_version]} - Expected #{suite[:expected]}, got #{actual}"
+        expect(actual).to eq(suite[:expected])
       end
     end
   end
@@ -133,7 +133,7 @@ describe 'docker_test::installation_package' do
       it 'generates the correct version string centos 7' do
         custom_resource = chef_run.docker_installation_package('default')
         actual = custom_resource.version_string(suite[:docker_version])
-        expect(actual).to eq(suite[:expected]), "#{suite[:platform_version]} - Expected #{suite[:expected]}, got #{actual}"
+        expect(actual).to eq(suite[:expected])
       end
     end
   end
