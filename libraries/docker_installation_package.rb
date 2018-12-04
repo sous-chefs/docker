@@ -155,6 +155,9 @@ module DockerCookbook
         return "#{v}.ce-1.el7.centos" if el7?
         return "#{v}~ce-0~debian" if debian?
         return "#{v}~ce-0~ubuntu" if ubuntu?
+      elsif v.to_f >= 18.09 && debuntu?
+        return "#{v}~ce~#{test_version}-0~debian-#{codename}" if debian?
+        return "#{v}~ce~#{test_version}-0~ubuntu-#{codename}" if ubuntu?
       else
         return "#{v}.ce" if fedora?
         return "#{v}.ce-#{test_version}.el7" if el7?
