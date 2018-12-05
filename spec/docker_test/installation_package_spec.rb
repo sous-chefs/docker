@@ -127,7 +127,7 @@ describe 'docker_test::installation_package' do
       {  docker_version: '18.03.1', expected: '18.03.1.ce-1.el7.centos' },
       {  docker_version: '18.06.0', expected: '18.06.0.ce-3.el7' },
       {  docker_version: '18.06.1', expected: '18.06.1.ce-3.el7' },
-      {  docker_version: '18.09.0', expected: '18.09.0-3.el7' }
+      {  docker_version: '18.09.0', expected: '18.09.0-3.el7' },
     ].each do |suite|
 
       it 'generates the correct version string centos 7' do

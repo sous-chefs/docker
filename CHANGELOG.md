@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 4.6.8 (2018-11-27)
+
+- add missing new_resource reference that prevented docker_container's reload action from running
+
 ## 4.6.7 (2018-10-10)
 
 - Add :default_address_pool property to docker_service
