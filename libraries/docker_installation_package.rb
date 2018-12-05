@@ -158,8 +158,8 @@ module DockerCookbook
         return "#{v}~ce-0~debian" if debian?
         return "#{v}~ce-0~ubuntu" if ubuntu?
       elsif v.to_f >= 18.09 && debuntu?
-        return "#{v}~ce~#{test_version}-0~debian-#{codename}" if debian?
-        return "#{v}~ce~#{test_version}-0~ubuntu-#{codename}" if ubuntu?
+        return "5:#{v}~#{test_version}-0~debian-#{codename}" if debian?
+        return "5:#{v}~#{test_version}-0~ubuntu-#{codename}" if ubuntu?
       elsif v.to_f >= 18.09 && el7?
         return "#{v}-#{test_version}.el7"
       else

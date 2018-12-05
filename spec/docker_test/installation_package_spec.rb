@@ -31,7 +31,7 @@ describe 'docker_test::installation_package' do
       { docker_version: '18.03.1', expected: '18.03.1~ce~3-0~ubuntu' },
       { docker_version: '18.06.0', expected: '18.06.0~ce~3-0~ubuntu' },
       { docker_version: '18.06.1', expected: '18.06.1~ce~3-0~ubuntu' },
-      { docker_version: '18.09.0', expected: '18.09.0~ce~3-0~ubuntu-bionic' },
+      { docker_version: '18.09.0', expected: '5:18.09.0~3-0~ubuntu-bionic' },
     ].each do |suite|
       it 'generates the correct version string ubuntu bionic' do
         custom_resource = chef_run.docker_installation_package('default')
@@ -63,7 +63,7 @@ describe 'docker_test::installation_package' do
       {  docker_version: '18.03.1', expected: '18.03.1~ce-0~ubuntu' },
       {  docker_version: '18.06.0', expected: '18.06.0~ce~3-0~ubuntu' },
       {  docker_version: '18.06.1', expected: '18.06.1~ce~3-0~ubuntu' },
-      {  docker_version: '18.09.0', expected: '18.09.0~ce~3-0~ubuntu-xenial' },
+      {  docker_version: '18.09.0', expected: '5:18.09.0~3-0~ubuntu-xenial' },
     ].each do |suite|
       it 'generates the correct version string ubuntu xenial' do
         custom_resource = chef_run.docker_installation_package('default')
@@ -94,7 +94,7 @@ describe 'docker_test::installation_package' do
       {  docker_version: '18.03.1', expected: '18.03.1~ce-0~debian' },
       {  docker_version: '18.06.0', expected: '18.06.0~ce~3-0~debian' },
       {  docker_version: '18.06.1', expected: '18.06.1~ce~3-0~debian' },
-      {  docker_version: '18.09.0', expected: '18.09.0~ce~3-0~debian-stretch' },
+      {  docker_version: '18.09.0', expected: '5:18.09.0~3-0~debian-stretch' },
     ].each do |suite|
 
       it 'generates the correct version string debian stretch' do
