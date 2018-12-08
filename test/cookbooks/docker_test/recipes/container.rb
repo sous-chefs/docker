@@ -1215,3 +1215,23 @@ docker_container 'memory' do
   memory_reservation '5m'
   action :run
 end
+
+################
+# health_check
+################
+
+docker_container 'health_check' do
+  repo 'alpine'
+  tag '3.1'
+  health_check ({
+    "Test" =>
+      [
+        "string"
+      ],
+      "Interval" => 0,
+      "Timeout" => 0,
+      "Retries" => 0,
+      "StartPeriod" => 0
+  })
+  action :run
+end

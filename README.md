@@ -647,6 +647,7 @@ Most `docker_container` properties are the `snake_case` version of the `CamelCas
 - `env_file` - Read environment variables from a file and set in the container. Accepts an Array or String to the file location. lazy evaluator must be set if the file passed is created by Chef.
 - `extra_hosts` - An array of hosts to add to the container's `/etc/hosts` in the form `['host_a:10.9.8.7', 'host_b:10.9.8.6']`
 - `force` - A boolean to use in container operations that support a `force` option. Defaults to `false`
+- `health_check` - A hash containing the health check options - https://docs.docker.com/engine/reference/run/#healthcheck
 - `host` - A string containing the host the API should communicate with. Defaults to ENV['DOCKER_HOST'] if set
 - `host_name` - The hostname for the container.
 - `labels` A string, array, or hash to set metadata on the container in the form ['foo:bar', 'hello:world']`
@@ -1087,6 +1088,26 @@ docker_container 'external_daemon' do
   repo 'alpine'
   host 'tcp://1.2.3.4:2376'
   action :create
+end
+```
+
+- Run a container with health_check options
+
+```ruby
+docker_container 'health_check' do
+  repo 'alpine'
+  tag '3.1'
+  health_check ({
+    "Test" =>
+      [
+        "string"
+      ],
+      "Interval" => 0,
+      "Timeout" => 0,
+      "Retries" => 0,
+      "StartPeriod" => 0
+  })
+  action :run
 end
 ```
 
