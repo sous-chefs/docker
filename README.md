@@ -577,6 +577,41 @@ docker_image 'alpine' do
 end
 ```
 
+## docker_image_prune
+
+The `docker_image_prune` is responsible for pruning Docker images from the system. It speaks directly to the [Docker Engine API](https://docs.docker.com/engine/api/v1.35/#operation/ImagePrune).
+
+### Actions
+
+- `:prune` - Delete unused images
+
+### Properties
+
+The `docker_image_prune` resource properties map to filters
+
+- `dangling` - When set to true (or 1), prune only unused and untagged images. When set to false (or 0), all unused images are pruned
+- `prune_until` - Prune images created before this timestamp. The <timestamp> can be Unix timestamps, date formatted timestamps, or Go duration strings (e.g. 10m, 1h30m) computed relative to the daemon machine’s time.
+- `label` -  (label=<key>, label=<key>=<value>, label!=<key>, or label!=<key>=<value>) Prune images with (or without, in case label!=... is used) the specified labels.
+
+### Examples
+
+- default action, default properties
+
+```ruby
+docker_image_prune 'prune-old-images'
+```
+
+- All filters
+
+```ruby
+docker_image_prune "prune-old-images" do
+  dangling true
+  prune_until '1h30m'
+  label ['"com.example.vendor"="ACME Incorporated"']
+  action :prune
+end
+```
+
 ## docker_tag
 
 Docker tags work very much like hard links in a Unix filesystem. They are just references to an existing image. Therefore, the docker_tag resource has taken inspiration from the Chef `link` resource.
