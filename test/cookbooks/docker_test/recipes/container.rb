@@ -827,7 +827,7 @@ docker_container 'ulimits' do
   ulimits [
     { 'Name' => 'nofile', 'Soft' => 40_960, 'Hard' => 40_960 },
     { 'Name' => 'core', 'Soft' => 100_000_000, 'Hard' => 100_000_000 },
-    { 'Name' => 'memlock', 'Soft' => 100_000_000, 'Hard' => 100_000_000 },
+    { 'Name' => 'memlock', 'Soft' => 100_000_000, 'Hard' => 100_000_000 }
   ]
   action :run
 end
@@ -867,7 +867,7 @@ docker_container 'uber_options' do
   tty true
   volumes ['/root', '/hostbits:/bits', '/more-hostbits:/more-bits']
   working_dir '/'
-  cap_add %w(NET_ADMIN SYS_RESOURCE)
+  cap_add %w[NET_ADMIN SYS_RESOURCE]
   cap_drop 'MKNOD'
   cpu_shares 512
   cpuset_cpus '0,1'
@@ -883,7 +883,7 @@ docker_container 'uber_options' do
   ulimits [
     'nofile=40960:40960',
     'core=100000000:100000000',
-    'memlock=100000000:100000000',
+    'memlock=100000000:100000000'
   ]
   labels ['foo:bar', 'hello:world']
   action :run
@@ -1224,14 +1224,14 @@ docker_container 'health_check' do
   repo 'alpine'
   tag '3.1'
   health_check ({
-    "Test" =>
+    'Test' =>
       [
-        "string"
+        'string',
       ],
-      "Interval" => 0,
-      "Timeout" => 0,
-      "Retries" => 0,
-      "StartPeriod" => 0
+    'Interval' => 0,
+    'Timeout' => 0,
+    'Retries' => 0,
+    'StartPeriod' => 0,
   })
   action :run
 end

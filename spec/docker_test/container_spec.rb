@@ -917,7 +917,7 @@ describe 'docker_test::container' do
           'Interval' => 0,
           'Timeout' => 0,
           'Retries' => 0,
-          'StartPeriod' => 0
+          'StartPeriod' => 0,
         }
       )
     end
