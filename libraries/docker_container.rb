@@ -422,13 +422,26 @@ module DockerCookbook
       restart_maximum_retry_count container.info['HostConfig']['RestartPolicy']['MaximumRetryCount']
       volumes_binds container.info['HostConfig']['Binds']
       ro_rootfs container.info['HostConfig']['ReadonlyRootfs']
-      if container.info['NetworkSettings'] &&
-         container.info['NetworkSettings']['Networks'] &&
-         container.info['NetworkSettings']['Networks'][new_resource.network_mode] &&
-         container.info['NetworkSettings']['Networks'][new_resource.network_mode]['IPAMConfig'] &&
-         container.info['NetworkSettings']['Networks'][new_resource.network_mode]['IPAMConfig']['IPv4Address']
+      ip_address ip_address_from_container_networks(container) unless ip_address_from_container_networks(container).nil?
+    end
 
-        ip_address container.info['NetworkSettings']['Networks'][new_resource.network_mode]['IPAMConfig']['IPv4Address']
+    # Gets the ip address from the existing container
+    # current docker api of 1.16 does not have ['NetworkSettings']['Networks']
+    # For docker > 1.21 - use ['NetworkSettings']['Networks']
+    #
+    #   @param container [Docker::Container] A container object
+    #   @returns [String] An ip_address
+    def ip_address_from_container_networks(container)
+      # We use the first value in 'Networks'
+      # We can't assume it will be 'bridged'
+      # It might also not match the new_resource value
+      if container.info['NetworkSettings'] &&
+        container.info['NetworkSettings']['Networks'] &&
+        container.info['NetworkSettings']['Networks'].values[0] &&
+        container.info['NetworkSettings']['Networks'].values[0]['IPAMConfig'] &&
+        container.info['NetworkSettings']['Networks'].values[0]['IPAMConfig']['IPv4Address']
+        # Return the ip address listed
+        container.info['NetworkSettings']['Networks'].values[0]['IPAMConfig']['IPv4Address']
       end
     end
 
@@ -696,15 +709,15 @@ module DockerCookbook
 
         if new_resource.network_mode == 'container' &&
            (
-            !(new_reosurce.hostname.nil? || new_reosurce.hostname.empty?) ||
-            !(new_reosurce.dns.nil? || new_reosurce.dns.empty?) ||
-            !(new_reosurce.dns_search.nil? || new_reosurce.dns_search.empty?) ||
-            !(new_reosurce.mac_address.nil? || new_reosurce.mac_address.empty?) ||
-            !(new_reosurce.extra_hosts.nil? || new_reosurce.extra_hosts.empty?) ||
-            !(new_reosurce.exposed_ports.nil? || new_reosurce.exposed_ports.empty?) ||
-            !(new_reosurce.port_bindings.nil? || new_reosurce.port_bindings.empty?) ||
-            !(new_reosurce.publish_all_ports.nil? || new_reosurce.publish_all_ports.empty?) ||
-            !new_reosurce.port.nil?
+           !(new_resource.hostname.nil? || new_resource.hostname.empty?) ||
+             !(new_resource.dns.nil? || new_resource.dns.empty?) ||
+             !(new_resource.dns_search.nil? || new_resource.dns_search.empty?) ||
+             !(new_resource.mac_address.nil? || new_resource.mac_address.empty?) ||
+             !(new_resource.extra_hosts.nil? || new_resource.extra_hosts.empty?) ||
+             !(new_resource.exposed_ports.nil? || new_resource.exposed_ports.empty?) ||
+             !(new_resource.port_bindings.nil? || new_resource.port_bindings.empty?) ||
+             !(new_resource.publish_all_ports.nil? || new_resource.publish_all_ports.empty?) ||
+             !new_resource.port.nil?
            )
           raise Chef::Exceptions::ValidationFailed, 'Cannot specify hostname, dns, dns_search, mac_address, extra_hosts, exposed_ports, port_bindings, publish_all_ports, port when network_mode is container.'
         end
