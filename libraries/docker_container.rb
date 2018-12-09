@@ -422,13 +422,26 @@ module DockerCookbook
       restart_maximum_retry_count container.info['HostConfig']['RestartPolicy']['MaximumRetryCount']
       volumes_binds container.info['HostConfig']['Binds']
       ro_rootfs container.info['HostConfig']['ReadonlyRootfs']
-      if container.info['NetworkSettings'] &&
-         container.info['NetworkSettings']['Networks'] &&
-         container.info['NetworkSettings']['Networks'][network_mode] &&
-         container.info['NetworkSettings']['Networks'][network_mode]['IPAMConfig'] &&
-         container.info['NetworkSettings']['Networks'][network_mode]['IPAMConfig']['IPv4Address']
+      ip_address ip_address_from_container_networks(container) unless ip_address_from_container_networks(container).nil?
+    end
 
-        ip_address container.info['NetworkSettings']['Networks'][network_mode]['IPAMConfig']['IPv4Address']
+    # Gets the ip address from the existing container
+    # current docker api of 1.16 does not have ['NetworkSettings']['Networks']
+    # For docker > 1.21 - use ['NetworkSettings']['Networks']
+    #
+    #   @param container [Docker::Container] A container object
+    #   @returns [String] An ip_address
+    def ip_address_from_container_networks(container)
+      # We use the first value in 'Networks'
+      # We can't assume it will be 'bridged'
+      # It might also not match the new_resource value
+      if container.info['NetworkSettings'] &&
+        container.info['NetworkSettings']['Networks'] &&
+        container.info['NetworkSettings']['Networks'].values[0] &&
+        container.info['NetworkSettings']['Networks'].values[0]['IPAMConfig'] &&
+        container.info['NetworkSettings']['Networks'].values[0]['IPAMConfig']['IPv4Address']
+        # Return the ip address listed
+        container.info['NetworkSettings']['Networks'].values[0]['IPAMConfig']['IPv4Address']
       end
     end
 
