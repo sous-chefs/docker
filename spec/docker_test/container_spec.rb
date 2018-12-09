@@ -910,14 +910,14 @@ describe 'docker_test::container' do
         repo: 'alpine',
         tag: '3.1',
         health_check: {
-          "Test" =>
+          'Test' =>
             [
-              "string"
+              'string',
             ],
-          "Interval" => 0,
-          "Timeout" => 0,
-          "Retries" => 0,
-          "StartPeriod" => 0
+          'Interval' => 0,
+          'Timeout' => 0,
+          'Retries' => 0,
+          'StartPeriod' => 0
         }
       )
     end

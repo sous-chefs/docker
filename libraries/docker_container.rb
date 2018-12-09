@@ -545,7 +545,7 @@ module DockerCookbook
           config.merge! net_config
 
           config.merge(
-            'Healthcheck' => new_resource.health_check,
+            'Healthcheck' => new_resource.health_check
           ) unless new_resource.health_check.empty?
 
           Docker::Container.create(config, connection)
