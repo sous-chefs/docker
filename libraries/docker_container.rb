@@ -26,6 +26,7 @@ module DockerCookbook
     property :extra_hosts, [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
     property :exposed_ports, PartialHashType, default: {}
     property :force, [TrueClass, FalseClass], default: false, desired_state: false
+    property :health_check, Hash, default: {}
     property :host, [String, nil], default: lazy { ENV['DOCKER_HOST'] }, desired_state: false
     property :hostname, String
     property :ipc_mode, String, default: ''
@@ -543,6 +544,10 @@ module DockerCookbook
           } if new_resource.network_mode
           config.merge! net_config
 
+          config.merge(
+            'Healthcheck' => new_resource.health_check,
+          ) unless new_resource.health_check.empty?
+
           Docker::Container.create(config, connection)
         end
       end
@@ -613,7 +618,7 @@ module DockerCookbook
 
     action :reload do
       converge_by "reloading #{new_resource.container_name}" do
-        with_retries { container.kill(signal: 'SIGHUP') }
+        with_retries { current_resource.container.kill(signal: 'SIGHUP') }
       end
     end
 

@@ -577,6 +577,44 @@ docker_image 'alpine' do
 end
 ```
 
+## docker_image_prune
+
+The `docker_image_prune` is responsible for pruning Docker images from the system. It speaks directly to the [Docker Engine API](https://docs.docker.com/engine/api/v1.35/#operation/ImagePrune).
+Note - this is best implemented by subscribing to `docker_image` changes.  There is no need to to clean up old images upon each converge.  It is best done at the end of a chef run (delayed) only if a new image was pulled.
+
+### Actions
+
+- `:prune` - Delete unused images
+
+### Properties
+
+The `docker_image_prune` resource properties map to filters
+
+- `dangling` - When set to true (or 1), prune only unused and untagged images. When set to false (or 0), all unused images are pruned
+- `prune_until` - Prune images created before this timestamp. The <timestamp> can be Unix timestamps, date formatted timestamps, or Go duration strings (e.g. 10m, 1h30m) computed relative to the daemon machine’s time.
+- `with_label/without_label` -  (label=<key>, label=<key>=<value>, label!=<key>, or label!=<key>=<value>) Prune images with (or without, in case label!=... is used) the specified labels.
+- `host` - A string containing the host the API should communicate with. Defaults to `ENV['DOCKER_HOST']` if set.
+
+### Examples
+
+- default action, default properties
+
+```ruby
+docker_image_prune 'prune-old-images'
+```
+
+- All filters
+
+```ruby
+docker_image_prune "prune-old-images" do
+  dangling true
+  prune_until '1h30m'
+  with_label 'com.example.vendor=ACME'
+  without_label 'no_prune'
+  action :prune
+end
+```
+
 ## docker_tag
 
 Docker tags work very much like hard links in a Unix filesystem. They are just references to an existing image. Therefore, the docker_tag resource has taken inspiration from the Chef `link` resource.
@@ -647,6 +685,7 @@ Most `docker_container` properties are the `snake_case` version of the `CamelCas
 - `env_file` - Read environment variables from a file and set in the container. Accepts an Array or String to the file location. lazy evaluator must be set if the file passed is created by Chef.
 - `extra_hosts` - An array of hosts to add to the container's `/etc/hosts` in the form `['host_a:10.9.8.7', 'host_b:10.9.8.6']`
 - `force` - A boolean to use in container operations that support a `force` option. Defaults to `false`
+- `health_check` - A hash containing the health check options - https://docs.docker.com/engine/reference/run/#healthcheck
 - `host` - A string containing the host the API should communicate with. Defaults to ENV['DOCKER_HOST'] if set
 - `host_name` - The hostname for the container.
 - `labels` A string, array, or hash to set metadata on the container in the form ['foo:bar', 'hello:world']`
@@ -1087,6 +1126,26 @@ docker_container 'external_daemon' do
   repo 'alpine'
   host 'tcp://1.2.3.4:2376'
   action :create
+end
+```
+
+- Run a container with health_check options
+
+```ruby
+docker_container 'health_check' do
+  repo 'alpine'
+  tag '3.1'
+  health_check ({
+    "Test" =>
+      [
+        "string"
+      ],
+      "Interval" => 0,
+      "Timeout" => 0,
+      "Retries" => 0,
+      "StartPeriod" => 0
+  })
+  action :run
 end
 ```
 

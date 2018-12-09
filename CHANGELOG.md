@@ -2,6 +2,15 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 4.7.0 (2018-12-05)
+
+- Added 17.03 support on RHEL 7. Thanks @smcavallo
+- Added 18.09 support. Thanks @smcavallo
+
+## 4.6.8 (2018-11-27)
+
+- add missing new_resource reference that prevented docker_container's reload action from running
+
 ## 4.6.7 (2018-10-10)
 
 - Add :default_address_pool property to docker_service

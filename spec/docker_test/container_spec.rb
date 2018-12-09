@@ -903,4 +903,23 @@ describe 'docker_test::container' do
       )
     end
   end
+
+  context 'testing health_check options' do
+    it 'sets health_check options' do
+      expect(chef_run).to run_docker_container('health_check').with(
+        repo: 'alpine',
+        tag: '3.1',
+        health_check: {
+          "Test" =>
+            [
+              "string"
+            ],
+          "Interval" => 0,
+          "Timeout" => 0,
+          "Retries" => 0,
+          "StartPeriod" => 0
+        }
+      )
+    end
+  end
 end
