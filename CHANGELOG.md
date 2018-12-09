@@ -2,6 +2,12 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 4.8.0 (2018-12-09)
+
+- Fix issues with network_mode in docker_container - [@smcavallo](https://github.com/smcavallo)
+- Add support for container health_check options - [@smcavallo](https://github.com/smcavallo)
+- Add new docker_image_prune resource - [@smcavallo](https://github.com/smcavallo)
+
 ## 4.7.0 (2018-12-05)
 
 - Added 17.03 support on RHEL 7. Thanks @smcavallo
