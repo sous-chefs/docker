@@ -1,6 +1,6 @@
 # Load cookbook libraries
 require 'chef'
-Dir['libraries/docker_*.rb'].each { |f| require File.expand_path(f) unless f.match?('spec') }
+Dir['libraries/*.rb'].each { |f| require File.expand_path(f) unless f.match?('spec') }
 
 describe DockerCookbook::DockerImagePrune do
   let(:resource) { DockerCookbook::DockerImagePrune.new('rspec') }
