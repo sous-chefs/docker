@@ -1,7 +1,7 @@
 # Load cookbook libraries
 require 'chef'
 require 'docker'
-Dir['libraries/docker_*.rb'].each { |f| require File.expand_path(f) unless f.match?('spec')}
+Dir['libraries/docker_*.rb'].each { |f| require File.expand_path(f) unless f.match?('spec') }
 
 describe DockerCookbook::DockerContainer do
   let(:resource) { DockerCookbook::DockerContainer.new('hello_world') }
