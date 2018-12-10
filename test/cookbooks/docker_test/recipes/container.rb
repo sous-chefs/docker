@@ -1223,7 +1223,7 @@ end
 docker_container 'health_check' do
   repo 'alpine'
   tag '3.1'
-  health_check({
+  health_check(
     'Test' =>
       [
         'string',
@@ -1232,6 +1232,6 @@ docker_container 'health_check' do
     'Timeout' => 0,
     'Retries' => 0,
     'StartPeriod' => 0,
-  })
+  )
   action :run
 end

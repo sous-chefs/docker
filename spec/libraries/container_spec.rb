@@ -21,7 +21,7 @@ describe DockerCookbook::DockerContainer do
       let(:options) do
         {
           'id' => rand(10_000).to_s,
-          'IPAddress' => ip_address
+          'IPAddress' => ip_address,
         }
       end
       it 'gets ip_address as nil' do
@@ -39,11 +39,11 @@ describe DockerCookbook::DockerContainer do
             'Networks' => {
               'bridge' => {
                 'IPAMConfig' => {
-                  'IPv4Address' => ip_address
-                }
-              }
-            }
-          }
+                  'IPv4Address' => ip_address,
+                },
+              },
+            },
+          },
         }
       end
       it 'gets ip_address' do
