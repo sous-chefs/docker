@@ -557,7 +557,7 @@ module DockerCookbook
           } if new_resource.network_mode
           config.merge! net_config
 
-          # Remove any options not valid on docker for windows
+          # Remove any config options not valid for windows
           if platform?('windows')
             config['HostConfig'].delete('MemorySwappiness')
           end
