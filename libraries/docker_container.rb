@@ -562,9 +562,9 @@ module DockerCookbook
             config['HostConfig'].delete('MemorySwappiness')
           end
 
-          config.merge!(
-            'Healthcheck' => new_resource.health_check
-          ) unless new_resource.health_check.empty?
+          unless new_resource.health_check.empty?
+            config['Healthcheck'] = new_resource.health_check
+          end
 
           Docker::Container.create(config, connection)
         end

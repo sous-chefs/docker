@@ -1231,7 +1231,7 @@ docker_container 'health_check' do
     'Interval' => 0,
     'Timeout' => 0,
     'Retries' => 0,
-    'StartPeriod' => 0,
+    'StartPeriod' => 0
   )
   action :run
 end
