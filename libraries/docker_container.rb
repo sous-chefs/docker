@@ -557,7 +557,6 @@ module DockerCookbook
           } if new_resource.network_mode
           config.merge! net_config
 
-
           unless new_resource.health_check.empty?
             config['Healthcheck'] = new_resource.health_check
           end
