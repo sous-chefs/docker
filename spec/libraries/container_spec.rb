@@ -1,5 +1,4 @@
 require 'spec_helper'
-Dir['libraries/*.rb'].each { |f| require File.expand_path(f) unless f.match?('spec') }
 
 describe DockerCookbook::DockerContainer do
   let(:resource) { DockerCookbook::DockerContainer.new('hello_world') }
