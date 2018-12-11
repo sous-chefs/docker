@@ -436,10 +436,10 @@ module DockerCookbook
       # We can't assume it will be 'bridged'
       # It might also not match the new_resource value
       if container.info['NetworkSettings'] &&
-        container.info['NetworkSettings']['Networks'] &&
-        container.info['NetworkSettings']['Networks'].values[0] &&
-        container.info['NetworkSettings']['Networks'].values[0]['IPAMConfig'] &&
-        container.info['NetworkSettings']['Networks'].values[0]['IPAMConfig']['IPv4Address']
+         container.info['NetworkSettings']['Networks'] &&
+         container.info['NetworkSettings']['Networks'].values[0] &&
+         container.info['NetworkSettings']['Networks'].values[0]['IPAMConfig'] &&
+         container.info['NetworkSettings']['Networks'].values[0]['IPAMConfig']['IPv4Address']
         # Return the ip address listed
         container.info['NetworkSettings']['Networks'].values[0]['IPAMConfig']['IPv4Address']
       end
@@ -557,9 +557,10 @@ module DockerCookbook
           } if new_resource.network_mode
           config.merge! net_config
 
-          config.merge(
-            'Healthcheck' => new_resource.health_check
-          ) unless new_resource.health_check.empty?
+
+          unless new_resource.health_check.empty?
+            config['Healthcheck'] = new_resource.health_check
+          end
 
           Docker::Container.create(config, connection)
         end
