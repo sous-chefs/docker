@@ -1,7 +1,10 @@
 require 'spec_helper'
 
-describe DockerCookbook::DockerContainer do
-  let(:resource) { DockerCookbook::DockerContainer.new('hello_world') }
+require_relative '../../libraries/docker_container'
+include DockerCookbook
+
+describe DockerContainer do
+  let(:resource) { DockerContainer.new('hello_world') }
 
   it 'has a default action of [:run]' do
     expect(resource.action).to eql([:run])

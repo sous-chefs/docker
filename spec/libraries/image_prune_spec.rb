@@ -1,7 +1,10 @@
 require 'spec_helper'
 
-describe DockerCookbook::DockerImagePrune do
-  let(:resource) { DockerCookbook::DockerImagePrune.new('rspec') }
+require_relative '../../libraries/docker_image_prune'
+include DockerCookbook
+
+describe DockerImagePrune do
+  let(:resource) { DockerImagePrune.new('rspec') }
 
   it 'has a default action of [:prune]' do
     expect(resource.action).to eql([:prune])

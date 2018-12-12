@@ -18,22 +18,6 @@ services: docker
 
 env:
   matrix:
-  - INSTANCE=installation-script-main-ubuntu-1604
-  - INSTANCE=installation-script-main-ubuntu-1804
-  - INSTANCE=installation-tarball-ubuntu-1604
-  - INSTANCE=installation-tarball-ubuntu-1804
-  - INSTANCE=installation-package-ubuntu-1604
-  - INSTANCE=installation-package-ubuntu-1804
-  - INSTANCE=registry-ubuntu-1604
-  - INSTANCE=network-ubuntu-1604
-  - INSTANCE=volume-ubuntu-1604
-  - INSTANCE=resources-debian-8
-  - INSTANCE=resources-debian-9
-  - INSTANCE=resources-centos-7
-  - INSTANCE=resources-fedora-28
-  - INSTANCE=resources-ubuntu-1404
-  - INSTANCE=resources-ubuntu-1604
-  - INSTANCE=resources-ubuntu-1804
 
 # Ensure we make ChefDK's Ruby the default
 before_script:
@@ -48,5 +32,5 @@ script: kitchen verify ${INSTANCE}
 matrix:
   include:
     - script:
-      - chef exec delivery local all
+      - chef exec delivery local unit
       env: UNIT_AND_LINT=1
