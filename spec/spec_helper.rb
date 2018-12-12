@@ -1,10 +1,5 @@
 require 'chefspec'
 require 'chefspec/berkshelf'
-Dir['libraries/*.rb'].each do |f|
-  if f.match?('docker_base|docker_image_prune|docker_container')
-    require File.expand_path(f) unless f.match?('spec')
-  end
-end
 
 class RSpecHelper
   class<<self
