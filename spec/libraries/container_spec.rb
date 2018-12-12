@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+require_relative '../../libraries/docker_base'
 require_relative '../../libraries/docker_container'
 include DockerCookbook
 
