@@ -1,6 +1,6 @@
-# Load all the libraries
-require 'chef'
-Dir['libraries/*.rb'].each { |f| require File.expand_path(f) }
+require 'spec_helper'
+require_relative '../../libraries/docker_base'
+require_relative '../../libraries/docker_image_prune'
 
 describe DockerCookbook::DockerImagePrune do
   let(:resource) { DockerCookbook::DockerImagePrune.new('rspec') }

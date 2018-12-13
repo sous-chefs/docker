@@ -1,7 +1,7 @@
-# Load all the libraries
-require 'chef'
+require 'spec_helper'
 require 'docker'
-Dir['libraries/*.rb'].each { |f| require File.expand_path(f) }
+require_relative '../../libraries/docker_base'
+require_relative '../../libraries/docker_container'
 
 describe DockerCookbook::DockerContainer do
   let(:resource) { DockerCookbook::DockerContainer.new('hello_world') }
