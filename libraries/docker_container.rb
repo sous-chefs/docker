@@ -79,6 +79,9 @@ module DockerCookbook
     # Used to store the state of the Docker container
     property :container, Docker::Container, desired_state: false
 
+    # Used to store the state of the Docker container create options
+    property :create_options, Hash, default: {}, desired_state: false
+
     # Used by :stop action. If the container takes longer than this
     # many seconds to stop, kill it instead. A nil value (the default) means
     # never kill the container.
@@ -436,10 +439,10 @@ module DockerCookbook
       # We can't assume it will be 'bridged'
       # It might also not match the new_resource value
       if container.info['NetworkSettings'] &&
-        container.info['NetworkSettings']['Networks'] &&
-        container.info['NetworkSettings']['Networks'].values[0] &&
-        container.info['NetworkSettings']['Networks'].values[0]['IPAMConfig'] &&
-        container.info['NetworkSettings']['Networks'].values[0]['IPAMConfig']['IPv4Address']
+         container.info['NetworkSettings']['Networks'] &&
+         container.info['NetworkSettings']['Networks'].values[0] &&
+         container.info['NetworkSettings']['Networks'].values[0]['IPAMConfig'] &&
+         container.info['NetworkSettings']['Networks'].values[0]['IPAMConfig']['IPv4Address']
         # Return the ip address listed
         container.info['NetworkSettings']['Networks'].values[0]['IPAMConfig']['IPv4Address']
       end
@@ -557,10 +560,17 @@ module DockerCookbook
           } if new_resource.network_mode
           config.merge! net_config
 
-          config.merge(
-            'Healthcheck' => new_resource.health_check
-          ) unless new_resource.health_check.empty?
+          # Remove any options not supported in windows
+          if platform?('windows')
+            config['HostConfig'].delete('MemorySwappiness')
+          end
 
+          unless new_resource.health_check.empty?
+            config['Healthcheck'] = new_resource.health_check
+          end
+
+          # Store the state of the options and create the container
+          new_resource.create_options = config
           Docker::Container.create(config, connection)
         end
       end
