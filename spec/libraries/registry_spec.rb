@@ -11,7 +11,7 @@ describe 'docker_registry' do
   # https://docs.docker.com/engine/api/v1.39/#section/Authentication
   let(:auth) do
     {
-      'identitytoken' => '9cbafc023786cd7...'
+      'identitytoken' => '9cbafc023786cd7...',
     }.to_json
   end
 
