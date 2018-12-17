@@ -79,6 +79,9 @@ module DockerCookbook
     # Used to store the state of the Docker container
     property :container, Docker::Container, desired_state: false
 
+    # Used to store the state of the Docker container create options
+    property :create_options, Hash, default: {}, desired_state: false
+
     # Used by :stop action. If the container takes longer than this
     # many seconds to stop, kill it instead. A nil value (the default) means
     # never kill the container.
@@ -557,10 +560,17 @@ module DockerCookbook
           } if new_resource.network_mode
           config.merge! net_config
 
+          # Remove any options not supported in windows
+          if platform?('windows')
+            config['HostConfig'].delete('MemorySwappiness')
+          end
+
           unless new_resource.health_check.empty?
             config['Healthcheck'] = new_resource.health_check
           end
 
+          # Store the state of the options and create the container
+          new_resource.create_options = config
           Docker::Container.create(config, connection)
         end
       end
