@@ -23,7 +23,7 @@ describe 'docker_container' do
                         'Binds' => [],
                         'ReadonlyRootfs' => false },
       'State' => 'not running',
-      'Warnings' => []
+      'Warnings' => [],
     }.to_json
   end
   # https://docs.docker.com/engine/api/v1.39/#tag/Image
@@ -42,7 +42,7 @@ describe 'docker_container' do
   let(:create) do
     {
       'Id' => 'e90e34656806',
-      'Warnings' => []
+      'Warnings' => [],
     }.to_json
   end
 
@@ -85,7 +85,7 @@ describe 'docker_container' do
         health_check(
           'Test' =>
             [
-              'string'
+              'string',
             ],
           'Interval' => 0,
           'Timeout' => 0,
