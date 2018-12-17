@@ -2,6 +2,12 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 4.9.0 (2018-12-17)
+
+- Add support for windows - [@smcavallo](https://github.com/smcavallo)
+- Expand ChefSpec testing - [@smcavallo](https://github.com/smcavallo)
+- Fix for when HealthCheck is used - [@smcavallo](https://github.com/smcavallo)
+
 ## 4.8.0 (2018-12-09)
 
 - Fix issues with network_mode in docker_container - [@smcavallo](https://github.com/smcavallo)
