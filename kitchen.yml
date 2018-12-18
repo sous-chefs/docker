@@ -18,6 +18,16 @@ verifier:
   name: inspec
 
 platforms:
+- name: amazonlinux
+  driver:
+    image: dokken/amazonlinux
+    pid_one_command: /sbin/init
+
+- name: amazonlinux-2
+  driver:
+    image: dokken/amazonlinux-2
+    pid_one_command: /usr/lib/systemd/systemd
+
 - name: debian-8
   driver:
     image: dokken/debian-8
@@ -38,11 +48,6 @@ platforms:
     image: dokken/fedora-28
     pid_one_command: /usr/lib/systemd/systemd
 
-- name: ubuntu-14.04
-  driver:
-    image: dokken/ubuntu-14.04
-    pid_one_command: /sbin/init
-
 - name: ubuntu-16.04
   driver:
     image: dokken/ubuntu-16.04
@@ -52,16 +57,6 @@ platforms:
   driver:
     image: dokken/ubuntu-18.04
     pid_one_command: /bin/systemd
-
-- name: amazonlinux
-  driver:
-    image: dokken/amazonlinux
-    pid_one_command: /sbin/init
-
-- name: amazonlinux-2
-  driver:
-    image: dokken/amazonlinux
-    pid_one_command: /usr/lib/systemd/systemd
 
 suites:
 
