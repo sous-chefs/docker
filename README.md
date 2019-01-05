@@ -646,7 +646,7 @@ end
 
 The `docker_container` is responsible for managing Docker container actions. It speaks directly to the [Docker remote API](https://docs.docker.com/reference/api/docker_remote_api_v1.20/).
 
-Containers are process oriented, and move through an event cycle. Thanks to [Glider Labs](http://gliderlabs.com/) for this excellent diagram. ![alt tag](http://gliderlabs.com/images/docker_events.png)
+Containers are process oriented, and move through an event cycle. Thanks to [Glider Labs](http://gliderlabs.com/) for this excellent diagram. ![alt tag](https://gliderlabs.com/images/2015/docker_events.png)
 
 ### Actions
 
