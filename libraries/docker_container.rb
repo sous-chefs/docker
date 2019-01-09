@@ -695,7 +695,7 @@ module DockerCookbook
           raise Chef::Exceptions::ValidationFailed, 'restart_policy must be either no, always, unless-stopped, or on-failure.'
         end
 
-        if new_resource.autoremove == true && (new_resource.property_is_set?(:restart_policy) && restart_policy != 'no')
+        if new_resource.autoremove == true && (new_resource.property_is_set?(:restart_policy) && new_resource.restart_policy != 'no')
           raise Chef::Exceptions::ValidationFailed, 'Conflicting options restart_policy and autoremove.'
         end
 
