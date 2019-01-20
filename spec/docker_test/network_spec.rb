@@ -1,4 +1,3 @@
-
 require 'spec_helper'
 
 describe 'docker_test::network' do

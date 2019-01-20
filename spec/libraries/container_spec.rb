@@ -15,7 +15,7 @@ describe 'docker_container' do
     {
       'Id' => '123456789',
       'IPAddress' => '10.0.0.1',
-      'Image' =>  'ubuntu:bionic',
+      'Image' => 'ubuntu:bionic',
       'Names' => ['/hello_world'],
       'Config' => { 'Labels' => {} },
       'HostConfig' => { 'RestartPolicy' => { 'Name' => 'unless-stopped',

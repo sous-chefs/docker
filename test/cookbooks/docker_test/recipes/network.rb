@@ -1,4 +1,3 @@
-
 # pull alpine image
 docker_image 'alpine' do
   tag '3.1'

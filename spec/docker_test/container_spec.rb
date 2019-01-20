@@ -813,7 +813,7 @@ describe 'docker_test::container' do
       expect(chef_run).to run_docker_container('overrides-2').with(
         repo: 'overrides',
         user: 'operator',
-        command:  ['sh', '-c', 'trap exit 0 SIGTERM; while :; do sleep 1; done'],
+        command: ['sh', '-c', 'trap exit 0 SIGTERM; while :; do sleep 1; done'],
         env: ['FOO=biz'],
         volume: { '/var/log' => {} },
         workdir: '/tmp'

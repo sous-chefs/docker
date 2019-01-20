@@ -19,11 +19,11 @@ describe 'docker_test::image' do
   context 'testing default action, default properties' do
     it 'pulls docker_image[hello-world]' do
       expect(chef_run).to pull_docker_image('hello-world').with(
-        api_retries:  3,
+        api_retries: 3,
         destination: nil,
         force: false,
         nocache: false,
-        noprune:  false,
+        noprune: false,
         read_timeout: 120,
         repo: 'hello-world',
         rm: true,
