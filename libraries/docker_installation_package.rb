@@ -29,7 +29,7 @@ module DockerCookbook
           apt_repository 'Docker' do
             components Array(new_resource.repo_channel)
             uri "https://download.docker.com/linux/#{node['platform']}"
-            arch 'amd64'
+            arch node['packages']['dpkg']['arch'] # Get the arch from a package that is always installed.
             keyserver 'keyserver.ubuntu.com'
             key "https://download.docker.com/linux/#{node['platform']}/gpg"
             action :add
