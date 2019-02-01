@@ -40,21 +40,6 @@ module DockerCookbook
         not_if { docker_name == 'default' && ::File.exist?('/lib/systemd/system/docker.service') }
       end
 
-      # this overrides the main systemd socket
-      template "/etc/systemd/system/#{docker_name}.socket" do
-        source 'systemd/docker.socket-override.erb'
-        cookbook 'docker'
-        owner 'root'
-        group 'root'
-        mode '0644'
-        variables(
-          config: new_resource,
-          docker_name: docker_name,
-          docker_socket: connect_socket
-        )
-        action connect_socket.nil? ? :delete : :create
-      end
-
       # this overrides the main systemd service
       template "/etc/systemd/system/#{docker_name}.service" do
         source 'systemd/docker.service-override.erb'
