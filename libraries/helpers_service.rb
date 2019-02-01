@@ -174,6 +174,12 @@ module DockerCookbook
         opts
       end
 
+      def systemd_socket_args
+        opts = ''
+        systemd_socket_opts.each { |systemd_socket_opt| opts << "#{systemd_socket_opt}\n" } if systemd_socket_opts
+        opts
+      end
+
       def docker_daemon_opts
         opts = []
         opts << "--api-cors-header=#{api_cors_header}" if api_cors_header
