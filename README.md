@@ -301,6 +301,7 @@ docker_service_manager_systemd 'default' do
   tls_client_cert "/path/to/cert.pem"
   tls_client_key "/path/to/key.pem"
   systemd_opts ["TasksMax=infinity","MountFlags=private"]
+  systemd_socket_opts ["Accept=yes"]
   action :start
 end
 ```
@@ -406,6 +407,7 @@ The `docker_service` resource property list mostly corresponds to the options fo
 #### Systemd-specific Options
 
 - `systemd_opts` - An array of strings that will be included as individual lines in the systemd service unit for Docker. _Note_: This option is only relevant for systems where systemd is the default service manager or where systemd is specified explicitly as the service manager.
+- `systemd_socket_opts` - An array of strings that will be included as individual lines in the systemd socket unit for Docker. _Note_: This option is only relevant for systems where systemd is the default service manager or where systemd is specified explicitly as the service manager.
 
 ### Actions
 
@@ -1384,4 +1386,3 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
-

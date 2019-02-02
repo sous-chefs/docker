@@ -50,7 +50,8 @@ module DockerCookbook
         variables(
           config: new_resource,
           docker_name: docker_name,
-          docker_socket: connect_socket
+          docker_socket: connect_socket,
+          systemd_socket_args: systemd_socket_args
         )
         action connect_socket.nil? ? :delete : :create
       end

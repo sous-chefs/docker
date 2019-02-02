@@ -68,6 +68,7 @@ module DockerCookbook
     # LimitNOFILE or TasksMax that you may wannt to use to customize
     # the environment in which Docker runs.
     property :systemd_opts, [String, Array], coerce: proc { |v| v.nil? ? nil : Array(v) }
+    property :systemd_socket_opts, [String, Array], coerce: proc { |v| v.nil? ? nil : Array(v) }
 
     # These are unvalidated daemon arguments passed in as a string.
     property :misc_opts, String
