@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 4.9.1 (2019-02-01)
+
+- added systemd_socket_opts for additional configuration of the systemd socket file
+
 ## 4.9.0 (2018-12-17)
 
 - Add support for windows - [@smcavallo](https://github.com/smcavallo)
