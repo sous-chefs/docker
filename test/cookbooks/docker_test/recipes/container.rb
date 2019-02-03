@@ -1213,6 +1213,7 @@ docker_container 'memory' do
   memory_swap '5M'
   memory_swappiness 50
   memory_reservation '5m'
+  shm_size '32m'
   action :run
 end
 

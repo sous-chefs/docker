@@ -713,6 +713,7 @@ Most `docker_container` properties are the `snake_case` version of the `CamelCas
 - `running_wait_time` - Amount of seconds `docker_container` wait to determine if a process is running.
 - `runtime` - Runtime to use when running container. Defaults to `runc`.
 - `security_opt` - A list of string values to customize labels for MLS systems, such as SELinux.
+- `shm_size` - The size of `/dev/shm`. The format is `<number><unit>`, where number must be greater than 0. Unit is optional and can be b (bytes), k (kilobytes), m(megabytes), or g (gigabytes). The default is `64m`.
 - `signal` - The signal to send when using the `:kill` action. Defaults to `SIGTERM`.
 - `sysctls` - A hash of sysctls to set on the container. Defaults to `{}`.
 - `tty` - Boolean value to allocate a pseudo-TTY. Defaults to `false`.
