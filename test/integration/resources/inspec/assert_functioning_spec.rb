@@ -955,3 +955,8 @@ describe command("docker inspect -f '{{ .HostConfig.MemoryReservation }}' memory
   its(:exit_status) { should eq 0 }
   its(:stdout) { should match(/5242880/) }
 end
+
+describe command("docker inspect -f '{{ .HostConfig.ShmSize }}' memory") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/67108864/) }
+end
