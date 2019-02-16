@@ -59,6 +59,7 @@ module DockerCookbook
     property :runtime, String, default: 'runc'
     property :ro_rootfs, [TrueClass, FalseClass], default: false
     property :security_opt, [String, Array], coerce: proc { |v| v.nil? ? nil : Array(v) }
+    property :shm_size, [String, Integer], default: '64m', coerce: proc { |v| coerce_to_bytes(v) }
     property :signal, String, default: 'SIGTERM'
     property :stdin_once, [TrueClass, FalseClass], default: false, desired_state: false
     property :sysctls, Hash, default: {}
@@ -538,6 +539,7 @@ module DockerCookbook
               'ReadonlyRootfs'  => new_resource.ro_rootfs,
               'Runtime'         => new_resource.runtime,
               'SecurityOpt'     => new_resource.security_opt,
+              'ShmSize'         => new_resource.shm_size,
               'Sysctls'         => new_resource.sysctls,
               'Ulimits'         => ulimits_to_hash,
               'UsernsMode'      => new_resource.userns_mode,
