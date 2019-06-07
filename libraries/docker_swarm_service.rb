@@ -13,7 +13,8 @@ module DockerCookbook
 
     property :image, String, required: true
     property :user, String, required: true, default: 'root'
-    property :networks, NonEmptyArray, required: true
+    property :networks, [Array, nil], required: true,
+             coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
     property :hostname, String
 
     property :environment, Hash, default: {}
