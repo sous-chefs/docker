@@ -84,8 +84,8 @@ module DockerCookbook
         spec = {
           # 'Networks' => [],
           'Image' => image,
-          'User' => user
-          # 'Mounts' => [],
+          'User' => user,
+          'Mounts' => mount_spec,
         }
 
         spec['Env'] = format_env unless environment.empty?
@@ -158,6 +158,59 @@ module DockerCookbook
 
           { 'Target' => network_id || network_name }
         end
+      end
+
+      def mount_spec
+        mounts.map do |mount|
+          spec = {
+            'Target' => mount[:target],
+            'Source' => mount[:source],
+            'Type' => mount[:type].to_s,
+            'ReadOnly' => mount[:readonly] || false,
+            'Consistency' => mount[:consistency]
+          }
+
+          %w[bind mount tmpfs].each do |mount_type|
+            opt = mount["#{mount_type}_options"]
+            if opt
+              spec["#{mount_type.capitalize}Options"] =
+                send("mount_#{mount_type}_options_spec", opt)
+            end
+          end
+
+          spec
+        end
+      end
+
+      def mount_bind_options_spec(opt)
+        {
+          'Propagation' => opt[:propagation]
+        }
+      end
+
+      def mount_volume_options_spec(opt)
+        {
+          'NoCopy' => opt[:no_copy] || false,
+          'Labels' => opt[:labels] || {},
+          'DriverConfig' => mount_volume_options_driver_config_spec(
+            opt[:driver_config]
+          )
+        }
+      end
+
+      def mount_volume_options_driver_config_spec(opt)
+        return {} unless opt
+        {
+          'Name' => opt[:name],
+          'Options' => opt[:options] || {}
+        }
+      end
+
+      def mount_tmpfs_options_spec(opt)
+        {
+          'SizeBytes' => opt[:size_bytes],
+          'Mode' => opt[:mode]
+        }
       end
     end
   end

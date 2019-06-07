@@ -33,6 +33,7 @@ module DockerCookbook
     property :replicas, Integer, default: 1
     property :ports, Array, default: []
     property :labels, Hash, default: {}
+    property :mounts, Array, default: []
 
     %i(update rollback).each do |kind|
       property "#{kind}_parallelism".to_sym, Integer, required: true, default: 1
