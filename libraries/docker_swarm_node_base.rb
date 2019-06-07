@@ -12,7 +12,7 @@ module DockerCookbook
 
     property :join_address, String
     property :join_token, String
-    property :force_leave, Boolean, default: true
+    property :force_leave, [TrueClass, FalseClass], default: true
 
     property :drain_opts, Hash, default: {}
 

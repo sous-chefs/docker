@@ -11,7 +11,7 @@ module DockerCookbook
     # Resource properties
     resource_name :docker_swarm_manager
 
-    property :first_manager, Boolean, default: false
+    property :first_manager, [TrueClass, FalseClass], default: false
 
     declare_action_class.class_eval do
       def whyrun_supported?

@@ -28,7 +28,7 @@ module DockerCookbook
     property :restart_delay, Integer, required: true, default: 1
     property :restart_attempts, Integer, required: true, default: 3
 
-    property :global, Boolean, required: true, default: false
+    property :global, [TrueClass, FalseClass], required: true, default: false
     property :replicas, Integer, default: 1
     property :ports, Array, default: []
     property :labels, Hash, default: {}
