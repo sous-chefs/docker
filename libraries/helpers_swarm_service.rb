@@ -84,10 +84,10 @@ module DockerCookbook
         spec = {
           # 'Networks' => [],
           'Image' => image,
-          'User' => user,
-          'Mounts' => mount_spec,
+          'User' => user
         }
 
+        spec['Mounts'] = mount_spec unless mounts.empty?
         spec['Env'] = format_env unless environment.empty?
         spec['Hostname'] = hostname unless hostname.empty?
 
