@@ -166,9 +166,10 @@ module DockerCookbook
             'Target' => mount[:target],
             'Source' => mount[:source],
             'Type' => mount[:type].to_s,
-            'ReadOnly' => mount[:readonly] || false,
-            'Consistency' => mount[:consistency]
+            'ReadOnly' => mount[:readonly] || false
           }
+
+          spec['Consistency'] = mount[:consistency] unless mount[:consistency].nil?
 
           %w[bind mount tmpfs].each do |mount_type|
             opt = mount["#{mount_type}_options"]
