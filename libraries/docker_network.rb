@@ -1,5 +1,7 @@
 module DockerCookbook
   class DockerNetwork < DockerBase
+    require 'ipaddress'
+
     resource_name :docker_network
     provides :docker_network
 
@@ -167,7 +169,6 @@ module DockerCookbook
     end
 
     declare_action_class.class_eval do
-      require 'ipaddr'
 
       ######
       # IPAM
@@ -239,7 +240,7 @@ module DockerCookbook
       end
 
       def subnet_matches(subnet, data)
-        IPAddr.new(subnet).include?(IPAddr.new(data))
+        IPAddress(subnet).include?(IPAddress(data))
       end
     end
   end
