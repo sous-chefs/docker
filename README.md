@@ -1212,10 +1212,12 @@ The `docker_network` resource is responsible for managing Docker named networks.
 ### Properties
 
 - `aux_address` - Auxiliary addresses for the network. Ex: `['a=192.168.1.5', 'b=192.168.1.6']`
-- `container` - Container-id/name to be connected/disconnected to/from the network. Used only by `:connect` and `:disconnect` actions
+- `container` - Container-id/name to be connected/disconnected to/from the network. Used only by `:connect` and `:disconnect` actions.
 - `driver` - The network driver to use. Defaults to `bridge`, other options include `overlay`.
 - `enable_ipv6` - Enable IPv6 on the network. Ex: true
 - `gateway` - Specify the gateway(s) for the network. Ex: `192.168.0.1`
+- `ip` - The IPv4 address a connected container shall have in the network. Used only by `:connect` and `:disconnect` actions. Ex: `192.168.0.7`
+- `ip6` - The IPv6 address a connected container shall have in the network. Used only by `:connect` and `:disconnect` actions. Ex: `fd9e:21a7:a92c:2323::1`
 - `ip_range` - Specify a range of IPs to allocate for containers. Ex: `192.168.1.0/24`
 - `subnet` - Specify the subnet(s) for the network. Ex: `192.168.0.0/16`
 

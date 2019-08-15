@@ -193,6 +193,22 @@ describe command("docker network inspect -f '{{ range $c:=.Containers }}{{ $c.Na
   its(:stdout) { should match 'container1-network_h' }
 end
 
+###########
+# network_i
+###########
+
+describe command("docker network ls -qf 'name=network_i$'") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should_not be_empty }
+end
+
+describe command("docker network inspect -f '{{ range $c:=.Containers }}{{ $c.Name }} {{ $c.IPv4Address }}|{{ end }}' network_i") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match %r{container1-network_i 172.30.0.10/24\|} }
+  its(:stdout) { should match %r{container2-network_i 172.30.0.12/24\|} }
+  its(:stdout) { should_not match %r{container2-network_i 172.30.0.11/24\|} }
+end
+
 ##############
 # network_ipv4
 ##############
@@ -229,6 +245,12 @@ end
 describe command("docker network inspect -f '{{ range $i:=.IPAM.Config }}{{ .Subnet | printf \"%s\\n\" }}{{ end }}' network_ipv6") do
   its(:exit_status) { should eq 0 }
   its(:stdout) { should include 'fd00:dead:beef::/48' }
+end
+
+describe command("docker network inspect -f '{{ range $c:=.Containers }}{{ $c.Name }} {{ $c.IPv6Address }}|{{ end }}' network_ipv6") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match %r{container1-network_ipv6 fd00:dead:beef::f24d/48\|} }
+  its(:stdout) { should_not match %r{container1-network_ipv6 fd00:dead:beef::f23d/48\|} }
 end
 
 ##################
