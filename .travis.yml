@@ -37,7 +37,6 @@ env:
   - INSTANCE=resources-ubuntu-1604
   - INSTANCE=resources-ubuntu-1804
 
-# Ensure we make ChefDK's Ruby the default
 before_script:
   - sudo iptables -L DOCKER || ( echo "DOCKER iptables chain missing" ; sudo iptables -N DOCKER )
   - eval "$(chef shell-init bash)"
