@@ -28,11 +28,11 @@ module DockerCookbook
       regex = /^(?<major>\d*)\.(?<minor>\d*)\./
       semver = regex.match(version)
       if semver['major'].to_i >= 19
-      "docker-#{version}.tgz"
+        "docker-#{version}.tgz"
       elsif semver['major'].to_i == 18 && semver['minor'].to_i > 6
-      "docker-#{version}.tgz"
+        "docker-#{version}.tgz"
       else
-      "docker-#{version}-ce.tgz"
+        "docker-#{version}-ce.tgz"
       end
     end
 
