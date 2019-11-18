@@ -32,6 +32,7 @@ describe 'docker_test::installation_package' do
       { docker_version: '18.06.0', expected: '18.06.0~ce~3-0~ubuntu' },
       { docker_version: '18.06.1', expected: '18.06.1~ce~3-0~ubuntu' },
       { docker_version: '18.09.0', expected: '5:18.09.0~3-0~ubuntu-bionic' },
+      { docker_version: '19.03.5', expected: '5:19.03.5~3-0~ubuntu-bionic' },
     ].each do |suite|
       it 'generates the correct version string ubuntu bionic' do
         custom_resource = chef_run.docker_installation_package('default')
@@ -64,6 +65,7 @@ describe 'docker_test::installation_package' do
       {  docker_version: '18.06.0', expected: '18.06.0~ce~3-0~ubuntu' },
       {  docker_version: '18.06.1', expected: '18.06.1~ce~3-0~ubuntu' },
       {  docker_version: '18.09.0', expected: '5:18.09.0~3-0~ubuntu-xenial' },
+      {  docker_version: '19.03.5', expected: '5:19.03.5~3-0~ubuntu-xenial' },
     ].each do |suite|
       it 'generates the correct version string ubuntu xenial' do
         custom_resource = chef_run.docker_installation_package('default')
@@ -95,6 +97,7 @@ describe 'docker_test::installation_package' do
       {  docker_version: '18.06.0', expected: '18.06.0~ce~3-0~debian' },
       {  docker_version: '18.06.1', expected: '18.06.1~ce~3-0~debian' },
       {  docker_version: '18.09.0', expected: '5:18.09.0~3-0~debian-stretch' },
+      {  docker_version: '19.03.5', expected: '5:19.03.5~3-0~debian-stretch' },
     ].each do |suite|
       it 'generates the correct version string debian stretch' do
         custom_resource = chef_run.docker_installation_package('default')
@@ -127,6 +130,7 @@ describe 'docker_test::installation_package' do
       {  docker_version: '18.06.0', expected: '18.06.0.ce-3.el7' },
       {  docker_version: '18.06.1', expected: '18.06.1.ce-3.el7' },
       {  docker_version: '18.09.0', expected: '18.09.0-3.el7' },
+      {  docker_version: '19.03.5', expected: '19.03.5-3.el7' },
     ].each do |suite|
       it 'generates the correct version string centos 7' do
         custom_resource = chef_run.docker_installation_package('default')

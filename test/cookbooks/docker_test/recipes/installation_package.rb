@@ -1,4 +1,4 @@
 docker_installation_package 'default' do
-  version '18.06.0'
+  version '19.03.5'
   action :create
 end
