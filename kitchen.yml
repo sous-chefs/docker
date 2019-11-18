@@ -42,9 +42,9 @@ platforms:
     image: dokken/centos-7
     pid_one_command: /usr/lib/systemd/systemd
 
-- name: fedora-28
+- name: fedora-29
   driver:
-    image: dokken/fedora-28
+    image: dokken/fedora-29
     pid_one_command: /usr/lib/systemd/systemd
 
 - name: ubuntu-16.04
