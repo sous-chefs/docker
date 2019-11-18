@@ -2,6 +2,12 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 4.10.0 (2019-11-18)
+
+- Cookstyle: Don't set allowed_actions in the resource - [@tas50](https://github.com/tas50)
+- update to the latest version of docker (for security reasons) - [@smcavallo](https://github.com/smcavallo)
+- fixing the default docker version in the kitchen tests - [@smcavallo](https://github.com/smcavallo)
+
 ## 4.9.3 (2019-08-14)
 
 - fixes issue #1061, docker_volume 'driver' and 'opts' don't work
