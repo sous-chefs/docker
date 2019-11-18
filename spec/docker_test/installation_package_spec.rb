@@ -9,7 +9,7 @@ describe 'docker_test::installation_package' do
 
   context 'testing default action, default properties' do
     it 'installs docker' do
-      expect(chef_run).to create_docker_installation_package('default').with(version: '18.06.0')
+      expect(chef_run).to create_docker_installation_package('default').with(version: '19.03.5')
     end
   end
 

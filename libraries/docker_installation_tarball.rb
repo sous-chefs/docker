@@ -20,7 +20,20 @@ module DockerCookbook
     end
 
     def default_source
-      "https://download.docker.com/#{docker_kernel.downcase}/static/#{channel}/#{docker_arch}/docker-#{version}-ce.tgz"
+      "https://download.docker.com/#{docker_kernel.downcase}/static/#{channel}/#{docker_arch}/#{default_filename(version)}"
+    end
+
+    def default_filename(version)
+      # https://download.docker.com/linux/static/stable/x86_64/
+      regex = /^(?<major>\d*)\.(?<minor>\d*)\./
+      semver = regex.match(version)
+      if semver['major'].to_i >= 19
+      "docker-#{version}.tgz"
+      elsif semver['major'].to_i == 18 && semver['minor'].to_i > 6
+      "docker-#{version}.tgz"
+      else
+      "docker-#{version}-ce.tgz"
+      end
     end
 
     def default_checksum
