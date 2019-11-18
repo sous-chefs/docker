@@ -26,6 +26,7 @@ module DockerCookbook
       end
 
       # stock systemd unit file
+      # See - https://github.com/docker/docker-ce-packaging/blob/master/systemd/docker.service
       template "/lib/systemd/system/#{docker_name}.service" do
         source 'systemd/docker.service.erb'
         cookbook 'docker'

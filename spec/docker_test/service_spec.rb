@@ -3,7 +3,7 @@ require_relative '../../libraries/helpers_service'
 
 describe 'docker_test::service' do
   before do
-    allow_any_instance_of(DockerCookbook::DockerHelpers::Service).to receive(:installed_docker_version).and_return('18.06.0')
+    allow_any_instance_of(DockerCookbook::DockerHelpers::Service).to receive(:installed_docker_version).and_return('19.03.5')
   end
 
   cached(:chef_run) do
@@ -19,31 +19,52 @@ describe 'docker_test::service' do
 [Unit]
 Description=Docker Application Container Engine
 Documentation=https://docs.docker.com
-After=network-online.target docker.socket firewalld.service
-Requires=docker.socket
+BindsTo=containerd.service
+After=network-online.target docker.socket firewalld.service containerd.service
 Wants=network-online.target
+Requires=docker.socket
 
 [Service]
 Type=notify
-ExecStartPre=/sbin/sysctl -w net.ipv4.ip_forward=1
-ExecStartPre=/sbin/sysctl -w net.ipv6.conf.all.forwarding=1
-ExecStart=/usr/bin/dockerd  --bip=10.10.10.0/24 --group=docker --default-address-pool=base=10.10.10.0/16,size=24 --pidfile=/var/run/docker.pid --storage-driver=overlay2
-ExecStartPost=/usr/lib/docker/docker-wait-ready
+# the default is not to use systemd for cgroups because the delegate issues still
+# exists and systemd currently does not support the cgroup feature set required
+# for containers run by docker
+ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
 ExecReload=/bin/kill -s HUP $MAINPID
-LimitNOFILE=1048576
-LimitNPROC=infinity
-LimitCORE=infinity
-TasksMax=infinity
-TimeoutStartSec=0
-Delegate=yes
-KillMode=process
+TimeoutSec=0
+RestartSec=2
 Restart=always
+
+# Note that StartLimit* options were moved from "Service" to "Unit" in systemd 229.
+# Both the old, and new location are accepted by systemd 229 and up, so using the old location
+# to make them work for either version of systemd.
 StartLimitBurst=3
+
+# Note that StartLimitInterval was renamed to StartLimitIntervalSec in systemd 230.
+# Both the old, and new name are accepted by systemd 230 and up, so using the old name to make
+# this option work for either version of systemd.
 StartLimitInterval=60s
 
+# Having non-zero Limit*s causes performance problems due to accounting overhead
+# in the kernel. We recommend using cgroups to do container-local accounting.
+LimitNOFILE=infinity
+LimitNPROC=infinity
+LimitCORE=infinity
+
+# Comment TasksMax if your systemd version does not support it.
+# Only systemd 226 and above support this option.
+TasksMax=infinity
+
+# set delegate yes so that systemd does not reset the cgroups of docker containers
+Delegate=yes
+
+# kill only the docker process, not all processes in the cgroup
+KillMode=process
 
 [Install]
 WantedBy=multi-user.target
+
+
 EOH
 
   it 'creates docker_service[default]' do
