@@ -9,7 +9,7 @@ uber_options_network_mode = 'bridge'
 # docker_service[default]
 
 describe docker.version do
-  its('Server.Version') { should eq '19.03.5-ce' }
+  its('Server.Version') { should eq '19.03.5' }
 end
 
 describe command('docker info') do
