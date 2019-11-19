@@ -1208,11 +1208,11 @@ docker_container 'memory' do
   tag '3.1'
   command 'nc -ll -p 70 -e /bin/cat'
   port '71:71'
-#  kernel_memory '10m'
+  kernel_memory '10m'
   memory '5m'
-  memory_swap '5M'
-#  memory_swappiness 50
-#  memory_reservation '5m'
+  memory_swap '6M' # must be larger than memory
+  memory_swappiness 50
+  memory_reservation '5m'
   shm_size '32m'
   action :run
 end
