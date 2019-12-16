@@ -2,6 +2,13 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 4.11.0 (2019-12-16)
+
+- Update format of docker tarball filenames > 18.06.3 - [@smcavallo](https://github.com/smcavallo)
+- Rework integration and unit tests to get everything green again - [@smcavallo](https://github.com/smcavallo)
+- Update the systemd unit file - [@smcavallo](https://github.com/smcavallo)
+- Remove the legacy foodcritic comments that aren't needed since we use cookstyle - [@tas50](https://github.com/tas50)
+
 ## 4.10.0 (2019-11-18)
 
 - Cookstyle: Don't set allowed_actions in the resource - [@tas50](https://github.com/tas50)
