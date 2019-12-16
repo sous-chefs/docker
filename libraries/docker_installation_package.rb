@@ -163,7 +163,7 @@ module DockerCookbook
       elsif v.to_f >= 18.09 && el7?
         return "#{v}-#{test_version}.el7"
       elsif v.to_f >= 18.09 && fedora?
-        return "#{v}"
+        return v.to_s
       else
         return "#{v}.ce" if fedora?
         return "#{v}.ce-#{test_version}.el7" if el7?

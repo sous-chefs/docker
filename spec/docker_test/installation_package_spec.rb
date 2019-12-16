@@ -142,7 +142,6 @@ describe 'docker_test::installation_package' do
   context 'version strings for Fedora' do
     cached(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'fedora',
-                               version: '28',
                                step_into: ['docker_installation_package']).converge(described_recipe)
     end
     # https://download.docker.com/linux/fedora/28/x86_64/stable/Packages/
