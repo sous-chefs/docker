@@ -1209,10 +1209,10 @@ docker_container 'memory' do
   command 'nc -ll -p 70 -e /bin/cat'
   port '71:71'
   kernel_memory '10m'
-  memory '5m'
-  memory_swap '5M'
+  memory '50m'
+  memory_swap '60M' # must be larger than memory
   memory_swappiness 50
-  memory_reservation '5m'
+  memory_reservation '50m'
   shm_size '32m'
   action :run
 end

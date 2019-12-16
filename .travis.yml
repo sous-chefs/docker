@@ -1,9 +1,8 @@
-sudo: required
-
+dist: xenial
 addons:
   apt:
     sources:
-      - chef-current-trusty
+      - chef-current-xenial
     packages:
       - chef-workstation
 
@@ -30,10 +29,9 @@ env:
   - INSTANCE=registry-ubuntu-1604
   - INSTANCE=network-ubuntu-1604
   - INSTANCE=volume-ubuntu-1604
-  - INSTANCE=resources-debian-8
   - INSTANCE=resources-debian-9
   - INSTANCE=resources-centos-7
-  - INSTANCE=resources-fedora-28
+  - INSTANCE=resources-fedora-latest
   - INSTANCE=resources-ubuntu-1604
   - INSTANCE=resources-ubuntu-1804
 
