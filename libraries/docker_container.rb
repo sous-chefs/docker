@@ -39,7 +39,7 @@ module DockerCookbook
     property :ip_address, String
     property :mac_address, String
     property :memory, [String, Integer], coerce: proc { |v| coerce_to_bytes(v) }, default: 0
-    property :memory_swap, [String, Integer], coerce: proc { |v| coerce_to_bytes(v) }, default: -1
+    property :memory_swap, [String, Integer], coerce: proc { |v| coerce_to_bytes(v) }, default: 0
     property :memory_swappiness, Integer, default: 0
     property :memory_reservation, Integer, coerce: proc { |v| coerce_to_bytes(v) }, default: 0
     property :network_disabled, [TrueClass, FalseClass], default: false
