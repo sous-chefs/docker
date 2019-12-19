@@ -5,7 +5,7 @@ module DockerCookbook
     property :local_alias, String, name_property: true
     property :remote_tag, String, default: 'latest'
     property :remote, [String, nil], default: nil
-    property :grant_privileges, [Array, TrueClass], default: []
+    property :grant_privileges, [Array, true], default: []
     property :options, Hash, default: {}
 
     default_action :install

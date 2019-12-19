@@ -96,11 +96,11 @@ module DockerCookbook
              default: 20,
              desired_state: false
 
-    property :tls, [TrueClass, FalseClass, nil],
+    property :tls, [true, false, nil],
              default: lazy { ENV['DOCKER_TLS'] },
              desired_state: false
 
-    property :tls_verify, [TrueClass, FalseClass, nil],
+    property :tls_verify, [true, false, nil],
              default: lazy { ENV['DOCKER_TLS_VERIFY'] },
              desired_state: false
 
