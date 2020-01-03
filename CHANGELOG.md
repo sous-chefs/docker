@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 4.12.0 (2020-01-03)
+
+- Include support for other architectures using upstream repo - [@ramereth](https://github.com/ramereth)
+
 ## 4.11.0 (2019-12-16)
 
 - Update format of docker tarball filenames > 18.06.3 - [@smcavallo](https://github.com/smcavallo)
