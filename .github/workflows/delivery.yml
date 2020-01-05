@@ -1,0 +1,16 @@
+name: delivery
+
+on: [push, pull_request]
+
+jobs:
+  delivery:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@master
+    - name: Run Chef Delivery
+      uses: actionshub/chef-delivery@master
+      env:
+        CHEF_LICENSE: accept-no-persist
