@@ -17,7 +17,7 @@ This cookbook is concerned with the [Docker](http://docker.io) container engine 
 ## Platform Support
 
 - Amazon Linux
-- Debian 8/9
+- Debian 8/9/10
 - Fedora
 - Ubuntu 14.04/16.04
 - CentOS 7
