@@ -2,6 +2,53 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## Unreleased
+
+- resolved cookstyle error: libraries/docker_container.rb:9:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_container.rb:10:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_container.rb:11:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_container.rb:12:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_container.rb:18:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_container.rb:28:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_container.rb:45:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_container.rb:48:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_container.rb:50:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_container.rb:54:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_container.rb:55:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_container.rb:56:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_container.rb:60:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_container.rb:64:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_container.rb:67:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_image.rb:10:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_image.rb:12:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_image.rb:13:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_image.rb:15:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_image_prune.rb:10:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_installation_package.rb:3:5 refactor: `ChefStyle/CommentFormat`
+- resolved cookstyle error: libraries/docker_installation_package.rb:8:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_installation_package.rb:169:9 convention: `Style/RedundantReturn`
+- resolved cookstyle error: libraries/docker_installation_package.rb:178:9 convention: `Style/RedundantReturn`
+- resolved cookstyle error: libraries/docker_installation_package.rb:180:9 convention: `Style/RedundantReturn`
+- resolved cookstyle error: libraries/docker_network.rb:9:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_network.rb:13:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_plugin.rb:7:38 refactor: `ChefRedundantCode/StringPropertyWithNilDefault`
+- resolved cookstyle error: libraries/docker_service.rb:26:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_service_base.rb:23:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_service_base.rb:30:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_service_base.rb:32:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_service_base.rb:41:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_service_base.rb:44:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_service_base.rb:45:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_service_base.rb:46:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_service_base.rb:47:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_service_base.rb:48:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_service_base.rb:49:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_service_base.rb:60:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_service_base.rb:63:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_service_base.rb:64:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: libraries/docker_tag.rb:9:5 refactor: `ChefStyle/TrueClassFalseClassResourceProperties`
+- resolved cookstyle error: spec/docker_test/installation_package_spec.rb:80:7 warning: `ChefDeprecations/DeprecatedChefSpecPlatform`
+
 ## 4.12.0 (2020-01-03)
 
 - Include support for other architectures using upstream repo - [@ramereth](https://github.com/ramereth)

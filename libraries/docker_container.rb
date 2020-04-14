@@ -6,16 +6,16 @@ module DockerCookbook
     property :repo, String, default: lazy { container_name }
     property :tag, String, default: 'latest'
     property :command, [Array, String, nil], coerce: proc { |v| v.is_a?(String) ? ::Shellwords.shellwords(v) : v }
-    property :attach_stderr, [TrueClass, FalseClass], default: false, desired_state: false
-    property :attach_stdin, [TrueClass, FalseClass], default: false, desired_state: false
-    property :attach_stdout, [TrueClass, FalseClass], default: false, desired_state: false
-    property :autoremove, [TrueClass, FalseClass], default: false, desired_state: false
+    property :attach_stderr, [true, false], default: false, desired_state: false
+    property :attach_stdin, [true, false], default: false, desired_state: false
+    property :attach_stdout, [true, false], default: false, desired_state: false
+    property :autoremove, [true, false], default: false, desired_state: false
     property :cap_add, [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
     property :cap_drop, [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
     property :cgroup_parent, String, default: ''
     property :cpu_shares, Integer, default: 0
     property :cpuset_cpus, String, default: ''
-    property :detach, [TrueClass, FalseClass], default: true, desired_state: false
+    property :detach, [true, false], default: true, desired_state: false
     property :devices, Array, default: []
     property :dns, Array, default: []
     property :dns_search, Array, default: []
@@ -25,7 +25,7 @@ module DockerCookbook
     property :env_file, [Array, String], coerce: proc { |v| coerce_env_file(v) }, default: [], desired_state: false
     property :extra_hosts, [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
     property :exposed_ports, PartialHashType, default: {}
-    property :force, [TrueClass, FalseClass], default: false, desired_state: false
+    property :force, [true, false], default: false, desired_state: false
     property :health_check, Hash, default: {}
     property :host, [String, nil], default: lazy { ENV['DOCKER_HOST'] }, desired_state: false
     property :hostname, String
@@ -42,29 +42,29 @@ module DockerCookbook
     property :memory_swap, [String, Integer], coerce: proc { |v| coerce_to_bytes(v) }, default: 0
     property :memory_swappiness, Integer, default: 0
     property :memory_reservation, Integer, coerce: proc { |v| coerce_to_bytes(v) }, default: 0
-    property :network_disabled, [TrueClass, FalseClass], default: false
+    property :network_disabled, [true, false], default: false
     property :network_mode, String, default: 'bridge'
     property :network_aliases, [String, Array], default: [], coerce: proc { |v| Array(v) }
-    property :oom_kill_disable, [TrueClass, FalseClass], default: false
+    property :oom_kill_disable, [true, false], default: false
     property :oom_score_adj, Integer, default: -500
-    property :open_stdin, [TrueClass, FalseClass], default: false, desired_state: false
+    property :open_stdin, [true, false], default: false, desired_state: false
     property :outfile, String
     property :port_bindings, PartialHashType, default: {}
     property :pid_mode, String, default: ''
-    property :privileged, [TrueClass, FalseClass], default: false
-    property :publish_all_ports, [TrueClass, FalseClass], default: false
-    property :remove_volumes, [TrueClass, FalseClass], default: false
+    property :privileged, [true, false], default: false
+    property :publish_all_ports, [true, false], default: false
+    property :remove_volumes, [true, false], default: false
     property :restart_maximum_retry_count, Integer, default: 0
     property :restart_policy, String
     property :runtime, String, default: 'runc'
-    property :ro_rootfs, [TrueClass, FalseClass], default: false
+    property :ro_rootfs, [true, false], default: false
     property :security_opt, [String, Array], coerce: proc { |v| v.nil? ? nil : Array(v) }
     property :shm_size, [String, Integer], default: '64m', coerce: proc { |v| coerce_to_bytes(v) }
     property :signal, String, default: 'SIGTERM'
-    property :stdin_once, [TrueClass, FalseClass], default: false, desired_state: false
+    property :stdin_once, [true, false], default: false, desired_state: false
     property :sysctls, Hash, default: {}
     property :timeout, Integer, desired_state: false
-    property :tty, [TrueClass, FalseClass], default: false
+    property :tty, [true, false], default: false
     property :ulimits, [Array, nil], coerce: proc { |v| coerce_ulimits(v) }
     property :user, String, default: ''
     property :userns_mode, String, default: ''
