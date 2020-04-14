@@ -78,7 +78,7 @@ describe 'docker_test::installation_package' do
   context 'version strings for Debian 9.5' do
     cached(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'debian',
-                               version: '9.5',
+                               version: '9',
                                step_into: ['docker_installation_package']).converge(described_recipe)
     end
     [

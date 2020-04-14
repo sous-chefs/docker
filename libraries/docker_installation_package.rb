@@ -1,11 +1,11 @@
 module DockerCookbook
   class DockerInstallationPackage < DockerBase
-    # Resource properties
+    # Resource:: properties
     resource_name :docker_installation_package
 
     provides :docker_installation, platform: 'amazon'
 
-    property :setup_docker_repo, [TrueClass, FalseClass], default: lazy { platform?('amazon') ? false : true }, desired_state: false
+    property :setup_docker_repo, [true, false], default: lazy { platform?('amazon') ? false : true }, desired_state: false
     property :repo_channel, String, default: 'stable'
     property :package_name, String, default: lazy { default_package_name }, desired_state: false
     property :package_version, String, default: lazy { version_string(version) }, desired_state: false
@@ -166,7 +166,7 @@ module DockerCookbook
         return "#{v}~ce-0~debian-#{codename}" if debian?
         return "#{v}~ce-0~ubuntu-#{codename}" if ubuntu?
       elsif v == '17.03.3' && el7?
-        return "#{v}.ce-1.el7"
+        "#{v}.ce-1.el7"
       elsif v.to_f < 18.06 && !bionic?
         return "#{v}.ce-1.el7.centos" if el7?
         return "#{v}~ce-0~debian" if debian?
@@ -175,9 +175,9 @@ module DockerCookbook
         return "5:#{v}~#{test_version}-0~debian-#{codename}" if debian?
         return "5:#{v}~#{test_version}-0~ubuntu-#{codename}" if ubuntu?
       elsif v.to_f >= 18.09 && el7?
-        return "#{v}-#{test_version}.el7"
+        "#{v}-#{test_version}.el7"
       elsif v.to_f >= 18.09 && fedora?
-        return v.to_s
+        v.to_s
       else
         return "#{v}.ce" if fedora?
         return "#{v}.ce-#{test_version}.el7" if el7?
