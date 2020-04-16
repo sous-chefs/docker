@@ -1,11 +1,8 @@
 *.rbc
 .config
-coverage
 InstalledFiles
 lib/bundler/man
 pkg
-rdoc
-spec/reports
 test/tmp
 test/version_tmp
 tmp
@@ -14,11 +11,14 @@ _Store
 *#
 .#*
 \#*#
-.*.sw[a-z]
 *.un~
 *.tmp
 *.bk
 *.bkup
+
+# editor temp files
+.idea
+.*.sw[a-z]
 
 # ruby/bundler files
 .ruby-version
@@ -27,14 +27,16 @@ _Store
 Gemfile.lock
 .bundle
 *.gem
+coverage
+spec/reports
 
-# YARD artifacts
+# YARD / rdoc artifacts
 .yardoc
 _yardoc
 doc/
-.idea
+rdoc
 
-# chef stuff
+# chef infra stuff
 Berksfile.lock
 .kitchen
 kitchen.local.yml
