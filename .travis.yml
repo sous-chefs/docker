@@ -42,10 +42,3 @@ before_script:
   - chef --version
 
 script: kitchen verify ${INSTANCE}
-
-matrix:
-  include:
-    - script:
-      - chef exec delivery local all
-      env:
-        - CHEF_LICENSE=accept
