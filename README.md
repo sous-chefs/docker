@@ -398,6 +398,7 @@ The `docker_service` resource property list mostly corresponds to the options fo
 - `tmpdir` - ENV variable set before for Docker daemon starts
 - `userland_proxy`- Enables or disables docker-proxy
 - `userns_remap` - Enable user namespace remapping options - `default`, `uid`, `uid:gid`, `username`, `username:groupname` (see: [Docker User Namespaces](see: https://docs.docker.com/v1.10/engine/reference/commandline/daemon/#daemon-user-namespace-options))
+- `live_restore` - Keep containers alive during daemon downtime (see: [Live restore](https://docs.docker.com/config/containers/live-restore))
 - `version` - Docker version to install
 
 #### Miscellaneous Options
