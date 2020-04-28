@@ -29,7 +29,7 @@ module DockerCookbook
     property :health_check, Hash, default: {}
     property :host, [String, nil], default: lazy { ENV['DOCKER_HOST'] }, desired_state: false
     property :hostname, String
-    property :ipc_mode, String, default: ''
+    property :ipc_mode, String, default: 'shareable'
     property :kernel_memory, [String, Integer], coerce: proc { |v| coerce_to_bytes(v) }, default: 0
     property :labels, [String, Array, Hash], default: {}, coerce: proc { |v| coerce_labels(v) }
     property :links, UnorderedArrayType, coerce: proc { |v| coerce_links(v) }
