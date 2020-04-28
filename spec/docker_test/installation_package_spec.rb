@@ -50,16 +50,6 @@ describe 'docker_test::installation_package' do
     end
 
     [
-      {  docker_version: '17.03.0', expected: '17.03.0~ce-0~ubuntu-xenial' },
-      {  docker_version: '17.03.1', expected: '17.03.1~ce-0~ubuntu-xenial' },
-      {  docker_version: '17.03.2', expected: '17.03.2~ce-0~ubuntu-xenial' },
-      {  docker_version: '17.03.3', expected: '17.03.3~ce-0~ubuntu-xenial' },
-      {  docker_version: '17.06.0', expected: '17.06.0~ce-0~ubuntu' },
-      {  docker_version: '17.06.1', expected: '17.06.1~ce-0~ubuntu' },
-      {  docker_version: '17.09.0', expected: '17.09.0~ce-0~ubuntu' },
-      {  docker_version: '17.09.1', expected: '17.09.1~ce-0~ubuntu' },
-      {  docker_version: '17.12.0', expected: '17.12.0~ce-0~ubuntu' },
-      {  docker_version: '17.12.1', expected: '17.12.1~ce-0~ubuntu' },
       {  docker_version: '18.03.0', expected: '18.03.0~ce-0~ubuntu' },
       {  docker_version: '18.03.1', expected: '18.03.1~ce-0~ubuntu' },
       {  docker_version: '18.06.0', expected: '18.06.0~ce~3-0~ubuntu' },
@@ -75,17 +65,13 @@ describe 'docker_test::installation_package' do
     end
   end
 
-  context 'version strings for Debian 9.5' do
+  context 'version strings for Debian 9' do
     cached(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'debian',
                                version: '9',
                                step_into: ['docker_installation_package']).converge(described_recipe)
     end
     [
-      {  docker_version: '17.03.0', expected: '17.03.0~ce-0~debian-stretch' },
-      {  docker_version: '17.03.1', expected: '17.03.1~ce-0~debian-stretch' },
-      {  docker_version: '17.03.2', expected: '17.03.2~ce-0~debian-stretch' },
-      {  docker_version: '17.03.3', expected: '17.03.3~ce-0~debian-stretch' },
       {  docker_version: '17.06.0', expected: '17.06.0~ce-0~debian' },
       {  docker_version: '17.06.1', expected: '17.06.1~ce-0~debian' },
       {  docker_version: '17.09.0', expected: '17.09.0~ce-0~debian' },
@@ -114,7 +100,6 @@ describe 'docker_test::installation_package' do
                                step_into: ['docker_installation_package']).converge(described_recipe)
     end
     [
-      {  docker_version: '17.12.1', expected: '17.12.1~ce-0~debian' },
       {  docker_version: '18.03.0', expected: '18.03.0~ce-0~debian' },
       {  docker_version: '18.03.1', expected: '18.03.1~ce-0~debian' },
       {  docker_version: '18.06.0', expected: '18.06.0~ce~3-0~debian' },
@@ -143,16 +128,6 @@ describe 'docker_test::installation_package' do
     end
     # https://download.docker.com/linux/centos/7/x86_64/stable/Packages/
     [
-      {  docker_version: '17.03.0', expected: '17.03.0.ce-1.el7.centos' },
-      {  docker_version: '17.03.1', expected: '17.03.1.ce-1.el7.centos' },
-      {  docker_version: '17.03.2', expected: '17.03.2.ce-1.el7.centos' },
-      {  docker_version: '17.03.3', expected: '17.03.3.ce-1.el7' },
-      {  docker_version: '17.06.0', expected: '17.06.0.ce-1.el7.centos' },
-      {  docker_version: '17.06.1', expected: '17.06.1.ce-1.el7.centos' },
-      {  docker_version: '17.09.0', expected: '17.09.0.ce-1.el7.centos' },
-      {  docker_version: '17.09.1', expected: '17.09.1.ce-1.el7.centos' },
-      {  docker_version: '17.12.0', expected: '17.12.0.ce-1.el7.centos' },
-      {  docker_version: '17.12.1', expected: '17.12.1.ce-1.el7.centos' },
       {  docker_version: '18.03.0', expected: '18.03.0.ce-1.el7.centos' },
       {  docker_version: '18.03.1', expected: '18.03.1.ce-1.el7.centos' },
       {  docker_version: '18.06.0', expected: '18.06.0.ce-3.el7' },

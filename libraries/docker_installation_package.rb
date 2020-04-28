@@ -148,12 +148,7 @@ module DockerCookbook
       # https://github.com/seemethere/docker-ce-packaging/blob/9ba8e36e8588ea75209d813558c8065844c953a0/deb/gen-deb-ver#L16-L20
       test_version = '3'
 
-      if v.to_f < 17.06 && debuntu?
-        return "#{v}~ce-0~debian-#{codename}" if debian?
-        return "#{v}~ce-0~ubuntu-#{codename}" if ubuntu?
-      elsif v == '17.03.3' && el7?
-        "#{v}.ce-1.el7"
-      elsif v.to_f < 18.06 && !bionic?
+      if v.to_f < 18.06 && !bionic?
         return "#{v}.ce-1.el7.centos" if el7?
         return "#{v}~ce-0~debian" if debian?
         return "#{v}~ce-0~ubuntu" if ubuntu?
