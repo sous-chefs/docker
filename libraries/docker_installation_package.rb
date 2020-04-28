@@ -116,18 +116,8 @@ module DockerCookbook
       false
     end
 
-    def trusty?
-      return true if node['platform'] == 'ubuntu' && node['platform_version'] == '14.04'
-      false
-    end
-
     def xenial?
       return true if node['platform'] == 'ubuntu' && node['platform_version'] == '16.04'
-      false
-    end
-
-    def artful?
-      return true if node['platform'] == 'ubuntu' && node['platform_version'] == '17.10'
       false
     end
 
