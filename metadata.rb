@@ -17,5 +17,5 @@ supports 'fedora'
 supports 'redhat'
 supports 'ubuntu'
 
-chef_version '>= 12.15'
+chef_version '>= 13.0'
 gem 'docker-api', '~> 1.34.0'

@@ -10,7 +10,7 @@ This cookbook is concerned with the [Docker](http://docker.io) container engine 
 
 ## Requirements
 
-- Chef 12.15 or later
+- Chef 13 or later
 - Network accessible web server hosting the docker binary.
 - SELinux permissive/disabled if CentOS [Docker Issue #15498](https://github.com/docker/docker/issues/15498)
 
