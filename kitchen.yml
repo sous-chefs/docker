@@ -20,11 +20,6 @@ verifier:
   name: inspec
 
 platforms:
-- name: amazonlinux
-  driver:
-    image: dokken/amazonlinux
-    pid_one_command: /sbin/init
-
 - name: amazonlinux-2
   driver:
     image: dokken/amazonlinux-2
