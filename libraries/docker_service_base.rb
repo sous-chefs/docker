@@ -63,7 +63,7 @@ module DockerCookbook
     property :userland_proxy, [true, false]
     property :disable_legacy_registry, [true, false]
     property :userns_remap, String
-    property :live_restore, [TrueClass, FalseClass], default: false
+    property :live_restore, [true, false], default: false
 
     # These are options specific to systemd configuration such as
     # LimitNOFILE or TasksMax that you may wannt to use to customize
