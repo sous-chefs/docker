@@ -101,11 +101,6 @@ module DockerCookbook
       false
     end
 
-    def jessie?
-      return true if node['platform'] == 'debian' && node['platform_version'].to_i == 8
-      false
-    end
-
     def stretch?
       return true if node['platform'] == 'debian' && node['platform_version'].to_i == 9
       false
@@ -126,6 +121,11 @@ module DockerCookbook
       false
     end
 
+    def focal?
+      return true if node['platform'] == 'ubuntu' && node['platform_version'] == '20.04'
+      false
+    end
+
     def amazon?
       return true if node['platform'] == 'amazon'
       false
@@ -133,20 +133,16 @@ module DockerCookbook
 
     # https://github.com/chef/chef/issues/4103
     def version_string(v)
-      codename = if jessie?
-                   'jessie'
-                 elsif stretch?
+      codename = if stretch? # deb 9
                    'stretch'
-                 elsif buster?
+                 elsif buster? # deb 10
                    'buster'
-                 elsif trusty?
-                   'trusty'
-                 elsif xenial?
+                 elsif xenial? # ubuntu 16.04
                    'xenial'
-                 elsif artful?
-                   'artful'
-                 elsif bionic?
+                 elsif bionic? # ubuntu 18.04
                    'bionic'
+                 elsif focal? # ubuntu 20.04
+                   'focal'
                  end
 
       # https://github.com/seemethere/docker-ce-packaging/blob/9ba8e36e8588ea75209d813558c8065844c953a0/deb/gen-deb-ver#L16-L20
