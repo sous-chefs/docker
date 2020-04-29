@@ -70,57 +70,52 @@ module DockerCookbook
     end
 
     def el7?
-      return true if node['platform_family'] == 'rhel' && node['platform_version'].to_i == 7
+      return true if platform_family?('rhel') && node['platform_version'].to_i == 7
       false
     end
 
     def fedora?
-      return true if node['platform'] == 'fedora'
+      return true if platform?('fedora')
       false
     end
 
     def debuntu?
-      return true if node['platform_family'] == 'debian'
+      return true if platform_family?('debian')
       false
     end
 
     def debian?
-      return true if node['platform'] == 'debian'
+      return true if platform?('debian')
       false
     end
 
     def ubuntu?
-      return true if node['platform'] == 'ubuntu'
+      return true if platform?('ubuntu')
       false
     end
 
     def stretch?
-      return true if node['platform'] == 'debian' && node['platform_version'].to_i == 9
+      return true if platform?('debian') && node['platform_version'].to_i == 9
       false
     end
 
     def buster?
-      return true if node['platform'] == 'debian' && node['platform_version'].to_i == 10
+      return true if platform?('debian') && node['platform_version'].to_i == 10
       false
     end
 
     def xenial?
-      return true if node['platform'] == 'ubuntu' && node['platform_version'] == '16.04'
+      return true if platform?('ubuntu') && node['platform_version'] == '16.04'
       false
     end
 
     def bionic?
-      return true if node['platform'] == 'ubuntu' && node['platform_version'] == '18.04'
+      return true if platform?('ubuntu') && node['platform_version'] == '18.04'
       false
     end
 
     def focal?
-      return true if node['platform'] == 'ubuntu' && node['platform_version'] == '20.04'
-      false
-    end
-
-    def amazon?
-      return true if node['platform'] == 'amazon'
+      return true if platform?('ubuntu') && node['platform_version'] == '20.04'
       false
     end
 
