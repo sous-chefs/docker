@@ -3,11 +3,9 @@ module DockerCookbook
     # Resource:: properties
     resource_name :docker_installation_package
 
-    provides :docker_installation, platform: 'amazon'
-
-    property :setup_docker_repo, [true, false], default: lazy { platform?('amazon') ? false : true }, desired_state: false
+    property :setup_docker_repo, [true, false], default: true , desired_state: false
     property :repo_channel, String, default: 'stable'
-    property :package_name, String, default: lazy { default_package_name }, desired_state: false
+    property :package_name, String, default: 'docker-ce', desired_state: false
     property :package_version, String, default: lazy { version_string(version) }, desired_state: false
     property :version, String, default: lazy { default_docker_version }, desired_state: false
     property :package_options, String, desired_state: false
@@ -54,7 +52,7 @@ module DockerCookbook
       end
 
       package new_resource.package_name do
-        version new_resource.package_version unless amazon?
+        version new_resource.package_version
         options new_resource.package_options
         action :install
       end
@@ -69,11 +67,6 @@ module DockerCookbook
     # These are helpers for the properties so they are not in an action class
     def default_docker_version
       '19.03.5'
-    end
-
-    def default_package_name
-      return 'docker' if amazon?
-      'docker-ce'
     end
 
     def el7?
