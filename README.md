@@ -10,7 +10,7 @@ This cookbook is concerned with the [Docker](http://docker.io) container engine 
 
 ## Requirements
 
-- Chef 13 or later
+- Chef Infra Client 15 or later
 - Network accessible web server hosting the docker binary.
 - SELinux permissive/disabled if CentOS [Docker Issue #15498](https://github.com/docker/docker/issues/15498)
 
@@ -19,7 +19,7 @@ This cookbook is concerned with the [Docker](http://docker.io) container engine 
 - Amazon Linux 2
 - Debian 9/10
 - Fedora
-- Ubuntu 14.04/16.04
+- Ubuntu 16.04/18.04
 - CentOS 7
 
 ## Cookbook Dependencies
