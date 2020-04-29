@@ -119,46 +119,4 @@ describe 'docker_test::installation_package' do
       end
     end
   end
-
-  context 'version strings for Centos 7' do
-    cached(:chef_run) do
-      ChefSpec::SoloRunner.new(platform: 'centos',
-                               version: '7',
-                               step_into: ['docker_installation_package']).converge(described_recipe)
-    end
-    # https://download.docker.com/linux/centos/7/x86_64/stable/Packages/
-    [
-      {  docker_version: '18.03.0', expected: '18.03.0.ce-1.el7.centos' },
-      {  docker_version: '18.03.1', expected: '18.03.1.ce-1.el7.centos' },
-      {  docker_version: '18.06.0', expected: '18.06.0.ce-3.el7' },
-      {  docker_version: '18.06.1', expected: '18.06.1.ce-3.el7' },
-      {  docker_version: '18.09.0', expected: '18.09.0-3.el7' },
-      {  docker_version: '19.03.5', expected: '19.03.5-3.el7' },
-    ].each do |suite|
-      it 'generates the correct version string centos 7' do
-        custom_resource = chef_run.docker_installation_package('default')
-        actual = custom_resource.version_string(suite[:docker_version])
-        expect(actual).to eq(suite[:expected])
-      end
-    end
-  end
-  context 'version strings for Fedora' do
-    cached(:chef_run) do
-      ChefSpec::SoloRunner.new(platform: 'fedora',
-                               step_into: ['docker_installation_package']).converge(described_recipe)
-    end
-    # https://download.docker.com/linux/fedora/28/x86_64/stable/Packages/
-    [
-        {  docker_version: '18.06.0', expected: '18.06.0.ce' },
-        {  docker_version: '18.06.1', expected: '18.06.1.ce' },
-        {  docker_version: '18.09.0', expected: '18.09.0' },
-        {  docker_version: '19.03.5', expected: '19.03.5' },
-    ].each do |suite|
-      it 'generates the correct version string fedora' do
-        custom_resource = chef_run.docker_installation_package('default')
-        actual = custom_resource.version_string(suite[:docker_version])
-        expect(actual).to eq(suite[:expected])
-      end
-    end
-  end
 end
