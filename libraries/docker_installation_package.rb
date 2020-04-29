@@ -1,16 +1,14 @@
 module DockerCookbook
   class DockerInstallationPackage < DockerBase
-    # Resource:: properties
     resource_name :docker_installation_package
 
     property :setup_docker_repo, [true, false], default: true, desired_state: false
     property :repo_channel, String, default: 'stable'
     property :package_name, String, default: 'docker-ce', desired_state: false
     property :package_version, String, default: lazy { version_string(version) }, desired_state: false
-    property :version, String, default: lazy { default_docker_version }, desired_state: false
+    property :version, String, default: '19.03.8', desired_state: false
     property :package_options, String, desired_state: false
 
-    # Actions
     action :create do
       if new_resource.setup_docker_repo
         if platform_family?('rhel', 'fedora')
