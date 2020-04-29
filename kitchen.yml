@@ -102,7 +102,7 @@ suites:
 - name: installation_package
   attributes:
     docker:
-      version: '19.03'
+      version: '19.03.8'
   run_list:
   - recipe[docker_test::installation_package]
   excludes: ['amazonlinux-2']
@@ -110,7 +110,7 @@ suites:
 - name: installation_tarball
   attributes:
     docker:
-      version: '19.03'
+      version: '19.03.8'
   run_list:
   - recipe[docker_test::installation_tarball]
   includes: [
@@ -125,7 +125,7 @@ suites:
 - name: resources
   attributes:
     docker:
-      version: '19.03'
+      version: '19.03.8'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::image]
@@ -139,7 +139,7 @@ suites:
    ]
   attributes:
     docker:
-      version: '19.03'
+      version: '19.03.8'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::network]
@@ -150,7 +150,7 @@ suites:
    ]
   attributes:
     docker:
-      version: '19.03'
+      version: '19.03.8'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::volume]
@@ -161,7 +161,7 @@ suites:
    ]
   attributes:
     docker:
-      version: '19.03'
+      version: '19.03.8'
   run_list:
   - recipe[docker_test::default]
   - recipe[docker_test::registry]
