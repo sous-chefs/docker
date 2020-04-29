@@ -228,7 +228,7 @@ The `docker_installation_package` resource uses the system package manager to in
 
 ```ruby
 docker_installation_package 'default' do
-  version '1.8.3'
+  version '19.03.8'
   action :create
   package_options %q|--force-yes -o Dpkg::Options::='--force-confold' -o Dpkg::Options::='--force-all'| # if Ubuntu for example
 end
@@ -236,7 +236,7 @@ end
 
 ### Properties
 
-- `version` - Used to calculate package_version string
+- `version` - Used to calculate package_version string. On Ubuntu / Debian this needs to be the complete version (19.03.8) while on Fedora / RHEL this can be any valid version string (19, 19.03, 19.03.8). We add an asterisk on automatically on RHEL/Fedora so leave that out.
 - `package_version` - Manually specify the package version string
 - `package_name` - Name of package to install. Defaults to 'docker-ce'
 - `package_options` - Manually specify additional options, like apt-get directives for example
