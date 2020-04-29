@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 6.0.0 (2020-04-28)
+
+- Require Chef Infra Client 15+ to fix issues with package versions on RHEL / Fedora since Chef Infra Client 15 reworked how yum_package performed and let us now pass in human readable versions to be installed- [@tas50](https://github.com/tas50)
+
 ## 5.0.0 (2020-04-28)
 
 - Fix missing reference to new_resource.restart_policy - [@petracvv](https://github.com/petracvv)
