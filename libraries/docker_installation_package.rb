@@ -3,7 +3,7 @@ module DockerCookbook
     # Resource:: properties
     resource_name :docker_installation_package
 
-    property :setup_docker_repo, [true, false], default: true , desired_state: false
+    property :setup_docker_repo, [true, false], default: true, desired_state: false
     property :repo_channel, String, default: 'stable'
     property :package_name, String, default: 'docker-ce', desired_state: false
     property :package_version, String, default: lazy { version_string(version) }, desired_state: false
