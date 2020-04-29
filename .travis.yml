@@ -26,9 +26,9 @@ env:
   - INSTANCE=installation-tarball-ubuntu-1804
   - INSTANCE=installation-package-ubuntu-1604
   - INSTANCE=installation-package-ubuntu-1804
-  - INSTANCE=registry-ubuntu-1604
-  - INSTANCE=network-ubuntu-1604
-  - INSTANCE=volume-ubuntu-1604
+  - INSTANCE=registry-ubuntu-1804
+  - INSTANCE=network-ubuntu-1804
+  - INSTANCE=volume-ubuntu-1804
   - INSTANCE=resources-debian-9
   - INSTANCE=resources-debian-10
   - INSTANCE=resources-centos-7
