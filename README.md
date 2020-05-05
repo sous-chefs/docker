@@ -444,10 +444,8 @@ The `docker_image` is responsible for managing Docker image pulls, builds, and d
 
 The `docker_image` resource properties mostly corresponds to the [Docker Engine API](https://docs.docker.com/engine/api/v1.35/#tag/Image) as driven by the [docker-api Ruby gem](https://github.com/swipely/docker-api)
 
-A `docker_image`'s full identifier is a string in the form "\
-
-<repo\>:\<tag\>". There is some nuance around naming using the
-public registry vs a private one.</tag\></repo\>
+A `docker_image`'s full identifier is a string in the form `<repo>:<tag>`. There is some nuance around naming using the
+public registry vs a private one.
 
 - `repo` - aka `image_name` - The first half of a Docker image's identity. This is a string in the form: `registry:port/owner/image_name`. If the `registry:port` portion is left off, Docker will implicitly use the Docker public registry. "Official Images" omit the owner part. This means a repo id can be as short as `busybox`, `alpine`, or `centos`. These names refer to official images on the public registry. Names can be as long as `my.computers.biz:5043/what/ever` to refer to custom images on an private registry. Often you'll see something like `chef/chef` to refer to private images on the public registry. - Defaults to resource name.
 - `tag` - The second half of a Docker image's identity. - Defaults to `latest`
