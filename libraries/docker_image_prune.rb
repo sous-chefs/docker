@@ -7,7 +7,7 @@ module DockerCookbook
     property :host, [String, nil], default: lazy { ENV['DOCKER_HOST'] }, desired_state: false
 
     # https://docs.docker.com/engine/api/v1.35/#operation/ImagePrune
-    property :dangling, [TrueClass, FalseClass], default: true
+    property :dangling, [true, false], default: true
     property :prune_until, String
     # https://docs.docker.com/engine/reference/builder/#label
     property :with_label, String

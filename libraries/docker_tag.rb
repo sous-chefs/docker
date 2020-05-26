@@ -6,7 +6,7 @@ module DockerCookbook
     property :target_tag, String
     property :to_repo, String
     property :to_tag, String
-    property :force, [TrueClass, FalseClass], default: false, desired_state: false
+    property :force, [true, false], default: false, desired_state: false
 
     #########
     # Actions

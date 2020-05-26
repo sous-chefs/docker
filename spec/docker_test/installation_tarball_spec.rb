@@ -21,7 +21,6 @@ describe 'docker_test::installation_tarball' do
     end
 
     [
-      { docker_version: '17.03.0', expected: 'docker-17.03.0-ce.tgz' },
       { docker_version: '18.03.1', expected: 'docker-18.03.1-ce.tgz' },
       { docker_version: '18.06.3', expected: 'docker-18.06.3-ce.tgz' },
       { docker_version: '18.09.0', expected: 'docker-18.09.0.tgz' },

@@ -6,30 +6,30 @@ module DockerCookbook
     property :repo, String, default: lazy { container_name }
     property :tag, String, default: 'latest'
     property :command, [Array, String, nil], coerce: proc { |v| v.is_a?(String) ? ::Shellwords.shellwords(v) : v }
-    property :attach_stderr, [TrueClass, FalseClass], default: false, desired_state: false
-    property :attach_stdin, [TrueClass, FalseClass], default: false, desired_state: false
-    property :attach_stdout, [TrueClass, FalseClass], default: false, desired_state: false
-    property :autoremove, [TrueClass, FalseClass], default: false, desired_state: false
+    property :attach_stderr, [true, false], default: false, desired_state: false
+    property :attach_stdin, [true, false], default: false, desired_state: false
+    property :attach_stdout, [true, false], default: false, desired_state: false
+    property :autoremove, [true, false], default: false, desired_state: false
     property :cap_add, [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
     property :cap_drop, [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
     property :cgroup_parent, String, default: ''
     property :cpu_shares, Integer, default: 0
     property :cpuset_cpus, String, default: ''
-    property :detach, [TrueClass, FalseClass], default: true, desired_state: false
+    property :detach, [true, false], default: true, desired_state: false
     property :devices, Array, default: []
     property :dns, Array, default: []
     property :dns_search, Array, default: []
     property :domain_name, String, default: ''
     property :entrypoint, [Array, String, nil], coerce: proc { |v| v.is_a?(String) ? ::Shellwords.shellwords(v) : v }
     property :env, UnorderedArrayType, default: []
-    property :env_file, [Array, String], coerce: proc { |v| coerce_env_file(v) }, default: [], desired_state: false
+    property :env_file, [Array, String], coerce: proc { |v| Array(v) }, default: [], desired_state: false
     property :extra_hosts, [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
     property :exposed_ports, PartialHashType, default: {}
-    property :force, [TrueClass, FalseClass], default: false, desired_state: false
+    property :force, [true, false], default: false, desired_state: false
     property :health_check, Hash, default: {}
     property :host, [String, nil], default: lazy { ENV['DOCKER_HOST'] }, desired_state: false
     property :hostname, String
-    property :ipc_mode, String, default: ''
+    property :ipc_mode, String, default: 'shareable'
     property :kernel_memory, [String, Integer], coerce: proc { |v| coerce_to_bytes(v) }, default: 0
     property :labels, [String, Array, Hash], default: {}, coerce: proc { |v| coerce_labels(v) }
     property :links, UnorderedArrayType, coerce: proc { |v| coerce_links(v) }
@@ -42,30 +42,30 @@ module DockerCookbook
     property :memory_swap, [String, Integer], coerce: proc { |v| coerce_to_bytes(v) }, default: 0
     property :memory_swappiness, Integer, default: 0
     property :memory_reservation, Integer, coerce: proc { |v| coerce_to_bytes(v) }, default: 0
-    property :network_disabled, [TrueClass, FalseClass], default: false
+    property :network_disabled, [true, false], default: false
     property :network_mode, String, default: 'bridge'
     property :network_aliases, [String, Array], default: [], coerce: proc { |v| Array(v) }
-    property :oom_kill_disable, [TrueClass, FalseClass], default: false
+    property :oom_kill_disable, [true, false], default: false
     property :oom_score_adj, Integer, default: -500
-    property :open_stdin, [TrueClass, FalseClass], default: false, desired_state: false
+    property :open_stdin, [true, false], default: false, desired_state: false
     property :outfile, String
     property :port_bindings, PartialHashType, default: {}
     property :pid_mode, String, default: ''
-    property :privileged, [TrueClass, FalseClass], default: false
-    property :publish_all_ports, [TrueClass, FalseClass], default: false
+    property :privileged, [true, false], default: false
+    property :publish_all_ports, [true, false], default: false
     property :reload_signal, String, default: 'SIGHUP'
-    property :remove_volumes, [TrueClass, FalseClass], default: false
+    property :remove_volumes, [true, false], default: false
     property :restart_maximum_retry_count, Integer, default: 0
     property :restart_policy, String
     property :runtime, String, default: 'runc'
-    property :ro_rootfs, [TrueClass, FalseClass], default: false
+    property :ro_rootfs, [true, false], default: false
     property :security_opt, [String, Array], coerce: proc { |v| v.nil? ? nil : Array(v) }
     property :shm_size, [String, Integer], default: '64m', coerce: proc { |v| coerce_to_bytes(v) }
     property :signal, String, default: 'SIGTERM'
-    property :stdin_once, [TrueClass, FalseClass], default: false, desired_state: false
+    property :stdin_once, [true, false], default: false, desired_state: false
     property :sysctls, Hash, default: {}
     property :timeout, Integer, desired_state: false
-    property :tty, [TrueClass, FalseClass], default: false
+    property :tty, [true, false], default: false
     property :ulimits, [Array, nil], coerce: proc { |v| coerce_ulimits(v) }
     property :user, String, default: ''
     property :userns_mode, String, default: ''
@@ -311,11 +311,6 @@ module DockerCookbook
       end
     end
 
-    def coerce_env_file(v)
-      return v if v.empty?
-      Array(v).map { |f| ::File.readlines(f).map(&:strip) }.flatten
-    end
-
     # log_driver and log_opts really handle this
     def log_config(value = Chef::NOT_PASSED)
       if value != Chef::NOT_PASSED
@@ -495,7 +490,7 @@ module DockerCookbook
             'AttachStdout'    => new_resource.attach_stdout,
             'Domainname'      => new_resource.domain_name,
             'Entrypoint'      => to_shellwords(new_resource.entrypoint),
-            'Env'             => new_resource.env + new_resource.env_file,
+            'Env'             => new_resource.env + read_env_file,
             'ExposedPorts'    => new_resource.exposed_ports,
             'Hostname'        => parsed_hostname,
             'MacAddress'      => new_resource.mac_address,
@@ -571,7 +566,6 @@ module DockerCookbook
           unless new_resource.health_check.empty?
             config['Healthcheck'] = new_resource.health_check
           end
-
           # Store the state of the options and create the container
           new_resource.create_options = config
           Docker::Container.create(config, connection)
@@ -698,7 +692,7 @@ module DockerCookbook
           raise Chef::Exceptions::ValidationFailed, 'restart_policy must be either no, always, unless-stopped, or on-failure.'
         end
 
-        if new_resource.autoremove == true && (new_resource.property_is_set?(:restart_policy) && restart_policy != 'no')
+        if new_resource.autoremove == true && (new_resource.property_is_set?(:restart_policy) && new_resource.restart_policy != 'no')
           raise Chef::Exceptions::ValidationFailed, 'Conflicting options restart_policy and autoremove.'
         end
 
@@ -758,6 +752,10 @@ module DockerCookbook
           hard = u.split('=')[1].split(':')[1]
           { 'Name' => name, 'Soft' => soft.to_i, 'Hard' => hard.to_i }
         end
+      end
+
+      def read_env_file
+        new_resource.env_file.map { |f| ::File.readlines(f).map(&:strip) }.flatten
       end
     end
   end

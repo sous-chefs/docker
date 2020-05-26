@@ -26,10 +26,11 @@ env:
   - INSTANCE=installation-tarball-ubuntu-1804
   - INSTANCE=installation-package-ubuntu-1604
   - INSTANCE=installation-package-ubuntu-1804
-  - INSTANCE=registry-ubuntu-1604
-  - INSTANCE=network-ubuntu-1604
-  - INSTANCE=volume-ubuntu-1604
+  - INSTANCE=registry-ubuntu-1804
+  - INSTANCE=network-ubuntu-1804
+  - INSTANCE=volume-ubuntu-1804
   - INSTANCE=resources-debian-9
+  - INSTANCE=resources-debian-10
   - INSTANCE=resources-centos-7
   - INSTANCE=resources-fedora-latest
   - INSTANCE=resources-ubuntu-1604
@@ -39,15 +40,5 @@ before_script:
   - sudo iptables -L DOCKER || ( echo "DOCKER iptables chain missing" ; sudo iptables -N DOCKER )
   - eval "$(chef shell-init bash)"
   - chef --version
-  - cookstyle --version
-  - foodcritic --version
 
 script: kitchen verify ${INSTANCE}
-
-matrix:
-  include:
-    - script:
-      - chef exec delivery local all
-      env:
-        - UNIT_AND_LINT=1
-        - CHEF_LICENSE=accept

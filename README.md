@@ -10,16 +10,16 @@ This cookbook is concerned with the [Docker](http://docker.io) container engine 
 
 ## Requirements
 
-- Chef 12.15 or later
+- Chef Infra Client 15 or later
 - Network accessible web server hosting the docker binary.
 - SELinux permissive/disabled if CentOS [Docker Issue #15498](https://github.com/docker/docker/issues/15498)
 
 ## Platform Support
 
-- Amazon Linux
-- Debian 8/9
+- Amazon Linux 2
+- Debian 9/10
 - Fedora
-- Ubuntu 14.04/16.04
+- Ubuntu 16.04/18.04
 - CentOS 7
 
 ## Cookbook Dependencies
@@ -228,7 +228,7 @@ The `docker_installation_package` resource uses the system package manager to in
 
 ```ruby
 docker_installation_package 'default' do
-  version '1.8.3'
+  version '19.03.8'
   action :create
   package_options %q|--force-yes -o Dpkg::Options::='--force-confold' -o Dpkg::Options::='--force-all'| # if Ubuntu for example
 end
@@ -236,7 +236,7 @@ end
 
 ### Properties
 
-- `version` - Used to calculate package_version string
+- `version` - Used to calculate package_version string. On Ubuntu / Debian this needs to be the complete version (19.03.8) while on Fedora / RHEL this can be any valid version string (19, 19.03, 19.03.8). We add an asterisk on automatically on RHEL/Fedora so leave that out.
 - `package_version` - Manually specify the package version string
 - `package_name` - Name of package to install. Defaults to 'docker-ce'
 - `package_options` - Manually specify additional options, like apt-get directives for example
@@ -398,6 +398,7 @@ The `docker_service` resource property list mostly corresponds to the options fo
 - `tmpdir` - ENV variable set before for Docker daemon starts
 - `userland_proxy`- Enables or disables docker-proxy
 - `userns_remap` - Enable user namespace remapping options - `default`, `uid`, `uid:gid`, `username`, `username:groupname` (see: [Docker User Namespaces](see: https://docs.docker.com/v1.10/engine/reference/commandline/daemon/#daemon-user-namespace-options))
+- `live_restore` - Keep containers alive during daemon downtime (see: [Live restore](https://docs.docker.com/config/containers/live-restore))
 - `version` - Docker version to install
 
 #### Miscellaneous Options
@@ -443,10 +444,8 @@ The `docker_image` is responsible for managing Docker image pulls, builds, and d
 
 The `docker_image` resource properties mostly corresponds to the [Docker Engine API](https://docs.docker.com/engine/api/v1.35/#tag/Image) as driven by the [docker-api Ruby gem](https://github.com/swipely/docker-api)
 
-A `docker_image`'s full identifier is a string in the form "\
-
-<repo\>:\<tag\>". There is some nuance around naming using the
-public registry vs a private one.</tag\></repo\>
+A `docker_image`'s full identifier is a string in the form `<repo>:<tag>`. There is some nuance around naming using the
+public registry vs a private one.
 
 - `repo` - aka `image_name` - The first half of a Docker image's identity. This is a string in the form: `registry:port/owner/image_name`. If the `registry:port` portion is left off, Docker will implicitly use the Docker public registry. "Official Images" omit the owner part. This means a repo id can be as short as `busybox`, `alpine`, or `centos`. These names refer to official images on the public registry. Names can be as long as `my.computers.biz:5043/what/ever` to refer to custom images on an private registry. Often you'll see something like `chef/chef` to refer to private images on the public registry. - Defaults to resource name.
 - `tag` - The second half of a Docker image's identity. - Defaults to `latest`

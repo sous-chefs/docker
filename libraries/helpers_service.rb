@@ -229,6 +229,7 @@ module DockerCookbook
         opts << "--userland-proxy=#{userland_proxy}" unless userland_proxy.nil?
         opts << "--disable-legacy-registry=#{disable_legacy_registry}" unless disable_legacy_registry.nil?
         opts << "--userns-remap=#{userns_remap}" if userns_remap
+        opts << '--live-restore' if live_restore
         opts << misc_opts if misc_opts
         opts
       end

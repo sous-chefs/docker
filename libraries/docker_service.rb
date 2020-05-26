@@ -23,7 +23,7 @@ module DockerCookbook
     # docker_installation_package
     property :package_version, String, desired_state: false
     property :package_name, String, desired_state: false
-    property :setup_docker_repo, [TrueClass, FalseClass], desired_state: false
+    property :setup_docker_repo, [true, false], desired_state: false
 
     # package and tarball
     property :version, String, desired_state: false
