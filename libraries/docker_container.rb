@@ -22,7 +22,7 @@ module DockerCookbook
     property :domain_name, String, default: ''
     property :entrypoint, [Array, String, nil], coerce: proc { |v| v.is_a?(String) ? ::Shellwords.shellwords(v) : v }
     property :env, UnorderedArrayType, default: []
-    property :env_file, [Array, String], coerce: proc { |v| coerce_env_file(v) }, default: [], desired_state: false
+    property :env_file, [Array, String], coerce: proc { |v| Array(v) }, default: [], desired_state: false
     property :extra_hosts, [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
     property :exposed_ports, PartialHashType, default: {}
     property :force, [true, false], default: false, desired_state: false
@@ -310,11 +310,6 @@ module DockerCookbook
       end
     end
 
-    def coerce_env_file(v)
-      return v if v.empty?
-      Array(v).map { |f| ::File.readlines(f).map(&:strip) }.flatten
-    end
-
     # log_driver and log_opts really handle this
     def log_config(value = Chef::NOT_PASSED)
       if value != Chef::NOT_PASSED
@@ -494,7 +489,7 @@ module DockerCookbook
             'AttachStdout'    => new_resource.attach_stdout,
             'Domainname'      => new_resource.domain_name,
             'Entrypoint'      => to_shellwords(new_resource.entrypoint),
-            'Env'             => new_resource.env + new_resource.env_file,
+            'Env'             => new_resource.env + read_env_file,
             'ExposedPorts'    => new_resource.exposed_ports,
             'Hostname'        => parsed_hostname,
             'MacAddress'      => new_resource.mac_address,
@@ -570,7 +565,6 @@ module DockerCookbook
           unless new_resource.health_check.empty?
             config['Healthcheck'] = new_resource.health_check
           end
-
           # Store the state of the options and create the container
           new_resource.create_options = config
           Docker::Container.create(config, connection)
@@ -757,6 +751,10 @@ module DockerCookbook
           hard = u.split('=')[1].split(':')[1]
           { 'Name' => name, 'Soft' => soft.to_i, 'Hard' => hard.to_i }
         end
+      end
+
+      def read_env_file
+        new_resource.env_file.map { |f| ::File.readlines(f).map(&:strip) }.flatten
       end
     end
   end
