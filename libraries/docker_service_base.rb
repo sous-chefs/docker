@@ -92,7 +92,7 @@ module DockerCookbook
 
     declare_action_class.class_eval do
       def libexec_dir
-        return '/usr/libexec/docker' if node['platform_family'] == 'rhel'
+        return '/usr/libexec/docker' if platform_family?('rhel')
         '/usr/lib/docker'
       end
 

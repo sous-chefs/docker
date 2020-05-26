@@ -2,6 +2,12 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 6.0.1 (2020-05-26)
+
+- Allow configuring reload signal #1089 - [@scalp42](https://github.com/scalp42)
+- Update docker_image doc to fix escaping typo - [@pgilad](https://github.com/pgilad)
+- Fix for env_file breaks on Chef 16 - [@kapilchouhan99](https://github.com/kapilchouhan99)
+
 ## 6.0.0 (2020-04-28)
 
 - Require Chef Infra Client 15+ to fix issues with package versions on RHEL / Fedora since Chef Infra Client 15 reworked how yum_package performed and let us now pass in human readable versions to be installed- [@tas50](https://github.com/tas50)
