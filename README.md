@@ -662,7 +662,7 @@ Containers are process oriented, and move through an event cycle. Thanks to [Gli
 - `:unpause` - Unpauses the container.
 - `:delete` - Deletes the container.
 - `:redeploy` - Deletes and runs the container.
-- `:reload` - Sends SIGHUP to pid 1 in the container
+- `:reload` - Sends SIGHUP to pid 1 in the container by default. Can be changed with `reload_signal`.
 
 ### Properties
 

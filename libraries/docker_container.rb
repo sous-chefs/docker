@@ -53,6 +53,7 @@ module DockerCookbook
     property :pid_mode, String, default: ''
     property :privileged, [true, false], default: false
     property :publish_all_ports, [true, false], default: false
+    property :reload_signal, String, default: 'SIGHUP'
     property :remove_volumes, [true, false], default: false
     property :restart_maximum_retry_count, Integer, default: 0
     property :restart_policy, String
@@ -637,7 +638,7 @@ module DockerCookbook
 
     action :reload do
       converge_by "reloading #{new_resource.container_name}" do
-        with_retries { current_resource.container.kill(signal: 'SIGHUP') }
+        with_retries { current_resource.container.kill(signal: new_resource.reload_signal) }
       end
     end
 
