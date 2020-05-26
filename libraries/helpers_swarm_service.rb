@@ -90,8 +90,15 @@ module DockerCookbook
         spec['Mounts'] = mount_spec unless mounts.empty?
         spec['Env'] = format_env unless environment.empty?
         spec['Hostname'] = hostname unless hostname.empty?
+        spec['HealthCheck'] = health_spec
 
         spec
+      end
+
+      def health_spec
+        {
+          'StartPeriod' => health_start_period * 1_000_000_000
+        }
       end
 
       def format_env
