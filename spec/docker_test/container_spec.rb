@@ -35,7 +35,7 @@ describe 'docker_test::container' do
         domain_name: '',
         log_driver: 'json-file',
         memory: 0,
-        memory_swap: 0,
+        memory_swap: nil,
         network_disabled: false,
         outfile: nil,
         restart_maximum_retry_count: 0,
