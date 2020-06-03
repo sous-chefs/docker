@@ -23,3 +23,5 @@ docker_exec 'poke_it' do
 end
 
 file '/marker_busybox_exec_twofile'
+
+docker_exec 'default'
