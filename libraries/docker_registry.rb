@@ -1,6 +1,6 @@
 module DockerCookbook
   class DockerRegistry < DockerBase
-    provides :docker_registry
+    resource_name :docker_registry
 
     property :email, String
 

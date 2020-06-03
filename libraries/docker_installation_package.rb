@@ -1,6 +1,6 @@
 module DockerCookbook
   class DockerInstallationPackage < DockerBase
-    provides :docker_installation_package
+    resource_name :docker_installation_package
 
     property :setup_docker_repo, [true, false], default: true, desired_state: false
     property :repo_channel, String, default: 'stable'

@@ -1,6 +1,6 @@
 module DockerCookbook
   class DockerVolume < DockerBase
-    provides :docker_volume
+    resource_name :docker_volume
 
     property :driver, String, desired_state: false
     property :host, [String, nil], default: lazy { ENV['DOCKER_HOST'] }, desired_state: false

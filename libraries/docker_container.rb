@@ -1,6 +1,6 @@
 module DockerCookbook
   class DockerContainer < DockerBase
-    provides :docker_container
+    resource_name :docker_container
 
     property :container_name, String, name_property: true
     property :repo, String, default: lazy { container_name }

@@ -1,6 +1,6 @@
 module DockerCookbook
   class DockerServiceManagerExecute < DockerServiceBase
-    provides :docker_service_manager_execute
+    resource_name :docker_service_manager_execute
 
     # Start the service
     action :start do
