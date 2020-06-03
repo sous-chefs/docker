@@ -1,6 +1,7 @@
 module DockerCookbook
   class DockerImage < DockerBase
     resource_name :docker_image
+    provides :docker_image
 
     # Modify the default of read_timeout from 60 to 120
     property :read_timeout, default: 120, desired_state: false

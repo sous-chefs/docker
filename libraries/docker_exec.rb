@@ -1,6 +1,7 @@
 module DockerCookbook
   class DockerExec < DockerBase
     resource_name :docker_exec
+    provides :docker_exec
 
     property :host, [String, nil], default: lazy { ENV['DOCKER_HOST'] }, desired_state: false
     property :command, Array

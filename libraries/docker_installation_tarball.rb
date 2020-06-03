@@ -1,6 +1,7 @@
 module DockerCookbook
   class DockerInstallationTarball < DockerBase
     resource_name :docker_installation_tarball
+    provides :docker_installation_tarball
 
     property :checksum, String, default: lazy { default_checksum }, desired_state: false
     property :source, String, default: lazy { default_source }, desired_state: false
