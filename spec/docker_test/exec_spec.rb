@@ -14,6 +14,19 @@ describe 'docker_test::exec' do
     )
   end
 
+  context 'testing default properties' do
+    it 'docker_exec[default]' do
+      expect(chef_run).to run_docker_exec('default').with(
+        host: nil,
+        command: nil,
+        container: nil,
+        timeout: 60,
+        container_obj: nil,
+        returns: [0]
+      )
+    end
+  end
+
   context 'testing run action' do
     it 'run docker_exec[touch_it]' do
       expect(chef_run).to run_docker_exec('touch_it').with(
