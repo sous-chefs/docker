@@ -1,9 +1,8 @@
-sudo: required
-
+dist: xenial
 addons:
   apt:
     sources:
-      - chef-current-trusty
+      - chef-current-xenial
     packages:
       - chef-workstation
 
@@ -54,3 +53,4 @@ matrix:
       env:
         - UNIT_AND_LINT=1
         - CHEF_LICENSE=accept
+
