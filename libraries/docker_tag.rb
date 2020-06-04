@@ -1,6 +1,6 @@
 module DockerCookbook
   class DockerTag < DockerBase
-    resource_name :docker_tag
+    provides :docker_tag
 
     property :target_repo, String, name_property: true
     property :target_tag, String
