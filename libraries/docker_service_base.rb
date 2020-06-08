@@ -11,6 +11,7 @@ module DockerCookbook
     #####################
 
     resource_name :docker_service_base
+    provides :docker_service_base
 
     # register with the resource resolution system
     provides :docker_service_manager

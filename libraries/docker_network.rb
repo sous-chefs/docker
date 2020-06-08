@@ -1,6 +1,7 @@
 module DockerCookbook
   class DockerNetwork < DockerBase
     resource_name :docker_network
+    provides :docker_network
 
     property :auxiliary_addresses, [String, Array, nil], coerce: proc { |v| coerce_auxiliary_addresses(v) }
     property :container, String, desired_state: false

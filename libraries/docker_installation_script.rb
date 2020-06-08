@@ -1,6 +1,7 @@
 module DockerCookbook
   class DockerInstallationScript < DockerBase
     resource_name :docker_installation_script
+    provides :docker_installation_script
 
     provides :docker_installation, os: 'linux'
 
