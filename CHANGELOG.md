@@ -4,6 +4,36 @@ This file is used to list changes made in each version of the docker cookbook.
 
 ## Unreleased
 
+- resolved cookstyle error: libraries/docker_installation_script.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
+- resolved cookstyle error: libraries/docker_installation_script.rb:4:1 convention: `Layout/IndentationConsistency`
+- resolved cookstyle error: libraries/docker_installation_script.rb:4:1 convention: `Layout/IndentationWidth`
+- resolved cookstyle error: libraries/docker_installation_script.rb:4:3 convention: `Layout/IndentationWidth`
+- resolved cookstyle error: libraries/docker_installation_script.rb:4:9 convention: `Layout/IndentationConsistency`
+- resolved cookstyle error: libraries/docker_service_base.rb:13:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
+- resolved cookstyle error: libraries/docker_service_base.rb:14:1 convention: `Layout/IndentationConsistency`
+- resolved cookstyle error: libraries/docker_service_base.rb:14:1 convention: `Layout/IndentationWidth`
+- resolved cookstyle error: libraries/docker_service_base.rb:14:3 convention: `Layout/IndentationWidth`
+- resolved cookstyle error: libraries/docker_service_base.rb:14:9 convention: `Layout/IndentationConsistency`
+- resolved cookstyle error: libraries/docker_service_manager_systemd.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
+- resolved cookstyle error: libraries/docker_service_manager_systemd.rb:4:1 convention: `Layout/IndentationConsistency`
+- resolved cookstyle error: libraries/docker_service_manager_systemd.rb:4:1 convention: `Layout/IndentationWidth`
+- resolved cookstyle error: libraries/docker_service_manager_systemd.rb:4:3 convention: `Layout/IndentationWidth`
+- resolved cookstyle error: libraries/docker_service_manager_systemd.rb:4:9 convention: `Layout/IndentationConsistency`
+- resolved cookstyle error: libraries/docker_service_manager_sysvinit_debian.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
+- resolved cookstyle error: libraries/docker_service_manager_sysvinit_debian.rb:4:1 convention: `Layout/IndentationConsistency`
+- resolved cookstyle error: libraries/docker_service_manager_sysvinit_debian.rb:4:1 convention: `Layout/IndentationWidth`
+- resolved cookstyle error: libraries/docker_service_manager_sysvinit_debian.rb:4:3 convention: `Layout/IndentationWidth`
+- resolved cookstyle error: libraries/docker_service_manager_sysvinit_debian.rb:4:9 convention: `Layout/IndentationConsistency`
+- resolved cookstyle error: libraries/docker_service_manager_sysvinit_rhel.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
+- resolved cookstyle error: libraries/docker_service_manager_sysvinit_rhel.rb:4:1 convention: `Layout/IndentationConsistency`
+- resolved cookstyle error: libraries/docker_service_manager_sysvinit_rhel.rb:4:1 convention: `Layout/IndentationWidth`
+- resolved cookstyle error: libraries/docker_service_manager_sysvinit_rhel.rb:4:3 convention: `Layout/IndentationWidth`
+- resolved cookstyle error: libraries/docker_service_manager_sysvinit_rhel.rb:4:9 convention: `Layout/IndentationConsistency`
+- resolved cookstyle error: libraries/docker_service_manager_upstart.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
+- resolved cookstyle error: libraries/docker_service_manager_upstart.rb:4:1 convention: `Layout/IndentationConsistency`
+- resolved cookstyle error: libraries/docker_service_manager_upstart.rb:4:1 convention: `Layout/IndentationWidth`
+- resolved cookstyle error: libraries/docker_service_manager_upstart.rb:4:3 convention: `Layout/IndentationWidth`
+- resolved cookstyle error: libraries/docker_service_manager_upstart.rb:4:9 convention: `Layout/IndentationConsistency`
 - resolved cookstyle error: libraries/docker_container.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
 - resolved cookstyle error: libraries/docker_exec.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
 - resolved cookstyle error: libraries/docker_image.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`

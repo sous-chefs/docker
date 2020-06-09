@@ -1,6 +1,7 @@
 module DockerCookbook
   class DockerServiceManagerSysvinitRhel < DockerServiceBase
     resource_name :docker_service_manager_sysvinit_rhel
+    provides :docker_service_manager_sysvinit_rhel
 
     provides :docker_service_manager, platform: 'amazon'
     provides :docker_service_manager, platform: 'suse'
