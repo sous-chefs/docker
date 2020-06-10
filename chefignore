@@ -10,10 +10,6 @@ Icon?
 nohup.out
 Thumbs.db
 
-# SASS #
-########
-.sass-cache
-
 # EDITORS #
 ###########
 .#*
@@ -26,10 +22,11 @@ Thumbs.db
 *.tmproj
 *~
 \#*
-mkmf.log
 REVISION
 TAGS*
 tmtags
+.vscode
+.editorconfig
 
 ## COMPILED ##
 ##############
@@ -42,6 +39,7 @@ tmtags
 *.so
 */rdoc/
 a.out
+mkmf.log
 
 # Testing #
 ###########
@@ -95,7 +93,7 @@ Gemfile.lock
 Policyfile.rb
 Policyfile.lock.json
 
-# Cookbooks #
+# Documentation #
 #############
 CHANGELOG*
 CONTRIBUTING*
