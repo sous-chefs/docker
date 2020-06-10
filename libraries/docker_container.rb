@@ -451,7 +451,7 @@ module DockerCookbook
     #########
 
     # Super handy visual reference!
-    # http://gliderlabs.com/images/docker_events.png
+    # https://gliderlabs.com/images/2015/docker_events.png
 
     # Loads container specific labels excluding those of engine or image.
     # This insures idempotency.
