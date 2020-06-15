@@ -2,6 +2,13 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 6.0.3 (2020-06-15)
+
+- Removed default value for properties working_dir and memory_swap. - [@antima-gupta](https://github.com/antima-gupta)
+- Updated memory_swap default value 0 to nil - [@antima-gupta](https://github.com/antima-gupta)
+- Fix for docker_exec does not check the return code of the command it runs - [@kapilchouhan99](https://github.com/kapilchouhan99)
+- Add provides in addition to resource_name to all resources - [@tas50](https://github.com/tas50)
+
 ## 6.0.2 (2020-06-02)
 
 - Standardise files with files in chef-cookbooks/repo-management - [@xorimabot](https://github.com/xorimabot)
