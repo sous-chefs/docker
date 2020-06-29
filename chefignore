@@ -9,6 +9,7 @@ ehthumbs.db
 Icon?
 nohup.out
 Thumbs.db
+.envrc
 
 # EDITORS #
 ###########
@@ -45,17 +46,23 @@ mkmf.log
 ###########
 .circleci/*
 .codeclimate.yml
+.delivery/*
 .foodcritic
 .kitchen*
+.mdlrc
+.overcommit.yml
 .rspec
 .rubocop.yml
 .travis.yml
 .watchr
+.yamllint
 azure-pipelines.yml
+Dangerfile
 examples/*
 features/*
 Guardfile
 kitchen.yml*
+mlc_config.json
 Procfile
 Rakefile
 spec/*
@@ -68,6 +75,7 @@ test/*
 .gitconfig
 .github/*
 .gitignore
+.gitkeep
 .gitmodules
 .svn
 */.bzr/*
@@ -95,10 +103,11 @@ Policyfile.lock.json
 
 # Documentation #
 #############
-CHANGELOG*
-CONTRIBUTING*
-TESTING*
 CODE_OF_CONDUCT*
+CONTRIBUTING*
+documentation/*
+TESTING*
+UPGRADING*
 
 # Vagrant #
 ###########
