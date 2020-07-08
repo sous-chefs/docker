@@ -77,7 +77,6 @@ module DockerCookbook
       execute 'extract tarball' do
         action :nothing
         command "tar -xzf #{docker_tarball} --strip-components=1 -C #{docker_bin_prefix}"
-        creates docker_bin
       end
 
       group 'docker' do
