@@ -97,6 +97,10 @@ module DockerCookbook
 
       def health_spec
         {
+          'Test' => [],
+          'Interval' => 0,
+          'Timeout' => 0,
+          'Retries' => 0,
           'StartPeriod' => health_start_period * 1_000_000_000
         }
       end
