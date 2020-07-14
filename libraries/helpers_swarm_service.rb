@@ -4,6 +4,10 @@ module DockerCookbook
   module DockerHelpers
     # Helpers for Docker Swarm Networks
     module SwarmService
+      def reset_current_service
+        @current_service = nil
+      end
+
       def current_service
         @current_service ||= current_swarm.find_service_by_name(name)
       end
@@ -97,10 +101,10 @@ module DockerCookbook
 
       def health_spec
         {
-          'Test' => [],
-          'Interval' => 0,
-          'Timeout' => 0,
-          'Retries' => 0,
+          # 'Test' => [],
+          # 'Interval' => 0,
+          # 'Timeout' => 0,
+          # 'Retries' => 0,
           'StartPeriod' => health_start_period * 1_000_000_000
         }
       end

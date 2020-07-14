@@ -73,6 +73,13 @@ module DockerCookbook
 
     action :update do
       ensure_swarm_available!
+
+      # To avoid using a stale version of the current service spec when
+      # executing two actions against the same resource in the same run (and
+      # have an out of sequence ForceUpdate counter). We reset our cached
+      # service spec before every update
+      reset_current_service
+
       if current_service_changed?
         converge_by('Update service') { update_service }
       end
@@ -80,6 +87,10 @@ module DockerCookbook
 
     action :force_update do
       ensure_swarm_available!
+
+      # See #update comment
+      reset_current_service
+
       converge_by('Update service [forced]') do
         update_service(true)
       end
