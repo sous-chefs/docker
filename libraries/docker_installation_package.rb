@@ -6,8 +6,8 @@ module DockerCookbook
     property :setup_docker_repo, [true, false], default: true, desired_state: false
     property :repo_channel, String, default: 'stable'
     property :package_name, String, default: 'docker-ce', desired_state: false
-    property :package_version, String, default: lazy { version_string(version) }, desired_state: false
-    property :version, String, default: '19.03.8', desired_state: false
+    property :package_version, String, desired_state: false
+    property :version, String, desired_state: false
     property :package_options, String, desired_state: false
 
     def el7?
@@ -62,6 +62,7 @@ module DockerCookbook
 
     # https://github.com/chef/chef/issues/4103
     def version_string(v)
+      return if v.nil?
       codename = if stretch? # deb 9
                    'stretch'
                  elsif buster? # deb 10
@@ -129,8 +130,10 @@ module DockerCookbook
         end
       end
 
-      package full_package_name do
-        version new_resource.package_version unless platform_family?('rhel', 'fedora') # rhel / fedora have the version injected in the name
+      version = new_resource.package_version || version_string(new_resource.version)
+
+      package new_resource.package_name do
+        version version
         options new_resource.package_options
         action :install
       end
@@ -139,16 +142,6 @@ module DockerCookbook
     action :delete do
       package new_resource.package_name do
         action :remove
-      end
-    end
-
-    action_class do
-      def full_package_name
-        if platform_family?('rhel', 'fedora')
-          new_resource.package_name + "-#{new_resource.version}*"
-        else
-          new_resource.package_name
-        end
       end
     end
   end
