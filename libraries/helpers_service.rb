@@ -217,7 +217,7 @@ module DockerCookbook
         opts << "--fixed-cidr-v6=#{fixed_cidr_v6}" if fixed_cidr_v6
         opts << "--group=#{group}" if group
         opts << "--data-root=#{data_root}" if data_root
-        opts << "--default-address-pool=#{default_ip_address_pool}" unless default_ip_address_pool.nil?
+        opts << "--default-address-pool #{default_ip_address_pool}" unless default_ip_address_pool.nil?
         host.each { |h| opts << "--host #{h}" } if host
         opts << "--icc=#{icc}" unless icc.nil?
         insecure_registry.each { |i| opts << "--insecure-registry=#{i}" } if insecure_registry
