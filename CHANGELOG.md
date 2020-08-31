@@ -2,6 +2,12 @@
 
 This file is used to list changes made in each version of the docker cookbook.
 
+## 7.0.0 (2020-08-31)
+
+### Breaking Change
+
+The 7.0 release includes a breaking change to package installs with version specified. Before this change RHEL based systems allowed specifying any valid version string (19, 19.03, 19.03.8) and an * was added automatically to package name for specified version installation. New change specifies docker-ce package name and uses package resource version option to specify version. The version option default has been removed and thus will default to the lastest version. If version option is specified it'll lock the package to that version. Debian family machines are unaffected by the change. With this change we will not need to constantly release new versions of the cookbook for new releases of Docker.
+
 ## 6.0.3 (2020-06-15)
 
 - Removed default value for properties working_dir and memory_swap. - [@antima-gupta](https://github.com/antima-gupta)
