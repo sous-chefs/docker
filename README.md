@@ -236,7 +236,7 @@ end
 
 ### Properties
 
-- `version` - Used to calculate package_version string. On Ubuntu / Debian this needs to be the complete version (19.03.8) while on Fedora / RHEL this can be any valid version string (19, 19.03, 19.03.8). We add an asterisk on automatically on RHEL/Fedora so leave that out.
+- `version` - Used to calculate package_version string. This needs to be the complete version (19.03.8).
 - `package_version` - Manually specify the package version string
 - `package_name` - Name of package to install. Defaults to 'docker-ce'
 - `package_options` - Manually specify additional options, like apt-get directives for example
