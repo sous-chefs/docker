@@ -51,7 +51,7 @@ module DockerCookbook
       end
 
       def connect_host
-        return nil unless host
+        return unless host
         sorted = coerce_host(host).sort do |a, b|
           c_a = 1 if a =~ /^unix:/
           c_a = 2 if a =~ /^fd:/
@@ -76,7 +76,7 @@ module DockerCookbook
 
       def connect_socket
         return "/var/run/#{docker_name}.sock" unless host
-        return nil if host.grep(%r{unix://|fd://}).empty?
+        return if host.grep(%r{unix://|fd://}).empty?
         sorted = coerce_host(host).sort do |a, b|
           c_a = 1 if a =~ /^unix:/
           c_a = 2 if a =~ /^fd:/
