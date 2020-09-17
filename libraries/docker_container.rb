@@ -125,7 +125,7 @@ module DockerCookbook
       when DockerBase::UnorderedArray, nil
         v
       else
-        return nil if v.empty?
+        return if v.empty?
         # Parse docker input of /source:/container_name/dest into source:dest
         DockerBase::UnorderedArray.new(Array(v)).map! do |link|
           if link =~ %r{^/(?<source>.+):/#{name}/(?<dest>.+)}
@@ -732,7 +732,7 @@ module DockerCookbook
       end
 
       def parsed_hostname
-        return nil if new_resource.network_mode == 'host'
+        return if new_resource.network_mode == 'host'
         new_resource.hostname
       end
 
@@ -746,7 +746,7 @@ module DockerCookbook
       end
 
       def ulimits_to_hash
-        return nil if new_resource.ulimits.nil?
+        return if new_resource.ulimits.nil?
         new_resource.ulimits.map do |u|
           name = u.split('=')[0]
           soft = u.split('=')[1].split(':')[0]
