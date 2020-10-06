@@ -1,0 +1,10 @@
+---
+version: 2.1
+orbs:
+  kitchen: sous-chefs/kitchen@2
+workflows:
+  danger:
+    jobs:
+      - kitchen/danger:
+          name: danger
+          context: Danger-Minimal
