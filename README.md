@@ -592,8 +592,8 @@ Note - this is best implemented by subscribing to `docker_image` changes.  There
 The `docker_image_prune` resource properties map to filters
 
 - `dangling` - When set to true (or 1), prune only unused and untagged images. When set to false (or 0), all unused images are pruned
-- `prune_until` - Prune images created before this timestamp. The <timestamp> can be Unix timestamps, date formatted timestamps, or Go duration strings (e.g. 10m, 1h30m) computed relative to the daemon machine’s time.
-- `with_label/without_label` -  (label=<key>, label=<key>=<value>, label!=<key>, or label!=<key>=<value>) Prune images with (or without, in case label!=... is used) the specified labels.
+- `prune_until` - Prune images created before this timestamp. The `<timestamp>` can be Unix timestamps, date formatted timestamps, or Go duration strings (e.g. 10m, 1h30m) computed relative to the daemon machine’s time.
+- `with_label/without_label` -  (`label=<key>`, `label=<key>=<value>`, `label!=<key>`, or `label!=<key>=<value>`) Prune images with (or without, in case label!=... is used) the specified labels.
 - `host` - A string containing the host the API should communicate with. Defaults to `ENV['DOCKER_HOST']` if set.
 
 ### Examples
@@ -686,7 +686,7 @@ Most `docker_container` properties are the `snake_case` version of the `CamelCas
 - `env_file` - Read environment variables from a file and set in the container. Accepts an Array or String to the file location. lazy evaluator must be set if the file passed is created by Chef.
 - `extra_hosts` - An array of hosts to add to the container's `/etc/hosts` in the form `['host_a:10.9.8.7', 'host_b:10.9.8.6']`
 - `force` - A boolean to use in container operations that support a `force` option. Defaults to `false`
-- `health_check` - A hash containing the health check options - https://docs.docker.com/engine/reference/run/#healthcheck
+- `health_check` - A hash containing the health check options - [healthcheck reference](https://docs.docker.com/engine/reference/run/#healthcheck)
 - `host` - A string containing the host the API should communicate with. Defaults to ENV['DOCKER_HOST'] if set
 - `host_name` - The hostname for the container.
 - `labels` A string, array, or hash to set metadata on the container in the form ['foo:bar', 'hello:world']`
