@@ -4,7 +4,7 @@ module DockerCookbook
     provides :docker_image
 
     # Modify the default of read_timeout from 60 to 120
-    property :read_timeout, default: 120, desired_state: false
+    property :read_timeout, Integer, default: 120, desired_state: false
 
     # https://docs.docker.com/engine/api/v1.35/#tag/Image
     property :destination, String

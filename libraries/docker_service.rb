@@ -12,7 +12,7 @@ module DockerCookbook
     property :service_manager, %w(execute sysvinit upstart systemd auto), default: 'auto', desired_state: false
 
     # docker_installation_script
-    property :repo, desired_state: false
+    property :repo, String, desired_state: false
     property :script_url, String, desired_state: false
 
     # docker_installation_tarball
