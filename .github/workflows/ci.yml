@@ -45,7 +45,8 @@ jobs:
         suite:
           - 'installation-script-main'
           - 'installation-script-test'
-          - 'installation-script-experimental'
+          # Upstream issue: Could not resolve host: apt.dockerproject.org
+          # - 'installation-script-experimental'
           - 'installation-package'
           - 'installation-tarball'
           - 'resources'
