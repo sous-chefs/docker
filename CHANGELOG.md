@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update and fix ChefSpec tests
 - Yamllint fixes
 - MDL Fixes
+- Loosen docker-api gem to allow >= 1.34, < 3.0 (resolves #1135)
 
 ## 7.0.0 (2020-08-31)
 

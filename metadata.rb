@@ -18,4 +18,4 @@ supports 'redhat'
 supports 'ubuntu'
 
 chef_version '>= 15.0'
-gem 'docker-api', '~> 1.34.0'
+gem 'docker-api', '>= 1.34', '< 3'
