@@ -24,4 +24,5 @@ end
 
 file '/marker_busybox_exec_twofile'
 
-docker_exec 'default'
+# TODO(ramereth): Disabling due to https://github.com/sous-chefs/docker/issues/1137
+# docker_exec 'default'

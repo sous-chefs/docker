@@ -9,7 +9,7 @@ uber_options_network_mode = 'bridge'
 # docker_service[default]
 
 describe docker.version do
-  its('Server.Version') { should eq '19.03.5' }
+  its('Server.Version') { should eq '19.03.8' }
 end
 
 describe command('docker info') do
@@ -941,6 +941,7 @@ describe command("docker inspect -f '{{ .HostConfig.Memory }}' memory") do
   its(:stdout) { should match(/5242880/) }
 end
 
+# TODO(ramereth): Failing with output of "-1"
 describe command("docker inspect -f '{{ .HostConfig.MemorySwap }}' memory") do
   its(:exit_status) { should eq 0 }
   its(:stdout) { should match(/62914560/) }

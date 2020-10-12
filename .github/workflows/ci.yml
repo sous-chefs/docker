@@ -49,7 +49,9 @@ jobs:
           # - 'installation-script-experimental'
           - 'installation-package'
           - 'installation-tarball'
-          - 'resources'
+          # TODO(ramereth): Does not work properly with dokken and should be
+          # tested manually with kitchen-vagrant.
+          # - 'resources'
           - 'network'
           - 'volume'
           - 'registry'
