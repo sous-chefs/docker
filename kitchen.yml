@@ -1,65 +1,28 @@
 ---
 driver:
-  name: dokken
-  privileged: true  # because Docker and SystemD/Upstart
-  chef_version: <%= ENV['CHEF_VERSION'] || 'current' %>
-  chef_license: accept-no-persist
-  volumes: [
-    '/var/lib/docker', '/var/lib/docker-one', '/var/lib/docker-two'
-  ]
-
-transport:
-  name: dokken
+  name: vagrant
+  customize:
+    memory: 2048
+    cpus: 2
 
 provisioner:
-  name: dokken
+  name: chef_solo
+  product_name: chef
+  enforce_idempotency: true
+  multiple_converge: 2
   deprecations_as_errors: true
-  chef_license: accept-no-persist
 
 verifier:
   name: inspec
 
 platforms:
   - name: amazonlinux-2
-    driver:
-      image: dokken/amazonlinux-2
-      pid_one_command: /usr/lib/systemd/systemd
-
   - name: debian-9
-    driver:
-      image: dokken/debian-9
-      pid_one_command: /bin/systemd
-      intermediate_instructions:
-        - RUN /usr/bin/apt-get update
-
   - name: debian-10
-    driver:
-      image: dokken/debian-10
-      pid_one_command: /bin/systemd
-      intermediate_instructions:
-        - RUN /usr/bin/apt-get update
-
   - name: centos-7
-    driver:
-      image: dokken/centos-7
-      pid_one_command: /usr/lib/systemd/systemd
-
   - name: fedora-latest
-    driver:
-      image: dokken/fedora-latest
-      pid_one_command: /usr/lib/systemd/systemd
-
   - name: ubuntu-16.04
-    driver:
-      image: dokken/ubuntu-16.04
-      pid_one_command: /bin/systemd
-      intermediate_instructions:
-        - RUN /usr/bin/apt-get update
-
   - name: ubuntu-18.04
-    driver:
-      image: dokken/ubuntu-18.04
-      pid_one_command: /bin/systemd
 
 suites:
 
@@ -123,6 +86,9 @@ suites:
   ##################
 
   - name: resources
+    provisioner:
+      enforce_idempotency: false
+      multiple_converge: 1
     attributes:
       docker:
         version: '19.03.8'
