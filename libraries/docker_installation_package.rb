@@ -118,6 +118,9 @@ module DockerCookbook
             else
               node['kernel']['machine']
             end
+
+          package 'apt-transport-https'
+
           apt_repository 'Docker' do
             components Array(new_resource.repo_channel)
             uri "https://download.docker.com/linux/#{node['platform']}"
