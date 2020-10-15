@@ -1,6 +1,7 @@
 # Two variables, one recipe.
 caname = 'docker_service_default'
 caroot = "/ca/#{caname}"
+chef_dir = ::File.exist?('/opt/cinc') ? '/opt/cinc' : '/opt/chef'
 
 ################
 # action :create
@@ -301,7 +302,7 @@ directory '/chefbuilder' do
 end
 
 execute 'copy chef to chefbuilder' do
-  command 'tar cf - /opt/chef | tar xf - -C /chefbuilder'
+  command "tar cf - #{chef_dir} | tar xf - -C /chefbuilder"
   creates '/chefbuilder/opt'
   action :run
 end
@@ -323,13 +324,13 @@ end
 # create a volume container
 docker_container 'chef_container' do
   command 'true'
-  volumes '/opt/chef'
+  volumes chef_dir
   action :create
 end
 
 # Inspect the docker logs with test-kitchen bussers
 docker_container 'ohai_debian' do
-  command '/opt/chef/embedded/bin/ohai platform'
+  command "#{chef_dir}/embedded/bin/ohai platform"
   repo 'debian'
   volumes_from 'chef_container'
   action :run_if_missing
@@ -377,14 +378,14 @@ end
 docker_container 'ohai_again' do
   repo 'debian'
   volumes_from 'chef_container'
-  entrypoint '/opt/chef/embedded/bin/ohai'
+  entrypoint "#{chef_dir}/embedded/bin/ohai"
   action :run_if_missing
 end
 
 docker_container 'ohai_again_debian' do
   repo 'debian'
   volumes_from 'chef_container'
-  entrypoint '/opt/chef/embedded/bin/ohai'
+  entrypoint "#{chef_dir}/embedded/bin/ohai"
   command 'platform'
   action :run_if_missing
 end
@@ -420,7 +421,7 @@ end
 
 # Inspect volume container with test-kitchen bussers
 docker_container 'sean_was_here' do
-  command "touch /opt/chef/sean_was_here-#{Time.new.strftime('%Y%m%d%H%M')}"
+  command "touch #{chef_dir}/sean_was_here-#{Time.new.strftime('%Y%m%d%H%M')}"
   repo 'debian'
   volumes_from 'chef_container'
   autoremove true
@@ -439,7 +440,7 @@ end
 
 # Inspect volume container with test-kitchen bussers
 docker_container 'attached' do
-  command "touch /opt/chef/attached-#{Time.new.strftime('%Y%m%d%H%M')}"
+  command "touch #{chef_dir}/attached-#{Time.new.strftime('%Y%m%d%H%M')}"
   repo 'debian'
   volumes_from 'chef_container'
   detach false
@@ -458,7 +459,7 @@ end
 
 # Inspect volume container with test-kitchen bussers
 docker_container 'attached_with_timeout' do
-  command "sleep 15 && touch /opt/chef/attached_with_timeout-#{Time.new.strftime('%Y%m%d%H%M')}"
+  command "sleep 15 && touch #{chef_dir}/attached_with_timeout-#{Time.new.strftime('%Y%m%d%H%M')}"
   repo 'debian'
   volumes_from 'chef_container'
   detach false
@@ -1215,6 +1216,7 @@ docker_container 'memory' do
   memory_reservation '50m'
   shm_size '32m'
   action :run
+  not_if { platform_family?('rhel') && node['platform_version'].to_i < 8 }
 end
 
 ################
