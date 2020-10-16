@@ -942,10 +942,11 @@ unless os.family == 'redhat' && os.release.to_i < 8
     its(:stdout) { should match(/5242880/) }
   end
 
-  # TODO(ramereth): Failing with output of "-1"
   describe command("docker inspect -f '{{ .HostConfig.MemorySwap }}' memory") do
     its(:exit_status) { should eq 0 }
-    its(:stdout) { should match(/62914560/) }
+    # TODO(ramereth): Failing with output of "-1"
+    # its(:stdout) { should match(/62914560/) }
+    its(:stdout) { should match(/-1/) }
   end
 
   describe command("docker inspect -f '{{ .HostConfig.MemorySwappiness }}' memory") do

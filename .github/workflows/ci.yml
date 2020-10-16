@@ -40,46 +40,17 @@ jobs:
     strategy:
       matrix:
         os:
+          - 'debian-9'
+          - 'debian-10'
+          - 'centos-7'
           - 'ubuntu-1604'
           - 'ubuntu-1804'
         suite:
           - 'installation-script-main'
           - 'installation-script-test'
-          # Upstream issue: Could not resolve host: apt.dockerproject.org
-          # - 'installation-script-experimental'
           - 'installation-package'
           - 'installation-tarball'
-          # TODO(ramereth): Does not work properly with dokken and should be
-          # tested manually with kitchen-vagrant.
-          # - 'resources'
-          - 'network'
-          - 'volume'
-          - 'registry'
           - 'smoke'
-        include:
-          - os: debian-9
-            suite: installation-package
-          - os: debian-10
-            suite: installation-package
-          - os: centos-7
-            suite: installation-package
-          - os: fedora-latest
-            suite: installation-package
-          - os: debian-9
-            suite: resources
-          - os: debian-10
-            suite: resources
-          - os: centos-7
-            suite: resources
-          - os: fedora-latest
-            suite: resources
-        exclude:
-          - os: ubuntu-1604
-            suite: network
-          - os: ubuntu-1604
-            suite: volume
-          - os: ubuntu-1604
-            suite: registry
       fail-fast: false
 
     steps:

@@ -30,10 +30,8 @@ suites:
   # docker_installation resources
   ###############################
   - name: installation_script_main
-    includes: [
-      'ubuntu-16.04',
-      'ubuntu-18.04'
-    ]
+    excludes:
+      - 'amazonlinux-2'
     attributes:
       docker:
         repo: 'main'
@@ -41,10 +39,8 @@ suites:
       - recipe[docker_test::installation_script]
 
   - name: installation_script_test
-    includes: [
-      'ubuntu-16.04',
-      'ubuntu-18.04'
-    ]
+    excludes:
+      - 'amazonlinux-2'
     attributes:
       docker:
         repo: 'test'
@@ -52,10 +48,8 @@ suites:
       - recipe[docker_test::installation_script]
 
   - name: installation_script_experimental
-    includes: [
-      'ubuntu-16.04',
-      'ubuntu-18.04'
-    ]
+    excludes:
+      - 'amazonlinux-2'
     attributes:
       docker:
         repo: 'experimental'
@@ -68,7 +62,8 @@ suites:
         version: '19.03.8'
     run_list:
       - recipe[docker_test::installation_package]
-    excludes: ['amazonlinux-2']
+    excludes:
+      - 'amazonlinux-2'
 
   - name: installation_tarball
     attributes:
@@ -76,10 +71,6 @@ suites:
         version: '19.03.8'
     run_list:
       - recipe[docker_test::installation_tarball]
-    includes: [
-      'ubuntu-16.04',
-      'ubuntu-18.04'
-    ]
 
   ##################
   # resource testing
@@ -98,48 +89,58 @@ suites:
       - recipe[docker_test::container]
       - recipe[docker_test::exec]
       - recipe[docker_test::plugin]
+    excludes:
+      - 'amazonlinux-2'
+      - 'fedora-latest'
 
   - name: network
-    includes: [
-      'ubuntu-18.04',
-    ]
+    provisioner:
+      enforce_idempotency: false
+      multiple_converge: 1
     attributes:
       docker:
         version: '19.03.8'
     run_list:
       - recipe[docker_test::default]
       - recipe[docker_test::network]
+    excludes:
+      - 'amazonlinux-2'
+      - 'fedora-latest'
 
   - name: volume
-    includes: [
-      'ubuntu-18.04',
-    ]
+    provisioner:
+      enforce_idempotency: false
+      multiple_converge: 1
     attributes:
       docker:
         version: '19.03.8'
     run_list:
       - recipe[docker_test::default]
       - recipe[docker_test::volume]
+    excludes:
+      - 'amazonlinux-2'
+      - 'fedora-latest'
 
   - name: registry
-    includes: [
-      'ubuntu-18.04',
-    ]
+    provisioner:
+      enforce_idempotency: false
+      multiple_converge: 1
     attributes:
       docker:
         version: '19.03.8'
     run_list:
       - recipe[docker_test::default]
       - recipe[docker_test::registry]
+    excludes:
+      - 'amazonlinux-2'
+      - 'fedora-latest'
 
   #############################
   # quick service smoke testing
   #############################
 
   - name: smoke
-    includes: [
-      'ubuntu-16.04',
-      'ubuntu-18.04'
-    ]
     run_list:
       - recipe[docker_test::smoke]
+    excludes:
+      - 'amazonlinux-2'
