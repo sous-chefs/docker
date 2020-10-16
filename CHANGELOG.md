@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update to use Sous Chefs GH workflow
 - Disable installation-script-experimental
 - Update README to sous-chefs
+- Update metadata.rb to Sous Chefs
 
 ### Fixed
 
