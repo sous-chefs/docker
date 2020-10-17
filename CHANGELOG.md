@@ -25,6 +25,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Loosen docker-api gem to allow >= 1.34, < 3.0 (resolves #1135)
 - Update test recipes/tests so they can work with Cinc
 
+### Added
+
+- Add testing for CentOS 8
+
 ### Removed
 
 - Disable broken tests and `resources` suite
