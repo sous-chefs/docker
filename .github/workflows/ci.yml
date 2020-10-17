@@ -46,6 +46,7 @@ jobs:
           - 'centos-8'
           - 'ubuntu-1604'
           - 'ubuntu-1804'
+          - 'ubuntu-2004'
         suite:
           - 'installation-script-main'
           - 'installation-script-test'
