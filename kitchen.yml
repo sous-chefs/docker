@@ -59,7 +59,7 @@ suites:
   - name: installation_package
     attributes:
       docker:
-        version: '19.03.8'
+        version: '19.03.13'
     run_list:
       - recipe[docker_test::installation_package]
     excludes:
@@ -68,7 +68,7 @@ suites:
   - name: installation_tarball
     attributes:
       docker:
-        version: '19.03.8'
+        version: '19.03.13'
     run_list:
       - recipe[docker_test::installation_tarball]
 
@@ -82,7 +82,7 @@ suites:
       multiple_converge: 1
     attributes:
       docker:
-        version: '19.03.8'
+        version: '19.03.13'
     run_list:
       - recipe[docker_test::default]
       - recipe[docker_test::image]
@@ -99,7 +99,7 @@ suites:
       multiple_converge: 1
     attributes:
       docker:
-        version: '19.03.8'
+        version: '19.03.13'
     run_list:
       - recipe[docker_test::default]
       - recipe[docker_test::network]
@@ -113,7 +113,7 @@ suites:
       multiple_converge: 1
     attributes:
       docker:
-        version: '19.03.8'
+        version: '19.03.13'
     run_list:
       - recipe[docker_test::default]
       - recipe[docker_test::volume]
@@ -127,7 +127,7 @@ suites:
       multiple_converge: 1
     attributes:
       docker:
-        version: '19.03.8'
+        version: '19.03.13'
     run_list:
       - recipe[docker_test::default]
       - recipe[docker_test::registry]

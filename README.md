@@ -236,7 +236,7 @@ The `docker_installation_package` resource uses the system package manager to in
 
 ```ruby
 docker_installation_package 'default' do
-  version '19.03.8'
+  version '19.03.13'
   action :create
   package_options %q|--force-yes -o Dpkg::Options::='--force-confold' -o Dpkg::Options::='--force-all'| # if Ubuntu for example
 end
