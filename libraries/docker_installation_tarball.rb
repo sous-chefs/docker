@@ -81,10 +81,18 @@ module DockerCookbook
         command "tar -xzf #{docker_tarball} --strip-components=1 -C #{docker_bin_prefix}"
         creates docker_bin
       end
+
+      group 'docker' do
+        system true
+      end
     end
 
     action :delete do
       file docker_bin do
+        action :delete
+      end
+
+      group 'docker' do
         action :delete
       end
     end
