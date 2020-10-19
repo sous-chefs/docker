@@ -68,9 +68,6 @@ suites:
       - 'amazonlinux-2'
 
   - name: installation_tarball
-    attributes:
-      docker:
-        version: '19.03.13'
     run_list:
       - recipe[docker_test::installation_tarball]
 
