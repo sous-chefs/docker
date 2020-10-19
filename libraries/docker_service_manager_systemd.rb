@@ -26,6 +26,16 @@ module DockerCookbook
         not_if { docker_name == 'default' && ::File.exist?('/lib/systemd/system/docker.socket') }
       end
 
+      template '/etc/systemd/system/containerd.service' do
+        source 'systemd/containerd.service.erb'
+        cookbook 'docker'
+        owner 'root'
+        group 'root'
+        mode '0644'
+        not_if { ::File.exist?('/lib/systemd/system/containerd.service') }
+        notifies :run, 'execute[systemctl daemon-reload]', :immediately
+      end
+
       # stock systemd unit file
       # See - https://github.com/docker/docker-ce-packaging/blob/master/systemd/docker.service
       template "/lib/systemd/system/#{docker_name}.service" do
