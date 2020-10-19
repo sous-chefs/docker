@@ -6,7 +6,7 @@ module DockerCookbook
     property :checksum, String, default: lazy { default_checksum }, desired_state: false
     property :source, String, default: lazy { default_source }, desired_state: false
     property :channel, String, default: 'stable', desired_state: false
-    property :version, String, default: '19.03.5', desired_state: false
+    property :version, String, default: '19.03.13', desired_state: false
 
     ##################
     # Property Helpers
@@ -45,7 +45,7 @@ module DockerCookbook
         when '18.03.0' then '2d44ed2ac1e24cb22b6e72cb16d74fc9e60245a8ac1d4f79475604b804f46d38'
         when '18.03.1' then 'bbfb9c599a4fdb45523496c2ead191056ff43d6be90cf0e348421dd56bc3dcf0'
         when '18.06.0' then '5489360ae1894375a56255fb821fcf368b33027cd4f4bbaebf5176c05b79f420'
-        when '19.03.5' then 'fd62b9239045a7356c9d36492779b8611dc783f455f5bf66a77b0bd7b2ec3913'
+        when '19.03.13' then 'd035d468218c26973710b35101b55dcf82c25d43a0a88aaa9f667b1782ec6ea4'
         end
       when 'Linux'
         case version
@@ -53,7 +53,7 @@ module DockerCookbook
         when '18.03.0' then 'e5dff6245172081dbf14285dafe4dede761f8bc1750310156b89928dbf56a9ee'
         when '18.03.1' then '0e245c42de8a21799ab11179a4fce43b494ce173a8a2d6567ea6825d6c5265aa'
         when '18.06.0' then '1c2fa625496465c68b856db0ba850eaad7a16221ca153661ca718de4a2217705'
-        when '19.03.5' then '50cdf38749642ec43d6ac50f4a3f1f7f6ac688e8d8b4e1c5b7be06e1a82f06e9'
+        when '19.03.13' then 'ddb13aff1fcdcceb710bf71a210169b9c1abfd7420eeaf42cf7975f8fae2fcc8'
         end
       end
     end

@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Disable installation-script-experimental
 - Update README to sous-chefs
 - Update metadata.rb to Sous Chefs
+- Update tarball version to 19.03.13
 
 ### Fixed
 
