@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add testing for CentOS 8
 - Add testing for Ubuntu 20.04
+- Add `docker_install_method` helper to automate install method
 
 ### Removed
 

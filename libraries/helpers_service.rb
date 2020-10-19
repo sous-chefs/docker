@@ -45,6 +45,17 @@ module DockerCookbook
         "docker-#{name}"
       end
 
+      def docker_install_method
+        case node['platform_family']
+        when 'amazon'
+          'tarball'
+        when 'debian', 'rhel', 'fedora'
+          'package'
+        else
+          'script'
+        end
+      end
+
       def installed_docker_version
         o = shell_out("#{docker_bin} --version")
         o.stdout.split[2].chomp(',')

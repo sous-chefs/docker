@@ -144,5 +144,3 @@ suites:
   - name: smoke
     run_list:
       - recipe[docker_test::smoke]
-    excludes:
-      - 'amazonlinux-2'
