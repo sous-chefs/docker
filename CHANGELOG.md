@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update metadata.rb to Sous Chefs
 - Update tarball version to 19.03.13
 - Update tarball suite tests
+- Update tarball checksums to latest versions
 
 ### Fixed
 
