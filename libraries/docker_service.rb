@@ -8,11 +8,11 @@ module DockerCookbook
     provides :docker_service
 
     # installation type and service_manager
-    property :install_method, %w(script package tarball none auto), default: 'auto', desired_state: false
+    property :install_method, %w(script package tarball none auto), default: lazy { docker_install_method }, desired_state: false
     property :service_manager, %w(execute sysvinit upstart systemd auto), default: 'auto', desired_state: false
 
     # docker_installation_script
-    property :repo, desired_state: false
+    property :repo, String, desired_state: false
     property :script_url, String, desired_state: false
 
     # docker_installation_tarball

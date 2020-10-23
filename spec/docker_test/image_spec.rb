@@ -57,9 +57,9 @@ describe 'docker_test::image' do
   context 'testing specifying a tag and read/write timeouts' do
     it 'pulls docker_image[alpine]' do
       expect(chef_run).to pull_docker_image('alpine').with(
-        tag: '3.1',
-        read_timeout: 60,
-        write_timeout: 60
+        tag: '2.7',
+        read_timeout: 120,
+        write_timeout: nil
       )
     end
   end

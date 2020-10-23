@@ -3,7 +3,6 @@
 #########################
 
 docker_service 'default' do
-  install_method 'package'
   graph '/var/lib/docker'
   action [:create, :start]
 end

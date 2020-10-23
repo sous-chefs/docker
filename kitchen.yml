@@ -1,179 +1,143 @@
 ---
 driver:
-  name: dokken
-  privileged: true # because Docker and SystemD/Upstart
-  chef_version: <%= ENV['CHEF_VERSION'] || 'current' %>
-  chef_license: accept-no-persist
-  volumes: [
-    '/var/lib/docker', '/var/lib/docker-one', '/var/lib/docker-two'
-    ]
-
-transport:
-  name: dokken
+  name: vagrant
+  customize:
+    memory: 2048
+    cpus: 2
 
 provisioner:
-  name: dokken
+  name: chef_solo
+  product_name: chef
+  enforce_idempotency: true
+  multiple_converge: 2
   deprecations_as_errors: true
-  chef_license: accept-no-persist
 
 verifier:
   name: inspec
 
 platforms:
-- name: amazonlinux-2
-  driver:
-    image: dokken/amazonlinux-2
-    pid_one_command: /usr/lib/systemd/systemd
-
-- name: debian-9
-  driver:
-    image: dokken/debian-9
-    pid_one_command: /bin/systemd
-    intermediate_instructions:
-      - RUN /usr/bin/apt-get update
-
-- name: debian-10
-  driver:
-    image: dokken/debian-10
-    pid_one_command: /bin/systemd
-    intermediate_instructions:
-      - RUN /usr/bin/apt-get update
-
-- name: centos-7
-  driver:
-    image: dokken/centos-7
-    pid_one_command: /usr/lib/systemd/systemd
-
-- name: fedora-latest
-  driver:
-    image: dokken/fedora-latest
-    pid_one_command: /usr/lib/systemd/systemd
-
-- name: ubuntu-16.04
-  driver:
-    image: dokken/ubuntu-16.04
-    pid_one_command: /bin/systemd
-    intermediate_instructions:
-      - RUN /usr/bin/apt-get update
-
-- name: ubuntu-18.04
-  driver:
-    image: dokken/ubuntu-18.04
-    pid_one_command: /bin/systemd
+  - name: amazonlinux-2
+  - name: debian-9
+  - name: debian-10
+  - name: centos-7
+  - name: centos-8
+  - name: fedora-latest
+  - name: ubuntu-16.04
+  - name: ubuntu-18.04
+  - name: ubuntu-20.04
 
 suites:
 
-###############################
-# docker_installation resources
-###############################
-- name: installation_script_main
-  includes: [
-    'ubuntu-16.04',
-    'ubuntu-18.04'
-   ]
-  attributes:
-    docker:
-      repo: 'main'
-  run_list:
-  - recipe[docker_test::installation_script]
+  ###############################
+  # docker_installation resources
+  ###############################
+  - name: installation_script_main
+    excludes:
+      - 'amazonlinux-2'
+    attributes:
+      docker:
+        repo: 'main'
+    run_list:
+      - recipe[docker_test::installation_script]
 
-- name: installation_script_test
-  includes: [
-    'ubuntu-16.04',
-    'ubuntu-18.04'
-   ]
-  attributes:
-    docker:
-      repo: 'test'
-  run_list:
-  - recipe[docker_test::installation_script]
+  - name: installation_script_test
+    excludes:
+      - 'amazonlinux-2'
+    attributes:
+      docker:
+        repo: 'test'
+    run_list:
+      - recipe[docker_test::installation_script]
 
-- name: installation_script_experimental
-  includes: [
-    'ubuntu-16.04',
-    'ubuntu-18.04'
-   ]
-  attributes:
-    docker:
-      repo: 'experimental'
-  run_list:
-  - recipe[docker_test::installation_script]
+  - name: installation_script_experimental
+    excludes:
+      - 'amazonlinux-2'
+    attributes:
+      docker:
+        repo: 'experimental'
+    run_list:
+      - recipe[docker_test::installation_script]
 
-- name: installation_package
-  attributes:
-    docker:
-      version: '19.03.8'
-  run_list:
-  - recipe[docker_test::installation_package]
-  excludes: ['amazonlinux-2']
+  - name: installation_package
+    attributes:
+      docker:
+        version: '19.03.13'
+    run_list:
+      - recipe[docker_test::installation_package]
+    excludes:
+      - 'amazonlinux-2'
 
-- name: installation_tarball
-  attributes:
-    docker:
-      version: '19.03.8'
-  run_list:
-  - recipe[docker_test::installation_tarball]
-  includes: [
-    'ubuntu-16.04',
-    'ubuntu-18.04'
-   ]
+  - name: installation_tarball
+    run_list:
+      - recipe[docker_test::installation_tarball]
 
-##################
-# resource testing
-##################
+  ##################
+  # resource testing
+  ##################
 
-- name: resources
-  attributes:
-    docker:
-      version: '19.03.8'
-  run_list:
-  - recipe[docker_test::default]
-  - recipe[docker_test::image]
-  - recipe[docker_test::container]
-  - recipe[docker_test::exec]
-  - recipe[docker_test::plugin]
+  - name: resources
+    provisioner:
+      enforce_idempotency: false
+      multiple_converge: 1
+    attributes:
+      docker:
+        version: '19.03.13'
+    run_list:
+      - recipe[docker_test::default]
+      - recipe[docker_test::image]
+      - recipe[docker_test::container]
+      - recipe[docker_test::exec]
+      - recipe[docker_test::plugin]
+    excludes:
+      - 'amazonlinux-2'
+      - 'fedora-latest'
 
-- name: network
-  includes: [
-    'ubuntu-18.04',
-   ]
-  attributes:
-    docker:
-      version: '19.03.8'
-  run_list:
-  - recipe[docker_test::default]
-  - recipe[docker_test::network]
+  - name: network
+    provisioner:
+      enforce_idempotency: false
+      multiple_converge: 1
+    attributes:
+      docker:
+        version: '19.03.13'
+    run_list:
+      - recipe[docker_test::default]
+      - recipe[docker_test::network]
+    excludes:
+      - 'amazonlinux-2'
+      - 'fedora-latest'
 
-- name: volume
-  includes: [
-    'ubuntu-18.04',
-   ]
-  attributes:
-    docker:
-      version: '19.03.8'
-  run_list:
-  - recipe[docker_test::default]
-  - recipe[docker_test::volume]
+  - name: volume
+    provisioner:
+      enforce_idempotency: false
+      multiple_converge: 1
+    attributes:
+      docker:
+        version: '19.03.13'
+    run_list:
+      - recipe[docker_test::default]
+      - recipe[docker_test::volume]
+    excludes:
+      - 'amazonlinux-2'
+      - 'fedora-latest'
 
-- name: registry
-  includes: [
-    'ubuntu-18.04',
-   ]
-  attributes:
-    docker:
-      version: '19.03.8'
-  run_list:
-  - recipe[docker_test::default]
-  - recipe[docker_test::registry]
+  - name: registry
+    provisioner:
+      enforce_idempotency: false
+      multiple_converge: 1
+    attributes:
+      docker:
+        version: '19.03.13'
+    run_list:
+      - recipe[docker_test::default]
+      - recipe[docker_test::registry]
+    excludes:
+      - 'amazonlinux-2'
+      - 'fedora-latest'
 
-#############################
-# quick service smoke testing
-#############################
+  #############################
+  # quick service smoke testing
+  #############################
 
-- name: smoke
-  includes: [
-    'ubuntu-16.04',
-    'ubuntu-18.04'
-   ]
-  run_list:
-  - recipe[docker_test::smoke]
+  - name: smoke
+    run_list:
+      - recipe[docker_test::smoke]

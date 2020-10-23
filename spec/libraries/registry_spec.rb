@@ -22,7 +22,7 @@ describe 'docker_registry' do
     # for multiple docker apis and docker-api gems
     # https://github.com/excon/excon#stubs
     Excon.defaults[:mock] = true
-    Excon.stub({ method: :post, path: '/v1.16/auth' }, body: auth, status: 200)
+    Excon.stub({ method: :post, path: '/auth' }, body: auth, status: 200)
   end
 
   context 'logs into a docker registry with default options' do

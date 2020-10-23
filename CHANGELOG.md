@@ -1,6 +1,45 @@
-# Docker Cookbook Changelog
+# docker Cookbook CHANGELOG
 
 This file is used to list changes made in each version of the docker cookbook.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## Unreleased
+
+### Changed
+
+- Sous Chefs Adoption
+- Update Changelog to Sous Chefs
+- Update to use Sous Chefs GH workflow
+- Disable installation-script-experimental
+- Update README to sous-chefs
+- Update metadata.rb to Sous Chefs
+- Update tarball version to 19.03.13
+- Update tarball suite tests
+- Update tarball checksums to latest versions
+
+### Fixed
+
+- Cookstyle fixes
+- Update and fix ChefSpec tests
+- Yamllint fixes
+- MDL Fixes
+- Loosen docker-api gem to allow >= 1.34, < 3.0 (resolves #1135)
+- Update test recipes/tests so they can work with Cinc
+- Ensure `docker` group exists for tarball installation
+- Enable containerd systemd unit if binary exists
+
+### Added
+
+- Add testing for CentOS 8
+- Add testing for Ubuntu 20.04
+- Add `docker_install_method` helper to automate install method
+- Add `container.service` unit for tarball installation method
+
+### Removed
+
+- Disable broken tests and `resources` suite
 
 ## 7.0.0 (2020-08-31)
 
@@ -1622,7 +1661,7 @@ This release deprecates AUFS/device-mapper handling from chef-docker, but provid
 
 # 0.32.0
 
-_If you're using CentOS/RHEL with EPEL, upcoming docker-io 0.9.0 package upgrade can be tracked at [Bugzilla 1074880](https://bugzilla.redhat.com/show_bug.cgi?id=1074880)_
+## If you're using CentOS/RHEL with EPEL, upcoming docker-io 0.9.0 package upgrade can be tracked at [Bugzilla 1074880](https://bugzilla.redhat.com/show_bug.cgi?id=1074880)
 
 This release includes Docker 0.9.0 changes and defaults, such as setting exec_driver to libcontainer ("native"), setting -rm on docker build, double dash arguments on the CLI, additional flags, etc.
 

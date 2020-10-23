@@ -158,7 +158,7 @@ bash 'start docker registry' do
   -p 5000:5000 \
   --name registry_service \
   --restart=always \
-  registry:2
+  registry
   EOF
   not_if "[ ! -z `docker ps -qaf 'name=registry_service$'` ]"
 end
