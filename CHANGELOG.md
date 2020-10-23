@@ -26,7 +26,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - MDL Fixes
 - Loosen docker-api gem to allow >= 1.34, < 3.0 (resolves #1135)
 - Update test recipes/tests so they can work with Cinc
-- Unsure `docker` group exists for tarball installation
+- Ensure `docker` group exists for tarball installation
+- Enable containerd systemd unit if binary exists
 
 ### Added
 

@@ -135,7 +135,11 @@ module DockerCookbook
       end
 
       def containerd_daemon_opts
-        ['--containerd=/run/containerd/containerd.sock'].join(' ')
+        if docker_containerd
+          ['--containerd=/run/containerd/containerd.sock'].join(' ')
+        else
+          []
+        end
       end
 
       def docker_major_version
@@ -163,7 +167,7 @@ module DockerCookbook
       end
 
       def docker_daemon_cmd
-        [dockerd_bin, docker_daemon_arg, docker_daemon_opts, containerd_daemon_opts].join(' ')
+        [dockerd_bin, docker_daemon_arg, docker_daemon_opts, containerd_daemon_opts].flatten.join(' ')
       end
 
       def docker_cmd
@@ -249,6 +253,18 @@ module DockerCookbook
         o = shell_out("#{docker_cmd} ps | head -n 1 | grep ^CONTAINER")
         return true if o.stdout =~ /CONTAINER/
         false
+      end
+
+      def docker_containerd
+        ::File.exist?('/usr/bin/containerd')
+      end
+
+      def docker_containerd_service_type
+        if Gem::Version.new(docker_major_version) <= Gem::Version.new('18.09')
+          'simple'
+        else
+          'notify'
+        end
       end
     end unless defined?(DockerCookbook::DockerHelpers::Service)
   end
