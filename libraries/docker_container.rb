@@ -14,6 +14,7 @@ module DockerCookbook
     property :cap_add, [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
     property :cap_drop, [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
     property :cgroup_parent, String, default: ''
+    property :cpus, [Integer, Float], coerce: proc { |v| coerce_cpus(v) }, default: 0
     property :cpu_shares, Integer, default: 0
     property :cpuset_cpus, String, default: ''
     property :detach, [true, false], default: true, desired_state: false
@@ -164,6 +165,11 @@ module DockerCookbook
                    end
 
       n * multiplier
+    end
+
+    def coerce_cpus(v)
+      return 0 if v.nil?
+      (v * (10**9)).to_i
     end
 
     def coerce_to_bytes(v)
@@ -522,6 +528,7 @@ module DockerCookbook
               'MemorySwap'      => new_resource.memory_swap,
               'MemorySwappiness' => new_resource.memory_swappiness,
               'MemoryReservation' => new_resource.memory_reservation,
+              'NanoCpus'        => new_resource.cpus,
               'NetworkMode'     => new_resource.network_mode,
               'OomKillDisable'  => new_resource.oom_kill_disable,
               'OomScoreAdj'     => new_resource.oom_score_adj,

@@ -10,7 +10,7 @@ chef_dir = file('/opt/cinc').exist? ? '/opt/cinc' : '/opt/chef'
 # docker_service[default]
 
 describe docker.version do
-  its('Server.Version') { should eq '19.03.8' }
+  its('Server.Version') { should eq '19.03.13' }
 end
 
 describe command('docker info') do
@@ -531,6 +531,18 @@ end
 #   its(:exit_status) { should eq 0 }
 #   its(:stdout) { should_not match(/0f343b0931126a20f133d67c2b018a3b/) }
 # end
+
+# docker_container[cpus]
+
+describe docker_container('cpus') do
+  it { should exist }
+  it { should_not be_running }
+end
+
+describe command("docker inspect -f '{{ .HostConfig.NanoCpus }}' cpus") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match(/500000000/) }
+end
 
 # docker_container[cpu_shares]
 

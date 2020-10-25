@@ -549,6 +549,19 @@ docker_container 'extra_hosts' do
 end
 
 ############
+# cpus
+############
+
+# docker inspect -f '{{ .HostConfig.NanoCpus }}' cpus
+docker_container 'cpus' do
+  repo 'alpine'
+  tag '3.1'
+  command 'ls -la'
+  cpus 0.5
+  action :run_if_missing
+end
+
+############
 # cpu_shares
 ############
 
@@ -870,6 +883,7 @@ docker_container 'uber_options' do
   working_dir '/'
   cap_add %w(NET_ADMIN SYS_RESOURCE)
   cap_drop 'MKNOD'
+  cpus 1.5
   cpu_shares 512
   cpuset_cpus '0,1'
   dns ['8.8.8.8', '8.8.4.4']

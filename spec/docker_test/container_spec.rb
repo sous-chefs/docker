@@ -29,6 +29,7 @@ describe 'docker_test::container' do
         tag: 'latest',
         command: ['/hello'],
         cgroup_parent: '',
+        cpus: 0,
         cpu_shares: 0,
         cpuset_cpus: '',
         detach: true,
@@ -489,6 +490,17 @@ describe 'docker_test::container' do
     end
   end
 
+  context 'testing cpus' do
+    it 'run_if_missing docker_container[cpus]' do
+      expect(chef_run).to run_if_missing_docker_container('cpus').with(
+          repo: 'alpine',
+          tag: '3.1',
+          command: ['ls', '-la'],
+          cpus: 500000000
+        )
+    end
+  end
+
   context 'testing cpu_shares' do
     it 'run_if_missing docker_container[cpu_shares]' do
       expect(chef_run).to run_if_missing_docker_container('cpu_shares').with(
@@ -762,6 +774,7 @@ describe 'docker_test::container' do
         working_dir: '/',
         cap_add: %w(NET_ADMIN SYS_RESOURCE),
         cap_drop: ['MKNOD'],
+        cpus: 1500000000,
         cpu_shares: 512,
         cpuset_cpus: '0,1',
         dns: ['8.8.8.8', '8.8.4.4'],
