@@ -684,6 +684,7 @@ Most `docker_container` properties are the `snake_case` version of the `CamelCas
 - `volumes` - An array of volume bindings for this container. Each volume binding is a string in one of these forms: `container_path` to create a new volume for the container. `host_path:container_path` to bind-mount a host path into the container. `host_path:container_path:ro` to make the bind-mount read-only inside the container.
 - `cap_add` - An array Linux Capabilities (`man 7 capabilities`) to add to grant the container beyond what it normally gets.
 - `cap_drop` - An array Linux Capabilities (`man 7 capabilities`) to revoke that the container normally has.
+- `cpus` - A float or integer value specifying how much of the available CPU resources a container can use. Available in Docker 1.13 and higher.
 - `cpu_shares` - An integer value containing the CPU Shares for the container.
 - `devices` - A Hash of devices to add to the container.
 - `dns` - An array of DNS servers the container will use for name resolution.
