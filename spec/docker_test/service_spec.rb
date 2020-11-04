@@ -32,7 +32,7 @@ ExecStartPre=/sbin/sysctl -w net.ipv6.conf.all.forwarding=1
 # the default is not to use systemd for cgroups because the delegate issues still
 # exists and systemd currently does not support the cgroup feature set required
 # for containers run by docker
-ExecStart=/usr/bin/dockerd  --bip=10.10.10.0/24 --group=docker --default-address-pool=base=10.10.10.0/16,size=24 --pidfile=/var/run/docker.pid --storage-driver=overlay2 --containerd=/run/containerd/containerd.sock
+ExecStart=/usr/bin/dockerd  --bip=10.10.10.0/24 --group=docker --default-address-pool base=10.10.10.0/16,size=24 --pidfile=/var/run/docker.pid --storage-driver=overlay2 --containerd=/run/containerd/containerd.sock
 ExecReload=/bin/kill -s HUP $MAINPID
 TimeoutSec=0
 RestartSec=2
@@ -109,7 +109,7 @@ ExecStartPre=/sbin/sysctl -w net.ipv6.conf.all.forwarding=1
 # the default is not to use systemd for cgroups because the delegate issues still
 # exists and systemd currently does not support the cgroup feature set required
 # for containers run by docker
-ExecStart=/usr/bin/dockerd  --bip=10.10.10.0/24 --group=docker --default-address-pool=base=10.10.10.0/16,size=24 --pidfile=/var/run/docker.pid --storage-driver=overlay2
+ExecStart=/usr/bin/dockerd  --bip=10.10.10.0/24 --group=docker --default-address-pool base=10.10.10.0/16,size=24 --pidfile=/var/run/docker.pid --storage-driver=overlay2
 ExecReload=/bin/kill -s HUP $MAINPID
 TimeoutSec=0
 RestartSec=2
