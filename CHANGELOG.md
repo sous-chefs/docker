@@ -5,6 +5,10 @@ This file is used to list changes made in each version of the docker cookbook.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+- add the properties `ip`and `ip6` to `docker_network`
+
 ## 7.2.1 (2020-11-03)
 
 - Fix issue with `default-ip-addr` in systemd
