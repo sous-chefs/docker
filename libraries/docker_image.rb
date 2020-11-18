@@ -31,13 +31,13 @@ module DockerCookbook
       case v
       when Hash
         str = ''
-        v.each do | key, value |
+        v.each do |key, value|
           str += '"' + key.to_s + '": "' + value.to_s + '",'
         end
         '{ ' + str.delete_suffix(',') + ' }'
       when Array
         str = ''
-        Array(v).each_with_object({}) do |label|
+        Array(v).each do |label|
           parts = label.split(':')
           str += '"' + parts[0].to_s + '": "' + parts[1].to_s + '",'
         end
