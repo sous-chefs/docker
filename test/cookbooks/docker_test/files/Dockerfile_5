@@ -1,0 +1,6 @@
+ARG IMAGE_TAG
+ARG IMAGE_NAME
+FROM $IMAGE_NAME:$IMAGE_TAG
+ARG IMAGE_NAME
+ENV image_name=$IMAGE_NAME
+RUN echo $image_name > /image_name
