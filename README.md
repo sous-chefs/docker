@@ -471,6 +471,7 @@ public registry vs a private one.
 - `tls_ca_cert` - Trust certs signed only by this CA. Defaults to `ENV['DOCKER_CERT_PATH']` if set.
 - `tls_client_cert` - Path to TLS certificate file for docker cli. Defaults to `ENV['DOCKER_CERT_PATH']` if set
 - `tls_client_key` - Path to TLS key file for docker cli. Defaults to `ENV['DOCKER_CERT_PATH']` if set.
+- `buildargs` - A string, hash, or array containing build arguments.
 
 ### Examples
 
@@ -551,7 +552,7 @@ docker_image 'image_2' do
 end
 ```
 
-- build from a tarball NOTE: this is not an "export" tarball generated from an an image save. The contents should be a Dockerfile, and anything it references to COPY or ADD
+- build from a tarball NOTE: this is not an "export" tarball generated from an image save. The contents should be a Dockerfile, and anything it references to COPY or ADD
 
 ```ruby
 docker_image 'image_3' do
@@ -567,6 +568,43 @@ docker_image 'hello-again' do
   source '/tmp/hello-world.tar'
   action :import
 end
+```
+
+- build from a Dockerfile on every chef-client run with `buildargs`
+
+Acceptable values for `buildargs`:
+
+String:
+
+`buildargs '{"IMAGE_NAME":"alpine","IMAGE_TAG":"latest"}'`
+
+Hash:
+
+`buildargs "IMAGE_NAME": "alpine", "IMAGE_TAG": "latest"`
+
+`buildargs "IMAGE_NAME" => "alpine", "IMAGE_TAG" => "latest"`
+
+Array:
+
+`buildargs ["IMAGE_NAME:alpine", "IMAGE_TAG:latest"]`
+
+```ruby
+docker_image 'image_1' do
+  source '/src/myproject/container1/Dockerfile'
+  buildargs '{"IMAGE_NAME":"alpine","IMAGE_TAG":"latest"}'
+  action :build
+end
+```
+
+Where `Dockerfile` contains:
+
+``` bash
+ARG IMAGE_TAG
+ARG IMAGE_NAME
+FROM $IMAGE_NAME:$IMAGE_TAG
+ARG IMAGE_NAME
+ENV image_name=$IMAGE_NAME
+RUN echo $image_name > /image_name
 ```
 
 - push

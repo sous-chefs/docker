@@ -159,6 +159,23 @@ docker_image 'image_3' do
   action :build_if_missing
 end
 
+# build from Dockerfile with buildargs
+directory '/usr/local/src/container5' do
+  action :create
+end
+
+cookbook_file '/usr/local/src/container5/Dockerfile' do
+  source 'Dockerfile_5'
+  action :create
+end
+
+docker_image 'image_5' do
+  tag 'v0.1.0'
+  source '/usr/local/src/container5/Dockerfile'
+  buildargs '{"IMAGE_NAME":"busybox","IMAGE_TAG":"latest"}'
+  action :build_if_missing
+end
+
 #########
 # :import
 #########
