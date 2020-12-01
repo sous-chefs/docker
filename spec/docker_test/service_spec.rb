@@ -76,6 +76,18 @@ EOH
       expect(content.gsub(/[\r\n]+/m, "\n")).to match(expected.gsub(/[\r\n]+/m, "\n"))
     }
   end
+  it 'allows a single registry mirror to be configured' do
+    expect(chef_run).to render_file('/etc/systemd/system/docker-one-mirror.service').with_content { |content|
+      expected_start_command = 'ExecStart=/usr/bin/dockerd  --group=docker --data-root=/var/lib/docker-one --host unix:///var/run/docker-one.sock --pidfile=/var/run/docker-one-mirror.pid --registry-mirror=https://mirror.gcr.io --containerd=/run/containerd/containerd.sock'
+      expect(content).to include(expected_start_command)
+    }
+  end
+  it 'allows multiple registry mirrors to be configured' do
+    expect(chef_run).to render_file('/etc/systemd/system/docker-two-mirrors.service').with_content { |content|
+      expected_start_command = 'ExecStart=/usr/bin/dockerd  --group=docker --data-root=/var/lib/docker-two --host unix:///var/run/docker-two.sock --pidfile=/var/run/docker-two-mirrors.pid --registry-mirror=https://mirror.gcr.io --registry-mirror=https://another.mirror.io --containerd=/run/containerd/containerd.sock'
+      expect(content).to include(expected_start_command)
+    }
+  end
   it do
     expect(chef_run).to create_template('/etc/systemd/system/containerd.service')
   end
