@@ -391,7 +391,7 @@ The `docker_service` resource property list mostly corresponds to the options fo
 - `no_proxy` - ENV variable set before for Docker daemon starts
 - `package_name` - Set the package name. Defaults to `docker-ce`
 - `pidfile` - Path to use for daemon PID file
-- `registry_mirror` - Preferred Docker registry mirror
+- `registry_mirror` - A string or array to set the preferred Docker registry mirror(s)
 - `selinux_enabled` - Enable selinux support
 - `source` - URL to the pre-compiled Docker binary used for installation. Defaults to a calculated URL based on kernel version, Docker version, and platform arch. By default, this will try to get to "<http://get.docker.io/builds/>".
 - `storage_driver` - Storage driver to use

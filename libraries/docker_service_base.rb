@@ -56,7 +56,7 @@ module DockerCookbook
     property :mount_flags, String
     property :mtu, String
     property :pidfile, String, default: lazy { "/var/run/#{docker_name}.pid" }
-    property :registry_mirror, String
+    property :registry_mirror, [String, Array], coerce: proc { |v| v.nil? ? nil : Array(v) }
     property :storage_driver, [String, Array], coerce: proc { |v| v.nil? ? nil : Array(v) }
     property :selinux_enabled, [true, false]
     property :storage_opts, Array
