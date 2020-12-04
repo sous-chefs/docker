@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Support `local`  option for the `log_driver` properties of `docker_service` and `docker_container` resources
+
 ## 7.3.0 - *2020-12-02*
 
 - Updates the `registry_mirror` option of `docker_service` to be either a string or array. This way multiple mirrors can be configured

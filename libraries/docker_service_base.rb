@@ -51,7 +51,7 @@ module DockerCookbook
     property :default_ip_address_pool, String
     property :log_level, %w(debug info warn error fatal)
     property :labels, [String, Array], coerce: proc { |v| coerce_daemon_labels(v) }, desired_state: false
-    property :log_driver, %w(json-file syslog journald gelf fluentd awslogs splunk none)
+    property :log_driver, %w(json-file syslog journald gelf fluentd awslogs splunk none local)
     property :log_opts, [String, Array], coerce: proc { |v| v.nil? ? nil : Array(v) }
     property :mount_flags, String
     property :mtu, String
