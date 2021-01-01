@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Fix the codeowners to use the correct group
+
 ## 7.4.0 - *2020-12-04*
 
 - Support `local`  option for the `log_driver` properties of `docker_service` and `docker_container` resources
