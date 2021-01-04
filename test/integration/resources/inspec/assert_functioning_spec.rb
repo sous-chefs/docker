@@ -10,7 +10,7 @@ chef_dir = file('/opt/cinc').exist? ? '/opt/cinc' : '/opt/chef'
 # docker_service[default]
 
 describe docker.version do
-  its('Server.Version') { should eq '19.03.13' }
+  its('Server.Version') { should eq '20.10.1' }
 end
 
 describe command('docker info') do
