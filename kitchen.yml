@@ -59,9 +59,6 @@ suites:
       - recipe[docker_test::installation_script]
 
   - name: installation_package
-    attributes:
-      docker:
-        version: '20.10.1'
     run_list:
       - recipe[docker_test::installation_package]
     excludes:
