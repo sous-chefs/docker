@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Update to use 20.10 by default
+- Update tarball for 19.03 to 19.03.14
+
 ## 7.4.1 - *2021-01-01*
 
 - Fix the codeowners to use the correct group

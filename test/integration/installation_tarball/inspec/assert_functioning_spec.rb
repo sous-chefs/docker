@@ -1,6 +1,6 @@
 describe command '/usr/bin/docker --version' do
   its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/19.03.13/) }
+  its(:stdout) { should match(/20.10.1/) }
 end
 
 describe group 'docker' do
