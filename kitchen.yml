@@ -61,7 +61,7 @@ suites:
   - name: installation_package
     attributes:
       docker:
-        version: '19.03.13'
+        version: '20.10.1'
     run_list:
       - recipe[docker_test::installation_package]
     excludes:
@@ -81,7 +81,7 @@ suites:
       multiple_converge: 1
     attributes:
       docker:
-        version: '19.03.13'
+        version: '20.10.1'
     run_list:
       - recipe[docker_test::default]
       - recipe[docker_test::image]
@@ -98,7 +98,7 @@ suites:
       multiple_converge: 1
     attributes:
       docker:
-        version: '19.03.13'
+        version: '20.10.1'
     run_list:
       - recipe[docker_test::default]
       - recipe[docker_test::network]
@@ -112,7 +112,7 @@ suites:
       multiple_converge: 1
     attributes:
       docker:
-        version: '19.03.13'
+        version: '20.10.1'
     run_list:
       - recipe[docker_test::default]
       - recipe[docker_test::volume]
@@ -126,7 +126,7 @@ suites:
       multiple_converge: 1
     attributes:
       docker:
-        version: '19.03.13'
+        version: '20.10.1'
     run_list:
       - recipe[docker_test::default]
       - recipe[docker_test::registry]
