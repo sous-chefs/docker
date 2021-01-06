@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Support for loki-docker driver logging plugin
+
 ## 7.5.0 - *2021-01-04*
 
 - Update to use 20.10 by default

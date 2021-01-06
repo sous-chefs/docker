@@ -35,7 +35,7 @@ module DockerCookbook
     property :kernel_memory, [String, Integer], coerce: proc { |v| coerce_to_bytes(v) }, default: 0
     property :labels, [String, Array, Hash], default: {}, coerce: proc { |v| coerce_labels(v) }
     property :links, UnorderedArrayType, coerce: proc { |v| coerce_links(v) }
-    property :log_driver, %w( json-file syslog journald gelf fluentd awslogs splunk etwlogs gcplogs none local ), default: 'json-file', desired_state: false
+    property :log_driver, %w( json-file syslog journald gelf fluentd awslogs splunk loki-docker etwlogs gcplogs none local ), default: 'json-file', desired_state: false
     property :log_opts, [Hash, nil], coerce: proc { |v| coerce_log_opts(v) }, desired_state: false
     property :init, [TrueClass, FalseClass, nil]
     property :ip_address, String
