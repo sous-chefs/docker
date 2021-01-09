@@ -424,7 +424,7 @@ module DockerCookbook
         case key
         when 'NanoCpus'
           property_name = 'cpus'
-          value = (value / (10**9))
+          value = (value / (10**9)).to_i
         else
           property_name = to_snake_case(key)
         end
