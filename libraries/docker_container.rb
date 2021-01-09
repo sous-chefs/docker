@@ -402,7 +402,7 @@ module DockerCookbook
       name
     end
 
-    load_current_value do|new_resource|
+    load_current_value do |new_resource|
       # Grab the container and assign the container property
       begin
         with_retries { container Docker::Container.get(container_name, {}, connection) }
