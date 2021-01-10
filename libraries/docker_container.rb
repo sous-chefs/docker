@@ -402,13 +402,17 @@ module DockerCookbook
       name
     end
 
-    load_current_value do
+    load_current_value do |new_resource|
       # Grab the container and assign the container property
       begin
         with_retries { container Docker::Container.get(container_name, {}, connection) }
       rescue Docker::Error::NotFoundError
         current_value_does_not_exist!
       end
+
+      # reload_signal is not persisted elsewhere, and will cause container
+      # to restart if different from the default value
+      public_send('reload_signal', new_resource.reload_signal)
 
       # Go through everything in the container and set corresponding properties:
       # c.info['Config']['ExposedPorts'] -> exposed_ports
@@ -417,7 +421,14 @@ module DockerCookbook
 
         # Image => image
         # Set exposed_ports = ExposedPorts (etc.)
-        property_name = to_snake_case(key)
+        case key
+        when 'NanoCpus'
+          property_name = 'cpus'
+          value = (value / (10**9)).to_i
+        else
+          property_name = to_snake_case(key)
+        end
+        
         public_send(property_name, value) if respond_to?(property_name)
       end
 
