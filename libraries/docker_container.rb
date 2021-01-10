@@ -428,7 +428,7 @@ module DockerCookbook
         else
           property_name = to_snake_case(key)
         end
-        
+
         public_send(property_name, value) if respond_to?(property_name)
       end
 
