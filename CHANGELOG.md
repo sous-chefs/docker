@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Fixed `reload_signal` and `cpus` bug for `docker_container` in #1090 [@urlund](https://github.com/urlund)
+
 ## 7.6.0 - *2021-01-06*
 
 - Support for loki-docker driver logging plugin
