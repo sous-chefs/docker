@@ -37,7 +37,7 @@ module DockerCookbook
         '{ ' + str.delete_suffix(',') + ' }'
       when Array
         str = ''
-        Array(v).each do |label|
+        v.each do |label|
           parts = label.split(':')
           str += '"' + parts[0].to_s + '": "' + parts[1].to_s + '",'
         end
