@@ -16,11 +16,36 @@ module DockerCookbook
     property :rm, [true, false], default: true
     property :source, String
     property :tag, String, default: 'latest'
+    property :buildargs, [String, Array, Hash], coerce: proc { |v| coerce_buildargs(v) }
 
     alias_method :image, :repo
     alias_method :image_name, :repo
     alias_method :no_cache, :nocache
     alias_method :no_prune, :noprune
+
+    ###################
+    # Property helpers
+    ###################
+
+    def coerce_buildargs(v)
+      case v
+      when Hash
+        str = ''
+        v.each do |key, value|
+          str += '"' + key.to_s + '": "' + value.to_s + '",'
+        end
+        '{ ' + str.delete_suffix(',') + ' }'
+      when Array
+        str = ''
+        Array(v).each do |label|
+          parts = label.split(':')
+          str += '"' + parts[0].to_s + '": "' + parts[1].to_s + '",'
+        end
+        '{ ' + str.delete_suffix(',') + ' }'
+      else
+        v
+      end
+    end
 
     #########
     # Actions
@@ -93,6 +118,7 @@ module DockerCookbook
           {
             'nocache' => new_resource.nocache,
             'rm' => new_resource.rm,
+            'buildargs' => new_resource.buildargs,
           },
           connection
         )
@@ -105,6 +131,7 @@ module DockerCookbook
           {
             'nocache' => new_resource.nocache,
             'rm' => new_resource.rm,
+            'buildargs' => new_resource.buildargs,
           },
           connection
         )
@@ -117,6 +144,7 @@ module DockerCookbook
           {
             'nocache' => new_resource.nocache,
             'rm' => new_resource.rm,
+            'buildargs' => new_resource.buildargs,
           },
           connection
         )
