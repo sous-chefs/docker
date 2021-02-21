@@ -30,9 +30,9 @@ module DockerCookbook
     def coerce_buildargs(v)
       case v
       when Hash
-        '{ %s }' % v.map { |k, v| '"%s": "%s"' % [k, v] }.join(',')
+        format('{ %s }', v.map { |key, value| format('"%s": "%s"', key, value) }.join(','))
       when Array
-        '{ %s }' % v.map { |label| '"%s": "%s"' % [label.split(':').first, label.split(':').last] }.join(',')
+        format('{ %s }', v.map { |label| format('"%s": "%s"', label.split(':').first, label.split(':').last) }.join(','))
       else
         v
       end
