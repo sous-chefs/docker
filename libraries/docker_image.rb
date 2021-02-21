@@ -30,18 +30,9 @@ module DockerCookbook
     def coerce_buildargs(v)
       case v
       when Hash
-        str = ''
-        v.each do |key, value|
-          str += '"' + key.to_s + '": "' + value.to_s + '",'
-        end
-        '{ ' + str.delete_suffix(',') + ' }'
+        '{ %s }' % v.map { |k, v| '"%s": "%s"' % [k, v] }.join(',')
       when Array
-        str = ''
-        Array(v).each do |label|
-          parts = label.split(':')
-          str += '"' + parts[0].to_s + '": "' + parts[1].to_s + '",'
-        end
-        '{ ' + str.delete_suffix(',') + ' }'
+        '{ %s }' % v.map { |label| '"%s": "%s"' % [label.split(':').first, label.split(':').last] }.join(',')
       else
         v
       end
