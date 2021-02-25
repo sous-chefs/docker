@@ -29,12 +29,13 @@ module DockerCookbook
 
     def coerce_buildargs(v)
       case v
-      when Hash
-        format('{ %s }', v.map { |key, value| format('"%s": "%s"', key, value) }.join(','))
-      when Array
-        format('{ %s }', v.map { |label| format('"%s": "%s"', label.split(':').first, label.split(':').last) }.join(','))
-      else
+      when Hash, nil
         v
+      else
+        Array(v).each_with_object({}) do |label, h|
+          parts = label.split(':')
+          h[parts[0]] = parts[1..-1].join(':')
+        end
       end
     end
 
