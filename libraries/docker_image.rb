@@ -16,7 +16,6 @@ module DockerCookbook
     property :rm, [true, false], default: true
     property :source, String
     property :tag, String, default: 'latest'
-    property :buildargs, [String, Array, Hash], coerce: proc { |v| coerce_buildargs(v) }
     property :buildargs, [String, Hash], coerce: proc { |v| v.is_a?(String) ? v : coerce_buildargs(v) }
 
     alias_method :image, :repo
