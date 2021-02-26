@@ -181,7 +181,7 @@ end
 docker_image 'image_5' do
   tag 'v0.1.1'
   source '/usr/local/src/container5/Dockerfile'
-  buildargs "IMAGE_NAME": "alpine", "IMAGE_TAG": "latest"
+  buildargs 'IMAGE_NAME': 'alpine', 'IMAGE_TAG': 'latest'
   action :build_if_missing
 end
 #########
