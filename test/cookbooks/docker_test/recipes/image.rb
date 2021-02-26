@@ -169,6 +169,7 @@ cookbook_file '/usr/local/src/container5/Dockerfile' do
   action :create
 end
 
+# String type
 docker_image 'image_5' do
   tag 'v0.1.0'
   source '/usr/local/src/container5/Dockerfile'
@@ -176,6 +177,13 @@ docker_image 'image_5' do
   action :build_if_missing
 end
 
+# Hash type
+docker_image 'image_5' do
+  tag 'v0.1.1'
+  source '/usr/local/src/container5/Dockerfile'
+  buildargs "IMAGE_NAME": "alpine", "IMAGE_TAG": "latest"
+  action :build_if_missing
+end
 #########
 # :import
 #########

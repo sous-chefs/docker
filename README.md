@@ -471,7 +471,7 @@ public registry vs a private one.
 - `tls_ca_cert` - Trust certs signed only by this CA. Defaults to `ENV['DOCKER_CERT_PATH']` if set.
 - `tls_client_cert` - Path to TLS certificate file for docker cli. Defaults to `ENV['DOCKER_CERT_PATH']` if set
 - `tls_client_key` - Path to TLS key file for docker cli. Defaults to `ENV['DOCKER_CERT_PATH']` if set.
-- `buildargs` - A string, hash, or array containing build arguments.
+- `buildargs` - A String or Hash containing build arguments.
 
 ### Examples
 
@@ -583,10 +583,6 @@ Hash:
 `buildargs "IMAGE_NAME": "alpine", "IMAGE_TAG": "latest"`
 
 `buildargs "IMAGE_NAME" => "alpine", "IMAGE_TAG" => "latest"`
-
-Array:
-
-`buildargs ["IMAGE_NAME:alpine", "IMAGE_TAG:latest"]`
 
 ```ruby
 docker_image 'image_1' do

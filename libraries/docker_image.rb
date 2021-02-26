@@ -17,6 +17,7 @@ module DockerCookbook
     property :source, String
     property :tag, String, default: 'latest'
     property :buildargs, [String, Array, Hash], coerce: proc { |v| coerce_buildargs(v) }
+    property :buildargs, [String, Hash], coerce: proc { |v| v.is_a?(String) ? v : coerce_buildargs(v) }
 
     alias_method :image, :repo
     alias_method :image_name, :repo
@@ -28,14 +29,7 @@ module DockerCookbook
     ###################
 
     def coerce_buildargs(v)
-      case v
-      when Hash
-        format('{ %s }', v.map { |key, value| format('"%s": "%s"', key, value) }.join(','))
-      when Array
-        format('{ %s }', v.map { |label| format('"%s": "%s"', label.split(':').first, label.split(':').last) }.join(','))
-      else
-        v
-      end
+      "{ #{v.map { |key, value| "\"#{key}\": \"#{value}\"" }.join(', ')} }"
     end
 
     #########
