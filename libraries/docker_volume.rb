@@ -10,11 +10,9 @@ module DockerCookbook
     property :volume_name, String, name_property: true
 
     load_current_value do
-      begin
-        with_retries { volume Docker::Volume.get(volume_name, connection) }
-      rescue Docker::Error::NotFoundError
-        current_value_does_not_exist!
-      end
+      with_retries { volume Docker::Volume.get(volume_name, connection) }
+    rescue Docker::Error::NotFoundError
+      current_value_does_not_exist!
     end
 
     action :create do

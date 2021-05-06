@@ -611,14 +611,12 @@ module DockerCookbook
       return unless state['Running']
       kill_after_str = "(will kill after #{new_resource.kill_after}s)" if new_resource.kill_after
       converge_by "stopping #{new_resource.container_name} #{kill_after_str}" do
-        begin
-          with_retries do
-            current_resource.container.stop!('timeout' => new_resource.kill_after)
-            wait_running_state(false)
-          end
-        rescue Docker::Error::TimeoutError
-          raise Docker::Error::TimeoutError, "Container failed to stop, consider adding kill_after to the container #{new_resource.container_name}"
+        with_retries do
+          current_resource.container.stop!('timeout' => new_resource.kill_after)
+          wait_running_state(false)
         end
+      rescue Docker::Error::TimeoutError
+        raise Docker::Error::TimeoutError, "Container failed to stop, consider adding kill_after to the container #{new_resource.container_name}"
       end
     end
 

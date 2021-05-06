@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- resolved cookstyle error: libraries/docker_container.rb:614:1 convention: `Layout/EmptyLinesAroundBlockBody`
+- resolved cookstyle error: libraries/docker_container.rb:614:1 convention: `Layout/TrailingWhitespace`
+- resolved cookstyle error: libraries/docker_container.rb:614:9 convention: `Style/RedundantBegin`
+- resolved cookstyle error: libraries/docker_container.rb:615:7 convention: `Layout/IndentationWidth`
+- resolved cookstyle error: libraries/docker_container.rb:619:9 convention: `Layout/RescueEnsureAlignment`
+- resolved cookstyle error: libraries/docker_container.rb:621:1 convention: `Layout/EmptyLinesAroundBlockBody`
+- resolved cookstyle error: libraries/docker_container.rb:621:1 convention: `Layout/TrailingWhitespace`
+- resolved cookstyle error: libraries/docker_volume.rb:13:1 convention: `Layout/EmptyLinesAroundBlockBody`
+- resolved cookstyle error: libraries/docker_volume.rb:13:1 convention: `Layout/TrailingWhitespace`
+- resolved cookstyle error: libraries/docker_volume.rb:13:7 convention: `Style/RedundantBegin`
+- resolved cookstyle error: libraries/docker_volume.rb:14:5 convention: `Layout/IndentationWidth`
+- resolved cookstyle error: libraries/docker_volume.rb:15:7 convention: `Layout/RescueEnsureAlignment`
+- resolved cookstyle error: libraries/docker_volume.rb:17:1 convention: `Layout/EmptyLinesAroundBlockBody`
+- resolved cookstyle error: libraries/docker_volume.rb:17:1 convention: `Layout/TrailingWhitespace`
 ## 7.7.0 - *2021-02-26*
 
 - Add `buildargs` property to `docker_image` resource
