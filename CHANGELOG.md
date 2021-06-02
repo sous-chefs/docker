@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Fix private registries credentials handling and public registries
+
 ## 7.7.0 - *2021-02-26*
 
 - Add `buildargs` property to `docker_image` resource
