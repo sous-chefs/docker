@@ -4,14 +4,14 @@ name: md-links
 "on":
   pull_request:
   push:
-    branches: [master]
+    branches: [main]
 
 jobs:
   md-links:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@main
+        uses: actions/checkout@v2
       - name: markdown-link-check
         uses: gaurav-nelson/github-action-markdown-link-check@v1
         with:
