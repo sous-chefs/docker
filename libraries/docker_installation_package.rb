@@ -94,8 +94,16 @@ module DockerCookbook
     action :create do
       if new_resource.setup_docker_repo
         if platform_family?('rhel', 'fedora')
-          platform = platform?('fedora') ? 'fedora' : 'centos'
           arch = node['kernel']['machine']
+          platform =
+            if platform?('fedora')
+              'fedora'
+            # s390x is only available under rhel platform
+            elsif platform?('redhat') && arch == 's390x'
+              'rhel'
+            else
+              'centos'
+            end
 
           yum_repository 'Docker' do
             baseurl "https://download.docker.com/linux/#{platform}/#{node['platform_version'].to_i}/#{arch}/#{new_resource.repo_channel}"
