@@ -58,7 +58,7 @@ module DockerCookbook
 
       def installed_docker_version
         o = shell_out("#{docker_bin} --version")
-        o.stdout.split[2].chomp(',')
+        o.stdout.split[2].chomp(',').tr('v', '')
       end
 
       def connect_host

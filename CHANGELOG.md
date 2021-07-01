@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Fix `installed_docker_version` method on ppc64le which appends `v` to the version
+
 ## 7.7.1 - *2021-06-30*
 
 - Fix package installation on RHEL s390x architecture
