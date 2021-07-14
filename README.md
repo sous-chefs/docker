@@ -111,7 +111,7 @@ end
 docker_container 'my_nginx' do
   repo 'nginx'
   tag 'latest'
-  port '80:80'
+  port [ '80:80' ]
   host_name 'www'
   domain_name 'computers.biz'
   env 'FOO=bar'
