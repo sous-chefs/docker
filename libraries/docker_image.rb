@@ -86,6 +86,7 @@ module DockerCookbook
     end
 
     action :load do
+      return if Docker::Image.exist?(image_identifier, {}, connection)
       converge_by "load image #{image_identifier}" do
         load_image
       end

@@ -2,7 +2,7 @@ require 'chefspec'
 require 'chefspec/berkshelf'
 
 class RSpecHelper
-  class<<self
+  class << self
     attr_accessor :current_example
   end
   def self.reset!
