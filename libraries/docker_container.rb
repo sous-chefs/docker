@@ -69,7 +69,7 @@ module DockerCookbook
     property :timeout, Integer, desired_state: false
     property :tty, [true, false], default: false
     property :ulimits, [Array, nil], coerce: proc { |v| coerce_ulimits(v) }
-    property :user, String, default: ''
+    property :user, String
     property :userns_mode, String, default: ''
     property :uts_mode, String, default: ''
     property :volumes, PartialHashType, default: {}, coerce: proc { |v| coerce_volumes(v) }
