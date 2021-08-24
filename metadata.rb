@@ -6,7 +6,7 @@ description       'Provides docker_service, docker_image, and docker_container r
 version           '7.7.6'
 source_url        'https://github.com/sous-chefs/docker'
 issues_url        'https://github.com/sous-chefs/docker/issues'
-chef_version      '>= 15.0'
+chef_version      '>= 15.3'
 
 supports 'amazon'
 supports 'centos'
