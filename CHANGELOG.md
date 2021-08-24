@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Disable installation-script-main suite on Debian 9 due to lack of upstream support
+
 ## 7.7.4 - *2021-08-24*
 
 ## 7.7.3 - *2021-07-17*
