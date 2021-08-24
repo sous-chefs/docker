@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Ensure `docker_container :user` is idempotent
+
 ## 8.2.0 - *2021-08-26*
 
 - Ensure `docker_container :health_check` is idempotent
