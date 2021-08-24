@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Update port syntax for `docker_container`
+
 ## 7.7.6 - *2021-08-24*
 
 ## 7.7.5 - *2021-08-24*
