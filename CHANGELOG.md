@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Move all resources into the resources folder
+- Move partials into the new _partials folder
+- Set unified_mode everywhere
+- Bump minimum supported version to 15.3
+
 ## 7.7.6 - *2021-08-24*
 
 ## 7.7.5 - *2021-08-24*
