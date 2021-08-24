@@ -53,6 +53,9 @@ jobs:
           - 'installation-package'
           - 'installation-tarball'
           - 'smoke'
+        exclude:
+          - os: debian-9
+            suite: installation-script-main
       fail-fast: false
 
     steps:
