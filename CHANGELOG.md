@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Update port syntax for `docker_container`
 
+## 7.7.6 - *2021-08-24*
+
 ## 7.7.5 - *2021-08-24*
 
 - Disable installation-script-main suite on Debian 9 due to lack of upstream support
