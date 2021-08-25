@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove upstart docker service manage
   - We don't officialy support any distros that use upstart anymore
 
+## 7.7.8 - *2021-08-25
+
 ## 7.7.7 - *2021-08-24*
 
 - Update port syntax for `docker_container`

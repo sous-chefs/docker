@@ -6,6 +6,10 @@ docker_image_prune 'hello-world' do
   dangling true
 end
 
+docker_image_prune 'prune-tagged-unused' do
+  dangling false
+end
+
 docker_image_prune 'prune-old-images' do
   dangling true
   prune_until '1h30m'
