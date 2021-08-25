@@ -11,7 +11,7 @@ describe DockerCookbook::DockerImagePrune do
 
   it 'generates filter json' do
     # Arrange
-    expected = '{"filters":["dangling=true","until=1h30m","label=com.example.vendor=ACME","label!=no_prune"]}'
+    expected = 'filters=%7B%22dangling%22%3A%7B%22true%22%3Atrue%7D%2C%22until%22%3A%7B%221h30m%22%3Atrue%7D%2C%22label%22%3A%7B%22com.example.vendor%3DACME%22%3Atrue%7D%2C%22label%21%22%3A%7B%22no_prune%22%3Atrue%7D%7D'
     resource.dangling = true
     resource.prune_until = '1h30m'
     resource.with_label = 'com.example.vendor=ACME'
