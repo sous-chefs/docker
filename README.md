@@ -27,7 +27,7 @@ This cookbook is maintained by the Sous Chefs. The Sous Chefs are a community of
 - Amazon Linux 2
 - Debian 9/10
 - Fedora
-- Ubuntu 16.04/18.04/20.04
+- Ubuntu 18.04/20.04
 - CentOS 7/8
 
 ## Cookbook Dependencies

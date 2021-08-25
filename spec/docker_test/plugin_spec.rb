@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'docker_test::plugin' do
-  cached(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '16.04').converge(described_recipe) }
+  cached(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
 
   let(:sshfs_caps) do
     [
