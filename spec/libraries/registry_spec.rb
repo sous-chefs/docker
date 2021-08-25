@@ -1,7 +1,6 @@
 require 'spec_helper'
-
-require_relative '../../libraries/docker_base'
-require_relative '../../libraries/docker_registry'
+# require_relative '../../libraries/docker_base'
+# require_relative '../../libraries/docker_registry'
 
 describe 'docker_registry' do
   step_into :docker_registry

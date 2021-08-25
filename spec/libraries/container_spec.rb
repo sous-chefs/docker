@@ -2,8 +2,8 @@ require 'spec_helper'
 require 'chef'
 require 'excon'
 
-require_relative '../../libraries/docker_base'
-require_relative '../../libraries/docker_container'
+# require_relative '../../libraries/docker_base'
+# require_relative '../../libraries/docker_container'
 
 describe 'docker_container' do
   step_into :docker_container

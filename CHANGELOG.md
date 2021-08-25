@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Move partials into the new _partials folder
 - Set unified_mode everywhere
 - Bump minimum supported version to 15.3
+- Update cookbook description to note we support more resources now
 
 ## 7.7.7 - *2021-08-24*
 
