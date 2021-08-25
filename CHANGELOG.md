@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Remove Ubuntu 16.04 support now it's end of life
+
 ## 8.0.1 - *2021-08-25*
 
 ## 8.0.0 - *2021-08-25*

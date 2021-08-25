@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'docker_test::volume' do
-  cached(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '16.04').converge(described_recipe) }
+  cached(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
 
   it 'pull_if_missing docker_image[alpine]' do
     expect(chef_run).to pull_if_missing_docker_image('alpine').with(

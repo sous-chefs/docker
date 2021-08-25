@@ -45,11 +45,6 @@ module DockerCookbook
       false
     end
 
-    def xenial?
-      return true if platform?('ubuntu') && node['platform_version'] == '16.04'
-      false
-    end
-
     def bionic?
       return true if platform?('ubuntu') && node['platform_version'] == '18.04'
       false
@@ -67,8 +62,6 @@ module DockerCookbook
                    'stretch'
                  elsif buster? # deb 10
                    'buster'
-                 elsif xenial? # ubuntu 16.04
-                   'xenial'
                  elsif bionic? # ubuntu 18.04
                    'bionic'
                  elsif focal? # ubuntu 20.04
