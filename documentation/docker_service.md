@@ -114,5 +114,4 @@ The `docker_service` resource property list mostly corresponds to the options fo
 
 - `docker_service_execute` - The simplest docker_service. Just starts a process. Fire and forget.
 - `docker_service_sysvinit` - Uses a SystemV init script to manage the service state.
-- `docker_service_upstart` - Uses an Upstart script to manage the service state.
 - `docker_service_systemd` - Uses an Systemd unit file to manage the service state. NOTE: This does NOT enable systemd socket activation.

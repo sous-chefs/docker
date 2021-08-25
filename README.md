@@ -85,7 +85,6 @@ test/cookbooks/docker_test/
 - [docker_installation_package](#docker_installation_package): package 'docker-ce'
 - [docker_service_manager_execute](#docker_service_manager_execute): manage docker daemon with Chef
 - [docker_service_manager_sysvinit](#docker_service_manager_sysvinit): manage docker daemon with a sysvinit script
-- [docker_service_manager_upstart](#docker_service_manager_upstart): manage docker daemon with upstart script
 - [docker_service_manager_systemd](#docker_service_manager_systemd): manage docker daemon with systemd unit files
 - [docker_image](#docker_image): image/repository operations
 - [docker_container](#docker_container): container operations
@@ -281,17 +280,6 @@ end
 docker_service_manager_sysvinit 'default' do
   host 'unix:///var/run/docker.sock'
   action :stop
-end
-```
-
-## docker_service_manager_upstart
-
-### Example
-
-```ruby
-docker_service_manager_upstart 'default' do
-  host ['unix:///var/run/docker.sock', 'tcp://127.0.0.1:2376']
-  action :start
 end
 ```
 
