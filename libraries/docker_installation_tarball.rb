@@ -99,7 +99,7 @@ module DockerCookbook
     ################
     # Action Helpers
     ################
-    declare_action_class.class_eval do
+    action_class do
       def docker_bin_prefix
         '/usr/bin'
       end

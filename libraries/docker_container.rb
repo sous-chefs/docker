@@ -702,7 +702,7 @@ module DockerCookbook
       end
     end
 
-    declare_action_class.class_eval do
+    action_class do
       def validate_container_create
         if new_resource.property_is_set?(:restart_policy) &&
            new_resource.restart_policy != 'no' &&

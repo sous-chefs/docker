@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Use new action_class instead of declare_action_class.class_eval for helper methods in resources
+
 ## 8.2.1 - *2021-08-26*
 
 - Ensure `docker_container :user` is idempotent
