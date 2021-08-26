@@ -91,7 +91,7 @@ module DockerCookbook
     alias_method :run_group, :group
     alias_method :graph, :data_root
 
-    declare_action_class.class_eval do
+    action_class do
       def libexec_dir
         return '/usr/libexec/docker' if platform_family?('rhel')
         '/usr/lib/docker'

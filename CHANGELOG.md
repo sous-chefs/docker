@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Use new action_class instead of declare_action_class.class_eval for helper methods in resources
+
 ## 8.1.0 - *2021-08-25*
 
 - Remove Ubuntu 16.04 support now it's end of life
