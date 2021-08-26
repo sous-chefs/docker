@@ -441,6 +441,7 @@ module DockerCookbook
       volumes_binds container.info['HostConfig']['Binds']
       ro_rootfs container.info['HostConfig']['ReadonlyRootfs']
       ip_address ip_address_from_container_networks(container) unless ip_address_from_container_networks(container).nil?
+      health_check container.info['Config']['Healthcheck']
     end
 
     # Gets the ip address from the existing container
