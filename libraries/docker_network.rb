@@ -166,7 +166,7 @@ module DockerCookbook
       end
     end
 
-    declare_action_class.class_eval do
+    action_class do
       require 'ipaddr'
 
       ######

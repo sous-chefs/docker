@@ -43,7 +43,7 @@ module DockerCookbook
       end
     end
 
-    declare_action_class.class_eval do
+    action_class do
       def remote_name
         return new_resource.remote unless new_resource.remote.nil? || new_resource.remote.empty?
         new_resource.local_alias
