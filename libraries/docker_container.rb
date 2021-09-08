@@ -28,7 +28,7 @@ module DockerCookbook
     property :extra_hosts, [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
     property :exposed_ports, PartialHashType, default: {}
     property :force, [true, false], default: false, desired_state: false
-    property :health_check, Hash, default: {}
+    property :health_check, [Hash, nil]
     property :host, [String, nil], default: lazy { ENV['DOCKER_HOST'] }, desired_state: false
     property :hostname, String
     property :ipc_mode, String, default: 'shareable'
