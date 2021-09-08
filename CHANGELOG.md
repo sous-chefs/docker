@@ -9,7 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Ensure docker_container :health_check is idempotent
 
-## 8.2.2 - *2021-08-27*
+## 8.2.3 - *2021-09-08*
+
+- Fix private registries credentials handling and public registries
+
+# 8.2.2 - *2021-08-27*
 
 - Use new action_class instead of declare_action_class.class_eval for helper methods in resources
 
