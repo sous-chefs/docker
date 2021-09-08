@@ -511,6 +511,7 @@ module DockerCookbook
             'Entrypoint'      => to_shellwords(new_resource.entrypoint),
             'Env'             => new_resource.env + read_env_file,
             'ExposedPorts'    => new_resource.exposed_ports,
+            'Healthcheck'     => new_resource.health_check,
             'Hostname'        => parsed_hostname,
             'MacAddress'      => new_resource.mac_address,
             'NetworkDisabled' => new_resource.network_disabled,
@@ -583,9 +584,6 @@ module DockerCookbook
             config['HostConfig'].delete('MemorySwappiness')
           end
 
-          unless new_resource.health_check.empty?
-            config['Healthcheck'] = new_resource.health_check
-          end
           # Store the state of the options and create the container
           new_resource.create_options = config
           Docker::Container.create(config, connection)
