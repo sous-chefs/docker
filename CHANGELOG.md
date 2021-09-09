@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Ensure docker_container :health_check is idempotent
+
 ## 8.2.3 - *2021-09-08*
 
 - Fix private registries credentials handling and public registries
