@@ -11,6 +11,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove Ubuntu 16.04 from the GitHub Actions test matrix
 - Add amazonlinux-2 to the test matrix
 
+## 8.2.4 - *2021-09-09*
+
+- Ensure docker_container :health_check is idempotent
+
+## 8.2.3 - *2021-09-08*
+
+- Fix private registries credentials handling and public registries
+
+## 8.2.2 - *2021-08-27*
+
+- Use new action_class instead of declare_action_class.class_eval for helper methods in resources
+
+## 8.2.1 - *2021-08-26*
+
+- Ensure `docker_container :user` is idempotent
+
+## 8.2.0 - *2021-08-26*
+
+- Ensure `docker_container :health_check` is idempotent
+
 ## 8.1.0 - *2021-08-25*
 
 - Remove Ubuntu 16.04 support now it's end of life

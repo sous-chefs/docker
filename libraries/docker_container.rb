@@ -28,7 +28,7 @@ module DockerCookbook
     property :extra_hosts, [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
     property :exposed_ports, PartialHashType, default: {}
     property :force, [true, false], default: false, desired_state: false
-    property :health_check, Hash, default: {}
+    property :health_check, Hash
     property :host, [String, nil], default: lazy { ENV['DOCKER_HOST'] }, desired_state: false
     property :hostname, String
     property :ipc_mode, String, default: 'shareable'
@@ -69,7 +69,7 @@ module DockerCookbook
     property :timeout, Integer, desired_state: false
     property :tty, [true, false], default: false
     property :ulimits, [Array, nil], coerce: proc { |v| coerce_ulimits(v) }
-    property :user, String, default: ''
+    property :user, String
     property :userns_mode, String, default: ''
     property :uts_mode, String, default: ''
     property :volumes, PartialHashType, default: {}, coerce: proc { |v| coerce_volumes(v) }
@@ -441,6 +441,7 @@ module DockerCookbook
       volumes_binds container.info['HostConfig']['Binds']
       ro_rootfs container.info['HostConfig']['ReadonlyRootfs']
       ip_address ip_address_from_container_networks(container) unless ip_address_from_container_networks(container).nil?
+      health_check container.info['Config']['Healthcheck']
     end
 
     # Gets the ip address from the existing container
@@ -510,6 +511,7 @@ module DockerCookbook
             'Entrypoint'      => to_shellwords(new_resource.entrypoint),
             'Env'             => new_resource.env + read_env_file,
             'ExposedPorts'    => new_resource.exposed_ports,
+            'Healthcheck'     => new_resource.health_check,
             'Hostname'        => parsed_hostname,
             'MacAddress'      => new_resource.mac_address,
             'NetworkDisabled' => new_resource.network_disabled,
@@ -582,9 +584,6 @@ module DockerCookbook
             config['HostConfig'].delete('MemorySwappiness')
           end
 
-          unless new_resource.health_check.empty?
-            config['Healthcheck'] = new_resource.health_check
-          end
           # Store the state of the options and create the container
           new_resource.create_options = config
           Docker::Container.create(config, connection)

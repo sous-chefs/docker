@@ -129,7 +129,19 @@ module DockerCookbook
 
     action_class do
       def parse_registry_host(val)
-        val.sub(%r{https?://}, '').split('/').first
+        # example values for val, can be prefixed with http(s):// :
+        #   image                    (=> Docker Hub)
+        #   organization/image       (=> Docker Hub)
+        #   domain.ext/image         (=> 3rd party registry)
+        #   domain.ext/.../image     (=> 3rd party registry)
+        #
+        first_part = val.sub(%r{https?://}, '').split('/').first
+
+        # looks like a host name of a custom docker registry
+        return first_part if first_part.include?('.')
+
+        # default host
+        'index.docker.io'
       end
     end
   end

@@ -43,7 +43,7 @@ describe 'docker_test::container' do
         restart_policy: nil,
         security_opt: nil,
         signal: 'SIGTERM',
-        user: ''
+        user: nil
       )
     end
   end
