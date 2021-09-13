@@ -33,7 +33,6 @@ suites:
   - name: installation_script_main
     excludes:
       - 'amazonlinux-2'
-      - 'debian-9'
     attributes:
       docker:
         repo: 'main'
@@ -46,15 +45,6 @@ suites:
     attributes:
       docker:
         repo: 'test'
-    run_list:
-      - recipe[docker_test::installation_script]
-
-  - name: installation_script_experimental
-    excludes:
-      - 'amazonlinux-2'
-    attributes:
-      docker:
-        repo: 'experimental'
     run_list:
       - recipe[docker_test::installation_script]
 
@@ -85,9 +75,6 @@ suites:
       - recipe[docker_test::container]
       - recipe[docker_test::exec]
       - recipe[docker_test::plugin]
-    excludes:
-      - 'amazonlinux-2'
-      - 'fedora-latest'
 
   - name: network
     provisioner:
@@ -99,9 +86,6 @@ suites:
     run_list:
       - recipe[docker_test::default]
       - recipe[docker_test::network]
-    excludes:
-      - 'amazonlinux-2'
-      - 'fedora-latest'
 
   - name: volume
     provisioner:
@@ -113,9 +97,6 @@ suites:
     run_list:
       - recipe[docker_test::default]
       - recipe[docker_test::volume]
-    excludes:
-      - 'amazonlinux-2'
-      - 'fedora-latest'
 
   - name: registry
     provisioner:
@@ -127,9 +108,6 @@ suites:
     run_list:
       - recipe[docker_test::default]
       - recipe[docker_test::registry]
-    excludes:
-      - 'amazonlinux-2'
-      - 'fedora-latest'
 
   #############################
   # quick service smoke testing

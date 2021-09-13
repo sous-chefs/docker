@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Remove Ubuntu 16.04 from the GitHub Actions test matrix
+- Add amazonlinux-2 to the test matrix
+
 ## 8.2.4 - *2021-09-09*
 
 - Ensure docker_container :health_check is idempotent
