@@ -31,9 +31,8 @@ suites:
   # docker_installation resources
   ###############################
   - name: installation_script_main
-    # excludes:
-    #   - 'amazonlinux-2'
-      # - 'debian-9'
+    excludes:
+      - 'amazonlinux-2'
     attributes:
       docker:
         repo: 'main'
@@ -41,28 +40,19 @@ suites:
       - recipe[docker_test::installation_script]
 
   - name: installation_script_test
-    # excludes:
-    #   - 'amazonlinux-2'
+    excludes:
+      - 'amazonlinux-2'
     attributes:
       docker:
         repo: 'test'
     run_list:
       - recipe[docker_test::installation_script]
 
-  - name: installation_script_experimental
-    # excludes:
-    #   - 'amazonlinux-2'
-    attributes:
-      docker:
-        repo: 'experimental'
-    run_list:
-      - recipe[docker_test::installation_script]
-
   - name: installation_package
     run_list:
       - recipe[docker_test::installation_package]
-    # excludes:
-    #   - 'amazonlinux-2'
+    excludes:
+      - 'amazonlinux-2'
 
   - name: installation_tarball
     run_list:

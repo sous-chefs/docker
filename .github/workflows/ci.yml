@@ -40,7 +40,7 @@ jobs:
     strategy:
       matrix:
         os:
-          - amazonlinux-2
+          - 'amazonlinux-2'
           - 'debian-9'
           - 'debian-10'
           - 'centos-7'
@@ -59,13 +59,9 @@ jobs:
           - os: debian-9
             suite: installation-script-main
           - os: amazonlinux-2
-            suite: installation_script_main
+            suite: installation-script-test
           - os: amazonlinux-2
-            suite: installation_script_test
-          - os: amazonlinux-2
-            suite: installation_script_experimental
-          - os: amazonlinux-2
-            suite: installation_package
+            suite: installation-package
       fail-fast: false
 
     steps:
