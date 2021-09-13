@@ -75,7 +75,6 @@ PartialHashType = property_type(
   coerce: proc { |v| v.nil? ? nil : PartialHash[v] }
 ) unless defined?(PartialHashType)
 
-
 property :api_retries, Integer,
           default: 3,
           desired_state: false
