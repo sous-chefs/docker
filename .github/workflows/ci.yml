@@ -56,7 +56,7 @@ jobs:
         exclude:
           - os: debian-9
             suite: installation-script-main
-          - os: debian-9
+          - os: amazonlinux-2
             suite: installation-script-main
           - os: amazonlinux-2
             suite: installation-script-test
