@@ -7,7 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-- Use new action_class instead of declare_action_class.class_eval for helper methods in resources
 - Remove Ubuntu 16.04 from the GitHub Actions test matrix
 - Add amazonlinux-2 to the test matrix
 
