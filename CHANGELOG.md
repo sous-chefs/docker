@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Move the docker_volume resources to a custom resource
 - Add the base partial for all future resources
+- Require Chef 16+ for resource partial support
 
 ## 8.3.0 - *2021-09-13*
 
