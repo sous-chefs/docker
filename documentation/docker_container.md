@@ -47,7 +47,7 @@ Most `docker_container` properties are the `snake_case` version of the `CamelCas
 - `host_name` - The hostname for the container.
 - `labels` A string, array, or hash to set metadata on the container in the form ['foo:bar', 'hello:world']`
 - `links` - An array of source container/alias pairs to link the container to in the form `[container_a:www', container_b:db']`
-- `log_driver` - Sets a custom logging driver for the container (json-file/syslog/journald/gelf/fluentd/none).
+- `log_driver` - Sets a custom logging driver for the container (json-file/syslog/journald/gelf/fluentd/awslogs/splunk/etwlogs/gcplogs/logentries/loki-docker/local/none).
 - `log_opts` - Configures the above logging driver options (driver-specific).
 - `init` - Run an init inside the container that forwards signals and reaps processes.
 - `ip_address` - Container IPv4 address (e.g. 172.30.100.104)

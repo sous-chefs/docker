@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- update and sync log drivers list for docker_service_manager and docker_container
+
 ## 9.2.0 - *2021-09-15*
 
 - Move the docker_exec library to a custom resource
