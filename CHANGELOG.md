@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Remove the workaround for package resource version <https://github.com/chef/chef/issues/4103>
+
 ## 9.3.0 - *2021-09-15*
 
 - update and sync log drivers list for docker_service_manager and docker_container
