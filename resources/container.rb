@@ -121,12 +121,12 @@ end
 
 def coerce_links(v)
   case v
-  when DockerBase::UnorderedArray, nil
+  when UnorderedArray, nil
     v
   else
     return if v.empty?
     # Parse docker input of /source:/container_name/dest into source:dest
-    DockerBase::UnorderedArray.new(Array(v)).map! do |link|
+    UnorderedArray.new(Array(v)).map! do |link|
       if link =~ %r{^/(?<source>.+):/#{name}/(?<dest>.+)}
         link = "#{Regexp.last_match[:source]}:#{Regexp.last_match[:dest]}"
       end
@@ -201,10 +201,10 @@ end
 
 def coerce_volumes(v)
   case v
-  when DockerBase::PartialHash, nil
+  when PartialHash, nil
     v
   when Hash
-    DockerBase::PartialHash[v]
+    PartialHash[v]
   else
     b = []
     v = Array(v).to_a # in case v.is_A?(Chef::Node::ImmutableArray)
@@ -214,8 +214,8 @@ def coerce_volumes(v)
     end
     b = nil if b.empty?
     volumes_binds b
-    return DockerBase::PartialHash.new if v.empty?
-    v.each_with_object(DockerBase::PartialHash.new) { |volume, h| h[volume] = {} }
+    return PartialHash.new if v.empty?
+    v.each_with_object(PartialHash.new) { |volume, h| h[volume] = {} }
   end
 end
 
@@ -400,6 +400,8 @@ def to_snake_case(name)
   name
 end
 
+include DockerCookbook::DockerHelpers::Network
+
 load_current_value do |new_resource|
   # Grab the container and assign the container property
   begin
@@ -440,26 +442,6 @@ load_current_value do |new_resource|
   ro_rootfs container.info['HostConfig']['ReadonlyRootfs']
   ip_address ip_address_from_container_networks(container) unless ip_address_from_container_networks(container).nil?
   health_check container.info['Config']['Healthcheck']
-end
-
-# Gets the ip address from the existing container
-# current docker api of 1.16 does not have ['NetworkSettings']['Networks']
-# For docker > 1.21 - use ['NetworkSettings']['Networks']
-#
-#   @param container [Docker::Container] A container object
-#   @returns [String] An ip_address
-def ip_address_from_container_networks(container)
-  # We use the first value in 'Networks'
-  # We can't assume it will be 'bridged'
-  # It might also not match the new_resource value
-  if container.info['NetworkSettings'] &&
-     container.info['NetworkSettings']['Networks'] &&
-     container.info['NetworkSettings']['Networks'].values[0] &&
-     container.info['NetworkSettings']['Networks'].values[0]['IPAMConfig'] &&
-     container.info['NetworkSettings']['Networks'].values[0]['IPAMConfig']['IPv4Address']
-    # Return the ip address listed
-    container.info['NetworkSettings']['Networks'].values[0]['IPAMConfig']['IPv4Address']
-  end
 end
 
 #########
