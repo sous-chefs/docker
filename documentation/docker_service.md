@@ -66,7 +66,7 @@ The `docker_service` resource property list mostly corresponds to the options fo
 - `ipv6_forward` - Enable net.ipv6.ip_forward
 - `ipv6` - Enable IPv6 networking
 - `labels` A string or array to set metadata on the daemon in the form ['foo:bar', 'hello:world']`
-- `log_driver` - Container's logging driver (json-file/syslog/journald/gelf/fluentd/awslogs/splunk/etwlogs/gcplogs/none)
+- `log_driver` - Container's logging driver (json-file/syslog/journald/gelf/fluentd/awslogs/splunk/etwlogs/gcplogs/logentries/loki-docker/local/none)
 - `log_level` - Set the logging level
 - `log_opts` - Container's logging driver options (driver-specific)
 - `logfile` - Location of Docker daemon log file

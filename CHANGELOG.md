@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- update and sync log drivers list for docker_service_manager and docker_container
+
 ## 8.3.0 - *2021-09-13*
 
 - Remove Ubuntu 16.04 from the GitHub Actions test matrix
