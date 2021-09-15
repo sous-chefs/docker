@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - update and sync log drivers list for docker_service_manager and docker_container
 
+## 9.2.0 - *2021-09-15*
+
+- Move the docker_exec library to a custom resource
+
+## 9.1.0 - *2021-09-15*
+
+- Move the docker_container resource to a custom resource
+
+## 9.0.0 - *2021-09-15*
+
+- Move the docker_volume resources to a custom resource
+- Add the base partial for all future resources
+- Require Chef 16+ for resource partial support
+
 ## 8.3.0 - *2021-09-13*
 
 - Remove Ubuntu 16.04 from the GitHub Actions test matrix
