@@ -2,9 +2,6 @@ require 'spec_helper'
 require 'chef'
 require 'excon'
 
-require_relative '../../libraries/docker_base'
-require_relative '../../libraries/docker_container'
-
 describe 'docker_container' do
   step_into :docker_container
   platform 'ubuntu'
@@ -26,6 +23,7 @@ describe 'docker_container' do
       'Warnings' => [],
     }.to_json
   end
+
   # https://docs.docker.com/engine/api/v1.39/#tag/Image
   let(:image) do
     { 'Id' => 'bf119e2',
