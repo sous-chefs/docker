@@ -51,12 +51,12 @@ module DockerCookbook
     property :default_ip_address_pool, String
     property :log_level, %w(debug info warn error fatal)
     property :labels, [String, Array], coerce: proc { |v| coerce_daemon_labels(v) }, desired_state: false
-    property :log_driver, %w(json-file syslog journald gelf fluentd awslogs splunk none)
+    property :log_driver, %w(json-file syslog journald gelf fluentd awslogs splunk etwlogs gcplogs logentries loki-docker none local)
     property :log_opts, [String, Array], coerce: proc { |v| v.nil? ? nil : Array(v) }
     property :mount_flags, String
     property :mtu, String
     property :pidfile, String, default: lazy { "/var/run/#{docker_name}.pid" }
-    property :registry_mirror, String
+    property :registry_mirror, [String, Array], coerce: proc { |v| v.nil? ? nil : Array(v) }
     property :storage_driver, [String, Array], coerce: proc { |v| v.nil? ? nil : Array(v) }
     property :selinux_enabled, [true, false]
     property :storage_opts, Array
@@ -91,7 +91,7 @@ module DockerCookbook
     alias_method :run_group, :group
     alias_method :graph, :data_root
 
-    declare_action_class.class_eval do
+    action_class do
       def libexec_dir
         return '/usr/libexec/docker' if platform_family?('rhel')
         '/usr/lib/docker'

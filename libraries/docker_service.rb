@@ -78,8 +78,6 @@ module DockerCookbook
           svc = docker_service_manager_execute(new_resource.name, &block)
         when 'sysvinit'
           svc = docker_service_manager_sysvinit(new_resource.name, &block)
-        when 'upstart'
-          svc = docker_service_manager_upstart(new_resource.name, &block)
         when 'systemd'
           svc = docker_service_manager_systemd(new_resource.name, &block)
         end

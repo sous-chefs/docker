@@ -22,7 +22,6 @@ platforms:
   - name: centos-7
   - name: centos-8
   - name: fedora-latest
-  - name: ubuntu-16.04
   - name: ubuntu-18.04
   - name: ubuntu-20.04
 
@@ -49,19 +48,7 @@ suites:
     run_list:
       - recipe[docker_test::installation_script]
 
-  - name: installation_script_experimental
-    excludes:
-      - 'amazonlinux-2'
-    attributes:
-      docker:
-        repo: 'experimental'
-    run_list:
-      - recipe[docker_test::installation_script]
-
   - name: installation_package
-    attributes:
-      docker:
-        version: '19.03.13'
     run_list:
       - recipe[docker_test::installation_package]
     excludes:
@@ -81,16 +68,13 @@ suites:
       multiple_converge: 1
     attributes:
       docker:
-        version: '19.03.13'
+        version: '20.10.1'
     run_list:
       - recipe[docker_test::default]
       - recipe[docker_test::image]
       - recipe[docker_test::container]
       - recipe[docker_test::exec]
       - recipe[docker_test::plugin]
-    excludes:
-      - 'amazonlinux-2'
-      - 'fedora-latest'
 
   - name: network
     provisioner:
@@ -98,13 +82,10 @@ suites:
       multiple_converge: 1
     attributes:
       docker:
-        version: '19.03.13'
+        version: '20.10.1'
     run_list:
       - recipe[docker_test::default]
       - recipe[docker_test::network]
-    excludes:
-      - 'amazonlinux-2'
-      - 'fedora-latest'
 
   - name: volume
     provisioner:
@@ -112,13 +93,10 @@ suites:
       multiple_converge: 1
     attributes:
       docker:
-        version: '19.03.13'
+        version: '20.10.1'
     run_list:
       - recipe[docker_test::default]
       - recipe[docker_test::volume]
-    excludes:
-      - 'amazonlinux-2'
-      - 'fedora-latest'
 
   - name: registry
     provisioner:
@@ -126,13 +104,10 @@ suites:
       multiple_converge: 1
     attributes:
       docker:
-        version: '19.03.13'
+        version: '20.10.1'
     run_list:
       - recipe[docker_test::default]
       - recipe[docker_test::registry]
-    excludes:
-      - 'amazonlinux-2'
-      - 'fedora-latest'
 
   #############################
   # quick service smoke testing

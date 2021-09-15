@@ -2,7 +2,7 @@ require 'chefspec'
 require 'chefspec/berkshelf'
 
 class RSpecHelper
-  class<<self
+  class << self
     attr_accessor :current_example
   end
   def self.reset!
@@ -13,6 +13,7 @@ end
 RSpec.configure do |config|
   config.filter_run focus: true
   config.run_all_when_everything_filtered = true
+  config.formatter = :documentation
 
   config.before :each do
     RSpecHelper.reset!

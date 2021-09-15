@@ -58,7 +58,7 @@ module DockerCookbook
 
       def installed_docker_version
         o = shell_out("#{docker_bin} --version")
-        o.stdout.split[2].chomp(',')
+        o.stdout.split[2].chomp(',').tr('v', '')
       end
 
       def connect_host
@@ -232,7 +232,7 @@ module DockerCookbook
         log_opts.each { |log_opt| opts << "--log-opt '#{log_opt}'" } if log_opts
         opts << "--mtu=#{mtu}" if mtu
         opts << "--pidfile=#{pidfile}" if pidfile
-        opts << "--registry-mirror=#{registry_mirror}" if registry_mirror
+        registry_mirror.each { |mirror| opts << "--registry-mirror=#{mirror}" } if registry_mirror
         storage_driver.each { |s| opts << "--storage-driver=#{s}" } if storage_driver
         opts << "--selinux-enabled=#{selinux_enabled}" unless selinux_enabled.nil?
         storage_opts.each { |storage_opt| opts << "--storage-opt=#{storage_opt}" } if storage_opts

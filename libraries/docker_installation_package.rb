@@ -45,11 +45,6 @@ module DockerCookbook
       false
     end
 
-    def xenial?
-      return true if platform?('ubuntu') && node['platform_version'] == '16.04'
-      false
-    end
-
     def bionic?
       return true if platform?('ubuntu') && node['platform_version'] == '18.04'
       false
@@ -67,8 +62,6 @@ module DockerCookbook
                    'stretch'
                  elsif buster? # deb 10
                    'buster'
-                 elsif xenial? # ubuntu 16.04
-                   'xenial'
                  elsif bionic? # ubuntu 18.04
                    'bionic'
                  elsif focal? # ubuntu 20.04
@@ -94,8 +87,16 @@ module DockerCookbook
     action :create do
       if new_resource.setup_docker_repo
         if platform_family?('rhel', 'fedora')
-          platform = platform?('fedora') ? 'fedora' : 'centos'
           arch = node['kernel']['machine']
+          platform =
+            if platform?('fedora')
+              'fedora'
+            # s390x is only available under rhel platform
+            elsif platform?('redhat') && arch == 's390x'
+              'rhel'
+            else
+              'centos'
+            end
 
           yum_repository 'Docker' do
             baseurl "https://download.docker.com/linux/#{platform}/#{node['platform_version'].to_i}/#{arch}/#{new_resource.repo_channel}"
