@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Move the docker_exec resource to a library
+
 ## 9.1.0 - *2021-09-15*
 
 - Move the docker_container resource to a custom resource
