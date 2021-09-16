@@ -33,7 +33,6 @@ describe 'docker_test::plugin' do
       expect(chef_run).to install_docker_plugin('vieux/sshfs').with(
         api_retries: 3,
         grant_privileges: sshfs_caps,
-        options: {},
         remote_tag: 'latest'
       )
     end
@@ -43,7 +42,6 @@ describe 'docker_test::plugin' do
     it 'enables debug on vieux/sshfs' do
       expect(chef_run).to update_docker_plugin('configure vieux/sshfs').with(
         api_retries: 3,
-        grant_privileges: [],
         options: {
           'DEBUG' => '1',
         },
@@ -57,8 +55,6 @@ describe 'docker_test::plugin' do
     it 'removes vieux/sshfs' do
       expect(chef_run).to remove_docker_plugin('remove vieux/sshfs').with(
         api_retries: 3,
-        grant_privileges: [],
-        options: {},
         local_alias: 'vieux/sshfs',
         remote_tag: 'latest'
       )
