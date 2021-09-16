@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Move the docker_image library to a custom resource
+
 ## 9.3.1 - *2021-09-15*
 
 - Move the Docker log properties to a partial
