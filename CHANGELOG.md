@@ -7,13 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Move the docker_plugin library to a custom resource
+
 ## 9.3.1 - *2021-09-15*
 
 - Move the Docker log properties to a partial
 
 ## 9.3.0 - *2021-09-15*
 
-- update and sync log drivers list for docker_service_manager and docker_container
+- Update and sync log drivers list for docker_service_manager and docker_container
 
 ## 9.2.0 - *2021-09-15*
 
