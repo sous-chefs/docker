@@ -1,5 +1,7 @@
 module DockerCookbook
   class DockerNetwork < DockerBase
+    require 'ipaddress'
+
     resource_name :docker_network
     provides :docker_network
 
@@ -17,6 +19,8 @@ module DockerCookbook
     property :network, Docker::Network, desired_state: false
     property :network_name, String, name_property: true
     property :subnet, [String, Array, nil], coerce: proc { |v| coerce_subnet(v) }
+    property :ip, String, callbacks: { 'invalid IPv4' => proc { |v| IPAddress(v).ipv4? } }
+    property :ip6, String, callbacks: { 'invalid IPv6' => proc { |v| IPAddress(v).ipv6? } }
 
     alias_method :aux_address, :auxiliary_addresses
 
@@ -134,16 +138,43 @@ module DockerCookbook
       end
 
       if current_resource
-        container_index = current_resource.network.info['Containers'].values.index { |c| c['Name'] == new_resource.container }
-        if container_index.nil?
+        container_info = current_resource.network.info['Containers'].values.find { |c| c['Name'] == new_resource.container }
+
+        unless container_info.nil?
+          # check whether we must disconnect the container first to correct its IP
+          must_disconnect = false
+
+          if property_is_set?(:ip) && (container_info['IPv4Address'].empty? || IPAddress(container_info['IPv4Address']) != IPAddress(new_resource.ip))
+            must_disconnect = true
+          end
+
+          if property_is_set?(:ip6) && (container_info['IPv6Address'].empty? || IPAddress(container_info['IPv6Address']) != IPAddress(new_resource.ip6))
+            must_disconnect = true
+          end
+
+          if must_disconnect
+            converge_by("disconnecting #{new_resource.container} to reattach it with the correct IP config") do
+              with_retries do
+                current_resource.network.disconnect(new_resource.container)
+              end
+            end
+            container_info = nil
+          end
+        end
+
+        if container_info.nil?
           converge_by("connect #{new_resource.container}") do
+            body_opts = {}
+            ((body_opts['EndpointConfig'] ||= {})['IPAMConfig'] ||= {})['IPv4Address'] = new_resource.ip if property_is_set?(:ip)
+            ((body_opts['EndpointConfig'] ||= {})['IPAMConfig'] ||= {})['IPv6Address'] = new_resource.ip6 if property_is_set?(:ip6)
+
             with_retries do
-              current_resource.network.connect(new_resource.container)
+              current_resource.network.connect(new_resource.container, {}, body_opts)
             end
           end
         end
       else
-        Chef::Log.warn("Cannot connect to #{network_name}: network does not exist")
+        raise "Cannot connect to #{new_resource.network_name}: network does not exist"
       end
     end
 
@@ -239,7 +270,7 @@ module DockerCookbook
       end
 
       def subnet_matches(subnet, data)
-        IPAddr.new(subnet).include?(IPAddr.new(data))
+        IPAddress(subnet).include?(IPAddress(data))
       end
     end
   end
