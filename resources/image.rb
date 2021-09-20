@@ -20,7 +20,7 @@ alias_method :image_name, :repo
 alias_method :no_cache, :nocache
 alias_method :no_prune, :noprune
 
-include DockerCookbook::CookbookHelpers::Build
+include DockerCookbook::DockerHelpers::Build
 
 action :pull do
   # We already did the work, but we need to report what we did!
