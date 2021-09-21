@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Move the docker_image_prune library to a custom resource
+
 ## 9.7.0 - *2021-09-21*
 
 - Move the docker_image library to a custom resource
