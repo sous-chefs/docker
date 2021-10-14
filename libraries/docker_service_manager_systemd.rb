@@ -129,6 +129,10 @@ module DockerCookbook
         action [:disable, :stop]
         only_if { ::File.exist?("/lib/systemd/system/#{docker_name}.service") }
       end
+
+      systemd_unit "#{docker_name}.socket" do
+        action [:disable, :stop]
+      end
     end
 
     action :restart do

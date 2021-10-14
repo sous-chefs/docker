@@ -58,6 +58,10 @@ suites:
     run_list:
       - recipe[docker_test::installation_tarball]
 
+  - name: install_and_stop
+    run_list:
+      - recipe[docker_test::install_and_stop]
+
   ##################
   # resource testing
   ##################
