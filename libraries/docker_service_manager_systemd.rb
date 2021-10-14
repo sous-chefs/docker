@@ -23,7 +23,7 @@ module DockerCookbook
           docker_socket: connect_socket
         )
         action connect_socket.nil? ? :delete : :create
-        not_if { docker_name == 'default' && ::File.exist?('/lib/systemd/system/docker.socket') }
+        not_if { docker_name == 'docker' && ::File.exist?('/lib/systemd/system/docker.socket') }
       end
 
       directory '/etc/containerd'
@@ -59,7 +59,7 @@ module DockerCookbook
           docker_socket: connect_socket,
           containerd: docker_containerd
         )
-        not_if { docker_name == 'default' && ::File.exist?('/lib/systemd/system/docker.service') }
+        not_if { docker_name == 'docker' && ::File.exist?('/lib/systemd/system/docker.service') }
       end
 
       # this overrides the main systemd socket
