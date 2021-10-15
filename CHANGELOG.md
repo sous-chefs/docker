@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Fix unwanted changes to /lib/systemd/system/* files
+
 ## 9.8.0 - *2021-10-14*
 
 - Stop the socket when stopping the service with systemd
