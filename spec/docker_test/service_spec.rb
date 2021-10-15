@@ -75,8 +75,6 @@ EOH
       # For tests which run on windows - convert CRLF
       expect(content.gsub(/[\r\n]+/m, "\n")).to match(expected.gsub(/[\r\n]+/m, "\n"))
     }
-    expect(chef_run).to_not create_template('/lib/systemd/system/docker.socket')
-    expect(chef_run).to_not create_template('/lib/systemd/system/docker.service')
   end
   it 'allows a single registry mirror to be configured' do
     expect(chef_run).to render_file('/etc/systemd/system/docker-one-mirror.service').with_content { |content|
