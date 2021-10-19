@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Move the docker_image_prune library to a custom resource
 
+## 9.9.0 - *2021-10-15*
+
+- Fix unwanted changes to /lib/systemd/system/* files
+
+## 9.8.0 - *2021-10-14*
+
+- Stop the socket when stopping the service with systemd
+
 ## 9.7.0 - *2021-09-21*
 
 - Move the docker_image library to a custom resource
