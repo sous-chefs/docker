@@ -1,8 +1,5 @@
 require 'spec_helper'
 
-require_relative '../../libraries/docker_base'
-require_relative '../../libraries/docker_registry'
-
 describe 'docker_registry' do
   step_into :docker_registry
   platform 'ubuntu'
@@ -33,7 +30,8 @@ describe 'docker_registry' do
         username 'chefspec_username'
       end
     end
-    it {
+
+    it do
       expect { chef_run }.to_not raise_error
       expect(chef_run).to login_docker_registry('chefspec_custom_registry').with(
         email: 'chefspec_email',
@@ -41,7 +39,7 @@ describe 'docker_registry' do
         username: 'chefspec_username',
         host: nil
       )
-    }
+    end
   end
 
   context 'logs into a docker registry with host' do

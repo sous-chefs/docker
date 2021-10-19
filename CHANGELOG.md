@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Move the docker_registry library to a custom resource
+
 ## 9.10.0 - *2021-10-19*
 
 - Move the docker_tag library to a custom resource
