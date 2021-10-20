@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Remove old refernces to services managers that no longer exist
+
 ## 10.0.0 - *2021-10-20*
 
 - Remove the sysvinit Docker Service managers
