@@ -1,27 +1,23 @@
+# TODO: Refactor test
 require 'spec_helper'
-require_relative '../../libraries/docker_base'
-require_relative '../../libraries/docker_image_prune'
+require_relative '../../libraries/helpers_json'
 
-describe DockerCookbook::DockerImagePrune do
-  let(:resource) { DockerCookbook::DockerImagePrune.new('rspec') }
-
-  it 'has a default action of [:prune]' do
-    expect(resource.action).to eql([:prune])
+RSpec.describe DockerCookbook::DockerHelpers::Json do
+  class DummyClass < Chef::Node
+    include DockerCookbook::DockerHelpers::Json
   end
 
-  it 'generates filter json' do
-    # Arrange
-    expected = 'filters=%7B%22dangling%22%3A%7B%22true%22%3Atrue%7D%2C%22until%22%3A%7B%221h30m%22%3Atrue%7D%2C%22label%22%3A%7B%22com.example.vendor%3DACME%22%3Atrue%7D%2C%22label%21%22%3A%7B%22no_prune%22%3Atrue%7D%7D'
-    resource.dangling = true
-    resource.prune_until = '1h30m'
-    resource.with_label = 'com.example.vendor=ACME'
-    resource.without_label = 'no_prune'
-    resource.action :prune
+  subject { DummyClass.new }
 
-    # Act
-    actual = resource.generate_json(resource)
+  describe '#generate_json' do
+    it 'generates filter json' do
+      dangling = true
+      prune_until = '1h30m'
+      with_label = 'com.example.vendor=ACME'
+      without_label = 'no_prune'
+      expected = 'filters=%7B%22dangling%22%3A%7B%22true%22%3Atrue%7D%2C%22until%22%3A%7B%221h30m%22%3Atrue%7D%2C%22label%22%3A%7B%22com.example.vendor%3DACME%22%3Atrue%7D%2C%22label%21%22%3A%7B%22no_prune%22%3Atrue%7D%7D'
 
-    # Assert
-    expect(actual).to eq(expected)
+      expect(subject.generate_json(dangling, prune_until, with_label, without_label)).to eq(expected)
+    end
   end
 end

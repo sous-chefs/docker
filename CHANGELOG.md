@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Move the docker_image_prune library to a custom resource
+
 ## 10.0.1 - *2021-10-20*
 
 - Remove old refernces to services managers that no longer exist
