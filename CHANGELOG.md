@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Remove the sysvinit Docker Service managers
+  - Platforms that supported these service managers are now EOL
+
 ## 9.11.0 - *2021-10-20*
 
 - Remove the docker_network library as it is no longer used
