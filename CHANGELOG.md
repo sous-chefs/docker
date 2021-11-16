@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Fix group resource for `docker_installation_tarball` library in #1205 [@benpro](https://github.com/benpro)
+
 ## 10.1.1 - *2021-11-03*
 
 - Add CentOS Stream 8 to CI pipeline
