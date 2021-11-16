@@ -83,6 +83,7 @@ module DockerCookbook
 
       group 'docker' do
         system true
+        append true
       end
     end
 
