@@ -25,7 +25,7 @@ This cookbook is maintained by the Sous Chefs. The Sous Chefs are a community of
 ## Platform Support
 
 - Amazon Linux 2
-- Debian 9/10
+- Debian 9/10/11
 - Fedora
 - Ubuntu 18.04/20.04
 - CentOS 7/8
