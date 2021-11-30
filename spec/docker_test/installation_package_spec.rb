@@ -179,6 +179,7 @@ describe 'docker_test::installation_package' do
         expect(actual).to eq(suite[:expected])
       end
     end
+  end
 
   context 'version strings for Debian 11' do
     platform 'debian', '11'
