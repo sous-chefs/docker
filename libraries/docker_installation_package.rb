@@ -45,6 +45,11 @@ module DockerCookbook
       false
     end
 
+    def bullseye?
+      return true if platform?('debian') && node['platform_version'].to_i == 11
+      false
+    end
+
     def bionic?
       return true if platform?('ubuntu') && node['platform_version'] == '18.04'
       false
@@ -62,6 +67,8 @@ module DockerCookbook
                    'stretch'
                  elsif buster? # deb 10
                    'buster'
+                 elsif bullseye? # deb 11
+                   'bullseye'
                  elsif bionic? # ubuntu 18.04
                    'bionic'
                  elsif focal? # ubuntu 20.04
