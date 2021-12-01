@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Update to tarball checksums to 20.10.11 and 19.03.15
+- Update to using version 20.10.11 for testing suites
+
 ## 10.1.2 - *2021-11-16*
 
 - Fix group resource for `docker_installation_tarball` library in #1205 [@benpro](https://github.com/benpro)

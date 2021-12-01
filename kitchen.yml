@@ -73,7 +73,7 @@ suites:
       multiple_converge: 1
     attributes:
       docker:
-        version: '20.10.1'
+        version: '20.10.11'
     run_list:
       - recipe[docker_test::default]
       - recipe[docker_test::image]
@@ -87,7 +87,7 @@ suites:
       multiple_converge: 1
     attributes:
       docker:
-        version: '20.10.1'
+        version: '20.10.11'
     run_list:
       - recipe[docker_test::default]
       - recipe[docker_test::network]
@@ -98,7 +98,7 @@ suites:
       multiple_converge: 1
     attributes:
       docker:
-        version: '20.10.1'
+        version: '20.10.11'
     run_list:
       - recipe[docker_test::default]
       - recipe[docker_test::volume]
@@ -109,7 +109,7 @@ suites:
       multiple_converge: 1
     attributes:
       docker:
-        version: '20.10.1'
+        version: '20.10.11'
     run_list:
       - recipe[docker_test::default]
       - recipe[docker_test::registry]
