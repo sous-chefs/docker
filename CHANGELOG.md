@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Fix raise when using mixed address families with a network
+
 ## 10.1.3 - *2021-12-01*
 
 - Update to tarball checksums to 20.10.11 and 19.03.15
