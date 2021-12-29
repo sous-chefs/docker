@@ -43,7 +43,6 @@ jobs:
           - 'amazonlinux-2'
           - 'debian-9'
           - 'debian-10'
-          - 'debian-11'
           - 'centos-7'
           - 'centos-8'
           - 'centos-stream-8'
