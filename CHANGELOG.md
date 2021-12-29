@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add debian 11 support
 
+## 10.1.5 - *2021-12-20*
+
+- Fix `generate_json` not accepting a variable number of arguments
+
+## 10.1.4 - *2021-12-05*
+
+- Fix raise when using mixed address families with a network
+
 ## 10.1.3 - *2021-12-01*
 
 - Update to tarball checksums to 20.10.11 and 19.03.15

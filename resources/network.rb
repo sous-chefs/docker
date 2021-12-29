@@ -268,6 +268,11 @@ action_class do
   end
 
   def subnet_matches(subnet, data)
-    IPAddress(subnet).include?(IPAddress(data))
+    s = IPAddress(subnet)
+    d = IPAddress(data)
+
+    return false unless s.class.eql?(d.class)
+
+    s.include?(d)
   end
 end
