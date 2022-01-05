@@ -173,7 +173,21 @@ describe 'docker_test::installation_package' do
       {  docker_version: '19.03.5', expected: '5:19.03.5~3-0~debian-buster' },
       {  docker_version: '20.10.7', expected: '5:20.10.7~3-0~debian-buster' },
     ].each do |suite|
-      it 'generates the correct version string debian stretch' do
+      it 'generates the correct version string debian buster' do
+        custom_resource = chef_run.docker_installation_package('default')
+        actual = custom_resource.version_string(suite[:docker_version])
+        expect(actual).to eq(suite[:expected])
+      end
+    end
+  end
+
+  context 'version strings for Debian 11' do
+    platform 'debian', '11'
+    cached(:subject) { chef_run }
+    [
+      {  docker_version: '20.10.11', expected: '5:20.10.11~3-0~debian-bullseye' },
+    ].each do |suite|
+      it 'generates the correct version string debian bullseye' do
         custom_resource = chef_run.docker_installation_package('default')
         actual = custom_resource.version_string(suite[:docker_version])
         expect(actual).to eq(suite[:expected])

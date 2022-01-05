@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Add debian 11 support
+
 ## 10.1.5 - *2021-12-20*
 
 - Fix `generate_json` not accepting a variable number of arguments

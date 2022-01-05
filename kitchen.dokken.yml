@@ -34,6 +34,13 @@ platforms:
       intermediate_instructions:
         - RUN /usr/bin/apt-get update
 
+  - name: debian-11
+    driver:
+      image: dokken/debian-11
+      pid_one_command: /bin/systemd
+      intermediate_instructions:
+        - RUN /usr/bin/apt-get update
+
   - name: centos-7
     driver:
       image: dokken/centos-7

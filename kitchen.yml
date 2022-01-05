@@ -19,6 +19,7 @@ platforms:
   - name: amazonlinux-2
   - name: debian-9
   - name: debian-10
+  - name: debian-11
   - name: centos-7
   - name: centos-8
   - name: centos-stream-8
