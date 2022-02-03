@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 - Remove delivery and move to calling RSpec directly via a reusable workflow
+- Update tested platforms
 
 ## 10.1.6 - *2022-01-05*
 
