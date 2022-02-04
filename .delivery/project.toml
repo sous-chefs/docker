@@ -1,9 +1,0 @@
-[local_phases]
-unit = "rspec spec/"
-lint = 'cookstyle --display-cop-names --extra-details'
-syntax = "echo skipping"
-provision = "echo skipping"
-deploy = "echo skipping"
-smoke = "echo skipping"
-functional = "echo skipping"
-cleanup = "echo skipping"

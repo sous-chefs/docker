@@ -6,7 +6,7 @@ driver:
     cpus: 2
 
 provisioner:
-  name: chef_solo
+  name: chef_infra
   product_name: chef
   enforce_idempotency: true
   multiple_converge: 2
@@ -16,14 +16,14 @@ verifier:
   name: inspec
 
 platforms:
+  - name: almalinux-8
   - name: amazonlinux-2
-  - name: debian-9
+  - name: centos-7
+  - name: centos-stream-8
   - name: debian-10
   - name: debian-11
-  - name: centos-7
-  - name: centos-8
-  - name: centos-stream-8
   - name: fedora-latest
+  - name: rockylinux-8
   - name: ubuntu-18.04
   - name: ubuntu-20.04
 
@@ -34,7 +34,9 @@ suites:
   ###############################
   - name: installation_script_main
     excludes:
+      - 'almalinux-8'
       - 'amazonlinux-2'
+      - 'rockylinux-8'
     attributes:
       docker:
         repo: 'main'
@@ -43,7 +45,9 @@ suites:
 
   - name: installation_script_test
     excludes:
+      - 'almalinux-8'
       - 'amazonlinux-2'
+      - 'rockylinux-8'
     attributes:
       docker:
         repo: 'test'

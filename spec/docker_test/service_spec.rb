@@ -88,9 +88,9 @@ EOH
       expect(content).to include(expected_start_command)
     }
   end
-  it do
-    expect(chef_run).to create_template('/etc/systemd/system/containerd.service')
-  end
+  # it do
+  #   expect(chef_run).to create_template('/etc/systemd/system/containerd.service')
+  # end
   context 'containerd does not exist' do
     before do
       allow_any_instance_of(DockerCookbook::DockerHelpers::Service).to receive(:installed_docker_version).and_return('18.06.3')
