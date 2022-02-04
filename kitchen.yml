@@ -34,7 +34,9 @@ suites:
   ###############################
   - name: installation_script_main
     excludes:
+      - 'almalinux-8'
       - 'amazonlinux-2'
+      - 'rockylinux-8'
     attributes:
       docker:
         repo: 'main'
@@ -43,7 +45,9 @@ suites:
 
   - name: installation_script_test
     excludes:
+      - 'almalinux-8'
       - 'amazonlinux-2'
+      - 'rockylinux-8'
     attributes:
       docker:
         repo: 'test'

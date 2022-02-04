@@ -44,6 +44,14 @@ jobs:
             suite: installation-script-test
           - os: amazonlinux-2
             suite: installation-package
+          - os: almalinux-8
+            suite: installation-script-main
+          - os: almalinux-8
+            suite: installation-script-test
+          - os: rockylinux-8
+            suite: installation-script-main
+          - os: rockylinux-8
+            suite: installation-script-test
       fail-fast: false
 
     steps:
