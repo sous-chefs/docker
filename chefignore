@@ -61,7 +61,7 @@ Dangerfile
 examples/*
 features/*
 Guardfile
-kitchen.yml*
+kitchen*.yml
 mlc_config.json
 Procfile
 Rakefile
