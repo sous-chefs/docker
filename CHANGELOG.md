@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Don't set container swappiness with cgroupv2
+
 ## 10.1.8 - *2022-04-20*
 
 Standardise files with files in sous-chefs/repo-management
