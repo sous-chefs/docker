@@ -531,8 +531,8 @@ action :create do
       } if new_resource.network_mode
       config.merge! net_config
 
-      # Remove any options not supported in windows
-      if platform?('windows')
+      # Swappiness is not supported in windows and with cgroupv2
+      if platform?('windows') || cgroupv2?
         config['HostConfig'].delete('MemorySwappiness')
       end
 
@@ -726,5 +726,9 @@ action_class do
 
   def read_env_file
     new_resource.env_file.map { |f| ::File.readlines(f).map(&:strip) }.flatten
+  end
+
+  def cgroupv2?
+    node.dig('filesystem', 'by_device').key?('cgroup2')
   end
 end
