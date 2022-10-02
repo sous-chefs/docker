@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Sort container volume_binds to prevent erroneous container re-deploys
+
 ## 10.2.0 - *2022-08-19*
 
 - Don't set container swappiness with cgroupv2
