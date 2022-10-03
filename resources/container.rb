@@ -75,7 +75,7 @@ property :volume_driver, String
 property :working_dir, String
 
 # Used to store the bind property since binds is an alias to volumes
-property :volumes_binds, Array
+property :volumes_binds, Array, coerce: proc { |v| v.sort }
 
 # Used to store the state of the Docker container
 property :container, Docker::Container, desired_state: false
