@@ -18,7 +18,6 @@ This cookbook is maintained by the Sous Chefs. The Sous Chefs are a community of
 
 ## Requirements
 
-- Chef Infra Client 15 or later
 - Network accessible web server hosting the docker binary.
 - SELinux permissive/disabled if CentOS [Docker Issue #15498](https://github.com/docker/docker/issues/15498)
 
