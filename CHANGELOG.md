@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Fix arguments to generate_json in docker_image_prune resource
+
 ## 10.2.1 - *2022-10-07*
 
 - Sort container volume_binds to prevent erroneous container re-deploys
