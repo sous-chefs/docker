@@ -14,7 +14,7 @@ property :without_label, String
 action :prune do
   # Have to call this method ourselves due to
   # https://github.com/swipely/docker-api/pull/507
-  json = generate_json(new_resource)
+  json = generate_json(new_resource.dangling, new_resource.prune_until, new_resource.with_label, new_resource.without_label)
 
   res = connection.post('/images/prune', json)
   Chef::Log.info res
