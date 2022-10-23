@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Update readme.md syntax, add link
+
 ## 10.2.2 - *2022-10-10*
 
 - Fix arguments to generate_json in docker_image_prune resource
