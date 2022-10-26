@@ -1784,8 +1784,8 @@ Major kudos to @tduffield for the [#147] PR, which includes:
 
    - Added `docker::dep_check` that will take an action if certain dependencies are not met.
 
-     - `node[docker][alert_on_error_action] = :fatal` will kill the chef run and print the error message.
-     - `node[docker][alert_on_error_action] = :warn` will print the error message but continue with the chef run. There is no guarantee that it will succeed though.
+   - `node[docker][alert_on_error_action] = :fatal` will kill the chef run and print the error message.
+   - `node[docker][alert_on_error_action] = :warn` will print the error message but continue with the chef run. There is no guarantee that it will succeed though.
 
 - KitchenCI
 
@@ -1795,7 +1795,7 @@ Major kudos to @tduffield for the [#147] PR, which includes:
    - Removed Ubuntu 12.10 because it is not supported by Docker and the Kernel is bad and fails all the tests.
    - Removed tests for the source recipe. The dotcloud/docker repo actually doesn't build any Go deliverables.
 
-     - I think that the source recipe needs to be completely refactored.
+   - I think that the source recipe needs to be completely refactored.
 
 Other awesome work merged:
 
