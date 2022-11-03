@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Update readme.md syntax, add link
 
+## 10.2.3 - *2022-11-03*
+
+- Update [CHANGELOG.md](/CHANGELOG.md) to fix MarkDownLint rules
+
 ## 10.2.2 - *2022-10-10*
 
 - Fix arguments to generate_json in docker_image_prune resource
@@ -66,7 +70,7 @@ Standardise files with files in sous-chefs/repo-management
 ## 10.0.0 - *2021-10-20*
 
 - Remove the sysvinit Docker Service managers
-  - Platforms that supported these service managers are now EOL
+   - Platforms that supported these service managers are now EOL
 
 ## 9.11.0 - *2021-10-20*
 
@@ -161,7 +165,7 @@ Standardise files with files in sous-chefs/repo-management
 ## 8.0.0 - *2021-08-25*
 
 - Remove upstart docker service manage
-  - We don't officialy support any distros that use upstart anymore
+   - We don't officialy support any distros that use upstart anymore
 
 ## 7.7.8 - *2021-08-25
 
@@ -283,18 +287,18 @@ The 7.0 release includes a breaking change to package installs with version spec
 
 - Standardise files with files in chef-cookbooks/repo-management - [@xorimabot](https://github.com/xorimabot)
 - Resolved deprecations to provide Chef Infra Client 16 compatibility - [@xorimabot](https://github.com/xorimabot)
-  - resolved cookstyle error: libraries/docker_container.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
-  - resolved cookstyle error: libraries/docker_exec.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
-  - resolved cookstyle error: libraries/docker_image.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
-  - resolved cookstyle error: libraries/docker_image_prune.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
-  - resolved cookstyle error: libraries/docker_installation_package.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
-  - resolved cookstyle error: libraries/docker_installation_tarball.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
-  - resolved cookstyle error: libraries/docker_network.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
-  - resolved cookstyle error: libraries/docker_plugin.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
-  - resolved cookstyle error: libraries/docker_registry.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
-  - resolved cookstyle error: libraries/docker_service_manager_execute.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
-  - resolved cookstyle error: libraries/docker_tag.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
-  - resolved cookstyle error: libraries/docker_volume.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
+   - resolved cookstyle error: libraries/docker_container.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
+   - resolved cookstyle error: libraries/docker_exec.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
+   - resolved cookstyle error: libraries/docker_image.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
+   - resolved cookstyle error: libraries/docker_image_prune.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
+   - resolved cookstyle error: libraries/docker_installation_package.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
+   - resolved cookstyle error: libraries/docker_installation_tarball.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
+   - resolved cookstyle error: libraries/docker_network.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
+   - resolved cookstyle error: libraries/docker_plugin.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
+   - resolved cookstyle error: libraries/docker_registry.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
+   - resolved cookstyle error: libraries/docker_service_manager_execute.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
+   - resolved cookstyle error: libraries/docker_tag.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
+   - resolved cookstyle error: libraries/docker_volume.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
 
 ## 6.0.1 (2020-05-26)
 
@@ -1753,11 +1757,11 @@ Please note some important changes with this release:
 - Enhancement: [#221]: Added NO_PROXY support (thanks jperville).
 - Various Test Suite Modifications
 
-  - Enhancement: [#192]: Allow image tags in serverspec matching (thanks bplunkert).
-  - Bugfix: [#223]: Convert a few occurrences of old 'should' rspec syntax to 'expect' (thanks jperville).
-  - Disable a few platforms that are experiencing bugs unrelated to core functionality.
-  - Address ChefSpec 4.1 deprecation warnings.
-  - Update Berksfile to reference supermarket.getchef.com instead of api.berkshelf.com
+   - Enhancement: [#192]: Allow image tags in serverspec matching (thanks bplunkert).
+   - Bugfix: [#223]: Convert a few occurrences of old 'should' rspec syntax to 'expect' (thanks jperville).
+   - Disable a few platforms that are experiencing bugs unrelated to core functionality.
+   - Address ChefSpec 4.1 deprecation warnings.
+   - Update Berksfile to reference supermarket.getchef.com instead of api.berkshelf.com
 
 # 0.35.2
 
@@ -1780,24 +1784,24 @@ Major kudos to @tduffield for the [#147] PR, which includes:
 
 - Binary Installation
 
-  - Added missing dependency resolution for using the binary.
+   - Added missing dependency resolution for using the binary.
 
 - Dependency Checks
 
-  - Added `docker::dep_check` that will take an action if certain dependencies are not met.
+   - Added `docker::dep_check` that will take an action if certain dependencies are not met.
 
-    - `node[docker][alert_on_error_action] = :fatal` will kill the chef run and print the error message.
-    - `node[docker][alert_on_error_action] = :warn` will print the error message but continue with the chef run. There is no guarantee that it will succeed though.
+   - `node[docker][alert_on_error_action] = :fatal` will kill the chef run and print the error message.
+   - `node[docker][alert_on_error_action] = :warn` will print the error message but continue with the chef run. There is no guarantee that it will succeed though.
 
 - KitchenCI
 
-  - Copied MiniTests to ServerSpec Tests
-  - Added new platforms (Debian 7.4)
-  - Changed provisioner from chef-solo to chef-zero
-  - Removed Ubuntu 12.10 because it is not supported by Docker and the Kernel is bad and fails all the tests.
-  - Removed tests for the source recipe. The dotcloud/docker repo actually doesn't build any Go deliverables.
+   - Copied MiniTests to ServerSpec Tests
+   - Added new platforms (Debian 7.4)
+   - Changed provisioner from chef-solo to chef-zero
+   - Removed Ubuntu 12.10 because it is not supported by Docker and the Kernel is bad and fails all the tests.
+   - Removed tests for the source recipe. The dotcloud/docker repo actually doesn't build any Go deliverables.
 
-    - I think that the source recipe needs to be completely refactored.
+   - I think that the source recipe needs to be completely refactored.
 
 Other awesome work merged:
 
@@ -1821,9 +1825,9 @@ Other awesome work merged:
 
 - [#141]: Bugfix/Enhancement: Fix and enhance docker_image pull/push behavior with Docker 0.10
 
-  - Removes deprecated --registry and --tag CLI args from docker_image pull
-  - Adds support for registry attribute usage in docker_image pull and push
-  - Adds support for tag attribute usage in docker_image push
+   - Removes deprecated --registry and --tag CLI args from docker_image pull
+   - Adds support for registry attribute usage in docker_image pull and push
+   - Adds support for tag attribute usage in docker_image push
 
 # 0.34.1
 
@@ -1949,7 +1953,7 @@ Awesome work by [@jcrobak] to close out two issues ([#49] and [#52]) with [#62].
 
 - Enhancement: [#57]: Implement id checking when determining current_resource
 
-  - Added to both container and image LWRPs
+   - Added to both container and image LWRPs
 
 - Enhancement: Set created and status attributes for current container resources (for handlers, wrappers, etc.)
 
@@ -2031,8 +2035,8 @@ Awesome work by [@jcrobak] to close out two issues ([#49] and [#52]) with [#62].
 - Enhancement: Default to package install_type only on distros with known packages
 - Enhancement: Initial Oracle 6 platform support via binary install_type
 
-  - <https://blogs.oracle.com/wim/entry/oracle_linux_6_5_and>
-  - <http://www.oracle.com/technetwork/articles/servers-storage-admin/resource-controllers-linux-1506602.html>
+   - <https://blogs.oracle.com/wim/entry/oracle_linux_6_5_and>
+   - <http://www.oracle.com/technetwork/articles/servers-storage-admin/resource-controllers-linux-1506602.html>
 
 - Enhancement: Split out lxc recipe for default platform lxc handling
 
@@ -2070,9 +2074,9 @@ Awesome work by [@jcrobak] to close out two issues ([#49] and [#52]) with [#62].
 - Enhancement: Switch container LWRPs to named containers on Fedora since now supported
 - Enhancement: Update docker systemd service contents from docker-io-0.7.0-12.fc20
 
-  - Add: Wants/After firewalld.service
-  - Add: ExecStartPost firewall-cmd
-  - Remove: ExecStartPost iptables commands
+   - Add: Wants/After firewalld.service
+   - Add: ExecStartPost firewall-cmd
+   - Remove: ExecStartPost iptables commands
 
 # 0.16.0
 
@@ -2080,8 +2084,8 @@ Awesome work by [@jcrobak] to close out two issues ([#49] and [#52]) with [#62].
 - Bugfix: Lengthen shell_out timeout for stop action in container LWRP to workaround Fedora being slow
 - Enhancement: Add service creation to container LWRP by default
 
-  - Please thoroughly test before putting into production!
-  - `set['docker']['container_init_type'] = false` or add `init_type false` for the LWRP to disable this behavior
+   - Please thoroughly test before putting into production!
+   - `set['docker']['container_init_type'] = false` or add `init_type false` for the LWRP to disable this behavior
 
 - Enhancement: Add configuration recipe with template
 
@@ -2128,22 +2132,22 @@ Awesome work by [@jcrobak] to close out two issues ([#49] and [#52]) with [#62].
 - DEPRACATION: container LWRP public_port attribute: use port attribute instead
 - Enhancement: Additional container LWRP attributes:
 
-  - cidfile
-  - container_name
-  - cpu_shares
-  - dns
-  - expose
-  - link
-  - lxc_conf
-  - publish_exposed_ports
-  - remove_automatically
-  - volumes_from
+   - cidfile
+   - container_name
+   - cpu_shares
+   - dns
+   - expose
+   - link
+   - lxc_conf
+   - publish_exposed_ports
+   - remove_automatically
+   - volumes_from
 
 - Enhancement: Support Array in container LWRP attributes:
 
-  - env
-  - port
-  - volume
+   - env
+   - port
+   - volume
 
 # 0.10.1
 
