@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Update readme.md syntax, add link
+
 ## 10.2.3 - *2022-11-03*
 
 - Update [CHANGELOG.md](/CHANGELOG.md) to fix MarkDownLint rules

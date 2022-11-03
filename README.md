@@ -67,13 +67,9 @@ end
 
 ## Test Cookbooks as Examples
 
-The cookbooks ran under test-kitchen make excellent usage examples.
+The cookbooks run by test-kitchen make excellent usage examples.
 
-The test recipes are found at:
-
-```text
-test/cookbooks/docker_test/
-```
+Those recipes are found at [test/cookbooks/docker_test/](/test/cookbooks/docker_test/).
 
 ## Resources Overview
 
