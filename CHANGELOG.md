@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Fixed "Can't start a simple container" in #1226 [@urlund](https://github.com/urlund)
+
 ## 10.3.0 - *2022-12-13*
 
 ## 10.2.5 - *2022-12-05*
