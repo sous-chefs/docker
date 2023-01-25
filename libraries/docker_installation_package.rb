@@ -138,6 +138,7 @@ module DockerCookbook
 
           apt_repository 'Docker' do
             components Array(new_resource.repo_channel)
+            distribution node['lsb']['codename']
             uri "https://download.docker.com/linux/#{node['platform']}"
             arch deb_arch
             key "https://download.docker.com/linux/#{node['platform']}/gpg"
