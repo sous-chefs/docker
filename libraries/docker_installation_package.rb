@@ -65,22 +65,26 @@ module DockerCookbook
       false
     end
 
-    # https://github.com/chef/chef/issues/4103
+    def debian_codename
+      if stretch? # deb 9
+        'stretch'
+      elsif buster? # deb 10
+        'buster'
+      elsif bullseye? # deb 11
+        'bullseye'
+      elsif bionic? # ubuntu 18.04
+        'bionic'
+      elsif focal? # ubuntu 20.04
+        'focal'
+      elsif jammy? # ubuntu 22.04
+        'jammy'
+      end
+    end
+
     def version_string(v)
       return if v.nil?
-      codename = if stretch? # deb 9
-                   'stretch'
-                 elsif buster? # deb 10
-                   'buster'
-                 elsif bullseye? # deb 11
-                   'bullseye'
-                 elsif bionic? # ubuntu 18.04
-                   'bionic'
-                 elsif focal? # ubuntu 20.04
-                   'focal'
-                 elsif jammy? # ubuntu 22.04
-                   'jammy'
-                 end
+    # https://github.com/chef/chef/issues/4103
+      codename = debian_codename
 
       # https://github.com/seemethere/docker-ce-packaging/blob/9ba8e36e8588ea75209d813558c8065844c953a0/deb/gen-deb-ver#L16-L20
       test_version = '3'
@@ -138,7 +142,7 @@ module DockerCookbook
 
           apt_repository 'Docker' do
             components Array(new_resource.repo_channel)
-            distribution node['lsb']['codename']
+            distribution debian_codename
             uri "https://download.docker.com/linux/#{node['platform']}"
             arch deb_arch
             key "https://download.docker.com/linux/#{node['platform']}/gpg"
