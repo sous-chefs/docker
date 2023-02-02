@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Set a ceiling of Chef 17 as Chef 18 is broken due to #1222
 - Fix various CI issues
 
 ## 10.3.0 - *2022-12-13*

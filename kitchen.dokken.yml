@@ -2,7 +2,7 @@
 driver:
   name: dokken
   privileged: true  # because Docker and SystemD/Upstart
-  chef_version: <%= ENV['CHEF_VERSION'] || 'current' %>
+  chef_version: <%= ENV['CHEF_VERSION'] || '17' %>
   chef_license: accept-no-persist
   cgroupns_host: true
   volumes:
