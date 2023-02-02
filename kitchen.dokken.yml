@@ -4,9 +4,12 @@ driver:
   privileged: true  # because Docker and SystemD/Upstart
   chef_version: <%= ENV['CHEF_VERSION'] || 'current' %>
   chef_license: accept-no-persist
-  volumes: [
-    '/var/lib/docker', '/var/lib/docker-one', '/var/lib/docker-two'
-  ]
+  cgroupns_host: true
+  volumes:
+    - /sys/fs/cgroup:/sys/fs/cgroup:rw
+    - /var/lib/docker
+    - /var/lib/docker-one
+    - /var/lib/docker-two
 
 transport:
   name: dokken
