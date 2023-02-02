@@ -37,7 +37,6 @@ jobs:
           - 'installation-package'
           - 'installation-tarball'
           - 'install-and-stop'
-          - 'smoke'
         exclude:
           - os: debian-9
             suite: installation-script-main
@@ -77,7 +76,6 @@ jobs:
         suite:
           - 'installation-tarball'
           - 'install-and-stop'
-          - 'smoke'
       fail-fast: false
 
     steps:
@@ -90,6 +88,37 @@ jobs:
         env:
           CHEF_LICENSE: accept-no-persist
           KITCHEN_LOCAL_YAML: kitchen.dokken.yml
+        with:
+          suite: ${{ matrix.suite }}
+          os: ${{ matrix.os }}
+
+  integration-smoke:
+    needs: lint-unit
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        os:
+          - 'almalinux-8'
+          - 'centos-7'
+          - 'centos-stream-8'
+          - 'debian-10'
+          - 'debian-11'
+          - 'rockylinux-8'
+          - 'ubuntu-1804'
+          - 'ubuntu-2004'
+        suite:
+          - 'smoke'
+      fail-fast: false
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+      - name: Install Chef
+        uses: actionshub/chef-install@main
+      - name: Dokken
+        uses: actionshub/test-kitchen@main
+        env:
+          CHEF_LICENSE: accept-no-persist
         with:
           suite: ${{ matrix.suite }}
           os: ${{ matrix.os }}

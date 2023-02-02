@@ -7,7 +7,6 @@ driver:
 
 provisioner:
   name: chef_infra
-  product_name: chef
   enforce_idempotency: true
   multiple_converge: 2
   deprecations_as_errors: true

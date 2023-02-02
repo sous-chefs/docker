@@ -7,7 +7,7 @@ if os.name == 'debian' && os.release.to_i == 9
 else
   describe command('/usr/bin/docker --version') do
     its(:exit_status) { should eq 0 }
-    its(:stdout) { should match(/20\.10\./) }
+    its(:stdout) { should match(/23\.0\./) }
   end
 end
 
