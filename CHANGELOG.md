@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Fixed "Can't start a simple container" in #1226 [@urlund](https://github.com/urlund)
+
 ## 10.4.0 - *2023-02-03*
 
 - Set a ceiling of Chef 17 as Chef 18 is broken due to #1222
