@@ -7,11 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Set a ceiling of Chef 17 as Chef 18 is broken due to #1222
+- Fix various CI issues
+
 ## 10.3.0 - *2022-12-13*
+
+- `docker_installation_package` support for ubuntu 22.04
 
 ## 10.2.5 - *2022-12-05*
 
-Standardise files with files in sous-chefs/repo-management
+- Standardise files with files in sous-chefs/repo-management
 
 ## 10.2.4 - *2022-11-03*
 
