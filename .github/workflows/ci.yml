@@ -23,20 +23,20 @@ jobs:
     strategy:
       matrix:
         os:
-          - 'almalinux-8'
-          - 'centos-7'
-          - 'centos-stream-8'
-          - 'debian-10'
-          - 'debian-11'
-          - 'rockylinux-8'
-          - 'ubuntu-1804'
-          - 'ubuntu-2004'
+          - "almalinux-8"
+          - "centos-7"
+          - "centos-stream-8"
+          - "debian-10"
+          - "debian-11"
+          - "rockylinux-8"
+          - "ubuntu-1804"
+          - "ubuntu-2004"
         suite:
-          - 'installation-script-main'
-          - 'installation-script-test'
-          - 'installation-package'
-          - 'installation-tarball'
-          - 'install-and-stop'
+          - "installation-script-main"
+          - "installation-script-test"
+          - "installation-package"
+          - "installation-tarball"
+          - "install-and-stop"
         exclude:
           - os: debian-9
             suite: installation-script-main
@@ -56,9 +56,9 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
       - name: Install Chef
-        uses: actionshub/chef-install@main
+        uses: actionshub/chef-install@2.0.4
       - name: Dokken
-        uses: actionshub/test-kitchen@main
+        uses: actionshub/test-kitchen@2.1.0
         env:
           CHEF_LICENSE: accept-no-persist
           KITCHEN_LOCAL_YAML: kitchen.dokken.yml
@@ -74,17 +74,17 @@ jobs:
         os:
           - amazonlinux-2
         suite:
-          - 'installation-tarball'
-          - 'install-and-stop'
+          - "installation-tarball"
+          - "install-and-stop"
       fail-fast: false
 
     steps:
       - name: Check out code
         uses: actions/checkout@v3
       - name: Install Chef
-        uses: actionshub/chef-install@main
+        uses: actionshub/chef-install@2.0.4
       - name: Dokken
-        uses: actionshub/test-kitchen@main
+        uses: actionshub/test-kitchen@2.1.0
         env:
           CHEF_LICENSE: accept-no-persist
           KITCHEN_LOCAL_YAML: kitchen.dokken.yml
@@ -98,25 +98,25 @@ jobs:
     strategy:
       matrix:
         os:
-          - 'almalinux-8'
-          - 'centos-7'
-          - 'centos-stream-8'
-          - 'debian-10'
-          - 'debian-11'
-          - 'rockylinux-8'
-          - 'ubuntu-1804'
-          - 'ubuntu-2004'
+          - "almalinux-8"
+          - "centos-7"
+          - "centos-stream-8"
+          - "debian-10"
+          - "debian-11"
+          - "rockylinux-8"
+          - "ubuntu-1804"
+          - "ubuntu-2004"
         suite:
-          - 'smoke'
+          - "smoke"
       fail-fast: false
 
     steps:
       - name: Check out code
         uses: actions/checkout@v3
       - name: Install Chef
-        uses: actionshub/chef-install@main
+        uses: actionshub/chef-install@2.0.4
       - name: Dokken
-        uses: actionshub/test-kitchen@main
+        uses: actionshub/test-kitchen@2.1.0
         env:
           CHEF_LICENSE: accept-no-persist
         with:
