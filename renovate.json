@@ -1,0 +1,17 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:base"],
+  "packageRules": [{
+      "groupName": "Actions",
+      "matchUpdateTypes": ["patch", "pin", "digest"],
+      "automerge": true,
+      "addLabels": ["Release: Patch", "Skip: Announcements"]
+    },
+    {
+      "groupName": "Actions",
+      "matchUpdateTypes": ["major"],
+      "automerge": false,
+      "addLabels": ["Release: Patch", "Skip: Announcements"]
+    }
+  ]
+}
