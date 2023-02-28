@@ -1,7 +1,7 @@
 {
   "recommendations": [
-      "chef-software.chef",
-      "rebornix.ruby",
-      "editorconfig.editorconfig"
+    "chef-software.chef",
+    "rebornix.ruby",
+    "editorconfig.editorconfig"
   ]
 }
