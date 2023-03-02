@@ -5,7 +5,7 @@ This file is used to list changes made in each version of the docker cookbook.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## 10.4.5 - *2023-03-02*
 
 ## 10.4.4 - *2023-02-20*
 
