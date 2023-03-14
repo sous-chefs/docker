@@ -1,4 +1,4 @@
 config:
   ul-indent: false # MD007
   line-length: false # MD013
-  no-duplicate-heading/no-duplicate-header: false # MD024
+  no-duplicate-heading: false # MD024
