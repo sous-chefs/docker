@@ -16,7 +16,6 @@ env:
 branches:
   only:
     - master
-
 services: docker
 
 env:
