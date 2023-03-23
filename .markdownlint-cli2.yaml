@@ -2,3 +2,4 @@ config:
   ul-indent: false # MD007
   line-length: false # MD013
   no-duplicate-heading: false # MD024
+  reference-links-images: false # MD052
