@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Add volume_prune resource
+
 ## 11.6.1 - *2024-12-10*
 
 ## 11.6.0 - *2024-12-03*
