@@ -22,6 +22,11 @@ platforms:
   - name: centos-7
   - name: centos-stream-8
   - name: debian-10
+    # docker post-install script misbehaves on Debian 10 if systemd isn't completely started
+    # https://forums.docker.com/t/failed-to-load-listeners-no-sockets-found-via-socket-activation-make-sure-the-service-was-started-by-systemd/62505/11
+    lifecycle:
+      pre_converge:
+        - remote: 'until systemctl --quiet is-active multi-user.target; do sleep 2; done'
   - name: debian-11
   - name: fedora-latest
   - name: rockylinux-8
