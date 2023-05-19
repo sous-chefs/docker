@@ -4,7 +4,7 @@ if os.name == 'debian' && os.release.to_i == 9
     its(:exit_status) { should eq 0 }
     its(:stdout) { should match(/19\.03\./) }
   end
-elsif os.name == 'amazon' && os.release == '2'
+elsif os.name == 'amazon' && %w(2 2023).include?(os.release)
   describe command('/usr/bin/docker --version') do
     its(:exit_status) { should eq 0 }
     its(:stdout) { should match(/20\.10\./) }
@@ -12,7 +12,7 @@ elsif os.name == 'amazon' && os.release == '2'
 else
   describe command('/usr/bin/docker --version') do
     its(:exit_status) { should eq 0 }
-    its(:stdout) { should match(/23\.0\./) }
+    its(:stdout) { should match(/24\.0\./) }
   end
 end
 
