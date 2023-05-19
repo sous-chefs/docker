@@ -60,6 +60,7 @@ jobs:
       - name: Dokken
         uses: actionshub/test-kitchen@2.1.0
         env:
+          CHEF_VERSION: 17
           CHEF_LICENSE: accept-no-persist
           KITCHEN_LOCAL_YAML: kitchen.dokken.yml
         with:
@@ -86,6 +87,7 @@ jobs:
       - name: Dokken
         uses: actionshub/test-kitchen@2.1.0
         env:
+          CHEF_VERSION: 17
           CHEF_LICENSE: accept-no-persist
           KITCHEN_LOCAL_YAML: kitchen.dokken.yml
         with:
@@ -118,6 +120,7 @@ jobs:
       - name: Dokken
         uses: actionshub/test-kitchen@2.1.0
         env:
+          CHEF_VERSION: 17
           CHEF_LICENSE: accept-no-persist
         with:
           suite: ${{ matrix.suite }}
