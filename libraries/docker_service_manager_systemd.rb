@@ -1,5 +1,8 @@
 module DockerCookbook
   class DockerServiceManagerSystemd < DockerServiceBase
+    # Chef 18 compatibility
+    unified_mode false
+
     resource_name :docker_service_manager_systemd
     provides :docker_service_manager_systemd
 

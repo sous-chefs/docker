@@ -1,5 +1,8 @@
 module DockerCookbook
   class DockerInstallationScript < DockerBase
+    # Chef 18 compatibility
+    unified_mode false
+
     resource_name :docker_installation_script
     provides :docker_installation_script
 

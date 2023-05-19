@@ -2,6 +2,9 @@ module DockerCookbook
   require_relative 'docker_service_base'
 
   class DockerService < DockerServiceBase
+    # Chef 18 compatibility
+    unified_mode false
+
     resource_name :docker_service
 
     # register with the resource resolution system

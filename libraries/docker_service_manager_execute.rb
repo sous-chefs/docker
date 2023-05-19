@@ -1,5 +1,8 @@
 module DockerCookbook
   class DockerServiceManagerExecute < DockerServiceBase
+    # Chef 18 compatibility
+    unified_mode false
+
     resource_name :docker_service_manager_execute
     provides :docker_service_manager_execute
 

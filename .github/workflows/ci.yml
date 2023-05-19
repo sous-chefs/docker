@@ -16,8 +16,6 @@ jobs:
       pull-requests: write
       statuses: write
       issues: write
-    with:
-      chef_workstation_version: 22.12.1024 # chef 17
 
   integration:
     needs: lint-unit
@@ -62,7 +60,7 @@ jobs:
       - name: Dokken
         uses: actionshub/test-kitchen@2.1.0
         env:
-          CHEF_VERSION: 17
+          CHEF_VERSION: latest
           CHEF_LICENSE: accept-no-persist
           KITCHEN_LOCAL_YAML: kitchen.dokken.yml
         with:
@@ -89,7 +87,7 @@ jobs:
       - name: Dokken
         uses: actionshub/test-kitchen@2.1.0
         env:
-          CHEF_VERSION: 17
+          CHEF_VERSION: latest
           CHEF_LICENSE: accept-no-persist
           KITCHEN_LOCAL_YAML: kitchen.dokken.yml
         with:
@@ -122,7 +120,7 @@ jobs:
       - name: Dokken
         uses: actionshub/test-kitchen@2.1.0
         env:
-          CHEF_VERSION: 17
+          CHEF_VERSION: latest
           CHEF_LICENSE: accept-no-persist
         with:
           suite: ${{ matrix.suite }}

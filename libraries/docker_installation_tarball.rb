@@ -1,5 +1,8 @@
 module DockerCookbook
   class DockerInstallationTarball < DockerBase
+    # Chef 18 compatibility
+    unified_mode false
+
     resource_name :docker_installation_tarball
     provides :docker_installation_tarball
 

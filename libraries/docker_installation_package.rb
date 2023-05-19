@@ -1,5 +1,8 @@
 module DockerCookbook
   class DockerInstallationPackage < DockerBase
+    # Chef 18 compatibility
+    unified_mode false
+
     resource_name :docker_installation_package
     provides :docker_installation_package
 
