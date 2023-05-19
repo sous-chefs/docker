@@ -31,6 +31,9 @@ platforms:
   - name: fedora-latest
   - name: rockylinux-8
   - name: ubuntu-18.04
+    lifecycle:
+      pre_converge:
+        - remote: sudo apt update
   - name: ubuntu-20.04
 
 suites:
