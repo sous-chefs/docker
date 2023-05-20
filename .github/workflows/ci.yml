@@ -9,13 +9,15 @@ name: ci
 
 jobs:
   lint-unit:
-    uses: sous-chefs/.github/.github/workflows/lint-unit.yml@2.0.4
+    uses: sous-chefs/.github/.github/workflows/lint-unit.yml@89865ee56cd1c401b2e758f3b82cafab834ca9f7
     permissions:
       actions: write
       checks: write
       pull-requests: write
       statuses: write
       issues: write
+    with:
+      chef_workstation_version: 22.12.1024 # chef 17
 
   integration:
     needs: lint-unit
