@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Update to work on Chef 18 in unified mode, fixes #1222 [@b-dean](https://github.com/b-dean)
+
+    The following resources are now custom resources:
+
+    - `docker_installation`
+    - `docker_installation_package`
+    - `docker_installation_script`
+    - `docker_installation_tarball`
+    - `docker_service`
+    - `docker_service_base`
+    - `docker_service_manager`
+    - `docker_service_manager_execute`
+    - `docker_service_manager_systemd`
+
+    This means their classes are no longer in the `DockerCookbook` module.
+
 ## 10.4.9 - *2023-05-16*
 
 ## 10.4.8 - *2023-04-24*
