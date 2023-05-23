@@ -62,7 +62,7 @@ Standardise files with files in sous-chefs/repo-management
 
 ## 10.2.3 - *2022-11-03*
 
-- Update [CHANGELOG.md](/CHANGELOG.md) to fix MarkDownLint rules
+- Update [CHANGELOG.md](CHANGELOG.md) to fix MarkDownLint rules
 
 ## 10.2.2 - *2022-10-10*
 
@@ -104,7 +104,7 @@ Standardise files with files in sous-chefs/repo-management
 
 ## 10.1.2 - *2021-11-16*
 
-- Fix group resource for `docker_installation_tarball` library in #1205 [@benpro](https://github.com/benpro)
+- Fix group resource for `docker_installation_tarball` library in #1205 [@benoitjpnet](https://github.com/benoitjpnet)
 
 ## 10.1.1 - *2021-11-03*
 
@@ -1915,8 +1915,8 @@ Attributes now available for all docker daemon flags as well as system IP forwar
 
 This release deprecates AUFS/device-mapper handling from chef-docker, but provides backwards compatibility by still including the default recipe of the new cookbooks. Please update your dependencies, Github watching/issues, and recipes to reflect the two new community cookbooks:
 
-- aufs: [aufs on community site](http://community.opscode.com/cookbooks/aufs) / [chef-aufs on Github](https://github.com/bflad/chef-aufs)
-- device-mapper: [device-mapper on community site](http://community.opscode.com/cookbooks/device-mapper) / [chef-device-mapper on Github](https://github.com/bflad/chef-device-mapper)
+- aufs: [aufs on community site](https://supermarket.chef.io/cookbooks/aufs) / [chef-aufs on Github](https://github.com/bflad/chef-aufs)
+- device-mapper: [device-mapper on community site](https://supermarket.chef.io/cookbooks/device-mapper) / [chef-device-mapper on Github](https://github.com/bflad/chef-device-mapper)
 - Bugfix: [#109]: Remove on lxc-net start from docker Upstart
 - Enhancement: [#88]: Migrate AUFS logic to separate cookbook
 - Enhancement: [#90]: Migrate device-mapper logic to separate cookbook
@@ -1945,8 +1945,8 @@ This release deprecates AUFS/device-mapper handling from chef-docker, but provid
 
 This release includes Docker 0.9.0 changes and defaults, such as setting exec_driver to libcontainer ("native"), setting -rm on docker build, double dash arguments on the CLI, additional flags, etc.
 
-- DEPRECATED: Rename storage_type attribute to storage_driver to [match Docker terminology](http://docs.docker.io/en/latest/reference/commandline/cli/#daemon) (storage_type will be removed in chef-docker 1.0)
-- DEPRECATED: Rename virtualization_type attribute to exec_driver to [match Docker terminology](http://docs.docker.io/en/latest/reference/commandline/cli/#daemon) (virtualization_type will be removed in chef-docker 1.0)
+- DEPRECATED: Rename storage_type attribute to storage_driver to [match Docker terminology](https://web.archive.org/web/20140611234732/http://docs.docker.com/reference/commandline/cli#daemon) (storage_type will be removed in chef-docker 1.0)
+- DEPRECATED: Rename virtualization_type attribute to exec_driver to [match Docker terminology](https://web.archive.org/web/20140611234732/http://docs.docker.com/reference/commandline/cli#daemon) (virtualization_type will be removed in chef-docker 1.0)
 - Bugfix: [#80]: Use double dashed arguments on CLI
 - Bugfix: Surround String values on CLI with quotes
 - Enhancement: [#77]: Improved docker ps handling
@@ -2086,7 +2086,7 @@ Awesome work by [@jcrobak] to close out two issues ([#49] and [#52]) with [#62].
 - Enhancement: Default to package install_type only on distros with known packages
 - Enhancement: Initial Oracle 6 platform support via binary install_type
 
-   - <https://blogs.oracle.com/wim/entry/oracle_linux_6_5_and>
+   - <https://web.archive.org/web/20160702000726/https://blogs.oracle.com/wim/entry/oracle_linux_6_5_and>
    - <http://www.oracle.com/technetwork/articles/servers-storage-admin/resource-controllers-linux-1506602.html>
 
 - Enhancement: Split out lxc recipe for default platform lxc handling
@@ -2161,7 +2161,7 @@ Awesome work by [@jcrobak] to close out two issues ([#49] and [#52]) with [#62].
 # 0.14.0
 
 - Bugfix: [#27] Only use command to determine running container if provided
-- Bugfix: [#28] Upstart requires full stop and start of service instead of restart if job configuration changes while already running. Note even `initctl reload-configuration` isn't working as expected from <http://upstart.ubuntu.com/faq.html#reload>
+- Bugfix: [#28] Upstart requires full stop and start of service instead of restart if job configuration changes while already running. Note even `initctl reload-configuration` isn't working as expected from <https://manpages.ubuntu.com/manpages/xenial/en/man8/reload.8.html>
 - Enhancement: [#26] Add ability to set package action
 
 # 0.13.0
