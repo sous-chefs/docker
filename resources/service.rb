@@ -66,7 +66,8 @@ action_class do
 
   def svc_manager(&block)
     b = proc {
-      copy_properties_from(new_resource, exclude: [:service_manager, :install_method])
+      copy_properties_from(new_resource, *property_intersection(new_resource, self),
+                           exclude: [:service_manager, :install_method])
       instance_exec(&block)
     }
 
