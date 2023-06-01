@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Only pass common resource properties of the `docker_service`-resource to
+  the specific service manager resources.
+
 ## 11.0.0 - *2023-05-29*
 
 - Update to work on Chef 18 in unified mode, fixes #1222 [@b-dean](https://github.com/b-dean)
