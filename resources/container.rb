@@ -64,6 +64,7 @@ property :signal, String, default: 'SIGTERM'
 property :stdin_once, [true, false], default: false, desired_state: false
 property :sysctls, Hash, default: {}
 property :timeout, Integer, desired_state: false
+property :tmpfs, Hash, default: {}
 property :tty, [true, false], default: false
 property :ulimits, [Array, nil], coerce: proc { |v| coerce_ulimits(v) }
 property :user, String
@@ -510,6 +511,7 @@ action :create do
           'SecurityOpt'     => new_resource.security_opt,
           'ShmSize'         => new_resource.shm_size,
           'Sysctls'         => new_resource.sysctls,
+          'Tmpfs'           => new_resource.tmpfs,
           'Ulimits'         => ulimits_to_hash,
           'UsernsMode'      => new_resource.userns_mode,
           'UTSMode'         => new_resource.uts_mode,

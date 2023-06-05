@@ -288,6 +288,16 @@ describe 'docker_test::container' do
     end
   end
 
+  context 'testing tmpfs_mounter' do
+    it 'run_if_missing_docker_container[tmpfs_mounter]' do
+      expect(chef_run).to run_if_missing_docker_container('tmpfs_mounter').with(
+        repo: 'busybox',
+        command: ['df', '-h', '/tmpfs_dir'],
+        tmpfs: { '/tmpfs_dir' => 'rw,size=10m' }
+      )
+    end
+  end
+
   context 'testing volumes_from' do
     it 'creates directory[/chefbuilder]' do
       expect(chef_run).to create_directory('/chefbuilder').with(
