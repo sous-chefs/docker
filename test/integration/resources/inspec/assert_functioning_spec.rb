@@ -315,6 +315,13 @@ describe command('docker inspect -f "{{ .Config.Volumes }}" binds_alias') do
   its(:stdout) { should match(%r{\/summer\:\{\}}) }
 end
 
+# docker_container[tmpfs_mounter]
+
+describe command('docker inspect -f "{{ .HostConfig.Tmpfs }}" tmpfs_mounter') do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match('/tmpfs.*10.0m.*tmpfs_dir/') }
+end
+
 # docker_container[chef_container]
 
 describe docker_container('chef_container') do
