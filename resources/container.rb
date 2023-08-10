@@ -12,6 +12,7 @@ property :attach_stdout, [true, false], default: false, desired_state: false
 property :autoremove, [true, false], default: false, desired_state: false
 property :cap_add, [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
 property :cap_drop, [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
+property :cgroup_ns, String, default: 'private'
 property :cgroup_parent, String, default: ''
 property :cpus, [Integer, Float], coerce: proc { |v| coerce_cpus(v) }, default: 0
 property :cpu_shares, Integer, default: 0
@@ -479,6 +480,7 @@ action :create do
           'CapAdd'          => new_resource.cap_add,
           'CapDrop'         => new_resource.cap_drop,
           'CgroupParent'    => new_resource.cgroup_parent,
+          'CgroupnsMode'    => new_resource.cgroup_ns,
           'CpuShares'       => new_resource.cpu_shares,
           'CpusetCpus'      => new_resource.cpuset_cpus,
           'Devices'         => new_resource.devices,
