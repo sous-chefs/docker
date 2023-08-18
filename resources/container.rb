@@ -2,6 +2,8 @@ unified_mode true
 use 'partial/_base'
 use 'partial/_logging'
 
+include DockerCookbook::DockerHelpers::Container
+
 property :container_name, String, name_property: true
 property :repo, String, default: lazy { container_name }
 property :tag, String, default: 'latest'
@@ -12,7 +14,7 @@ property :attach_stdout, [true, false], default: false, desired_state: false
 property :autoremove, [true, false], default: false, desired_state: false
 property :cap_add, [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
 property :cap_drop, [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
-property :cgroup_ns, String, default: 'private'
+property :cgroup_ns, String, default: lazy { cgroupv2? ? 'private' : 'host' }
 property :cgroup_parent, String, default: ''
 property :cpus, [Integer, Float], coerce: proc { |v| coerce_cpus(v) }, default: 0
 property :cpu_shares, Integer, default: 0
@@ -657,6 +659,8 @@ action :export do
 end
 
 action_class do
+  include DockerCookbook::DockerHelpers::Container
+
   def validate_container_create
     if new_resource.property_is_set?(:restart_policy) &&
        new_resource.restart_policy != 'no' &&
@@ -730,10 +734,5 @@ action_class do
 
   def read_env_file
     new_resource.env_file.map { |f| ::File.readlines(f).map(&:strip) }.flatten
-  end
-
-  def cgroupv2?
-    return if node.dig('filesystem', 'by_device').nil?
-    node.dig('filesystem', 'by_device').key?('cgroup2')
   end
 end
