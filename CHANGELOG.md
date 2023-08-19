@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - fix the generation of the docker version string to install on ubuntu jammy
 
+## 11.2.2 - *2023-08-18*
+
+## 11.2.1 - *2023-08-18*
+
+- Fix breaking change introduced by #1253
+
 ## 11.2.0 - *2023-08-10*
 
 - added cgroup_ns option to container resource with default private
