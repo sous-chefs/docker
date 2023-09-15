@@ -731,7 +731,7 @@ module DockerCookbook
                !(new_resource.extra_hosts.nil? || new_resource.extra_hosts.empty?) ||
                !(new_resource.exposed_ports.nil? || new_resource.exposed_ports.empty?) ||
                !(new_resource.port_bindings.nil? || new_resource.port_bindings.empty?) ||
-               !(new_resource.publish_all_ports.nil? || new_resource.publish_all_ports.empty?) ||
+               new_resource.publish_all_ports ||
                !new_resource.port.nil?
            )
           raise Chef::Exceptions::ValidationFailed, 'Cannot specify hostname, dns, dns_search, mac_address, extra_hosts, exposed_ports, port_bindings, publish_all_ports, port when network_mode is container.'
