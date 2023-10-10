@@ -1,6 +1,5 @@
 # Docker Cookbook
 
-[![Cookbook Version](https://img.shields.io/cookbook/v/docker.svg)](https://supermarket.chef.io/cookbooks/docker)
 [![CI State](https://github.com/sous-chefs/docker/workflows/ci/badge.svg)](https://github.com/sous-chefs/docker/actions?query=workflow%3Aci)
 [![OpenCollective](https://opencollective.com/sous-chefs/backers/badge.svg)](#backers)
 [![OpenCollective](https://opencollective.com/sous-chefs/sponsors/badge.svg)](#sponsors)
@@ -69,24 +68,24 @@ end
 
 The cookbooks run by test-kitchen make excellent usage examples.
 
-Those recipes are found at [test/cookbooks/docker_test/](/test/cookbooks/docker_test/).
+Those recipes are found at `test/cookbooks/docker_test`.
 
 ## Resources Overview
 
-- [docker_service](#docker_service): composite resource that uses docker_installation and docker_service_manager
+- [docker_service](documentation/docker_service.md): composite resource that uses docker_installation and docker_service_manager
 - [docker_installation](#docker_installation): automatically select an installation method
 - [docker_service_manager](#docker_service_manager): automatically selects a service manager
 - [docker_installation_script](#docker_installation_script): curl | bash
 - [docker_installation_package](#docker_installation_package): package 'docker-ce'
 - [docker_service_manager_execute](#docker_service_manager_execute): manage docker daemon with Chef
 - [docker_service_manager_systemd](#docker_service_manager_systemd): manage docker daemon with systemd unit files
-- [docker_image](#docker_image): image/repository operations
-- [docker_container](#docker_container): container operations
-- [docker_tag](#docker_tag): image tagging operations
-- [docker_registry](#docker_registry): registry operations
-- [docker_network](#docker_network): network operations
-- [docker_volume](#docker_volume): volume operations
-- [docker_plugin](#docker_plugin): plugin operations
+- [docker_image](documentation/docker_image.md): image/repository operations
+- [docker_container](documentation/docker_container.md): container operations
+- [docker_tag](documentation/docker_tag.md): image tagging operations
+- [docker_registry](documentation/docker_registry.md): registry operations
+- [docker_network](documentation/docker_network.md): network operations
+- [docker_volume](documentation/docker_volume.md): volume operations
+- [docker_plugin](documentation/docker_plugin.md): plugin operations
 
 ## Getting Started
 
