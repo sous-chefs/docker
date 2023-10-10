@@ -2,9 +2,4 @@ config:
   ul-indent: false # MD007
   line-length: false # MD013
   no-duplicate-heading: false # MD024
-  single-title: false # MD025
-  no-bare-urls: false # MD034
-  no-space-in-emphasis: false # MD037
-  link-fragments: false #MD051
   reference-links-images: false # MD052
-  link-image-reference-definitions: false # MD053
