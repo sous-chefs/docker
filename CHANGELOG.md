@@ -1342,7 +1342,7 @@ switching systemd unit MountFlags from slave to private
 
 ## v2.2.1
 
-- marking attach_ properties desired_state: false
+- marking attach_properties desired_state: false
 
 ## v2.2.0
 
