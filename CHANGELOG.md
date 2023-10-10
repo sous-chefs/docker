@@ -1986,8 +1986,8 @@ This release deprecates AUFS/device-mapper handling from chef-docker, but provid
 
 This release includes Docker 0.9.0 changes and defaults, such as setting exec_driver to libcontainer ("native"), setting -rm on docker build, double dash arguments on the CLI, additional flags, etc.
 
-- DEPRECATED: Rename storage_type attribute to storage_driver to [match Docker terminology](https://web.archive.org/web/20140611234732/http://docs.docker.com/reference/commandline/cli#daemon) (storage_type will be removed in chef-docker 1.0)
-- DEPRECATED: Rename virtualization_type attribute to exec_driver to [match Docker terminology](https://web.archive.org/web/20140611234732/http://docs.docker.com/reference/commandline/cli#daemon) (virtualization_type will be removed in chef-docker 1.0)
+- DEPRECATED: Rename storage_type attribute to storage_driver to match Docker terminology (storage_type will be removed in chef-docker 1.0)
+- DEPRECATED: Rename virtualization_type attribute to exec_driver to match Docker terminology (virtualization_type will be removed in chef-docker 1.0)
 - Bugfix: [#80]: Use double dashed arguments on CLI
 - Bugfix: Surround String values on CLI with quotes
 - Enhancement: [#77]: Improved docker ps handling

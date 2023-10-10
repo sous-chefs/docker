@@ -1,6 +1,5 @@
 # Docker Cookbook
 
-[![Cookbook Version](https://img.shields.io/cookbook/v/docker.svg)](https://supermarket.chef.io/cookbooks/docker)
 [![CI State](https://github.com/sous-chefs/docker/workflows/ci/badge.svg)](https://github.com/sous-chefs/docker/actions?query=workflow%3Aci)
 [![OpenCollective](https://opencollective.com/sous-chefs/backers/badge.svg)](#backers)
 [![OpenCollective](https://opencollective.com/sous-chefs/sponsors/badge.svg)](#sponsors)
