@@ -45,7 +45,7 @@ Most `docker_container` properties are the `snake_case` version of the `CamelCas
 - `health_check` - A hash containing the health check options - [healthcheck reference](https://docs.docker.com/engine/reference/run/#healthcheck)
 - `host` - A string containing the host the API should communicate with. Defaults to ENV['DOCKER_HOST'] if set
 - `host_name` - The hostname for the container.
-- `labels` A string, array, or hash to set metadata on the container in the form ['foo:bar', 'hello:world']`
+- `labels` A string, array, or hash to set metadata on the container in the form `['foo:bar', 'hello:world']`
 - `links` - An array of source container/alias pairs to link the container to in the form `[container_a:www', container_b:db']`
 - `log_driver` - Sets a custom logging driver for the container (json-file/syslog/journald/gelf/fluentd/awslogs/splunk/etwlogs/gcplogs/logentries/loki-docker/local/none).
 - `log_opts` - Configures the above logging driver options (driver-specific).
@@ -88,6 +88,7 @@ Most `docker_container` properties are the `snake_case` version of the `CamelCas
 - `tls_ca_cert` - Trust certs signed only by this CA. Defaults to ENV['DOCKER_CERT_PATH'] if set
 - `tls_client_cert` - Path to TLS certificate file for docker cli. Defaults to ENV['DOCKER_CERT_PATH'] if set
 - `tls_client_key` - Path to TLS key file for docker cli. Defaults to ENV['DOCKER_CERT_PATH'] if set
+- `tmpfs` - A hash of paths to tmpfs options. Defaults to `{}`.
 - `userns_mode` - Modify the user namespace mode - Defaults to `nil`, example option: `host`
 - `pid_mode` - Set the PID (Process) Namespace mode for the container. `host`: use the host's PID namespace inside the container.
 - `ipc_mode` - Set the IPC mode for the container - Defaults to `nil`, example option: `host`
@@ -274,6 +275,16 @@ docker_container 'ohai_debian' do
   command '/opt/chef/embedded/bin/ohai platform'
   repo 'debian'
   volumes_from 'chef_container'
+end
+```
+
+### Mount a tmpfs at a given directory in the container
+
+```ruby
+docker_container 'tmp_db' do
+    command '/bin/run_db.sh'
+    tmpfs { '/var/lib/db_data' => 'rw,size=2g' }
+    action :run
 end
 ```
 

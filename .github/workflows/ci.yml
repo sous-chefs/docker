@@ -9,7 +9,7 @@ name: ci
 
 jobs:
   lint-unit:
-    uses: sous-chefs/.github/.github/workflows/lint-unit.yml@89865ee56cd1c401b2e758f3b82cafab834ca9f7
+    uses: sous-chefs/.github/.github/workflows/lint-unit.yml@19068b35e66a632c5640c222430fcea905c1662f
     permissions:
       actions: write
       checks: write
@@ -54,7 +54,7 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install Chef
         uses: actionshub/chef-install@2.0.4
       - name: Dokken
@@ -69,7 +69,7 @@ jobs:
 
   integration-amazonlinux:
     needs: lint-unit
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         os:
@@ -81,7 +81,7 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install Chef
         uses: actionshub/chef-install@2.0.4
       - name: Dokken
@@ -114,7 +114,7 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install Chef
         uses: actionshub/chef-install@2.0.4
       - name: Dokken

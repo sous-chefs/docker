@@ -2,6 +2,8 @@ unified_mode true
 use 'partial/_base'
 use 'partial/_logging'
 
+include DockerCookbook::DockerHelpers::Container
+
 property :container_name, String, name_property: true
 property :repo, String, default: lazy { container_name }
 property :tag, String, default: 'latest'
@@ -12,6 +14,7 @@ property :attach_stdout, [true, false], default: false, desired_state: false
 property :autoremove, [true, false], default: false, desired_state: false
 property :cap_add, [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
 property :cap_drop, [Array, nil], coerce: proc { |v| Array(v).empty? ? nil : Array(v) }
+property :cgroup_ns, String, default: lazy { cgroupv2? ? 'private' : 'host' }
 property :cgroup_parent, String, default: ''
 property :cpus, [Integer, Float], coerce: proc { |v| coerce_cpus(v) }, default: 0
 property :cpu_shares, Integer, default: 0
@@ -64,6 +67,7 @@ property :signal, String, default: 'SIGTERM'
 property :stdin_once, [true, false], default: false, desired_state: false
 property :sysctls, Hash, default: {}
 property :timeout, Integer, desired_state: false
+property :tmpfs, Hash, default: {}
 property :tty, [true, false], default: false
 property :ulimits, [Array, nil], coerce: proc { |v| coerce_ulimits(v) }
 property :user, String
@@ -478,6 +482,7 @@ action :create do
           'CapAdd'          => new_resource.cap_add,
           'CapDrop'         => new_resource.cap_drop,
           'CgroupParent'    => new_resource.cgroup_parent,
+          'CgroupnsMode'    => new_resource.cgroup_ns,
           'CpuShares'       => new_resource.cpu_shares,
           'CpusetCpus'      => new_resource.cpuset_cpus,
           'Devices'         => new_resource.devices,
@@ -510,6 +515,7 @@ action :create do
           'SecurityOpt'     => new_resource.security_opt,
           'ShmSize'         => new_resource.shm_size,
           'Sysctls'         => new_resource.sysctls,
+          'Tmpfs'           => new_resource.tmpfs,
           'Ulimits'         => ulimits_to_hash,
           'UsernsMode'      => new_resource.userns_mode,
           'UTSMode'         => new_resource.uts_mode,
@@ -653,6 +659,8 @@ action :export do
 end
 
 action_class do
+  include DockerCookbook::DockerHelpers::Container
+
   def validate_container_create
     if new_resource.property_is_set?(:restart_policy) &&
        new_resource.restart_policy != 'no' &&
@@ -726,10 +734,5 @@ action_class do
 
   def read_env_file
     new_resource.env_file.map { |f| ::File.readlines(f).map(&:strip) }.flatten
-  end
-
-  def cgroupv2?
-    return if node.dig('filesystem', 'by_device').nil?
-    node.dig('filesystem', 'by_device').key?('cgroup2')
   end
 end

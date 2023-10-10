@@ -10,6 +10,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Standardise files with files in sous-chefs/repo-management
 - Various MDL fixes
 
+## 11.2.5 - *2023-10-10*
+
+## 11.2.4 - *2023-09-29*
+
+## 11.2.3 - *2023-09-04*
+
+## 11.2.2 - *2023-08-18*
+
+## 11.2.1 - *2023-08-18*
+
+- Fix breaking change introduced by #1253
+
+## 11.2.0 - *2023-08-10*
+
+- added cgroup_ns option to container resource with default private
+
+## 11.1.1 - *2023-07-10*
+
+## 11.1.0 - *2023-06-06*
+
 ## 11.0.1 - *2023-06-01*
 
 - Only pass common resource properties of the `docker_service`-resource to

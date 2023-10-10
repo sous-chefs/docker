@@ -290,6 +290,18 @@ docker_container 'binds_alias' do
   action :run_if_missing
 end
 
+#######
+# tmpfs
+#######
+
+# docker inspect -f "{{ .HostConfig.Tmpfs }}"
+docker_container 'tmpfs_mounter' do
+  repo 'busybox'
+  command 'df -h /tmpfs_dir'
+  tmpfs '/tmpfs_dir' => 'rw,size=10m'
+  action :run_if_missing
+end
+
 ##############
 # volumes_from
 ##############
