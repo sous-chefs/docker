@@ -8,7 +8,7 @@ module DockerCookbook
         opts['label!'] = { "#{without_label}": true } if without_label
         opts['all'] = true if all
 
-        'filters=' + URI.encode_www_form_component(opts.to_jso)
+        'filters=' + URI.encode_www_form_component(opts.to_json)
       end
     end
   end
