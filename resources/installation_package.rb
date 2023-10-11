@@ -90,7 +90,7 @@ def version_string(v)
     return "#{v}~ce-0~debian" if debian?
     return "#{v}~ce-0~ubuntu" if ubuntu?
   elsif v.to_f >= 23.0 && ubuntu?
-    return "5:#{v}-1~ubuntu.#{node['platform_version']}~#{codename}"
+    "5:#{v}-1~ubuntu.#{node['platform_version']}~#{codename}"
   elsif v.to_f >= 18.09 && debuntu?
     return "5:#{v}~#{test_version}-0~debian-#{codename}" if debian?
     return "5:#{v}~#{test_version}-0~ubuntu-#{codename}" if ubuntu?
