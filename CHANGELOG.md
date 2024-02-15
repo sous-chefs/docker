@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 11.3.1 - *2024-02-15*
+
 ## 11.3.0 - *2023-10-12*
 
 - fix the generation of the docker version string to install on ubuntu jammy
