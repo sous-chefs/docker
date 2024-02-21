@@ -118,7 +118,7 @@ action :create do
 
       yum_repository 'Docker' do
         baseurl "https://#{new_resource.site_url}/linux/#{platform}/#{node['platform_version'].to_i}/#{arch}/#{new_resource.repo_channel}"
-        gpgkey "https://#{new_resource.site_url}linux/#{platform}/gpg"
+        gpgkey "https://#{new_resource.site_url}/linux/#{platform}/gpg"
         description "Docker #{new_resource.repo_channel.capitalize} repository"
         gpgcheck true
         enabled true
