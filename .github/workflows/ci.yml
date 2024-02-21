@@ -9,7 +9,7 @@ name: ci
 
 jobs:
   lint-unit:
-    uses: sous-chefs/.github/.github/workflows/lint-unit.yml@8afd68a6093e2c9f40efdaf20d7bd08eef008d20
+    uses: sous-chefs/.github/.github/workflows/lint-unit.yml@74ab041a37e1adfd8872d6e81fc00bfef05f9b94
     permissions:
       actions: write
       checks: write
