@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Add site_url property to docker_installation_package resource
+  
 ## 11.3.1 - *2024-02-15*
 
 ## 11.3.0 - *2023-10-12*

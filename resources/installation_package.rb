@@ -10,6 +10,7 @@ property :package_name, String, default: 'docker-ce', desired_state: false
 property :package_version, String, desired_state: false
 property :version, String, desired_state: false
 property :package_options, String, desired_state: false
+property :site_url, String, default: 'download.docker.com'
 
 def el7?
   return true if platform_family?('rhel') && node['platform_version'].to_i == 7
@@ -116,8 +117,8 @@ action :create do
         end
 
       yum_repository 'Docker' do
-        baseurl "https://download.docker.com/linux/#{platform}/#{node['platform_version'].to_i}/#{arch}/#{new_resource.repo_channel}"
-        gpgkey "https://download.docker.com/linux/#{platform}/gpg"
+        baseurl "https://#{new_resource.site_url}/linux/#{platform}/#{node['platform_version'].to_i}/#{arch}/#{new_resource.repo_channel}"
+        gpgkey "https://#{new_resource.site_url}/linux/#{platform}/gpg"
         description "Docker #{new_resource.repo_channel.capitalize} repository"
         gpgcheck true
         enabled true
@@ -141,9 +142,9 @@ action :create do
 
       apt_repository 'Docker' do
         components Array(new_resource.repo_channel)
-        uri "https://download.docker.com/linux/#{node['platform']}"
+        uri "https://#{new_resource.site_url}/linux/#{node['platform']}"
         arch deb_arch
-        key "https://download.docker.com/linux/#{node['platform']}/gpg"
+        key "https://#{new_resource.site_url}/linux/#{node['platform']}/gpg"
         action :add
       end
     else
