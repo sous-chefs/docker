@@ -58,7 +58,7 @@ jobs:
       - name: Install Chef
         uses: actionshub/chef-install@3.0.0
       - name: Dokken
-        uses: actionshub/test-kitchen@2.1.0
+        uses: actionshub/test-kitchen@3.0.0
         env:
           CHEF_VERSION: latest
           CHEF_LICENSE: accept-no-persist
@@ -85,7 +85,7 @@ jobs:
       - name: Install Chef
         uses: actionshub/chef-install@3.0.0
       - name: Dokken
-        uses: actionshub/test-kitchen@2.1.0
+        uses: actionshub/test-kitchen@3.0.0
         env:
           CHEF_VERSION: latest
           CHEF_LICENSE: accept-no-persist
@@ -118,7 +118,7 @@ jobs:
       - name: Install Chef
         uses: actionshub/chef-install@3.0.0
       - name: Dokken
-        uses: actionshub/test-kitchen@2.1.0
+        uses: actionshub/test-kitchen@3.0.0
         env:
           CHEF_VERSION: latest
           CHEF_LICENSE: accept-no-persist
