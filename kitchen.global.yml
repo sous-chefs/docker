@@ -18,16 +18,12 @@ platforms:
   - name: almalinux-8
   - name: almalinux-9
   - name: amazonlinux-2023
-  - name: centos-7
   - name: centos-stream-8
   - name: centos-stream-9
-  - name: debian-9
-  - name: debian-10
   - name: debian-11
   - name: debian-12
   - name: fedora-latest
   - name: opensuse-leap-15
-  - name: oraclelinux-7
   - name: oraclelinux-8
   - name: oraclelinux-9
   - name: rockylinux-8
@@ -35,4 +31,4 @@ platforms:
   - name: ubuntu-18.04
   - name: ubuntu-20.04
   - name: ubuntu-22.04
-  - name: ubuntu-23.04
+  - name: ubuntu-24.04
