@@ -22,11 +22,6 @@ platforms:
       image: dokken/amazonlinux-2023
       pid_one_command: /usr/lib/systemd/systemd
 
-  - name: centos-7
-    driver:
-      image: dokken/centos-7
-      pid_one_command: /usr/lib/systemd/systemd
-
   - name: centos-stream-8
     driver:
       image: dokken/centos-stream-8
@@ -36,16 +31,6 @@ platforms:
     driver:
       image: dokken/centos-stream-9
       pid_one_command: /usr/lib/systemd/systemd
-
-  - name: debian-9
-    driver:
-      image: dokken/debian-9
-      pid_one_command: /bin/systemd
-
-  - name: debian-10
-    driver:
-      image: dokken/debian-10
-      pid_one_command: /bin/systemd
 
   - name: debian-11
     driver:
@@ -65,11 +50,6 @@ platforms:
   - name: opensuse-leap-15
     driver:
       image: dokken/opensuse-leap-15
-      pid_one_command: /usr/lib/systemd/systemd
-
-  - name: oraclelinux-7
-    driver:
-      image: dokken/oraclelinux-7
       pid_one_command: /usr/lib/systemd/systemd
 
   - name: oraclelinux-8
@@ -92,11 +72,6 @@ platforms:
       image: dokken/rockylinux-9
       pid_one_command: /usr/lib/systemd/systemd
 
-  - name: ubuntu-18.04
-    driver:
-      image: dokken/ubuntu-18.04
-      pid_one_command: /bin/systemd
-
   - name: ubuntu-20.04
     driver:
       image: dokken/ubuntu-20.04
@@ -107,7 +82,7 @@ platforms:
       image: dokken/ubuntu-22.04
       pid_one_command: /bin/systemd
 
-  - name: ubuntu-23.04
+  - name: ubuntu-24.04
     driver:
-      image: dokken/ubuntu-23.04
+      image: dokken/ubuntu-24.04
       pid_one_command: /bin/systemd
