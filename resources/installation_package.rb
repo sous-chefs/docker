@@ -67,7 +67,7 @@ def jammy?
   false
 end
 
-def nobel?
+def noble?
   return true if platform?('ubuntu') && node['platform_version'] == '24.04'
   false
 end
@@ -87,8 +87,8 @@ def version_string(v)
                'focal'
              elsif jammy? # ubuntu 22.04
                'jammy'
-             elsif nobel? # ubuntu 24.04
-               'nobel'
+             elsif noble? # ubuntu 24.04
+               'noble'
              end
 
   # https://github.com/seemethere/docker-ce-packaging/blob/9ba8e36e8588ea75209d813558c8065844c953a0/deb/gen-deb-ver#L16-L20
