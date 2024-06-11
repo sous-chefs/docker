@@ -67,6 +67,11 @@ def jammy?
   false
 end
 
+def nobel?
+  return true if platform?('ubuntu') && node['platform_version'] == '24.04'
+  false
+end
+
 # https://github.com/chef/chef/issues/4103
 def version_string(v)
   return if v.nil?
@@ -82,6 +87,8 @@ def version_string(v)
                'focal'
              elsif jammy? # ubuntu 22.04
                'jammy'
+             elsif nobel? # ubuntu 24.04
+               'nobel'
              end
 
   # https://github.com/seemethere/docker-ce-packaging/blob/9ba8e36e8588ea75209d813558c8065844c953a0/deb/gen-deb-ver#L16-L20
