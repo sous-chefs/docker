@@ -18,3 +18,4 @@ supports 'redhat'
 supports 'ubuntu'
 
 gem 'docker-api', '>= 1.34', '< 3'
+gem 'excon', '0.110.0'

@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Temporary version in for `excon` gem due to v0.111.0 introducing breaking changes with the `docker-api` gem. To be fixed [upstream](https://github.com/upserve/docker-api/issues/586)
+
 Standardise files with files in sous-chefs/repo-management
 
 Standardise files with files in sous-chefs/repo-management
@@ -18,7 +20,7 @@ Standardise files with files in sous-chefs/repo-management
 ## 11.3.2 - *2024-02-21*
 
 - Add site_url property to docker_installation_package resource
-  
+
 ## 11.3.1 - *2024-02-15*
 
 ## 11.3.0 - *2023-10-12*
