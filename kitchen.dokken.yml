@@ -22,11 +22,6 @@ platforms:
       image: dokken/amazonlinux-2023
       pid_one_command: /usr/lib/systemd/systemd
 
-  - name: centos-stream-8
-    driver:
-      image: dokken/centos-stream-8
-      pid_one_command: /usr/lib/systemd/systemd
-
   - name: centos-stream-9
     driver:
       image: dokken/centos-stream-9
