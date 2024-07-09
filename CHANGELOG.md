@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+Standardise files with files in sous-chefs/repo-management
+
 ## 11.3.7 - *2024-07-09*
 
 - Bump `docker-api` dependency to `>= 2.3` to fix [upstream bug #586](https://github.com/upserve/docker-api/issues/586)
