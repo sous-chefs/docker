@@ -52,6 +52,11 @@ def bullseye?
   false
 end
 
+def bookworm?
+  return true if platform?('debian') && node['platform_version'].to_i == 11
+  false
+end
+
 def bionic?
   return true if platform?('ubuntu') && node['platform_version'] == '18.04'
   false
@@ -81,6 +86,8 @@ def version_string(v)
                'buster'
              elsif bullseye? # deb 11
                'bullseye'
+             elsif bookworm? # deb 12
+               'bookworm'
              elsif bionic? # ubuntu 18.04
                'bionic'
              elsif focal? # ubuntu 20.04

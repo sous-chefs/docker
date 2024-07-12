@@ -1,18 +1,22 @@
-# Debian 9 does not include 23.0
-if os.name == 'debian' && os.release.to_i == 9
+if os.name == 'debian'
   describe command('/usr/bin/docker --version') do
     its(:exit_status) { should eq 0 }
-    its(:stdout) { should match(/19\.03\./) }
+    its(:stdout) { should match(/27\.0\./) }
   end
 elsif os.name == 'amazon' && %w(2 2023).include?(os.release)
   describe command('/usr/bin/docker --version') do
     its(:exit_status) { should eq 0 }
     its(:stdout) { should match(/20\.10\./) }
   end
+elsif os.family == 'redhat' && os.release.to_i == 8
+  describe command('/usr/bin/docker --version') do
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match(/26\.1\./) }
+  end
 else
   describe command('/usr/bin/docker --version') do
     its(:exit_status) { should eq 0 }
-    its(:stdout) { should match(/24\.0\./) }
+    its(:stdout) { should match(/27\.0\./) }
   end
 end
 
