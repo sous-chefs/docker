@@ -93,6 +93,8 @@ suites:
       - recipe[docker_test::container]
       - recipe[docker_test::exec]
       - recipe[docker_test::plugin]
+      - recipe[docker_test::image_prune]
+      - recipe[docker_test::volume_prune]
 
   - name: network
     provisioner:
@@ -115,6 +117,7 @@ suites:
     run_list:
       - recipe[docker_test::default]
       - recipe[docker_test::volume]
+      - recipe[docker_test::volume_prune]
 
   - name: registry
     provisioner:

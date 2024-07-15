@@ -39,6 +39,12 @@ Standardise files with files in sous-chefs/repo-management
 
 - fix the generation of the docker version string to install on ubuntu jammy
 
+- Add volume_prune resource
+
+## 10.4.7 - *2023-04-20*
+
+## 10.4.6 - *2023-04-01*
+
 ## 11.2.6 - *2023-10-10*
 
 - Standardise files with files in sous-chefs/repo-management
