@@ -53,7 +53,7 @@ def bullseye?
 end
 
 def bookworm?
-  return true if platform?('debian') && node['platform_version'].to_i == 11
+  return true if platform?('debian') && node['platform_version'].to_i == 12
   false
 end
 

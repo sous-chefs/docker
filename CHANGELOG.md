@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Fix `version_string` for Debian Bookworm
+
 ## 11.4.0 - *2024-07-15*
 
 - `docker_installation_package` support for Ubuntu v24.04 (noble)
