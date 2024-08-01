@@ -9,7 +9,7 @@ provides :docker_service
 
 # installation type and service_manager
 property :install_method, %w(script package tarball none auto), default: lazy { docker_install_method }, desired_state: false
-property :service_manager, %w(execute systemd auto), default: 'auto', desired_state: false
+property :service_manager, %w(execute systemd none auto), default: 'auto', desired_state: false
 
 # docker_installation_script
 property :repo, String, desired_state: false
@@ -78,6 +78,9 @@ action_class do
       svc = docker_service_manager_execute(new_resource.name, &b)
     when 'systemd'
       svc = docker_service_manager_systemd(new_resource.name, &b)
+    when 'none'
+      Chef::Log.info('Skipping Docker Server Manager. Assuming it was handled previously.')
+      return
     end
     svc
   end
