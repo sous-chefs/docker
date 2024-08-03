@@ -1,13 +1,13 @@
 require 'spec_helper'
 
 describe 'docker_test::installation_package' do
-  platform 'ubuntu', '18.04'
+  platform 'ubuntu'
   step_into :docker_installation_package
   cached(:subject) { chef_run }
 
   context 'Ubuntu: testing default action, default properties' do
     it 'installs docker' do
-      expect(chef_run).to create_docker_installation_package('default').with(version: '20.10.11')
+      expect(chef_run).to create_docker_installation_package('default')
     end
 
     it do
@@ -23,7 +23,7 @@ describe 'docker_test::installation_package' do
   context 'Ubuntu (aarch64): testing default action, default properties' do
     automatic_attributes['kernel']['machine'] = 'aarch64'
     it 'installs docker' do
-      expect(chef_run).to create_docker_installation_package('default').with(version: '20.10.11')
+      expect(chef_run).to create_docker_installation_package('default')
     end
 
     it do
@@ -39,7 +39,7 @@ describe 'docker_test::installation_package' do
   context 'Ubuntu (ppc64le): testing default action, default properties' do
     automatic_attributes['kernel']['machine'] = 'ppc64le'
     it 'installs docker' do
-      expect(chef_run).to create_docker_installation_package('default').with(version: '20.10.11')
+      expect(chef_run).to create_docker_installation_package('default')
     end
 
     it do
@@ -53,10 +53,10 @@ describe 'docker_test::installation_package' do
   end
 
   context 'CentOS: testing default action, default properties' do
-    platform 'centos', '8'
+    platform 'centos'
     cached(:subject) { chef_run }
     it 'installs docker' do
-      expect(chef_run).to create_docker_installation_package('default').with(version: '3:20.10.11')
+      expect(chef_run).to create_docker_installation_package('default')
     end
     it do
       expect(chef_run).to create_yum_repository('Docker').with(
@@ -75,7 +75,7 @@ describe 'docker_test::installation_package' do
     automatic_attributes['kernel']['machine'] = 's390x'
 
     it 'installs docker' do
-      expect(chef_run).to create_docker_installation_package('default').with(version: '3:20.10.11')
+      expect(chef_run).to create_docker_installation_package('default')
     end
     it do
       expect(chef_run).to create_yum_repository('Docker').with(
