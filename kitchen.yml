@@ -8,7 +8,7 @@ driver:
 provisioner:
   name: chef_infra
   product_name: <%= ENV['CHEF_PRODUCT_NAME'] || 'chef' %>
-  product_version: <%= ENV['CHEF_VERSION'] || '18' %>
+  product_version: <%= ENV['CHEF_VERSION'] || 'latest' %>
   enforce_idempotency: true
   multiple_converge: 2
   deprecations_as_errors: true
