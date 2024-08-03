@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 - Add `none` as an option to `service_manager` to allow using the system defaults
+- Switch to running vagrant+virtualbox on Ubuntu via nested virtualization for smoke tests
+- Fix package installation tests
 
 ## 11.4.2 - *2024-07-16*
 

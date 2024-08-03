@@ -8,10 +8,11 @@ driver:
 provisioner:
   name: chef_infra
   product_name: <%= ENV['CHEF_PRODUCT_NAME'] || 'chef' %>
-  product_version: <%= ENV['CHEF_VERSION'] || '17' %>
+  product_version: <%= ENV['CHEF_VERSION'] || '18' %>
   enforce_idempotency: true
   multiple_converge: 2
   deprecations_as_errors: true
+  chef_license: accept-no-persist
 
 verifier:
   name: inspec
