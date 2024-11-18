@@ -17,6 +17,11 @@ platforms:
       image: dokken/almalinux-9
       pid_one_command: /usr/lib/systemd/systemd
 
+  - name: almalinux-10
+    driver:
+      image: dokken/almalinux-10
+      pid_one_command: /usr/lib/systemd/systemd
+
   - name: amazonlinux-2023
     driver:
       image: dokken/amazonlinux-2023
@@ -25,6 +30,11 @@ platforms:
   - name: centos-stream-9
     driver:
       image: dokken/centos-stream-9
+      pid_one_command: /usr/lib/systemd/systemd
+
+  - name: centos-stream-10
+    driver:
+      image: dokken/centos-stream-10
       pid_one_command: /usr/lib/systemd/systemd
 
   - name: debian-11
