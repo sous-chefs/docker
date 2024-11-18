@@ -9,7 +9,7 @@ name: ci
 
 jobs:
   lint-unit:
-    uses: sous-chefs/.github/.github/workflows/lint-unit.yml@bd438e6f5861a5b7ac15e6fe7d10222a4bc296be
+    uses: sous-chefs/.github/.github/workflows/lint-unit.yml@main
     permissions:
       actions: write
       checks: write
@@ -30,6 +30,7 @@ jobs:
           - "rockylinux-9"
           - "ubuntu-2004"
           - "ubuntu-2204"
+          - "ubuntu-2404"
         suite:
           - "installation-script-main"
           - "installation-script-test"
@@ -72,7 +73,7 @@ jobs:
 
   integration-amazonlinux:
     needs: lint-unit
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         os:
@@ -99,18 +100,19 @@ jobs:
 
   integration-smoke:
     needs: lint-unit
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         os:
           - "almalinux-8"
-          - "centos-7"
-          - "centos-stream-8"
-          - "debian-10"
+          - "almalinux-9"
           - "debian-11"
+          - "debian-12"
           - "rockylinux-8"
-          - "ubuntu-1804"
+          - "rockylinux-9"
           - "ubuntu-2004"
+          - "ubuntu-2204"
+          - "ubuntu-2404"
         suite:
           - "smoke"
       fail-fast: false
@@ -118,6 +120,12 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v4
+      - name: Install VirtualBox & Vagrant
+        run: |
+          sudo apt update && sudo apt install virtualbox
+          wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+          echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+          sudo apt update && sudo apt install vagrant
       - name: Install Chef
         uses: actionshub/chef-install@3.0.0
       - name: Dokken

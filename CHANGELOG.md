@@ -9,11 +9,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Standardise files with files in sous-chefs/repo-management
 
-Standardise files with files in sous-chefs/repo-management
+## 11.5.1 - *2024-10-07*
 
-Standardise files with files in sous-chefs/repo-management
+## 11.5.0 - *2024-08-03*
 
-Standardise files with files in sous-chefs/repo-management
+- Add `none` as an option to `service_manager` to allow using the system defaults
+- Switch to running vagrant+virtualbox on Ubuntu via nested virtualization for smoke tests
+- Fix package installation tests
+
+## 11.4.2 - *2024-07-16*
+
+## 11.4.1 - *2024-07-16*
+
+- Fix `version_string` for Debian Bookworm
+
+## 11.4.0 - *2024-07-15*
+
+- `docker_installation_package` support for Ubuntu v24.04 (noble)
 
 ## 11.3.7 - *2024-07-09*
 

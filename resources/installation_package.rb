@@ -53,7 +53,7 @@ def bullseye?
 end
 
 def bookworm?
-  return true if platform?('debian') && node['platform_version'].to_i == 11
+  return true if platform?('debian') && node['platform_version'].to_i == 12
   false
 end
 
@@ -69,6 +69,11 @@ end
 
 def jammy?
   return true if platform?('ubuntu') && node['platform_version'] == '22.04'
+  false
+end
+
+def noble?
+  return true if platform?('ubuntu') && node['platform_version'] == '24.04'
   false
 end
 
@@ -89,6 +94,8 @@ def version_string(v)
                'focal'
              elsif jammy? # ubuntu 22.04
                'jammy'
+             elsif noble? # ubuntu 24.04
+               'noble'
              end
 
   # https://github.com/seemethere/docker-ce-packaging/blob/9ba8e36e8588ea75209d813558c8065844c953a0/deb/gen-deb-ver#L16-L20
