@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- add opts for ip6tables
+
 ## 11.5.2 - *2024-11-18*
 
 Standardise files with files in sous-chefs/repo-management
