@@ -62,6 +62,7 @@ The `docker_service` resource property list mostly corresponds to the options fo
 - `ip_masq` - Enable IP masquerading
 - `ip` - Default IP when binding container ports
 - `iptables` - Enable addition of iptables rules
+- `ip6tables` - Enable addition of ip6tables rules
 - `ipv4_forward` - Enable net.ipv4.ip_forward
 - `ipv6_forward` - Enable net.ipv6.ip_forward
 - `ipv6` - Enable IPv6 networking
