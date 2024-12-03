@@ -38,6 +38,7 @@ property :ipv4_forward, [true, false], default: true
 property :ipv6_forward, [true, false], default: true
 property :ip_masq, [true, false]
 property :iptables, [true, false]
+property :ip6tables, [true, false]
 property :ipv6, [true, false]
 property :default_ip_address_pool, String
 property :log_level, %w(debug info warn error fatal)

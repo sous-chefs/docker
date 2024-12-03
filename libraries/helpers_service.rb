@@ -225,6 +225,7 @@ module DockerCookbook
         opts << "--ip-forward=#{ip_forward}" unless ip_forward.nil?
         opts << "--ip-masq=#{ip_masq}" unless ip_masq.nil?
         opts << "--iptables=#{iptables}" unless iptables.nil?
+        opts << "--ip6tables=#{ip6tables}" unless ip6tables.nil?
         opts << "--ipv6=#{ipv6}" unless ipv6.nil?
         opts << "--log-level=#{log_level}" if log_level
         labels.each { |l| opts << "--label=#{l}" } if labels
