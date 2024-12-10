@@ -77,6 +77,8 @@ property :volumes, PartialHashType, default: {}, coerce: proc { |v| coerce_volum
 property :volumes_from, [String, Array], coerce: proc { |v| v.nil? ? nil : Array(v) }
 property :volume_driver, String
 property :working_dir, String
+property :gpus, [String, nil], description: 'GPU devices to add to the container (e.g., all or device=0)'
+property :gpu_driver, String, default: 'nvidia', description: 'GPU driver to use for container (e.g., nvidia)'
 
 # Used to store the bind property since binds is an alias to volumes
 property :volumes_binds, Array, coerce: proc { |v| v.sort }
@@ -326,11 +328,11 @@ end
 #
 # If you say:    `image 'repo/blah'`
 # Repo will be:  `repo/blah`
-# Tag will be:   `latest`
+# Tag will be:   `latest'
 #
 # If you say:    `image 'repo/blah:3.1'`
 # Repo will be:  `repo/blah`
-# Tag will be:   `3.1`
+# Tag will be:   `3.1'
 #
 # If you say:    `image 'repo:1337/blah'`
 # Repo will be:  `repo:1337/blah`
@@ -338,7 +340,7 @@ end
 #
 # If you say:    `image 'repo:1337/blah:3.1'`
 # Repo will be:  `repo:1337/blah`
-# Tag will be:   `3.1`
+# Tag will be:   `3.1'
 #
 def image(image = nil)
   if image
@@ -544,6 +546,12 @@ action :create do
 
       # Store the state of the options and create the container
       new_resource.create_options = config
+      config['HostConfig']['DeviceRequests'] = [{
+        'Driver' => new_resource.gpu_driver,
+        'Count' => -1, # -1 means no limit
+        'Capabilities' => [['gpu']],
+      }] if new_resource.gpus == 'all'
+
       Docker::Container.create(config, connection)
     end
   end

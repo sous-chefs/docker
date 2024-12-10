@@ -42,6 +42,8 @@ Most `docker_container` properties are the `snake_case` version of the `CamelCas
 - `env_file` - Read environment variables from a file and set in the container. Accepts an Array or String to the file location. lazy evaluator must be set if the file passed is created by Chef.
 - `extra_hosts` - An array of hosts to add to the container's `/etc/hosts` in the form `['host_a:10.9.8.7', 'host_b:10.9.8.6']`
 - `force` - A boolean to use in container operations that support a `force` option. Defaults to `false`
+- `gpus` - GPU devices to add to the container. Use 'all' to pass all GPUs to the container.
+- `gpu_driver` - GPU driver to use for container. Defaults to 'nvidia'.
 - `health_check` - A hash containing the health check options - [healthcheck reference](https://docs.docker.com/engine/reference/run/#healthcheck)
 - `host` - A string containing the host the API should communicate with. Defaults to ENV['DOCKER_HOST'] if set
 - `host_name` - The hostname for the container.
@@ -519,5 +521,27 @@ docker_container 'health_check' do
   tag '3.1'
   devices [{"PathOnHost" => "/dev/dri", "PathInContainer" => "/dev/dri", "CgroupPermissions" => "rwm"}]
   action :run
+end
+```
+
+### Run a container with GPU support
+
+```ruby
+# Using default NVIDIA driver
+docker_container 'gpu_container' do
+  repo 'nvidia/cuda'
+  tag 'latest'
+  command 'nvidia-smi'
+  gpus 'all'
+  action :run_if_missing
+end
+
+# Using a custom GPU driver
+docker_container 'custom_gpu_container' do
+  repo 'custom/gpu-image'
+  tag 'latest'
+  gpus 'all'
+  gpu_driver 'custom_driver'
+  action :run_if_missing
 end
 ```
