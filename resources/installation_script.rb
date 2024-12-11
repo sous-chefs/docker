@@ -16,14 +16,7 @@ default_action :create
 #########################
 
 def default_script_url
-  case repo
-  when 'main'
-    'https://get.docker.com/'
-  when 'test'
-    'https://test.docker.com/'
-  when 'experimental'
-    'https://experimental.docker.com/'
-  end
+  "https://#{repo == 'main' ? 'get' : 'test'}.docker.com/"
 end
 
 #########

@@ -1,117 +1,187 @@
 # docker_service
 
-The `docker_service`: resource is a composite resource that uses `docker_installation` and `docker_service_manager` resources.
+The `docker_service` resource is a composite resource that manages Docker daemon installation and service configuration. It combines the functionality of `docker_installation` and `docker_service_manager` resources.
 
-- The `:create` action uses a `docker_installation`
-- The `:delete` action uses a `docker_installation`
-- The `:start` action uses a `docker_service_manager`
-- The `:stop` action uses a `docker_service_manager`
+## Actions
 
-The service management strategy for the host platform is dynamically chosen based on platform, but can be overridden.
+- `:create` - Installs Docker using `docker_installation`
+- `:delete` - Removes Docker installation
+- `:start` - Starts the Docker daemon using `docker_service_manager`
+- `:stop` - Stops the Docker daemon
+- `:restart` - Restarts the Docker daemon
 
-## Example
+The service management strategy is automatically chosen based on the platform but can be overridden.
+
+## Properties
+
+### Installation Properties
+
+- `install_method` - Installation method: `script`, `package`, `tarball`, `none`, or `auto` (default)
+- `service_manager` - Service manager to use: `execute`, `systemd`, `none`, or `auto` (default)
+
+#### Script Installation
+
+- `repo` - Repository URL for script installation
+- `script_url` - Custom script URL for installation
+
+#### Package Installation
+
+- `package_version` - Specific package version to install
+- `package_name` - Package name (default: docker-ce)
+- `setup_docker_repo` - Whether to configure Docker repository
+- `package_options` - Additional package installation options
+
+#### Tarball Installation
+
+- `checksum` - SHA256 checksum of Docker binary
+- `docker_bin` - Path to Docker binary
+- `source` - URL to Docker binary tarball
+- `version` - Docker version to install
+
+### Core Settings
+
+- `instance` - Resource name (name property)
+- `env_vars` - Hash of environment variables for Docker service
+- `data_root` - Root directory of the Docker runtime
+- `debug` - Enable debug mode (default: false)
+- `daemon` - Enable daemon mode (default: true)
+- `group` - Posix group for unix socket (default: 'docker')
+
+### Network Configuration
+
+- `bip` - Network bridge IP (accepts IPv4/IPv6 address/CIDR)
+- `bridge` - Network bridge for container attachment
+- `default_ip_address_pool` - Default address pool for networks
+- `dns` - DNS servers (String or Array)
+- `dns_search` - DNS search domains (Array)
+- `fixed_cidr` - IPv4 subnet for fixed IPs
+- `fixed_cidr_v6` - IPv6 subnet for fixed IPs
+- `ip` - Default IP for container binding (IPv4/IPv6)
+- `ip_forward` - Enable IP forwarding
+- `ipv4_forward` - Enable net.ipv4.ip_forward (default: true)
+- `ipv6_forward` - Enable net.ipv6.ip_forward (default: true)
+- `ip_masq` - Enable IP masquerading
+- `iptables` - Enable iptables rules
+- `ip6tables` - Enable ip6tables rules
+- `ipv6` - Enable IPv6 networking
+- `mtu` - Container network MTU
+
+### Cluster Configuration
+
+- `cluster_store` - Cluster store settings
+- `cluster_advertise` - Cluster advertisement configuration
+- `cluster_store_opts` - Cluster store options (String or Array)
+
+### API and Security
+
+- `api_cors_header` - Set CORS headers for remote API
+- `host` - Docker daemon socket(s) to connect to
+- `selinux_enabled` - Enable SELinux support
+- `userns_remap` - User namespace remapping options
+- `labels` - Daemon metadata (String or Array)
+
+### Storage
+
+- `storage_driver` - Storage driver (String or Array)
+- `storage_opts` - Storage driver options (Array)
+- `exec_driver` - Execution driver ('native', 'lxc', nil)
+- `exec_opts` - Execution options (String or Array)
+
+### Logging
+
+- `log_driver` - Container logging driver:
+  - Supported: json-file, syslog, journald, gelf, fluentd, awslogs, splunk, etwlogs, gcplogs, logentries, loki-docker, none, local
+- `log_opts` - Logging driver options (String or Array)
+- `log_level` - Logging level (debug, info, warn, error, fatal)
+- `logfile` - Log file location (default: '/var/log/docker.log')
+
+### Process Management
+
+- `pidfile` - PID file location (default: /var/run/[service-name].pid)
+- `auto_restart` - Enable automatic restart (default: false)
+- `service_timeout` - Docker wait-ready timeout in seconds (default: 20)
+
+### Proxy Settings
+
+- `http_proxy` - HTTP proxy environment variable
+- `https_proxy` - HTTPS proxy environment variable
+- `no_proxy` - No proxy environment variable
+- `tmpdir` - Temporary directory path
+
+### Registry
+
+- `disable_legacy_registry` - Disable legacy registry support
+- `insecure_registry` - Enable insecure registry communication
+- `registry_mirror` - Preferred registry mirror(s)
+
+### Resource Limits
+
+- `default_ulimit` - Default ulimit settings (String or Array)
+
+### Service Management
+
+#### Systemd Options
+
+- `systemd_opts` - Additional systemd service unit options
+- `systemd_socket_opts` - Additional systemd socket unit options
+- `mount_flags` - Systemd mount propagation flags
+
+### Advanced Options
+
+- `live_restore` - Keep containers alive during daemon downtime (default: false)
+- `userland_proxy` - Enable/disable docker-proxy
+- `misc_opts` - Additional daemon options as `--flag=value`
+
+## Examples
+
+### Basic Docker Service
 
 ```ruby
-docker_service 'tls_test:2376' do
-  host [ "tcp://#{node['ipaddress']}:2376", 'unix:///var/run/docker.sock' ]
-  tls_verify true
-  tls_ca_cert '/path/to/ca.pem'
-  tls_server_cert '/path/to/server.pem'
-  tls_server_key '/path/to/server-key.pem'
-  tls_client_cert '/path/to/client.pem'
-  tls_client_key '/path/to/client-key.pem'
+docker_service 'default' do
   action [:create, :start]
 end
 ```
 
-WARNING - When creating multiple `docker_service` resources on the same machine, you will need to specify unique data_root properties to avoid unexpected behavior and possible data corruption.
+### Custom Installation
 
-## Properties
+```ruby
+docker_service 'custom' do
+  install_method 'package'
+  package_version '20.10.11'
+  service_manager 'systemd'
+  action [:create, :start]
+end
+```
 
-The `docker_service` resource property list mostly corresponds to the options found in the [Docker Command Line Reference](https://docs.docker.com/engine/reference/commandline/docker/)
+### Secure Configuration with Registry Mirrors
 
-- `api_cors_header` - Set CORS headers in the remote API
-- `auto_restart`
-- `exec_opts`
-- `bip` - Specify network bridge IP
-- `bridge` - Attach containers to a network bridge
-- `checksum` - sha256 checksum of Docker binary
-- `cluster_advertise` - IP and port that this daemon should advertise to the cluster
-- `cluster_store_opts` - Cluster store options
-- `cluster_store` - Cluster store to use
-- `daemon` - Enable daemon mode
-- `data_root` - Root of the Docker runtime
-- `debug` - Enable debug mode
-- `default_ip_address_pool` - Set the default address pool for networks creates by docker
-- `default_ulimit` - Set default ulimit settings for containers
-- `disable_legacy_registry` - Do not contact legacy registries
-- `dns_search` - DNS search domains to use
-- `dns` - DNS server(s) to use
-- `exec_driver` - Exec driver to use
-- `fixed_cidr_v6` - IPv6 subnet for fixed IPs
-- `fixed_cidr` - IPv4 subnet for fixed IPs
-- `group` - Posix group for the unix socket. Default to `docker`
-- `host` - Daemon socket(s) to connect to - `tcp://host:port`, `unix:///path/to/socket`, `fd://*` or `fd://socketfd`
-- `http_proxy` - ENV variable set before for Docker daemon starts
-- `https_proxy` - ENV variable set before for Docker daemon starts
-- `icc` - Enable inter-container communication
-- `insecure_registry` - Enable insecure registry communication
-- `install_method` - Select script, package, tarball, none, or auto. Defaults to `auto`.
-- `instance`- Optional property used to override the name provided in the resource.
-- `ip_forward` - Enable ip forwarding
-- `ip_masq` - Enable IP masquerading
-- `ip` - Default IP when binding container ports
-- `iptables` - Enable addition of iptables rules
-- `ip6tables` - Enable addition of ip6tables rules
-- `ipv4_forward` - Enable net.ipv4.ip_forward
-- `ipv6_forward` - Enable net.ipv6.ip_forward
-- `ipv6` - Enable IPv6 networking
-- `labels` A string or array to set metadata on the daemon in the form ['foo:bar', 'hello:world']`
-- `log_driver` - Container's logging driver (json-file/syslog/journald/gelf/fluentd/awslogs/splunk/etwlogs/gcplogs/logentries/loki-docker/local/none)
-- `log_level` - Set the logging level
-- `log_opts` - Container's logging driver options (driver-specific)
-- `logfile` - Location of Docker daemon log file
-- `mount_flags` - Set the systemd mount propagation flag.
-- `mtu` - Set the containers network MTU
-- `no_proxy` - ENV variable set before for Docker daemon starts
-- `package_name` - Set the package name. Defaults to `docker-ce`
-- `pidfile` - Path to use for daemon PID file
-- `registry_mirror` - A string or array to set the preferred Docker registry mirror(s)
-- `selinux_enabled` - Enable selinux support
-- `source` - URL to the pre-compiled Docker binary used for installation. Defaults to a calculated URL based on kernel version, Docker version, and platform arch. By default, this will try to get to "<http://get.docker.io/builds/>".
-- `storage_driver` - Storage driver to use
-- `storage_opts` - Set storage driver options
-- `tls_ca_cert` - Trust certs signed only by this CA. Defaults to ENV['DOCKER_CERT_PATH'] if set
-- `tls_client_cert` - Path to TLS certificate file for docker cli. Defaults to ENV['DOCKER_CERT_PATH'] if set
-- `tls_client_key` - Path to TLS key file for docker cli. Defaults to ENV['DOCKER_CERT_PATH'] if set
-- `tls_server_cert` - Path to TLS certificate file for docker service
-- `tls_server_key` - Path to TLS key file for docker service
-- `tls_verify` - Use TLS and verify the remote. Defaults to ENV['DOCKER_TLS_VERIFY'] if set
-- `tls` - Use TLS; implied by --tlsverify. Defaults to ENV['DOCKER_TLS'] if set
-- `tmpdir` - ENV variable set before for Docker daemon starts
-- `userland_proxy`- Enables or disables docker-proxy
-- `userns_remap` - Enable user namespace remapping options - `default`, `uid`, `uid:gid`, `username`, `username:groupname` (see: [Docker User Namespaces](https://docs.docker.com/engine/reference/commandline/dockerd/#daemon-user-namespace-options))
-- `live_restore` - Keep containers alive during daemon downtime (see: [Live restore](https://docs.docker.com/config/containers/live-restore))
-- `version` - Docker version to install
+```ruby
+docker_service 'production' do
+  registry_mirror ['https://mirror1.example.com', 'https://mirror2.example.com']
+  insecure_registry ['172.16.0.0/12']
+  storage_driver 'overlay2'
+  storage_opts ['overlay2.override_kernel_check=true']
+  log_driver 'json-file'
+  log_opts ['max-size=100m', 'max-file=3']
+  action [:create, :start]
+end
+```
 
-### Miscellaneous Options
+### Multiple Services
 
-- `misc_opts` - Pass the docker daemon any other options bypassing flag validation, supplied as `--flag=value`
+```ruby
+docker_service 'primary' do
+  data_root '/var/lib/docker-primary'
+  action [:create, :start]
+end
 
-### Systemd-specific Options
+docker_service 'secondary' do
+  data_root '/var/lib/docker-secondary'
+  host ['tcp://0.0.0.0:2375']
+  action [:create, :start]
+end
+```
 
-- `systemd_opts` - An array of strings that will be included as individual lines in the systemd service unit for Docker. _Note_: This option is only relevant for systems where systemd is the default service manager or where systemd is specified explicitly as the service manager.
-- `systemd_socket_opts` - An array of strings that will be included as individual lines in the systemd socket unit for Docker. _Note_: This option is only relevant for systems where systemd is the default service manager or where systemd is specified explicitly as the service manager.
+## Warning
 
-## Actions
-
-- `:create` - Lays the Docker bits out on disk
-- `:delete` - Removes the Docker bits from the disk
-- `:start` - Makes sure the service provider is set up properly and start it
-- `:stop` - Stops the service
-- `:restart` - Restarts the service
-
-## `docker_service` implementations
-
-- `docker_service_execute` - The simplest docker_service. Just starts a process. Fire and forget.
-- `docker_service_systemd` - Uses an Systemd unit file to manage the service state. NOTE: This does NOT enable systemd socket activation.
+When creating multiple `docker_service` resources on the same machine, you MUST specify unique `data_root` properties to avoid data corruption and unexpected behavior.

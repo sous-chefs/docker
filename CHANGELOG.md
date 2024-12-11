@@ -7,9 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Update documentation for `docker_container` resource
+- Update documentation for `docker_service` resource
+- Update documentation for `docker_exec` resource
+- Update resources overview
+- Update documentation for `docker_installation_package` resource
+- Update documentation for `docker_installation_script` resource
+- Update documentation for `docker_installation_tarball` resource
+- Update documentation for `docker_service_manager_execute` resource
+- Update documentation for `docker_service_manager_systemd` resource
+- Update documentation for `docker_volume_prune` resource
+<<<<<<< HEAD
+
 ## 11.8.3 - *2024-12-11*
 
 - Cleanup changelog
+=======
+
+>>>>>>> 5326caf (Update readme, and documentation folder)
 
 ## 11.8.2 - *2024-12-11*
 
@@ -808,6 +823,3 @@ The 7.0 release includes a breaking change to package installs with version spec
 - [#296](https://github.com/sous-chefs/docker/issues/296)
 - [#297](https://github.com/sous-chefs/docker/issues/297)
 - [#298](https://github.com/sous-chefs/docker/issues/298)
-
-[@jcrobak]: https://github.com/jcrobak
-[@wingrunr21]: https://github.com/wingrunr21
