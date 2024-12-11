@@ -405,7 +405,7 @@ load_current_value do |new_resource|
       value = (value / (10**9)).to_i
     when 'NetworkMode'
       property_name = 'network_mode'
-      value = normalize_network_mode(value)
+      value = normalize_container_network_mode(value)
     else
       property_name = to_snake_case(key)
     end
@@ -504,7 +504,7 @@ action :create do
           'MemorySwappiness' => new_resource.memory_swappiness,
           'MemoryReservation' => new_resource.memory_reservation,
           'NanoCpus'        => new_resource.cpus,
-          'NetworkMode'     => normalize_network_mode(new_resource.network_mode),
+          'NetworkMode'     => normalize_container_network_mode(new_resource.network_mode),
           'OomKillDisable'  => new_resource.oom_kill_disable,
           'OomScoreAdj'     => new_resource.oom_score_adj,
           'Privileged'      => new_resource.privileged,
@@ -747,10 +747,10 @@ action_class do
     new_resource.env_file.map { |f| ::File.readlines(f).map(&:strip) }.flatten
   end
 
-  def normalize_network_mode(value)
+  def normalize_container_network_mode(value)
     if value.is_a?(String) && value.start_with?('container:')
       # Use the network helper method for container network mode
-      DockerCookbook::DockerHelpers::Network.normalize_network_mode(value)
+      DockerCookbook::DockerHelpers::Network.normalize_container_network_mode(value)
     else
       case value
       when 'host'

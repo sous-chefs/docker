@@ -21,7 +21,7 @@ module DockerCookbook
         end
       end
 
-      def normalize_network_mode(mode)
+      def normalize_container_network_mode(mode)
         return mode unless mode.is_a?(String) && mode.start_with?('container:')
 
         # Extract container name/id from network mode
