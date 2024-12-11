@@ -403,6 +403,9 @@ load_current_value do |new_resource|
     when 'NanoCpus'
       property_name = 'cpus'
       value = (value / (10**9)).to_i
+    when 'NetworkMode'
+      property_name = 'network_mode'
+      value = normalize_network_mode(value)
     else
       property_name = to_snake_case(key)
     end
@@ -501,7 +504,7 @@ action :create do
           'MemorySwappiness' => new_resource.memory_swappiness,
           'MemoryReservation' => new_resource.memory_reservation,
           'NanoCpus'        => new_resource.cpus,
-          'NetworkMode'     => new_resource.network_mode,
+          'NetworkMode'     => normalize_network_mode(new_resource.network_mode),
           'OomKillDisable'  => new_resource.oom_kill_disable,
           'OomScoreAdj'     => new_resource.oom_score_adj,
           'Privileged'      => new_resource.privileged,
@@ -742,5 +745,18 @@ action_class do
 
   def read_env_file
     new_resource.env_file.map { |f| ::File.readlines(f).map(&:strip) }.flatten
+  end
+
+  def normalize_network_mode(value)
+    case value
+    when 'host'
+      'host'
+    when 'none'
+      'none'
+    when 'default'
+      'bridge'
+    else
+      value
+    end
   end
 end

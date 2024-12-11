@@ -20,6 +20,22 @@ module DockerCookbook
           container.info['NetworkSettings']['Networks'].values[0]['IPAMConfig']['IPv4Address']
         end
       end
+
+      def normalize_network_mode(mode)
+        return mode unless mode.is_a?(String) && mode.start_with?('container:')
+
+        # Extract container name/id from network mode
+        container_ref = mode.split(':', 2)[1]
+        begin
+          # Try to get the container by name or ID
+          container = Docker::Container.get(container_ref, {}, connection)
+          # Return normalized form with full container ID
+          "container:#{container.id}"
+        rescue Docker::Error::NotFoundError
+          # If container not found, return original value
+          mode
+        end
+      end
     end
   end
 end
