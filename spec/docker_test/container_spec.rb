@@ -945,4 +945,17 @@ describe 'docker_test::container' do
       )
     end
   end
+
+  context 'testing GPU support' do
+    let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+
+    it 'creates a container with GPU support' do
+      expect(chef_run).to run_if_missing_docker_container('gpu_test').with(
+        repo: 'nvidia/cuda',
+        tag: 'latest',
+        gpus: 'all',
+        gpu_driver: 'nvidia'
+      )
+    end
+  end
 end
