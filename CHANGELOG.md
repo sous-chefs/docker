@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add volume_prune resource
 
+## 11.7.0 - *2024-12-11*
+
+- Added GPU support for the `docker_container` resource
+
 ## 11.6.1 - *2024-12-10*
 
 ## 11.6.0 - *2024-12-03*

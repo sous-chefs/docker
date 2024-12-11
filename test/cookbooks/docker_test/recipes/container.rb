@@ -1156,6 +1156,18 @@ docker_container 'sysctls' do
   action :run_if_missing
 end
 
+###################
+# GPU test container
+###################
+
+docker_container 'gpu_test' do
+  repo 'nvidia/cuda'
+  tag 'latest'
+  gpus 'all'
+  gpu_driver 'nvidia'
+  action :run_if_missing
+end
+
 ########################
 # Dockerfile CMD changes
 ########################

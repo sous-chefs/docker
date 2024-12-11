@@ -36,8 +36,7 @@ describe 'docker_registry' do
       expect(chef_run).to login_docker_registry('chefspec_custom_registry').with(
         email: 'chefspec_email',
         password: 'chefspec_password',
-        username: 'chefspec_username',
-        host: nil
+        username: 'chefspec_username'
       )
     end
   end
