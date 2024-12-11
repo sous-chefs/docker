@@ -37,7 +37,7 @@ describe 'docker_registry' do
         email: 'chefspec_email',
         password: 'chefspec_password',
         username: 'chefspec_username',
-        host: nil
+        host: 'unix:///var/run/docker.sock'
       )
     end
   end
