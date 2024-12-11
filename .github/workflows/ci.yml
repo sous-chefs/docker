@@ -18,7 +18,7 @@ jobs:
       issues: write
 
   integration:
-    # needs: lint-unit
+    needs: lint-unit
     runs-on: ubuntu-latest
     strategy:
       matrix:
