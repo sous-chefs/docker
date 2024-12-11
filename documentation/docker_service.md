@@ -20,16 +20,19 @@ The service management strategy is automatically chosen based on the platform bu
 - `service_manager` - Service manager to use: `execute`, `systemd`, `none`, or `auto` (default)
 
 #### Script Installation
+
 - `repo` - Repository URL for script installation
 - `script_url` - Custom script URL for installation
 
 #### Package Installation
+
 - `package_version` - Specific package version to install
 - `package_name` - Package name (default: docker-ce)
 - `setup_docker_repo` - Whether to configure Docker repository
 - `package_options` - Additional package installation options
 
 #### Tarball Installation
+
 - `checksum` - SHA256 checksum of Docker binary
 - `docker_bin` - Path to Docker binary
 - `source` - URL to Docker binary tarball
@@ -118,6 +121,7 @@ The service management strategy is automatically chosen based on the platform bu
 ### Service Management
 
 #### Systemd Options
+
 - `systemd_opts` - Additional systemd service unit options
 - `systemd_socket_opts` - Additional systemd socket unit options
 - `mount_flags` - Systemd mount propagation flags

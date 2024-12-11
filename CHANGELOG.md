@@ -10,6 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update documentation for `docker_container` resource
 - Update documentation for `docker_service` resource
 - Update documentation for `docker_exec` resource
+- Update resources overview
+- Update documentation for `docker_installation_package` resource
+- Update documentation for `docker_installation_script` resource
+- Update documentation for `docker_installation_tarball` resource
+- Update documentation for `docker_service_manager_execute` resource
+- Update documentation for `docker_service_manager_systemd` resource
+- Update documentation for `docker_volume_prune` resource
 
 ## 11.8.2 - *2024-12-11*
 

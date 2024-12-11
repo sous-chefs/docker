@@ -73,19 +73,21 @@ Those recipes are found at `test/cookbooks/docker_test`.
 ## Resources Overview
 
 - [docker_service](documentation/docker_service.md): composite resource that uses docker_installation and docker_service_manager
-- [docker_installation](#docker_installation): automatically select an installation method
-- [docker_service_manager](#docker_service_manager): automatically selects a service manager
-- [docker_installation_script](#docker_installation_script): curl | bash
-- [docker_installation_package](#docker_installation_package): package 'docker-ce'
-- [docker_service_manager_execute](#docker_service_manager_execute): manage docker daemon with Chef
-- [docker_service_manager_systemd](#docker_service_manager_systemd): manage docker daemon with systemd unit files
-- [docker_image](documentation/docker_image.md): image/repository operations
 - [docker_container](documentation/docker_container.md): container operations
-- [docker_tag](documentation/docker_tag.md): image tagging operations
-- [docker_registry](documentation/docker_registry.md): registry operations
+- [docker_exec](documentation/docker_exec.md): execute commands inside running containers
+- [docker_image](documentation/docker_image.md): image/repository operations
+- [docker_image_prune](documentation/docker_image_prune.md): remove unused docker images
+- [docker_installation_package](documentation/docker_installation_package.md): install Docker via package 'docker-ce'
+- [docker_installation_script](documentation/docker_installation_script.md): install Docker via curl | bash
+- [docker_installation_tarball](documentation/docker_installation_tarball.md): install Docker from a tarball
 - [docker_network](documentation/docker_network.md): network operations
-- [docker_volume](documentation/docker_volume.md): volume operations
 - [docker_plugin](documentation/docker_plugin.md): plugin operations
+- [docker_registry](documentation/docker_registry.md): registry operations
+- [docker_service_manager_execute](documentation/docker_service_manager_execute.md): manage docker daemon with Chef
+- [docker_service_manager_systemd](documentation/docker_service_manager_systemd.md): manage docker daemon with systemd unit files
+- [docker_tag](documentation/docker_tag.md): image tagging operations
+- [docker_volume](documentation/docker_volume.md): volume operations
+- [docker_volume_prune](documentation/docker_volume_prune.md): remove unused docker volumes
 
 ## Getting Started
 
