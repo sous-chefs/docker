@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Enhance tmpfs support for containers
+  - Added support for array format in tmpfs property
+  - Improved documentation with examples
+  - Added test coverage for tmpfs functionality
+
 ## 11.8.1 - *2024-12-11*
 
 - Fix issue with container network mode causing unnecessary redeployment when using `container:<name>` format
