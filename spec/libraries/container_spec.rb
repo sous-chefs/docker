@@ -98,7 +98,7 @@ describe 'docker_container' do
       expect { chef_run }.to_not raise_error
       expect(chef_run).to create_docker_container('hello_world').with(
         tag: 'ubuntu:latest',
-        create_options: { 'name' => 'hello_world', 'Image' => 'hello_world:ubuntu:latest', 'Labels' => {}, 'Cmd' => nil, 'AttachStderr' => false, 'AttachStdin' => false, 'AttachStdout' => false, 'Domainname' => '', 'Entrypoint' => nil, 'Env' => [], 'ExposedPorts' => {}, 'Hostname' => nil, 'MacAddress' => nil, 'NetworkDisabled' => false, 'OpenStdin' => false, 'StdinOnce' => false, 'Tty' => false, 'User' => nil, 'Volumes' => {}, 'WorkingDir' => nil, 'HostConfig' => { 'Binds' => nil, 'CapAdd' => nil, 'CapDrop' => nil, 'CgroupParent' => '', 'CgroupnsMode' => 'private', 'CpuShares' => 0, 'CpusetCpus' => '', 'Devices' => [], 'Dns' => [], 'DnsSearch' => [], 'ExtraHosts' => nil, 'IpcMode' => 'shareable', 'Init' => nil, 'KernelMemory' => 0, 'Links' => nil, 'LogConfig' => nil, 'Memory' => 0, 'MemorySwap' => nil, 'MemoryReservation' => 0, 'NanoCpus' => 0, 'NetworkMode' => 'bridge', 'OomKillDisable' => false, 'OomScoreAdj' => -500, 'Privileged' => false, 'PidMode' => '', 'PortBindings' => {}, 'PublishAllPorts' => false, 'RestartPolicy' => { 'Name' => nil, 'MaximumRetryCount' => 0 }, 'ReadonlyRootfs' => false, 'Runtime' => 'runc', 'SecurityOpt' => nil, 'ShmSize' => 67108864, 'Sysctls' => {}, 'Tmpfs' => {}, 'Ulimits' => nil, 'UsernsMode' => '', 'UTSMode' => '', 'VolumesFrom' => nil, 'VolumeDriver' => nil }, 'NetworkingConfig' => { 'EndpointsConfig' => { 'bridge' => { 'IPAMConfig' => { 'IPv4Address' => nil }, 'Aliases' => [] } } }, 'Healthcheck' => { 'Test' => ['string'], 'Interval' => 0, 'Timeout' => 0, 'Retries' => 0, 'StartPeriod' => 0 } }
+        create_options: { 'name' => 'hello_world', 'Image' => 'hello_world:ubuntu:latest', 'Labels' => {}, 'Cmd' => nil, 'AttachStderr' => false, 'AttachStdin' => false, 'AttachStdout' => false, 'Domainname' => '', 'Entrypoint' => nil, 'Env' => [], 'ExposedPorts' => {}, 'Healthcheck' => nil, 'Hostname' => nil, 'MacAddress' => nil, 'NetworkDisabled' => false, 'OpenStdin' => false, 'StdinOnce' => false, 'Tty' => false, 'User' => nil, 'Volumes' => {}, 'WorkingDir' => nil, 'HostConfig' => { 'Binds' => nil, 'CapAdd' => nil, 'CapDrop' => nil, 'CgroupParent' => '', 'CgroupnsMode' => 'private', 'CpuShares' => 0, 'CpusetCpus' => '', 'Devices' => [], 'Dns' => [], 'DnsSearch' => [], 'ExtraHosts' => nil, 'IpcMode' => 'shareable', 'Init' => nil, 'KernelMemory' => 0, 'Links' => nil, 'LogConfig' => nil, 'Memory' => 0, 'MemorySwap' => nil, 'MemoryReservation' => 0, 'NanoCpus' => 0, 'NetworkMode' => 'bridge', 'OomKillDisable' => false, 'OomScoreAdj' => -500, 'Privileged' => false, 'PidMode' => '', 'PortBindings' => {}, 'PublishAllPorts' => false, 'RestartPolicy' => { 'Name' => nil, 'MaximumRetryCount' => 0 }, 'ReadonlyRootfs' => false, 'Runtime' => 'runc', 'SecurityOpt' => nil, 'ShmSize' => 67108864, 'Sysctls' => {}, 'Tmpfs' => {}, 'Ulimits' => nil, 'UsernsMode' => '', 'UTSMode' => '', 'VolumesFrom' => nil, 'VolumeDriver' => nil }, 'NetworkingConfig' => { 'EndpointsConfig' => { 'bridge' => { 'IPAMConfig' => { 'IPv4Address' => nil }, 'Aliases' => [] } } }, 'Healthcheck' => { 'Test' => ['string'], 'Interval' => 0, 'Timeout' => 0, 'Retries' => 0, 'StartPeriod' => 0 } }
       )
     }
   end
@@ -138,5 +138,36 @@ describe 'docker_container' do
         create_options: { 'name' => 'hello_world', 'Image' => 'hello_world:ubuntu:latest', 'Labels' => {}, 'Cmd' => nil, 'AttachStderr' => false, 'AttachStdin' => false, 'AttachStdout' => false, 'Domainname' => '', 'Entrypoint' => nil, 'Env' => [], 'ExposedPorts' => {}, 'Healthcheck' => nil, 'Hostname' => nil, 'MacAddress' => nil, 'NetworkDisabled' => false, 'OpenStdin' => false, 'StdinOnce' => false, 'Tty' => false, 'User' => nil, 'Volumes' => {}, 'WorkingDir' => nil, 'HostConfig' => { 'Binds' => nil, 'CapAdd' => nil, 'CapDrop' => nil, 'CgroupnsMode' => 'host', 'CgroupParent' => '', 'CpuShares' => 0, 'CpusetCpus' => '', 'Devices' => [], 'Dns' => [], 'DnsSearch' => [], 'ExtraHosts' => nil, 'IpcMode' => 'shareable', 'Init' => nil, 'KernelMemory' => 0, 'Links' => nil, 'LogConfig' => nil, 'Memory' => 0, 'MemorySwap' => nil, 'MemoryReservation' => 0, 'NanoCpus' => 0, 'NetworkMode' => 'bridge', 'OomKillDisable' => false, 'OomScoreAdj' => -500, 'Privileged' => false, 'PidMode' => '', 'PortBindings' => {}, 'PublishAllPorts' => false, 'RestartPolicy' => { 'Name' => nil, 'MaximumRetryCount' => 0 }, 'ReadonlyRootfs' => false, 'Runtime' => 'runc', 'SecurityOpt' => nil, 'ShmSize' => 67108864, 'Sysctls' => {}, 'Tmpfs' => {}, 'Ulimits' => nil, 'UsernsMode' => '', 'UTSMode' => '', 'VolumesFrom' => nil, 'VolumeDriver' => nil }, 'NetworkingConfig' => { 'EndpointsConfig' => { 'bridge' => { 'IPAMConfig' => { 'IPv4Address' => nil }, 'Aliases' => [] } } } }
       )
     }
+  end
+
+  context 'when GPU support is configured' do
+    let(:resource) do
+      r = Chef::Resource::DockerContainer.new('gpu_test')
+      r.gpus 'all'
+      r.gpu_driver 'nvidia'
+      r
+    end
+
+    it 'configures nvidia GPU support' do
+      expect(resource.create_options['HostConfig']['DeviceRequests']).to eq([{
+        'Driver' => 'nvidia',
+        'Count' => -1,
+        'Capabilities' => [['gpu']]
+      }])
+    end
+
+    it 'allows custom GPU driver' do
+      resource.gpu_driver 'custom_driver'
+      expect(resource.create_options['HostConfig']['DeviceRequests']).to eq([{
+        'Driver' => 'custom_driver',
+        'Count' => -1,
+        'Capabilities' => [['gpu']]
+      }])
+    end
+
+    it 'does not add DeviceRequests when gpus is not set' do
+      resource.gpus nil
+      expect(resource.create_options['HostConfig']['DeviceRequests']).to be_nil
+    end
   end
 end
