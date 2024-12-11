@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Update documentation for `docker_container` resource
+- Update documentation for `docker_service` resource
+- Update documentation for `docker_exec` resource
+
 ## 11.8.2 - *2024-12-11*
 
 - Enhance tmpfs support for containers

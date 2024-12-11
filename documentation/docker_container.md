@@ -1,13 +1,13 @@
 # docker_container
 
-The `docker_container` is responsible for managing Docker container actions. It speaks directly to the [Docker remote API](https://docs.docker.com/reference/api/docker_remote_api_v1.20/).
+The `docker_container` resource is responsible for managing Docker container actions. It speaks directly to the [Docker remote API](https://docs.docker.com/reference/api/docker_remote_api_v1.20/).
 
-Containers are process oriented, and move through an event cycle.
+Containers are process oriented and move through an event cycle.
 
 ## Actions
 
 - `:create` - Creates the container but does not start it. Useful for Volume containers.
-- `:start` - Starts the container. Useful for containers that run jobs.. command that exit.
+- `:start` - Starts the container. Useful for containers that run jobs and exit.
 - `:run` - The default action. Both `:create` and `:start` the container in one action. Redeploys the container on resource change.
 - `:run_if_missing` - Runs a container only once.
 - `:stop` - Stops the container.
@@ -23,81 +23,134 @@ Containers are process oriented, and move through an event cycle.
 
 Most `docker_container` properties are the `snake_case` version of the `CamelCase` keys found in the [Docker Remote Api](https://docs.docker.com/reference/api/docker_remote_api_v1.20/)
 
+### Core Properties
+
 - `container_name` - The name of the container. Defaults to the name of the `docker_container` resource.
 - `repo` - aka `image_name`. The first half of a the complete identifier for a Docker Image.
-- `tag` - The second half of a Docker image's identity. - Defaults to `latest`.
+- `tag` - The second half of a Docker image's identity. Defaults to `latest`.
 - `command` - The command to run when starting the container.
-- `autoremove` - Boolean - Automatically delete a container when it's command exits. Defaults to `false`.
-- `volumes` - An array of volume bindings for this container. Each volume binding is a string in one of these forms: `container_path` to create a new volume for the container. `host_path:container_path` to bind-mount a host path into the container. `host_path:container_path:ro` to make the bind-mount read-only inside the container.
-- `cap_add` - An array Linux Capabilities (`man 7 capabilities`) to add to grant the container beyond what it normally gets.
-- `cap_drop` - An array Linux Capabilities (`man 7 capabilities`) to revoke that the container normally has.
+- `working_dir` - A string specifying the working directory for commands to run in.
+- `user` - A string value specifying the user inside the container.
+
+### Resource Management
+
 - `cpus` - A float or integer value specifying how much of the available CPU resources a container can use. Available in Docker 1.13 and higher.
 - `cpu_shares` - An integer value containing the CPU Shares for the container.
-- `devices` - A Hash of devices to add to the container.
+- `memory` - Memory limit in bytes.
+- `memory_swap` - Total memory limit (memory + swap); set `-1` to disable swap limit (unlimited). Must be used with memory and set larger than memory.
+- `shm_size` - The size of `/dev/shm`. Format is `<number><unit>`, where number must be greater than 0. Unit is optional: b (bytes), k (kilobytes), m (megabytes), or g (gigabytes). Default is `64m`.
+
+### Storage and Volumes
+
+- `volumes` - An array of volume bindings for this container. Each binding can be:
+  - `container_path` - Creates a new volume for the container
+  - `host_path:container_path` - Bind-mounts a host path into the container
+  - `host_path:container_path:ro` - Makes the bind-mount read-only inside the container
+- `volumes_from` - A list of volumes to inherit from another container. Format: `<container name>[:<ro|rw>]`
+- `volume_driver` - Driver that this container uses to mount volumes.
+- `tmpfs` - A hash or array of tmpfs mounts to add to the container. Provides temporary filesystem without requiring privileged mode.
+
+### Networking
+
+- `network_mode` - Sets the networking mode for the container. One of:
+  - `bridge` - Default Docker bridge network
+  - `host` - Use the host's network stack inside the container
+  - `container:<name|id>` - Use another container's network stack
+  - `none` - No networking
+- `network_disabled` - Boolean to disable networking. Defaults to `false`.
+- `network_aliases` - Adds network-scoped alias for the container in form `['alias-1', 'alias-2']`.
+- `hostname` - The hostname for the container.
+- `domain_name` - Sets the container's dnsdomainname as returned by the `dnsdomainname` command.
 - `dns` - An array of DNS servers the container will use for name resolution.
 - `dns_search` - An array of domains the container will search for name resolution.
-- `domain_name` - Set's the container's dnsdomainname as returned by the `dnsdomainname` command.
-- `entrypoint` - Set the entry point for the container as a string or an array of strings.
-- `env` - Set environment variables in the container in the form `['FOO=bar', 'BIZ=baz']`
-- `env_file` - Read environment variables from a file and set in the container. Accepts an Array or String to the file location. lazy evaluator must be set if the file passed is created by Chef.
-- `extra_hosts` - An array of hosts to add to the container's `/etc/hosts` in the form `['host_a:10.9.8.7', 'host_b:10.9.8.6']`
-- `force` - A boolean to use in container operations that support a `force` option. Defaults to `false`
-- `gpus` - GPU devices to add to the container. Use 'all' to pass all GPUs to the container.
-- `gpu_driver` - GPU driver to use for container. Defaults to 'nvidia'.
-- `health_check` - A hash containing the health check options - [healthcheck reference](https://docs.docker.com/engine/reference/run/#healthcheck)
-- `host` - A string containing the host the API should communicate with. Defaults to ENV['DOCKER_HOST'] if set
-- `host_name` - The hostname for the container.
-- `labels` A string, array, or hash to set metadata on the container in the form `['foo:bar', 'hello:world']`
-- `links` - An array of source container/alias pairs to link the container to in the form `[container_a:www', container_b:db']`
-- `log_driver` - Sets a custom logging driver for the container (json-file/syslog/journald/gelf/fluentd/awslogs/splunk/etwlogs/gcplogs/logentries/loki-docker/local/none).
-- `log_opts` - Configures the above logging driver options (driver-specific).
-- `init` - Run an init inside the container that forwards signals and reaps processes.
-- `ip_address` - Container IPv4 address (e.g. 172.30.100.104)
 - `mac_address` - The mac address for the container to use.
-- `memory` - Memory limit in bytes.
-- `memory_swap` - Total memory limit (memory + swap); set `-1` to disable swap limit (unlimited). You must use this with memory and make the swap value larger than memory.
-- `network_disabled` - Boolean to disable networking. Defaults to `false`.
-- `network_mode` - Sets the networking mode for the container. One of `bridge`, `host`, `container`.
-- `network_aliases` - Adds network-scoped alias for the container in form `['alias-1', 'alias-2']`.
-- `oom_kill_disable` - Whether to disable OOM Killer for the container or not.
-- `oom_score_adj` - Tune container's OOM preferences (-1000 to 1000).
-- `open_stdin` - Boolean value, opens stdin. Defaults to `false`.
-- `outfile` - The path to write the file when using `:export` action.
-- `port` - The port configuration to use in the container. Matches the syntax used by the `docker` CLI tool.
-- `privileged` - Boolean to start the container in privileged more. Defaults to `false`
-- `publish_all_ports` - Allocates a random host port for all of a container's exposed ports.
-- `remove_volumes` - A boolean to clean up "dangling" volumes when removing the last container with a reference to it. Default to `false` to match the Docker CLI behavior.
-- `restart_policy` - One of `no`, `on-failure`, `unless-stopped`, or `always`. Use `always` if you want a service container to survive a Dockerhost reboot. Defaults to `no`.
-- `restart_maximum_retry_count` - Maximum number of restarts to try when `restart_policy` is `on-failure`. Defaults to an ever increasing delay (double the previous delay, starting at 100mS), to prevent flooding the server.
-- `running_wait_time` - Amount of seconds `docker_container` wait to determine if a process is running.
-- `runtime` - Runtime to use when running container. Defaults to `runc`.
+- `ip_address` - Container IPv4 address (e.g. 172.30.100.104)
+
+### Security and Resource Constraints
+
+- `privileged` - Boolean to start the container in privileged mode. Defaults to `false`.
+- `cap_add` - An array Linux Capabilities (`man 7 capabilities`) to add to grant the container beyond what it normally gets.
+- `cap_drop` - An array Linux Capabilities (`man 7 capabilities`) to revoke that the container normally has.
 - `security_opt` - A list of string values to customize labels for MLS systems, such as SELinux.
-- `shm_size` - The size of `/dev/shm`. The format is `<number><unit>`, where number must be greater than 0. Unit is optional and can be b (bytes), k (kilobytes), m(megabytes), or g (gigabytes). The default is `64m`.
-- `signal` - The signal to send when using the `:kill` action. Defaults to `SIGTERM`.
-- `sysctls` - A hash of sysctl settings to configure for the container.
-- `timeout` - Timeout setting for container operations.
-- `tmpfs` - A hash or array of tmpfs mounts to add to the container. Useful for providing a temporary filesystem without requiring privileged mode.
-- `tty` - Boolean value, allocates a pseudo-TTY. Defaults to `false`.
-- `user` - A string value specifying the user inside the container.
-- `volumes` - An Array of paths inside the container to expose. Does the same thing as the `VOLUME` directive in a Dockerfile, but works on container creation.
-- `volumes_from` - A list of volumes to inherit from another container. Specified in the form `<container name>[:<ro|rw>]`
-- `volume_driver` - Driver that this container users to mount volumes.
-- `working_dir` - A string specifying the working directory for commands to run in.
-- `read_timeout` - May need to increase for commits or exports that are slow
-- `write_timeout` - May need to increase for commits or exports that are slow
-- `kill_after` - Number of seconds to wait before killing the container. Defaults to wait indefinitely; eventually will hit read_timeout limit.
-- `tls` - Use TLS; implied by --tlsverify. Defaults to ENV['DOCKER_TLS'] if set
-- `tls_verify` - Use TLS and verify the remote. Defaults to ENV['DOCKER_TLS_VERIFY'] if set
-- `tls_ca_cert` - Trust certs signed only by this CA. Defaults to ENV['DOCKER_CERT_PATH'] if set
-- `tls_client_cert` - Path to TLS certificate file for docker cli. Defaults to ENV['DOCKER_CERT_PATH'] if set
-- `tls_client_key` - Path to TLS key file for docker cli. Defaults to ENV['DOCKER_CERT_PATH'] if set
-- `userns_mode` - Modify the user namespace mode - Defaults to `nil`, example option: `host`
+- `userns_mode` - Modify the user namespace mode. Defaults to `nil`, example option: `host`
 - `pid_mode` - Set the PID (Process) Namespace mode for the container. `host`: use the host's PID namespace inside the container.
-- `ipc_mode` - Set the IPC mode for the container - Defaults to `nil`, example option: `host`
-- `uts_mode` - Set the UTS namespace mode for the container. The UTS namespace is for setting the hostname and the domain that is visible to running processes in that namespace. By default, all containers, including those with `--network=host`, have their own UTS namespace. The host setting will result in the container using the same UTS namespace as the host. Note that --hostname is invalid in host UTS mode.
-- `ro_rootfs` - Mount the container's root filesystem as read only using the `--read-only` flag. Defaults to `false`
+- `ipc_mode` - Set the IPC mode for the container. Defaults to `nil`, example option: `host`
+- `uts_mode` - Set the UTS namespace mode for the container.
+- `ro_rootfs` - Mount the container's root filesystem as read only. Defaults to `false`
+
+### Logging Properties
+
+- `log_driver` - The logging driver to use for the container. One of:
+  - `json-file` - Default Docker logging driver that writes JSON messages to file
+  - `syslog` - Syslog logging driver that writes log messages to syslog
+  - `journald` - Journald logging driver that writes log messages to systemd journal
+  - `gelf` - Graylog Extended Log Format (GELF) logging driver
+  - `fluentd` - Fluentd logging driver
+  - `awslogs` - Amazon CloudWatch Logs logging driver
+  - `splunk` - Splunk logging driver
+  - `etwlogs` - ETW logging driver for Windows
+  - `gcplogs` - Google Cloud Logging driver
+  - `logentries` - Logentries logging driver
+  - `loki-docker` - Grafana Loki logging driver
+  - `none` - Disables container logging
+  - `local` - Local file-based logging driver
+  Defaults to `json-file`.
+
+- `log_opts` - A hash of key-value pairs to configure the selected log driver. Common options include:
+  - For json-file:
+    - `max-size` - Maximum size of the log before it is rolled
+    - `max-file` - Maximum number of log files that can exist
+  - For syslog:
+    - `syslog-address` - Address of remote syslog server
+    - `tag` - Tag for syslog messages
+  - For other drivers, refer to the [Docker logging configuration documentation](https://docs.docker.com/config/containers/logging/configure/)
+
+### GPU Support
+
+- `gpus` - GPU devices to add to the container. Use 'all' to pass all GPUs.
+- `gpu_driver` - GPU driver to use. Defaults to 'nvidia'.
 
 ## Examples
+
+### Basic Container Creation
+
+```ruby
+docker_container 'hello-world' do
+  command '/hello'
+  action :create
+end
+```
+
+### Using tmpfs Mounts
+
+```ruby
+# Using hash format with mount options
+docker_container 'tmpfs_test' do
+  repo 'nginx'
+  tmpfs({
+    '/tmpfs1' => '',                           # No options
+    '/tmpfs2' => 'size=20M,uid=1000',         # With size and uid options
+    '/tmpfs3' => 'rw,noexec,nosuid,size=50M'  # With multiple options
+  })
+end
+
+# Using array format (all mounts will have default options)
+docker_container 'tmpfs_test' do
+  repo 'nginx'
+  tmpfs ['/tmpfs1', '/tmpfs2']
+end
+```
+
+### Container with GPU Support
+
+```ruby
+docker_container 'gpu_container' do
+  repo 'nvidia/cuda'
+  tag 'latest'
+  gpus 'all'  # Pass all GPUs to the container
+  gpu_driver 'nvidia'  # Use NVIDIA driver
+end
+```
 
 ### Create a container without starting it
 
@@ -563,4 +616,31 @@ docker_container 'custom_gpu_container' do
   gpus 'all'
   gpu_driver 'custom_driver'
   action :run_if_missing
+end
+
+```
+
+### Using json-file driver with size limits
+
+```ruby
+docker_container 'webapp' do
+  repo 'nginx'
+  log_driver 'json-file'
+  log_opts({
+    'max-size' => '10m',
+    'max-file' => '3'
+  })
+end
+```
+
+### Using syslog driver with remote server
+
+```ruby
+docker_container 'webapp' do
+  repo 'nginx'
+  log_driver 'syslog'
+  log_opts({
+    'syslog-address' => 'udp://1.2.3.4:1111',
+    'tag' => 'webapp'
+  })
 end
