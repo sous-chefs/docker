@@ -17,10 +17,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update documentation for `docker_service_manager_execute` resource
 - Update documentation for `docker_service_manager_systemd` resource
 - Update documentation for `docker_volume_prune` resource
+<<<<<<< HEAD
 
 ## 11.8.3 - *2024-12-11*
 
 - Cleanup changelog
+=======
+>>>>>>> 5326caf (Update readme, and documentation folder)
 
 ## 11.8.2 - *2024-12-11*
 

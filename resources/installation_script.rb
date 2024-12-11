@@ -21,6 +21,7 @@ def default_script_url
     'https://get.docker.com/'
   when 'test'
     'https://test.docker.com/'
+  end
 end
 
 #########
