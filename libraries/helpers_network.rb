@@ -31,7 +31,7 @@ module DockerCookbook
           container = Docker::Container.get(container_ref, {}, connection)
           # Return normalized form with full container ID
           "container:#{container.id}"
-        rescue Docker::Error::NotFoundError
+        rescue Docker::Error::NotFoundError, Docker::Error::TimeoutError
           # If container not found, return original value
           mode
         end
