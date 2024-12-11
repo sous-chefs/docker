@@ -67,7 +67,8 @@ property :signal, String, default: 'SIGTERM'
 property :stdin_once, [true, false], default: false, desired_state: false
 property :sysctls, Hash, default: {}
 property :timeout, Integer, desired_state: false
-property :tmpfs, Hash, default: {}
+property :tmpfs, [Hash, Array], default: {}, coerce: proc { |v| coerce_tmpfs(v) },
+  description: 'A hash or array of tmpfs mounts to add to the container. Hash format: { "/path" => "size=100M,uid=1000" }. Array format: ["/path", "/path2"]. See https://docs.docker.com/storage/tmpfs/'
 property :tty, [true, false], default: false
 property :ulimits, [Array, nil], coerce: proc { |v| coerce_ulimits(v) }
 property :user, String
@@ -209,6 +210,15 @@ def coerce_volumes(v)
     volumes_binds b
     return PartialHash.new if v.empty?
     v.each_with_object(PartialHash.new) { |volume, h| h[volume] = {} }
+  end
+end
+
+def coerce_tmpfs(v)
+  case v
+  when Hash, nil
+    v
+  when Array
+    v.each_with_object({}) { |path, h| h[path] = '' }
   end
 end
 

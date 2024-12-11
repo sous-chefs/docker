@@ -74,8 +74,10 @@ Most `docker_container` properties are the `snake_case` version of the `CamelCas
 - `security_opt` - A list of string values to customize labels for MLS systems, such as SELinux.
 - `shm_size` - The size of `/dev/shm`. The format is `<number><unit>`, where number must be greater than 0. Unit is optional and can be b (bytes), k (kilobytes), m(megabytes), or g (gigabytes). The default is `64m`.
 - `signal` - The signal to send when using the `:kill` action. Defaults to `SIGTERM`.
-- `sysctls` - A hash of sysctls to set on the container. Defaults to `{}`.
-- `tty` - Boolean value to allocate a pseudo-TTY. Defaults to `false`.
+- `sysctls` - A hash of sysctl settings to configure for the container.
+- `timeout` - Timeout setting for container operations.
+- `tmpfs` - A hash or array of tmpfs mounts to add to the container. Useful for providing a temporary filesystem without requiring privileged mode.
+- `tty` - Boolean value, allocates a pseudo-TTY. Defaults to `false`.
 - `user` - A string value specifying the user inside the container.
 - `volumes` - An Array of paths inside the container to expose. Does the same thing as the `VOLUME` directive in a Dockerfile, but works on container creation.
 - `volumes_from` - A list of volumes to inherit from another container. Specified in the form `<container name>[:<ro|rw>]`
@@ -84,13 +86,11 @@ Most `docker_container` properties are the `snake_case` version of the `CamelCas
 - `read_timeout` - May need to increase for commits or exports that are slow
 - `write_timeout` - May need to increase for commits or exports that are slow
 - `kill_after` - Number of seconds to wait before killing the container. Defaults to wait indefinitely; eventually will hit read_timeout limit.
-- `timeout` - Seconds to wait for an attached container to return
 - `tls` - Use TLS; implied by --tlsverify. Defaults to ENV['DOCKER_TLS'] if set
 - `tls_verify` - Use TLS and verify the remote. Defaults to ENV['DOCKER_TLS_VERIFY'] if set
 - `tls_ca_cert` - Trust certs signed only by this CA. Defaults to ENV['DOCKER_CERT_PATH'] if set
 - `tls_client_cert` - Path to TLS certificate file for docker cli. Defaults to ENV['DOCKER_CERT_PATH'] if set
 - `tls_client_key` - Path to TLS key file for docker cli. Defaults to ENV['DOCKER_CERT_PATH'] if set
-- `tmpfs` - A hash of paths to tmpfs options. Defaults to `{}`.
 - `userns_mode` - Modify the user namespace mode - Defaults to `nil`, example option: `host`
 - `pid_mode` - Set the PID (Process) Namespace mode for the container. `host`: use the host's PID namespace inside the container.
 - `ipc_mode` - Set the IPC mode for the container - Defaults to `nil`, example option: `host`
@@ -105,6 +105,26 @@ Most `docker_container` properties are the `snake_case` version of the `CamelCas
 docker_container 'hello-world' do
   command '/hello'
   action :create
+end
+```
+
+### Create a container with tmpfs mounts
+
+```ruby
+# Using hash format with mount options
+docker_container 'tmpfs_test' do
+  repo 'nginx'
+  tmpfs({
+    '/tmpfs1' => '',  # No options
+    '/tmpfs2' => 'size=100M,uid=1000',  # With size and uid options
+    '/tmpfs3' => 'rw,noexec,nosuid,size=200M'  # With multiple options
+  })
+end
+
+# Using array format (all mounts will have default options)
+docker_container 'tmpfs_test' do
+  repo 'nginx'
+  tmpfs ['/tmpfs1', '/tmpfs2']
 end
 ```
 
@@ -544,4 +564,3 @@ docker_container 'custom_gpu_container' do
   gpu_driver 'custom_driver'
   action :run_if_missing
 end
-```
