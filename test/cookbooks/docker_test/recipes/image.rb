@@ -31,14 +31,6 @@ docker_image 'alpine' do
   write_timeout 60
 end
 
-# pull NVIDIA CUDA image for GPU testing
-docker_container 'nvidia/cuda' do
-  tag 'latest'
-  action :pull_if_missing
-  gpus 'all'
-  gpu_driver 'nvidia'
-end
-
 # host override
 docker_image 'alpine-localhost' do
   repo 'alpine'
