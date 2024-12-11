@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Fix issue with container network mode causing unnecessary redeployment when using `container:<name>` format
+  - Added network mode normalization to handle container IDs consistently
+  - Prevents container recreation when only the container ID format changes
+
 ## 11.8.0 - *2024-12-11*
 
 - Add volume_prune resource
