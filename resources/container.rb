@@ -748,15 +748,20 @@ action_class do
   end
 
   def normalize_network_mode(value)
-    case value
-    when 'host'
-      'host'
-    when 'none'
-      'none'
-    when 'default'
-      'bridge'
+    if value.is_a?(String) && value.start_with?('container:')
+      # Use the network helper method for container network mode
+      DockerCookbook::DockerHelpers::Network.normalize_network_mode(value)
     else
-      value
+      case value
+      when 'host'
+        'host'
+      when 'none'
+        'none'
+      when 'default'
+        'bridge'
+      else
+        value
+      end
     end
   end
 end
