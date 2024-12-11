@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Cleanup changelog
+
+## 11.8.2 - *2024-12-11*
+
 - Enhance tmpfs support for containers
   - Added support for array format in tmpfs property
   - Improved documentation with examples
