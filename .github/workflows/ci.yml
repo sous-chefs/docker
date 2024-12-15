@@ -98,6 +98,26 @@ jobs:
           suite: ${{ matrix.suite }}
           os: ${{ matrix.os }}
 
+  integration-swarm:
+    needs: lint-unit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+      - name: Install Chef
+        uses: actionshub/chef-install@3.0.1
+      - name: Install Docker
+        uses: docker/setup-docker-action@v4
+      - name: Test Kitchen
+        uses: actionshub/test-kitchen@3.0.0
+        env:
+          CHEF_VERSION: latest
+          CHEF_LICENSE: accept-no-persist
+          KITCHEN_LOCAL_YAML: kitchen.exec.yml
+        with:
+          suite: swarm
+          os: ubuntu-latest
+
   integration-smoke:
     needs: lint-unit
     runs-on: ubuntu-latest

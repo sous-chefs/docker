@@ -84,14 +84,14 @@ action_class do
     cmd = %w(docker service create)
     cmd << "--name #{new_resource.service_name}"
     cmd << "--replicas #{new_resource.replicas}"
-    
+
     new_resource.env.each { |e| cmd << "--env #{e}" }
     new_resource.labels.each { |k, v| cmd << "--label #{k}=#{v}" }
     new_resource.mounts.each { |m| cmd << "--mount #{m}" }
     new_resource.networks.each { |n| cmd << "--network #{n}" }
     new_resource.ports.each { |p| cmd << "--publish #{p}" }
     new_resource.constraints.each { |c| cmd << "--constraint #{c}" }
-    
+
     if new_resource.restart_policy
       cmd << "--restart-condition #{new_resource.restart_policy[:condition]}"
       cmd << "--restart-delay #{new_resource.restart_policy[:delay]}" if new_resource.restart_policy[:delay]
