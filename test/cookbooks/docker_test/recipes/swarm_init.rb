@@ -19,8 +19,8 @@ end
 # Save the token to a node attribute for use by workers
 ruby_block 'save_token' do
   block do
-    node.normal['docker']['swarm']['tokens'] ||= {}
-    node.normal['docker']['swarm']['tokens']['worker'] = node.run_state['docker_swarm']['worker_token']
+    node.override['docker']['swarm']['tokens'] ||= {}
+    node.override['docker']['swarm']['tokens']['worker'] = node.run_state['docker_swarm']['worker_token']
   end
   action :nothing
 end

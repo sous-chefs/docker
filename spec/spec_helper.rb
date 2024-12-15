@@ -18,9 +18,5 @@ RSpec.configure do |config|
   config.before :each do
     RSpecHelper.reset!
     RSpecHelper.current_example = self
-    # Include DockerCookbook::DockerHelpers::Swarm in the example group
-    RSpec.configure do |c|
-      c.include DockerCookbook::DockerHelpers::Swarm
-    end
   end
 end

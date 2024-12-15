@@ -40,7 +40,7 @@ load_current_value do |new_resource|
 end
 
 action :create do
-  return unless swarm_manager?(new_resource)
+  return unless swarm_manager?
 
   converge_if_changed do
     cmd = create_service_cmd(new_resource)
@@ -52,7 +52,7 @@ action :create do
 end
 
 action :update do
-  return unless swarm_manager?(new_resource)
+  return unless swarm_manager?
   return unless service_exists?(new_resource)
 
   converge_if_changed do
@@ -65,7 +65,7 @@ action :update do
 end
 
 action :delete do
-  return unless swarm_manager?(new_resource)
+  return unless swarm_manager?
   return unless service_exists?(new_resource)
 
   converge_by "deleting service #{new_resource.service_name}" do

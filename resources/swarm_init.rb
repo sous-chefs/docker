@@ -11,7 +11,7 @@ property :force_new_cluster, [true, false], default: false
 property :autolock, [true, false], default: false
 
 action :init do
-  return if swarm_member?(new_resource)
+  return if swarm_member?
 
   converge_by 'initializing docker swarm' do
     cmd = Mixlib::ShellOut.new(swarm_init_cmd(new_resource).join(' '))
@@ -23,7 +23,7 @@ action :init do
 end
 
 action :leave do
-  return unless swarm_member?(new_resource)
+  return unless swarm_member?
 
   converge_by 'leaving docker swarm' do
     cmd = Mixlib::ShellOut.new('docker swarm leave --force')

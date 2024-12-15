@@ -29,14 +29,14 @@ module DockerCookbook
         %w(docker swarm join-token -q) << token_type
       end
 
-      def swarm_member?(resource = nil)
+      def swarm_member?
         cmd = Mixlib::ShellOut.new('docker info --format "{{ .Swarm.LocalNodeState }}"')
         cmd.run_command
         return false if cmd.error?
         cmd.stdout.strip == 'active'
       end
 
-      def swarm_manager?(resource = nil)
+      def swarm_manager?
         return false unless swarm_member?
         cmd = Mixlib::ShellOut.new('docker info --format "{{ .Swarm.ControlAvailable }}"')
         cmd.run_command
@@ -44,7 +44,7 @@ module DockerCookbook
         cmd.stdout.strip == 'true'
       end
 
-      def swarm_worker?(resource = nil)
+      def swarm_worker?
         swarm_member? && !swarm_manager?
       end
 

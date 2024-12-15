@@ -12,10 +12,10 @@ property :listen_addr, String
 property :data_path_addr, String
 
 action :join do
-  return if swarm_member?(new_resource)
+  return if swarm_member?
 
   converge_by 'joining docker swarm' do
-    cmd = Mixlib::ShellOut.new(swarm_join_cmd(new_resource).join(' '))
+    cmd = Mixlib::ShellOut.new(swarm_join_cmd.join(' '))
     cmd.run_command
     if cmd.error?
       raise "Failed to join swarm: #{cmd.stderr}"
@@ -24,7 +24,7 @@ action :join do
 end
 
 action :leave do
-  return unless swarm_member?(new_resource)
+  return unless swarm_member?
 
   converge_by 'leaving docker swarm' do
     cmd = Mixlib::ShellOut.new('docker swarm leave --force')
