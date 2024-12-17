@@ -10,7 +10,7 @@ property :rotate, [true, false], default: false
 
 load_current_value do
   if swarm_manager?
-    cmd = Mixlib::ShellOut.new("docker swarm join-token -q #{token_type}")
+    cmd = Mixlib::ShellOut.new("docker swarm join-token -q #{new_resource.token_type}")
     cmd.run_command
     current_value_does_not_exist! if cmd.error?
   else

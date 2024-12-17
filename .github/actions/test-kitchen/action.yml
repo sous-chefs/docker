@@ -1,0 +1,43 @@
+name: 'Run Test Kitchen'
+description: 'Runs Test Kitchen tests with configurable options'
+
+inputs:
+  suite:
+    description: 'Test Kitchen suite to run'
+    required: true
+  os:
+    description: 'Operating system to test'
+    required: true
+  kitchen-yaml:
+    description: 'Kitchen YAML file to use'
+    required: false
+    default: 'kitchen.dokken.yml'
+  chef-version:
+    description: 'Chef version to use'
+    required: false
+    default: 'latest'
+  chef-license:
+    description: 'Chef license acceptance'
+    required: false
+    default: 'accept-no-persist'
+  kitchen-command:
+    description: 'Kitchen command to run (test, verify, etc)'
+    required: false
+    default: 'test'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install Chef
+      uses: actionshub/chef-install@3.0.1
+      with:
+        version: ${{ inputs.chef-version }}
+
+    - name: Run Test Kitchen
+      shell: bash
+      run:
+        kitchen ${{ inputs.kitchen-command }} ${{ inputs.suite }}-${{ inputs.os }}
+      env:
+        CHEF_LICENSE: ${{ inputs.chef-license }}
+        KITCHEN_LOCAL_YAML: ${{ inputs.kitchen-yaml }}
+        KITCHEN_YAML: ${{ inputs.kitchen-yaml }}

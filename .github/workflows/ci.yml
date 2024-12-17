@@ -19,104 +19,64 @@ jobs:
 
   integration:
     needs: lint-unit
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-2204
     strategy:
       matrix:
         os:
-          - "almalinux-8"
-          - "debian-11"
-          - "debian-12"
-          - "rockylinux-8"
-          - "rockylinux-9"
-          - "ubuntu-2004"
-          - "ubuntu-2204"
-          - "ubuntu-2404"
+          - almalinux-9
+          - almalinux-10
+          - amazonlinux-2023
+          - centos-stream-9
+          - centos-stream-10
+          - debian-11
+          - debian-12
+          - fedora-latest
+          - opensuse-leap-15
+          - oraclelinux-8
+          - oraclelinux-9
+          - ubuntu-2204
+          - ubuntu-2404
         suite:
           - "installation-script-main"
           - "installation-script-test"
           - "installation-package"
           - "installation-tarball"
           - "install-and-stop"
-        exclude:
-          - os: debian-11
-            suite: installation-script-test
-          - os: debian-12
-            suite: installation-script-test
-          - os: almalinux-8
-            suite: installation-script-main
-          - os: almalinux-8
-            suite: installation-script-test
-          - os: rockylinux-8
-            suite: installation-script-main
-          - os: rockylinux-8
-            suite: installation-script-test
-          - os: rockylinux-9
-            suite: installation-script-main
-          - os: rockylinux-9
-            suite: installation-script-test
       fail-fast: false
-
     steps:
       - name: Check out code
         uses: actions/checkout@v4
-      - name: Install Chef
-        uses: actionshub/chef-install@3.0.1
-      - name: Dokken
-        uses: actionshub/test-kitchen@3.0.0
-        env:
-          CHEF_VERSION: latest
-          CHEF_LICENSE: accept-no-persist
-          KITCHEN_LOCAL_YAML: kitchen.dokken.yml
+      - name: Test Kitchen
+        uses: ./.github/actions/test-kitchen
         with:
           suite: ${{ matrix.suite }}
           os: ${{ matrix.os }}
-
-  integration-amazonlinux:
-    needs: lint-unit
-    runs-on: ubuntu-24.04
-    strategy:
-      matrix:
-        os:
-          - amazonlinux-2
-        suite:
-          - "installation-tarball"
-          - "install-and-stop"
-      fail-fast: false
-
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-      - name: Install Chef
-        uses: actionshub/chef-install@3.0.1
-      - name: Dokken
-        uses: actionshub/test-kitchen@3.0.0
-        env:
-          CHEF_VERSION: latest
-          CHEF_LICENSE: accept-no-persist
-          KITCHEN_LOCAL_YAML: kitchen.dokken.yml
-        with:
-          suite: ${{ matrix.suite }}
-          os: ${{ matrix.os }}
+          kitchen-yaml: kitchen.dokken.yml
+          chef-version: latest
+          chef-license: accept-no-persist
 
   integration-swarm:
     needs: lint-unit
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        os: ["ubuntu-2204"]
+        suite: ["swarm"]
+      fail-fast: false
+
     steps:
       - name: Check out code
         uses: actions/checkout@v4
-      - name: Install Chef
-        uses: actionshub/chef-install@3.0.1
-      - name: Install Docker
-        uses: docker/setup-docker-action@v4
-      - name: Test Kitchen
-        uses: actionshub/test-kitchen@3.0.0
-        env:
-          CHEF_VERSION: latest
-          CHEF_LICENSE: accept-no-persist
-          KITCHEN_LOCAL_YAML: kitchen.exec.yml
+      - name: Setup VirtualBox & Vagrant
+        uses: ./.github/actions/virtualbox-setup
+      - name: Run Kitchen Tests
+        uses: ./.github/actions/test-kitchen
         with:
-          suite: swarm
-          os: ubuntu-latest
+          suite: ${{ matrix.suite }}
+          os: ${{ matrix.os }}
+          kitchen-yaml: kitchen.yml
+          chef-version: latest
+          chef-license: accept-no-persist
 
   integration-smoke:
     needs: lint-unit
@@ -136,23 +96,18 @@ jobs:
         suite:
           - "smoke"
       fail-fast: false
-
     steps:
       - name: Check out code
         uses: actions/checkout@v4
-      - name: Install VirtualBox & Vagrant
-        run: |
-          sudo apt update && sudo apt install virtualbox
-          wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-          echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-          sudo apt update && sudo apt install vagrant
+      - name: Setup VirtualBox & Vagrant
+        uses: ./.github/workflows/virtualbox-setup.yml
       - name: Install Chef
         uses: actionshub/chef-install@3.0.1
-      - name: Dokken
-        uses: actionshub/test-kitchen@3.0.0
-        env:
-          CHEF_VERSION: latest
-          CHEF_LICENSE: accept-no-persist
+      - name: Test Kitchen
+        uses: ./.github/actions/test-kitchen
         with:
           suite: ${{ matrix.suite }}
           os: ${{ matrix.os }}
+          kitchen-yaml: kitchen.yml
+          chef-version: latest
+          chef-license: accept-no-persist

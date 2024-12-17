@@ -67,21 +67,6 @@ platforms:
       image: dokken/oraclelinux-9
       pid_one_command: /usr/lib/systemd/systemd
 
-  - name: rockylinux-8
-    driver:
-      image: dokken/rockylinux-8
-      pid_one_command: /usr/lib/systemd/systemd
-
-  - name: rockylinux-9
-    driver:
-      image: dokken/rockylinux-9
-      pid_one_command: /usr/lib/systemd/systemd
-
-  - name: ubuntu-20.04
-    driver:
-      image: dokken/ubuntu-20.04
-      pid_one_command: /bin/systemd
-
   - name: ubuntu-22.04
     driver:
       image: dokken/ubuntu-22.04
