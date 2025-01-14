@@ -22,15 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        os:
-          - "almalinux-8"
-          - "debian-11"
-          - "debian-12"
-          - "rockylinux-8"
-          - "rockylinux-9"
-          - "ubuntu-2004"
-          - "ubuntu-2204"
-          - "ubuntu-2404"
+        os: ["almalinux-8", "debian-11", "debian-12", "rockylinux-8", "rockylinux-9", "ubuntu-2004", "ubuntu-2204", "ubuntu-2404"]
         suite:
           - "installation-script-main"
           - "installation-script-test"
