@@ -69,7 +69,25 @@ describe 'docker_test::installation_package' do
     end
   end
 
-  context 'CentOS (s390x): testing default action, default properties' do
+  context 'CentOS 9: testing default action, default properties' do
+    platform 'centos-stream', '9'
+    cached(:subject) { chef_run }
+
+    it 'installs docker' do
+      expect(chef_run).to create_docker_installation_package('default')
+    end
+    it do
+      expect(chef_run).to create_yum_repository('Docker').with(
+        baseurl: 'https://download.docker.com/linux/centos/9/x86_64/stable',
+        gpgkey: 'https://download.docker.com/linux/centos/gpg',
+        description: 'Docker Stable repository',
+        gpgcheck: true,
+        enabled: true
+      )
+    end
+  end
+
+  context 'RHEL (s390x): testing default action, default properties' do
     platform 'redhat', '8'
     cached(:subject) { chef_run }
     automatic_attributes['kernel']['machine'] = 's390x'
@@ -80,6 +98,93 @@ describe 'docker_test::installation_package' do
     it do
       expect(chef_run).to create_yum_repository('Docker').with(
         baseurl: 'https://download.docker.com/linux/rhel/8/s390x/stable',
+        gpgkey: 'https://download.docker.com/linux/rhel/gpg',
+        description: 'Docker Stable repository',
+        gpgcheck: true,
+        enabled: true
+      )
+    end
+  end
+
+  context 'RHEL 8: testing default action, default properties' do
+    platform 'redhat', '8'
+    cached(:subject) { chef_run }
+
+    it 'installs docker' do
+      expect(chef_run).to create_docker_installation_package('default')
+    end
+    it do
+      expect(chef_run).to create_yum_repository('Docker').with(
+        baseurl: 'https://download.docker.com/linux/rhel/8/x86_64/stable',
+        gpgkey: 'https://download.docker.com/linux/rhel/gpg',
+        description: 'Docker Stable repository',
+        gpgcheck: true,
+        enabled: true
+      )
+    end
+  end
+
+  context 'RHEL 9: testing default action, default properties' do
+    platform 'redhat', '9'
+    cached(:subject) { chef_run }
+
+    it 'installs docker' do
+      expect(chef_run).to create_docker_installation_package('default')
+    end
+    it do
+      expect(chef_run).to create_yum_repository('Docker').with(
+        baseurl: 'https://download.docker.com/linux/rhel/9/x86_64/stable',
+        gpgkey: 'https://download.docker.com/linux/rhel/gpg',
+        description: 'Docker Stable repository',
+        gpgcheck: true,
+        enabled: true
+      )
+    end
+  end
+
+  context 'Oracle 7: testing default action, default properties' do
+    platform 'oracle', '7'
+    cached(:subject) { chef_run }
+    it 'installs docker' do
+      expect(chef_run).to create_docker_installation_package('default')
+    end
+    it do
+      expect(chef_run).to create_yum_repository('Docker').with(
+        baseurl: 'https://download.docker.com/linux/centos/7/x86_64/stable',
+        gpgkey: 'https://download.docker.com/linux/centos/gpg',
+        description: 'Docker Stable repository',
+        gpgcheck: true,
+        enabled: true
+      )
+    end
+  end
+
+  context 'Oracle 8: testing default action, default properties' do
+    platform 'oracle', '8'
+    cached(:subject) { chef_run }
+    it 'installs docker' do
+      expect(chef_run).to create_docker_installation_package('default')
+    end
+    it do
+      expect(chef_run).to create_yum_repository('Docker').with(
+        baseurl: 'https://download.docker.com/linux/rhel/8/x86_64/stable',
+        gpgkey: 'https://download.docker.com/linux/rhel/gpg',
+        description: 'Docker Stable repository',
+        gpgcheck: true,
+        enabled: true
+      )
+    end
+  end
+
+  context 'Oracle 9: testing default action, default properties' do
+    platform 'oracle', '9'
+    cached(:subject) { chef_run }
+    it 'installs docker' do
+      expect(chef_run).to create_docker_installation_package('default')
+    end
+    it do
+      expect(chef_run).to create_yum_repository('Docker').with(
+        baseurl: 'https://download.docker.com/linux/rhel/9/x86_64/stable',
         gpgkey: 'https://download.docker.com/linux/rhel/gpg',
         description: 'Docker Stable repository',
         gpgcheck: true,

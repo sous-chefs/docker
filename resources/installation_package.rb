@@ -17,6 +17,11 @@ def el7?
   false
 end
 
+def el8?
+  return true if platform_family?('rhel') && node['platform_version'].to_i == 8
+  false
+end
+
 def fedora?
   return true if platform?('fedora')
   false
@@ -124,7 +129,10 @@ action :create do
         if platform?('fedora')
           'fedora'
           # s390x is only available under rhel platform
-        elsif platform?('redhat') && arch == 's390x'
+        elsif platform?('redhat', 'oracle') && (arch == 's390x' || !el7?)
+          'rhel'
+          # use rhel for all el8 since CentOS 8 is dead
+        elsif el8? && !platform?('centos')
           'rhel'
         else
           'centos'
