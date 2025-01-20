@@ -46,6 +46,7 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v4
+
       - name: Test Kitchen
         uses: ./.github/actions/test-kitchen
         with:
@@ -53,7 +54,7 @@ jobs:
           os: ${{ matrix.os }}
           kitchen-yaml: kitchen.dokken.yml
           chef-version: latest
-          chef-license: accept-no-persist
+          license-id: ${{ secrets.CHEF_LICENSE_KEY }}
 
   integration-swarm:
     needs: lint-unit
@@ -63,12 +64,13 @@ jobs:
         os: ["ubuntu-2204"]
         suite: ["swarm"]
       fail-fast: false
-
     steps:
       - name: Check out code
         uses: actions/checkout@v4
+
       - name: Setup VirtualBox & Vagrant
         uses: ./.github/actions/virtualbox-setup
+
       - name: Run Kitchen Tests
         uses: ./.github/actions/test-kitchen
         with:
@@ -76,7 +78,7 @@ jobs:
           os: ${{ matrix.os }}
           kitchen-yaml: kitchen.yml
           chef-version: latest
-          chef-license: accept-no-persist
+          license-id: ${{ secrets.CHEF_LICENSE_KEY }}
 
   integration-smoke:
     needs: lint-unit
@@ -99,10 +101,10 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v4
+
       - name: Setup VirtualBox & Vagrant
-        uses: ./.github/workflows/virtualbox-setup.yml
-      - name: Install Chef
-        uses: actionshub/chef-install@3.0.1
+        uses: ./.github/actions/virtualbox-setup
+
       - name: Test Kitchen
         uses: ./.github/actions/test-kitchen
         with:
@@ -110,4 +112,4 @@ jobs:
           os: ${{ matrix.os }}
           kitchen-yaml: kitchen.yml
           chef-version: latest
-          chef-license: accept-no-persist
+          license-id: ${{ secrets.CHEF_LICENSE_KEY }}
