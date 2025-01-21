@@ -1,3 +1,4 @@
+include_recipe 'test::installation_package'
 # We need to get the token from the manager node
 # In a real environment, you would use a more secure way to distribute the token
 ruby_block 'wait for manager' do

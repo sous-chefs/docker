@@ -1,7 +1,4 @@
-docker_installation_package 'default' do
-  version node['docker']['version'] if node['docker']['version']
-  action :create
-end
+include_recipe 'docker_test::installation_package'
 
 docker_swarm_init 'initialize swarm' do
   advertise_addr node['docker']['swarm']['init']['advertise_addr']

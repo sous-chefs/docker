@@ -24,6 +24,5 @@ suites:
             publish: ['80:80']
             replicas: 2
     run_list:
-      - recipe[docker_test::swarm_default]
-      - recipe[docker_test::swarm_init]
+      - recipe[docker_test::swarm]
       - recipe[docker_test::swarm_service]

@@ -31,8 +31,11 @@ control 'docker-swarm-2' do
 
   describe command('docker service inspect web') do
     its('exit_status') { should eq 0 }
-    its('stdout') { should match(/"Image":\s*"nginx:latest"/) }
     its('stdout') { should match(/"Replicas":\s*2/) }
+
+    describe json(content: command('docker service inspect web').stdout) do
+      its([0, 'Spec', 'TaskTemplate', 'ContainerSpec', 'Image']) { should match(/^nginx:latest(@sha256:)?/) }
+    end
   end
 
   describe command('docker service ps web --format "{{.CurrentState}}"') do
