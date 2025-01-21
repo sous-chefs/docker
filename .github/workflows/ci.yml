@@ -56,7 +56,7 @@ jobs:
           chef-version: latest
           license-id: ${{ secrets.CHEF_LICENSE_KEY }}
 
-  integration-swarm:
+  swarm:
     needs: lint-unit
     runs-on: ubuntu-22.04
     strategy:
@@ -80,7 +80,7 @@ jobs:
           chef-version: latest
           license-id: ${{ secrets.CHEF_LICENSE_KEY }}
 
-  integration-smoke:
+  smoke:
     needs: lint-unit
     runs-on: ubuntu-latest
     strategy:
@@ -113,3 +113,10 @@ jobs:
           kitchen-yaml: kitchen.yml
           chef-version: latest
           license-id: ${{ secrets.CHEF_LICENSE_KEY }}
+
+  final:
+    needs: [lint-unit, integration, swarm, smoke]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Complete
+        run: echo "All tests passed"
