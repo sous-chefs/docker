@@ -51,7 +51,7 @@ jobs:
         uses: ./.github/actions/test-kitchen
         with:
           # suite: ${{ matrix.suite }}
-          # os: ${{ matrix.os }}
+          os: ${{ matrix.os }}
           kitchen-yaml: kitchen.dokken.yml
           chef-version: latest
           license-id: ${{ secrets.CHEF_LICENSE_KEY }}
