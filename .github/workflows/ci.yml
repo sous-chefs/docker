@@ -50,7 +50,7 @@ jobs:
       - name: Test Kitchen
         uses: ./.github/actions/test-kitchen
         with:
-          # suite: ${{ matrix.suite }}
+          suite: ${{ matrix.suite }}
           os: ${{ matrix.os }}
           kitchen-yaml: kitchen.dokken.yml
           chef-version: latest

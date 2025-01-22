@@ -50,7 +50,7 @@ runs:
 
     - name: Run Test Kitchen
       shell: bash
-      run: kitchen ${{ inputs.kitchen-command }} ${{ inputs.suite }}-${{ inputs.os }}
+      run: kitchen ${{ inputs.kitchen-command }} ${{ inputs.suite }}${{ inputs.suite && inputs.os && '-' }}${{ inputs.os }}
       env:
         CHEF_LICENSE: ${{ inputs.license-id }}
         KITCHEN_LOCAL_YAML: ${{ inputs.kitchen-yaml }}
