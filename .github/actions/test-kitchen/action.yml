@@ -4,10 +4,10 @@ description: 'Runs Test Kitchen tests with configurable options'
 inputs:
   suite:
     description: 'Test Kitchen suite to run'
-    required: true
+    required: false
   os:
     description: 'Operating system to test'
-    required: true
+    required: false
   kitchen-yaml:
     description: 'Kitchen YAML file to use'
     required: false
