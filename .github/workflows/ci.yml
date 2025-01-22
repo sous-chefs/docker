@@ -55,6 +55,7 @@ jobs:
           kitchen-yaml: kitchen.dokken.yml
           chef-version: latest
           license-id: ${{ secrets.CHEF_LICENSE_KEY }}
+          kitchen-command: list
 
   swarm:
     needs: lint-unit
