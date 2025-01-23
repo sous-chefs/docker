@@ -53,9 +53,13 @@ jobs:
           version: latest
           license-id: ${{ secrets.CHEF_LICENSE_KEY }}
 
-      - name: Run Test Kitchen
-        shell: bash
-        run: KITCHEN_LOCAL_YAML=kitchen.dokken.yml kitchen test ${{ matrix.suite }}-${{ matrix.os }}
+      - name: Test Kitchen
+        uses: ./.github/actions/test-kitchen
+        with:
+          kitchen-local-yaml: kitchen.dokken.yml
+          suite: ${{ matrix.suite }}
+          os: ${{ matrix.os }}
+          license-id: ${{ secrets.CHEF_LICENSE_KEY }}
 
   swarm:
     needs: lint-unit
@@ -75,7 +79,7 @@ jobs:
       - name: Test Kitchen
         uses: ./.github/actions/test-kitchen
         with:
-          kitchen-yaml: kitchen.yml
+          kitchen-yaml: kitchen.dokken.yml
           suite: ${{ matrix.suite }}
           os: ${{ matrix.os }}
           license-id: ${{ secrets.CHEF_LICENSE_KEY }}
