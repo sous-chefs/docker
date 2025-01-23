@@ -54,4 +54,4 @@ runs:
       env:
         CHEF_LICENSE: ${{ inputs.license-id }}
         KITCHEN_LOCAL_YAML: ${{ inputs.kitchen-yaml }}
-        KITCHEN_YAML: ${{ inputs.kitchen-yaml }}
+        # KITCHEN_YAML: ${{ inputs.kitchen-yaml }}
