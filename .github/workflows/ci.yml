@@ -55,7 +55,7 @@ jobs:
 
       - name: Test Kitchen
         run: |
-          kitchen list
+          KITCHEN_LOCAL_YAML=kitchen.dokken.yml kitchen list
 
   swarm:
     needs: lint-unit
