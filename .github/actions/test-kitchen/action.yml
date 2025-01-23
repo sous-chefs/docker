@@ -15,7 +15,7 @@ inputs:
   chef-version:
     description: 'Chef version to use'
     required: false
-    default: 'current'
+    default: 'latest'
   license-id:
     description: 'Chef license ID'
     required: true
