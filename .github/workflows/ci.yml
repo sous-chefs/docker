@@ -47,6 +47,12 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
 
+      - name: Debug
+        run: |
+          echo "OS: ${{ matrix.os }}"
+          echo "Suite: ${{ matrix.suite }}"
+          ls -la .
+
       - name: Test Kitchen
         uses: ./.github/actions/test-kitchen
         with:
