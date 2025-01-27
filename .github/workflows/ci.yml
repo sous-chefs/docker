@@ -56,7 +56,7 @@ jobs:
       - name: Test Kitchen
         uses: ./.github/actions/test-kitchen
         with:
-          kitchen-local-yaml: kitchen.dokken.yml
+          kitchen-yaml: kitchen.dokken.yml
           suite: ${{ matrix.suite }}
           os: ${{ matrix.os }}
           license-id: ${{ secrets.CHEF_LICENSE_KEY }}
