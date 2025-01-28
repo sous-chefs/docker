@@ -6,7 +6,13 @@ provides :docker_installation_package
 
 property :setup_docker_repo, [true, false], default: true, desired_state: false
 property :repo_channel, String, default: 'stable'
-property :package_name, String, default: 'docker-ce', desired_state: false
+property :package_name, String, default: lazy {
+  if amazonlinux_2023? || fedora?
+    'docker'
+  else
+    'docker-ce'
+  end
+}, desired_state: false
 property :package_version, String, desired_state: false
 property :version, String, desired_state: false
 property :package_options, String, desired_state: false
@@ -79,6 +85,11 @@ end
 
 def noble?
   return true if platform?('ubuntu') && node['platform_version'] == '24.04'
+  false
+end
+
+def amazonlinux_2023?
+  return true if platform?('amazon') && node['platform_version'] == '2023'
   false
 end
 
@@ -159,6 +170,8 @@ action :create do
         else
           node['kernel']['machine']
         end
+
+      apt_update 'apt-transport-https'
 
       package 'apt-transport-https'
 

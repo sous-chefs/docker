@@ -30,15 +30,9 @@ jobs:
           - centos-stream-10
           - debian-11
           - debian-12
-          - fedora-latest
-          - opensuse-leap-15
-          - oraclelinux-8
-          - oraclelinux-9
           - ubuntu-2204
           - ubuntu-2404
         suite:
-          - "installation-script-main"
-          - "installation-script-test"
           - "installation-package"
           - "installation-tarball"
           - "install-and-stop"
@@ -47,11 +41,31 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
 
-      - name: Install Chef
-        uses: ./.github/actions/chef-install
+      - name: Test Kitchen
+        uses: ./.github/actions/test-kitchen
         with:
-          version: latest
+          kitchen-yaml: kitchen.dokken.yml
+          suite: ${{ matrix.suite }}
+          os: ${{ matrix.os }}
           license-id: ${{ secrets.CHEF_LICENSE_KEY }}
+
+  installation-script:
+    needs: lint-unit
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        os:
+          - centos-stream-9
+          - centos-stream-10
+          - debian-11
+          - debian-12
+          - ubuntu-2204
+          - ubuntu-2404
+        suite: ["installation-script"]
+      fail-fast: false
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
 
       - name: Test Kitchen
         uses: ./.github/actions/test-kitchen
@@ -79,7 +93,7 @@ jobs:
       - name: Test Kitchen
         uses: ./.github/actions/test-kitchen
         with:
-          kitchen-yaml: kitchen.dokken.yml
+          kitchen-yaml: kitchen.yml
           suite: ${{ matrix.suite }}
           os: ${{ matrix.os }}
           license-id: ${{ secrets.CHEF_LICENSE_KEY }}
@@ -94,8 +108,6 @@ jobs:
           - "almalinux-9"
           - "debian-11"
           - "debian-12"
-          - "rockylinux-8"
-          - "rockylinux-9"
           - "ubuntu-2004"
           - "ubuntu-2204"
           - "ubuntu-2404"
@@ -118,7 +130,7 @@ jobs:
           license-id: ${{ secrets.CHEF_LICENSE_KEY }}
 
   final:
-    needs: [lint-unit, integration, swarm, smoke]
+    needs: [lint-unit, installation-script, integration, swarm, smoke]
     runs-on: ubuntu-latest
     steps:
       - name: Complete

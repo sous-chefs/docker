@@ -74,12 +74,6 @@ action :delete do
 end
 
 action_class do
-  def service_exists?(new_resource)
-    cmd = Mixlib::ShellOut.new("docker service inspect #{new_resource.service_name}")
-    cmd.run_command
-    !cmd.error?
-  end
-
   def create_service_cmd(new_resource)
     cmd = %w(docker service create)
     cmd << "--name #{new_resource.service_name}"

@@ -8,9 +8,9 @@ provides :docker_swarm_token
 property :token_type, String, name_property: true, equal_to: %w(worker manager)
 property :rotate, [true, false], default: false
 
-load_current_value do |_new_resource|
+load_current_value do |new_resource|
   if swarm_manager?
-    cmd = Mixlib::ShellOut.new("docker swarm join-token -q #{new_resourcetoken_type}")
+    cmd = Mixlib::ShellOut.new("docker swarm join-token -q #{new_resource.token_type}")
     cmd.run_command
     current_value_does_not_exist! if cmd.error?
   else

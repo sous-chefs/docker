@@ -29,29 +29,11 @@ platforms:
   - name: ubuntu-24.04
 
 suites:
-
-  ###############################
-  # docker_installation resources
-  ###############################
-  - name: installation_script_main
+  - name: installation_script
     excludes:
-      - 'almalinux-8'
-      - 'amazonlinux-2'
-      - 'rockylinux-8'
-    attributes:
-      docker:
-        repo: 'main'
-    run_list:
-      - recipe[docker_test::installation_script]
-
-  - name: installation_script_test
-    excludes:
-      - 'almalinux-8'
-      - 'amazonlinux-2'
-      - 'rockylinux-8'
-    attributes:
-      docker:
-        repo: 'test'
+      - 'almalinux'
+      - 'amazonlinux'
+      - 'rockylinux-9'
     run_list:
       - recipe[docker_test::installation_script]
 
@@ -72,7 +54,6 @@ suites:
   ##################
   # resource testing
   ##################
-
   - name: resources
     provisioner:
       enforce_idempotency: false
