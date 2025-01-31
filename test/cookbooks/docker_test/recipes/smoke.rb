@@ -83,3 +83,10 @@ docker_container 'hello-world' do
   command '/hello'
   action :create
 end
+
+# Test case for digest image format
+docker_container 'sha256-test' do
+  repo 'hello-world'
+  tag 'sha256:d715f14f9eca81473d9112df50457893aa4d099adeb4729f679006bf5ea12407'
+  action :run
+end
