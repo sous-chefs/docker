@@ -472,7 +472,7 @@ action :create do
     with_retries do
       config = {
         'name'            => new_resource.container_name,
-        'Image'           => "#{new_resource.repo}:#{new_resource.tag}",
+        'Image'           => new_resource.tag.to_s.start_with?('sha256:') ? "#{new_resource.repo}@#{new_resource.tag}" : "#{new_resource.repo}:#{new_resource.tag}",
         'Labels'          => new_resource.labels,
         'Cmd'             => to_shellwords(new_resource.command),
         'AttachStderr'    => new_resource.attach_stderr,
