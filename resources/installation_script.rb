@@ -1,33 +1,26 @@
 unified_mode true
 use 'partial/_base'
 
-resource_name :docker_installation_script
-provides :docker_installation_script
-
 provides :docker_installation, os: 'linux'
-
-property :repo, %w(main test experimental), default: 'main', desired_state: false
-property :script_url, String, default: lazy { default_script_url }, desired_state: false
+property :repo, %w(stable test), default: 'stable', desired_state: false
 
 default_action :create
 
-#########################
-# property helper methods
-#########################
-
-def default_script_url
-  "https://#{repo == 'main' ? 'get' : 'test'}.docker.com/"
-end
-
-#########
-# Actions
-#########
-
 action :create do
-  package 'curl'
+  raise 'Installation script not supported on AlmaLinux or Rocky Linux' if platform?('almalinux', 'rocky')
+
+  package 'curl' do
+    options '--allowerasing'
+    not_if { platform_family?('rhel') && shell_out('rpm -q curl-minimal').exitstatus.zero? }
+  end
+
+  execute 'download docker installation script' do
+    command 'curl -fsSL https://get.docker.com -o /opt/install-docker.sh'
+    creates '/opt/install-docker.sh'
+  end
 
   execute 'install docker' do
-    command "curl -sSL #{new_resource.script_url} | sh"
+    command "sh /opt/install-docker.sh --channel #{new_resource.repo}"
     creates '/usr/bin/docker'
   end
 end

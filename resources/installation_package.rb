@@ -6,7 +6,13 @@ provides :docker_installation_package
 
 property :setup_docker_repo, [true, false], default: true, desired_state: false
 property :repo_channel, String, default: 'stable'
-property :package_name, String, default: 'docker-ce', desired_state: false
+property :package_name, String, default: lazy {
+  if amazonlinux_2023? || fedora?
+    'docker'
+  else
+    'docker-ce'
+  end
+}, desired_state: false
 property :package_version, String, desired_state: false
 property :version, String, desired_state: false
 property :package_options, String, desired_state: false
@@ -82,6 +88,11 @@ def noble?
   false
 end
 
+def amazonlinux_2023?
+  return true if platform?('amazon') && node['platform_version'] == '2023'
+  false
+end
+
 # https://github.com/chef/chef/issues/4103
 def version_string(v)
   return if v.nil?
@@ -138,7 +149,7 @@ action :create do
           'centos'
         end
 
-      yum_repository 'Docker' do
+      yum_repository 'docker' do
         baseurl "https://#{new_resource.site_url}/linux/#{platform}/#{node['platform_version'].to_i}/#{arch}/#{new_resource.repo_channel}"
         gpgkey "https://#{new_resource.site_url}/linux/#{platform}/gpg"
         description "Docker #{new_resource.repo_channel.capitalize} repository"
@@ -160,15 +171,19 @@ action :create do
           node['kernel']['machine']
         end
 
+      apt_update 'apt-transport-https'
+
       package 'apt-transport-https'
 
-      apt_repository 'Docker' do
+      apt_repository 'docker' do
         components Array(new_resource.repo_channel)
         uri "https://#{new_resource.site_url}/linux/#{node['platform']}"
         arch deb_arch
         key "https://#{new_resource.site_url}/linux/#{node['platform']}/gpg"
         action :add
       end
+
+      apt_update 'docker'
     else
       Chef::Log.warn("Cannot setup the Docker repo for platform #{node['platform']}. Skipping.")
     end
