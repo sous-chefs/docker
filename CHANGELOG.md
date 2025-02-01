@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-- Support digest image format in docker_container resource. If the tag starts with 'sha256:', the image reference is constructed using '@' separator instead of ':' (Issue #1057).
+- Standardise files with files in sous-chefs/repo-management
+- Support digest image format in docker_container resource. If the tag starts with 'sha256:', the image reference is constructed using '@' separator instead of ':' (Issue #1057)
 
 ## 11.9.0 - *2025-01-31*
 
