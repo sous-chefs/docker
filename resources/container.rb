@@ -68,7 +68,7 @@ property :stdin_once, [true, false], default: false, desired_state: false
 property :sysctls, Hash, default: {}
 property :timeout, Integer, desired_state: false
 property :tmpfs, [Hash, Array], default: {}, coerce: proc { |v| coerce_tmpfs(v) },
-  description: 'A hash or array of tmpfs mounts to add to the container. Hash format: { "/path" => "size=100M,uid=1000" }. Array format: ["/path", "/path2"]. See https://docs.docker.com/storage/tmpfs/'
+                                description: 'A hash or array of tmpfs mounts to add to the container. Hash format: { "/path" => "size=100M,uid=1000" }. Array format: ["/path", "/path2"]. See https://docs.docker.com/storage/tmpfs/'
 property :tty, [true, false], default: false
 property :ulimits, [Array, nil], coerce: proc { |v| coerce_ulimits(v) }
 property :user, String
@@ -201,7 +201,7 @@ def coerce_volumes(v)
     PartialHash[v]
   else
     b = []
-    v = Array(v).to_a # in case v.is_A?(Chef::Node::ImmutableArray)
+    v = Array(v) # in case v.is_A?(Chef::Node::ImmutableArray)
     v.delete_if do |x|
       parts = x.split(':')
       b << x if parts.length > 1
@@ -471,71 +471,71 @@ action :create do
 
     with_retries do
       config = {
-        'name'            => new_resource.container_name,
-        'Image'           => new_resource.tag.to_s.start_with?('sha256:') ? "#{new_resource.repo}@#{new_resource.tag}" : "#{new_resource.repo}:#{new_resource.tag}",
-        'Labels'          => new_resource.labels,
-        'Cmd'             => to_shellwords(new_resource.command),
-        'AttachStderr'    => new_resource.attach_stderr,
-        'AttachStdin'     => new_resource.attach_stdin,
-        'AttachStdout'    => new_resource.attach_stdout,
-        'Domainname'      => new_resource.domain_name,
-        'Entrypoint'      => to_shellwords(new_resource.entrypoint),
-        'Env'             => new_resource.env + read_env_file,
-        'ExposedPorts'    => new_resource.exposed_ports,
-        'Healthcheck'     => new_resource.health_check,
-        'Hostname'        => parsed_hostname,
-        'MacAddress'      => new_resource.mac_address,
+        'name' => new_resource.container_name,
+        'Image' => new_resource.tag.to_s.start_with?('sha256:') ? "#{new_resource.repo}@#{new_resource.tag}" : "#{new_resource.repo}:#{new_resource.tag}",
+        'Labels' => new_resource.labels,
+        'Cmd' => to_shellwords(new_resource.command),
+        'AttachStderr' => new_resource.attach_stderr,
+        'AttachStdin' => new_resource.attach_stdin,
+        'AttachStdout' => new_resource.attach_stdout,
+        'Domainname' => new_resource.domain_name,
+        'Entrypoint' => to_shellwords(new_resource.entrypoint),
+        'Env' => new_resource.env + read_env_file,
+        'ExposedPorts' => new_resource.exposed_ports,
+        'Healthcheck' => new_resource.health_check,
+        'Hostname' => parsed_hostname,
+        'MacAddress' => new_resource.mac_address,
         'NetworkDisabled' => new_resource.network_disabled,
-        'OpenStdin'       => new_resource.open_stdin,
-        'StdinOnce'       => new_resource.stdin_once,
-        'Tty'             => new_resource.tty,
-        'User'            => new_resource.user,
-        'Volumes'         => new_resource.volumes,
-        'WorkingDir'      => new_resource.working_dir,
-        'HostConfig'      => {
-          'Binds'           => new_resource.volumes_binds,
-          'CapAdd'          => new_resource.cap_add,
-          'CapDrop'         => new_resource.cap_drop,
-          'CgroupParent'    => new_resource.cgroup_parent,
-          'CgroupnsMode'    => new_resource.cgroup_ns,
-          'CpuShares'       => new_resource.cpu_shares,
-          'CpusetCpus'      => new_resource.cpuset_cpus,
-          'Devices'         => new_resource.devices,
-          'Dns'             => new_resource.dns,
-          'DnsSearch'       => new_resource.dns_search,
-          'ExtraHosts'      => new_resource.extra_hosts,
-          'IpcMode'         => new_resource.ipc_mode,
-          'Init'            => new_resource.init,
-          'KernelMemory'    => new_resource.kernel_memory,
-          'Links'           => new_resource.links,
-          'LogConfig'       => log_config,
-          'Memory'          => new_resource.memory,
-          'MemorySwap'      => new_resource.memory_swap,
+        'OpenStdin' => new_resource.open_stdin,
+        'StdinOnce' => new_resource.stdin_once,
+        'Tty' => new_resource.tty,
+        'User' => new_resource.user,
+        'Volumes' => new_resource.volumes,
+        'WorkingDir' => new_resource.working_dir,
+        'HostConfig' => {
+          'Binds' => new_resource.volumes_binds,
+          'CapAdd' => new_resource.cap_add,
+          'CapDrop' => new_resource.cap_drop,
+          'CgroupParent' => new_resource.cgroup_parent,
+          'CgroupnsMode' => new_resource.cgroup_ns,
+          'CpuShares' => new_resource.cpu_shares,
+          'CpusetCpus' => new_resource.cpuset_cpus,
+          'Devices' => new_resource.devices,
+          'Dns' => new_resource.dns,
+          'DnsSearch' => new_resource.dns_search,
+          'ExtraHosts' => new_resource.extra_hosts,
+          'IpcMode' => new_resource.ipc_mode,
+          'Init' => new_resource.init,
+          'KernelMemory' => new_resource.kernel_memory,
+          'Links' => new_resource.links,
+          'LogConfig' => log_config,
+          'Memory' => new_resource.memory,
+          'MemorySwap' => new_resource.memory_swap,
           'MemorySwappiness' => new_resource.memory_swappiness,
           'MemoryReservation' => new_resource.memory_reservation,
-          'NanoCpus'        => new_resource.cpus,
-          'NetworkMode'     => normalize_container_network_mode(new_resource.network_mode),
-          'OomKillDisable'  => new_resource.oom_kill_disable,
-          'OomScoreAdj'     => new_resource.oom_score_adj,
-          'Privileged'      => new_resource.privileged,
-          'PidMode'         => new_resource.pid_mode,
-          'PortBindings'    => new_resource.port_bindings,
+          'NanoCpus' => new_resource.cpus,
+          'NetworkMode' => normalize_container_network_mode(new_resource.network_mode),
+          'OomKillDisable' => new_resource.oom_kill_disable,
+          'OomScoreAdj' => new_resource.oom_score_adj,
+          'Privileged' => new_resource.privileged,
+          'PidMode' => new_resource.pid_mode,
+          'PortBindings' => new_resource.port_bindings,
           'PublishAllPorts' => new_resource.publish_all_ports,
-          'RestartPolicy'   => {
-            'Name'              => new_resource.restart_policy,
+          'RestartPolicy' => {
+            'Name' => new_resource.restart_policy,
             'MaximumRetryCount' => new_resource.restart_maximum_retry_count,
           },
-          'ReadonlyRootfs'  => new_resource.ro_rootfs,
-          'Runtime'         => new_resource.runtime,
-          'SecurityOpt'     => new_resource.security_opt,
-          'ShmSize'         => new_resource.shm_size,
-          'Sysctls'         => new_resource.sysctls,
-          'Tmpfs'           => new_resource.tmpfs,
-          'Ulimits'         => ulimits_to_hash,
-          'UsernsMode'      => new_resource.userns_mode,
-          'UTSMode'         => new_resource.uts_mode,
-          'VolumesFrom'     => new_resource.volumes_from,
-          'VolumeDriver'    => new_resource.volume_driver,
+          'ReadonlyRootfs' => new_resource.ro_rootfs,
+          'Runtime' => new_resource.runtime,
+          'SecurityOpt' => new_resource.security_opt,
+          'ShmSize' => new_resource.shm_size,
+          'Sysctls' => new_resource.sysctls,
+          'Tmpfs' => new_resource.tmpfs,
+          'Ulimits' => ulimits_to_hash,
+          'UsernsMode' => new_resource.userns_mode,
+          'UTSMode' => new_resource.uts_mode,
+          'VolumesFrom' => new_resource.volumes_from,
+          'VolumeDriver' => new_resource.volume_driver,
         },
       }
       net_config = {
@@ -691,7 +691,7 @@ action_class do
       raise Chef::Exceptions::ValidationFailed, 'restart_policy must be either no, always, unless-stopped, or on-failure.'
     end
 
-    if new_resource.autoremove == true && (new_resource.property_is_set?(:restart_policy) && new_resource.restart_policy != 'no')
+    if new_resource.autoremove == true && new_resource.property_is_set?(:restart_policy) && new_resource.restart_policy != 'no'
       raise Chef::Exceptions::ValidationFailed, 'Conflicting options restart_policy and autoremove.'
     end
 
