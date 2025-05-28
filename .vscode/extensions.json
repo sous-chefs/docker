@@ -1,7 +1,7 @@
 {
   "recommendations": [
     "chef-software.chef",
-    "rebornix.ruby",
+    "Shopify.ruby-lsp",
     "editorconfig.editorconfig",
     "DavidAnson.vscode-markdownlint"
   ]
