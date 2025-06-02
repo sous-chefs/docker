@@ -129,10 +129,10 @@ action_class do
     #   domain.ext/image         (=> 3rd party registry)
     #   domain.ext/.../image     (=> 3rd party registry)
     #
-    first_part = val.sub(%r{https?://}, '').split('/').first
+    registry = val.sub(%r{https?://}, '')
 
     # looks like a host name of a custom docker registry
-    return first_part if first_part.include?('.')
+    return registry if registry.include?('.')
 
     # default host
     'index.docker.io'
