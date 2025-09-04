@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Add support for multiple credentials per-registry
+  - Image resource will match on the longest case match by default
+  - Credentials to use can be explicitly set by `:repo_credential_override`
+
 ## 11.9.2 - *2025-02-02*
 
 ## 11.9.1 - *2025-02-01*
