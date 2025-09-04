@@ -39,7 +39,7 @@ jobs:
       fail-fast: false
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Test Kitchen
         uses: ./.github/actions/test-kitchen
@@ -65,7 +65,7 @@ jobs:
       fail-fast: false
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Test Kitchen
         uses: ./.github/actions/test-kitchen
@@ -85,7 +85,7 @@ jobs:
       fail-fast: false
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup VirtualBox & Vagrant
         uses: ./.github/actions/virtualbox-setup
@@ -116,7 +116,7 @@ jobs:
       fail-fast: false
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup VirtualBox & Vagrant
         uses: ./.github/actions/virtualbox-setup
