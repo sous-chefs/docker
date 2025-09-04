@@ -27,9 +27,9 @@ def with_retries(&_block)
     yield
   # Only catch errors that can be fixed with retries.
   rescue Docker::Error::ServerError, # 500
-          Docker::Error::UnexpectedResponseError, # 400
-          Docker::Error::TimeoutError,
-          Docker::Error::IOError
+         Docker::Error::UnexpectedResponseError, # 400
+         Docker::Error::TimeoutError,
+         Docker::Error::IOError
     tries -= 1
     retry if tries > 0
     raise

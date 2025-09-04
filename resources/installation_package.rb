@@ -119,12 +119,12 @@ def version_string(v)
 
   if v.to_f < 18.06 && !bionic?
     return "#{v}~ce-0~debian" if debian?
-    return "#{v}~ce-0~ubuntu" if ubuntu?
+    "#{v}~ce-0~ubuntu" if ubuntu?
   elsif v.to_f >= 23.0 && ubuntu?
     "5:#{v}-1~ubuntu.#{node['platform_version']}~#{codename}"
   elsif v.to_f >= 18.09 && debuntu?
     return "5:#{v}~#{test_version}-0~debian-#{codename}" if debian?
-    return "5:#{v}~#{test_version}-0~ubuntu-#{codename}" if ubuntu?
+    "5:#{v}~#{test_version}-0~ubuntu-#{codename}" if ubuntu?
   else
     return "#{v}~ce~#{test_version}-0~debian" if debian?
     return "#{v}~ce~#{test_version}-0~ubuntu" if ubuntu?
