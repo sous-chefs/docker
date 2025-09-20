@@ -7,7 +7,7 @@ property :container, String
 property :timeout, Numeric, default: 60, desired_state: false
 property :container_obj, Docker::Container, desired_state: false
 property :returns, [ Integer, Array ], coerce: proc { |v| Array(v) }, default: [0],
-  description: 'The return value for a command. This may be an array of accepted values. An exception is raised when the return value(s) do not match.'
+                                       description: 'The return value for a command. This may be an array of accepted values. An exception is raised when the return value(s) do not match.'
 
 alias_method :cmd, :command
 
