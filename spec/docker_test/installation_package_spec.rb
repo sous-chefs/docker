@@ -15,6 +15,7 @@ describe 'docker_test::installation_package' do
         components: %w(stable),
         uri: 'https://download.docker.com/linux/ubuntu',
         arch: 'amd64',
+        signed_by: false,
         key: %w(https://download.docker.com/linux/ubuntu/gpg)
       )
     end
@@ -31,6 +32,7 @@ describe 'docker_test::installation_package' do
         components: %w(stable),
         uri: 'https://download.docker.com/linux/ubuntu',
         arch: 'arm64',
+        signed_by: false,
         key: %w(https://download.docker.com/linux/ubuntu/gpg)
       )
     end
@@ -47,6 +49,7 @@ describe 'docker_test::installation_package' do
         components: %w(stable),
         uri: 'https://download.docker.com/linux/ubuntu',
         arch: 'ppc64el',
+        signed_by: false,
         key: %w(https://download.docker.com/linux/ubuntu/gpg)
       )
     end

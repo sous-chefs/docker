@@ -7,9 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-Standardise files with files in sous-chefs/repo-management
-
-Standardise files with files in sous-chefs/repo-management
+- Set signed_by property in apt_repository to false on platforms that do not support it
+- Fix sha256 tag references
+- Update smoke test recipe to work with an image that will stay running
+- Ensure buildah and podman are removed if present
+- Standardise files with files in sous-chefs/repo-management
 
 ## 11.9.3 - *2025-09-04*
 

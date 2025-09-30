@@ -20,7 +20,6 @@ verifier:
 platforms:
   - name: almalinux-8
   - name: almalinux-9
-  - name: debian-11
   - name: debian-12
   - name: rockylinux-8
   - name: rockylinux-9
