@@ -84,9 +84,14 @@ docker_container 'hello-world' do
   action :create
 end
 
+docker_image 'debian' do
+  tag 'sha256:d6743b7859c917a488ca39f4ab5e174011305f50b44ce32d3b9ea5d81b291b3b'
+end
+
 # Test case for digest image format
 docker_container 'sha256-test' do
-  repo 'hello-world'
-  tag 'sha256:d715f14f9eca81473d9112df50457893aa4d099adeb4729f679006bf5ea12407'
+  repo 'debian'
+  tag 'sha256:d6743b7859c917a488ca39f4ab5e174011305f50b44ce32d3b9ea5d81b291b3b'
+  command 'sleep infinity'
   action :run
 end

@@ -362,6 +362,9 @@ def image(image = nil)
       dirname, _, basename = image.rpartition('/')
       r, t = basename.split(':', 2)
       r = [dirname, r].join('/')
+    elsif image.include?('sha256')
+      # sha256 image references need to be handled differently
+      r, t = image.split('@', 2)
     else
       # normal case, the ':' starts the tag part
       r, t = image.split(':', 2)

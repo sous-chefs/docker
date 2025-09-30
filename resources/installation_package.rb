@@ -156,6 +156,11 @@ action :create do
         gpgcheck true
         enabled true
       end
+
+      # These have conflicting dependencies and need to be removed
+      package %w(buildah podman) do
+        action :remove
+      end
     elsif platform_family?('debian')
       deb_arch =
         case node['kernel']['machine']
@@ -175,11 +180,18 @@ action :create do
 
       package 'apt-transport-https'
 
+      # Some platforms don't have this directory
+      directory '/etc/apt/keyrings'
+
       apt_repository 'docker' do
         components Array(new_resource.repo_channel)
         uri "https://#{new_resource.site_url}/linux/#{node['platform']}"
         arch deb_arch
         key "https://#{new_resource.site_url}/linux/#{node['platform']}/gpg"
+        # TODO: This eventually should go away once Debian 12 and Ubuntu 24.04 go EOL
+        if (debian? && node['platform_version'].to_i < 13) || (ubuntu? && node['platform_version'].to_f <= 24.04)
+          signed_by false
+        end
         action :add
       end
 

@@ -128,7 +128,12 @@ action_class do
   end
 
   def image_identifier
-    "#{new_resource.repo}:#{new_resource.tag}"
+    # handle sha256 tag references correctly
+    if new_resource.tag.to_s.start_with?('sha256:')
+      "#{new_resource.repo}@#{new_resource.tag}"
+    else
+      "#{new_resource.repo}:#{new_resource.tag}"
+    end
   end
 
   def import_image
