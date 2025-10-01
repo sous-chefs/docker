@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+Standardise files with files in sous-chefs/repo-management
+
 ## 11.10.0 - *2025-09-30*
 
 - Set signed_by property in apt_repository to false on platforms that do not support it
