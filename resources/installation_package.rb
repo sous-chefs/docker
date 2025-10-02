@@ -191,7 +191,7 @@ action :create do
         # TODO: This eventually should go away once Debian 12 and Ubuntu 24.04 go EOL
         if (debian? && node['platform_version'].to_i < 13) || (ubuntu? && node['platform_version'].to_f <= 24.04)
           signed_by false
-        end
+        end if Chef::VERSION >= Gem::Version.new('18.7.10')
         action :add
       end
 
