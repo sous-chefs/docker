@@ -13,7 +13,7 @@ module DockerCookbook
         # It might also not match the new_resource value
         if container.info['NetworkSettings'] &&
            container.info['NetworkSettings']['Networks'] &&
-           container.info['NetworkSettings']['Networks'].values[0] &&
+           container.info['NetworkSettings']['Networks'].values.first &&
            container.info['NetworkSettings']['Networks'].values[0]['IPAMConfig'] &&
            container.info['NetworkSettings']['Networks'].values[0]['IPAMConfig']['IPv4Address']
           # Return the ip address listed

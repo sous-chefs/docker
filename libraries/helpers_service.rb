@@ -115,10 +115,10 @@ module DockerCookbook
         Array(v).each_with_object([]) do |label, a|
           if label =~ /:/
             parts = label.split(':')
-            a << "#{parts[0]}=\"#{parts[1]}\""
+            a << "#{parts.first}=\"#{parts[1]}\""
           elsif label =~ /=/
             parts = label.split('=')
-            a << "#{parts[0]}=#{parts[1]}"
+            a << "#{parts.first}=#{parts[1]}"
           else
             Chef::Log.info("WARNING: docker_service label #{label} not valid")
           end

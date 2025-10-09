@@ -36,25 +36,25 @@ def coerce_auxiliary_addresses(v)
       e.each { |key, val| ray << "#{key}=#{val}" }
     end
   end
-  ray.length == 1 ? ray[0] : ray
+  ray.length == 1 ? ray.first : ray
 end
 
 def coerce_gateway(v)
   case v
   when String
-    v.split('/')[0]
+    v.split('/').first
   when Array
-    ray = Array(v).map { |a| a.split('/')[0] }
-    ray.length == 1 ? ray[0] : ray
+    ray = Array(v).map { |a| a.split('/').first }
+    ray.length == 1 ? ray.first : ray
   end
 end
 
 def coerce_subnet(v)
-  Array(v).length == 1 ? Array(v)[0] : v
+  Array(v).length == 1 ? Array(v).first : v
 end
 
 def coerce_ip_range(v)
-  Array(v).length == 1 ? Array(v)[0] : v
+  Array(v).length == 1 ? Array(v).first : v
 end
 
 ####################
@@ -219,7 +219,7 @@ action_class do
 
     # Check overlapping subnets
     subnets.each do |s|
-      data.each do |k, _|
+      data.each_key do |k|
         if subnet_matches(s, k) || subnet_matches(k, s)
           raise 'multiple overlapping subnet configuration is not supported'
         end
