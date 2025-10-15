@@ -1,0 +1,23 @@
+---
+name: release
+
+"on":
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  packages: write
+  attestations: write
+  id-token: write
+
+jobs:
+  release:
+    uses: sous-chefs/.github/.github/workflows/release-cookbook.yml@5.0.3
+    secrets:
+      token: ${{ secrets.PORTER_GITHUB_TOKEN }}
+      supermarket_user: ${{ secrets.CHEF_SUPERMARKET_USER }}
+      supermarket_key: ${{ secrets.CHEF_SUPERMARKET_KEY }}
