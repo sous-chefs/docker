@@ -1,0 +1,14 @@
+---
+name: conventional-commits
+
+"on":
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - edited
+      - synchronize
+
+jobs:
+  conventional-commits:
+    uses: sous-chefs/.github/.github/workflows/conventional-commits.yml@5.0.3

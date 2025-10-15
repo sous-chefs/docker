@@ -1,0 +1,24 @@
+---
+name: 'Copilot Setup Steps'
+
+"on":
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+  pull_request:
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+
+jobs:
+  copilot-setup-steps:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v5
+      - name: Install Chef
+        uses: actionshub/chef-install@main
+      - name: Install cookbooks
+        run: berks install
