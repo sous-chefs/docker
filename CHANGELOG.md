@@ -13,7 +13,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [11.10.2](https://github.com/sous-chefs/docker/compare/11.10.1...v11.10.2) (2025-10-15)
 
-
 ### Bug Fixes
 
 * **ci:** Update workflows to use release pipeline ([#1320](https://github.com/sous-chefs/docker/issues/1320)) ([5fce840](https://github.com/sous-chefs/docker/commit/5fce84023bac5499c9552cd295dddcab2504ed9c))
