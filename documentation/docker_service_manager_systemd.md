@@ -12,15 +12,15 @@ The `docker_service_manager_systemd` resource manages the Docker daemon using sy
 
 This resource inherits properties from the `docker_service_base` resource. Common properties include:
 
-| Property           | Type    | Default    | Description                                      |
-|-------------------|---------|------------|--------------------------------------------------|
-| `docker_daemon_cmd`| String  | Generated  | Command to start the Docker daemon              |
-| `docker_name`     | String  | `'docker'` | Name of the Docker service                      |
-| `connect_socket`  | String  | `nil`      | Docker socket path                              |
-| `docker_containerd`| Boolean | -          | Whether to use containerd                       |
-| `env_vars`        | Hash    | `{}`       | Environment variables for the Docker daemon      |
-| `systemd_socket_args`| Hash  | `{}`       | Additional systemd socket arguments             |
-| `systemd_args`    | Hash    | `{}`       | Additional systemd service arguments            |
+| Property              | Type    | Default    | Description                                 |
+|-----------------------|---------|------------|---------------------------------------------|
+| `docker_daemon_cmd`   | String  | Generated  | Command to start the Docker daemon          |
+| `docker_name`         | String  | `'docker'` | Name of the Docker service                  |
+| `connect_socket`      | String  | `nil`      | Docker socket path                          |
+| `docker_containerd`   | Boolean | -          | Whether to use containerd                   |
+| `env_vars`            | Hash    | `{}`       | Environment variables for the Docker daemon |
+| `systemd_socket_args` | Hash    | `{}`       | Additional systemd socket arguments         |
+| `systemd_args`        | Hash    | `{}`       | Additional systemd service arguments        |
 
 ## Examples
 
