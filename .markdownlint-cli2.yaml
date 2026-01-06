@@ -3,5 +3,7 @@ config:
   line-length: false # MD013
   no-duplicate-heading: false # MD024
   reference-links-images: false # MD052
+  no-multiple-blanks:
+    maximum: 2    
 ignores:
   - .github/copilot-instructions.md
