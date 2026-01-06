@@ -9,15 +9,15 @@ The `docker_installation_package` resource is responsible for installing Docker 
 
 ## Properties
 
-| Property          | Type    | Default                | Description                                                |
-|------------------|---------|------------------------|------------------------------------------------------------|
-| `setup_docker_repo` | Boolean | `true`                | Whether to set up the Docker repository                    |
-| `repo_channel`    | String  | `'stable'`            | Repository channel to use (`stable`, `test`, `nightly`)    |
-| `package_name`    | String  | `'docker-ce'`         | Name of the Docker package to install                      |
-| `package_version` | String  | `nil`                 | Specific package version to install                        |
-| `version`         | String  | `nil`                 | Docker version to install (e.g., '20.10.23')              |
-| `package_options` | String  | `nil`                 | Additional options to pass to the package manager          |
-| `site_url`        | String  | `'download.docker.com'`| Docker repository URL                                     |
+| Property            | Type    | Default                 | Description                                             |
+|---------------------|---------|-------------------------|---------------------------------------------------------|
+| `setup_docker_repo` | Boolean | `true`                  | Whether to set up the Docker repository                 |
+| `repo_channel`      | String  | `'stable'`              | Repository channel to use (`stable`, `test`, `nightly`) |
+| `package_name`      | String  | `'docker-ce'`           | Name of the Docker package to install                   |
+| `package_version`   | String  | `nil`                   | Specific package version to install                     |
+| `version`           | String  | `nil`                   | Docker version to install (e.g., '20.10.23')            |
+| `package_options`   | String  | `nil`                   | Additional options to pass to the package manager       |
+| `site_url`          | String  | `'download.docker.com'` | Docker repository URL                                   |
 
 ## Examples
 

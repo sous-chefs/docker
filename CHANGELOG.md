@@ -7,7 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [11.10.2](https://github.com/sous-chefs/docker/compare/11.10.1...v11.10.2) (2025-10-15)
 
-
 ### Bug Fixes
 
 * **ci:** Update workflows to use release pipeline ([#1320](https://github.com/sous-chefs/docker/issues/1320)) ([5fce840](https://github.com/sous-chefs/docker/commit/5fce84023bac5499c9552cd295dddcab2504ed9c))
@@ -33,10 +32,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Add Docker Swarm support
   New resources:
-  - docker_swarm_init
-  - docker_swarm_join
-  - docker_swarm_service
-  - docker_swarm_token
+  * docker_swarm_init
+  * docker_swarm_join
+  * docker_swarm_service
+  * docker_swarm_token
 
 ## 11.8.4 - *2024-12-11*
 
@@ -54,15 +53,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## 11.8.2 - *2024-12-11*
 
 * Enhance tmpfs support for containers
-  - Added support for array format in tmpfs property
-  - Improved documentation with examples
-  - Added test coverage for tmpfs functionality
+  * Added support for array format in tmpfs property
+  * Improved documentation with examples
+  * Added test coverage for tmpfs functionality
 
 ## 11.8.1 - *2024-12-11*
 
 * Fix issue with container network mode causing unnecessary redeployment when using `container:<name>` format
-  - Added network mode normalization to handle container IDs consistently
-  - Prevents container recreation when only the container ID format changes
+  * Added network mode normalization to handle container IDs consistently
+  * Prevents container recreation when only the container ID format changes
 
 ## 11.8.0 - *2024-12-11*
 
@@ -134,15 +133,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
     The following resources are now custom resources:
 
-    - `docker_installation`
-    - `docker_installation_package`
-    - `docker_installation_script`
-    - `docker_installation_tarball`
-    - `docker_service`
-    - `docker_service_base`
-    - `docker_service_manager`
-    - `docker_service_manager_execute`
-    - `docker_service_manager_systemd`
+    * `docker_installation`
+    * `docker_installation_package`
+    * `docker_installation_script`
+    * `docker_installation_tarball`
+    * `docker_service`
+    * `docker_service_base`
+    * `docker_service_manager`
+    * `docker_service_manager_execute`
+    * `docker_service_manager_systemd`
 
     This means their classes are no longer in the `DockerCookbook` module.
 
@@ -252,7 +251,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## 10.0.0 - *2021-10-20*
 
 * Remove the sysvinit Docker Service managers
-   - Platforms that supported these service managers are now EOL
+   * Platforms that supported these service managers are now EOL
 
 ## 9.11.0 - *2021-10-20*
 
@@ -349,7 +348,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## 8.0.0 - *2021-08-25*
 
 * Remove upstart docker service manage
-   - We don't officialy support any distros that use upstart anymore
+   * We don't officialy support any distros that use upstart anymore
 
 ## 7.7.8 - *2021-08-25
 
@@ -477,18 +476,18 @@ The 7.0 release includes a breaking change to package installs with version spec
 
 * Standardise files with files in chef-cookbooks/repo-management - [@xorimabot](https://github.com/xorimabot)
 * Resolved deprecations to provide Chef Infra Client 16 compatibility - [@xorimabot](https://github.com/xorimabot)
-   - resolved cookstyle error: libraries/docker_container.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
-   - resolved cookstyle error: libraries/docker_exec.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
-   - resolved cookstyle error: libraries/docker_image.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
-   - resolved cookstyle error: libraries/docker_image_prune.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
-   - resolved cookstyle error: libraries/docker_installation_package.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
-   - resolved cookstyle error: libraries/docker_installation_tarball.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
-   - resolved cookstyle error: libraries/docker_network.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
-   - resolved cookstyle error: libraries/docker_plugin.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
-   - resolved cookstyle error: libraries/docker_registry.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
-   - resolved cookstyle error: libraries/docker_service_manager_execute.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
-   - resolved cookstyle error: libraries/docker_tag.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
-   - resolved cookstyle error: libraries/docker_volume.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
+   * resolved cookstyle error: libraries/docker_container.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
+   * resolved cookstyle error: libraries/docker_exec.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
+   * resolved cookstyle error: libraries/docker_image.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
+   * resolved cookstyle error: libraries/docker_image_prune.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
+   * resolved cookstyle error: libraries/docker_installation_package.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
+   * resolved cookstyle error: libraries/docker_installation_tarball.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
+   * resolved cookstyle error: libraries/docker_network.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
+   * resolved cookstyle error: libraries/docker_plugin.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
+   * resolved cookstyle error: libraries/docker_registry.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
+   * resolved cookstyle error: libraries/docker_service_manager_execute.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
+   * resolved cookstyle error: libraries/docker_tag.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
+   * resolved cookstyle error: libraries/docker_volume.rb:3:5 warning: `ChefDeprecations/ResourceUsesOnlyResourceName`
 
 ## 6.0.1 (2020-05-26)
 
