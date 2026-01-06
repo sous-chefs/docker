@@ -5,6 +5,16 @@ This file is used to list changes made in each version of the docker cookbook.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [11.10.3](https://github.com/sous-chefs/docker/compare/v11.10.2...v11.10.3) (2026-01-06)
+
+
+### Bug Fixes
+
+* **ci:** Update workflows to use release pipeline ([#1320](https://github.com/sous-chefs/docker/issues/1320)) ([5fce840](https://github.com/sous-chefs/docker/commit/5fce84023bac5499c9552cd295dddcab2504ed9c))
+* correct install version for ubuntu jammy ([#1255](https://github.com/sous-chefs/docker/issues/1255)) ([3861b7a](https://github.com/sous-chefs/docker/commit/3861b7abcdc442f9bb1717eeaf862700582f8f69))
+* **docs:** Fix markdown ([#1329](https://github.com/sous-chefs/docker/issues/1329)) ([b9e57a3](https://github.com/sous-chefs/docker/commit/b9e57a34477d31b36ffc086a4250940587801606))
+* **docs:** Ignore multiple blank lines ([#1330](https://github.com/sous-chefs/docker/issues/1330)) ([04a69e5](https://github.com/sous-chefs/docker/commit/04a69e5fa8f63d08b2082433aa1daa29985d9769))
+
 ## [11.10.2](https://github.com/sous-chefs/docker/compare/11.10.1...v11.10.2) (2025-10-15)
 
 
