@@ -5,6 +5,13 @@ This file is used to list changes made in each version of the docker cookbook.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [11.10.4](https://github.com/sous-chefs/docker/compare/v11.10.3...v11.10.4) (2026-03-03)
+
+
+### Bug Fixes
+
+* remove version constraint on chef-client ([#1331](https://github.com/sous-chefs/docker/issues/1331)) ([948ac70](https://github.com/sous-chefs/docker/commit/948ac7080e474e41de1af92a9b69f117848d2e12))
+
 ## [11.10.3](https://github.com/sous-chefs/docker/compare/v11.10.2...v11.10.3) (2026-01-06)
 
 
