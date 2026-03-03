@@ -23,10 +23,12 @@ This cookbook is maintained by the Sous Chefs. The Sous Chefs are a community of
 ## Platform Support
 
 - Amazon Linux 2
-- Debian 9/10/11
+- Debian 9/10/11/12
 - Fedora
-- Ubuntu 18.04/20.04/22.04
-- CentOS 7/8
+- Ubuntu 18.04/20.04/22.04/24.04
+- CentOS 7/8/9
+- Rocky Linux 8/9
+- AlmaLinux 8/9
 
 ## Cookbook Dependencies
 

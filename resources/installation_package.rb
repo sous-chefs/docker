@@ -142,6 +142,9 @@ action :create do
           # s390x is only available under rhel platform
         elsif platform?('redhat', 'oracle') && (arch == 's390x' || !el7?)
           'rhel'
+          # Rocky and AlmaLinux are CentOS successors, use centos repos
+        elsif platform?('rocky', 'almalinux')
+          'centos'
           # use rhel for all el8 since CentOS 8 is dead
         elsif el8? && !platform?('centos')
           'rhel'

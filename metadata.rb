@@ -16,5 +16,7 @@ supports 'debian'
 supports 'fedora'
 supports 'redhat'
 supports 'ubuntu'
+supports 'rocky'
+supports 'almalinux'
 
 gem 'docker-api', '>= 2.3', '< 3'

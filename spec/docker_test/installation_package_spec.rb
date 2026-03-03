@@ -196,6 +196,74 @@ describe 'docker_test::installation_package' do
     end
   end
 
+  context 'Rocky Linux 8: testing default action, default properties' do
+    platform 'rocky', '8'
+    cached(:subject) { chef_run }
+    it 'installs docker' do
+      expect(chef_run).to create_docker_installation_package('default')
+    end
+    it do
+      expect(chef_run).to create_yum_repository('docker').with(
+        baseurl: 'https://download.docker.com/linux/centos/8/x86_64/stable',
+        gpgkey: 'https://download.docker.com/linux/centos/gpg',
+        description: 'Docker Stable repository',
+        gpgcheck: true,
+        enabled: true
+      )
+    end
+  end
+
+  context 'Rocky Linux 9: testing default action, default properties' do
+    platform 'rocky', '9'
+    cached(:subject) { chef_run }
+    it 'installs docker' do
+      expect(chef_run).to create_docker_installation_package('default')
+    end
+    it do
+      expect(chef_run).to create_yum_repository('docker').with(
+        baseurl: 'https://download.docker.com/linux/centos/9/x86_64/stable',
+        gpgkey: 'https://download.docker.com/linux/centos/gpg',
+        description: 'Docker Stable repository',
+        gpgcheck: true,
+        enabled: true
+      )
+    end
+  end
+
+  context 'AlmaLinux 8: testing default action, default properties' do
+    platform 'almalinux', '8'
+    cached(:subject) { chef_run }
+    it 'installs docker' do
+      expect(chef_run).to create_docker_installation_package('default')
+    end
+    it do
+      expect(chef_run).to create_yum_repository('docker').with(
+        baseurl: 'https://download.docker.com/linux/centos/8/x86_64/stable',
+        gpgkey: 'https://download.docker.com/linux/centos/gpg',
+        description: 'Docker Stable repository',
+        gpgcheck: true,
+        enabled: true
+      )
+    end
+  end
+
+  context 'AlmaLinux 9: testing default action, default properties' do
+    platform 'almalinux', '9'
+    cached(:subject) { chef_run }
+    it 'installs docker' do
+      expect(chef_run).to create_docker_installation_package('default')
+    end
+    it do
+      expect(chef_run).to create_yum_repository('docker').with(
+        baseurl: 'https://download.docker.com/linux/centos/9/x86_64/stable',
+        gpgkey: 'https://download.docker.com/linux/centos/gpg',
+        description: 'Docker Stable repository',
+        gpgcheck: true,
+        enabled: true
+      )
+    end
+  end
+
   # Coverage of all recent docker versions
   # To ensure test coverage and backwards compatibility
   # With the frequent changes in package naming convention

@@ -55,11 +55,11 @@ chef exec rspec                 # Unit tests (ChefSpec)
 3. Also update any InSpec tests under test/integration
 4. Ensure cookstyle and rspec passes at least. You may run `cookstyle -a` to automatically fix issues if needed.
 5. Also always update all documentation found in README.md and any files under documentation/*
-6. **Always update CHANGELOG.md** (required by Dangerfile) - Make sure this conforms with the Sous Chefs changelog standards.
+6. **Do NOT update CHANGELOG.md** - This cookbook uses release-please for automatic changelog generation
 
 ### Pull Request Requirements
 - **PR description >10 chars** (Danger enforced)
-- **CHANGELOG.md entry** for all code changes
+- **Do NOT manually update CHANGELOG.md** - release-please handles this automatically
 - **Version labels** (major/minor/patch) required
 - **All linters must pass** (cookstyle, yamllint, markdownlint)
 - **Test updates** needed for code changes >5 lines and parameter changes that affect the code logic
