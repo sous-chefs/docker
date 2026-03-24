@@ -29,8 +29,9 @@ jobs:
           - centos-stream-9
           - centos-stream-10
           - debian-12
-          - ubuntu-2204
-          - ubuntu-2404
+          - debian-13
+          - ubuntu-22.04
+          - ubuntu-24.04
         suite:
           - "installation-package"
           - "installation-tarball"
@@ -57,8 +58,9 @@ jobs:
           - centos-stream-9
           - centos-stream-10
           - debian-12
-          - ubuntu-2204
-          - ubuntu-2404
+          - debian-13
+          - ubuntu-22.04
+          - ubuntu-24.04
         suite: ["installation-script"]
       fail-fast: false
     steps:
@@ -78,7 +80,7 @@ jobs:
     runs-on: ubuntu-24.04
     strategy:
       matrix:
-        os: ["ubuntu-2204"]
+        os: ["ubuntu-22.04"]
         suite: ["swarm"]
       fail-fast: false
     steps:
@@ -102,12 +104,12 @@ jobs:
     strategy:
       matrix:
         os:
-          - "almalinux-8"
           - "almalinux-9"
+          - "almalinux-10"
           - "debian-12"
-          - "ubuntu-2004"
-          - "ubuntu-2204"
-          - "ubuntu-2404"
+          - "debian-13"
+          - "ubuntu-22.04"
+          - "ubuntu-24.04"
         suite:
           - "smoke"
       fail-fast: false

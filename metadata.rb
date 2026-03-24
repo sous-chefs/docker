@@ -10,11 +10,12 @@ chef_version      '>= 16.0'
 
 supports 'amazon'
 supports 'centos'
-supports 'scientific'
 supports 'oracle'
 supports 'debian'
 supports 'fedora'
 supports 'redhat'
 supports 'ubuntu'
+supports 'almalinux'
+supports 'rocky'
 
 gem 'docker-api', '>= 2.3', '< 3'
