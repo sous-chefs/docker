@@ -95,7 +95,7 @@ def version_string(v)
     "5:#{v}-1~ubuntu.#{node['platform_version']}~#{codename}"
   elsif v.to_f >= 18.09 && debuntu?
     return "5:#{v}~#{test_version}-0~debian-#{codename}" if debian?
-    return "5:#{v}~#{test_version}-0~ubuntu-#{codename}" if ubuntu?
+    "5:#{v}~#{test_version}-0~ubuntu-#{codename}" if ubuntu?
   else
     return "#{v}~ce~#{test_version}-0~debian" if debian?
     return "#{v}~ce~#{test_version}-0~ubuntu" if ubuntu?
@@ -162,7 +162,7 @@ action :create do
         # TODO: This eventually should go away once Debian 12 and Ubuntu 24.04 go EOL
         if (debian? && node['platform_version'].to_i < 13) || (ubuntu? && node['platform_version'].to_f <= 24.04)
           signed_by false
-        end if Chef::VERSION >= Gem::Version.new('18.7.10')
+        end if Gem::Version.new('18.7.10') <= Chef::VERSION
         action :add
       end
 

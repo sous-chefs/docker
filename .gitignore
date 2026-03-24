@@ -25,6 +25,7 @@ _Store
 .rvmrc
 Gemfile.lock
 .bundle
+/bin/
 *.gem
 coverage
 spec/reports

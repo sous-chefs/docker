@@ -311,10 +311,10 @@ docker_container 'tmpfs_test' do
   tag '3.1'
   command 'df -h'
   tmpfs({
-    '/tmpfs1' => '',
-    '/tmpfs2' => 'size=20M,uid=1000',
-    '/tmpfs3' => 'rw,noexec,nosuid,size=50M',
-  })
+          '/tmpfs1' => '',
+          '/tmpfs2' => 'size=20M,uid=1000',
+          '/tmpfs3' => 'rw,noexec,nosuid,size=50M',
+        })
   action :run_if_missing
 end
 
