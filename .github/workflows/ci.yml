@@ -30,8 +30,9 @@ jobs:
           - centos-stream-10
           - debian-12
           - debian-13
-          - ubuntu-22.04
-          - ubuntu-24.04
+          - "ubuntu-2204"
+          - "ubuntu-2404"
+
         suite:
           - "installation-package"
           - "installation-tarball"
@@ -59,8 +60,9 @@ jobs:
           - centos-stream-10
           - debian-12
           - debian-13
-          - ubuntu-22.04
-          - ubuntu-24.04
+          - "ubuntu-2204"
+          - "ubuntu-2404"
+
         suite: ["installation-script"]
       fail-fast: false
     steps:
@@ -108,8 +110,9 @@ jobs:
           - "almalinux-10"
           - "debian-12"
           - "debian-13"
-          - "ubuntu-22.04"
-          - "ubuntu-24.04"
+          - "ubuntu-2204"
+          - "ubuntu-2404"
+
         suite:
           - "smoke"
       fail-fast: false

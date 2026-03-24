@@ -24,8 +24,6 @@ platforms:
   - name: opensuse-leap-15
   - name: oraclelinux-8
   - name: oraclelinux-9
-  - name: rockylinux-8
   - name: rockylinux-9
-  - name: ubuntu-20.04
-  - name: ubuntu-22.04
-  - name: ubuntu-24.04
+  - name: ubuntu-2204
+  - name: ubuntu-2404
