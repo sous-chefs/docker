@@ -1,5 +1,10 @@
+# frozen_string_literal: true
+
 unified_mode true
 use 'partial/_base'
+
+resource_name :docker_plugin
+provides :docker_plugin
 
 property :local_alias, String, name_property: true
 property :remote_tag, String, default: 'latest'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Constants
 IPV6_ADDR ||= /(
 ([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|

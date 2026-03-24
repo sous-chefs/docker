@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # TODO: Refactor test
 require 'spec_helper'
 require_relative '../../libraries/helpers_json'

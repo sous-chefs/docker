@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 property :log_driver,
          equal_to: %w( json-file syslog journald gelf fluentd awslogs splunk etwlogs gcplogs logentries loki-docker none local ),
          default: 'json-file',

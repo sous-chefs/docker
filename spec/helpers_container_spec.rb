@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # require 'rspec'
 # require 'rspec/its'
 # require_relative '../libraries/helpers_container'

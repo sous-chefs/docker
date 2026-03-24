@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Docker
   module Cookbook
     module Helpers

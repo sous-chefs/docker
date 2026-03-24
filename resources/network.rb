@@ -1,5 +1,10 @@
+# frozen_string_literal: true
+
 unified_mode true
 use 'partial/_base'
+
+resource_name :docker_network
+provides :docker_network
 
 require 'ipaddress'
 
