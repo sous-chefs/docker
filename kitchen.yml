@@ -24,8 +24,8 @@ platforms:
   - name: debian-13
   - name: rockylinux-9
   - name: rockylinux-10
-  - name: ubuntu-22.04
-  - name: ubuntu-24.04
+  - name: ubuntu-2204
+  - name: ubuntu-2404
 
 suites:
   - name: installation_script
@@ -149,7 +149,7 @@ suites:
   ###############################
   - name: swarm
     includes:
-      - ubuntu-22.04
+      - ubuntu-2204
     provisioner:
       enforce_idempotency: false
       multiple_converge: 1

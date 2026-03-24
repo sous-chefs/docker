@@ -67,12 +67,12 @@ platforms:
       image: dokken/rockylinux-10
       pid_one_command: /usr/lib/systemd/systemd
 
-  - name: ubuntu-22.04
+  - name: ubuntu-2204
     driver:
       image: dokken/ubuntu-22.04
       pid_one_command: /bin/systemd
 
-  - name: ubuntu-24.04
+  - name: ubuntu-2404
     driver:
       image: dokken/ubuntu-24.04
       pid_one_command: /bin/systemd
