@@ -1,6 +1,7 @@
 ---
 driver:
   name: exec
+  sudo: true
 
 transport:
   name: exec
@@ -13,6 +14,7 @@ provisioner:
   multiple_converge: 2
   deprecations_as_errors: true
   chef_license: accept-no-persist
+  chef_omnibus_install: false
 
 verifier:
   name: inspec
