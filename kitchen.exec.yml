@@ -1,7 +1,102 @@
 ---
-driver: { name: exec }
-transport: { name: exec }
+driver:
+  name: exec
+
+transport:
+  name: exec
+
+provisioner:
+  name: chef_infra
+  product_name: <%= ENV['CHEF_PRODUCT_NAME'] || 'chef' %>
+  product_version: <%= ENV['CHEF_VERSION'] || 'latest' %>
+  enforce_idempotency: true
+  multiple_converge: 2
+  deprecations_as_errors: true
+  chef_license: accept-no-persist
+
+verifier:
+  name: inspec
 
 platforms:
+  - name: ubuntu-latest
   - name: macos-latest
   - name: windows-latest
+
+suites:
+  - name: installation_script
+    run_list:
+      - recipe[docker_test::installation_script]
+
+  - name: installation_package
+    run_list:
+      - recipe[docker_test::installation_package]
+
+  - name: installation_tarball
+    run_list:
+      - recipe[docker_test::installation_tarball]
+
+  - name: install_and_stop
+    run_list:
+      - recipe[docker_test::install_and_stop]
+
+  - name: resources
+    provisioner:
+      enforce_idempotency: false
+      multiple_converge: 1
+    run_list:
+      - recipe[docker_test::default]
+      - recipe[docker_test::image]
+      - recipe[docker_test::container]
+      - recipe[docker_test::exec]
+      - recipe[docker_test::plugin]
+      - recipe[docker_test::image_prune]
+      - recipe[docker_test::volume_prune]
+
+  - name: network
+    provisioner:
+      enforce_idempotency: false
+      multiple_converge: 1
+    run_list:
+      - recipe[docker_test::default]
+      - recipe[docker_test::network]
+
+  - name: volume
+    provisioner:
+      enforce_idempotency: false
+      multiple_converge: 1
+    run_list:
+      - recipe[docker_test::default]
+      - recipe[docker_test::volume]
+      - recipe[docker_test::volume_prune]
+
+  - name: registry
+    provisioner:
+      enforce_idempotency: false
+      multiple_converge: 1
+    run_list:
+      - recipe[docker_test::default]
+      - recipe[docker_test::registry]
+
+  - name: swarm
+    provisioner:
+      enforce_idempotency: false
+      multiple_converge: 1
+    attributes:
+      docker:
+        swarm:
+          init:
+            advertise_addr: '127.0.0.1'
+            listen_addr: '0.0.0.0:2377'
+          rotate_token: true
+          service:
+            name: 'web'
+            image: 'nginx:latest'
+            publish: ['80:80']
+            replicas: 2
+    run_list:
+      - recipe[docker_test::swarm]
+      - recipe[docker_test::swarm_service]
+
+  - name: smoke
+    run_list:
+      - recipe[docker_test::smoke]

@@ -19,120 +19,35 @@ jobs:
 
   integration:
     needs: lint-unit
-    runs-on: ubuntu-24.04
-    strategy:
-      matrix:
-        os:
-          - almalinux-9
-          - almalinux-10
-          - amazonlinux-2023
-          - centos-stream-9
-          - centos-stream-10
-          - debian-12
-          - debian-13
-          - "ubuntu-2204"
-          - "ubuntu-2404"
-
-        suite:
-          - "installation-package"
-          - "installation-tarball"
-          - "install-and-stop"
-      fail-fast: false
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v6
-
-      - name: Test Kitchen
-        uses: ./.github/actions/test-kitchen
-        with:
-          kitchen-yaml: kitchen.dokken.yml
-          suite: ${{ matrix.suite }}
-          os: ${{ matrix.os }}
-          license-id: ${{ secrets.CHEF_LICENSE_KEY }}
-
-  installation-script:
-    needs: lint-unit
-    runs-on: ubuntu-24.04
-    strategy:
-      matrix:
-        os:
-          - centos-stream-9
-          - centos-stream-10
-          - debian-12
-          - debian-13
-          - "ubuntu-2204"
-          - "ubuntu-2404"
-
-        suite: ["installation-script"]
-      fail-fast: false
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v6
-
-      - name: Test Kitchen
-        uses: ./.github/actions/test-kitchen
-        with:
-          kitchen-yaml: kitchen.dokken.yml
-          suite: ${{ matrix.suite }}
-          os: ${{ matrix.os }}
-          license-id: ${{ secrets.CHEF_LICENSE_KEY }}
-
-  swarm:
-    needs: lint-unit
-    runs-on: ubuntu-24.04
-    strategy:
-      matrix:
-        os: ["ubuntu-2204"]
-        suite: ["swarm"]
-      fail-fast: false
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v6
-
-      - name: Setup VirtualBox & Vagrant
-        uses: ./.github/actions/virtualbox-setup
-
-      - name: Test Kitchen
-        uses: ./.github/actions/test-kitchen
-        with:
-          kitchen-yaml: kitchen.yml
-          suite: ${{ matrix.suite }}
-          os: ${{ matrix.os }}
-          license-id: ${{ secrets.CHEF_LICENSE_KEY }}
-
-  smoke:
-    needs: lint-unit
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        os:
-          - "almalinux-9"
-          - "almalinux-10"
-          - "debian-12"
-          - "debian-13"
-          - "ubuntu-2204"
-          - "ubuntu-2404"
-
         suite:
+          - "installation-package"
+          - "installation-tarball"
+          - "installation-script"
+          - "install-and-stop"
+          - "resources"
+          - "network"
+          - "volume"
+          - "registry"
+          - "swarm"
           - "smoke"
       fail-fast: false
     steps:
       - name: Check out code
         uses: actions/checkout@v6
 
-      - name: Setup VirtualBox & Vagrant
-        uses: ./.github/actions/virtualbox-setup
-
       - name: Test Kitchen
         uses: ./.github/actions/test-kitchen
         with:
-          kitchen-yaml: kitchen.yml
+          kitchen-yaml: kitchen.exec.yml
           suite: ${{ matrix.suite }}
-          os: ${{ matrix.os }}
+          os: "ubuntu-latest"
           license-id: ${{ secrets.CHEF_LICENSE_KEY }}
 
   final:
-    needs: [lint-unit, installation-script, integration, swarm, smoke]
+    needs: [lint-unit, integration]
     runs-on: ubuntu-latest
     steps:
       - name: Complete
