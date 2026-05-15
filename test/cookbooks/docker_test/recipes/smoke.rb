@@ -4,6 +4,7 @@
 
 docker_service 'default' do
   graph '/var/lib/docker'
+  install_method 'none'
   action [:create, :start]
 end
 

@@ -6,4 +6,3 @@ description 'installs a buncha junk'
 version '0.6.0'
 
 depends 'docker'
-depends 'etcd'
