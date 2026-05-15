@@ -9,7 +9,7 @@ name: ci
 
 jobs:
   lint-unit:
-    uses: sous-chefs/.github/.github/workflows/lint-unit.yml@main
+    uses: sous-chefs/.github/.github/workflows/lint-unit.yml@6.0.0
     permissions:
       actions: write
       checks: write
@@ -38,13 +38,16 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v6
 
+      - name: Install Cinc Workstation
+        uses: sous-chefs/.github/.github/actions/install-workstation@6.0.0
+
       - name: Test Kitchen
-        uses: ./.github/actions/test-kitchen
+        uses: actionshub/test-kitchen@3.0.0
+        env:
+          KITCHEN_LOCAL_YAML: kitchen.exec.yml
         with:
-          kitchen-yaml: kitchen.exec.yml
           suite: ${{ matrix.suite }}
           os: "ubuntu-latest"
-          license-id: ${{ secrets.CHEF_LICENSE_KEY }}
 
   final:
     needs: [lint-unit, integration]
