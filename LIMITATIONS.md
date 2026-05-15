@@ -24,5 +24,5 @@ This cookbook supports the following platforms:
 
 ## Requirements
 
-- Chef Infra Client 16.5 or later
+- Chef Infra Client 16.0 or later
 - `docker-api` gem

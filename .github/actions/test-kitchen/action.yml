@@ -11,7 +11,7 @@ inputs:
   kitchen-yaml:
     description: 'Kitchen YAML file to use'
     required: false
-    default: 'kitchen.dokken.yml'
+    default: 'kitchen.exec.yml'
   chef-version:
     description: 'Chef version to use'
     required: false
