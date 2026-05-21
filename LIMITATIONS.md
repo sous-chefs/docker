@@ -11,7 +11,7 @@ This cookbook supports the following platforms:
 - Fedora
 - Oracle Linux 8/9
 - Rocky Linux 9/10
-- Red Hat Enterprise Linux 8/9
+- Red Hat Enterprise Linux 8/9/10
 - Ubuntu 22.04/24.04
 
 ## Supported Architectures
@@ -26,6 +26,15 @@ This cookbook supports the following platforms:
 
 - Chef Infra Client 16.0 or later
 - `docker-api` gem
+
+## Docker Engine Platform Notes
+
+- Docker publishes installation procedures for CentOS Stream, Debian, Fedora, RHEL, Ubuntu, and
+  static binaries.
+- Official Docker packages support Ubuntu 22.04/24.04 LTS, Debian 12/13, CentOS Stream 9/10,
+  Fedora current releases, and RHEL 8/9/10.
+- Derivative distributions may work through the matching upstream package repositories, but Docker
+  does not test or verify every derivative.
 
 ## Docker Engine Compatibility
 

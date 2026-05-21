@@ -1,0 +1,7 @@
+---
+name: installation_script
+title: Installation Script Tests
+maintainer: Sous Chefs
+license: Apache-2.0
+summary: Installation Script tests for the docker cookbook
+version: 1.0.0

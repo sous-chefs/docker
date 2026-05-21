@@ -23,6 +23,7 @@ platforms:
   - name: debian-12
   - name: debian-13
   - name: fedora-latest
+  - name: oraclelinux-8
   - name: oraclelinux-9
   - name: rockylinux-9
   - name: rockylinux-10

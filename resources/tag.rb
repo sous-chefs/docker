@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 unified_mode true
-use 'partial/_base'
+use '_partial/_base'
 
 resource_name :docker_tag
 provides :docker_tag

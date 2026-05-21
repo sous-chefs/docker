@@ -15,71 +15,72 @@ provisioner:
   multiple_converge: 2
   deprecations_as_errors: true
   install_strategy: skip
-  require_chef_omnibus: false
-  chef_client_path: /opt/cinc/bin/chef-client
+  chef_client_path: /opt/cinc-workstation/bin/chef-client
 
 verifier:
   name: inspec
 
 platforms:
   - name: ubuntu-latest
-  - name: macos-latest
-  - name: windows-latest
 
 suites:
+  - name: default
+    run_list:
+      - recipe[test::default]
+
   - name: installation_script
     run_list:
-      - recipe[docker_test::installation_script]
+      - recipe[test::installation_script]
 
   - name: installation_package
     run_list:
-      - recipe[docker_test::installation_package]
+      - recipe[test::installation_package]
 
   - name: installation_tarball
     run_list:
-      - recipe[docker_test::installation_tarball]
+      - recipe[test::installation_tarball]
 
   - name: install_and_stop
     run_list:
-      - recipe[docker_test::install_and_stop]
+      - recipe[test::install_and_stop]
 
   - name: resources
     provisioner:
       enforce_idempotency: false
       multiple_converge: 1
     run_list:
-      - recipe[docker_test::default]
-      - recipe[docker_test::image]
-      - recipe[docker_test::container]
-      - recipe[docker_test::exec]
-      - recipe[docker_test::plugin]
-      - recipe[docker_test::image_prune]
-      - recipe[docker_test::volume_prune]
+      - recipe[test::default]
+      - recipe[test::image]
+      - recipe[test::container]
+      - recipe[test::exec]
+      - recipe[test::plugin]
+      - recipe[test::image_prune]
+      - recipe[test::volume_prune]
 
   - name: network
     provisioner:
       enforce_idempotency: false
       multiple_converge: 1
     run_list:
-      - recipe[docker_test::default]
-      - recipe[docker_test::network]
+      - recipe[test::default]
+      - recipe[test::network]
 
   - name: volume
     provisioner:
       enforce_idempotency: false
       multiple_converge: 1
     run_list:
-      - recipe[docker_test::default]
-      - recipe[docker_test::volume]
-      - recipe[docker_test::volume_prune]
+      - recipe[test::default]
+      - recipe[test::volume]
+      - recipe[test::volume_prune]
 
   - name: registry
     provisioner:
       enforce_idempotency: false
       multiple_converge: 1
     run_list:
-      - recipe[docker_test::default]
-      - recipe[docker_test::registry]
+      - recipe[test::default]
+      - recipe[test::registry]
 
   - name: swarm
     provisioner:
@@ -98,9 +99,9 @@ suites:
             publish: ['80:80']
             replicas: 2
     run_list:
-      - recipe[docker_test::swarm]
-      - recipe[docker_test::swarm_service]
+      - recipe[test::swarm]
+      - recipe[test::swarm_service]
 
   - name: smoke
     run_list:
-      - recipe[docker_test::smoke]
+      - recipe[test::smoke]

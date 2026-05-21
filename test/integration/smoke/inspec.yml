@@ -1,0 +1,7 @@
+---
+name: smoke
+title: Smoke Tests
+maintainer: Sous Chefs
+license: Apache-2.0
+summary: Smoke tests for the docker cookbook
+version: 1.0.0

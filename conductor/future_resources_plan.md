@@ -36,7 +36,7 @@ This plan outlines the implementation of resources for Docker features that are 
 1. Create `resources/secret.rb`.
 2. Create `resources/config.rb`.
 3. Add corresponding unit tests in `spec/unit/resources/`.
-4. Add integration tests in a new `test/cookbooks/docker_test/recipes/swarm_resources.rb`.
+4. Add integration tests in a new `test/cookbooks/test/recipes/swarm_resources.rb`.
 
 ### Phase 2: AI-Native Features
 

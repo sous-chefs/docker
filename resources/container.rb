@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 unified_mode true
-use 'partial/_base'
-use 'partial/_logging'
+use '_partial/_base'
+use '_partial/_logging'
 
 resource_name :docker_container
 provides :docker_container

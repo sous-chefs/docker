@@ -23,6 +23,7 @@ jobs:
     strategy:
       matrix:
         suite:
+          - "default"
           - "installation-package"
           - "installation-tarball"
           - "installation-script"

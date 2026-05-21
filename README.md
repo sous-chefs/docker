@@ -68,7 +68,7 @@ end
 
 The cookbooks run by test-kitchen make excellent usage examples.
 
-Those recipes are found at `test/cookbooks/docker_test`.
+Those recipes are found at `test/cookbooks/test`.
 
 ## Resources Overview
 
