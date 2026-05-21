@@ -108,8 +108,10 @@ describe docker_image('localhost:5043/someara/name.w.dots:latest') do
   it { should_not exist }
 end
 
-describe docker_image('localhost:5043/someara/name.w.dots:v0.1.0') do
-  it { should_not exist }
+if docker_server_version >= Gem::Version.new('29.0.0')
+  describe docker_image('localhost:5043/someara/name.w.dots:v0.1.0') do
+    it { should_not exist }
+  end
 end
 
 # FIXME: We need to test the "docker_registry" stuff...
