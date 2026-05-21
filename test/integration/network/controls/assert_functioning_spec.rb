@@ -6,6 +6,8 @@
 
 # https://docs.docker.com/engine/reference/commandline/network_create/
 
+swarm_manager = command("docker info --format '{{ .Swarm.ControlAvailable }}'").stdout.strip == 'true'
+
 ###########
 # network_a
 ###########
@@ -93,14 +95,20 @@ end
 # network_e
 ###########
 
-describe command("docker network ls -qf 'name=network_e$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should_not be_empty }
-end
+if swarm_manager
+  describe command("docker network ls -qf 'name=network_e$'") do
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should_not be_empty }
+  end
 
-describe command('docker network inspect -f "{{ .Driver }}" network_e') do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should eq "overlay\n" }
+  describe command('docker network inspect -f "{{ .Driver }}" network_e') do
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should eq "overlay\n" }
+  end
+else
+  describe 'network_e overlay network' do
+    skip 'overlay networks require an active swarm'
+  end
 end
 
 ###########
@@ -143,37 +151,43 @@ end
 # network_g
 ###########
 
-describe command("docker network ls -qf 'name=network_g$'") do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should_not be_empty }
-end
+if swarm_manager
+  describe command("docker network ls -qf 'name=network_g$'") do
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should_not be_empty }
+  end
 
-describe command('docker network inspect -f "{{ .Driver }}" network_g') do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should eq "overlay\n" }
-end
+  describe command('docker network inspect -f "{{ .Driver }}" network_g') do
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should eq "overlay\n" }
+  end
 
-describe command('docker network inspect network_g') do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(%r{Subnet.*192\.168\.0\.0/16}) }
-  its(:stdout) { should match(%r{IPRange.*192\.168\.1\.0/24}) }
-  its(:stdout) { should match(/Gateway.*192\.168\.0\.100/) }
-  its(:stdout) { should match(/a.*192\.168\.1\.5/) }
-  its(:stdout) { should match(/a.*192\.168\.1\.5/) }
-  its(:stdout) { should match(%r{Subnet.*192\.170\.0\.0/16}) }
-  its(:stdout) { should match(/Gateway.*192\.170\.0\.100/) }
-  its(:stdout) { should match(/a.*192\.170\.1\.5/) }
-  its(:stdout) { should match(/a.*192\.170\.1\.5/) }
-end
+  describe command('docker network inspect network_g') do
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match(%r{Subnet.*192\.168\.0\.0/16}) }
+    its(:stdout) { should match(%r{IPRange.*192\.168\.1\.0/24}) }
+    its(:stdout) { should match(/Gateway.*192\.168\.0\.100/) }
+    its(:stdout) { should match(/a.*192\.168\.1\.5/) }
+    its(:stdout) { should match(/a.*192\.168\.1\.5/) }
+    its(:stdout) { should match(%r{Subnet.*192\.170\.0\.0/16}) }
+    its(:stdout) { should match(/Gateway.*192\.170\.0\.100/) }
+    its(:stdout) { should match(/a.*192\.170\.1\.5/) }
+    its(:stdout) { should match(/a.*192\.170\.1\.5/) }
+  end
 
-describe command('docker network inspect -f "{{ .Containers }}" network_g') do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match 'echo-station-network_g' }
-end
+  describe command('docker network inspect -f "{{ .Containers }}" network_g') do
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match 'echo-station-network_g' }
+  end
 
-describe command('docker network inspect -f "{{ .Containers }}" network_g') do
-  its(:exit_status) { should eq 0 }
-  its(:stdout) { should match 'echo-base-network_g' }
+  describe command('docker network inspect -f "{{ .Containers }}" network_g') do
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match 'echo-base-network_g' }
+  end
+else
+  describe 'network_g overlay network' do
+    skip 'overlay networks require an active swarm'
+  end
 end
 
 ###########

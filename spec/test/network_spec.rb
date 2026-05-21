@@ -3,6 +3,10 @@
 require 'spec_helper'
 
 describe 'test::network' do
+  before do
+    stub_command('docker info --format "{{ .Swarm.ControlAvailable }}" | grep -q true').and_return(true)
+  end
+
   cached(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
 
   context 'creates a network with unicode name' do

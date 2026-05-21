@@ -2,9 +2,11 @@
 
 # pull alpine image
 docker_image 'alpine' do
-  tag '3.1'
+  tag '3.20'
   action :pull_if_missing
 end
+
+swarm_manager = 'docker info --format "{{ .Swarm.ControlAvailable }}" | grep -q true'
 
 # unicode characters
 docker_network 'seseme_straße' do
@@ -23,7 +25,7 @@ end
 # docker run --net=
 docker_container 'echo-base-network_a' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   port '1337'
   network_mode 'network_a'
@@ -32,7 +34,7 @@ end
 
 docker_container 'echo-station-network_a' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   port '31337'
   network_mode 'network_a'
@@ -71,7 +73,7 @@ end
 # docker run --net=
 docker_container 'echo-base-network_c' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   port '1337'
   network_mode 'network_c'
@@ -80,7 +82,7 @@ end
 
 docker_container 'echo-station-network_c' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   port '31337'
   network_mode 'network_c'
@@ -100,7 +102,7 @@ end
 
 docker_container 'echo-base-network_d' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   port '1337'
   network_mode 'network_d'
@@ -109,7 +111,7 @@ end
 
 docker_container 'echo-station-network_d' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   port '31337'
   network_mode 'network_d'
@@ -123,6 +125,7 @@ end
 # specify overlay driver
 docker_network 'network_e' do
   driver 'overlay'
+  only_if swarm_manager
   action :create
 end
 
@@ -140,7 +143,7 @@ end
 
 docker_container 'echo-base-network_f' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   port '1337'
   network_mode 'network_f'
@@ -150,7 +153,7 @@ end
 
 docker_container 'echo-station-network_f' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   port '31337'
   network_mode 'network_f'
@@ -168,23 +171,26 @@ docker_network 'network_g' do
   gateway ['192.168.0.100', '192.170.0.100']
   ip_range '192.168.1.0/24'
   aux_address ['a=192.168.1.5', 'b=192.168.1.6', 'a=192.170.1.5', 'b=192.170.1.6']
+  only_if swarm_manager
 end
 
 docker_container 'echo-base-network_g' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   port '1337'
   network_mode 'network_g'
+  only_if swarm_manager
   action :run
 end
 
 docker_container 'echo-station-network_g' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   port '31337'
   network_mode 'network_g'
+  only_if swarm_manager
   action :run
 end
 
@@ -203,7 +209,7 @@ end
 
 docker_container 'container1-network_h' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   network_mode 'network_h1'
   command 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   not_if { ::File.exist?('/marker_network_h') }
@@ -241,7 +247,7 @@ end
 
 docker_container 'container1-network_i' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   not_if { ::File.exist?('/marker_network_i') }
   action :run
@@ -249,7 +255,7 @@ end
 
 docker_container 'container2-network_i' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   not_if { ::File.exist?('/marker_network_i') }
   action :run
@@ -292,7 +298,7 @@ end
 
 docker_container 'container1-network_ipv6' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   not_if { ::File.exist?('/marker_network_ipv6') }
   action :run
