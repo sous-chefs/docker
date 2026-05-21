@@ -1219,7 +1219,7 @@ EOF
 end
 
 execute 'build initial cmd_change image' do
-  command 'docker build -t cmd_change /usr/local/src/cmd_change_one'
+  command 'docker buildx build --load -t cmd_change /usr/local/src/cmd_change_one'
   not_if 'docker images | grep cmd_change'
   action :run
 end
@@ -1236,9 +1236,9 @@ docker_container 'cmd_change' do
 end
 
 execute 'build updated cmd_change image' do
-  command 'docker build -t cmd_change /usr/local/src/cmd_change_two'
+  command 'docker buildx build --load -t cmd_change /usr/local/src/cmd_change_two'
   not_if { ::File.exist?('/marker_cmd_change') }
-  notifies :redeploy, 'docker_container[cmd_change]'
+  notifies :redeploy, 'docker_container[cmd_change]', :immediately
 end
 
 file '/marker_cmd_change' do
