@@ -93,6 +93,29 @@ EOH
   # it do
   #   expect(chef_run).to create_template('/etc/systemd/system/containerd.service')
   # end
+  context 'with Docker 23 or later' do
+    before do
+      allow_any_instance_of(DockerCookbook::DockerHelpers::Service).to receive(:installed_docker_version).and_return('28.0.4')
+      allow_any_instance_of(DockerCookbook::DockerHelpers::Service).to receive(:docker_containerd).and_return(true)
+    end
+
+    cached(:chef_run) do
+      ChefSpec::SoloRunner.new(platform: 'ubuntu',
+                               version: '24.04',
+                               step_into: %w(helpers_service docker_service docker_service_base docker_service_manager docker_service_manager_systemd)) do |node|
+        node.automatic['ipaddress'] = '127.0.0.1'
+      end.converge('docker_test::legacy_cluster')
+    end
+
+    it 'omits classic cluster store daemon flags removed in Docker 23' do
+      expect(chef_run).to render_file('/etc/systemd/system/docker-legacy-cluster.service').with_content { |content|
+        expect(content).not_to include('--cluster-store')
+        expect(content).not_to include('--cluster-advertise')
+        expect(content).not_to include('--cluster-store-opt')
+      }
+    end
+  end
+
   context 'containerd does not exist' do
     before do
       allow_any_instance_of(DockerCookbook::DockerHelpers::Service).to receive(:installed_docker_version).and_return('18.06.3')

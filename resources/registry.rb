@@ -34,7 +34,7 @@ action :login do
   }
 
   begin
-    Docker.connection.post(
+    connection.post(
       '/auth', {},
       body: node.run_state['docker_auth'][registry_host].to_json
     )

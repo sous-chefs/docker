@@ -16,7 +16,7 @@ describe 'docker_test::registry' do
     stub_command('/usr/bin/test -f /tmp/registry/tls/server.csr').and_return(false)
     stub_command("[ ! -z `docker ps -qaf 'name=registry_service$'` ]").and_return(false)
     stub_command("[ ! -z `docker ps -qaf 'name=registry_proxy$'` ]").and_return(false)
-    stub_command('netstat -plnt | grep ":5000" && netstat -plnt | grep ":5043"').and_return(false)
+    stub_command('curl --silent --show-error --fail --insecure --user testuser:testpassword https://127.0.0.1:5043/v2/ > /dev/null').and_return(false)
   end
 
   context 'when compiling the recipe' do
@@ -64,13 +64,13 @@ describe 'docker_test::registry' do
 
     it 'pulls docker_image[nginx]' do
       expect(chef_run).to pull_docker_image('nginx').with(
-        tag: '1.9'
+        tag: '1.27'
       )
     end
 
     it 'pulls docker_image[registry]' do
       expect(chef_run).to pull_docker_image('registry').with(
-        tag: '2.6.1'
+        tag: '2'
       )
     end
 

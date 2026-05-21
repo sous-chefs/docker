@@ -26,3 +26,9 @@ This cookbook supports the following platforms:
 
 - Chef Infra Client 16.0 or later
 - `docker-api` gem
+
+## Docker Engine Compatibility
+
+- Docker Engine 23.0 removed the classic `--cluster-store`, `--cluster-advertise`, and
+  `--cluster-store-opt` daemon flags. The `docker_service` resource ignores the corresponding
+  properties when managing Docker 23.0 or later.

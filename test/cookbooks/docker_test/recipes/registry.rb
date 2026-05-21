@@ -109,11 +109,11 @@ end
 #
 
 docker_image 'nginx' do
-  tag '1.9'
+  tag '1.27'
 end
 
 docker_image 'registry' do
-  tag '2.6.1'
+  tag '2'
 end
 
 directory '/tmp/registry/auth' do
@@ -158,7 +158,7 @@ bash 'start docker registry' do
   -p 5000:5000 \
   --name registry_service \
   --restart=always \
-  registry
+  registry:2
   EOF
   not_if "[ ! -z `docker ps -qaf 'name=registry_service$'` ]"
 end
@@ -171,22 +171,22 @@ bash 'start docker registry proxy' do
   --name registry_proxy \
   --restart=always \
   -v /tmp/registry/auth/:/etc/nginx/conf.d \
-  nginx:1.9
+  nginx:1.27
   EOF
   not_if "[ ! -z `docker ps -qaf 'name=registry_proxy$'` ]"
 end
+
+registry_ready_command = 'curl --silent --show-error --fail --insecure --user testuser:testpassword https://127.0.0.1:5043/v2/ > /dev/null'
 
 bash 'wait for docker registry and proxy' do
   code <<-EOF
   i=0
   tries=20
-  while true; do
+  until #{registry_ready_command}; do
     ((i++))
-    netstat -plnt | grep ":5000" && netstat -plnt | grep ":5043"
-    [ $? -eq 0 ] && break
-    [ $i -eq $tries ] && break
+    [ $i -eq $tries ] && exit 1
     sleep 1
   done
   EOF
-  not_if 'netstat -plnt | grep ":5000" && netstat -plnt | grep ":5043"'
+  not_if registry_ready_command
 end

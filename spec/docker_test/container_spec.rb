@@ -19,6 +19,7 @@ describe 'docker_test::container' do
     stub_command("[ ! -z `docker ps -qaf 'name=change_network_mode$'` ]").and_return(false)
     stub_command('docker images | grep cmd_change').and_return(false)
     stub_command('docker ps -a | grep cmd_change$').and_return(false)
+    stub_command("docker info --format '{{json .Runtimes}}' | grep -q nvidia").and_return(true)
   end
 
   context 'testing create action' do
@@ -61,7 +62,7 @@ describe 'docker_test::container' do
     it 'run_if_missing docker_container[alpine_ls]' do
       expect(chef_run).to run_if_missing_docker_container('alpine_ls').with(
         repo: 'alpine',
-        tag: '3.1',
+        tag: '3.20',
         command: ['ls', '-la', '/']
       )
     end
@@ -71,7 +72,7 @@ describe 'docker_test::container' do
     it 'run docker_container[an_echo_server]' do
       expect(chef_run).to run_docker_container('an_echo_server').with(
         repo: 'alpine',
-        tag: '3.1',
+        tag: '3.20',
         command: ['nc', '-ll', '-p', '7', '-e', '/bin/cat'],
         port: '7:7'
       )
@@ -80,7 +81,7 @@ describe 'docker_test::container' do
     it 'run docker_container[another_echo_server]' do
       expect(chef_run).to run_docker_container('another_echo_server').with(
         repo: 'alpine',
-        tag: '3.1',
+        tag: '3.20',
         command: ['nc', '-ll', '-p', '7', '-e', '/bin/cat'],
         port: '7'
       )
@@ -89,7 +90,7 @@ describe 'docker_test::container' do
     it 'run docker_container[an_udp_echo_server]' do
       expect(chef_run).to run_docker_container('an_udp_echo_server').with(
         repo: 'alpine',
-        tag: '3.1',
+        tag: '3.20',
         command: ['nc', '-ul', '-p', '7', '-e', '/bin/cat'],
         port: '5007:7/udp'
       )
@@ -98,7 +99,7 @@ describe 'docker_test::container' do
     it 'run docker_container[multi_ip_port]' do
       expect(chef_run).to run_docker_container('multi_ip_port').with(
         repo: 'alpine',
-        tag: '3.1',
+        tag: '3.20',
         command: ['nc', '-ul', '-p', '7', '-e', '/bin/cat'],
         port: ['8301', '8301:8301/udp', '127.0.0.1:8500:8500', '127.0.1.1:8500:8500']
       )
@@ -107,7 +108,7 @@ describe 'docker_test::container' do
     it 'run docker_container[port_range]' do
       expect(chef_run).to run_docker_container('port_range').with(
         repo: 'alpine',
-        tag: '3.1',
+        tag: '3.20',
         command: ['sh', '-c', 'trap exit 0 SIGTERM; while :; do sleep 1; done'],
         port: ['2000-2001', '2000-2001/udp', '3000-3001/tcp', '7000-7002:8000-8002']
       )
@@ -214,7 +215,7 @@ describe 'docker_test::container' do
     it 'runs docker_container[redeployer]' do
       expect(chef_run).to run_docker_container('redeployer').with(
         repo: 'alpine',
-        tag: '3.1',
+        tag: '3.20',
         command: ['sh', '-c', 'trap exit 0 SIGTERM; while :; do sleep 1; done'],
         port: '7'
       )
@@ -223,7 +224,7 @@ describe 'docker_test::container' do
     it 'creates docker_container[unstarted_redeployer]' do
       expect(chef_run).to create_docker_container('unstarted_redeployer').with(
         repo: 'alpine',
-        tag: '3.1',
+        tag: '3.20',
         command: ['sh', '-c', 'trap exit 0 SIGTERM; while :; do sleep 1; done'],
         port: '7'
       )
@@ -294,7 +295,7 @@ describe 'docker_test::container' do
     it 'run_if_missing_docker_container[tmpfs_mounter]' do
       expect(chef_run).to run_if_missing_docker_container('tmpfs_mounter').with(
         repo: 'busybox',
-        command: ['df', '-h', '/tmpfs_dir'],
+        command: ['sh', '-c', 'df -h /tmpfs_dir; trap exit 0 SIGTERM; while :; do sleep 1; done'],
         tmpfs: { '/tmpfs_dir' => 'rw,size=10m' }
       )
     end
@@ -438,16 +439,18 @@ describe 'docker_test::container' do
   context 'testing cap_add' do
     it 'run_if_missing docker_container[cap_add_net_admin]' do
       expect(chef_run).to run_if_missing_docker_container('cap_add_net_admin').with(
-        repo: 'debian',
-        command: ['bash', '-c', 'ip addr add 10.9.8.7/24 brd + dev eth0 label eth0:0 ; ip addr list'],
+        repo: 'alpine',
+        tag: '3.20',
+        command: ['sh', '-c', 'ip addr add 10.9.8.7/24 brd + dev eth0 label eth0:0 ; ip addr list'],
         cap_add: ['NET_ADMIN']
       )
     end
 
     it 'run_if_missing docker_container[cap_add_net_admin_error]' do
       expect(chef_run).to run_if_missing_docker_container('cap_add_net_admin_error').with(
-        repo: 'debian',
-        command: ['bash', '-c', 'ip addr add 10.9.8.7/24 brd + dev eth0 label eth0:0 ; ip addr list']
+        repo: 'alpine',
+        tag: '3.20',
+        command: ['sh', '-c', 'ip addr add 10.9.8.7/24 brd + dev eth0 label eth0:0 ; ip addr list']
       )
     end
   end
@@ -506,7 +509,7 @@ describe 'docker_test::container' do
     it 'run_if_missing docker_container[cpus]' do
       expect(chef_run).to run_if_missing_docker_container('cpus').with(
           repo: 'alpine',
-          tag: '3.1',
+          tag: '3.20',
           command: ['ls', '-la'],
           cpus: 500000000
         )
@@ -517,7 +520,7 @@ describe 'docker_test::container' do
     it 'run_if_missing docker_container[cpu_shares]' do
       expect(chef_run).to run_if_missing_docker_container('cpu_shares').with(
         repo: 'alpine',
-        tag: '3.1',
+        tag: '3.20',
         command: ['ls', '-la'],
         cpu_shares: 512
       )
@@ -528,7 +531,7 @@ describe 'docker_test::container' do
     it 'run_if_missing docker_container[cpuset_cpus]' do
       expect(chef_run).to run_if_missing_docker_container('cpuset_cpus').with(
         repo: 'alpine',
-        tag: '3.1',
+        tag: '3.20',
         command: ['ls', '-la'],
         cpuset_cpus: '0,1'
       )
@@ -539,7 +542,7 @@ describe 'docker_test::container' do
     it 'run_if_missing docker_container[try_try_again]' do
       expect(chef_run).to run_if_missing_docker_container('try_try_again').with(
         repo: 'alpine',
-        tag: '3.1',
+        tag: '3.20',
         command: ['grep', 'asdasdasd', '/etc/passwd'],
         restart_policy: 'on-failure',
         restart_maximum_retry_count: 2
@@ -549,7 +552,7 @@ describe 'docker_test::container' do
     it 'run_if_missing docker_container[reboot_survivor]' do
       expect(chef_run).to run_if_missing_docker_container('reboot_survivor').with(
         repo: 'alpine',
-        tag: '3.1',
+        tag: '3.20',
         command: ['nc', '-ll', '-p', '123', '-e', '/bin/cat'],
         port: '123',
         restart_policy: 'always'
@@ -559,10 +562,10 @@ describe 'docker_test::container' do
     it 'run_if_missing docker_container[reboot_survivor_retry]' do
       expect(chef_run).to run_if_missing_docker_container('reboot_survivor_retry').with(
         repo: 'alpine',
-        tag: '3.1',
+        tag: '3.20',
         command: ['nc', '-ll', '-p', '123', '-e', '/bin/cat'],
         port: '123',
-        restart_policy: nil,
+        restart_policy: 'on-failure',
         restart_maximum_retry_count: 2
       )
     end
@@ -572,7 +575,7 @@ describe 'docker_test::container' do
     it 'runs docker_container[link_source]' do
       expect(chef_run).to run_docker_container('link_source').with(
         repo: 'alpine',
-        tag: '3.1',
+        tag: '3.20',
         env: ['FOO=bar', 'BIZ=baz'],
         command: ['sh', '-c', 'trap exit 0 SIGTERM; while :; do sleep 1; done'],
         port: '321'
@@ -582,7 +585,7 @@ describe 'docker_test::container' do
     it 'runs docker_container[link_source_2]' do
       expect(chef_run).to run_docker_container('link_source_2').with(
         repo: 'alpine',
-        tag: '3.1',
+        tag: '3.20',
         env: ['FOO=few', 'BIZ=buzz'],
         command: ['sh', '-c', 'trap exit 0 SIGTERM; while :; do sleep 1; done'],
         port: '322'
@@ -592,7 +595,7 @@ describe 'docker_test::container' do
     it 'run_if_missing docker_container[link_target_1]' do
       expect(chef_run).to run_if_missing_docker_container('link_target_1').with(
         repo: 'alpine',
-        tag: '3.1',
+        tag: '3.20',
         env: ['ASD=asd'],
         command: ['ping', '-c', '1', 'hello'],
         links: ['link_source:hello']
@@ -602,7 +605,7 @@ describe 'docker_test::container' do
     it 'run_if_missing docker_container[link_target_2]' do
       expect(chef_run).to run_if_missing_docker_container('link_target_2').with(
         repo: 'alpine',
-        tag: '3.1',
+        tag: '3.20',
         command: ['env'],
         links: ['link_source:hello']
       )
@@ -611,7 +614,7 @@ describe 'docker_test::container' do
     it 'run_if_missing docker_container[link_target_3]' do
       expect(chef_run).to run_if_missing_docker_container('link_target_3').with(
         repo: 'alpine',
-        tag: '3.1',
+        tag: '3.20',
         env: ['ASD=asd'],
         command: ['ping', '-c', '1', 'hello_again'],
         links: ['link_source:hello', 'link_source_2:hello_again']
@@ -621,7 +624,7 @@ describe 'docker_test::container' do
     it 'run_if_missing docker_container[link_target_4]' do
       expect(chef_run).to run_if_missing_docker_container('link_target_4').with(
         repo: 'alpine',
-        tag: '3.1',
+        tag: '3.20',
         command: ['env'],
         links: ['link_source:hello', 'link_source_2:hello_again']
       )
@@ -636,7 +639,7 @@ describe 'docker_test::container' do
     it 'run_if_missing docker_container[another_link_source]' do
       expect(chef_run).to run_if_missing_docker_container('another_link_source').with(
         repo: 'alpine',
-        tag: '3.1',
+        tag: '3.20',
         command: ['nc', '-ll', '-p', '456', '-e', '/bin/cat'],
         port: '456'
       )
@@ -645,7 +648,7 @@ describe 'docker_test::container' do
     it 'run_if_missing docker_container[another_link_target]' do
       expect(chef_run).to run_if_missing_docker_container('another_link_target').with(
         repo: 'alpine',
-        tag: '3.1',
+        tag: '3.20',
         command: ['ping', '-c', '1', 'hello'],
         links: ['another_link_source:derp']
       )
@@ -719,7 +722,7 @@ describe 'docker_test::container' do
     it 'runs docker_container[network_mode]' do
       expect(chef_run).to run_docker_container('network_mode').with(
         repo: 'alpine',
-        tag: '3.1',
+        tag: '3.20',
         command: ['nc', '-ll', '-p', '776', '-e', '/bin/cat'],
         port: '776:776',
         network_mode: 'host'
@@ -739,7 +742,7 @@ describe 'docker_test::container' do
     it 'runs docker_container[ulimits]' do
       expect(chef_run).to run_docker_container('ulimits').with(
         repo: 'alpine',
-        tag: '3.1',
+        tag: '3.20',
         command: ['sh', '-c', 'trap exit 0 SIGTERM; while :; do sleep 1; done'],
         port: '778:778',
         cap_add: ['SYS_RESOURCE'],
@@ -757,7 +760,7 @@ describe 'docker_test::container' do
       expect(chef_run).to run_if_missing_docker_container('api_timeouts').with(
         command: ['nc', '-ll', '-p', '779', '-e', '/bin/cat'],
         repo: 'alpine',
-        tag: '3.1',
+        tag: '3.20',
         read_timeout: 60,
         write_timeout: 60
       )
@@ -774,7 +777,7 @@ describe 'docker_test::container' do
     it 'runs docker_container[uber_options]' do
       expect(chef_run).to run_docker_container('uber_options').with(
         repo: 'alpine',
-        tag: '3.1',
+        tag: '3.20',
         hostname: 'www',
         domainname: 'computers.biz',
         env: ['FOO=foo', 'BAR=bar'],
@@ -795,7 +798,7 @@ describe 'docker_test::container' do
         links: ['link_source:hello'],
         port: '1234:1234',
         volumes_from: ['chef_container'],
-        user: 'operator',
+        user: 'root',
         entrypoint: ['/bin/sh', '-c'],
         command: ['trap exit 0 SIGTERM; while :; do sleep 5; done'],
         ulimits: [
@@ -861,7 +864,7 @@ describe 'docker_test::container' do
       expect(chef_run).to run_if_missing_docker_container('syslogger').with(
         command: ['nc', '-ll', '-p', '780', '-e', '/bin/cat'],
         repo: 'alpine',
-        tag: '3.1',
+        tag: '3.20',
         log_driver: 'syslog',
         log_opts: { 'tag' => 'container-syslogger' }
       )
@@ -933,7 +936,7 @@ describe 'docker_test::container' do
     it 'sets health_check options' do
       expect(chef_run).to run_docker_container('health_check').with(
         repo: 'alpine',
-        tag: '3.1',
+        tag: '3.20',
         health_check: {
           'Test' =>
             [
@@ -954,7 +957,7 @@ describe 'docker_test::container' do
     it 'creates a container with GPU support' do
       expect(chef_run).to run_if_missing_docker_container('gpu_test').with(
         repo: 'nvidia/cuda',
-        tag: 'latest',
+        tag: '12.4.1-base-ubuntu22.04',
         gpus: 'all',
         gpu_driver: 'nvidia'
       )

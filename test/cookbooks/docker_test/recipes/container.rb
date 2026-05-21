@@ -30,7 +30,7 @@ end
 # action.
 docker_container 'alpine_ls' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'ls -la /'
   action :run_if_missing
 end
@@ -43,7 +43,7 @@ end
 # nothing on subsequent converges.
 docker_container 'an_echo_server' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'nc -ll -p 7 -e /bin/cat'
   port '7:7'
   action :run
@@ -52,7 +52,7 @@ end
 # let docker pick the host port
 docker_container 'another_echo_server' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'nc -ll -p 7 -e /bin/cat'
   port '7'
   action :run
@@ -61,7 +61,7 @@ end
 # specify the udp protocol
 docker_container 'an_udp_echo_server' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'nc -ul -p 7 -e /bin/cat'
   port '5007:7/udp'
   action :run
@@ -70,7 +70,7 @@ end
 # multiple ips
 docker_container 'multi_ip_port' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'nc -ul -p 7 -e /bin/cat'
   port ['8301', '8301:8301/udp', '127.0.0.1:8500:8500', '127.0.1.1:8500:8500']
   action :run
@@ -79,7 +79,7 @@ end
 # port range
 docker_container 'port_range' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   port ['2000-2001', '2000-2001/udp', '3000-3001/tcp', '7000-7002:8000-8002']
   action :run
@@ -219,7 +219,7 @@ end
 
 docker_container 'redeployer' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   port '7'
   action :run
@@ -227,7 +227,7 @@ end
 
 docker_container 'unstarted_redeployer' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   port '7'
   action :create
@@ -297,7 +297,7 @@ end
 # docker inspect -f "{{ .HostConfig.Tmpfs }}"
 docker_container 'tmpfs_mounter' do
   repo 'busybox'
-  command 'df -h /tmpfs_dir'
+  command 'sh -c "df -h /tmpfs_dir; trap exit 0 SIGTERM; while :; do sleep 1; done"'
   tmpfs '/tmpfs_dir' => 'rw,size=10m'
   action :run_if_missing
 end
@@ -308,8 +308,8 @@ end
 
 docker_container 'tmpfs_test' do
   repo 'alpine'
-  tag '3.1'
-  command 'df -h'
+  tag '3.20'
+  command 'sh -c "df -h; trap exit 0 SIGTERM; while :; do sleep 1; done"'
   tmpfs({
           '/tmpfs1' => '',
           '/tmpfs2' => 'size=20M,uid=1000',
@@ -507,15 +507,17 @@ end
 
 # Inspect system with test-kitchen bussers
 docker_container 'cap_add_net_admin' do
-  repo 'debian'
-  command 'bash -c "ip addr add 10.9.8.7/24 brd + dev eth0 label eth0:0 ; ip addr list"'
+  repo 'alpine'
+  tag '3.20'
+  command 'sh -c "ip addr add 10.9.8.7/24 brd + dev eth0 label eth0:0 ; ip addr list"'
   cap_add 'NET_ADMIN'
   action :run_if_missing
 end
 
 docker_container 'cap_add_net_admin_error' do
-  repo 'debian'
-  command 'bash -c "ip addr add 10.9.8.7/24 brd + dev eth0 label eth0:0 ; ip addr list"'
+  repo 'alpine'
+  tag '3.20'
+  command 'sh -c "ip addr add 10.9.8.7/24 brd + dev eth0 label eth0:0 ; ip addr list"'
   action :run_if_missing
 end
 
@@ -583,7 +585,7 @@ end
 # docker inspect -f '{{ .HostConfig.NanoCpus }}' cpus
 docker_container 'cpus' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'ls -la'
   cpus 0.5
   action :run_if_missing
@@ -596,7 +598,7 @@ end
 # docker inspect -f '{{ .HostConfig.CpuShares }}' cpu_shares
 docker_container 'cpu_shares' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'ls -la'
   cpu_shares 512
   action :run_if_missing
@@ -609,7 +611,7 @@ end
 # docker inspect cpu_shares | grep '"CpusetCpus": "0,1"'
 docker_container 'cpuset_cpus' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'ls -la'
   cpuset_cpus '0,1'
   action :run_if_missing
@@ -622,7 +624,7 @@ end
 # docker inspect restart_policy | grep 'RestartPolicy'
 docker_container 'try_try_again' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'grep asdasdasd /etc/passwd'
   restart_policy 'on-failure'
   restart_maximum_retry_count 2
@@ -631,7 +633,7 @@ end
 
 docker_container 'reboot_survivor' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'nc -ll -p 123 -e /bin/cat'
   port '123'
   restart_policy 'always'
@@ -640,9 +642,10 @@ end
 
 docker_container 'reboot_survivor_retry' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'nc -ll -p 123 -e /bin/cat'
   port '123'
+  restart_policy 'on-failure'
   restart_maximum_retry_count 2
   action :run_if_missing
 end
@@ -655,7 +658,7 @@ end
 # docker inspect -f "{{ .NetworkSettings.IPAddress }}" link_source
 docker_container 'link_source' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   env ['FOO=bar', 'BIZ=baz']
   command 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   port '321'
@@ -664,7 +667,7 @@ end
 
 docker_container 'link_source_2' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   env ['FOO=few', 'BIZ=buzz']
   command 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   port '322'
@@ -676,7 +679,7 @@ end
 # docker inspect -f "{{ .Config.Env }}" link_target_1
 docker_container 'link_target_1' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   env ['ASD=asd']
   command 'ping -c 1 hello'
   links 'link_source:hello'
@@ -687,7 +690,7 @@ end
 # docker logs linker_target_2
 docker_container 'link_target_2' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'env'
   links ['link_source:hello']
   subscribes :run, 'docker_container[link_source]'
@@ -697,7 +700,7 @@ end
 # docker logs linker_target_3
 docker_container 'link_target_3' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   env ['ASD=asd']
   command 'ping -c 1 hello_again'
   links ['link_source:hello', 'link_source_2:hello_again']
@@ -709,7 +712,7 @@ end
 # docker logs linker_target_4
 docker_container 'link_target_4' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'env'
   links ['link_source:hello', 'link_source_2:hello_again']
   subscribes :run, 'docker_container[link_source]'
@@ -738,7 +741,7 @@ end
 # docker inspect -f "{{ .HostConfig.Links }}" another_link_source
 docker_container 'another_link_source' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'nc -ll -p 456 -e /bin/cat'
   port '456'
   action :run_if_missing
@@ -747,7 +750,7 @@ end
 # docker inspect -f "{{ .HostConfig.Links }}" another_link_target
 docker_container 'another_link_target' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'ping -c 1 hello'
   links ['another_link_source:derp']
   action :run_if_missing
@@ -831,7 +834,7 @@ end
 
 docker_container 'network_mode' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'nc -ll -p 776 -e /bin/cat'
   port '776:776'
   network_mode 'host'
@@ -843,14 +846,14 @@ end
 #####################
 
 execute 'change_network_mode' do
-  command 'docker run --name change_network_mode -d alpine:3.1 sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
+  command 'docker run --name change_network_mode -d alpine:3.20 sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   not_if "[ ! -z `docker ps -qaf 'name=change_network_mode$'` ]"
   action :run
 end
 
 docker_container 'change_network_mode' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   network_mode 'host'
   action :run
@@ -862,7 +865,7 @@ end
 
 docker_container 'ulimits' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'sh -c "trap exit 0 SIGTERM; while :; do sleep 1; done"'
   port '778:778'
   cap_add 'SYS_RESOURCE'
@@ -881,7 +884,7 @@ end
 docker_container 'api_timeouts' do
   command 'nc -ll -p 779 -e /bin/cat'
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   read_timeout 60
   write_timeout 60
   action :run_if_missing
@@ -900,7 +903,7 @@ end
 
 docker_container 'uber_options' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   hostname 'www'
   domainname 'computers.biz'
   env ['FOO=foo', 'BAR=bar']
@@ -920,7 +923,7 @@ docker_container 'uber_options' do
   links ['link_source:hello']
   port '1234:1234'
   volumes_from 'chef_container'
-  user 'operator'
+  user 'root'
   command '"trap exit 0 SIGTERM; while :; do sleep 5; done"'
   entrypoint '/bin/sh -c'
   ulimits [
@@ -1008,7 +1011,7 @@ end
 docker_container 'syslogger' do
   command 'nc -ll -p 780 -e /bin/cat'
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   log_driver 'syslog'
   log_opts 'tag=container-syslogger'
   action :run_if_missing
@@ -1072,7 +1075,7 @@ end
 
 docker_container 'oom_kill_disable' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'ls -la'
   oom_kill_disable true
   timeout 40
@@ -1085,7 +1088,7 @@ end
 
 docker_container 'oom_score_adj' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'ls -la'
   oom_score_adj 600
   timeout 40
@@ -1098,7 +1101,7 @@ end
 
 docker_container 'pid_mode' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'ps -ef'
   pid_mode 'host'
   timeout 40
@@ -1112,7 +1115,7 @@ end
 # docker inspect init | grep '"Init": true'
 docker_container 'init' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'ls -la'
   init true
   timeout 40
@@ -1125,7 +1128,7 @@ end
 
 docker_container 'ipc_mode' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'ps -ef'
   ipc_mode 'host'
   timeout 40
@@ -1138,7 +1141,7 @@ end
 
 docker_container 'uts_mode' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'ps -ef'
   uts_mode 'host'
   timeout 40
@@ -1151,7 +1154,7 @@ end
 
 docker_container 'ro_rootfs' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'ps -ef'
   ro_rootfs true
   timeout 40
@@ -1164,7 +1167,7 @@ end
 
 docker_container 'sysctls' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command '/sbin/sysctl -a'
   sysctls 'net.core.somaxconn' => '65535',
           'net.core.xfrm_acq_expires' => '42'
@@ -1178,9 +1181,10 @@ end
 
 docker_container 'gpu_test' do
   repo 'nvidia/cuda'
-  tag 'latest'
+  tag '12.4.1-base-ubuntu22.04'
   gpus 'all'
   gpu_driver 'nvidia'
+  only_if "docker info --format '{{json .Runtimes}}' | grep -q nvidia"
   action :run_if_missing
 end
 
@@ -1194,7 +1198,7 @@ end
 
 file '/usr/local/src/cmd_change_one/Dockerfile' do
   content <<EOF
-FROM alpine:3.1
+FROM alpine:3.20
 CMD [ "nc", "-ll", "-p", "6", "-e", "/bin/cat" ]
 EOF
   action :create
@@ -1206,7 +1210,7 @@ end
 
 file '/usr/local/src/cmd_change_two/Dockerfile' do
   content <<EOF
-FROM alpine:3.1
+FROM alpine:3.20
 CMD [ "nc", "-ll", "-p", "9", "-e", "/bin/cat" ]
 EOF
   action :create
@@ -1247,7 +1251,7 @@ end
 
 docker_container 'security_opt' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'nc -ll -p 70 -e /bin/cat'
   port '70:70'
   security_opt ['no-new-privileges', 'label=type:DERP']
@@ -1260,7 +1264,7 @@ end
 
 docker_container 'memory' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   command 'nc -ll -p 70 -e /bin/cat'
   port '71:71'
   kernel_memory '10m'
@@ -1279,7 +1283,7 @@ end
 
 docker_container 'health_check' do
   repo 'alpine'
-  tag '3.1'
+  tag '3.20'
   health_check(
     'Test' =>
       [
@@ -1294,8 +1298,14 @@ docker_container 'health_check' do
 end
 
 # Test case for digest image format
+docker_image 'hello-world digest' do
+  repo 'hello-world'
+  tag 'sha256:b44f8077f3cc983f21adf071c813599ff805af75196a456a326253c7b3357c48'
+  action :pull_if_missing
+end
+
 docker_container 'sha256-test' do
   repo 'hello-world'
-  tag 'sha256:0add3ace90ecb4adbf7777e9aacf18357296e799f81cabc9fde470971e499788'
+  tag 'sha256:b44f8077f3cc983f21adf071c813599ff805af75196a456a326253c7b3357c48'
   action :run
 end

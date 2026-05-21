@@ -21,5 +21,11 @@ RSpec.describe DockerCookbook::DockerHelpers::Json do
 
       expect(subject.prune_generate_json(dangling: dangling, prune_until: prune_until, with_label: with_label, without_label: without_label)).to eq(expected)
     end
+
+    it 'generates volume prune filter json' do
+      expected = 'all=true'
+
+      expect(subject.prune_generate_json(all: true)).to eq(expected)
+    end
   end
 end

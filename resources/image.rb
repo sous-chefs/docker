@@ -181,7 +181,14 @@ action_class do
 
   def load_image
     with_retries do
-      Docker::Image.load(new_resource.source, {}, connection)
+      ::File.open(new_resource.source, 'rb') do |file|
+        connection.post(
+          '/images/load',
+          {},
+          headers: { 'Content-Type' => 'application/x-tar' },
+          body: file
+        )
+      end
     end
   end
 

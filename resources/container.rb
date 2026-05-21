@@ -237,10 +237,16 @@ end
 def wait_running_state(v)
   tries = running_wait_time
   tries.times do
-    return if state['Running'] == v
+    current_state = state
+    return if current_state['Running'] == v
+    return if v && current_state['Running'] == false && current_state.key?('ExitCode')
+
     sleep 1
   end
-  return if state['Running'] == v
+
+  current_state = state
+  return if current_state['Running'] == v
+  return if v && current_state['Running'] == false && current_state.key?('ExitCode')
 
   # Container failed to reach correct state: Throw an error
   desired_state_str = v ? 'running' : 'not running'

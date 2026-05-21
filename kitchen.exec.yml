@@ -2,6 +2,7 @@
 driver:
   name: exec
   sudo: true
+  chef_omnibus_install: false
 
 transport:
   name: exec
@@ -13,7 +14,9 @@ provisioner:
   enforce_idempotency: true
   multiple_converge: 2
   deprecations_as_errors: true
-  chef_omnibus_install: false
+  install_strategy: skip
+  require_chef_omnibus: false
+  chef_client_path: /opt/cinc/bin/chef-client
 
 verifier:
   name: inspec

@@ -11,7 +11,7 @@ docker_image 'hello-world'
 
 # non-default name attribute, containing a single quote
 docker_image "Tom's container" do
-  repo 'tduffield/testcontainerd'
+  repo 'hello-world'
 end
 
 # :pull action specified
@@ -26,7 +26,7 @@ end
 
 # specify a tag and read/write timeouts
 docker_image 'alpine' do
-  tag '3.1'
+  tag '3.20'
   read_timeout 60
   write_timeout 60
 end
@@ -34,7 +34,7 @@ end
 # host override
 docker_image 'alpine-localhost' do
   repo 'alpine'
-  tag '2.7'
+  tag '3.20'
   host 'tcp://127.0.0.1:2376'
   tls_verify true
   tls_ca_cert "#{caroot}/ca.pem"
@@ -91,6 +91,7 @@ docker_image 'remove cirros' do
 end
 
 docker_image 'load cirros' do
+  repo 'cirros'
   source '/cirros.tar'
   not_if { ::File.exist?('/marker_load_cirros-1') }
   action :load
@@ -267,10 +268,6 @@ end
 # end
 
 # docker_image 'someara/private-repo-test'
-
-# public images
-docker_image 'someara/name-w-dashes'
-docker_image 'someara/name.w.dots'
 
 ##################
 # Private registry

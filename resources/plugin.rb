@@ -83,7 +83,7 @@ action_class do
       end
 
     # actually do the plugin install
-    body = ''
+    body = String.new
 
     opts = { remote: plugin_identifier, name: local_name }
     Chef::Log.info("pulling plugin #{opts} with privileges #{privileges}")
@@ -103,6 +103,8 @@ action_class do
   end
 
   def configure_plugin
+    return if new_resource.options.nil? || new_resource.options.empty?
+
     options_for_json = []
     new_resource.options.each_pair do |k, v|
       options_for_json.push("#{k}=#{v}")

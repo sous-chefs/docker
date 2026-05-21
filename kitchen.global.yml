@@ -26,5 +26,5 @@ platforms:
   - name: oraclelinux-9
   - name: rockylinux-9
   - name: rockylinux-10
-  - name: ubuntu-2204
-  - name: ubuntu-2404
+  - name: ubuntu-22.04
+  - name: ubuntu-24.04

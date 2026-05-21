@@ -134,7 +134,7 @@ action_class do
     first_part = val.sub(%r{https?://}, '').split('/').first
 
     # looks like a host name of a custom docker registry
-    return first_part if first_part.include?('.')
+    return first_part if first_part.include?('.') || first_part.include?(':') || first_part == 'localhost'
 
     # default host
     'index.docker.io'

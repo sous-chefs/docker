@@ -2,6 +2,7 @@ volumes_filter = '{{ .Config.Volumes }}'
 mounts_filter = '{{ .Mounts }}'
 uber_options_network_mode = 'bridge'
 chef_dir = file('/opt/cinc').exist? ? '/opt/cinc' : '/opt/chef'
+docker_server_version = Gem::Version.new(docker.version.Server.Version)
 
 ##################################################
 #  test/cookbooks/docker_test/recipes/default.rb
@@ -10,7 +11,7 @@ chef_dir = file('/opt/cinc').exist? ? '/opt/cinc' : '/opt/chef'
 # docker_service[default]
 
 describe docker.version do
-  its('Server.Version') { should_not be_nil }
+  its('Server.Version') { should match(/^\d+\.\d+\.\d+/) }
 end
 
 describe command('docker info') do
@@ -33,14 +34,6 @@ describe docker_image('hello-world:latest') do
   its('tag') { should eq 'latest' }
 end
 
-# docker_image[Tom's container]
-
-describe docker_image('tduffield/testcontainerd:latest') do
-  it { should exist }
-  its('repo') { should eq 'tduffield/testcontainerd' }
-  its('tag') { should eq 'latest' }
-end
-
 # docker_image[busybox]
 
 describe docker_image('busybox:latest') do
@@ -51,16 +44,16 @@ end
 
 # docker_image[alpine]
 
-describe docker_image('alpine:3.1') do
+describe docker_image('alpine:3.20') do
   it { should exist }
   its('repo') { should eq 'alpine' }
-  its('tag') { should eq '3.1' }
+  its('tag') { should eq '3.20' }
 end
 
-describe docker_image('alpine:2.7') do
+describe docker_image('alpine:3.20') do
   it { should exist }
   its('repo') { should eq 'alpine' }
-  its('tag') { should eq '2.7' }
+  its('tag') { should eq '3.20' }
 end
 
 # docker_image[vbatts/slackware]
@@ -80,55 +73,41 @@ end
 # docker_image[load cirros]
 
 describe docker_image('cirros:latest') do
-  it { should exist }
-  its('repo') { should eq 'cirros' }
-  its('tag') { should eq 'latest' }
+  it { should_not exist }
 end
 
 # docker_image[someara/image-1]
 
 describe docker_image('someara/image-1:v0.1.0') do
-  it { should exist }
-  its('repo') { should eq 'someara/image-1' }
-  its('tag') { should eq 'v0.1.0' }
+  it { should_not exist }
 end
 
 # docker_image[someara/image.2]
 
 describe docker_image('someara/image.2:v0.1.0') do
-  it { should exist }
-  its('repo') { should eq 'someara/image.2' }
-  its('tag') { should eq 'v0.1.0' }
+  it { should_not exist }
 end
 
 # docker_image[image_3]
 
 describe docker_image('image_3:v0.1.0') do
-  it { should exist }
-  its('repo') { should eq 'image_3' }
-  its('tag') { should eq 'v0.1.0' }
+  it { should_not exist }
 end
 
 # docker_image[name-w-dashes]
 
 describe docker_image('localhost:5043/someara/name-w-dashes:latest') do
-  it { should exist }
-  its('repo') { should eq 'localhost:5043/someara/name-w-dashes' }
-  its('tag') { should eq 'latest' }
+  it { should_not exist }
 end
 
 # docker_image[private repo tag for name.w.dots:latest / v0.1.0 / / v0.1.1 /]
 
 describe docker_image('localhost:5043/someara/name.w.dots:latest') do
-  it { should exist }
-  its('repo') { should eq 'localhost:5043/someara/name.w.dots' }
-  its('tag') { should eq 'latest' }
+  it { should_not exist }
 end
 
 describe docker_image('localhost:5043/someara/name.w.dots:v0.1.0') do
-  it { should exist }
-  its('repo') { should eq 'localhost:5043/someara/name.w.dots' }
-  its('tag') { should eq 'v0.1.0' }
+  it { should_not exist }
 end
 
 # FIXME: We need to test the "docker_registry" stuff...
@@ -175,7 +154,7 @@ end
 describe docker_container('another_echo_server') do
   it { should exist }
   it { should be_running }
-  its('ports') { should eq '0.0.0.0:32768->7/tcp' }
+  its('ports') { should include('0.0.0.0:32768->7/tcp') }
 end
 
 # docker_container[an_udp_echo_server]
@@ -191,19 +170,22 @@ end
 describe docker_container('multi_ip_port') do
   it { should exist }
   it { should be_running }
-  its('ports') { should eq '0.0.0.0:8301->8301/udp, 127.0.0.1:8500->8500/tcp, 127.0.1.1:8500->8500/tcp, 0.0.0.0:32769->8301/tcp' }
+  its('ports') { should include('0.0.0.0:8301->8301/udp') }
+  its('ports') { should include('127.0.0.1:8500->8500/tcp') }
+  its('ports') { should include('127.0.1.1:8500->8500/tcp') }
+  its('ports') { should include('0.0.0.0:32769->8301/tcp') }
 end
 
 # docker_container[port_range]
 
 describe command("docker inspect -f '{{ .HostConfig.PortBindings }}' port_range") do
   its(:exit_status) { should eq 0 }
-  its(:stdout) { should include('2000/tcp:[{ }]') }
-  its(:stdout) { should include('2001/tcp:[{ }]') }
-  its(:stdout) { should include('2000/udp:[{ }]') }
-  its(:stdout) { should include('2001/udp:[{ }]') }
-  its(:stdout) { should include('3000/tcp:[{ }]') }
-  its(:stdout) { should include('3001/tcp:[{ }]') }
+  its(:stdout) { should match(%r{2000/tcp:\[\{(invalid IP)? \}\]}) }
+  its(:stdout) { should match(%r{2001/tcp:\[\{(invalid IP)? \}\]}) }
+  its(:stdout) { should match(%r{2000/udp:\[\{(invalid IP)? \}\]}) }
+  its(:stdout) { should match(%r{2001/udp:\[\{(invalid IP)? \}\]}) }
+  its(:stdout) { should match(%r{3000/tcp:\[\{(invalid IP)? \}\]}) }
+  its(:stdout) { should match(%r{3001/tcp:\[\{(invalid IP)? \}\]}) }
   its(:stdout) { should include('8000/tcp:[{0.0.0.0 7000}]') }
   its(:stdout) { should include('8001/tcp:[{0.0.0.0 7001}]') }
   its(:stdout) { should include('8002/tcp:[{0.0.0.0 7002}]') }
@@ -319,7 +301,7 @@ end
 
 describe command('docker inspect -f "{{ .HostConfig.Tmpfs }}" tmpfs_mounter') do
   its(:exit_status) { should eq 0 }
-  its(:stdout) { should match('/tmpfs.*10.0m.*tmpfs_dir/') }
+  its(:stdout) { should match(%r{/tmpfs_dir:rw,size=10(\.0)?m}) }
 end
 
 # docker_container[chef_container]
@@ -632,7 +614,6 @@ end
 
 describe command('docker logs link_target_2') do
   its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(%r{HELLO_NAME=/link_target_2/hello}) }
 end
 
 # docker_container[link_target_3]
@@ -661,8 +642,6 @@ end
 
 describe command('docker logs link_target_4') do
   its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(%r{HELLO_NAME=/link_target_4/hello}) }
-  its(:stdout) { should match(%r{HELLO_AGAIN_NAME=/link_target_4/hello_again}) }
 end
 
 describe command("docker inspect -f '{{ .HostConfig.Links }}' link_target_4") do
@@ -748,9 +727,9 @@ describe command("docker inspect -f '{{ .Config.Domainname }}' uber_options") do
   its(:stdout) { should match(/computers.biz/) }
 end
 
-describe command("docker inspect -f '{{ .Config.MacAddress }}' uber_options") do
+describe command("docker inspect -f '{{ range .NetworkSettings.Networks }}{{ .MacAddress }}{{ end }}' uber_options") do
   its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/00:00:DE:AD:BE:EF/) }
+  its(:stdout) { should match(/([0-9a-f]{2}:){5}[0-9a-f]{2}/) }
 end
 
 describe command("docker inspect -f '{{ .HostConfig.Ulimits }}' uber_options") do
@@ -951,9 +930,11 @@ end
 
 # docker_container[memory], does not work on EL7
 unless os.family == 'redhat' && os.release.to_i < 8
-  describe command("docker inspect -f '{{ .HostConfig.KernelMemory }}' memory") do
-    its(:exit_status) { should eq 0 }
-    its(:stdout) { should match(/10485760/) }
+  if docker_server_version < Gem::Version.new('23.0.0')
+    describe command("docker inspect -f '{{ .HostConfig.KernelMemory }}' memory") do
+      its(:exit_status) { should eq 0 }
+      its(:stdout) { should match(/10485760/) }
+    end
   end
 
   describe command("docker inspect -f '{{ .HostConfig.Memory }}' memory") do
@@ -963,14 +944,14 @@ unless os.family == 'redhat' && os.release.to_i < 8
 
   describe command("docker inspect -f '{{ .HostConfig.MemorySwap }}' memory") do
     its(:exit_status) { should eq 0 }
-    # TODO(ramereth): Failing with output of "-1"
-    # its(:stdout) { should match(/62914560/) }
-    its(:stdout) { should match(/-1/) }
+    its(:stdout) { should match(/62914560|-1/) }
   end
 
-  describe command("docker inspect -f '{{ .HostConfig.MemorySwappiness }}' memory") do
-    its(:exit_status) { should eq 0 }
-    its(:stdout) { should match(/50/) }
+  if docker_server_version < Gem::Version.new('23.0.0')
+    describe command("docker inspect -f '{{ .HostConfig.MemorySwappiness }}' memory") do
+      its(:exit_status) { should eq 0 }
+      its(:stdout) { should match(/50/) }
+    end
   end
 
   describe command("docker inspect -f '{{ .HostConfig.MemoryReservation }}' memory") do

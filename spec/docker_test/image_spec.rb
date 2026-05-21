@@ -15,7 +15,7 @@ describe 'docker_test::image' do
     stub_command('/usr/bin/test -f /tmp/registry/tls/cert.pem').and_return(true)
     stub_command("[ ! -z `docker ps -qaf 'name=registry_service$'` ]").and_return(true)
     stub_command("[ ! -z `docker ps -qaf 'name=registry_proxy$'` ]").and_return(true)
-    stub_command('netstat -plnt | grep ":5000" && netstat -plnt | grep ":5043"').and_return(false)
+    stub_command('curl --silent --show-error --fail --insecure --user testuser:testpassword https://127.0.0.1:5043/v2/ > /dev/null').and_return(true)
   end
 
   context 'testing default action, default properties' do
@@ -39,7 +39,7 @@ describe 'docker_test::image' do
   context 'testing non-default name attribute containing a single quote' do
     it "pulls docker_image[Tom's container]" do
       expect(chef_run).to pull_docker_image("Tom's container").with(
-        repo: 'tduffield/testcontainerd'
+        repo: 'hello-world'
       )
     end
   end
@@ -59,7 +59,7 @@ describe 'docker_test::image' do
   context 'testing specifying a tag and read/write timeouts' do
     it 'pulls docker_image[alpine]' do
       expect(chef_run).to pull_docker_image('alpine').with(
-        tag: '2.7',
+        tag: '3.20',
         read_timeout: 120,
         write_timeout: nil
       )
@@ -70,7 +70,7 @@ describe 'docker_test::image' do
     it 'pulls docker_image[alpine-localhost]' do
       expect(chef_run).to pull_docker_image('alpine-localhost').with(
         repo: 'alpine',
-        tag: '2.7',
+        tag: '3.20',
         host: 'tcp://127.0.0.1:2376'
       )
     end
@@ -117,6 +117,7 @@ describe 'docker_test::image' do
 
     it 'loads docker_image[load cirros]' do
       expect(chef_run).to load_docker_image('load cirros').with(
+        repo: 'cirros',
         source: '/cirros.tar'
       )
     end
@@ -196,16 +197,6 @@ describe 'docker_test::image' do
         tag: 'v0.1.0',
         source: '/hello-world.tar'
       )
-    end
-  end
-
-  context 'testing images with dots and dashes in the name' do
-    it 'pulls docker_image[someara/name-w-dashes]' do
-      expect(chef_run).to pull_docker_image('someara/name-w-dashes')
-    end
-
-    it 'pulls docker_image[someara/name.w.dots]' do
-      expect(chef_run).to pull_docker_image('someara/name.w.dots')
     end
   end
 
