@@ -1235,10 +1235,8 @@ docker_container 'cmd_change' do
   action :run
 end
 
-docker_image 'cmd_change' do
-  tag 'latest'
-  action :build
-  source '/usr/local/src/cmd_change_two'
+execute 'build updated cmd_change image' do
+  command 'docker build -t cmd_change /usr/local/src/cmd_change_two'
   not_if { ::File.exist?('/marker_cmd_change') }
   notifies :redeploy, 'docker_container[cmd_change]'
 end

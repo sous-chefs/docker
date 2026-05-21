@@ -459,7 +459,12 @@ end
 # Loads container specific labels excluding those of engine or image.
 # This insures idempotency.
 def load_container_labels
-  image_labels = Docker::Image.get(container.info['Image'], {}, connection).info['Config']['Labels'] || {}
+  image_labels =
+    begin
+      Docker::Image.get(container.info['Image'], {}, connection).info['Config']['Labels'] || {}
+    rescue Docker::Error::NotFoundError
+      {}
+    end
   engine_labels = Docker.info(connection)['Labels'] || {}
 
   labels = (container.info['Config']['Labels'] || {}).reject do |key, val|
