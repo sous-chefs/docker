@@ -5,6 +5,17 @@ This file is used to list changes made in each version of the docker cookbook.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [12.0.0](https://github.com/sous-chefs/docker/compare/v11.10.4...v12.0.0) (2026-05-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* modernize platforms and cleanup legacy init templates ([#1333](https://github.com/sous-chefs/docker/issues/1333))
+
+### Features
+
+* modernize platforms and cleanup legacy init templates ([#1333](https://github.com/sous-chefs/docker/issues/1333)) ([687f807](https://github.com/sous-chefs/docker/commit/687f807409715ed773b9dbd4740a50cb2bdecb98))
+
 ## [11.10.4](https://github.com/sous-chefs/docker/compare/v11.10.3...v11.10.4) (2026-03-03)
 
 
