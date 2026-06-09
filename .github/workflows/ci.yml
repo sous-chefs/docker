@@ -40,7 +40,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Install Cinc Workstation
-        uses: sous-chefs/.github/.github/actions/install-workstation@6.0.0
+        uses: sous-chefs/.github/.github/actions/install-workstation@8.0.1
 
       - name: Test Kitchen
         uses: actionshub/test-kitchen@3.0.0
