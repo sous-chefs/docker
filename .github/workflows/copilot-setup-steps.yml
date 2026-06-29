@@ -19,6 +19,6 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v7
       - name: Install Cinc Workstation
-        uses: sous-chefs/.github/.github/actions/install-workstation@8.0.1
+        uses: sous-chefs/.github/.github/actions/install-workstation@8.0.4
       - name: Install cookbooks
         run: berks install

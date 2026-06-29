@@ -9,7 +9,7 @@ name: ci
 
 jobs:
   lint-unit:
-    uses: sous-chefs/.github/.github/workflows/lint-unit.yml@8.0.1
+    uses: sous-chefs/.github/.github/workflows/lint-unit.yml@8.0.4
     permissions:
       actions: write
       checks: write
@@ -40,7 +40,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Install Cinc Workstation
-        uses: sous-chefs/.github/.github/actions/install-workstation@8.0.1
+        uses: sous-chefs/.github/.github/actions/install-workstation@8.0.4
 
       - name: Test Kitchen
         uses: actionshub/test-kitchen@3.0.0

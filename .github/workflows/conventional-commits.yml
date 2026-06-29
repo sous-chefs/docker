@@ -11,4 +11,4 @@ name: conventional-commits
 
 jobs:
   conventional-commits:
-    uses: sous-chefs/.github/.github/workflows/conventional-commits.yml@8.0.1
+    uses: sous-chefs/.github/.github/workflows/conventional-commits.yml@8.0.4
