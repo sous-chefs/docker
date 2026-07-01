@@ -41,6 +41,11 @@ jobs:
 
       - name: Install Cinc Workstation
         uses: sous-chefs/.github/.github/actions/install-workstation@8.0.4
+      - name: Install InSpec Docker resource pack
+        if: matrix.suite == 'resources'
+        run: inspec plugin install inspec-docker-resources
+        env:
+          CHEF_LICENSE: accept-no-persist
 
       - name: Test Kitchen
         uses: actionshub/test-kitchen@3.0.0
