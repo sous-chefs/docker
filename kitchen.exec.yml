@@ -25,27 +25,38 @@ platforms:
 
 suites:
   - name: default
+    provisioner:
+      named_run_list: default
     run_list:
       - recipe[test::default]
 
   - name: installation_script
+    provisioner:
+      named_run_list: installation_script
     run_list:
       - recipe[test::installation_script]
 
   - name: installation_package
+    provisioner:
+      named_run_list: installation_package
     run_list:
       - recipe[test::installation_package]
 
   - name: installation_tarball
+    provisioner:
+      named_run_list: installation_tarball
     run_list:
       - recipe[test::installation_tarball]
 
   - name: install_and_stop
+    provisioner:
+      named_run_list: install_and_stop
     run_list:
       - recipe[test::install_and_stop]
 
   - name: resources
     provisioner:
+      named_run_list: resources
       enforce_idempotency: false
       multiple_converge: 1
     run_list:
@@ -59,6 +70,7 @@ suites:
 
   - name: network
     provisioner:
+      named_run_list: network
       enforce_idempotency: false
       multiple_converge: 1
     run_list:
@@ -67,6 +79,7 @@ suites:
 
   - name: volume
     provisioner:
+      named_run_list: volume
       enforce_idempotency: false
       multiple_converge: 1
     run_list:
@@ -76,6 +89,7 @@ suites:
 
   - name: registry
     provisioner:
+      named_run_list: registry
       enforce_idempotency: false
       multiple_converge: 1
     run_list:
@@ -84,6 +98,7 @@ suites:
 
   - name: swarm
     provisioner:
+      named_run_list: swarm
       enforce_idempotency: false
       multiple_converge: 1
     attributes:
@@ -103,5 +118,7 @@ suites:
       - recipe[test::swarm_service]
 
   - name: smoke
+    provisioner:
+      named_run_list: smoke
     run_list:
       - recipe[test::smoke]
