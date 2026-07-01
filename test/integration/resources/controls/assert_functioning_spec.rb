@@ -4,7 +4,7 @@ volumes_filter = '{{ .Config.Volumes }}'
 mounts_filter = '{{ .Mounts }}'
 uber_options_network_mode = 'bridge'
 chef_dir = ['/opt/cinc-workstation', '/opt/cinc', '/opt/chef'].find { |path| file(path).exist? } || '/opt/chef'
-docker_server_version = Gem::Version.new(docker.version['Server']['Version'])
+docker_server_version = Gem::Version.new(command('docker version --format "{{.Server.Version}}"').stdout.strip)
 
 ##################################################
 #  test/cookbooks/test/recipes/default.rb
