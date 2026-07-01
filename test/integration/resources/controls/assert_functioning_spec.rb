@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'inspec-docker-resources'
+
 volumes_filter = '{{ .Config.Volumes }}'
 mounts_filter = '{{ .Mounts }}'
 uber_options_network_mode = 'bridge'

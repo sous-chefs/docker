@@ -5,5 +5,3 @@ maintainer: Sous Chefs
 license: Apache-2.0
 summary: Resources tests for the docker cookbook
 version: 1.0.0
-gem_dependencies:
-  - name: inspec-docker-resources
