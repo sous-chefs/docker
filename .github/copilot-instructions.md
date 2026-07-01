@@ -27,7 +27,7 @@
 
 ### Essential Commands (strict order)
 ```bash
-berks install                   # Install dependencies (always first)
+chef install Policyfile.rb                   # Install dependencies (always first)
 cookstyle                       # Ruby/Chef linting
 yamllint .                      # YAML linting
 markdownlint-cli2 '**/*.md'     # Markdown linting
@@ -42,7 +42,7 @@ chef exec rspec                 # Unit tests (ChefSpec)
 - **Full CI Runtime:** 30+ minutes for complete matrix
 
 ### Common Issues and Solutions
-- **Always run `berks install` first** - most failures are dependency-related
+- **Always run `chef install Policyfile.rb` first** - most failures are dependency-related
 - **Docker must be running** for kitchen tests
 - **Chef Workstation required** - no workarounds, no alternatives
 - **Test data bags needed** (optional for some cookbooks) in `test/integration/data_bags/` for convergence
@@ -88,7 +88,7 @@ These instructions are validated for Sous Chefs cookbooks. **Do not search for b
 
 **Error Resolution Checklist:**
 1. Verify Chef Workstation installation
-2. Confirm `berks install` completed successfully
+2. Confirm `chef install Policyfile.rb` completed successfully
 3. Ensure Docker is running for integration tests
 4. Check for missing test data dependencies
 

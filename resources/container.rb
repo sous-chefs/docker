@@ -223,7 +223,7 @@ def coerce_tmpfs(v)
   when Hash, nil
     v
   when Array
-    v.each_with_object({}) { |path, h| h[path] = '' }
+    v.to_h { |path| [path, ''] }
   end
 end
 
@@ -307,9 +307,7 @@ def coerce_exposed_ports(v)
   else
     x = Array(v).map { |a| parse_port(a) }
     x.flatten!
-    x.each_with_object({}) do |y, h|
-      h[y['container_port']] = {}
-    end
+    x.to_h { |y| [y['container_port'], {}] }
   end
 end
 
