@@ -43,15 +43,11 @@ jobs:
         uses: sous-chefs/.github/.github/actions/install-workstation@8.0.4
       - name: Install InSpec Docker resource pack
         if: matrix.suite == 'resources'
-        run: inspec plugin install inspec-docker-resources
-        env:
-          CHEF_LICENSE: accept-no-persist
-          INSPEC_CONFIG_DIR: ${{ github.workspace }}/.inspec
+        run: chef gem install inspec-docker-resources
 
       - name: Test Kitchen
         uses: actionshub/test-kitchen@3.0.0
         env:
-          INSPEC_CONFIG_DIR: ${{ github.workspace }}/.inspec
           KITCHEN_LOCAL_YAML: kitchen.exec.yml
         with:
           suite: ${{ matrix.suite }}
