@@ -4,8 +4,9 @@ control 'docker-default-01' do
   impact 1.0
   title 'Docker service is installed and responsive'
 
-  describe docker.version do
-    its('Server.Version') { should match(/^\d+\.\d+\.\d+/) }
+  describe command('docker version --format "{{.Server.Version}}"') do
+    its(:exit_status) { should eq 0 }
+    its(:stdout) { should match(/^\d+\.\d+\.\d+/) }
   end
 
   describe command('docker info') do
