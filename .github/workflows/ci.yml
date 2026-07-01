@@ -46,10 +46,12 @@ jobs:
         run: inspec plugin install inspec-docker-resources
         env:
           CHEF_LICENSE: accept-no-persist
+          INSPEC_CONFIG_DIR: ${{ github.workspace }}/.inspec
 
       - name: Test Kitchen
         uses: actionshub/test-kitchen@3.0.0
         env:
+          INSPEC_CONFIG_DIR: ${{ github.workspace }}/.inspec
           KITCHEN_LOCAL_YAML: kitchen.exec.yml
         with:
           suite: ${{ matrix.suite }}
