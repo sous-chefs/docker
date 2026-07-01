@@ -41,8 +41,6 @@ jobs:
 
       - name: Install Cinc Workstation
         uses: sous-chefs/.github/.github/actions/install-workstation@8.0.4
-      - name: Install InSpec Docker resources
-        run: chef gem install inspec-docker-resources
 
       - name: Test Kitchen
         uses: actionshub/test-kitchen@3.0.0
