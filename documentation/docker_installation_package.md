@@ -75,48 +75,6 @@ it does not manage or restart the Docker service.
 `restart_target` implements the handoff between these two resources. It is set
 automatically by `docker_service` and should not be set in a recipe.
 
-### Applying This Pattern Elsewhere
-
-This pattern is useful when a higher-level resource coordinates separate
-install, configuration, and service resources:
-
-```ruby
-service_target = new_resource
-
-application_install 'example' do
-  restart_target service_target
-end
-
-application_config 'example' do
-  reload_target service_target
-end
-```
-
-The lower-level resources place notifications on the changes that require them:
-
-```ruby
-package 'example' do
-  notifies :restart, restart_target, :immediately
-end
-
-template '/etc/example.conf' do
-  notifies :reload, reload_target, :delayed
-end
-```
-
-This keeps the responsibilities separate:
-
-- The install resource knows which package changes require a restart.
-- The configuration resource knows which file changes require a reload or
-  restart.
-- The service resource owns the `:start`, `:stop`, `:reload`, and `:restart`
-  actions.
-- The higher-level resource connects them by passing the service resource as the
-  notification target.
-
-These generic examples illustrate the reusable pattern. The Docker cookbook
-currently uses it only for package-triggered restarts.
-
 ## Examples
 
 ### Install Latest Version of Docker
