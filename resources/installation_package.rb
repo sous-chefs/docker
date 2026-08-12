@@ -19,7 +19,9 @@ property :package_version, String, desired_state: false
 property :version, String, desired_state: false
 property :package_options, String, desired_state: false
 property :site_url, String, default: 'download.docker.com'
-property :restart_service, Chef::Resource, desired_state: false
+property :restart_service, Chef::Resource,
+         description: 'Internal notification target used by docker_service to restart Docker only when the package changes',
+         desired_state: false
 
 def el7?
   return true if platform_family?('rhel') && node['platform_version'].to_i == 7

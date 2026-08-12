@@ -9,15 +9,34 @@ The `docker_installation_package` resource is responsible for installing Docker 
 
 ## Properties
 
-| Property            | Type    | Default                 | Description                                             |
-|---------------------|---------|-------------------------|---------------------------------------------------------|
-| `setup_docker_repo` | Boolean | `true`                  | Whether to set up the Docker repository                 |
-| `repo_channel`      | String  | `'stable'`              | Repository channel to use (`stable`, `test`, `nightly`) |
-| `package_name`      | String  | `'docker-ce'`           | Name of the Docker package to install                   |
-| `package_version`   | String  | `nil`                   | Specific package version to install                     |
-| `version`           | String  | `nil`                   | Docker version to install (e.g., '20.10.23')            |
-| `package_options`   | String  | `nil`                   | Additional options to pass to the package manager       |
-| `site_url`          | String  | `'download.docker.com'` | Docker repository URL                                   |
+| Property            | Type             | Default                 | Description                                             |
+|---------------------|------------------|-------------------------|---------------------------------------------------------|
+| `setup_docker_repo` | Boolean          | `true`                  | Whether to set up the Docker repository                 |
+| `repo_channel`      | String           | `'stable'`              | Repository channel to use (`stable`, `test`, `nightly`) |
+| `package_name`      | String           | `'docker-ce'`           | Name of the Docker package to install                   |
+| `package_version`   | String           | `nil`                   | Specific package version to install                     |
+| `version`           | String           | `nil`                   | Docker version to install (e.g., '20.10.23')            |
+| `package_options`   | String           | `nil`                   | Additional options to pass to the package manager       |
+| `site_url`          | String           | `'download.docker.com'` | Docker repository URL                                   |
+| `restart_service`   | `Chef::Resource` | `nil`                   | Internal service notification target                    |
+
+### Internal Service Notification
+
+`restart_service` is internal wiring used by the `docker_service` resource.
+Normal cookbook consumers should not set it directly. `docker_service` passes
+its own resource object to `docker_installation_package`, which uses Chef's
+direct-resource notification support to restart Docker immediately when the
+Docker package changes. Repository metadata updates do not trigger the restart.
+
+The internal call has this shape:
+
+```ruby
+service = new_resource
+
+docker_installation_package 'default' do
+  restart_service service
+end
+```
 
 ## Examples
 
