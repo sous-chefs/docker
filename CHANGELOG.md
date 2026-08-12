@@ -5,6 +5,13 @@ This file is used to list changes made in each version of the docker cookbook.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [12.0.2](https://github.com/sous-chefs/docker/compare/v12.0.1...v12.0.2) (2026-08-12)
+
+
+### Bug Fixes
+
+* avoid Docker restart on apt refresh ([#1347](https://github.com/sous-chefs/docker/issues/1347)) ([e0836bf](https://github.com/sous-chefs/docker/commit/e0836bf4fef32f469a0aa6279e1fd41035b93a21))
+
 ## [12.0.1](https://github.com/sous-chefs/docker/compare/v12.0.0...v12.0.1) (2026-07-01)
 
 
