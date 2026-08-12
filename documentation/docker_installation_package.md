@@ -9,15 +9,71 @@ The `docker_installation_package` resource is responsible for installing Docker 
 
 ## Properties
 
-| Property            | Type    | Default                 | Description                                             |
-|---------------------|---------|-------------------------|---------------------------------------------------------|
-| `setup_docker_repo` | Boolean | `true`                  | Whether to set up the Docker repository                 |
-| `repo_channel`      | String  | `'stable'`              | Repository channel to use (`stable`, `test`, `nightly`) |
-| `package_name`      | String  | `'docker-ce'`           | Name of the Docker package to install                   |
-| `package_version`   | String  | `nil`                   | Specific package version to install                     |
-| `version`           | String  | `nil`                   | Docker version to install (e.g., '20.10.23')            |
-| `package_options`   | String  | `nil`                   | Additional options to pass to the package manager       |
-| `site_url`          | String  | `'download.docker.com'` | Docker repository URL                                   |
+| Property            | Type             | Default                 | Description                                             |
+|---------------------|------------------|-------------------------|---------------------------------------------------------|
+| `setup_docker_repo` | Boolean          | `true`                  | Whether to set up the Docker repository                 |
+| `repo_channel`      | String           | `'stable'`              | Repository channel to use (`stable`, `test`, `nightly`) |
+| `package_name`      | String           | `'docker-ce'`           | Name of the Docker package to install                   |
+| `package_version`   | String           | `nil`                   | Specific package version to install                     |
+| `version`           | String           | `nil`                   | Docker version to install (e.g., '20.10.23')            |
+| `package_options`   | String           | `nil`                   | Additional options to pass to the package manager       |
+| `site_url`          | String           | `'download.docker.com'` | Docker repository URL                                   |
+| `restart_target`    | `Chef::Resource` | `nil`                   | Internal property set automatically by `docker_service` |
+
+### How Package-Triggered Restarts Work
+
+Use `docker_service` when this cookbook should install Docker and manage its
+service:
+
+```ruby
+docker_service 'default' do
+  install_method 'package'
+  action [:create, :start]
+end
+```
+
+The `docker_service` resource creates the package-installation resource and
+passes itself as that resource's `restart_target`. This tells the package
+installer which Docker service resource to notify after changing the package.
+
+The relevant internal code is equivalent to:
+
+```ruby
+service_to_restart = new_resource
+
+docker_installation_package 'default' do
+  restart_target service_to_restart
+end
+```
+
+Passing the object does **not** restart Docker. It only identifies which Chef
+resource should receive a future notification. The package resource decides
+whether to send that notification. Think of `restart_target` as an address:
+passing the address does not send a message; it tells Chef where to deliver the
+message if the package changes.
+
+The package resource uses that address here:
+
+```ruby
+package 'docker-ce' do
+  notifies :restart, restart_target, :immediately
+end
+```
+
+Chef sends a resource's notifications only when that resource updates the
+system. The results are therefore:
+
+- A Docker package install or upgrade restarts Docker immediately.
+- A Chef run where the Docker package is already correct does not restart
+  Docker.
+- A repository or package-cache update without a package change does not restart
+  Docker.
+
+If you call `docker_installation_package` directly, it only manages the package;
+it does not manage or restart the Docker service.
+
+`restart_target` implements the handoff between these two resources. It is set
+automatically by `docker_service` and should not be set in a recipe.
 
 ## Examples
 
