@@ -33,9 +33,8 @@ end
 ```
 
 The `docker_service` resource creates the package-installation resource and
-passes itself as that resource's `restart_target`. In plain English, it tells
-the package installer: "If you change the Docker package, notify this Docker
-service resource."
+passes itself as that resource's `restart_target`. This tells the package
+installer which Docker service resource to notify after changing the package.
 
 The relevant internal code is equivalent to:
 
