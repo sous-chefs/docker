@@ -20,7 +20,7 @@ property :version, String, desired_state: false
 property :package_options, String, desired_state: false
 property :site_url, String, default: 'download.docker.com'
 property :restart_service, Chef::Resource,
-         description: 'Internal notification target used by docker_service to restart Docker only when the package changes',
+         description: 'Internal: the docker_service resource to notify when the Docker package changes',
          desired_state: false
 
 def el7?

@@ -18,25 +18,31 @@ The `docker_installation_package` resource is responsible for installing Docker 
 | `version`           | String           | `nil`                   | Docker version to install (e.g., '20.10.23')            |
 | `package_options`   | String           | `nil`                   | Additional options to pass to the package manager       |
 | `site_url`          | String           | `'download.docker.com'` | Docker repository URL                                   |
-| `restart_service`   | `Chef::Resource` | `nil`                   | Internal service notification target                    |
+| `restart_service`   | `Chef::Resource` | `nil`                   | Internal property set automatically by `docker_service` |
 
-### Internal Service Notification
+### Restart Behavior
 
-`restart_service` is internal wiring used by the `docker_service` resource.
-Normal cookbook consumers should not set it directly. `docker_service` passes
-its own resource object to `docker_installation_package`, which uses Chef's
-direct-resource notification support to restart Docker immediately when the
-Docker package changes. Repository metadata updates do not trigger the restart.
-
-The internal call has this shape:
+Use `docker_service` when this cookbook should install Docker and manage its
+service:
 
 ```ruby
-service = new_resource
-
-docker_installation_package 'default' do
-  restart_service service
+docker_service 'default' do
+  install_method 'package'
+  action [:create, :start]
 end
 ```
+
+With this usage:
+
+- A Docker package install or upgrade restarts Docker immediately.
+- A repository or package-cache update without a package change does not restart
+  Docker.
+
+If you call `docker_installation_package` directly, it only manages the package;
+it does not manage or restart the Docker service.
+
+`restart_service` implements the handoff between these two resources. It is set
+automatically by `docker_service` and should not be set in a recipe.
 
 ## Examples
 
