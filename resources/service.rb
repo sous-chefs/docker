@@ -99,7 +99,7 @@ action :create do
   installation do
     action :create
     if service.install_method == 'package'
-      restart_service service
+      restart_target service
     else
       notifies :restart, service, :immediately
     end

@@ -19,7 +19,7 @@ property :package_version, String, desired_state: false
 property :version, String, desired_state: false
 property :package_options, String, desired_state: false
 property :site_url, String, default: 'download.docker.com'
-property :restart_service, Chef::Resource,
+property :restart_target, Chef::Resource,
          description: 'Internal: the docker_service resource to notify when the Docker package changes',
          desired_state: false
 
@@ -176,13 +176,13 @@ action :create do
   end
 
   version = new_resource.package_version || version_string(new_resource.version)
-  restart_service = new_resource.restart_service
+  restart_target = new_resource.restart_target
 
   package new_resource.package_name do
     version version
     options new_resource.package_options
     action :install
-    notifies :restart, restart_service, :immediately if restart_service
+    notifies :restart, restart_target, :immediately if restart_target
   end
 end
 

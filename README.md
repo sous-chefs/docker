@@ -248,7 +248,7 @@ end
 - `package_options` - Manually specify additional options, like apt-get directives for example
 - `setup_docker_repo` - Setup the download.docker.com repo. If you would like to manage the repo yourself so you can use an internal repo then set this to false. default: true on all platforms except Amazon Linux.
 - `repo_channel` - The channel of docker to setup from download.docker.com. Only used if `setup_docker_repo` is true. default: 'stable'
-- `restart_service` - Internal property set automatically by `docker_service` to restart Docker after a package change. Do not set this in a recipe.
+- `restart_target` - Internal service-resource reference set automatically by `docker_service`. The package resource notifies this target only when the Docker package changes. Do not set this in a recipe.
 
 ## docker_service_manager
 

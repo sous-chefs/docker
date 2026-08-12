@@ -18,9 +18,9 @@ The `docker_installation_package` resource is responsible for installing Docker 
 | `version`           | String           | `nil`                   | Docker version to install (e.g., '20.10.23')            |
 | `package_options`   | String           | `nil`                   | Additional options to pass to the package manager       |
 | `site_url`          | String           | `'download.docker.com'` | Docker repository URL                                   |
-| `restart_service`   | `Chef::Resource` | `nil`                   | Internal property set automatically by `docker_service` |
+| `restart_target`    | `Chef::Resource` | `nil`                   | Internal property set automatically by `docker_service` |
 
-### Restart Behavior
+### How Package-Triggered Restarts Work
 
 Use `docker_service` when this cookbook should install Docker and manage its
 service:
@@ -32,17 +32,91 @@ docker_service 'default' do
 end
 ```
 
-With this usage:
+The `docker_service` resource creates the package-installation resource and
+passes itself as that resource's `restart_target`. In plain English, it tells
+the package installer: "If you change the Docker package, notify this Docker
+service resource."
+
+The relevant internal code is equivalent to:
+
+```ruby
+service_to_restart = new_resource
+
+docker_installation_package 'default' do
+  restart_target service_to_restart
+end
+```
+
+Passing the object does **not** restart Docker. It only identifies which Chef
+resource should receive a future notification. The package resource decides
+whether to send that notification. Think of `restart_target` as an address:
+passing the address does not send a message; it tells Chef where to deliver the
+message if the package changes.
+
+The package resource uses that address here:
+
+```ruby
+package 'docker-ce' do
+  notifies :restart, restart_target, :immediately
+end
+```
+
+Chef sends a resource's notifications only when that resource updates the
+system. The results are therefore:
 
 - A Docker package install or upgrade restarts Docker immediately.
+- A Chef run where the Docker package is already correct does not restart
+  Docker.
 - A repository or package-cache update without a package change does not restart
   Docker.
 
 If you call `docker_installation_package` directly, it only manages the package;
 it does not manage or restart the Docker service.
 
-`restart_service` implements the handoff between these two resources. It is set
+`restart_target` implements the handoff between these two resources. It is set
 automatically by `docker_service` and should not be set in a recipe.
+
+### Applying This Pattern Elsewhere
+
+This pattern is useful when a higher-level resource coordinates separate
+install, configuration, and service resources:
+
+```ruby
+service_target = new_resource
+
+application_install 'example' do
+  restart_target service_target
+end
+
+application_config 'example' do
+  reload_target service_target
+end
+```
+
+The lower-level resources place notifications on the changes that require them:
+
+```ruby
+package 'example' do
+  notifies :restart, restart_target, :immediately
+end
+
+template '/etc/example.conf' do
+  notifies :reload, reload_target, :delayed
+end
+```
+
+This keeps the responsibilities separate:
+
+- The install resource knows which package changes require a restart.
+- The configuration resource knows which file changes require a reload or
+  restart.
+- The service resource owns the `:start`, `:stop`, `:reload`, and `:restart`
+  actions.
+- The higher-level resource connects them by passing the service resource as the
+  notification target.
+
+These generic examples illustrate the reusable pattern. The Docker cookbook
+currently uses it only for package-triggered restarts.
 
 ## Examples
 
