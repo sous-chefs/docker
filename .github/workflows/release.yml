@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   release:
-    uses: sous-chefs/.github/.github/workflows/release-cookbook.yml@main
+    uses: sous-chefs/.github/.github/workflows/release-cookbook.yml@9.0.1
     with:
       publish_oci: true
     secrets:
