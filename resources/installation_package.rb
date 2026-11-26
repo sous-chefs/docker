@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 unified_mode true
-use 'partial/_base'
+use '_partial/_base'
 
 resource_name :docker_installation_package
 provides :docker_installation_package
@@ -17,6 +19,9 @@ property :package_version, String, desired_state: false
 property :version, String, desired_state: false
 property :package_options, String, desired_state: false
 property :site_url, String, default: 'download.docker.com'
+property :restart_target, Chef::Resource,
+         description: 'Internal: the docker_service resource to notify when the Docker package changes',
+         desired_state: false
 
 def el7?
   return true if platform_family?('rhel') && node['platform_version'].to_i == 7
@@ -48,33 +53,13 @@ def ubuntu?
   false
 end
 
-def stretch?
-  return true if platform?('debian') && node['platform_version'].to_i == 9
-  false
-end
-
-def buster?
-  return true if platform?('debian') && node['platform_version'].to_i == 10
-  false
-end
-
-def bullseye?
-  return true if platform?('debian') && node['platform_version'].to_i == 11
-  false
-end
-
 def bookworm?
   return true if platform?('debian') && node['platform_version'].to_i == 12
   false
 end
 
-def bionic?
-  return true if platform?('ubuntu') && node['platform_version'] == '18.04'
-  false
-end
-
-def focal?
-  return true if platform?('ubuntu') && node['platform_version'] == '20.04'
+def trixie?
+  return true if platform?('debian') && node['platform_version'].to_i == 13
   false
 end
 
@@ -96,18 +81,10 @@ end
 # https://github.com/chef/chef/issues/4103
 def version_string(v)
   return if v.nil?
-  codename = if stretch? # deb 9
-               'stretch'
-             elsif buster? # deb 10
-               'buster'
-             elsif bullseye? # deb 11
-               'bullseye'
-             elsif bookworm? # deb 12
+  codename = if bookworm? # deb 12
                'bookworm'
-             elsif bionic? # ubuntu 18.04
-               'bionic'
-             elsif focal? # ubuntu 20.04
-               'focal'
+             elsif trixie? # deb 13
+               'trixie'
              elsif jammy? # ubuntu 22.04
                'jammy'
              elsif noble? # ubuntu 24.04
@@ -117,14 +94,11 @@ def version_string(v)
   # https://github.com/seemethere/docker-ce-packaging/blob/9ba8e36e8588ea75209d813558c8065844c953a0/deb/gen-deb-ver#L16-L20
   test_version = '3'
 
-  if v.to_f < 18.06 && !bionic?
-    return "#{v}~ce-0~debian" if debian?
-    return "#{v}~ce-0~ubuntu" if ubuntu?
-  elsif v.to_f >= 23.0 && ubuntu?
+  if v.to_f >= 23.0 && ubuntu?
     "5:#{v}-1~ubuntu.#{node['platform_version']}~#{codename}"
   elsif v.to_f >= 18.09 && debuntu?
     return "5:#{v}~#{test_version}-0~debian-#{codename}" if debian?
-    return "5:#{v}~#{test_version}-0~ubuntu-#{codename}" if ubuntu?
+    "5:#{v}~#{test_version}-0~ubuntu-#{codename}" if ubuntu?
   else
     return "#{v}~ce~#{test_version}-0~debian" if debian?
     return "#{v}~ce~#{test_version}-0~ubuntu" if ubuntu?
@@ -136,24 +110,28 @@ action :create do
   if new_resource.setup_docker_repo
     if platform_family?('rhel', 'fedora')
       arch = node['kernel']['machine']
+      major = node['platform_version'].to_i
+      distro_packages_available = [9, 10].include?(major) && %w(x86_64 aarch64).include?(arch)
+      official_channel = new_resource.site_url == 'download.docker.com' && %w(stable test).include?(new_resource.repo_channel)
+      pinned_version = new_resource.package_version || new_resource.version
       platform =
         if platform?('fedora')
           'fedora'
           # s390x is only available under rhel platform
         elsif platform?('redhat', 'oracle') && (arch == 's390x' || !el7?)
           'rhel'
-          # Rocky and AlmaLinux are CentOS successors, use centos repos
-        elsif platform?('rocky', 'almalinux')
-          'centos'
           # use rhel for all el8 since CentOS 8 is dead
         elsif el8? && !platform?('centos')
           'rhel'
+        # The CentOS feeds retain older versions that are absent from these repositories.
+        elsif platform?('rocky', 'almalinux') && distro_packages_available && official_channel && !pinned_version
+          platform?('rocky') ? 'rocky' : 'alma'
         else
           'centos'
         end
 
       yum_repository 'docker' do
-        baseurl "https://#{new_resource.site_url}/linux/#{platform}/#{node['platform_version'].to_i}/#{arch}/#{new_resource.repo_channel}"
+        baseurl "https://#{new_resource.site_url}/linux/#{platform}/#{major}/#{arch}/#{new_resource.repo_channel}"
         gpgkey "https://#{new_resource.site_url}/linux/#{platform}/gpg"
         description "Docker #{new_resource.repo_channel.capitalize} repository"
         gpgcheck true
@@ -194,7 +172,7 @@ action :create do
         # TODO: This eventually should go away once Debian 12 and Ubuntu 24.04 go EOL
         if (debian? && node['platform_version'].to_i < 13) || (ubuntu? && node['platform_version'].to_f <= 24.04)
           signed_by false
-        end if Chef::VERSION >= Gem::Version.new('18.7.10')
+        end if Gem::Version.new('18.7.10') <= Chef::VERSION
         action :add
       end
 
@@ -205,11 +183,13 @@ action :create do
   end
 
   version = new_resource.package_version || version_string(new_resource.version)
+  restart_target = new_resource.restart_target
 
   package new_resource.package_name do
     version version
     options new_resource.package_options
     action :install
+    notifies :restart, restart_target, :immediately if restart_target
   end
 end
 

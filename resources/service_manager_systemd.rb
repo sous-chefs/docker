@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 unified_mode true
-use 'partial/_base'
-use 'partial/_service_base'
+use '_partial/_base'
+use '_partial/_service_base'
 
 resource_name :docker_service_manager_systemd
 provides :docker_service_manager_systemd
@@ -129,7 +131,8 @@ action :stop do
     provider Chef::Provider::Service::Systemd
     supports status: true
     action [:disable, :stop]
-    only_if { ::File.exist?("/lib/systemd/system/#{docker_name}.service") }
+    # Limit this action to installations with the unit at the cookbook's expected path.
+    only_if { ::File.exist?("/lib/systemd/system/#{docker_name}.service") } # rubocop:disable Chef/RedundantCode/ServiceGuardOnStopDisable
   end
 
   systemd_unit "#{docker_name}.socket" do

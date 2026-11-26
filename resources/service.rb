@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 unified_mode true
-use 'partial/_base'
-use 'partial/_service_base'
+use '_partial/_base'
+use '_partial/_service_base'
 
 resource_name :docker_service
 
@@ -93,9 +95,14 @@ end
 action :create do
   validate_install_method
 
+  service = new_resource
   installation do
     action :create
-    notifies :restart, new_resource, :immediately
+    if service.install_method == 'package'
+      restart_target service
+    else
+      notifies :restart, service, :immediately
+    end
   end
 end
 

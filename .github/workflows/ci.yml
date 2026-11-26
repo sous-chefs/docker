@@ -7,9 +7,13 @@ name: ci
     branches:
       - main
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   lint-unit:
-    uses: sous-chefs/.github/.github/workflows/lint-unit.yml@main
+    uses: sous-chefs/.github/.github/workflows/lint-unit.yml@9.0.1
     permissions:
       actions: write
       checks: write
@@ -19,120 +23,42 @@ jobs:
 
   integration:
     needs: lint-unit
-    runs-on: ubuntu-24.04
-    strategy:
-      matrix:
-        os:
-          - almalinux-9
-          - almalinux-10
-          - amazonlinux-2023
-          - centos-stream-9
-          - centos-stream-10
-          - debian-12
-          - rockylinux-8
-          - rockylinux-9
-          - rockylinux-10
-          - ubuntu-2204
-          - ubuntu-2404
-        suite:
-          - "installation-package"
-          - "installation-tarball"
-          - "install-and-stop"
-      fail-fast: false
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v5
-
-      - name: Test Kitchen
-        uses: ./.github/actions/test-kitchen
-        with:
-          kitchen-yaml: kitchen.dokken.yml
-          suite: ${{ matrix.suite }}
-          os: ${{ matrix.os }}
-          license-id: ${{ secrets.CHEF_LICENSE_KEY }}
-
-  installation-script:
-    needs: lint-unit
-    runs-on: ubuntu-24.04
-    strategy:
-      matrix:
-        os:
-          - centos-stream-9
-          - centos-stream-10
-          - debian-12
-          - ubuntu-2204
-          - ubuntu-2404
-        suite: ["installation-script"]
-      fail-fast: false
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v5
-
-      - name: Test Kitchen
-        uses: ./.github/actions/test-kitchen
-        with:
-          kitchen-yaml: kitchen.dokken.yml
-          suite: ${{ matrix.suite }}
-          os: ${{ matrix.os }}
-          license-id: ${{ secrets.CHEF_LICENSE_KEY }}
-
-  swarm:
-    needs: lint-unit
-    runs-on: ubuntu-24.04
-    strategy:
-      matrix:
-        os: ["ubuntu-2204"]
-        suite: ["swarm"]
-      fail-fast: false
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v5
-
-      - name: Setup VirtualBox & Vagrant
-        uses: ./.github/actions/virtualbox-setup
-
-      - name: Test Kitchen
-        uses: ./.github/actions/test-kitchen
-        with:
-          kitchen-yaml: kitchen.yml
-          suite: ${{ matrix.suite }}
-          os: ${{ matrix.os }}
-          license-id: ${{ secrets.CHEF_LICENSE_KEY }}
-
-  smoke:
-    needs: lint-unit
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        os:
-          - "almalinux-8"
-          - "almalinux-9"
-          - "debian-12"
-          - "rockylinux-8"
-          - "rockylinux-9"
-          - "ubuntu-2004"
-          - "ubuntu-2204"
-          - "ubuntu-2404"
         suite:
+          - "default"
+          - "installation-package"
+          - "installation-tarball"
+          - "installation-script"
+          - "install-and-stop"
+          - "resources"
+          - "network"
+          - "volume"
+          - "registry"
+          - "swarm"
           - "smoke"
       fail-fast: false
     steps:
       - name: Check out code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
-      - name: Setup VirtualBox & Vagrant
-        uses: ./.github/actions/virtualbox-setup
+      - name: Install Cinc Workstation
+        uses: sous-chefs/.github/.github/actions/install-workstation@9.0.1
+      - name: Install InSpec Docker resource pack
+        if: matrix.suite == 'resources'
+        run: chef gem install inspec-docker-resources
 
       - name: Test Kitchen
-        uses: ./.github/actions/test-kitchen
+        uses: actionshub/test-kitchen@3.0.0
+        env:
+          KITCHEN_LOCAL_YAML: kitchen.exec.yml
         with:
-          kitchen-yaml: kitchen.yml
           suite: ${{ matrix.suite }}
-          os: ${{ matrix.os }}
-          license-id: ${{ secrets.CHEF_LICENSE_KEY }}
+          os: "ubuntu-latest"
 
   final:
-    needs: [lint-unit, installation-script, integration, swarm, smoke]
+    needs: [lint-unit, integration]
     runs-on: ubuntu-latest
     steps:
       - name: Complete

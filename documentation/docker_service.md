@@ -72,6 +72,9 @@ The service management strategy is automatically chosen based on the platform bu
 - `cluster_advertise` - Cluster advertisement configuration
 - `cluster_store_opts` - Cluster store options (String or Array)
 
+Docker Engine 23.0 removed the classic cluster store daemon flags. These properties are ignored
+when the installed Docker version is 23.0 or later.
+
 ### API and Security
 
 - `api_cors_header` - Set CORS headers for remote API

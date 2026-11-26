@@ -1,0 +1,2 @@
+[env]
+_.path = ["{{config_root}}/bin", "/opt/chef-workstation/bin"]

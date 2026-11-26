@@ -1,0 +1,7 @@
+---
+name: volume
+title: Volume Tests
+maintainer: Sous Chefs
+license: Apache-2.0
+summary: Volume tests for the docker cookbook
+version: 1.0.0

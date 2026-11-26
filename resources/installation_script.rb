@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 unified_mode true
-use 'partial/_base'
+use '_partial/_base'
 
 provides :docker_installation, os: 'linux'
 property :repo, %w(stable test), default: 'stable', desired_state: false

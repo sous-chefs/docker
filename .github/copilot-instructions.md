@@ -27,7 +27,7 @@
 
 ### Essential Commands (strict order)
 ```bash
-berks install                   # Install dependencies (always first)
+chef install Policyfile.rb                   # Install dependencies (always first)
 cookstyle                       # Ruby/Chef linting
 yamllint .                      # YAML linting
 markdownlint-cli2 '**/*.md'     # Markdown linting
@@ -42,7 +42,7 @@ chef exec rspec                 # Unit tests (ChefSpec)
 - **Full CI Runtime:** 30+ minutes for complete matrix
 
 ### Common Issues and Solutions
-- **Always run `berks install` first** - most failures are dependency-related
+- **Always run `chef install Policyfile.rb` first** - most failures are dependency-related
 - **Docker must be running** for kitchen tests
 - **Chef Workstation required** - no workarounds, no alternatives
 - **Test data bags needed** (optional for some cookbooks) in `test/integration/data_bags/` for convergence
@@ -55,11 +55,11 @@ chef exec rspec                 # Unit tests (ChefSpec)
 3. Also update any InSpec tests under test/integration
 4. Ensure cookstyle and rspec passes at least. You may run `cookstyle -a` to automatically fix issues if needed.
 5. Also always update all documentation found in README.md and any files under documentation/*
-6. **Do NOT update CHANGELOG.md** - This cookbook uses release-please for automatic changelog generation
+6. **Always update CHANGELOG.md** (required by Dangerfile) - Make sure this conforms with the Sous Chefs changelog standards.
 
 ### Pull Request Requirements
 - **PR description >10 chars** (Danger enforced)
-- **Do NOT manually update CHANGELOG.md** - release-please handles this automatically
+- **CHANGELOG.md entry** for all code changes
 - **Version labels** (major/minor/patch) required
 - **All linters must pass** (cookstyle, yamllint, markdownlint)
 - **Test updates** needed for code changes >5 lines and parameter changes that affect the code logic
@@ -88,7 +88,7 @@ These instructions are validated for Sous Chefs cookbooks. **Do not search for b
 
 **Error Resolution Checklist:**
 1. Verify Chef Workstation installation
-2. Confirm `berks install` completed successfully
+2. Confirm `chef install Policyfile.rb` completed successfully
 3. Ensure Docker is running for integration tests
 4. Check for missing test data dependencies
 

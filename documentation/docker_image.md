@@ -21,6 +21,7 @@ A `docker_image`'s full identifier is a string in the form `<repo>:<tag>`. There
 public registry vs a private one.
 
 - `repo` - aka `image_name` - The first half of a Docker image's identity. This is a string in the form: `registry:port/owner/image_name`. If the `registry:port` portion is left off, Docker will implicitly use the Docker public registry. "Official Images" omit the owner part. This means a repo id can be as short as `busybox`, `alpine`, or `centos`. These names refer to official images on the public registry. Names can be as long as `my.computers.biz:5043/what/ever` to refer to custom images on an private registry. Often you'll see something like `chef/chef` to refer to private images on the public registry. - Defaults to resource name.
+- `repo_credential_override` - For pulls and pushes, select the exact `repository_prefix` registered by an earlier [docker_registry](docker_registry.md) resource on the image's registry. The action fails if the prefix is missing. Omit this property to use the longest matching prefix, the registry default, or anonymous access.
 - `tag` - The second half of a Docker image's identity. - Defaults to `latest`
 - `source` - Path to input for the `:import`, `:build` and `:build_if_missing` actions. For building, this can be a Dockerfile, a tarball containing a Dockerfile in its root, or a directory containing a Dockerfile. For `:import`, this should be a tarball containing Docker formatted image, as generated with `:save`.
 - `destination` - Path for output from the `:save` action.

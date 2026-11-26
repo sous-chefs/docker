@@ -9,12 +9,12 @@ The `docker_installation_tarball` resource installs Docker on a system using pre
 
 ## Properties
 
-| Property    | Type   | Default           | Description                                |
-|------------|--------|-------------------|--------------------------------------------|
-| `checksum`  | String | Based on version  | SHA256 checksum of the Docker tarball     |
-| `source`    | String | Based on version  | URL of the Docker tarball                 |
-| `channel`   | String | `'stable'`        | Docker release channel to use             |
-| `version`   | String | `'20.10.11'`      | Docker version to install                 |
+| Property   | Type   | Default          | Description                           |
+|------------|--------|------------------|---------------------------------------|
+| `checksum` | String | Based on version | SHA256 checksum of the Docker tarball |
+| `source`   | String | Based on version | URL of the Docker tarball             |
+| `channel`  | String | `'stable'`       | Docker release channel to use         |
+| `version`  | String | `'20.10.11'`     | Docker version to install             |
 
 ## Examples
 

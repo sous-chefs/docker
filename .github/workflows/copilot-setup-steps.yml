@@ -17,8 +17,8 @@ jobs:
       contents: read
     steps:
       - name: Check out code
-        uses: actions/checkout@v5
-      - name: Install Chef
-        uses: actionshub/chef-install@main
+        uses: actions/checkout@v7
+      - name: Install Cinc Workstation
+        uses: sous-chefs/.github/.github/actions/install-workstation@9.0.1
       - name: Install cookbooks
-        run: berks install
+        run: chef install Policyfile.rb

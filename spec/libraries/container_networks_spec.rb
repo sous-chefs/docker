@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 require 'docker'
 require_relative '../../libraries/helpers_network'

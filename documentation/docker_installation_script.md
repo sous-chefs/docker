@@ -9,10 +9,10 @@ The `docker_installation_script` resource installs Docker on Linux systems using
 
 ## Properties
 
-| Property     | Type   | Default        | Description                                                           |
-|-------------|--------|----------------|-----------------------------------------------------------------------|
-| `repo`      | String | `'main'`       | Repository to use for installation. One of: `main`, `test`, or `experimental` |
-| `script_url`| String | Based on repo  | URL of the installation script. Defaults to official Docker URLs based on the repo property |
+| Property     | Type   | Default       | Description                                                                                 |
+|--------------|--------|---------------|---------------------------------------------------------------------------------------------|
+| `repo`       | String | `'main'`      | Repository to use for installation. One of: `main`, `test`, or `experimental`               |
+| `script_url` | String | Based on repo | URL of the installation script. Defaults to official Docker URLs based on the repo property |
 
 ## Examples
 

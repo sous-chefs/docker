@@ -1,5 +1,10 @@
+# frozen_string_literal: true
+
 unified_mode true
-use 'partial/_base'
+use '_partial/_base'
+
+resource_name :docker_image_prune
+provides :docker_image_prune
 
 property :read_timeout, Integer, default: 120, desired_state: false
 property :host, [String, nil], default: lazy { ENV['DOCKER_HOST'] }, desired_state: false

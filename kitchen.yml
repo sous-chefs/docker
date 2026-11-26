@@ -18,37 +18,51 @@ verifier:
   name: inspec
 
 platforms:
-  - name: almalinux-8
   - name: almalinux-9
+  - name: almalinux-10
+  - name: amazonlinux-2023
+  - name: centos-stream-9
+  - name: centos-stream-10
   - name: debian-12
-  - name: rockylinux-8
+  - name: debian-13
+  - name: fedora-latest
+  - name: oraclelinux-8
+  - name: oraclelinux-9
   - name: rockylinux-9
-  - name: ubuntu-20.04
+  - name: rockylinux-10
   - name: ubuntu-22.04
   - name: ubuntu-24.04
 
 suites:
+  - name: default
+    run_list:
+      - recipe[test::default]
+
   - name: installation_script
     excludes:
-      - 'almalinux'
-      - 'amazonlinux'
+      - 'almalinux-9'
+      - 'almalinux-10'
+      - 'amazonlinux-2023'
+      - 'oraclelinux-8'
+      - 'oraclelinux-9'
       - 'rockylinux-9'
+      - 'rockylinux-10'
     run_list:
-      - recipe[docker_test::installation_script]
+      - recipe[test::installation_script]
 
   - name: installation_package
     run_list:
-      - recipe[docker_test::installation_package]
+      - recipe[test::installation_package]
     excludes:
       - 'amazonlinux-2'
 
   - name: installation_tarball
     run_list:
-      - recipe[docker_test::installation_tarball]
+      - recipe[test::installation_tarball]
 
   - name: install_and_stop
     run_list:
-      - recipe[docker_test::install_and_stop]
+      - recipe[test::install_and_stop]
 
   ##################
   # resource testing
@@ -58,44 +72,44 @@ suites:
       enforce_idempotency: false
       multiple_converge: 1
     run_list:
-      - recipe[docker_test::default]
-      - recipe[docker_test::image]
-      - recipe[docker_test::container]
-      - recipe[docker_test::exec]
-      - recipe[docker_test::plugin]
-      - recipe[docker_test::image_prune]
-      - recipe[docker_test::volume_prune]
+      - recipe[test::default]
+      - recipe[test::image]
+      - recipe[test::container]
+      - recipe[test::exec]
+      - recipe[test::plugin]
+      - recipe[test::image_prune]
+      - recipe[test::volume_prune]
 
   - name: network
     provisioner:
       enforce_idempotency: false
       multiple_converge: 1
     run_list:
-      - recipe[docker_test::default]
-      - recipe[docker_test::network]
+      - recipe[test::default]
+      - recipe[test::network]
 
   - name: volume
     provisioner:
       enforce_idempotency: false
       multiple_converge: 1
     run_list:
-      - recipe[docker_test::default]
-      - recipe[docker_test::volume]
-      - recipe[docker_test::volume_prune]
+      - recipe[test::default]
+      - recipe[test::volume]
+      - recipe[test::volume_prune]
 
   - name: registry
     provisioner:
       enforce_idempotency: false
       multiple_converge: 1
     run_list:
-      - recipe[docker_test::default]
-      - recipe[docker_test::registry]
+      - recipe[test::default]
+      - recipe[test::registry]
 
   ####################
   # swarm testing
   ####################
 
-  - name: swarm
+  - name: swarm_manager
     driver:
       network:
         - ["private_network", {ip: "192.168.56.10"}]
@@ -115,8 +129,8 @@ suites:
             publish: ['80:80']
             replicas: 2
     run_list:
-      - recipe[docker_test::swarm]
-      - recipe[docker_test::swarm_service]
+      - recipe[test::swarm]
+      - recipe[test::swarm_service]
 
   - name: swarm_worker
     driver:
@@ -134,7 +148,7 @@ suites:
             listen_addr: '0.0.0.0:2377'
             # Token will be obtained from the manager node
     run_list:
-      - recipe[docker_test::swarm_worker]
+      - recipe[test::swarm_worker]
 
   #############################
   # quick service smoke testing
@@ -142,7 +156,7 @@ suites:
 
   - name: smoke
     run_list:
-      - recipe[docker_test::smoke]
+      - recipe[test::smoke]
 
   ###############################
   # docker_swarm resources
@@ -166,5 +180,5 @@ suites:
             publish: ['80:80']
             replicas: 2
     run_list:
-      - recipe[docker_test::swarm]
-      - recipe[docker_test::swarm_service]
+      - recipe[test::swarm]
+      - recipe[test::swarm_service]

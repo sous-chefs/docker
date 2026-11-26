@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 unified_mode true
-use 'partial/_base'
-use 'partial/_service_base'
+use '_partial/_base'
+use '_partial/_service_base'
 
 resource_name :docker_service_manager_execute
 provides :docker_service_manager_execute

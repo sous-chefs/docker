@@ -1,0 +1,7 @@
+---
+name: swarm_worker
+title: Swarm Worker Tests
+maintainer: Sous Chefs
+license: Apache-2.0
+summary: Swarm worker tests for the docker cookbook
+version: 1.0.0

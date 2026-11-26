@@ -23,12 +23,10 @@ This cookbook is maintained by the Sous Chefs. The Sous Chefs are a community of
 ## Platform Support
 
 - Amazon Linux 2
-- Debian 9/10/11/12
+- Debian 9/10/11
 - Fedora
-- Ubuntu 18.04/20.04/22.04/24.04
-- CentOS 7/8/9
-- Rocky Linux 8/9
-- AlmaLinux 8/9
+- Ubuntu 18.04/20.04/22.04
+- CentOS 7/8
 
 ## Cookbook Dependencies
 
@@ -70,7 +68,7 @@ end
 
 The cookbooks run by test-kitchen make excellent usage examples.
 
-Those recipes are found at `test/cookbooks/docker_test`.
+Those recipes are found at `test/cookbooks/test`.
 
 ## Resources Overview
 
@@ -250,6 +248,7 @@ end
 - `package_options` - Manually specify additional options, like apt-get directives for example
 - `setup_docker_repo` - Setup the download.docker.com repo. If you would like to manage the repo yourself so you can use an internal repo then set this to false. default: true on all platforms except Amazon Linux.
 - `repo_channel` - The channel of docker to setup from download.docker.com. Only used if `setup_docker_repo` is true. default: 'stable'
+- `restart_target` - Internal service-resource reference set automatically by `docker_service`. The package resource notifies this target only when the Docker package changes. Do not set this in a recipe.
 
 ## docker_service_manager
 
