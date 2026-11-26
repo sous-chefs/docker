@@ -12,15 +12,15 @@ The `docker_service_manager_execute` resource manages the Docker daemon using Ch
 
 This resource inherits properties from the `docker_service_base` resource. Common properties include:
 
-| Property           | Type   | Default    | Description                                    |
-|-------------------|--------|------------|------------------------------------------------|
-| `docker_daemon_cmd`| String | Generated  | Command to start the Docker daemon            |
-| `logfile`         | String | Based on name | Path to the log file                       |
-| `pidfile`         | String | Based on name | Path to the PID file                       |
-| `http_proxy`      | String | `nil`      | HTTP proxy settings                           |
-| `https_proxy`     | String | `nil`      | HTTPS proxy settings                          |
-| `no_proxy`        | String | `nil`      | No proxy settings                             |
-| `tmpdir`          | String | `nil`      | Temporary directory path                      |
+| Property            | Type   | Default       | Description                        |
+|---------------------|--------|---------------|------------------------------------|
+| `docker_daemon_cmd` | String | Generated     | Command to start the Docker daemon |
+| `logfile`           | String | Based on name | Path to the log file               |
+| `pidfile`           | String | Based on name | Path to the PID file               |
+| `http_proxy`        | String | `nil`         | HTTP proxy settings                |
+| `https_proxy`       | String | `nil`         | HTTPS proxy settings               |
+| `no_proxy`          | String | `nil`         | No proxy settings                  |
+| `tmpdir`            | String | `nil`         | Temporary directory path           |
 
 ## Examples
 

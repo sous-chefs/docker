@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 unified_mode true
-use 'partial/_base'
+use '_partial/_base'
 
 resource_name :docker_installation_tarball
 provides :docker_installation_tarball
@@ -77,7 +79,8 @@ action :create do
     notifies :run, 'execute[extract tarball]', :immediately
   end
 
-  execute 'extract tarball' do
+  # Chef 16 needs tar to strip the archive's leading directory.
+  execute 'extract tarball' do # rubocop:disable Chef/Modernize/ExecuteArchiveExtract
     action :nothing
     command "tar -xzf #{docker_tarball} --strip-components=1 -C #{docker_bin_prefix}"
   end

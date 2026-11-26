@@ -1,5 +1,10 @@
+# frozen_string_literal: true
+
 unified_mode true
-use 'partial/_base'
+use '_partial/_base'
+
+resource_name :docker_image
+provides :docker_image
 
 property :read_timeout, Integer, default: 120, desired_state: false
 property :host, [String, nil], default: lazy { ENV['DOCKER_HOST'] }, desired_state: false
@@ -10,7 +15,7 @@ property :force, [true, false], default: false, desired_state: false
 property :nocache, [true, false], default: false
 property :noprune, [true, false], default: false
 property :repo, String, name_property: true
-property :repo_credential_override, String
+property :repo_credential_override, String, desired_state: false
 property :rm, [true, false], default: true
 property :source, String
 property :tag, String, default: 'latest'
@@ -129,7 +134,12 @@ action_class do
   end
 
   def image_identifier
-    "#{new_resource.repo}:#{new_resource.tag}"
+    # handle sha256 tag references correctly
+    if new_resource.tag.to_s.start_with?('sha256:')
+      "#{new_resource.repo}@#{new_resource.tag}"
+    else
+      "#{new_resource.repo}:#{new_resource.tag}"
+    end
   end
 
   def import_image
@@ -141,7 +151,7 @@ action_class do
 
   def pull_image
     with_retries do
-      creds = credentials
+      creds = registry_credentials
       original_image = Docker::Image.get(image_identifier, {}, connection) if Docker::Image.exist?(image_identifier, {}, connection)
       new_image = Docker::Image.create({ 'fromImage' => image_identifier }, creds, connection)
 
@@ -151,7 +161,7 @@ action_class do
 
   def push_image
     with_retries do
-      creds = credentials
+      creds = registry_credentials
       i = Docker::Image.get(image_identifier, {}, connection)
       i.push(creds, repo_tag: image_identifier)
     end
@@ -172,29 +182,47 @@ action_class do
 
   def load_image
     with_retries do
-      Docker::Image.load(new_resource.source, {}, connection)
+      ::File.open(new_resource.source, 'rb') do |file|
+        connection.post(
+          '/images/load',
+          {},
+          headers: { 'Content-Type' => 'application/x-tar' },
+          body: file
+        )
+      end
     end
   end
 
-  def credentials
-    return new_resource.repo_credential_override unless new_resource.repo_credential_override.nil? || new_resource.repo_credential_override.empty?
-
+  def registry_credentials
     registry_host = parse_registry_host(new_resource.repo)
-    # Return unless we have credentials stored and we have a custom repo path
-    return registry_host unless registry_host.include?('/') && node.run_state.key?('docker_auth')
+    scope_host, repository = repository_auth_scope(registry_host)
+    repository_auth = node.run_state.dig('docker_repository_auth', scope_host) || {}
 
-    # Longest-path registry credentials match
-    registry_host = nil
-    registry_split = new_resource.repo.split('/')
-    join_count = registry_split.count
-
-    until registry_host || (join_count < 0)
-      join_count -= 1
-      registry_host = registry_split[0..join_count].join('/') if node.run_state['docker_auth'].key?(registry_split[0..join_count].join('/'))
+    if new_resource.repo_credential_override
+      return repository_auth.fetch(new_resource.repo_credential_override) do
+        raise Chef::Exceptions::ValidationFailed, "No Docker registry credentials registered for the requested override on #{registry_host}"
+      end
     end
 
-    return {} unless registry_host
+    prefix = repository_auth.keys.select { |key| repository == key || repository.start_with?("#{key}/") }.max_by(&:length)
+    return repository_auth.fetch(prefix) if prefix
+
+    # The legacy parser can misidentify a single-label private authority as Docker Hub.
+    return {} unless repository_auth_host(registry_host) == scope_host
 
     node.run_state.dig('docker_auth', registry_host) || {}
+  end
+
+  def repository_auth_scope(registry_host)
+    first, repository = new_resource.repo.split('/', 2)
+    if repository && (first == registry_host || first != first.downcase)
+      scope_host = repository_auth_host(first)
+    else
+      scope_host = 'docker.io'
+      repository = new_resource.repo
+    end
+
+    repository = "library/#{repository}" if scope_host == 'docker.io' && !repository.include?('/')
+    [scope_host, repository]
   end
 end

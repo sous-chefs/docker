@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # TODO: Refactor test
 require 'spec_helper'
 require_relative '../../libraries/helpers_json'
@@ -18,6 +20,12 @@ RSpec.describe DockerCookbook::DockerHelpers::Json do
       expected = 'filters=%7B%22dangling%22%3A%7B%22true%22%3Atrue%7D%2C%22until%22%3A%7B%221h30m%22%3Atrue%7D%2C%22label%22%3A%7B%22com.example.vendor%3DACME%22%3Atrue%7D%2C%22label%21%22%3A%7B%22no_prune%22%3Atrue%7D%7D'
 
       expect(subject.prune_generate_json(dangling: dangling, prune_until: prune_until, with_label: with_label, without_label: without_label)).to eq(expected)
+    end
+
+    it 'generates volume prune filter json' do
+      expected = 'all=true'
+
+      expect(subject.prune_generate_json(all: true)).to eq(expected)
     end
   end
 end

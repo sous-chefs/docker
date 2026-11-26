@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Constants
 IPV6_ADDR ||= /(
 ([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|
@@ -115,10 +117,10 @@ module DockerCookbook
         Array(v).each_with_object([]) do |label, a|
           if label =~ /:/
             parts = label.split(':')
-            a << "#{parts[0]}=\"#{parts[1]}\""
+            a << "#{parts.first}=\"#{parts[1]}\""
           elsif label =~ /=/
             parts = label.split('=')
-            a << "#{parts[0]}=#{parts[1]}"
+            a << "#{parts.first}=#{parts[1]}"
           else
             Chef::Log.info("WARNING: docker_service label #{label} not valid")
           end
@@ -156,6 +158,10 @@ module DockerCookbook
         else
           ''
         end
+      end
+
+      def classic_cluster_store_supported?
+        Gem::Version.new(docker_major_version) < Gem::Version.new('23.0')
       end
 
       def docker_raw_logs_arg
@@ -205,9 +211,13 @@ module DockerCookbook
         opts << "--bridge=#{bridge}" if bridge
         opts << "--bip=#{bip}" if bip
         opts << '--debug' if debug
-        opts << "--cluster-advertise=#{cluster_advertise}" if cluster_advertise
-        opts << "--cluster-store=#{cluster_store}" if cluster_store
-        cluster_store_opts.each { |store_opt| opts << "--cluster-store-opt=#{store_opt}" } if cluster_store_opts
+        if classic_cluster_store_supported?
+          opts << "--cluster-advertise=#{cluster_advertise}" if cluster_advertise
+          opts << "--cluster-store=#{cluster_store}" if cluster_store
+          cluster_store_opts.each { |store_opt| opts << "--cluster-store-opt=#{store_opt}" } if cluster_store_opts
+        elsif cluster_advertise || cluster_store || cluster_store_opts
+          Chef::Log.warn('Docker removed classic cluster-store daemon options in Engine 23.0; ignoring cluster_store, cluster_advertise, and cluster_store_opts')
+        end
         default_ulimit.each { |u| opts << "--default-ulimit=#{u}" } if default_ulimit
         dns.each { |dns| opts << "--dns=#{dns}" } if dns
         dns_search.each { |dns| opts << "--dns-search=#{dns}" } if dns_search

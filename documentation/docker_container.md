@@ -146,7 +146,7 @@ end
 ```ruby
 docker_container 'gpu_container' do
   repo 'nvidia/cuda'
-  tag 'latest'
+  tag '12.4.1-base-ubuntu22.04'
   gpus 'all'  # Pass all GPUs to the container
   gpu_driver 'nvidia'  # Use NVIDIA driver
 end
@@ -603,7 +603,7 @@ end
 # Using default NVIDIA driver
 docker_container 'gpu_container' do
   repo 'nvidia/cuda'
-  tag 'latest'
+  tag '12.4.1-base-ubuntu22.04'
   command 'nvidia-smi'
   gpus 'all'
   action :run_if_missing
