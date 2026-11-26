@@ -15,6 +15,7 @@ property :force, [true, false], default: false, desired_state: false
 property :nocache, [true, false], default: false
 property :noprune, [true, false], default: false
 property :repo, String, name_property: true
+property :repo_credential_override, String, desired_state: false
 property :rm, [true, false], default: true
 property :source, String
 property :tag, String, default: 'latest'
@@ -150,7 +151,7 @@ action_class do
 
   def pull_image
     with_retries do
-      creds = credentails
+      creds = registry_credentials
       original_image = Docker::Image.get(image_identifier, {}, connection) if Docker::Image.exist?(image_identifier, {}, connection)
       new_image = Docker::Image.create({ 'fromImage' => image_identifier }, creds, connection)
 
@@ -160,7 +161,7 @@ action_class do
 
   def push_image
     with_retries do
-      creds = credentails
+      creds = registry_credentials
       i = Docker::Image.get(image_identifier, {}, connection)
       i.push(creds, repo_tag: image_identifier)
     end
@@ -192,8 +193,36 @@ action_class do
     end
   end
 
-  def credentails
+  def registry_credentials
     registry_host = parse_registry_host(new_resource.repo)
-    node.run_state['docker_auth'] && node.run_state['docker_auth'][registry_host] || {}
+    scope_host, repository = repository_auth_scope(registry_host)
+    repository_auth = node.run_state.dig('docker_repository_auth', scope_host) || {}
+
+    if new_resource.repo_credential_override
+      return repository_auth.fetch(new_resource.repo_credential_override) do
+        raise Chef::Exceptions::ValidationFailed, "No Docker registry credentials registered for the requested override on #{registry_host}"
+      end
+    end
+
+    prefix = repository_auth.keys.select { |key| repository == key || repository.start_with?("#{key}/") }.max_by(&:length)
+    return repository_auth.fetch(prefix) if prefix
+
+    # The legacy parser can misidentify a single-label private authority as Docker Hub.
+    return {} unless repository_auth_host(registry_host) == scope_host
+
+    node.run_state.dig('docker_auth', registry_host) || {}
+  end
+
+  def repository_auth_scope(registry_host)
+    first, repository = new_resource.repo.split('/', 2)
+    if repository && (first == registry_host || first != first.downcase)
+      scope_host = repository_auth_host(first)
+    else
+      scope_host = 'docker.io'
+      repository = new_resource.repo
+    end
+
+    repository = "library/#{repository}" if scope_host == 'docker.io' && !repository.include?('/')
+    [scope_host, repository]
   end
 end

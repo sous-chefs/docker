@@ -124,6 +124,10 @@ alias_method :tlskey, :tls_server_key
 alias_method :tlsverify, :tls_verify
 
 action_class do
+  def registry_authority(address)
+    address.sub(%r{https?://}, '').split('/').first
+  end
+
   def parse_registry_host(val)
     # example values for val, can be prefixed with http(s):// :
     #   image                    (=> Docker Hub)
@@ -131,12 +135,16 @@ action_class do
     #   domain.ext/image         (=> 3rd party registry)
     #   domain.ext/.../image     (=> 3rd party registry)
     #
-    first_part = val.sub(%r{https?://}, '').split('/').first
+    first_part = registry_authority(val)
 
     # looks like a host name of a custom docker registry
     return first_part if first_part.include?('.') || first_part.include?(':') || first_part == 'localhost'
 
     # default host
     'index.docker.io'
+  end
+
+  def repository_auth_host(registry_host)
+    registry_host == 'index.docker.io' ? 'docker.io' : registry_host
   end
 end

@@ -79,7 +79,8 @@ action :create do
     notifies :run, 'execute[extract tarball]', :immediately
   end
 
-  execute 'extract tarball' do
+  # Chef 16 needs tar to strip the archive's leading directory.
+  execute 'extract tarball' do # rubocop:disable Chef/Modernize/ExecuteArchiveExtract
     action :nothing
     command "tar -xzf #{docker_tarball} --strip-components=1 -C #{docker_bin_prefix}"
   end

@@ -12,7 +12,7 @@ end
 docker_swarm_token 'worker' do
   rotate node['docker']['swarm']['rotate_token'] if node['docker']['swarm']['rotate_token']
   action node['docker']['swarm']['rotate_token'] ? :rotate : :read
-  notifies :create, 'ruby_block[save_token]', :immediately
+  notifies :run, 'ruby_block[save_token]', :immediately
 end
 
 # Save the token to a node attribute for use by workers
