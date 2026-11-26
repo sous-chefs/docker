@@ -38,6 +38,8 @@ end
 docker_service 'one' do
   graph '/var/lib/docker-one'
   host 'unix:///var/run/docker-one.sock'
+  # Docker 29 shares image metadata when both daemons use the same containerd namespace.
+  misc_opts '--exec-root=/var/run/docker-one --containerd-namespace=moby-one --containerd-plugins-namespace=plugins.moby-one'
   install_method 'none'
   action [:create, :start]
 end
