@@ -12,3 +12,5 @@ name: conventional-commits
 jobs:
   conventional-commits:
     uses: sous-chefs/.github/.github/workflows/conventional-commits.yml@9.0.1
+    permissions:
+      pull-requests: read
