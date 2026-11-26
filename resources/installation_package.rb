@@ -110,6 +110,10 @@ action :create do
   if new_resource.setup_docker_repo
     if platform_family?('rhel', 'fedora')
       arch = node['kernel']['machine']
+      major = node['platform_version'].to_i
+      distro_packages_available = [9, 10].include?(major) && %w(x86_64 aarch64).include?(arch)
+      official_channel = new_resource.site_url == 'download.docker.com' && %w(stable test).include?(new_resource.repo_channel)
+      pinned_version = new_resource.package_version || new_resource.version
       platform =
         if platform?('fedora')
           'fedora'
@@ -119,12 +123,15 @@ action :create do
           # use rhel for all el8 since CentOS 8 is dead
         elsif el8? && !platform?('centos')
           'rhel'
+        # The CentOS feeds retain older versions that are absent from these repositories.
+        elsif platform?('rocky', 'almalinux') && distro_packages_available && official_channel && !pinned_version
+          platform?('rocky') ? 'rocky' : 'alma'
         else
           'centos'
         end
 
       yum_repository 'docker' do
-        baseurl "https://#{new_resource.site_url}/linux/#{platform}/#{node['platform_version'].to_i}/#{arch}/#{new_resource.repo_channel}"
+        baseurl "https://#{new_resource.site_url}/linux/#{platform}/#{major}/#{arch}/#{new_resource.repo_channel}"
         gpgkey "https://#{new_resource.site_url}/linux/#{platform}/gpg"
         description "Docker #{new_resource.repo_channel.capitalize} repository"
         gpgcheck true

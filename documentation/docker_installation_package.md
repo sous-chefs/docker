@@ -140,6 +140,11 @@ This resource supports the following platforms:
 - RHEL/CentOS 7 and later
 - Fedora (latest versions)
 
+On Rocky Linux and AlmaLinux 9 and 10, unpinned `stable` and `test` installs from
+`download.docker.com` use Docker's repositories for those distributions on x86-64
+and ARM64. Pinned versions, custom mirrors, other channels, and other architectures
+keep the existing repository selection.
+
 ## Notes
 
 - The resource automatically handles architecture-specific package names and repositories

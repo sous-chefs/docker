@@ -95,6 +95,111 @@ describe 'test::installation_package' do
     end
   end
 
+  { 'rocky' => 'rocky', 'almalinux' => 'alma' }.each do |distribution, repository|
+    %w(9 10).product(%w(x86_64 aarch64)).each do |major, architecture|
+      context "#{distribution} #{major} on #{architecture}" do
+        platform distribution, '9'
+        automatic_attributes['platform_version'] = major
+        automatic_attributes['kernel']['machine'] = architecture
+        cached(:subject) { chef_run }
+
+        it 'configures the distribution repository and verifies packages with its signing key' do
+          expect(chef_run).to create_yum_repository('docker').with(
+            baseurl: "https://download.docker.com/linux/#{repository}/#{major}/#{architecture}/stable",
+            gpgkey: "https://download.docker.com/linux/#{repository}/gpg",
+            gpgcheck: true,
+            enabled: true
+          )
+        end
+      end
+    end
+
+    context "#{distribution} 9 on ppc64le" do
+      platform distribution, '9'
+      automatic_attributes['kernel']['machine'] = 'ppc64le'
+      cached(:subject) { chef_run }
+
+      it 'keeps the existing CentOS source for this architecture' do
+        expect(chef_run).to create_yum_repository('docker').with(
+          baseurl: 'https://download.docker.com/linux/centos/9/ppc64le/stable',
+          gpgkey: 'https://download.docker.com/linux/centos/gpg'
+        )
+      end
+    end
+
+    context "#{distribution} 8" do
+      platform distribution, '8'
+      cached(:subject) { chef_run }
+
+      it 'keeps the existing RHEL source' do
+        expect(chef_run).to create_yum_repository('docker').with(
+          baseurl: 'https://download.docker.com/linux/rhel/8/x86_64/stable',
+          gpgkey: 'https://download.docker.com/linux/rhel/gpg'
+        )
+      end
+    end
+  end
+
+  context 'Rocky 9 with a custom mirror and channel' do
+    platform 'rocky', '9'
+    cached(:subject) { chef_run }
+    recipe do
+      docker_installation_package 'default' do
+        site_url 'mirror.example.test'
+        repo_channel 'test'
+      end
+    end
+
+    it 'uses the configured mirror for both the repository and its signing key' do
+      expect(chef_run).to create_yum_repository('docker').with(
+        baseurl: 'https://mirror.example.test/linux/centos/9/x86_64/test',
+        gpgkey: 'https://mirror.example.test/linux/centos/gpg',
+        description: 'Docker Test repository',
+        gpgcheck: true
+      )
+    end
+  end
+
+  %i(version package_version).each do |pin|
+    context "Rocky 9 with a pinned #{pin}" do
+      platform 'rocky', '9'
+      cached(:subject) { chef_run }
+      recipe do
+        docker_installation_package 'default' do
+          public_send(pin, '29.9.3')
+        end
+      end
+
+      it 'uses the CentOS source that provides the requested version' do
+        expect(chef_run).to create_yum_repository('docker').with(
+          baseurl: 'https://download.docker.com/linux/centos/9/x86_64/stable',
+          gpgkey: 'https://download.docker.com/linux/centos/gpg'
+        )
+        expect(chef_run).to install_package('docker-ce').with(version: '29.9.3')
+      end
+    end
+  end
+
+  { 'test' => 'rocky', 'nightly' => 'centos' }.each do |channel, repository|
+    context "Rocky 9 with the #{channel} channel" do
+      platform 'rocky', '9'
+      cached(:subject) { chef_run }
+      recipe do
+        docker_installation_package 'default' do
+          repo_channel channel
+        end
+      end
+
+      it 'uses the repository that publishes the requested channel' do
+        expect(chef_run).to create_yum_repository('docker').with(
+          baseurl: "https://download.docker.com/linux/#{repository}/9/x86_64/#{channel}",
+          gpgkey: "https://download.docker.com/linux/#{repository}/gpg",
+          gpgcheck: true
+        )
+      end
+    end
+  end
+
   context 'RHEL (s390x): testing default action, default properties' do
     platform 'redhat', '8'
     cached(:subject) { chef_run }
