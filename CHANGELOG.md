@@ -5,6 +5,18 @@ This file is used to list changes made in each version of the docker cookbook.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [12.1.0](https://github.com/sous-chefs/docker/compare/v12.0.2...v12.1.0) (2026-11-26)
+
+
+### Features
+
+* support multiple credentials per registry ([1e63eb2](https://github.com/sous-chefs/docker/commit/1e63eb21d92451b1837f1157736552541f4606bb))
+
+
+### Bug Fixes
+
+* use official Rocky Linux and AlmaLinux Docker repositories ([7c36452](https://github.com/sous-chefs/docker/commit/7c3645253f1b6302774f57fdb3c6ecf5201f79f2))
+
 ## [12.0.2](https://github.com/sous-chefs/docker/compare/v12.0.1...v12.0.2) (2026-08-12)
 
 
