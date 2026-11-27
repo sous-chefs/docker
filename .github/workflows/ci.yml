@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   lint-unit:
-    uses: sous-chefs/.github/.github/workflows/lint-unit.yml@9.0.1
+    uses: sous-chefs/.github/.github/workflows/lint-unit.yml@9.0.2
     permissions:
       actions: write
       checks: write
@@ -44,7 +44,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Install Cinc Workstation
-        uses: sous-chefs/.github/.github/actions/install-workstation@9.0.1
+        uses: sous-chefs/.github/.github/actions/install-workstation@9.0.2
       - name: Install InSpec Docker resource pack
         if: matrix.suite == 'resources'
         run: chef gem install inspec-docker-resources
